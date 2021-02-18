@@ -1,0 +1,10 @@
+.DS_Store
+
+# Python
+*.pyc
+__pycache__
+/venv
+/.venv
+
+# Node
+/node_modules
