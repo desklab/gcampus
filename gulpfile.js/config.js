@@ -1,4 +1,5 @@
 let path = require('path');
+const gulpUtil = require("gulp-util");
 
 
 const staticDir = 'static';
@@ -22,5 +23,6 @@ const apps = [
 module.exports = {
     apps: apps,
     staticDir: staticDir,
-    sourceDir: sourceDir
+    sourceDir: sourceDir,
+    sourceMaps: !gulpUtil.env.production
 }

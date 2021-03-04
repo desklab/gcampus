@@ -28,5 +28,5 @@ gulp.task('clean', () => {
         .pipe(clean).on('error', gulpUtil.log);
 });
 
-gulp.task('build', gulp.series('javascript', 'assets'));
+gulp.task('build', gulp.series('javascript', 'styles', 'assets'));
 gulp.task('default', gulp.series('clean', 'build'));
