@@ -11,7 +11,6 @@ static/
 
 # Node
 /node_modules
-package-lock.json
 
 # Database
 *.sqlite3
