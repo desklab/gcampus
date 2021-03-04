@@ -15,14 +15,14 @@ import os
 from pathlib import Path
 
 
-STATIC_LOCATION = 'static'
+STATIC_LOCATION = "static"
 
 if os.environ.get("USE_S3_STORAGE", False):
     # Credentials
-    AWS_ACCESS_KEY_ID = os.environ.get('S3_ACCESS_KEY')
-    AWS_SECRET_ACCESS_KEY = os.environ.get('S3_SECRET_KEY')
+    AWS_ACCESS_KEY_ID = os.environ.get("S3_ACCESS_KEY")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("S3_SECRET_KEY")
     # Location
-    AWS_S3_ENDPOINT_URL = os.environ.get('S3_ENDPOINT_URL', 'http://localhost:9000')
+    AWS_S3_ENDPOINT_URL = os.environ.get("S3_ENDPOINT_URL", "http://localhost:9000")
     AWS_STORAGE_BUCKET_NAME = os.environ.get("S3_BUCKET_NAME", "gcampus")
 
     # Other settings
@@ -30,14 +30,15 @@ if os.environ.get("USE_S3_STORAGE", False):
     AWS_DEFAULT_ACL = None
     AWS_BUCKET_ACL = None
     AWS_S3_SECURE_URLS = os.environ.get("S3_SECURE_URLS", True)
-    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
     AWS_QUERYSTRING_EXPIRE = 86400
 
     STATICFILES_STORAGE = "gcampus.core.storage.StaticFileStorage"
 
     STATIC_URL = "{endpoint:s}/{bucket:s}/{location:s}/".format(
-        endpoint=AWS_S3_ENDPOINT_URL, bucket=AWS_STORAGE_BUCKET_NAME,
-        location=STATIC_LOCATION
+        endpoint=AWS_S3_ENDPOINT_URL,
+        bucket=AWS_STORAGE_BUCKET_NAME,
+        location=STATIC_LOCATION,
     )
 else:
     # Use django's default static file storage class. See

@@ -7,14 +7,14 @@ from storages.backends.s3boto3 import S3StaticStorage  # noqa
 
 @deconstructible
 class StaticFileStorage(S3StaticStorage):  # noqa
-    """Static File Storage Class
-    """
+    """Static File Storage Class"""
+
     # The location basically equates to the bucket
-    location = getattr(settings, 'STATIC_LOCATION', 'static')
+    location = getattr(settings, "STATIC_LOCATION", "static")
 
     # Set the default permission for the static files bucket. Should be
     # publicly readable.
-    default_acl = 'public-read'
+    default_acl = "public-read"
 
     # Disable authentication using query strings. This is done to avoid
     # generating a custom access token for every request which would be
@@ -31,7 +31,8 @@ class StaticFileStorage(S3StaticStorage):  # noqa
     @functools.lru_cache
     def _static_url(self):
         return "{endpoint:s}/{bucket:s}/".format(
-            endpoint=self.endpoint_url, bucket=self.bucket_name,
+            endpoint=self.endpoint_url,
+            bucket=self.bucket_name,
         )
 
     def url(self, name, parameters=None, expire=None, http_method=None):
