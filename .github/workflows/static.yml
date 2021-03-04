@@ -7,8 +7,6 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -37,8 +35,11 @@ jobs:
         with:
           python-version: '3.x'
       
+      - name: Install Requirements
+        run: pip install -r requirements.txt
+
       - name: Upload static files
-        run: python manage.py collectstatic
+        run: python manage.py collectstatic --no-input
         env:
           USE_S3_STORAGE: True
           S3_ACCESS_KEY: ${{secrets.MINIO_ACCESS_KEY}}
