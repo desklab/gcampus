@@ -27,12 +27,21 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.5
 
-      - run: npm ci --also=dev
-      - run: npm run build
-
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Install Node.js packages
+        run: npm ci --also=dev
+      - name: Build static files
+        run: npm run build
+      
+      - name: Setup Python
+        uses: actions/setup-python@v2.2.1
+        with:
+          python-version: '3.x'
+      
+      - name: Upload static files
+        run: python manage.py collectstatic
+        env:
+          USE_S3_STORAGE: True
+          S3_ACCESS_KEY: ${{secrets.MINIO_ACCESS_KEY}}
+          S3_SECRET_KEY: ${{secrets.MINIO_SECRET_KEY}}
+          S3_ENDPOINT_URL: 'https://static.desk-lab.de'
+          S3_BUCKET_NAME: 'gcampus'
