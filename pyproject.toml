@@ -1,7 +1,7 @@
 [tool.black]
 line-length = 88
 target-version = ["py37"]
-exclude = "/(\\.eggs|\\.git|venv|frontend|node_modules)/"
+exclude = "/(\\.eggs|\\.git|venv|gulpfile.js|node_modules)/"
 
 [tool.pylint.master]
 ignore = "frontend"
