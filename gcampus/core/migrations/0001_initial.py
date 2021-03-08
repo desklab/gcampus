@@ -10,36 +10,71 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='DataType',
+            name="DataType",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(blank=True, max_length=280)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(blank=True, max_length=280)),
             ],
         ),
         migrations.CreateModel(
-            name='Measurement',
+            name="Measurement",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(blank=True, max_length=280)),
-                ('location', django.contrib.gis.db.models.fields.PointField(srid=4326)),
-                ('time', models.DateTimeField()),
-                ('comment', models.TextField(blank=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(blank=True, max_length=280)),
+                ("location", django.contrib.gis.db.models.fields.PointField(srid=4326)),
+                ("time", models.DateTimeField()),
+                ("comment", models.TextField(blank=True)),
             ],
             bases=(gcampus.core.models.util.DateMixin, models.Model),
         ),
         migrations.CreateModel(
-            name='DataPoint',
+            name="DataPoint",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('value', models.FloatField()),
-                ('comment', models.TextField(blank=True)),
-                ('data_type', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='gcampuscore.datatype')),
-                ('measurement', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='gcampuscore.measurement')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("value", models.FloatField()),
+                ("comment", models.TextField(blank=True)),
+                (
+                    "data_type",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="gcampuscore.datatype",
+                    ),
+                ),
+                (
+                    "measurement",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="gcampuscore.measurement",
+                    ),
+                ),
             ],
             bases=(gcampus.core.models.util.DateMixin, models.Model),
         ),
