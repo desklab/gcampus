@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
                 ("time", models.DateTimeField()),
                 ("comment", models.TextField(blank=True)),
             ],
-            bases=(gcampus.core.models.util.DateMixin, models.Model),
+            bases=(gcampus.core.models.util.DateModelMixin, models.Model),
         ),
         migrations.CreateModel(
             name="DataPoint",
@@ -76,6 +76,6 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            bases=(gcampus.core.models.util.DateMixin, models.Model),
+            bases=(gcampus.core.models.util.DateModelMixin, models.Model),
         ),
     ]

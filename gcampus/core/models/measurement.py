@@ -7,7 +7,7 @@ from django.contrib.gis.db import models
 from gcampus.core.models import util
 
 
-class Measurement(util.DateMixin, models.Model):
+class Measurement(util.DateModelMixin):
     # Tokens are not yet implemented. This will be done in version 0.2
     token: Optional[str] = None
 
@@ -23,7 +23,7 @@ class DataType(models.Model):
     # TODO: Maybe add unit
 
 
-class DataPoint(util.DateMixin, models.Model):
+class DataPoint(util.DateModelMixin):
     data_type = models.ForeignKey(DataType, on_delete=models.PROTECT)
     value = models.FloatField(blank=False)
     measurement = models.ForeignKey(Measurement, on_delete=models.CASCADE)
