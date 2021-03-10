@@ -21,6 +21,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.gis",
+    # External apps
+    "leaflet",
     # gcampus specific apps
     "gcampus.core",
 ]
@@ -108,3 +110,8 @@ from gcampus.settings.files import *  # noqa
 
 # Geo Settings
 NOMINATIM_USER_AGENT = "gcampus"
+
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (51.15, 10.45),
+    "DEFAULT_ZOOM": 4
+}
