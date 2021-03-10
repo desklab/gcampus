@@ -1,6 +1,11 @@
 from django.db import models
 
 
+ADMIN_READ_ONLY_FIELDS = ("created_at", "updated_at")
+
+EMPTY = ("", None, False, (), [], {})
+
+
 class DateModelMixin(models.Model):
     class Meta:
         abstract = True

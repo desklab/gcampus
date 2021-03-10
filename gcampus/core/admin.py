@@ -11,7 +11,7 @@ class DataTypeAdmin(admin.ModelAdmin):
 
 
 class DataPointAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ADMIN_READ_ONLY_FIELDS
 
 
 admin.site.register(Measurement, MeasurementAdmin)
