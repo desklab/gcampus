@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "gulp --production",
-    "dev": "gulp"
+    "dev": "gulp watch"
   },
   "browserslist": [
     "Firefox ESR",
