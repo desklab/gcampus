@@ -104,3 +104,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 from gcampus.settings.files import *  # noqa
+
+
+# Geo Settings
+NOMINATIM_USER_AGENT = "gcampus"
