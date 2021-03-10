@@ -16,7 +16,7 @@ class Measurement(util.DateModelMixin):
 
     name = models.CharField(blank=True, max_length=280)  # Optional name
     location = models.PointField(blank=False)  # Location is always required
-    location_name = models.CharField(blank=True, max_length=280)
+    location_name = models.CharField(blank=True, null=True, max_length=280)
 
     time = models.DateTimeField(blank=False)
     comment = models.TextField(blank=True)
