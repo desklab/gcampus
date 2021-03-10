@@ -8,6 +8,7 @@ from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 class MeasurementAdmin(LeafletGeoAdmin):
     readonly_fields = ADMIN_READ_ONLY_FIELDS + ("location_name",)
 
+
 class DataTypeAdmin(admin.ModelAdmin):
     pass
 

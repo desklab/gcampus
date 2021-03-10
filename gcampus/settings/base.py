@@ -110,8 +110,6 @@ from gcampus.settings.files import *  # noqa
 
 # Geo Settings
 NOMINATIM_USER_AGENT = "gcampus"
+NOMINATIM_DOMAIN = "nominatim.openstreetmap.org"
 
-LEAFLET_CONFIG = {
-    'DEFAULT_CENTER': (51.15, 10.45),
-    "DEFAULT_ZOOM": 4
-}
+LEAFLET_CONFIG = {"DEFAULT_CENTER": (51.15, 10.45), "DEFAULT_ZOOM": 4}
