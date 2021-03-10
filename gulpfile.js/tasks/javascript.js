@@ -3,8 +3,7 @@ let path = require('path');
 let gulp = require('gulp');
 let gulpUtil = require('gulp-util');
 let gulpIf = require('gulp-if');
-let sourcemaps = require('gulp-sourcemaps');
-let babel = require('gulp-babel');
+const gulpEsbuild = require('gulp-esbuild')
 
 let config = require('../config');
 
@@ -14,12 +13,15 @@ let dest = config.apps.map(app => path.join(app.dest, 'js'));
 
 gulp.task('javascript', () => {
     return gulp.src(src)
-        .pipe(sourcemaps.init())
-        .pipe(gulpIf(config.sourceMaps, sourcemaps.init()))
-        .pipe(babel({
-            presets: ['@babel/preset-env']
+        .pipe(gulpEsbuild({
+            bundle: true,
+            sourcemap: config.sourceMaps,
+            format: "iife"
         }))
-        .pipe(gulpIf(config.sourceMaps, sourcemaps.write(dest)))
         .pipe(gulp.dest(dest))
         .on('error', gulpUtil.log);
+});
+
+gulp.task('watch-javascript', () => {
+    gulp.watch(src, gulp.series('javascript'));
 });

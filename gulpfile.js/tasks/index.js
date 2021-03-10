@@ -30,3 +30,4 @@ gulp.task('clean', () => {
 
 gulp.task('build', gulp.series('javascript', 'styles', 'assets'));
 gulp.task('default', gulp.series('clean', 'build'));
+gulp.task('watch', gulp.parallel('watch-javascript', 'watch-styles', 'watch-assets'));

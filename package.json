@@ -30,6 +30,7 @@
     "fibers": "^5.0.0",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
+    "gulp-esbuild": "^0.5.5",
     "gulp-if": "^3.0.0",
     "gulp-postcss": "^9.0.0",
     "gulp-sass": "^4.1.0",

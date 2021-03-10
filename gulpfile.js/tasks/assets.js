@@ -14,3 +14,7 @@ gulp.task('assets', () => {
         .pipe(gulp.dest(dest))
         .on('error', gulpUtil.log);
 });
+
+gulp.task('watch-assets', () => {
+    gulp.watch(src, gulp.series('assets'));
+});

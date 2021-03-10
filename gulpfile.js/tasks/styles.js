@@ -17,6 +17,11 @@ sass.compiler = require('sass');
 let src = config.apps.map(app => path.join(app.src, 'styles/**/*.scss'));
 let dest = config.apps.map(app => path.join(app.dest, 'styles'));
 
+// Also add leaflet.css to static files
+src.push(path.join('.', 'node_modules', 'leaflet', 'dist', 'leaflet.css'));
+// ``dest[0]`` should equate to the gcampuscore app
+dest.push(dest[0])
+
 gulp.task('styles', function () {
     return gulp.src(src)
         .pipe(gulpIf(config.sourceMaps, sourcemaps.init()))
@@ -28,4 +33,8 @@ gulp.task('styles', function () {
         .pipe(gulpIf(config.sourceMaps, sourcemaps.write()))
         .pipe(gulp.dest(dest))
         .on('error', gulpUtil.log);
+});
+
+gulp.task('watch-styles', () => {
+    gulp.watch(src, gulp.series('styles'));
 });
