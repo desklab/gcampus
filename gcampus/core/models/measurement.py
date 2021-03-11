@@ -5,6 +5,7 @@ from typing import Optional
 from django.contrib.gis.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext_lazy
 
 from gcampus.core.models import util
 from gcampus.core.util import get_location_name
@@ -13,6 +14,7 @@ from gcampus.core.util import get_location_name
 class Measurement(util.DateModelMixin):
     class Meta:
         verbose_name = _("Measurement")
+        verbose_name_plural = _("Measurements")
 
     # Tokens are not yet implemented. This will be done in version 0.2
     token: Optional[str] = None
@@ -72,6 +74,7 @@ class Measurement(util.DateModelMixin):
 class DataType(models.Model):
     class Meta:
         verbose_name = _("Data type")
+        verbose_name_plural = _("Data types")
     name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
     # TODO: Maybe add unit
 
@@ -79,6 +82,7 @@ class DataType(models.Model):
 class DataPoint(util.DateModelMixin):
     class Meta:
         verbose_name = _("Data point")
+        verbose_name_plural = _("Data points")
     data_type = models.ForeignKey(
         DataType, on_delete=models.PROTECT, verbose_name=_("Data type")
     )
