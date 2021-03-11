@@ -11,15 +11,27 @@ from gcampus.core.util import get_location_name
 
 
 class Measurement(util.DateModelMixin):
+    class Meta:
+        verbose_name = _("Measurement")
+
     # Tokens are not yet implemented. This will be done in version 0.2
     token: Optional[str] = None
 
-    name = models.CharField(blank=True, max_length=280)  # Optional name
-    location = models.PointField(blank=False)  # Location is always required
-    location_name = models.CharField(blank=True, null=True, max_length=280)
+    name = models.CharField(
+        blank=True, max_length=280, verbose_name=_("Name"),
+        help_text=_("Your name or team name")
+    )
+    location = models.PointField(blank=False, verbose_name=_("Location"))
+    location_name = models.CharField(
+        blank=True, null=True, max_length=280, verbose_name=_("Location name"),
+        help_text=_("An approximated location for the measurement")
+    )
 
-    time = models.DateTimeField(blank=False)
-    comment = models.TextField(blank=True)
+    time = models.DateTimeField(
+        blank=False, verbose_name=_("Time"),
+        help_text=_("Date and time of the measurement")
+    )
+    comment = models.TextField(blank=True, verbose_name=_("Comment"))
 
     def is_location_changed(self):
         try:
@@ -29,11 +41,11 @@ class Measurement(util.DateModelMixin):
         return self.location.coords != db_instance.location.coords
 
     def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
+            self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
         # Check if the location field has ben updated
         if (
-            update_fields is not None and "location" in update_fields
+                update_fields is not None and "location" in update_fields
         ) or self.is_location_changed():
             coordinates = getattr(self.location, "coords", None)
             self.location_name = get_location_name(coordinates)
@@ -58,12 +70,20 @@ class Measurement(util.DateModelMixin):
 
 
 class DataType(models.Model):
-    name = models.CharField(blank=True, max_length=280)
+    class Meta:
+        verbose_name = _("Data type")
+    name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
     # TODO: Maybe add unit
 
 
 class DataPoint(util.DateModelMixin):
-    data_type = models.ForeignKey(DataType, on_delete=models.PROTECT)
-    value = models.FloatField(blank=False)
-    measurement = models.ForeignKey(Measurement, on_delete=models.CASCADE)
-    comment = models.TextField(blank=True)
+    class Meta:
+        verbose_name = _("Data point")
+    data_type = models.ForeignKey(
+        DataType, on_delete=models.PROTECT, verbose_name=_("Data type")
+    )
+    value = models.FloatField(blank=False, verbose_name=_("Value"))
+    measurement = models.ForeignKey(
+        Measurement, on_delete=models.CASCADE, verbose_name=_("Associated measurement")
+    )
+    comment = models.TextField(blank=True, verbose_name=_("Comment"))

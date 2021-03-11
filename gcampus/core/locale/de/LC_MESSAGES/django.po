@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-11 22:31+0100\n"
+"POT-Creation-Date: 2021-03-12 00:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,26 +17,81 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: gcampus/core/apps.py:8
 msgid "GCampus Core"
 msgstr "Gewässercampus"
 
-#: gcampus/core/models/measurement.py:46
+#: gcampus/core/models/measurement.py:15
+#, fuzzy
+#| msgid "Measurement %(id)s"
+msgid "Measurement"
+msgstr "Messung %(id)s"
+
+#: gcampus/core/models/measurement.py:21 gcampus/core/models/measurement.py:75
+msgid "Name"
+msgstr "Name"
+
+#: gcampus/core/models/measurement.py:22
+msgid "Your name or team name"
+msgstr "Dein Name oder ein Team Name"
+
+#: gcampus/core/models/measurement.py:24
+msgid "Location"
+msgstr "Standort"
+
+#: gcampus/core/models/measurement.py:26
+msgid "Location name"
+msgstr "Standort name"
+
+#: gcampus/core/models/measurement.py:27
+msgid "An approximated location for the measurement"
+msgstr "Ein abgeschätzter Standort der Messung"
+
+#: gcampus/core/models/measurement.py:31
+msgid "Time"
+msgstr "Messzeitpunkt"
+
+#: gcampus/core/models/measurement.py:32
+msgid "Date and time of the measurement"
+msgstr "Datum und Uhrzeit der Messung"
+
+#: gcampus/core/models/measurement.py:34 gcampus/core/models/measurement.py:89
+msgid "Comment"
+msgstr "Kommentar"
+
+#: gcampus/core/models/measurement.py:58
 #, python-format
 msgid "Measurement in %(location)s by %(name)s"
 msgstr "Messung in %(location)s von %(name)s"
 
-#: gcampus/core/models/measurement.py:51
+#: gcampus/core/models/measurement.py:63
 #, python-format
 msgid "Measurement by %(name)s"
 msgstr "Messung von %(name)s"
 
-#: gcampus/core/models/measurement.py:53
+#: gcampus/core/models/measurement.py:65
 #, python-format
 msgid "Measurement in %(location)s"
 msgstr "Messung in %(location)s"
 
-#: gcampus/core/models/measurement.py:57
+#: gcampus/core/models/measurement.py:69
 #, python-format
 msgid "Measurement %(id)s"
 msgstr "Messung %(id)s"
+
+#: gcampus/core/models/measurement.py:74 gcampus/core/models/measurement.py:83
+msgid "Data type"
+msgstr "Daten typ"
+
+#: gcampus/core/models/measurement.py:81
+msgid "Data point"
+msgstr "Messwert"
+
+#: gcampus/core/models/measurement.py:85
+msgid "Value"
+msgstr "Wert"
+
+#: gcampus/core/models/measurement.py:87
+msgid "Associated measurement"
+msgstr "Verknüpfte Messung"
