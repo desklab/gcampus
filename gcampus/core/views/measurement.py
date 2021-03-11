@@ -1,5 +1,7 @@
 from django.views.generic import ListView
 
+from gcampus.core.models import Measurement
 
-class Measurement_List(ListView):
+
+class MeasurementList(ListView):
     model = Measurement
