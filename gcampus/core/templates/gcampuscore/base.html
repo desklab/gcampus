@@ -1,10 +1,29 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="{% block description %}{% endblock %}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    {# Global stylesheets #}
+    {% comment %}
+        <link rel="stylesheet" type="text/css" href="{% static 'desklabcore/css/desklab.css' %}">
+    {% endcomment %}
+
+    {% block extra_head %}
+        {# Override this in templates to add extra stylesheets #}
+    {% endblock %}
 </head>
-<body>
-{% block body %}{% endblock %}
+
+<body class="{% block body_class %}{% endblock %}">
+{% block content %}
+{% endblock %}
+{# Global javascript #}
+{% block extra_body %}
+    {# Override this in templates to add extra javascript #}
+{% endblock %}
 </body>
 </html>

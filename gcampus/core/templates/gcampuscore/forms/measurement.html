@@ -1,0 +1,14 @@
+{% extends "gcampuscore/base.html" %}
+{% load leaflet_tags %}
+{% block extra_head %}
+    {% leaflet_js plugins="forms" %}
+    {% leaflet_css plugins="forms" %}
+{% endblock %}
+{% block content %}
+    <h1>Edit {{ object }}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit"/>
+    </form>
+{% endblock %}
