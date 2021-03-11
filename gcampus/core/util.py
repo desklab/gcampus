@@ -33,7 +33,7 @@ def get_location_name(long_lat: Optional[Tuple[float, float]]) -> Optional[str]:
     geo_loc = get_geo_locator()
     try:
         loc: Optional[Location] = geo_loc.reverse((lat, long), exactly_one=True)
-    except ValueError or GeocoderServiceError:
+    except (ValueError, GeocoderServiceError):
         return None
     if loc is not None and "address" in loc.raw:
         address = loc.raw["address"]
