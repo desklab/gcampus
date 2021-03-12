@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                 ("location", django.contrib.gis.db.models.fields.PointField(srid=4326)),
                 ("time", models.DateTimeField()),
                 ("comment", models.TextField(blank=True)),
-            ]
+            ],
         ),
         migrations.CreateModel(
             name="DataPoint",
@@ -74,6 +74,6 @@ class Migration(migrations.Migration):
                         to="gcampuscore.measurement",
                     ),
                 ),
-            ]
+            ],
         ),
     ]

@@ -8,6 +8,4 @@ class MeasurementForm(ModelForm):
     class Meta:
         model = Measurement
         fields = ["name", "time", "location", "comment"]
-        widgets = {
-            "location": LeafletWidget()
-        }
+        widgets = {"location": LeafletWidget()}
