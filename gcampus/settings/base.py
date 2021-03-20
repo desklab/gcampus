@@ -100,14 +100,9 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-LANGUAGES = (
-    ("en", _("English")),
-    ("de", _("German"))
-)
+LANGUAGES = (("en", _("English")), ("de", _("German")))
 
-LOCALE_PATHS = [
-    BASE_DIR.joinpath("locale")
-]
+LOCALE_PATHS = [BASE_DIR.joinpath("locale")]
 
 
 # Static files (CSS, JavaScript, Images)
