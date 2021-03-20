@@ -1,8 +1,14 @@
-from django.views.generic import ListView
+from __future__ import annotations
+
+from django.http import HttpResponseRedirect, HttpRequest
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from django.views.generic import ListView, View
+from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import FormView
 
-from gcampus.core.forms.measurement import MeasurementForm
-from gcampus.core.models import Measurement
+from gcampus.core.forms.measurement import MeasurementForm, DataPointFormSet
+from gcampus.core.models import Measurement, Optional
 
 
 class MeasurementListView(ListView):
@@ -12,8 +18,55 @@ class MeasurementListView(ListView):
 class MeasurementFormView(FormView):
     template_name = "gcampuscore/forms/measurement.html"
     form_class = MeasurementForm
-    success_url = "/admin"
+    next_view_name = "gcampuscore:data_points_add"
 
     def form_valid(self, form: MeasurementForm):
-        form.save()
-        return super(MeasurementFormView, self).form_valid(form)
+        instance: Measurement = form.save()
+        return HttpResponseRedirect(self.get_next_url(instance))
+
+    def get_next_url(self, instance: Measurement):
+        return reverse(self.next_view_name, kwargs={"measurement_id": instance.id})
+
+
+class DataPointFormSetView(TemplateResponseMixin, View):
+    formset_class = DataPointFormSet
+    template_name = "gcampuscore/forms/datapoints.html"
+    success_url = "/admin"
+
+    def form_valid(self, formset: DataPointFormSet):
+        formset.save()
+        return HttpResponseRedirect(self.success_url)
+
+    def get_formset(
+        self, request: HttpRequest, measurement_id: int
+    ) -> DataPointFormSetView.formset_class:
+        """Get Formset
+
+        Get the formset for the current request based on the instance of
+        the specified measurement ID.
+        Will raise a 404 error if no measurement with such ID exists.
+
+        :param request: The request object. Contains e.g. the POST form
+            data.
+        :param measurement_id: This information comes from the URL and
+            contains the ID to the measurement entry that is being
+            edited.
+        """
+        instance: Measurement = get_object_or_404(Measurement, id=measurement_id)
+        if request.method == "POST":
+            return self.formset_class(
+                data=request.POST, files=request.FILES, instance=instance
+            )
+        else:
+            return self.formset_class(instance=instance)
+
+    def post(self, request: HttpRequest, measurement_id: int, *args, **kwargs):
+        formset = self.get_formset(request, measurement_id)
+        if formset.is_valid():
+            return self.form_valid(formset)
+        else:
+            return self.render_to_response({"formset": formset})
+
+    def get(self, request: HttpRequest, measurement_id: int, *args, **kwargs):
+        formset = self.get_formset(request, measurement_id)
+        return self.render_to_response({"formset": formset})
