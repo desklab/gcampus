@@ -8,7 +8,7 @@ from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import FormView
 
 from gcampus.core.forms.measurement import MeasurementForm, DataPointFormSet
-from gcampus.core.models import Measurement, Optional
+from gcampus.core.models import Measurement
 
 
 class MeasurementListView(ListView):
@@ -20,7 +20,7 @@ class MeasurementListView(ListView):
 class MeasurementFormView(FormView):
     template_name = "gcampuscore/forms/measurement.html"
     form_class = MeasurementForm
-    next_view_name = "gcampuscore:data_points_add"
+    next_view_name = "gcampuscore:add_data_points"
 
     def form_valid(self, form: MeasurementForm):
         instance: Measurement = form.save()
