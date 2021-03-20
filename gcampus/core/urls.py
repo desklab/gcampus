@@ -9,6 +9,7 @@ urlpatterns = [
         DataPointFormSetView.as_view(),
         name="data_points_add",
     ),
+    path("measurement_list/", MeasurementListView.as_view()),
 ]
 
 app_name = "gcampuscore"

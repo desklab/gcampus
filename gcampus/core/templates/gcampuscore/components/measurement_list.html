@@ -1,0 +1,26 @@
+
+{% extends "gcampuscore/base.html" %}
+{% block content %}
+ <table>
+      <tbody>
+      <tr>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Date</th>
+          <th>Comment</th>
+      </tr>
+        {% for measurement in measurement_list %}
+          <tr>
+            <td>{{ measurement.name }}</td>
+            <td>{{ measurement.location_name }}</td>
+            <td>{{ measurement.time }}</td>
+              <td>{{ measurement.comment }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+ </table>
+{% endblock %}
+
+
+
+

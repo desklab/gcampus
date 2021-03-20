@@ -12,7 +12,9 @@ from gcampus.core.models import Measurement, Optional
 
 
 class MeasurementListView(ListView):
+    template_name = "gcampuscore/components/measurement_list.html"
     model = Measurement
+    context_object_name = "measurement_list"
 
 
 class MeasurementFormView(FormView):
