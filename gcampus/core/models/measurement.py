@@ -20,18 +20,24 @@ class Measurement(util.DateModelMixin):
     token: Optional[str] = None
 
     name = models.CharField(
-        blank=True, max_length=280, verbose_name=_("Name"),
-        help_text=_("Your name or team name")
+        blank=True,
+        max_length=280,
+        verbose_name=_("Name"),
+        help_text=_("Your name or team name"),
     )
     location = models.PointField(blank=False, verbose_name=_("Location"))
     location_name = models.CharField(
-        blank=True, null=True, max_length=280, verbose_name=_("Location name"),
-        help_text=_("An approximated location for the measurement")
+        blank=True,
+        null=True,
+        max_length=280,
+        verbose_name=_("Location name"),
+        help_text=_("An approximated location for the measurement"),
     )
 
     time = models.DateTimeField(
-        blank=False, verbose_name=_("Time"),
-        help_text=_("Date and time of the measurement")
+        blank=False,
+        verbose_name=_("Time"),
+        help_text=_("Date and time of the measurement"),
     )
     comment = models.TextField(blank=True, verbose_name=_("Comment"))
 
@@ -43,11 +49,11 @@ class Measurement(util.DateModelMixin):
         return self.location.coords != db_instance.location.coords
 
     def save(
-            self, force_insert=False, force_update=False, using=None, update_fields=None
+        self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
         # Check if the location field has ben updated
         if (
-                update_fields is not None and "location" in update_fields
+            update_fields is not None and "location" in update_fields
         ) or self.is_location_changed():
             coordinates = getattr(self.location, "coords", None)
             self.location_name = get_location_name(coordinates)
@@ -75,14 +81,20 @@ class DataType(models.Model):
     class Meta:
         verbose_name = _("Data type")
         verbose_name_plural = _("Data types")
+
     name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
+
     # TODO: Maybe add unit
+
+    def __str__(self):
+        return self.name
 
 
 class DataPoint(util.DateModelMixin):
     class Meta:
         verbose_name = _("Data point")
         verbose_name_plural = _("Data points")
+
     data_type = models.ForeignKey(
         DataType, on_delete=models.PROTECT, verbose_name=_("Data type")
     )
@@ -91,3 +103,8 @@ class DataPoint(util.DateModelMixin):
         Measurement, on_delete=models.CASCADE, verbose_name=_("Associated measurement")
     )
     comment = models.TextField(blank=True, verbose_name=_("Comment"))
+
+    def __str__(self):
+        return _("Data point %(id)s") % {
+            "location": self.id,
+        }
