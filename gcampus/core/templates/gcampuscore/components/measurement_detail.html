@@ -1,16 +1,15 @@
+{% load i18n %}
 
-
-
- <table>
+<table>
       <tbody>
       <h1>{{ object }}</h1>
       <tr>
-        <th>Data Type</th>
+        <th>{% translate "Data type" %}</th>
         <th>Value</th>
         <th>Measurement</th>
           <th>Comment</th>
     </tr>
-           {% for datapoint in datapoint_list %}
+           {% for datapoint in object.datapoint_set.all %}
           <tr>
             <td>{{ datapoint.data_type }}</td>
             <td>{{ datapoint.value }}</td>

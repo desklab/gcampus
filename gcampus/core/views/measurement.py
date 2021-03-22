@@ -1,16 +1,16 @@
-from django.views.generic import ListView, DetailView
 from __future__ import annotations
 
 from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
+from django.views.generic import DetailView
 from django.views.generic import ListView, View
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import FormView
 
 from gcampus.core.forms.measurement import MeasurementForm, DataPointFormSet
-from gcampus.core.models import Measurement
 from gcampus.core.models import DataPoint
+from gcampus.core.models import Measurement
 
 
 class MeasurementListView(ListView):
@@ -24,13 +24,14 @@ class MeasurementDetailView(DetailView):
     model = Measurement
     template_name = "gcampuscore/components/measurement_detail.html"
 
-    def get_context_data(self, **kwargs):
+"""    def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
         context = super().get_context_data(**kwargs)
         # Create any data and add it to the context
         test = DataPoint.objects
         context['datapoint_list'] = DataPoint.objects.all()
-        return context
+        context["object"].datapoint_set.all()
+        return context"""
 
 class MeasurementFormView(FormView):
     template_name = "gcampuscore/forms/measurement.html"

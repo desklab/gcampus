@@ -12,7 +12,7 @@
         {% for measurement in measurement_list %}
           <tr>
             <td> <li>
-                <a href="measurement_detail/{{ measurement.pk }}">{{ measurement.name }}</a>
+                <a href="{% url "gcampuscore:measurement_detail" pk=measurement.pk %}">{{ measurement.name }}</a>
             </li></td>
             <td>{{ measurement.location_name }}</td>
             <td>{{ measurement.time }}</td>
