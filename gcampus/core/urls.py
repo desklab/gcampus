@@ -2,16 +2,22 @@ from django.urls import path
 
 from gcampus.core.views.measurement import (
     MeasurementFormView,
+    DataPointFormSetView,
     MeasurementListView,
-    MeasurementDetailView,
+    MeasurementDetailView
 )
-#from gcampus.core.views.datapoint import DatapointDetailView
-
 
 urlpatterns = [
-    path("add/", MeasurementFormView.as_view()),
-    path("measurement_list/", MeasurementListView.as_view()),
+    path("add/", MeasurementFormView.as_view(), name="add_measurement"),
     path(
-        "measurement_detail/<int:pk>", MeasurementDetailView.as_view(), name="measurement-detail"
+        "add/<measurement_id>/data/",
+        DataPointFormSetView.as_view(),
+        name="add_data_points",
+    ),
+    path("measurements/", MeasurementListView.as_view(), name="measurements"),
+    path(
+        "measurement/<int:pk>/detail", MeasurementDetailView.as_view(), name="measurement-detail"
     ),
 ]
+
+app_name = "gcampuscore"

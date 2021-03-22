@@ -1,0 +1,13 @@
+{% extends "gcampuscore/base.html" %}
+{% block content %}
+    <h1>Edit {{ object }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        <table>
+            {% for form in formset %}
+                {{ form }}
+            {% endfor %}
+        </table>
+    </form>
+{% endblock %}

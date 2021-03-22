@@ -83,7 +83,11 @@ class DataType(models.Model):
         verbose_name_plural = _("Data types")
 
     name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
+
     # TODO: Maybe add unit
+
+    def __str__(self):
+        return self.name
 
 
 class DataPoint(util.DateModelMixin):
@@ -99,3 +103,8 @@ class DataPoint(util.DateModelMixin):
         Measurement, on_delete=models.CASCADE, verbose_name=_("Associated measurement")
     )
     comment = models.TextField(blank=True, verbose_name=_("Comment"))
+
+    def __str__(self):
+        return _("Data point %(id)s") % {
+            "location": self.id,
+        }
