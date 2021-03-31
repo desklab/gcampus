@@ -41,14 +41,22 @@ jobs:
           activate-environment: gcampus
 
       - name: Install Python and GDAL
-        if: steps.cache-mircomamba.outputs.cache-hit != 'true'
-        run: mamba install -y gdal -c conda-forge
+        shell: bash -l {0}
+        run: |
+          conda activate gcampus
+          mamba install -y libgdal -c conda-forge
 
       - name: Install Requirements
-        run: pip install -r requirements.txt
+        shell: bash -l {0}
+        run: |
+          conda activate gcampus
+          pip install -r requirements.txt
 
       - name: Upload static files
-        run: python manage.py collectstatic --no-input
+        run: |
+          conda activate gcampus
+          python manage.py collectstatic --no-input
+        shell: bash -l {0}
         env:
           USE_S3_STORAGE: True
           S3_ACCESS_KEY: ${{secrets.MINIO_ACCESS_KEY}}
