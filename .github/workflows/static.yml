@@ -44,8 +44,9 @@ jobs:
         if: steps.cache-mircomamba.outputs.cache-hit != 'true'
         run: |
           wget -qO- https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
-          mkdir -p ${GITHUB_WORKSPACE}/micromamba
-          ./bin/micromamba shell init -s bash -p ${GITHUB_WORKSPACE}/micromamba
+          mkdir -p $GITHUB_WORKSPACE/micromamba
+          export MAMBA_ROOT_PREFIX=$GITHUB_WORKSPACE/micromamba
+          ./bin/micromamba shell init -s bash -p $GITHUB_WORKSPACE/micromamba
 
       - name: Install Python and GDAL
         if: steps.cache-mircomamba.outputs.cache-hit != 'true'
