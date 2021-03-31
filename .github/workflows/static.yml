@@ -44,7 +44,8 @@ jobs:
       - name: Setup micromamba
         if: steps.cache-mircomamba.outputs.cache-hit != 'true'
         run: |
-          wget -qO- https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj ~/bin/micromamba
+          wget -qO- https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+          mv bin ~/bin
           ~/bin/micromamba shell init -s bash -p ~/micromamba
       
       - name: Install Python and GDAL
