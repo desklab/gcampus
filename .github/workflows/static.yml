@@ -45,28 +45,28 @@ jobs:
         if: steps.cache-mircomamba.outputs.cache-hit != 'true'
         run: |
           wget -qO- https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
-          mv bin ~/bin
-          ~/bin/micromamba shell init -s bash -p ~/micromamba
+          ./bin/micromamba shell init -s bash -p ${GITHUB_WORKSPACE}/micromamba
+          mv ~/.bashrc ${GITHUB_WORKSPACE}/.bashrc
       
       - name: Install Python and GDAL
         if: steps.cache-mircomamba.outputs.cache-hit != 'true'
         shell: bash -l {0}
         run: |
-          source ~/.bashrc
+          source ${GITHUB_WORKSPACE}/.bashrc
           micromamba activate
           micromamba install -y python=3.9 gdal -c conda-forge
 
       - name: Install Requirements
         shell: bash -l {0}
         run: |
-          source ~/.bashrc
+          source ${GITHUB_WORKSPACE}/.bashrc
           micromamba activate
           pip install -r requirements.txt
 
       - name: Upload static files
         shell: bash -l {0}
         run: |
-          source ~/.bashrc
+          source ${GITHUB_WORKSPACE}/.bashrc
           micromamba activate
           python manage.py collectstatic --no-input
         env:
