@@ -19,8 +19,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      MAMBA_ROOT_PREFIX: ~/micromamba
-      MAMBA_EXE: ~/bin/micromamba
+      MAMBA_ROOT_PREFIX: ./micromamba
+      MAMBA_EXE: ./bin/micromamba
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -48,27 +48,25 @@ jobs:
         if: steps.cache-mircomamba.outputs.cache-hit != 'true'
         run: |
           wget -qO- https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
-          mv ./bin ~/bin
-          ~/bin/micromamba shell init -s bash -p ~/micromamba
       - name: Install Python and GDAL
         if: steps.cache-mircomamba.outputs.cache-hit != 'true'
         shell: bash -l {0}
         run: |
-          . $MAMBA_ROOT_PREFIX/etc/profile.d/mamba.sh
+          eval "$(./bin/micromamba shell hook -s posix)"
           micromamba activate
           micromamba install -y python=3.9 gdal -c conda-forge
 
       - name: Install Requirements
         shell: bash -l {0}
         run: |
-          . $MAMBA_ROOT_PREFIX/etc/profile.d/mamba.sh
+          eval "$(./bin/micromamba shell hook -s posix)"
           micromamba activate
           pip install -r requirements.txt
 
       - name: Upload static files
         shell: bash -l {0}
         run: |
-          . $MAMBA_ROOT_PREFIX/etc/profile.d/mamba.sh
+          eval "$(./bin/micromamba shell hook -s posix)"
           micromamba activate
           python manage.py collectstatic --no-input
         env:
