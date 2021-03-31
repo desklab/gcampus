@@ -39,7 +39,7 @@ jobs:
             ~/.bashrc
             ~/bin/micromamba
             ~/micromamba
-          key: ${{ run~ner.os }}-micromamba
+          key: ${{ runner.os }}-micromamba
 
       - name: Setup micromamba
         if: steps.cache-mircomamba.outputs.cache-hit != 'true'
