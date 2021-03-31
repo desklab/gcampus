@@ -1,0 +1,30 @@
+{% load i18n %}
+
+<table>
+      <tbody>
+      <h1>{{ object }}</h1>
+      <tr>
+        <th>{% translate "Data type" %}</th>
+        <th>Value</th>
+        <th>Measurement</th>
+          <th>Comment</th>
+    </tr>
+           {% for datapoint in object.datapoint_set.all %}
+          <tr>
+            <td>{{ datapoint.data_type }}</td>
+            <td>{{ datapoint.value }}</td>
+          <td>{{ datapoint.measurement }}</td>
+          <td>{{ datapoint.comment }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+ </table>
+    {% comment %}
+    {% endblock %}
+    {% block content %}
+        {% endcomment %}
+
+
+
+
+

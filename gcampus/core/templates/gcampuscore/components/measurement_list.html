@@ -11,7 +11,9 @@
       </tr>
         {% for measurement in measurement_list %}
           <tr>
-            <td>{{ measurement.name }}</td>
+            <td> <li>
+                <a href="{% url "gcampuscore:measurement_detail" pk=measurement.pk %}">{{ measurement.name }}</a>
+            </li></td>
             <td>{{ measurement.location_name }}</td>
             <td>{{ measurement.time }}</td>
               <td>{{ measurement.comment }}</td>
@@ -20,7 +22,3 @@
       </tbody>
  </table>
 {% endblock %}
-
-
-
-
