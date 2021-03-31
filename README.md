@@ -39,7 +39,7 @@ pip install -r requirements-dev.txt
 To install GDAL, run the following command:
 
 ```shell
-conda install -c conda-forge gdal
+conda install -c conda-forge libgdal
 ```
 
 ### Static Files (JavaScript, Stylesheets)
