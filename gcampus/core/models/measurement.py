@@ -105,6 +105,6 @@ class DataPoint(util.DateModelMixin):
     comment = models.TextField(blank=True, verbose_name=_("Comment"))
 
     def __str__(self):
-        return _("Data point %(id)s") % {
-            "location": self.id,
+        return _("Data point %(pk)s") % {
+            "pk": self.pk,
         }
