@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-22 14:59+0100\n"
+"POT-Creation-Date: 2021-04-02 20:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,6 +81,7 @@ msgid "Measurement %(id)s"
 msgstr "Messung %(id)s"
 
 #: gcampus/core/models/measurement.py:82 gcampus/core/models/measurement.py:99
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:7
 msgid "Data type"
 msgstr "Daten Typ"
 
@@ -105,5 +106,5 @@ msgid "Associated measurement"
 msgstr "Verknüpfte Messung"
 
 #: gcampus/core/models/measurement.py:108
-msgid "Data point %(id)s"
-msgstr "Messwert %(id)s"
+msgid "Data point %(pk)s"
+msgstr "Messwert %(pk)s"
