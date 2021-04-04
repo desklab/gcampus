@@ -110,7 +110,7 @@ let gcampuscoreConfig = (env, options) => {
         name: 'gcampuscore',
         entry: {
             main: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'index.js'),
-            // styles: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'styles', 'main.scss')
+            autofocus: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'autofocus.js'),
         },
         output: {
             path: path.resolve(__dirname, 'gcampus', 'core', 'static', 'gcampuscore'),
