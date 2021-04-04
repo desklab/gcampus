@@ -1,5 +1,8 @@
 {% extends "gcampuscore/base.html" %}
 {% load i18n static leaflet_tags %}
+{% block title %}
+    {% translate "Create new Measurement" %}
+{% endblock %}
 {% block extra_head %}
     {% leaflet_js plugins="forms" %}
     {% leaflet_css plugins="forms" %}
