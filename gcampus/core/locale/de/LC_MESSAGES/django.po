@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-02 20:27+0200\n"
+"POT-Creation-Date: 2021-04-04 22:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,7 +49,7 @@ msgid "An approximated location for the measurement"
 msgstr "Ein abgeschätzter Standort der Messung"
 
 #: gcampus/core/models/measurement.py:39
-msgid "Time"
+msgid "Measurement Time"
 msgstr "Messzeitpunkt"
 
 #: gcampus/core/models/measurement.py:40
@@ -106,5 +106,72 @@ msgid "Associated measurement"
 msgstr "Verknüpfte Messung"
 
 #: gcampus/core/models/measurement.py:108
+#, python-format
 msgid "Data point %(pk)s"
 msgstr "Messwert %(pk)s"
+
+#: gcampus/core/templates/gcampuscore/forms/components/label.html:5
+msgid "(Optional)"
+msgstr "(Optional)"
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:10
+#| msgid "Measurement"
+msgid "Create new Measurement"
+msgstr "Neue Messung Erstellen"
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:41
+msgid "Save and Continue"
+msgstr "Speichern und Weiter"
+
+#: gcampus/core/templates/gcampuscore/forms/widgets/splitdate.html:3
+msgid "Date"
+msgstr "Datum"
+
+#: gcampus/core/templates/gcampuscore/forms/widgets/splittime.html:3
+msgid "Time"
+msgstr "Zeit"
+
+#: gcampus/core/widgets.py:18
+msgid "Hour"
+msgstr "Stunde"
+
+#: gcampus/core/widgets.py:19
+msgctxt "hour input short"
+msgid "HH"
+msgstr ""
+
+#: gcampus/core/widgets.py:22
+msgid "Minute"
+msgstr "Minute"
+
+#: gcampus/core/widgets.py:23
+msgctxt "minute input short"
+msgid "MM"
+msgstr "MM"
+
+#: gcampus/core/widgets.py:45
+msgid "Day"
+msgstr "Tag"
+
+#: gcampus/core/widgets.py:46
+msgctxt "day input short"
+msgid "DD"
+msgstr "TT"
+
+#: gcampus/core/widgets.py:49
+msgid "Month"
+msgstr "Monat"
+
+#: gcampus/core/widgets.py:50
+msgctxt "month input short"
+msgid "MM"
+msgstr "MM"
+
+#: gcampus/core/widgets.py:53
+msgid "Year"
+msgstr "Jahr"
+
+#: gcampus/core/widgets.py:54
+msgctxt "year input short"
+msgid "YYYY"
+msgstr "JJJJ"

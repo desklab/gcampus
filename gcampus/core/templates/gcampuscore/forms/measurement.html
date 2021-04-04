@@ -1,14 +1,81 @@
 {% extends "gcampuscore/base.html" %}
-{% load leaflet_tags %}
+{% load i18n static leaflet_tags %}
 {% block extra_head %}
     {% leaflet_js plugins="forms" %}
     {% leaflet_css plugins="forms" %}
 {% endblock %}
+{% block body_class %}bg-light{% endblock %}
 {% block content %}
-    <h1>Edit {{ object }}</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit"/>
-    </form>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>{% translate "Create new Measurement" %}</h2>
+            {% comment %}
+                <p class="lead">
+                    {% blocktranslate %}
+                        Test
+                    {% endblocktranslate %}
+                </p>
+            {% endcomment %}
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="invalid-feedback">
+                    {{ form.non_field_errors }}
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    {# Name #}
+                    {% with form.name as field %}
+                        <div class="mb-3">
+                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                            {% include "gcampuscore/forms/components/helptext.html" %}
+                            {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                        </div>
+                    {% endwith %}
+                    {# Date and time of measurement #}
+                    {% with form.time as field %}
+                        <div class="mb-3">
+                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                            {% include "gcampuscore/forms/components/helptext.html" %}
+                            {{ field }}
+                        </div>
+                    {% endwith %}
+                    {# Location (map) #}
+                    {% with form.location as field %}
+                        <div class="mb-3">
+                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                            {% include "gcampuscore/forms/components/helptext.html" %}
+                            <div class="shadow-sm">
+                                {{ field }}
+                            </div>
+                        </div>
+                    {% endwith %}
+                    {# Comment #}
+                    {% with form.comment as field %}
+                        <div class="mb-3">
+                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                            {% include "gcampuscore/forms/components/helptext.html" %}
+                            {% include "gcampuscore/forms/widgets/textarea.html" with widget=field.subwidgets.0.data %}
+                        </div>
+                    {% endwith %}
+                    {% for field in form %}
+                        <div class="mb-2">
+                            {% if field.errors %}
+                                <div class="invalid-feedback">
+                                    {{ field.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <button class="btn btn-primary btn-lg">
+                        {% translate "Save and Continue" %}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_body %}
+    <script type="text/javascript" src="{% static 'gcampuscore/js/autofocus.js' %}"></script>
 {% endblock %}

@@ -9,9 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     {# Global stylesheets #}
-    {% comment %}
-        <link rel="stylesheet" type="text/css" href="{% static 'desklabcore/css/desklab.css' %}">
-    {% endcomment %}
+    <link rel="stylesheet" type="text/css" href="{% static 'gcampuscore/styles/main.css' %}">
 
     {% block extra_head %}
         {# Override this in templates to add extra stylesheets #}
@@ -22,6 +20,13 @@
 {% block content %}
 {% endblock %}
 {# Global javascript #}
+<script type="text/javascript" src="{% static 'gcampuscore/js/main.js' %}"></script>
+<script type="text/javascript">
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new gcampus.Tooltip(tooltipTriggerEl)
+    })
+</script>
 {% block extra_body %}
     {# Override this in templates to add extra javascript #}
 {% endblock %}
