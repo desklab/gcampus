@@ -40,10 +40,13 @@ class SplitSplitDateTimeField(DateTimeField):
             hour, minute = time_list
             try:
                 result = datetime.datetime(
-                    day=int(day), month=int(month), year=int(year),
-                    hour=int(hour), minute=int(minute)
+                    day=int(day),
+                    month=int(month),
+                    year=int(year),
+                    hour=int(hour),
+                    minute=int(minute),
                 )
             except (ValueError, OverflowError):
-                raise ValidationError(self.error_messages['invalid'], code='invalid')
+                raise ValidationError(self.error_messages["invalid"], code="invalid")
             return from_current_timezone(result)
         return super(SplitSplitDateTimeField, self).to_python(value)

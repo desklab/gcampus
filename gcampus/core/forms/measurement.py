@@ -9,9 +9,7 @@ class MeasurementForm(ModelForm):
     class Meta:
         model = Measurement
         fields = ["name", "time", "location", "comment"]
-        field_classes = {
-            "time": SplitSplitDateTimeField
-        }
+        field_classes = {"time": SplitSplitDateTimeField}
         widgets = {
             "location": LeafletWidget(),
         }

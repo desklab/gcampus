@@ -19,14 +19,14 @@ class SplitTimeWidget(MultiWidget):
             "maxlength": 2,
             "min": 0,
             "max": 24,
-            "placeholder": pgettext("hour input short", "HH")
+            "placeholder": pgettext("hour input short", "HH"),
         }
         minute_attrs = {
             "title": _("Minute"),
             "maxlength": 2,
             "min": 0,
             "max": 59,
-            "placeholder": pgettext("minute input short", "MM")
+            "placeholder": pgettext("minute input short", "MM"),
         }
         hour_attrs.update(attrs)
         minute_attrs.update(attrs)
@@ -52,19 +52,19 @@ class SplitDateWidget(MultiWidget):
             "maxlength": 2,
             "min": 1,
             "max": 31,
-            "placeholder": pgettext("day input short", "DD")
+            "placeholder": pgettext("day input short", "DD"),
         }
         month_attrs = {
             "title": _("Month"),
             "maxlength": 2,
             "min": 1,
             "max": 12,
-            "placeholder": pgettext("month input short", "MM")
+            "placeholder": pgettext("month input short", "MM"),
         }
         year_attrs = {
             "maxlength": 4,
             "title": _("Year"),
-            "placeholder": pgettext("year input short", "YYYY")
+            "placeholder": pgettext("year input short", "YYYY"),
         }
         day_attrs.update(attrs)
         month_attrs.update(attrs)
@@ -72,7 +72,7 @@ class SplitDateWidget(MultiWidget):
         widgets = (
             NumberInput(attrs=day_attrs),
             NumberInput(attrs=month_attrs),
-            NumberInput(attrs=year_attrs)
+            NumberInput(attrs=year_attrs),
         )
         self.date_format = date_format
         super().__init__(widgets)
@@ -87,10 +87,18 @@ class SplitSplitDateTimeWidget(MultiWidget):
     """
     A widget that splits datetime input into two <input type="text"> boxes.
     """
-    supports_microseconds = False
-    template_name = 'gcampuscore/forms/widgets/splitsplitdatetime.html'
 
-    def __init__(self, attrs=None, date_format=None, time_format=None, date_attrs=None, time_attrs=None):
+    supports_microseconds = False
+    template_name = "gcampuscore/forms/widgets/splitsplitdatetime.html"
+
+    def __init__(
+        self,
+        attrs=None,
+        date_format=None,
+        time_format=None,
+        date_attrs=None,
+        time_attrs=None,
+    ):
         widgets = (
             SplitDateWidget(
                 attrs=attrs if date_attrs is None else date_attrs,

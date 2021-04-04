@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     "gcampus.core",
     # Other django apps
     # Sometimes the order is important
-    "django.forms"
+    "django.forms",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
