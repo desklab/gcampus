@@ -36,7 +36,7 @@ class Measurement(util.DateModelMixin):
 
     time = models.DateTimeField(
         blank=False,
-        verbose_name=_("Time"),
+        verbose_name=_("Measurement Time"),
         help_text=_("Date and time of the measurement"),
     )
     comment = models.TextField(blank=True, verbose_name=_("Comment"))
