@@ -115,7 +115,11 @@ let gcampuscoreConfig = (env, options) => {
         output: {
             path: path.resolve(__dirname, 'gcampus', 'core', 'static', 'gcampuscore'),
             publicPath: '/static/gcampuscore',
-            filename: 'js/[name].js'
+            filename: 'js/[name].js',
+            library: {
+                name: 'gcampus',
+                type: 'var'
+            }
         },
         plugins: [
             ...(common.plugins || []),

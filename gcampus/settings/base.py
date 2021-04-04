@@ -14,6 +14,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -24,10 +25,13 @@ INSTALLED_APPS = [
     "django.contrib.gis",
     # External apps
     "leaflet",
+    "django_feather",
     # gcampus specific apps
     "gcampus.core",
+    # Other django apps
+    # Sometimes the order is important
+    "django.forms"
 ]
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -56,6 +60,9 @@ TEMPLATES = [
         },
     },
 ]
+
+FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
+
 
 WSGI_APPLICATION = "gcampus.wsgi.application"
 

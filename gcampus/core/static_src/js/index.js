@@ -1,5 +1,5 @@
-import leaflet from "leaflet/dist/leaflet";
+import Tooltip from 'bootstrap/js/src/tooltip';
+
 import '../styles/main.scss';
 
-
-export default leaflet;
+export {Tooltip};
