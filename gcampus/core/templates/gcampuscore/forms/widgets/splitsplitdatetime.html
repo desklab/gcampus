@@ -1,0 +1,8 @@
+{% spaceless %}
+    {% with widget.subwidgets.0 as widget %}
+        {% include "gcampuscore/forms/widgets/splitdate.html" with class="mb-2" %}
+    {% endwith %}
+    {% with widget.subwidgets.1 as widget %}
+        {% include "gcampuscore/forms/widgets/splittime.html" %}
+    {% endwith %}
+{% endspaceless %}

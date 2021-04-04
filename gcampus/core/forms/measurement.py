@@ -1,6 +1,7 @@
 from django.forms import ModelForm, modelformset_factory, inlineformset_factory
 from leaflet.forms.widgets import LeafletWidget
 
+from gcampus.core.fields import SplitSplitDateTimeField
 from gcampus.core.models import Measurement, DataPoint
 
 
@@ -8,7 +9,12 @@ class MeasurementForm(ModelForm):
     class Meta:
         model = Measurement
         fields = ["name", "time", "location", "comment"]
-        widgets = {"location": LeafletWidget()}
+        field_classes = {
+            "time": SplitSplitDateTimeField
+        }
+        widgets = {
+            "location": LeafletWidget(),
+        }
 
 
 class DataPointForm(ModelForm):
