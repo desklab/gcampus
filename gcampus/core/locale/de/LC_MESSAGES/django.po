@@ -176,6 +176,11 @@ msgctxt "year input short"
 msgid "YYYY"
 msgstr "JJJJ"
 
-#: gcampus/core/templates/gcampuscore/components/measurement_list.html:3
+#: gcampus/core/templates/gcampuscore/components/measurement_list.html:4
 msgid "All measurements"
 msgstr "Alle Messungen"
+
+#: gcampus/core/templates/gcampuscore/components/measurement_search_form.html:18
+msgid "Search Measurements"
+msgstr "Messungen durchsuchen"
+

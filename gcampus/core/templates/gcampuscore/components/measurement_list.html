@@ -11,16 +11,27 @@
         </div>
      </div>
 
+    <div class="container">
+    <div class="py-5 text-center">
+    <form method="GET" action='{% url "gcampuscore:measurementsearchresult" %}'>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder={% translate "Search Measurements" %} name="q">
+          </div>
+         <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    </div>
+
     <div class="row justify-content-center">
     <div class="col-lg-10">
     <table class="table">
         <thead class="thead-dark">
         <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Location</th>
-        <th scope="col">Date</th>
-        <th scope="col">Comment</th>
+        <th scope="col"></th>
+        <th scope="col">{% translate "Name" %}</th>
+        <th scope="col">{% translate "Location" %}</th>
+        <th scope="col">{% translate "Date" %}</th>
+        <th scope="col">{% translate "Comment" %}</th>
         </tr>
     </thead>
     <tbody>
