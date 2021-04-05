@@ -84,7 +84,7 @@ class DataType(models.Model):
 
     name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
 
-    # TODO: Maybe add unit
+    unit = models.CharField(blank=True, max_length=10, verbose_name=_("Unit"))
 
     def __str__(self):
         return self.name
