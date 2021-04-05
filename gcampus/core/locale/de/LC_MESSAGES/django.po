@@ -175,3 +175,7 @@ msgstr "Jahr"
 msgctxt "year input short"
 msgid "YYYY"
 msgstr "JJJJ"
+
+#: gcampus/core/templates/gcampuscore/components/measurement_list.html:3
+msgid "All measurements"
+msgstr "Alle Messungen"
