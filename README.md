@@ -44,11 +44,11 @@ conda install -c conda-forge libgdal
 
 ### Static Files (JavaScript, Stylesheets)
 
-Make sure you have **Node.js** installed. We use `gulp` to build
-stylesheets and bundle JavaScript using `esbuild`. 
+Make sure you have **Node.js** installed. We use `webpack` to build
+stylesheets and bundle JavaScript. 
 
 ```bash
-npm install -g gulp
+npm install -g webpack-cli
 npm install
 
 npm run dev

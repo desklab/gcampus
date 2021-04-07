@@ -43,7 +43,7 @@ const commonConfig = (env, options) => {
                         cssFileLoader(env, options),
                         'extract-loader',
                         'css-loader',
-                        postcssLoader
+                        postcssLoader(env, options)
                     ]
                 },
                 {
