@@ -25,14 +25,6 @@ class MeasurementDetailView(DetailView):
     model = Measurement
     template_name = "gcampuscore/components/measurement_detail.html"
 
-    # def get_context_data(self, **kwargs):
-    #     # Call the base implementation first to get the context
-    #     context = super().get_context_data(**kwargs)
-    #     # Create any data and add it to the context
-    #     test = DataPoint.objects
-    #     context['datapoint_list'] = DataPoint.objects.all()
-    #     context["object"].datapoint_set.all()
-    #     return context
 
 
 class MeasurementFormView(FormView):
