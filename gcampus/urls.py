@@ -19,5 +19,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path("", include("gcampus.core.urls")),
+    path("api/v1/", include("gcampus.api.urls", namespace="v1")),
     path("admin/", admin.site.urls),
 ]

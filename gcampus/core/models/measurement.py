@@ -34,6 +34,7 @@ class Measurement(util.DateModelMixin):
         help_text=_("An approximated location for the measurement"),
     )
 
+    # TODO think of a better name for this field
     time = models.DateTimeField(
         blank=False,
         verbose_name=_("Measurement Time"),
@@ -100,7 +101,8 @@ class DataPoint(util.DateModelMixin):
     )
     value = models.FloatField(blank=False, verbose_name=_("Value"))
     measurement = models.ForeignKey(
-        Measurement, on_delete=models.CASCADE, verbose_name=_("Associated measurement")
+        Measurement, on_delete=models.CASCADE, verbose_name=_("Associated measurement"),
+        related_name="data_points"
     )
     comment = models.TextField(blank=True, verbose_name=_("Comment"))
 

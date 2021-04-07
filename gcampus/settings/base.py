@@ -26,8 +26,11 @@ INSTALLED_APPS = [
     # External apps
     "leaflet",
     "django_feather",
+    "rest_framework",
+    "rest_framework_gis",
     # gcampus specific apps
     "gcampus.core",
+    "gcampus.api",
     # Other django apps
     # Sometimes the order is important
     "django.forms",
@@ -117,6 +120,13 @@ LOCALE_PATHS = [BASE_DIR.joinpath("locale")]
 
 from gcampus.settings.files import *  # noqa
 
+
+# Rest Framework
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
+    "PAGE_SIZE": 100,
+}
 
 # Geo Settings
 NOMINATIM_USER_AGENT = "gcampus"

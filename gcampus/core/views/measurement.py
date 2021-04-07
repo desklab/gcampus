@@ -26,7 +26,6 @@ class MeasurementDetailView(DetailView):
     template_name = "gcampuscore/components/measurement_detail.html"
 
 
-
 class MeasurementFormView(FormView):
     template_name = "gcampuscore/forms/measurement.html"
     form_class = MeasurementForm
