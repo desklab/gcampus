@@ -26,6 +26,10 @@
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new gcampus.Tooltip(tooltipTriggerEl)
     })
+    var collapseTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="collapse"]'))
+    var collapseList = collapseTriggerList.map(function (collapseTriggerEl) {
+        return new gcampus.Collapse(collapseTriggerEl)
+    })
 </script>
 {% block extra_body %}
     {# Override this in templates to add extra javascript #}
