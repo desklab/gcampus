@@ -1,11 +1,15 @@
 from collections import OrderedDict
-from typing import List
+from decimal import Decimal
+from typing import List, Tuple
 
+from django.contrib.gis.geos import LineString
+from overpy import Way, Node
 from rest_framework import serializers
-from rest_framework_gis.serializers import GeoFeatureModelSerializer, \
-    GeoFeatureModelListSerializer
 from rest_framework_gis.fields import GeometryField
-from overpy import Way
+from rest_framework_gis.serializers import (
+    GeoFeatureModelSerializer,
+    GeoFeatureModelListSerializer,
+)
 
 from gcampus.core.models import Measurement, DataPoint, DataType
 
@@ -52,9 +56,7 @@ class OverpassWaySerializer(serializers.Serializer):
         """
         if isinstance(instance, dict) or instance is None:
             return instance
-        feature = OrderedDict({
-            "type": "Feature"
-        })
+        feature = OrderedDict({"type": "Feature"})
         processed_fields = set()
 
         id_field_name = "id"
@@ -65,45 +67,37 @@ class OverpassWaySerializer(serializers.Serializer):
 
         geometry_field_name = "geometry"
         geometry_field = self.fields[geometry_field_name]
-        geometry_value = instance.nodes
+        geometry_value = self.way_to_geometry(instance)
         feature["geometry"] = geometry_field.to_representation(geometry_value)
         processed_fields.add(geometry_field_name)
 
-        fields = [
-            field_value
-            for field_key, field_value in self.fields.items()
-            if field_key not in processed_fields
-        ]
-
         # GeoJSON properties
-        feature["properties"] = self.get_properties(instance, fields)
-
-    def get_properties(self, instance, fields):
-        """
-        This method is heavily inspired by
-        :class:`rest_framework_gis.serializers.GeoFeatureModelSerializer`
-
-        Copyright (C) 2013-2014 Douglas Meehan
-        Licensed under the MIT License
-        """
-        properties = OrderedDict()
-
-        for field in fields:
-            if field.write_only:
-                continue
-            value = field.get_attribute(instance)
-            representation = None
-            if value is not None:
-                representation = field.to_representation(value)
-            properties[field.field_name] = representation
-
-        return properties
+        tags = dict(instance.tags)
+        try:
+            name = str(tags.pop("name"))
+        except KeyError:
+            name = ""  # Empty name if tag ``name`` does not exists
+        name_field: serializers.CharField = self.fields["name"]
+        tags_field: serializers.JSONField = self.fields["tags"]
+        feature["properties"] = {
+            "name": name_field.to_representation(name),
+            "tags": tags_field.to_representation(tags),
+        }
+        return feature
 
     def update(self, instance, validated_data):
         raise NotImplementedError()
 
     def create(self, validated_data):
         raise NotImplementedError()
+
+    @staticmethod
+    def way_to_geometry(way: Way, resolve_missing=True) -> LineString:
+        nodes: List[Node] = way.get_nodes(resolve_missing=resolve_missing)
+        coordinates: Tuple[Tuple[Decimal, ...], ...] = tuple(
+            (node.lon, node.lat) for node in nodes
+        )
+        return LineString(coordinates)
 
 
 class GeoLookupSerializer(GeoFeatureModelListSerializer):
