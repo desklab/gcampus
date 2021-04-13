@@ -46,7 +46,7 @@ class SplitSplitDateTimeField(DateTimeField):
                     hour=int(hour),
                     minute=int(minute),
                 )
-            except (ValueError, OverflowError):
+            except (TypeError, ValueError, OverflowError):
                 raise ValidationError(self.error_messages["invalid"], code="invalid")
             return from_current_timezone(result)
         return super(SplitSplitDateTimeField, self).to_python(value)
