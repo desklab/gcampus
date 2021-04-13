@@ -10,9 +10,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name="datatype",
-            name="unit",
-            field=models.CharField(blank=True, max_length=10, verbose_name="Unit"),
-        ),
+        # The following migration is migration was already performed
+        # migrations.AddField(
+        #     model_name="datatype",
+        #     name="unit",
+        #     field=models.CharField(blank=True, max_length=10, verbose_name="Unit"),
+        # ),
     ]
