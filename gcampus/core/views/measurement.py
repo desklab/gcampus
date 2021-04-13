@@ -12,6 +12,7 @@ from django.views.generic.edit import FormView
 from gcampus.core.forms.measurement import MeasurementForm, DataPointFormSet
 from gcampus.core.models import DataPoint
 from gcampus.core.models import Measurement
+from gcampus.core.filters import MeasurementFilter
 
 
 class MeasurementListView(ListView):
@@ -19,6 +20,13 @@ class MeasurementListView(ListView):
     model = Measurement
     context_object_name = "measurement_list"
     paginate_by = 10
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter"] = MeasurementFilter(
+            self.request.GET, queryset=self.get_queryset()
+        )
+        return context
 
 
 class MeasurementDetailView(DetailView):

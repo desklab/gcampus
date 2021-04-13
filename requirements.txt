@@ -8,3 +8,4 @@ django-feather
 djangorestframework==3.12.4
 djangorestframework-gis==0.17
 overpy
+django-filter

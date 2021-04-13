@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "django_feather",
     "rest_framework",
     "rest_framework_gis",
+    "django_filters",
     # gcampus specific apps
     "gcampus.core",
     "gcampus.api",
