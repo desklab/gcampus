@@ -2,7 +2,11 @@ from django.urls import path, include
 
 from rest_framework import routers
 
-from gcampus.api.views import MeasurementAPIViewSet, DataTypeAPIViewSet, DataPointAPIViewSet
+from gcampus.api.views import (
+    MeasurementAPIViewSet,
+    DataTypeAPIViewSet,
+    DataPointAPIViewSet,
+)
 
 router_v1 = routers.DefaultRouter()
 router_v1.register(r"measurements", MeasurementAPIViewSet)

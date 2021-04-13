@@ -38,8 +38,7 @@ class MeasurementSerializer(GeoFeatureModelSerializer):
 
 
 class OverpassWaySerializer(serializers.Serializer):
-    """
-    """
+    """"""
 
     id = serializers.IntegerField()
     name = serializers.CharField()
