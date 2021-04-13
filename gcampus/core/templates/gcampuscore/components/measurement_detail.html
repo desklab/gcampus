@@ -45,20 +45,22 @@
                         <td>{{ datapoint.value }} {{ datapoint.data_type.unit }}</td>
                         <td>
                             {% if datapoint.comment %}
-                            <p>
-                                <a class="btn btn-primary btn-sm" data-bs-toggle="collapse"
-                                   href="#multiCollapseExample{{ forloop.counter }}" role="button" aria-expanded="false"
-                                   aria-controls="multiCollapseExample1">{% translate "Expand comment" %}</a>
-                            </p>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="collapse multi-collapse" id="multiCollapseExample{{ forloop.counter }}">
-                                        <div class="card card-body">
-                                            <small>{{ datapoint.comment }}</small>
+                                <p>
+                                    <a class="btn btn-primary btn-sm" data-bs-toggle="collapse"
+                                       href="#multiCollapseExample{{ forloop.counter }}" role="button"
+                                       aria-expanded="false"
+                                       aria-controls="multiCollapseExample1">{% translate "Expand comment" %}</a>
+                                </p>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="collapse multi-collapse"
+                                             id="multiCollapseExample{{ forloop.counter }}">
+                                            <div class="card card-body">
+                                                <small>{{ datapoint.comment }}</small>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             {% else %}
                                 -
                             {% endif %}

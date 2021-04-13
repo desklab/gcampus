@@ -6,33 +6,17 @@
 
 
 {% block content %}
-     <div class="container">
+    <div class="container">
         <div class="py-5 text-center">
             <h2>{% translate "All measurements" %}</h2>
         </div>
-     </div>
-
-    <div class="container">
-    <div class="py-5 text-center">
-    <form method="GET" action='{% url "gcampuscore:measurementsearchresult" %}'>
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder={% translate "Search Measurements" %} name="q">
-          </div>
-         <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-    </div>
     </div>
 
-        {% with form.time as field %}
-                        <div class="mb-3">
-                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                            {% include "gcampuscore/forms/components/helptext.html" %}
-                            {{filter.form}}
-                        </div>
-                    {% endwith %}
+
+
     <div class="container">
         <form method="GET">
-            {{filter.form}}
+            {{ filter.form }}
             <button type="submit" class="btn btn-primary">{% translate "Search" %}</button>
         </form>
 
@@ -42,38 +26,39 @@
 
 
     <div class="row justify-content-center text-center">
-    <div class="col-lg-10">
-    <table class="table">
-        <thead class="thead-dark">
-        <tr>
-        <th scope="col"></th>
-        <th scope="col">{% translate "Name" %}</th>
-        <th scope="col">{% translate "Location" %}</th>
-        <th scope="col">{% translate "Date" %}</th>
-        <th scope="col">{% translate "Number of Datapoints" %}</th>
-        <th scope="col">{% translate "To the Measurement" %}</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for measurement in filter.qs %}
-            <tr>
-            <th scope="row"><input type="checkbox" id="scales" name="scales"></th>
-            <td>
-                {{ measurement.name }}
-            </td>
-            <td>{{ measurement.location_name }}</td>
-            <td>{{ measurement.time }}</td>
-            <td>{{ measurement.data_points.count }}</td>
-            <td>
-                <a href="{% url "gcampuscore:measurement_detail" pk=measurement.pk %}" class="btn btn-primary btn-md" role="button">
-                    {% translate "To the Measurement" %}</a>
-            </td>
-            </tr>
-        {% endfor %}
-    </tbody>
-    </table>
-</div>
-</div>
+        <div class="col-lg-10">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">{% translate "Name" %}</th>
+                    <th scope="col">{% translate "Location" %}</th>
+                    <th scope="col">{% translate "Date" %}</th>
+                    <th scope="col">{% translate "Number of Datapoints" %}</th>
+                    <th scope="col">{% translate "To the Measurement" %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for measurement in filter.qs %}
+                    <tr>
+                        <th scope="row"><input type="checkbox" id="scales" name="scales"></th>
+                        <td>
+                            {{ measurement.name }}
+                        </td>
+                        <td>{{ measurement.location_name }}</td>
+                        <td>{{ measurement.time }}</td>
+                        <td>{{ measurement.data_points.count }}</td>
+                        <td>
+                            <a href="{% url "gcampuscore:measurement_detail" pk=measurement.pk %}"
+                               class="btn btn-primary btn-md" role="button">
+                                {% translate "To the Measurement" %}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 {% endblock %}
 
