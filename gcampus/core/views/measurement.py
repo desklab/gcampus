@@ -89,26 +89,3 @@ class DataPointFormSetView(TemplateResponseMixin, View):
     def get(self, request: HttpRequest, measurement_id: int, *args, **kwargs):
         formset = self.get_formset(request, measurement_id)
         return self.render_to_response({"formset": formset})
-
-
-class MeasurementSearch(TemplateView):
-    template_name = "gcampuscore/components/measurement_list.html"
-
-
-class MeasurementSearchResult(ListView):
-    model = Measurement
-    template_name = "gcampuscore/components/measurement_list.html"
-    context_object_name = "measurement_list"
-    paginate_by = 10
-
-    def get_queryset(self, *args, **kwargs):
-        val = self.request.GET.get("q")
-        if val:
-            queryset = Measurement.objects.filter(
-                Q(name__icontains=val)
-                | Q(comment__icontains=val)
-                | Q(location_name__icontains=val)
-            ).distinct()
-        else:
-            queryset = Measurement.objects.all()
-        return queryset

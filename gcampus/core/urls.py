@@ -5,8 +5,6 @@ from gcampus.core.views.measurement import (
     DataPointFormSetView,
     MeasurementListView,
     MeasurementDetailView,
-    MeasurementSearchResult,
-    MeasurementSearch,
 )
 
 urlpatterns = [
@@ -21,12 +19,6 @@ urlpatterns = [
         "measurement/<int:pk>/detail",
         MeasurementDetailView.as_view(),
         name="measurement_detail",
-    ),
-    path("measurementsearch/", MeasurementSearch.as_view(), name="measurementsearch"),
-    path(
-        "measurementsearchresult/",
-        MeasurementSearchResult.as_view(),
-        name="measurementsearchresult",
     ),
 ]
 
