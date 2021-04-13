@@ -1,10 +1,11 @@
 import datetime
 from typing import Optional
 
-from django.forms import MultiWidget, NumberInput
+from django.forms import MultiWidget, NumberInput, CheckboxSelectMultiple
 from django.forms.utils import to_current_timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import pgettext
+from leaflet.forms.widgets import LeafletWidget
 
 
 class SplitTimeWidget(MultiWidget):
@@ -116,3 +117,18 @@ class SplitSplitDateTimeWidget(MultiWidget):
             value = to_current_timezone(value)
             return [value.date(), value.time()]
         return [None, None]
+
+
+class LocationRadiusWidget(MultiWidget):
+    template_name = "gcampuscore/forms/widgets/locationradius.html"
+
+    def __init__(self, *args, **kwargs):
+        widgets = (LeafletWidget(), NumberInput())
+        super().__init__(widgets, *args, **kwargs)
+
+    def decompress(self, value):
+        return value
+
+
+class DataTypeCheckBoxFilter(CheckboxSelectMultiple):
+    template_name = "gcampuscore/forms/widgets/checkbox.html"
