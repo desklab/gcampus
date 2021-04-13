@@ -27,19 +27,19 @@
         </div>
     </div>
     <div class="row justify-content-center text-center">
-        <div class="col-lg-10">
+        <div class="table-responsive">
             <table class="table">
                 <thead class="thead-dark">
                 <tr>
                 <tr>
-                    <th>{% translate "Data type" %}</th>
-                    <th>{% translate "Value" %}</th>
+                    <th style="width: 40%">{% translate "Data type" %}</th>
+                    <th style="width: 20%">{% translate "Value" %}</th>
                     <th style="width: 40%">{% translate "Comment" %}</th>
                 </tr>
                 </tr>
                 </thead>
                 <tbody>
-                {% for datapoint in object.datapoint_set.all %}
+                {% for datapoint in object.data_points.all %}
                     <tr>
                         <td>{{ datapoint.data_type }}</td>
                         <td>{{ datapoint.value }} {{ datapoint.data_type.unit }}</td>
