@@ -3,14 +3,16 @@ __ALL__ = ["Measurement", "DataType", "DataPoint"]
 from typing import Optional
 
 from django.contrib.gis.db import models
+from django.contrib.postgres.search import SearchVectorField, SearchVector
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
-from django.utils.translation import ngettext_lazy
 
 from gcampus.core.models import util
+from gcampus.core.models.util import search_model
 from gcampus.core.util import get_location_name
 
 
+@search_model
 class Measurement(util.DateModelMixin):
     class Meta:
         verbose_name = _("Measurement")
@@ -41,6 +43,13 @@ class Measurement(util.DateModelMixin):
         help_text=_("Date and time of the measurement"),
     )
     comment = models.TextField(blank=True, verbose_name=_("Comment"))
+    search_vector = SearchVectorField(null=True, editable=False)
+
+    search_fields = [
+        SearchVector("name", weight="A"),
+        SearchVector("comment", weight="A"),
+        SearchVector("data_points__comment", weight="B")
+    ]
 
     def is_location_changed(self):
         try:
