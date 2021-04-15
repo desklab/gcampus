@@ -1,13 +1,12 @@
+__ALL__ = ["SplitSplitDateTimeField"]
+
 import datetime
 
 from django.core.exceptions import ValidationError
-from django.forms import DateTimeField, SplitDateTimeField, MultiValueField, IntegerField
+from django.forms import DateTimeField
 from django.forms.utils import from_current_timezone
-from django.utils.dateparse import parse_datetime
-from leaflet.forms.fields import PointField
 
-from gcampus.core.models.util import EMPTY
-from gcampus.core.widgets import SplitSplitDateTimeWidget, LocationRadiusWidget
+from gcampus.core.widgets import SplitSplitDateTimeWidget
 
 
 class SplitSplitDateTimeField(DateTimeField):
@@ -52,17 +51,3 @@ class SplitSplitDateTimeField(DateTimeField):
                 raise ValidationError(self.error_messages["invalid"], code="invalid")
             return from_current_timezone(result)
         return super(SplitSplitDateTimeField, self).to_python(value)
-
-
-class LocationRadiusField(MultiValueField):
-    widget = LocationRadiusWidget
-
-    def compress(self, data_list):
-        if data_list in EMPTY:
-            return [None, None]
-        return data_list
-
-    def __init__(self, *args, **kwargs):
-        super(LocationRadiusField, self).__init__(
-            (PointField(), IntegerField()), *args, **kwargs
-        )
