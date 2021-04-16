@@ -1,14 +1,26 @@
-# Gewässercampus
+<img width="100%" src="./artwork/Readme-Head.png">
 
-This is the source code running behind
-**[gewaessercampus.de](https://gewaessercampus.de)**, build by 
-[desklab](https://desk-lab.de).
+<br>
+<br>
+
+**GewässerCampus** (`gcampus`) is part of an educational project on Limnology aiming to provide students the possibility to analyse, publish and discuss results of self-conducted measurements of water-quality in rivers and lakes. It is developed by [desklab](www.desk-lab.de) in cooperation with the [TU Kaiserslautern](https://www.mv.uni-kl.de/biovt/) and funded by the [DBU](https://www.dbu.de/). See [gewaessercampus.de](https:/gewaessercampus.de) for more information.
+
+
+<hr>
+
+<h2 align="center" style="font-size: 28px;"> gcampus </h1>
+
+
+This repository (`desklab/gcampus`) contains the source code running behind the *GewässerCampus*-web-application. The [landingpage](https://gewaessercampus.de) is developed in [`desklab/gcampus-landingpage`](https://github.com/desklab/gcampus-landingpage).
+
+
+## Contribution
+
+Contributions in the form of reporting issues or submitting pull requests are welcome! Please use the available tools as described here to ensure your changes of the code could be merged. As this project addresses primarily a special group of users (students/teachers) and must retain compatibility to the software and devices developed by desklab (some of which may not be public yet), there may be some additional requirements, which can not be covered by automated tests. Therefore you should not hesitate to contact us via orga@desk-lab.de or by opening an issue, if you are planning to contribute to this project, such that we could discuss the best way to go forward. Submitted code changes are understood to be under the same license that covers the project.
 
 ## Development
 
-There are mainly two aspects to developing `gcampus`. There is **1)**
-the django python backend and **2)** static files like JavaScript or
-stylesheets.
+There are mainly two aspects to developing `gcampus`. There is **1)** the django python backend and **2)** static files like JavaScript or stylesheets.
 
 ### General Setup
 
@@ -106,3 +118,8 @@ A ``Dockerfile`` is provided to easily build `gcampus` for production
 usage. Note that this Dockerfile only runs a `gunicorn` server to serve
 the django backend. Static files need to be served separately. In
 production, this is done by using a S3 compatible object storage.
+
+
+## License
+
+*TBA.*
