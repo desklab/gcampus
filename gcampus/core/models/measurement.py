@@ -3,9 +3,10 @@ __ALL__ = ["Measurement", "DataType", "DataPoint"]
 from typing import Optional
 
 from django.contrib.gis.db import models
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVectorField
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
-from django.utils.translation import ngettext_lazy
 
 from gcampus.core.models import util
 from gcampus.core.util import get_location_name
@@ -15,6 +16,9 @@ class Measurement(util.DateModelMixin):
     class Meta:
         verbose_name = _("Measurement")
         verbose_name_plural = _("Measurements")
+        indexes = (
+            GinIndex(fields=("search_vector",)),
+        )
 
     # Tokens are not yet implemented. This will be done in version 0.2
     token: Optional[str] = None
@@ -41,6 +45,9 @@ class Measurement(util.DateModelMixin):
         help_text=_("Date and time of the measurement"),
     )
     comment = models.TextField(blank=True, verbose_name=_("Comment"))
+    # The search vector will be overwritten and turned into a postgres
+    # generated column in migration ``0011``.
+    search_vector = SearchVectorField(null=True, editable=False)
 
     def is_location_changed(self):
         try:
@@ -49,18 +56,15 @@ class Measurement(util.DateModelMixin):
             return True
         return self.location.coords != db_instance.location.coords
 
-    def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
-    ):
+    def save(self, **kwargs):
         # Check if the location field has ben updated
+        update_fields = kwargs.get("update_fields", None)
         if (
             update_fields is not None and "location" in update_fields
         ) or self.is_location_changed():
             coordinates = getattr(self.location, "coords", None)
             self.location_name = get_location_name(coordinates)
-        return super(Measurement, self).save(
-            force_insert=False, force_update=False, using=None, update_fields=None
-        )
+        return super(Measurement, self).save(**kwargs)
 
     def __str__(self):
         if self.location_name not in util.EMPTY and self.name not in util.EMPTY:
