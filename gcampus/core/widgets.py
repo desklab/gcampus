@@ -121,13 +121,55 @@ class SplitSplitDateTimeWidget(MultiWidget):
 
 class LocationRadiusWidget(MultiWidget):
     template_name = "gcampuscore/forms/widgets/locationradius.html"
+    map_srid = 4326
+    geom_type = "POINT"
 
     def __init__(self, *args, **kwargs):
-        widgets = (LeafletWidget(), NumberInput())
+        self.map_srid = kwargs.get("map_srid", self.map_srid)
+        self.map_widget = LeafletWidget(
+            attrs={"map_srid": self.map_srid, "geom_type": self.geom_type}
+        )
+        self.map_widget.geom_type = self.geom_type
+        widgets = (self.map_widget, NumberInput())
         super().__init__(widgets, *args, **kwargs)
 
     def decompress(self, value):
         return value
+
+    def _get_leaflet_map_attrs(self, name, attrs=None):
+        """Get Leaflet Map Attributes
+
+        Replicates the functionality of the private method
+        :meth:`leaflet.forms.widgets.LeafletWidget._get_attr` which
+        provides additional context variables used to render a leaflet
+        map.
+
+        .. todo:: Consider calling the private method ``_get_attrs``
+            instead.
+
+        :param name: Widget name
+        :param attrs: Additional attributes
+        :return: Dictionary of additional attributes
+        :rtype: dict
+        """
+        return self.map_widget._get_attrs(name)  # noqa
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        map_widget_name = context["widget"]["subwidgets"][0]["name"]
+        context.update(self._get_leaflet_map_attrs(map_widget_name, attrs))
+        map_value = value[0]
+        if map_value and isinstance(map_value, str):
+            map_value = self.map_widget.deserialize(map_value)
+        context.update(
+            {
+                "map_srid": self.map_srid,
+                "geom_type": self.geom_type,
+                "name": map_widget_name,
+                "serialized": self.map_widget.serialize(map_value),
+            }
+        )
+        return context
 
 
 class DataTypeCheckBoxFilter(CheckboxSelectMultiple):
