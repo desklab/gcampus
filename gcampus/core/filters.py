@@ -37,18 +37,22 @@ class MeasurementSearchFilter(CharFilter):
         })
         return qs
 
+
 class GeolocationFilter(Filter):
     field_class = LocationRadiusField
 
-    def filter(self, qs: QuerySet, value: Tuple[Point, int]):
+    def filter(self, qs: QuerySet, value: Tuple[Point, int]) -> QuerySet:
         if value in EMPTY or None in value:
             return qs
+        if self.distinct:
+            qs = qs.distinct()
         query_name = f"{self.field_name}__{self.lookup_expr}"
         point, distance = value
         query = {
             query_name: (point, Distance(km=distance))  # TODO variable distance
         }
-        return qs.filter(**query)
+        qs = self.get_method(qs)(**query)
+        return qs
 
 
 class MeasurementFilter(FilterSet):
