@@ -6,9 +6,7 @@ from django.contrib.gis.measure import Distance
 from django.contrib.postgres.search import SearchQuery
 from django.core.validators import EMPTY_VALUES
 from django.db.models import QuerySet
-from django.forms import MultiValueField, IntegerField
 from django_filters import Filter, FilterSet, DateTimeFilter, BooleanFilter, CharFilter
-from leaflet.forms.fields import PointField
 
 from gcampus.core.fields import SplitSplitDateTimeField, LocationRadiusField
 from gcampus.core.models import Measurement
@@ -32,9 +30,9 @@ class MeasurementSearchFilter(CharFilter):
             return qs
         if self.distinct:
             qs = qs.distinct()
-        qs = self.get_method(qs)(**{
-            self.field_name: SearchQuery(value, config=self.TSVECTOR_CONF)
-        })
+        qs = self.get_method(qs)(
+            **{self.field_name: SearchQuery(value, config=self.TSVECTOR_CONF)}
+        )
         return qs
 
 
@@ -48,16 +46,14 @@ class GeolocationFilter(Filter):
             qs = qs.distinct()
         query_name = f"{self.field_name}__{self.lookup_expr}"
         point, distance = value
-        query = {
-            query_name: (point, Distance(km=distance))  # TODO variable distance
-        }
+        query = {query_name: (point, Distance(km=distance))}  # TODO variable distance
         qs = self.get_method(qs)(**query)
         return qs
 
 
 class MeasurementFilter(FilterSet):
-    time_gt = SplitDateTimeFilter(field_name='time', lookup_expr="gt")
-    time_lt = SplitDateTimeFilter(field_name='time', lookup_expr="lt")
+    time_gt = SplitDateTimeFilter(field_name="time", lookup_expr="gt")
+    time_lt = SplitDateTimeFilter(field_name="time", lookup_expr="lt")
     has_datatype = BooleanFilter(field_name="DataType")
     location = GeolocationFilter(field_name="location", lookup_expr="distance_lte")
 
@@ -65,9 +61,11 @@ class MeasurementFilter(FilterSet):
 
     def filter_location(self, queryset, name, value):
         # TODO value from string to coordinates
-        return queryset.filter(**{
-            name: value,
-        })
+        return queryset.filter(
+            **{
+                name: value,
+            }
+        )
 
     class Meta:
         model = Measurement

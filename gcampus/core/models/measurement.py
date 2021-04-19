@@ -16,9 +16,7 @@ class Measurement(util.DateModelMixin):
     class Meta:
         verbose_name = _("Measurement")
         verbose_name_plural = _("Measurements")
-        indexes = (
-            GinIndex(fields=("search_vector",)),
-        )
+        indexes = (GinIndex(fields=("search_vector",)),)
 
     # Tokens are not yet implemented. This will be done in version 0.2
     token: Optional[str] = None
