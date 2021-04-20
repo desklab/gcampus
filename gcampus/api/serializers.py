@@ -14,14 +14,17 @@ from rest_framework_gis.serializers import (
 from gcampus.core.models import Measurement, DataPoint, DataType
 
 
-class DataTypeSerializer(serializers.HyperlinkedModelSerializer):
+class DataTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = DataType
         fields = ("name", "unit")
 
 
-class DataPointSerializer(serializers.HyperlinkedModelSerializer):
+class DataPointSerializer(serializers.ModelSerializer):
     data_type = DataTypeSerializer(many=False, read_only=True)
+    measurement = serializers.PrimaryKeyRelatedField(
+        many=False, read_only=True
+    )
 
     class Meta:
         model = DataPoint
