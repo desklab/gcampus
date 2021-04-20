@@ -137,8 +137,9 @@ class LocationRadiusWidget(MultiWidget):
         )
         self.map_widget.geom_type = self.geom_type
         self.slider_widget = RangeInput(
-            attrs={"class": "form-range", 'type': 'range', 'step': '1', 'min': '1', 'max': '148',
+            attrs={"class": "form-range", 'type': 'range', 'step': '1', 'min': '1', 'max': '150',
                    "oninput": "this.nextElementSibling.value = this.value"})
+                    # This is a hack to display the value of the slider, no Js necessary
         widgets = (
             self.map_widget, self.slider_widget)
         super().__init__(widgets, *args, **kwargs)
