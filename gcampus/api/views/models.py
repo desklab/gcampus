@@ -11,18 +11,18 @@ from gcampus.core.models import Measurement, DataType, DataPoint
 
 
 class MeasurementAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    queryset = Measurement.objects.order_by('time').all()
+    queryset = Measurement.objects.order_by("time").all()
     serializer_class = MeasurementSerializer
     pagination_class = GeoJsonPagination
 
 
 class DataTypeAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    queryset = DataType.objects.order_by('name').all()
+    queryset = DataType.objects.order_by("name").all()
     serializer_class = DataTypeSerializer
     pagination_class = PageNumberPagination
 
 
 class DataPointAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    queryset = DataPoint.objects.order_by('measurement__time').all()
+    queryset = DataPoint.objects.order_by("measurement__time").all()
     serializer_class = DataPointSerializer
     pagination_class = PageNumberPagination

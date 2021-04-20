@@ -1,7 +1,6 @@
 from numbers import Number
 from typing import Tuple, Union
 
-import coreschema
 import overpy
 from django.http import HttpRequest
 from django.utils.decorators import method_decorator
@@ -82,7 +81,7 @@ class GeoLookupViewSet(viewsets.ViewSet):
 
 
 def get_bbox_coordinates(
-        center: Point, size: Union[Number, Distance]
+    center: Point, size: Union[Number, Distance]
 ) -> Tuple[Point, Point]:
     """Get Bounding Box Coordinates
 

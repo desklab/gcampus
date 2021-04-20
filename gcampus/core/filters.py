@@ -6,15 +6,19 @@ from django.contrib.gis.measure import Distance
 from django.contrib.postgres.search import SearchQuery
 from django.core.validators import EMPTY_VALUES
 from django.db.models import QuerySet
-from django_filters import Filter, FilterSet, DateTimeFilter, CharFilter, ModelMultipleChoiceFilter
+from django_filters import (
+    Filter,
+    FilterSet,
+    DateTimeFilter,
+    CharFilter,
+    ModelMultipleChoiceFilter,
+)
 from django.forms import TextInput, CheckboxSelectMultiple
 from django.utils.translation import ugettext_lazy as _
 
 from gcampus.core.fields import SplitSplitDateTimeField, LocationRadiusField
 from gcampus.core.models import Measurement, DataType
 from gcampus.core.models.util import EMPTY
-
-
 
 
 class SplitDateTimeFilter(DateTimeFilter):
@@ -67,8 +71,15 @@ class MeasurementFilter(FilterSet):
     name = CharFilter(field_name="name", lookup_expr="icontains")
     time_gt = SplitDateTimeFilter(field_name="time", lookup_expr="gt")
     time_lt = SplitDateTimeFilter(field_name="time", lookup_expr="lt")
-    datatypes = DataTypeFilter(field_name="datatype", queryset=DataType.objects.all(), widget=CheckboxSelectMultiple, label=_("DataType"))
-    location = GeolocationFilter(field_name="location", lookup_expr="distance_lte", label=_("location"))
+    datatypes = DataTypeFilter(
+        field_name="datatype",
+        queryset=DataType.objects.all(),
+        widget=CheckboxSelectMultiple,
+        label=_("DataType"),
+    )
+    location = GeolocationFilter(
+        field_name="location", lookup_expr="distance_lte", label=_("location")
+    )
 
     def filter_location(self, queryset, name, value):
         # TODO value from string to coordinates
@@ -77,5 +88,3 @@ class MeasurementFilter(FilterSet):
                 name: value,
             }
         )
-
-

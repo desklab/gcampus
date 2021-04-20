@@ -5,7 +5,8 @@ from rest_framework import routers
 from gcampus.api.views import (
     MeasurementAPIViewSet,
     DataTypeAPIViewSet,
-    DataPointAPIViewSet, GeoLookupViewSet,
+    DataPointAPIViewSet,
+    GeoLookupViewSet,
 )
 
 router_v1 = routers.DefaultRouter()
