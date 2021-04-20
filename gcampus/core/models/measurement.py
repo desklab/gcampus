@@ -79,6 +79,24 @@ class Measurement(util.DateModelMixin):
         else:
             return _("Measurement %(id)s") % {"id": self.pk}
 
+    def _do_insert(self, manager, using, fields, update_pk, raw):
+        mod_fields = list(fields)
+        for i, field in enumerate(mod_fields):
+            if field.name == "search_vector":
+                del mod_fields[i]
+        return super(Measurement, self)._do_insert(
+            manager, using, mod_fields, update_pk, raw
+        )
+
+    def _do_update(self, base_qs, using, pk_val, values, update_fields, forced_update):
+        mod_values = list(values)
+        for i, (field, _, value) in enumerate(mod_values):
+            if field.name == "search_vector":
+                del mod_values[i]
+        return super(Measurement, self)._do_update(
+            base_qs, using, pk_val, mod_values, update_fields, forced_update
+        )
+
 
 class DataType(models.Model):
     class Meta:
