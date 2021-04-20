@@ -92,11 +92,11 @@ python manage.py migrate
 Always make sure to apply migrations and check after pulling from git
 if there are new migrations.
 
-When first setting up the server, you will have to create a superuser
-or admin user in that regard. This can also be done using django's
-built-in commands:
+You can load a predefined fixture called `fixture.json` that already
+includes some dummy fields and an admin user with the username admin
+and password `admin`:
 ```shell
-python manage.py createsuperuser
+python manage.py loaddata fixture.json
 ```
 
 Finally, you can run the development server:
