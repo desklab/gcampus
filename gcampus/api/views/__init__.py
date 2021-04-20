@@ -3,3 +3,4 @@ from gcampus.api.views.models import (
     DataTypeAPIViewSet,
     DataPointAPIViewSet,
 )
+from gcampus.api.views.functions import GeoLookupViewSet
