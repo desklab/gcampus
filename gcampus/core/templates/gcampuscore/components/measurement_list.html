@@ -16,7 +16,7 @@
 
     <div class="container">
         <form method="GET">
-            {{ filter.form }}
+            {{ filter.form.as_p }}
             <button type="submit" class="btn btn-primary">{% translate "Search" %}</button>
         </form>
     </div>
@@ -34,8 +34,8 @@
     {% endcomment %}
 
     <div class="row justify-content-center text-center">
-        <div class="col-lg-10">
-            <table class="table">
+        <div class="col-auto">
+            <table class="table-responsive">
                 <thead class="thead-dark">
                 <tr>
                     <th scope="col"></th>
@@ -67,6 +67,8 @@
             </table>
         </div>
     </div>
+
+
 
 {% endblock %}
 
