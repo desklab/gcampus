@@ -122,7 +122,7 @@ class SplitSplitDateTimeWidget(MultiWidget):
 class RangeInput(NumberInput):
     input_type = "range"
     template_name = "gcampuscore/forms/widgets/range_slider.html"
-    default_number = 10
+
 
 
 class LocationRadiusWidget(MultiWidget):
@@ -143,10 +143,10 @@ class LocationRadiusWidget(MultiWidget):
                 "step": "1",
                 "min": "1",
                 "max": "150",
-                "oninput": "this.nextElementSibling.value = this.value",
+                "oninput": "myFunction()",
+                "id": "slider",
             }
         )
-        # This is a hack to display the value of the slider, no Js necessary
         widgets = (self.map_widget, self.slider_widget)
         super().__init__(widgets, *args, **kwargs)
 

@@ -1,2 +1,10 @@
 {% include "django/forms/widgets/input.html" %}
-<output>{{ widget.default_number }}</output>
+<output id="output" onload="myFunction()">{{ widget.attrs.value }}</output>
+<script>
+
+function myFunction() {
+    var val = document.getElementById("id_location_1").value;
+    document.getElementById("output").innerHTML = val;
+}
+</script>
+
