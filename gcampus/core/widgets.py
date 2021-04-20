@@ -1,7 +1,7 @@
 import datetime
 from typing import Optional
 
-from django.forms import MultiWidget, NumberInput, CheckboxSelectMultiple
+from django.forms import MultiWidget, NumberInput
 from django.forms.utils import to_current_timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import pgettext
@@ -93,12 +93,12 @@ class SplitSplitDateTimeWidget(MultiWidget):
     template_name = "gcampuscore/forms/widgets/splitsplitdatetime.html"
 
     def __init__(
-        self,
-        attrs=None,
-        date_format=None,
-        time_format=None,
-        date_attrs=None,
-        time_attrs=None,
+            self,
+            attrs=None,
+            date_format=None,
+            time_format=None,
+            date_attrs=None,
+            time_attrs=None,
     ):
         widgets = (
             SplitDateWidget(
@@ -119,6 +119,12 @@ class SplitSplitDateTimeWidget(MultiWidget):
         return [None, None]
 
 
+class RangeInput(NumberInput):
+    input_type = 'range'
+    template_name = "gcampuscore/forms/widgets/range_slider.html"
+    default_number = 10
+
+
 class LocationRadiusWidget(MultiWidget):
     template_name = "gcampuscore/forms/widgets/locationradius.html"
     map_srid = 4326
@@ -130,7 +136,12 @@ class LocationRadiusWidget(MultiWidget):
             attrs={"map_srid": self.map_srid, "geom_type": self.geom_type}
         )
         self.map_widget.geom_type = self.geom_type
-        widgets = (self.map_widget, NumberInput())
+        self.slider_widget = RangeInput(
+            attrs={"class": "form-range", 'type': 'range', 'step': '1', 'min': '1', 'max': '150',
+                   "oninput": "this.nextElementSibling.value = this.value"})
+                    # This is a hack to display the value of the slider, no Js necessary
+        widgets = (
+            self.map_widget, self.slider_widget)
         super().__init__(widgets, *args, **kwargs)
 
     def decompress(self, value):
@@ -170,7 +181,3 @@ class LocationRadiusWidget(MultiWidget):
             }
         )
         return context
-
-
-class DataTypeCheckBoxFilter(CheckboxSelectMultiple):
-    template_name = "gcampuscore/forms/widgets/checkbox.html"
