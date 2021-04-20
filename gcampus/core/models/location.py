@@ -7,7 +7,7 @@ from gcampus.core.models import util
 class LocationWay(util.DateModelMixin):
     """Location Way
 
-    According to OpenStreetMaps OSM), a `way`_ is a fundamental data
+    According to OpenStreetMaps (OSM), a `way`_ is a fundamental data
     type or map element. It describes e.g. a polygon or line.
     In our case, we use this model to store objects of type
     "natual/water" in the database. These objects are generally used
