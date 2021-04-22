@@ -14,7 +14,7 @@ from django_filters import (
     ModelMultipleChoiceFilter,
 )
 from django.forms import TextInput, CheckboxSelectMultiple
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.fields import SplitSplitDateTimeField, LocationRadiusField
 from gcampus.core.models import Measurement, DataType
@@ -38,7 +38,6 @@ class DataTypeFilter(ModelMultipleChoiceFilter):
 
 
 class MeasurementSearchFilter(CharFilter):
-
     TSVECTOR_CONF = getattr(settings, "TSVECTOR_CONF")
 
     def filter(self, qs, value):
@@ -62,7 +61,7 @@ class GeolocationFilter(Filter):
             qs = qs.distinct()
         query_name = f"{self.field_name}__{self.lookup_expr}"
         point, distance = value
-        query = {query_name: (point, Distance(km=distance))}  # TODO variable distance
+        query = {query_name: (point, Distance(km=distance))}
         qs = self.get_method(qs)(**query)
         return qs
 
@@ -78,13 +77,5 @@ class MeasurementFilter(FilterSet):
         label=_("DataType"),
     )
     location = GeolocationFilter(
-        field_name="location", lookup_expr="distance_lte", label=_("location")
+        field_name="location", lookup_expr="distance_lte", label=_("Location")
     )
-
-    def filter_location(self, queryset, name, value):
-        # TODO value from string to coordinates
-        return queryset.filter(
-            **{
-                name: value,
-            }
-        )
