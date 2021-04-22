@@ -68,17 +68,31 @@ class GeolocationFilter(Filter):
 
 
 class MeasurementFilter(FilterSet):
-    name = CharFilter(field_name="name", lookup_expr="icontains", help_text=_("Filter either by name or comment"))
-    time_gt = SplitDateTimeFilter(field_name="time", lookup_expr="gt",
-                                  help_text=_("Filter for measurements conducted before a specified time"))
-    time_lt = SplitDateTimeFilter(field_name="time", lookup_expr="lt",
-                                  help_text=_("Filter for measurements conducted after a specified time"))
+    name = CharFilter(
+        field_name="name",
+        lookup_expr="icontains",
+        help_text=_("Filter either by name or comment"),
+    )
+    time_gt = SplitDateTimeFilter(
+        field_name="time",
+        lookup_expr="gt",
+        help_text=_("Filter for measurements conducted before a specified time"),
+    )
+    time_lt = SplitDateTimeFilter(
+        field_name="time",
+        lookup_expr="lt",
+        help_text=_("Filter for measurements conducted after a specified time"),
+    )
     datatypes = DataTypeFilter(
         field_name="datatype",
         queryset=DataType.objects.all(),
         widget=CheckboxSelectMultiple,
         label=_("Data Type"),
-        help_text=_("Filter for measurements containing a specific data type"))
+        help_text=_("Filter for measurements containing a specific data type"),
+    )
     location = GeolocationFilter(
-        field_name="location", lookup_expr="distance_lte", label=_("Location"),
-        help_text=_("Filter by radius after selecting a location"))
+        field_name="location",
+        lookup_expr="distance_lte",
+        label=_("Location"),
+        help_text=_("Filter by radius after selecting a location"),
+    )

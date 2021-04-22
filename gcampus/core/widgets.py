@@ -124,7 +124,6 @@ class RangeInput(NumberInput):
     template_name = "gcampuscore/forms/widgets/range_slider.html"
 
 
-
 class LocationRadiusWidget(MultiWidget):
     template_name = "gcampuscore/forms/widgets/locationradius.html"
     map_srid = 4326
