@@ -111,6 +111,7 @@ let gcampuscoreConfig = (env, options) => {
         entry: {
             main: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'index.js'),
             autofocus: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'autofocus.js'),
+            leafletsearch: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'leafletsearch.js')
         },
         output: {
             path: path.resolve(__dirname, 'gcampus', 'core', 'static', 'gcampuscore'),

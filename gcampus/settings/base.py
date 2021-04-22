@@ -134,7 +134,18 @@ REST_FRAMEWORK = {
 NOMINATIM_USER_AGENT = "gcampus"
 NOMINATIM_DOMAIN = "nominatim.openstreetmap.org"
 
-LEAFLET_CONFIG = {"DEFAULT_CENTER": (51.15, 10.45), "DEFAULT_ZOOM": 4}
+LEAFLET_CONFIG = {
+    "DEFAULT_CENTER": (51.15, 10.45),
+    "DEFAULT_ZOOM": 4,
+    "RESET_VIEW": False,  # Disable reset button on map
+    'PLUGINS': {
+        'leafletsearch': {
+            'css': ['gcampuscore/styles/leaflet.css'],
+            'js': 'gcampuscore/js/leafletsearch.js',
+            'auto-include': True,
+        },
+    }
+}
 
 # Full Text Search
 TSVECTOR_CONF = "german"
