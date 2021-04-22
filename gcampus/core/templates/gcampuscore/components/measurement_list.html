@@ -16,23 +16,62 @@
 
     <div class="container">
         <form method="GET">
-            {{ filter.form.as_p }}
-            <button type="submit" class="btn btn-primary">{% translate "Search" %}</button>
+            {% with filter.form.name as field %}
+                <div class="mb-3">
+                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                    {% include "gcampuscore/forms/components/helptext.html" %}
+                    {{ field }}
+                </div>
+            {% endwith %}
+            <div/>
+
+            <p>
+                <a class="btn btn-primary btn-sm" data-bs-toggle="collapse"
+                   href="#filterCollapse" role="button"
+                   aria-expanded="false"
+                   aria-controls="filterCollapse">{% translate "Open additional filters" %}</a>
+            </p>
+            <div class="row">
+                <div class="col">
+                    <div class="collapse multi-collapse"
+                         id="filterCollapse">
+                        <div class="card card-body">
+                            <div class="container">
+                                {% with filter.form.time_gt as field %}
+                                    <div class="mb-3">
+                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                        {% include "gcampuscore/forms/components/helptext.html" %}
+                                        {{ field }}
+                                    </div>
+                                {% endwith %}
+                                {% with filter.form.time_lt as field %}
+                                    <div class="mb-3">
+                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                        {% include "gcampuscore/forms/components/helptext.html" %}
+                                        {{ field }}
+                                    </div>
+                                {% endwith %}
+                                {% with filter.form.datatypes as field %}
+                                    <div class="mb-3">
+                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                        {% include "gcampuscore/forms/components/helptext.html" %}
+                                        {{ field }}
+                                    </div>
+                                {% endwith %}
+                                {% with filter.form.location as field %}
+                                    <div class="mb-3">
+                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                        {% include "gcampuscore/forms/components/helptext.html" %}
+                                        {{ field }}
+                                    </div>
+                                {% endwith %}
         </form>
     </div>
-
-    {% comment %}
-    {% with filter.form.location as field %}
-        <div class="mb-3">
-            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-            {% include "gcampuscore/forms/components/helptext.html" %}
-            <div class="shadow-sm">
-                {{ field }}
-            </div>
-        </div>
-    {% endwith %}
-    {% endcomment %}
-
+    </div>
+    </div>
+    </div>
+    </div>
+    <button type="submit" class="btn btn-primary">{% translate "Search" %}</button>
     <div class="row justify-content-center text-center">
         <div class="col-auto">
             <table class="table-responsive">
@@ -67,9 +106,4 @@
             </table>
         </div>
     </div>
-
-
-
 {% endblock %}
-
-
