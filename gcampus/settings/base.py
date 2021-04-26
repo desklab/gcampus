@@ -138,13 +138,13 @@ LEAFLET_CONFIG = {
     "DEFAULT_CENTER": (51.15, 10.45),
     "DEFAULT_ZOOM": 4,
     "RESET_VIEW": False,  # Disable reset button on map
-    'PLUGINS': {
-        'leafletsearch': {
-            'css': ['gcampuscore/styles/leaflet.css'],
-            'js': 'gcampuscore/js/leafletsearch.js',
-            'auto-include': True,
+    "PLUGINS": {
+        "leafletsearch": {
+            "css": ["gcampuscore/styles/leaflet.css"],
+            "js": "gcampuscore/js/leafletsearch.js",
+            "auto-include": True,
         },
-    }
+    },
 }
 
 # Full Text Search
