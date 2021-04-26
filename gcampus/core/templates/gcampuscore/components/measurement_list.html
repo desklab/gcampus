@@ -111,7 +111,6 @@
         let filterCollapse = document.getElementById("filterCollapse");
 
         function setCookie() {
-            let filterButton = document.getElementById("filterCollapseButton");
             var status = filterButton.getAttribute('aria-expanded');
             document.cookie = "filterButtonStatus=" + status;
         }
@@ -127,8 +126,10 @@
             console.log(bool_button_value)
             if (bool_button_value) {
                 filterCollapse.setAttribute("class", "collapse show");
+                filterButton.setAttribute('aria-expanded', "true");
             } else {
                 filterCollapse.setAttribute("class", "collapse");
+                filterButton.setAttribute('aria-expanded', "false");
             }
         }
 
