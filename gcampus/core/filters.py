@@ -72,6 +72,7 @@ class MeasurementFilter(FilterSet):
         field_name="name",
         lookup_expr="icontains",
         help_text=_("Filter either by name or comment"),
+        label=_("Filter measurements"),
     )
     time_gt = SplitDateTimeFilter(
         field_name="time",
