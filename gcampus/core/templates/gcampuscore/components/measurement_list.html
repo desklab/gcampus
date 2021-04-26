@@ -112,16 +112,11 @@
 
         function setCookie() {
             var status = filterButton.getAttribute('aria-expanded');
-            document.cookie = "filterButtonStatus=" + status;
-        }
-
-        function getCookieValue(cookieName) {
-            const value = document.cookie.match('(^|;)\\s*' + cookieName + '\\s*=\\s*([^;]+)');
-            return value ? value.pop() : '';
+            localStorage.setItem("filterButtonStatus", status);
         }
 
         function setCollapse() {
-            var button_value = getCookieValue("filterButtonStatus");
+            var button_value = localStorage.getItem("filterButtonStatus");
             var bool_button_value = (button_value == 'true');
             console.log(bool_button_value)
             if (bool_button_value) {
