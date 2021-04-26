@@ -22,9 +22,9 @@
                 <h5>{% translate "Comment" %}</h5>
                 <p>
                     {% if measurement.comment %}
-                    {{ measurement.comment }}
+                        {{ measurement.comment }}
                     {% else %}
-                    -
+                        -
                     {% endif %}
                 </p>
             </div>
@@ -51,14 +51,14 @@
                             {% if datapoint.comment %}
                                 <p>
                                     <a class="btn btn-primary btn-sm" data-bs-toggle="collapse"
-                                       href="#multiCollapseExample{{ forloop.counter }}" role="button"
-                                       aria-expanded="false"
+                                       href="#CommentCollapse{{ forloop.counter }}" role="button" onclick="setCookie()"
+                                       aria-expanded="false" id="CommentCollapseButton{{ forloop.counter }}"
                                        aria-controls="multiCollapseExample1">{% translate "Expand comment" %}</a>
                                 </p>
                                 <div class="row">
                                     <div class="col">
-                                        <div class="collapse multi-collapse"
-                                             id="multiCollapseExample{{ forloop.counter }}">
+                                        <div class="collapse"
+                                             id="CommentCollapse{{ forloop.counter }}">
                                             <div class="card card-body">
                                                 <small>{{ datapoint.comment }}</small>
                                             </div>
@@ -75,6 +75,50 @@
             </table>
         </div>
     </div>
+    <script>
+        function setCookie() {
+            var statusList = [];
+            var i;
+            for (i = 0; i < {{ object.data_points.all|length }}; i++) {
+                var collapse_id = "CommentCollapseButton" + (i + 1)
+                let comment_collapse_button = document.getElementById(collapse_id);
+                if (comment_collapse_button !== null) {
+                    var status = comment_collapse_button.getAttribute('aria-expanded');
+                    statusList.push(status)
+                }
+            }
+            document.cookie = "CommentCollapse{{ measurement.pk }}=" + statusList;
+        }
+
+        function getCookieValue(cookieName) {
+            const value = document.cookie.match('(^|;)\\s*' + cookieName + '\\s*=\\s*([^;]+)');
+            return value ? value.pop() : '';
+        }
+
+        function setCollapse() {
+            var collapse_values = getCookieValue("CommentCollapse{{ measurement.pk }}");
+            var collapse_values_list = collapse_values.split(',');
+            var i;
+            var comment_counter = 0;
+            for (i = 0; i < {{ object.data_points.all|length }}; i++) {
+                let comment_collapse_button = document.getElementById("CommentCollapseButton" + (i + 1));
+                let comment_collapse = document.getElementById("CommentCollapse" + (i + 1));
+                if (comment_collapse !== null) {
+                    var bool_button_value = (collapse_values_list[comment_counter] == 'true');
+                    if (bool_button_value) {
+                        comment_collapse.setAttribute("class", "collapse show");
+                        comment_collapse_button.setAttribute('aria-expanded', "true");
+                    } else {
+                        comment_collapse.setAttribute("class", "collapse");
+                        comment_collapse_button.setAttribute('aria-expanded', "false");
+                    }
+                    comment_counter = comment_counter + 1;
+                }
+            }
+        }
+
+        setCollapse()
+    </script>
 {% endblock %}
 
 
