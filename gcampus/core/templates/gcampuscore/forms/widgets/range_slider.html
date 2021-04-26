@@ -1,10 +1,12 @@
 {% include "django/forms/widgets/input.html" %}
 <output id="output">{{ widget.attrs.value }}</output>
 <script>
-let input_element = document.getElementById("{{ widget.attrs.id }}");
-function viewValue() {
-    input_value = input_element.value;
-    document.getElementById("output").innerHTML = input_value;
-}
-window.onload = viewValue;
+    let input_element = document.getElementById("{{ widget.attrs.id }}");
+
+    function viewValue() {
+        input_value = input_element.value;
+        document.getElementById("output").innerHTML = input_value;
+    }
+
+    viewValue()
 </script>

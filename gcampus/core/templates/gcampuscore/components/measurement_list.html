@@ -26,14 +26,14 @@
             <div/>
 
             <p>
-                <a class="btn btn-primary btn-sm" data-bs-toggle="collapse"
-                   href="#filterCollapse" role="button"
+                <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" id="filterCollapseButton"
+                   href="#filterCollapse" role="button" onclick="setCookie()"
                    aria-expanded="false"
                    aria-controls="filterCollapse">{% translate "Open additional filters" %}</a>
             </p>
-            <div class="row">
+            <div class="row" id="test">
                 <div class="col">
-                    <div class="collapse multi-collapse"
+                    <div class="collapse"
                          id="filterCollapse">
                         <div class="card card-body">
                             <div class="container">
@@ -106,4 +106,33 @@
             </table>
         </div>
     </div>
+    <script>
+        let filterButton = document.getElementById("filterCollapseButton");
+        let filterCollapse = document.getElementById("filterCollapse");
+
+        function setCookie() {
+            let filterButton = document.getElementById("filterCollapseButton");
+            var status = filterButton.getAttribute('aria-expanded');
+            document.cookie = "filterButtonStatus=" + status;
+        }
+
+        function getCookieValue(cookieName) {
+            const value = document.cookie.match('(^|;)\\s*' + cookieName + '\\s*=\\s*([^;]+)');
+            return value ? value.pop() : '';
+        }
+
+        function setCollapse() {
+            var button_value = getCookieValue("filterButtonStatus");
+            var bool_button_value = (button_value == 'true');
+            console.log(bool_button_value)
+            if (bool_button_value) {
+                filterCollapse.setAttribute("class", "collapse show");
+            } else {
+                filterCollapse.setAttribute("class", "collapse");
+            }
+        }
+
+        setCollapse()
+    </script>
 {% endblock %}
+
