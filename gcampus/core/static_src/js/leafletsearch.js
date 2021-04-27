@@ -14,5 +14,3 @@ window.addEventListener('map:init', function (e) {
     let target_map = e.detail.map;
     target_map.addControl(search);
 });
-
-// export {search};
