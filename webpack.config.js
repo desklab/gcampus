@@ -17,13 +17,14 @@ const postcssLoader = (env, options) => {
             }
         }
     };
-}
+};
+
 const cssFileLoader = (env, options) => {
     return {
         loader: 'file-loader',
         options: {outputPath: 'styles', name: '[name].css'}
     };
-}
+};
 
 const commonConfig = (env, options) => {
     let isProduction = options.mode === 'production';
@@ -111,7 +112,8 @@ let gcampuscoreConfig = (env, options) => {
         entry: {
             main: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'index.js'),
             autofocus: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'autofocus.js'),
-            leafletsearch: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'leafletsearch.js')
+            leafletsearch: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'leafletsearch.js'),
+            watersuggestion: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'watersuggestion.js'),
         },
         output: {
             path: path.resolve(__dirname, 'gcampus', 'core', 'static', 'gcampuscore'),
@@ -136,10 +138,11 @@ let gcampuscoreConfig = (env, options) => {
     });
 }
 
+// TODO is this still needed?
 module.exports = [gcampuscoreConfig];
 
 module.exports = (env, options) => {
     return [
         gcampuscoreConfig(env, options)
     ];
-}
+};

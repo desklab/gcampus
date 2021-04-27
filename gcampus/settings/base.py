@@ -139,10 +139,14 @@ LEAFLET_CONFIG = {
     "DEFAULT_ZOOM": 4,
     "RESET_VIEW": False,  # Disable reset button on map
     "PLUGINS": {
-        "leafletsearch": {
+        "leafletsearch": {  # Add leaflet search control
             "css": ["gcampuscore/styles/leaflet.css"],
             "js": "gcampuscore/js/leafletsearch.js",
             "auto-include": True,
+        },
+        "watersuggestion": {  # Suggest nearby natural=water
+            "js": "gcampuscore/js/watersuggestion.js",
+            "auto-include": False,
         },
     },
 }

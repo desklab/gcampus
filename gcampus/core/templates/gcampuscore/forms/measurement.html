@@ -4,7 +4,6 @@
     {% translate "Create new Measurement" %}
 {% endblock %}
 {% block extra_head %}
-    {% leaflet_js plugins="leafletsearch,forms" %}
     {% leaflet_css plugins="leafletsearch,forms" %}
 {% endblock %}
 {% block body_class %}bg-light{% endblock %}
@@ -44,12 +43,18 @@
                         </div>
                     {% endwith %}
                     {# Location (map) #}
-                    {% with form.location as field %}
+                    {% with field=form.location map_height=400 %}
                         <div class="mb-3">
                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
                             {% include "gcampuscore/forms/components/helptext.html" %}
-                            <div class="shadow-sm">
+                            <style>
+                                #{{ field.id_for_label }}-map {
+                                    height: 400px;
+                                }
+                            </style>
+                            <div class="rounded-2">
                                 {{ field }}
+                                <div id="watersuggestion"></div>
                             </div>
                         </div>
                     {% endwith %}
@@ -80,5 +85,6 @@
     </div>
 {% endblock %}
 {% block extra_body %}
+    {% leaflet_js plugins="leafletsearch,forms,watersuggestion" %}
     <script type="text/javascript" src="{% static 'gcampuscore/js/autofocus.js' %}"></script>
 {% endblock %}
