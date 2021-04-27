@@ -79,7 +79,7 @@
         </table>
     </div>
     <script>
-        function map_init_basic(map, options) {
+        function map_init_basic(map) {
             var location_N = "{{ measurement.location.coords.0 }}".replace(",", ".")
             var location_E = "{{ measurement.location.coords.1 }}".replace(",", ".")
             var location = [parseFloat(location_E), parseFloat(location_N)];

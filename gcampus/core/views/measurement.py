@@ -33,6 +33,7 @@ class MeasurementDetailView(DetailView):
     model = Measurement
     template_name = "gcampuscore/components/measurement_detail.html"
 
+
 class MeasurementMapView(ListView):
     model = Measurement
     template_name = "gcampuscore/components/mapview.html"
