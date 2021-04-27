@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-26 15:06+0200\n"
+"POT-Creation-Date: 2021-04-27 21:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -109,8 +109,8 @@ msgid "Date and time of the measurement"
 msgstr "Datum und Uhrzeit der Messung"
 
 #: gcampus/core/models/measurement.py:45 gcampus/core/models/measurement.py:129
-#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:22
-#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:41
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:26
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:45
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -136,7 +136,7 @@ msgstr "Messung %(id)s"
 
 #: gcampus/core/models/measurement.py:103
 #: gcampus/core/models/measurement.py:120
-#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:39
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:43
 msgid "Data type"
 msgstr "Daten Typ"
 
@@ -157,7 +157,7 @@ msgid "Data points"
 msgstr "Messwerte"
 
 #: gcampus/core/models/measurement.py:122
-#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:40
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:44
 msgid "Value"
 msgstr "Wert"
 
@@ -170,19 +170,24 @@ msgstr "Verknüpfte Messung"
 msgid "Data point %(pk)s"
 msgstr "Messwert %(pk)s"
 
-#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:18
-#, python-format
-msgid "The measurement was conducted on %(date)s at %(time)s"
-msgstr "Die Messung wurde am %(date)s um %(time)s durchgeführt"
-
-#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:56
-msgid "Expand comment"
-msgstr "Kommentar ansehen"
-
+#: gcampus/core/templates/gcampuscore/components/mapview.html:4
 #: gcampus/core/templates/gcampuscore/components/measurement_list.html:4
 #: gcampus/core/templates/gcampuscore/components/measurement_list.html:13
 msgid "All measurements"
 msgstr "Alle Messungen"
+
+#: gcampus/core/templates/gcampuscore/components/mapview.html:17
+msgid "Measurement by"
+msgstr "Messung von"
+
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:22
+#, python-format
+msgid "The measurement was conducted on %(date)s at %(time)s"
+msgstr "Die Messung wurde am %(date)s um %(time)s durchgeführt"
+
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:60
+msgid "Expand comment"
+msgstr "Kommentar ansehen"
 
 #: gcampus/core/templates/gcampuscore/components/measurement_list.html:32
 msgid "Open additional filters"
@@ -267,6 +272,11 @@ msgstr "Jahr"
 msgctxt "year input short"
 msgid "YYYY"
 msgstr "JJJJ"
+
+#, fuzzy
+#~| msgid "Measurement"
+#~ msgid "Measurement from"
+#~ msgstr "Messung"
 
 #, fuzzy
 #~| msgid "Location"

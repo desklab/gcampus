@@ -1,0 +1,39 @@
+{% extends "gcampuscore/base.html" %}
+{% load i18n static leaflet_tags %}
+{% block title %}
+    {% translate "All measurements" %}
+{% endblock %}
+{% block extra_head %}
+    {% leaflet_js plugins="forms" %}
+    {% leaflet_css plugins="forms" %}
+
+    <script>
+        function map_init_basic(map, options) {
+            var locations = []
+            {% for measurement in measurement_list %}
+                var location_N = "{{ measurement.location.coords.0 }}".replace(",", ".")
+                var location_E = "{{ measurement.location.coords.1 }}".replace(",", ".")
+                var name = "{{ measurement.name }}"
+                var location_name = "{% translate "Measurement by" %} "
+                var location = [location_name + name, parseFloat(location_E), parseFloat(location_N)];
+                locations.push(location)
+            {% endfor %}
+
+            for (var i = 0; i < locations.length; i++) {
+                marker = new L.marker([locations[i][1], locations[i][2]])
+                    .bindPopup(locations[i][0])
+                    .addTo(map);
+            }
+            //L.marker(locations).addTo(map);
+            map.setView([51.163375, 10.447683], 5.3);
+
+        }
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            {% leaflet_map "yourmap" callback="window.map_init_basic" %}
+            <div/>
+            <div/>
+{% endblock %}
