@@ -125,7 +125,6 @@ class RangeInput(NumberInput):
 
 
 class LocationRadiusWidget(MultiWidget):
-    template_name = "gcampuscore/forms/widgets/locationradius.html"
     map_srid = 4326
     geom_type = "POINT"
 
@@ -160,15 +159,12 @@ class LocationRadiusWidget(MultiWidget):
         provides additional context variables used to render a leaflet
         map.
 
-        .. todo:: Consider calling the private method ``_get_attrs``
-            instead.
-
         :param name: Widget name
         :param attrs: Additional attributes
         :return: Dictionary of additional attributes
         :rtype: dict
         """
-        return self.map_widget._get_attrs(name)  # noqa
+        return self.map_widget._get_attrs(name, attrs=attrs)  # noqa
 
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
