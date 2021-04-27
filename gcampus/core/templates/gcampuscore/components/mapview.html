@@ -13,9 +13,8 @@
             {% for measurement in measurement_list %}
                 var location_N = "{{ measurement.location.coords.0 }}".replace(",", ".")
                 var location_E = "{{ measurement.location.coords.1 }}".replace(",", ".")
-                var name = "{{ measurement.name }}"
-                var location_name = "{% translate "Measurement by" %} "
-                var location = [location_name + name, parseFloat(location_E), parseFloat(location_N)];
+                var name = "{% translate "Measurement by" %} " + "{{ measurement.name }}"
+                var location = [name, parseFloat(location_E), parseFloat(location_N)];
                 locations.push(location)
             {% endfor %}
 
@@ -24,7 +23,7 @@
                     .bindPopup(locations[i][0])
                     .addTo(map);
             }
-            //L.marker(locations).addTo(map);
+            //This is the geographical center of germany, factor 5.3 zooms in on germany quite well
             map.setView([51.163375, 10.447683], 5.3);
 
         }

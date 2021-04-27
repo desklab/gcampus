@@ -83,13 +83,16 @@
             var location_N = "{{ measurement.location.coords.0 }}".replace(",", ".")
             var location_E = "{{ measurement.location.coords.1 }}".replace(",", ".")
             var location = [parseFloat(location_E), parseFloat(location_N)];
-            L.marker(location).addTo(map);
+            var name = "{% translate "Measurement by" %} " + "{{ measurement.name }}"
+            marker = new L.marker(location)
+                .bindPopup(name)
+                .addTo(map);
             map.setView(location, 12);
 
         }
     </script>
     <div class="row justify-content-center">
-     <div class="col-lg-6">
+    <div class="col-lg-6">
     {% leaflet_map "yourmap" callback="window.map_init_basic" %}
     <div/>
     <div/>
