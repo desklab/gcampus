@@ -1,12 +1,12 @@
 from numbers import Number
-from typing import Tuple, Union
+from typing import Tuple, Union, List
 
 import overpy
 from django.http import HttpRequest
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy
 from django.views.decorators.cache import cache_page
-from overpy.exception import OverpassTooManyRequests
+from overpy.exception import OverpassTooManyRequests, OverpassGatewayTimeout
 from rest_framework.decorators import action
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
@@ -42,18 +42,40 @@ class GeoLookupViewSet(viewsets.ViewSet):
             size = float(size)
         except (TypeError, ValueError, OverflowError):
             raise ParseError("Unable to parse 'size'")
+        # Generate the overpass query
         center = Point(x, y, srid=srid)
         query = self._get_overpass_query(center, size)
+        # Query the overpass api
         try:
             result = self.api.query(query)
-        except OverpassTooManyRequests:
-            raise Throttled
+        except (OverpassTooManyRequests, OverpassGatewayTimeout):
+            raise Throttled()
+
+        # Get all relations from the result and save the ID of each
+        # way contained in the relation. All ways that are part of an
+        # relation will be discarded later.
+        relations: List[overpy.Relation] = result.get_relations()
+        relation_way_ids: List[overpy.RelationWay] = []
+        for relation in relations:
+            for member in relation.members:
+                if isinstance(member, overpy.RelationWay):
+                    relation_way_ids.append(member.ref)
+        # Only include the ways that are unique and not in a relation
+        # from the result
+        ways: List[overpy.Way] = [
+            way for way in result.get_ways() if way.id not in relation_way_ids
+        ]
+        # Combine both lists of all relations and ways which are not
+        # part of any relation
+        instances: List[Union[overpy.Way, overpy.Relation]] = relations + ways
+        del relation_way_ids
         serializer = self.serializer()
         return Response(
-            serializer.to_representation(result.get_ways()), status=status.HTTP_200_OK
+            serializer.to_representation(instances), status=status.HTTP_200_OK
         )
 
-    def _get_overpass_query(self, center: Point, size: Union[Number, Distance]) -> str:
+    @staticmethod
+    def _get_overpass_query(center: Point, size: Union[Number, Distance]) -> str:
         """Get Overpass Query
 
         Generate the query for used for overpass
@@ -68,14 +90,15 @@ class GeoLookupViewSet(viewsets.ViewSet):
         upper_left, lower_right = get_bbox_coordinates(center, size)
         bbox = f"{upper_left.x},{upper_left.y},{lower_right.x},{lower_right.y}"
         query = f"""
+        [bbox:{bbox}];
         (
-            way["natural"="water"]({bbox});
-            way["waterway"]({bbox});
-            way["water"]({bbox});
+            way["natural"="water"];>;
+            relation["natural"="water"];>;
+            way["waterway"];>;
+            relation["waterway"];>;
         );
-        out body;
-        >;
-        out skel qt;
+        // (._; >;);
+        out geom;
         """
         return query
 

@@ -1,9 +1,9 @@
 from collections import OrderedDict
 from decimal import Decimal
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
-from django.contrib.gis.geos import LineString
-from overpy import Way, Node
+from django.contrib.gis.geos import LineString, GeometryCollection, GEOSGeometry
+from overpy import Way, Node, Relation, RelationWay
 from rest_framework import serializers
 from rest_framework_gis.fields import GeometryField
 from rest_framework_gis.serializers import (
@@ -38,15 +38,13 @@ class MeasurementSerializer(GeoFeatureModelSerializer):
         fields = ("id", "name", "time", "comment", "data_points")
 
 
-class OverpassWaySerializer(serializers.Serializer):
-    """"""
-
+class OverpassElementSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     name = serializers.CharField()
     tags = serializers.JSONField()
     geometry = GeometryField()
 
-    def to_representation(self, instance: Way):
+    def to_representation(self, instance: Union[Way, Relation]):
         """
         This method is heavily inspired by
         :class:`rest_framework_gis.serializers.GeoFeatureModelSerializer`
@@ -67,7 +65,7 @@ class OverpassWaySerializer(serializers.Serializer):
 
         geometry_field_name = "geometry"
         geometry_field = self.fields[geometry_field_name]
-        geometry_value = self.way_to_geometry(instance)
+        geometry_value: GEOSGeometry = self.element_to_geometry(instance)
         feature["geometry"] = geometry_field.to_representation(geometry_value)
         processed_fields.add(geometry_field_name)
 
@@ -91,14 +89,48 @@ class OverpassWaySerializer(serializers.Serializer):
     def create(self, validated_data):
         raise NotImplementedError()
 
-    @staticmethod
-    def way_to_geometry(way: Way, resolve_missing=True) -> LineString:
+    @classmethod
+    def element_to_geometry(
+            cls,
+            element: Union[Way, Relation],
+            *,
+            resolve_missing=True
+    ) -> GEOSGeometry:
+        if isinstance(element, Way):
+            return cls.way_to_geometry(element, resolve_missing=resolve_missing)
+        elif isinstance(element, Relation):
+            return cls.relation_to_geometry(element, resolve_missing=resolve_missing)
+        else:
+            raise ValueError(f"Unsupported element type {type(element)}")
+
+    @classmethod
+    def way_to_geometry(cls, way: Way, *, resolve_missing=True) -> LineString:
         nodes: List[Node] = way.get_nodes(resolve_missing=resolve_missing)
         coordinates: Tuple[Tuple[Decimal, ...], ...] = tuple(
             (node.lon, node.lat) for node in nodes
         )
         return LineString(coordinates)
 
+    @classmethod
+    def relation_to_geometry(
+            cls, relation: Relation, *, resolve_missing=True
+    ) -> GeometryCollection:
+        relation_ways: List[RelationWay] = [
+            member for member in relation.members if isinstance(member, RelationWay)
+        ]
+        ways: List[Way] = [
+            relation_way.resolve(resolve_missing=resolve_missing)
+            for relation_way in relation_ways
+        ]
+        line_strings: List[LineString] = [
+            cls.way_to_geometry(way, resolve_missing=resolve_missing)
+            for way in ways
+        ]
+        return GeometryCollection(line_strings)
+
 
 class GeoLookupSerializer(GeoFeatureModelListSerializer):
-    child = OverpassWaySerializer()
+    def update(self, instance, validated_data):
+        raise NotImplementedError()
+
+    child = OverpassElementSerializer()
