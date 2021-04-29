@@ -1,12 +1,13 @@
 {% extends "gcampuscore/base.html" %}
 {% load i18n static leaflet_tags %}
 {% block title %}
-    {% translate "All measurements" %}
+    {% translate "All measurements displayed on a map" %}
 {% endblock %}
 {% block extra_head %}
     {% leaflet_js plugins="forms" %}
     {% leaflet_css plugins="forms" %}
-
+{% endblock %}
+{% block content %}
     <script>
         function map_init_basic(map, options) {
             var locations = []
@@ -23,16 +24,12 @@
                     .bindPopup(locations[i][0])
                     .addTo(map);
             }
-            //This is the geographical center of germany, factor 5.3 zooms in on germany quite well
-            map.setView([51.163375, 10.447683], 5.3);
-
         }
     </script>
-{% endblock %}
-{% block content %}
+
     <div class="row justify-content-center">
         <div class="col-lg-6">
             {% leaflet_map "yourmap" callback="window.map_init_basic" %}
-            <div/>
-            <div/>
+        <div/>
+    <div/>
 {% endblock %}

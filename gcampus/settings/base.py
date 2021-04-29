@@ -135,8 +135,8 @@ NOMINATIM_USER_AGENT = "gcampus"
 NOMINATIM_DOMAIN = "nominatim.openstreetmap.org"
 
 LEAFLET_CONFIG = {
-    "DEFAULT_CENTER": (51.15, 10.45),
-    "DEFAULT_ZOOM": 4,
+    "DEFAULT_CENTER": (49.4922, 8.4430),
+    "DEFAULT_ZOOM": 8,
     "RESET_VIEW": False,  # Disable reset button on map
     "PLUGINS": {
         "leafletsearch": {  # Add leaflet search control
