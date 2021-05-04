@@ -4,6 +4,8 @@ import {html} from 'htm/preact';
 
 const DEFAULT_COLOR = '#33658A';
 const HIGHLIGHT_COLOR = '#F6AE2D';
+const VAR_LOCATION_PLACEHOLDER = window._varLocationPlaceholder;
+const VAR_LOCATION_TITLE = window._varLocationTitle;
 
 
 /**
@@ -37,25 +39,77 @@ function ListItem(props) {
     let name = feature.properties.name;
     let id = feature.id;
     return html`
-        <li class="list-group-item list-group-item-action"
-            onMouseOver=${highlight} onMouseLeave=${resetHighlight}>
-            <input class="form-check-input"
+        <label class="list-group-item list-group-item-action" for="water${id}"
+               onMouseOver=${highlight} onMouseLeave=${resetHighlight}>
+            <input class="form-check-input me-2" id="water${id}"
                    type="radio" name="location_name"
-                   value="${id}"
-                   aria-label="${name}"/>
-            <span class="ms-2">${name}</span>
-        </li>`;
+                   value="${id}"/>
+            ${name}
+        </label>`;
+}
+
+
+class VariableWaterItem extends Component {
+    constructor() {
+        super();
+        this.state = {name: ''};
+    }
+
+    setName(name) {
+        this.setState({name: name});
+    }
+
+    setChecked(checked) {
+        let el = document.getElementById('varWater');
+        el.checked = checked;
+    }
+
+    createNameChangeListener() {
+        return (e) => {
+            this.setChecked(true);
+            let new_name = e.target.value;
+            if (this.state.name !== new_name)
+                this.setName(new_name);
+        };
+    }
+
+    createClickListener() {
+        return () => {
+            this.setChecked(true);
+        }
+    }
+
+    render(props, state, context) {
+        let {name} = state;
+        return html`
+            <div class="list-group-item list-group-item-action"
+                 onclick=${this.createClickListener()}>
+                <input class="form-check-input me-2" id="varWater"
+                       type="radio" name="location_name"
+                       style="vertical-align: text-bottom"
+                       value="${name}"
+                       aria-label="${VAR_LOCATION_TITLE}" />
+                ${VAR_LOCATION_TITLE}
+                <input type="text"
+                       id="inputLocationName"
+                       class="form-control form-control-sm w-auto d-inline ms-2"
+                       placeholder="${VAR_LOCATION_PLACEHOLDER}"
+                       aria-label="${VAR_LOCATION_PLACEHOLDER}"
+                       onInput=${this.createNameChangeListener()} />
+            </div>`;
+    }
 }
 
 
 class WaterList extends Component {
     constructor() {
         super();
-        this.state = {features: []};
+        this.state = {features: [], loading: false};
         window.addEventListener('map:init', this.mapInit.bind(this));
     }
 
     setFeatures(features) {
+        this.setLoading(false);
         this.layer.clearLayers();
         features = features || [];
         features = features.filter(
@@ -66,6 +120,10 @@ class WaterList extends Component {
             this.layer.setStyle({color: DEFAULT_COLOR});
         }
         this.setState({features: features});
+    }
+
+    setLoading(loading) {
+        this.setState({loading: loading});
     }
 
     updateStyle(layer, color) {
@@ -102,9 +160,15 @@ class WaterList extends Component {
         this.setFeatures([]);
         let marker = e.layer;
         let {lat, lng} = marker.getLatLng();
+        this.setLoading(true)
         fetchWaterSuggestion(lat, lng)
             .then(data => this.setFeatures(data.features))
-            .catch(console.error);
+            .catch(this.onError.bind(this));
+    }
+
+    onError(err) {
+        this.setLoading(false);
+        console.error(err);
     }
 
     mapInit(e) {
@@ -126,9 +190,18 @@ class WaterList extends Component {
     }
 
     render(props, state, context) {
-        let {features} = state;
+        let {features, loading} = state;
+        let spinner = '';
+        if (loading) {
+            spinner = html`
+                <div class="list-group-item">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                    </div>
+                    <span class="ms-2">Loading...</span>
+                </div>`
+        }
         return html`
-            <ul class="list-group bg-white"
+            <div class="list-group bg-white"
                 style="border-top-left-radius: 0; border-top-right-radius: 0;">
                 ${features.map(feature => html`
                     <${ListItem}
@@ -137,7 +210,9 @@ class WaterList extends Component {
                             resetHighlight=${this.createMouseLeaveListener(feature)}
                     />
                 `)}
-            </ul>`;
+                ${spinner}
+                <${VariableWaterItem} />
+            </div>`;
     }
 }
 
