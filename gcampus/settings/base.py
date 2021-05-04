@@ -133,6 +133,8 @@ REST_FRAMEWORK = {
 # Geo Settings
 NOMINATIM_USER_AGENT = "gcampus"
 NOMINATIM_DOMAIN = "nominatim.openstreetmap.org"
+OVERPASS_SERVER = "https://overpass-api.de/api/interpreter"
+OVERPASS_CACHE = 60 * 60 * 24 * 2
 
 LEAFLET_CONFIG = {
     "DEFAULT_CENTER": (49.4922, 8.4430),

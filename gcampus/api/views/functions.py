@@ -2,14 +2,12 @@ from numbers import Number
 from typing import Tuple, Union, List
 
 import overpy
-from django.http import HttpRequest
-from django.utils.decorators import method_decorator
-from django.utils.translation import gettext_lazy
-from django.views.decorators.cache import cache_page
-from overpy.exception import OverpassTooManyRequests, OverpassGatewayTimeout
-from rest_framework.decorators import action
+from django.conf import settings
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from overpy.exception import OverpassTooManyRequests, OverpassGatewayTimeout
 from rest_framework import viewsets, serializers, status
 from rest_framework.exceptions import ParseError, Throttled
 from rest_framework.request import Request
@@ -19,11 +17,12 @@ from gcampus.api.serializers import GeoLookupSerializer
 
 
 class GeoLookupViewSet(viewsets.ViewSet):
-    api = overpy.Overpass()
+    api = overpy.Overpass(url=getattr(settings, "OVERPASS_SERVER", None))
     serializer = GeoLookupSerializer
 
-    @method_decorator(cache_page(60 * 60 * 24 * 2))  # Cache for two days
-    def list(self, request: Request, **kwargs):
+    # Cache for two days by default
+    @method_decorator(cache_page(getattr(settings, "OVERPASS_CACHE", 60 * 60 * 24 * 2)))
+    def list(self, request: Request, **kwargs):  # noqa
         params = request.query_params
         coordinates = params.get("coords", None)
         size = params.get("size", None)
