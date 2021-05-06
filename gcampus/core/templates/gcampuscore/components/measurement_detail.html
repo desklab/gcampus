@@ -80,16 +80,34 @@
     </div>
     <script>
         function map_init_basic(map) {
-            var location_N = "{{ measurement.location.coords.0 }}".replace(",", ".")
-            var location_E = "{{ measurement.location.coords.1 }}".replace(",", ".")
-            var location = [parseFloat(location_E), parseFloat(location_N)];
-            var name = "{% translate "Measurement by" %} " + "{{ measurement.name }}"
+            var close_locations = []
+            var location_long = "{{ measurement.location.coords.0 }}".replace(",", ".");
+            var location_lat = "{{ measurement.location.coords.1 }}".replace(",", ".");
+            var location = [parseFloat(location_lat), parseFloat(location_long)];
+            var name = "{% translate "Measurement by" %} " + "{{ measurement.name }}";
             marker = new L.marker(location)
                 .bindPopup(name)
                 .addTo(map);
-            map.setView(location, 12);
 
+
+            {% for measurement in close_measurements %}
+            var additional_long = "{{ measurement.location.coords.0 }}".replace(",", ".");
+            var additional_lat = "{{ measurement.location.coords.1 }}".replace(",", ".");
+            var additional_name = "{% translate "Measurement by" %} " + "{{ measurement.name }}";
+            var additional_link = "{% url "gcampuscore:measurement_detail" pk=measurement.pk %}";
+            var additional_location = [additional_name, parseFloat(additional_lat), parseFloat(additional_long), additional_link];
+            close_locations.push(additional_location)
+            {% endfor %}
+
+            for (var i = 0; i < close_locations.length; i++) {
+                circleMarker = new L.circleMarker([close_locations[i][1], close_locations[i][2]], {radius: 5})
+                    .bindPopup('<a href="' + close_locations[i][3] + '">' + close_locations[i][0] + '</a>')
+                    .addTo(map);
+            }
+            map.setView(location, 12);
         }
+
+
     </script>
     <div class="row justify-content-center">
     <div class="col-lg-6">

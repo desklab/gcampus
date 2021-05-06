@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from django.db.models import Q
+from django.contrib.gis.measure import Distance
+from django.contrib.gis.geos import Point
 from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -33,10 +35,28 @@ class MeasurementDetailView(DetailView):
     model = Measurement
     template_name = "gcampuscore/components/measurement_detail.html"
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["measurement_list"] = Measurement.objects.all()
+        current_measurement = self.object
+        point = Point(current_measurement.location.coords)
+        close_measurements = Measurement.objects.filter(
+            location__distance_lte=(point, Distance(km=2))).all()
+        close_measurements = close_measurements.exclude(pk=self.object.pk)
+        context["close_measurements"] = close_measurements
+        return context
+
 
 class MeasurementMapView(ListView):
     model = Measurement
     template_name = "gcampuscore/components/mapview.html"
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter"] = MeasurementFilter(
+            self.request.GET, queryset=self.get_queryset()
+        )
+        return context
 
 
 class MeasurementFormView(FormView):
@@ -62,7 +82,7 @@ class DataPointFormSetView(TemplateResponseMixin, View):
         return HttpResponseRedirect(self.success_url)
 
     def get_formset(
-        self, request: HttpRequest, measurement_id: int
+            self, request: HttpRequest, measurement_id: int
     ) -> DataPointFormSetView.formset_class:
         """Get Formset
 
