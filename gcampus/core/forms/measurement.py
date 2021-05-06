@@ -1,5 +1,7 @@
 from django.forms import ModelForm, modelformset_factory, inlineformset_factory
+from django.forms.widgets import Select, TextInput, Textarea
 from leaflet.forms.widgets import LeafletWidget
+from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.fields import SplitSplitDateTimeField
 from gcampus.core.models import Measurement, DataPoint
@@ -30,6 +32,18 @@ class DataPointForm(ModelForm):
     class Meta:
         model = DataPoint
         fields = ["data_type", "value", "comment"]
+        widgets = {
+            "data_type": Select(attrs={"class": "form-select form-select-sm"}),
+            "value": TextInput(attrs={
+                "class": "form-control form-control-sm",
+                "placeholder": _("Value")
+            }),
+            "comment": Textarea(attrs={
+                "class": "form-control form-control-sm",
+                "placeholder": _("Comment"),
+                "rows": 2
+            })
+        }
 
 
 DataPointFormSet = inlineformset_factory(

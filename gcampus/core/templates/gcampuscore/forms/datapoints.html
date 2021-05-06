@@ -1,13 +1,59 @@
 {% extends "gcampuscore/base.html" %}
+{% load i18n static %}
+{% block title %}
+    {% translate "Add Data Points" %}
+{% endblock %}
+{% block body_class %}bg-light{% endblock %}
 {% block content %}
-    <h1>Edit {{ object }}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ formset.management_form }}
-        <table>
-            {% for form in formset %}
-                {{ form }}
-            {% endfor %}
-        </table>
-    </form>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>{% translate "Add Data Points" %}</h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <form method="POST">
+                    <div class="invalid-feedback">
+                        {% for error in formset.non_form_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% csrf_token %}
+                    {{ formset.management_form }}
+                    <ol class="list-group list-group-numbered">
+                        {% for form in formset %}
+                            <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-start">
+                                <div class="ms-2 flex-fill">
+                                    <div class="row">
+                                        <div class="col-md">
+                                            {% with form.data_type as field %}
+                                                {% include "gcampuscore/forms/components/label.html" with class="mb-1" %}
+                                                {{ field }}
+                                            {% endwith %}
+                                        </div>
+                                        <div class="col-md">
+                                            {% with form.value as field %}
+                                                {% include "gcampuscore/forms/components/label.html" with class="mb-1" %}
+                                                {{ field }}
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                    {% with form.comment as field %}
+                                        {% include "gcampuscore/forms/components/label.html" with class="my-1" %}
+                                        {{ field }}
+                                    {% endwith %}
+                                </div>
+                                <button type="button" class="btn-close"
+                                        aria-label="Close"></button>
+                                <div>
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
