@@ -41,7 +41,8 @@ class MeasurementDetailView(DetailView):
         current_measurement = self.object
         point = Point(current_measurement.location.coords)
         close_measurements = Measurement.objects.filter(
-            location__distance_lte=(point, Distance(km=2))).all()
+            location__distance_lte=(point, Distance(km=2))
+        ).all()
         close_measurements = close_measurements.exclude(pk=self.object.pk)
         context["close_measurements"] = close_measurements
         return context
@@ -82,7 +83,7 @@ class DataPointFormSetView(TemplateResponseMixin, View):
         return HttpResponseRedirect(self.success_url)
 
     def get_formset(
-            self, request: HttpRequest, measurement_id: int
+        self, request: HttpRequest, measurement_id: int
     ) -> DataPointFormSetView.formset_class:
         """Get Formset
 

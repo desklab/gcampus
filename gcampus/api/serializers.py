@@ -91,10 +91,7 @@ class OverpassElementSerializer(serializers.Serializer):
 
     @classmethod
     def element_to_geometry(
-            cls,
-            element: Union[Way, Relation],
-            *,
-            resolve_missing=True
+        cls, element: Union[Way, Relation], *, resolve_missing=True
     ) -> GEOSGeometry:
         if isinstance(element, Way):
             return cls.way_to_geometry(element, resolve_missing=resolve_missing)
@@ -113,7 +110,7 @@ class OverpassElementSerializer(serializers.Serializer):
 
     @classmethod
     def relation_to_geometry(
-            cls, relation: Relation, *, resolve_missing=True
+        cls, relation: Relation, *, resolve_missing=True
     ) -> GeometryCollection:
         relation_ways: List[RelationWay] = [
             member for member in relation.members if isinstance(member, RelationWay)
@@ -123,8 +120,7 @@ class OverpassElementSerializer(serializers.Serializer):
             for relation_way in relation_ways
         ]
         line_strings: List[LineString] = [
-            cls.way_to_geometry(way, resolve_missing=resolve_missing)
-            for way in ways
+            cls.way_to_geometry(way, resolve_missing=resolve_missing) for way in ways
         ]
         return GeometryCollection(line_strings)
 
