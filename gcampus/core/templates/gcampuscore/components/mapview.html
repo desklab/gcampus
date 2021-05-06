@@ -11,25 +11,103 @@
     <script>
         function map_init_basic(map, options) {
             var locations = []
-            {% for measurement in measurement_list %}
+            {% for measurement in filter.qs %}
                 var location_N = "{{ measurement.location.coords.0 }}".replace(",", ".")
                 var location_E = "{{ measurement.location.coords.1 }}".replace(",", ".")
                 var name = "{% translate "Measurement by" %} " + "{{ measurement.name }}"
-                var location = [name, parseFloat(location_E), parseFloat(location_N)];
+                var link = "{% url "gcampuscore:measurement_detail" pk=measurement.pk %}"
+                var location = [name, parseFloat(location_E), parseFloat(location_N), link];
+
                 locations.push(location)
             {% endfor %}
 
             for (var i = 0; i < locations.length; i++) {
                 marker = new L.marker([locations[i][1], locations[i][2]])
-                    .bindPopup(locations[i][0])
+                    .bindPopup('<a href="' + locations[i][3] + '">' + locations[i][0] + '</a>')
                     .addTo(map);
             }
         }
     </script>
-
-    <div class="row justify-content-center">
+        <div class="row justify-content-center">
         <div class="col-lg-6">
             {% leaflet_map "yourmap" callback="window.map_init_basic" %}
+        </div>
+    </div>
+    <div class="container">
+    <form method="GET">
         <div/>
-    <div/>
+
+        <p>
+            <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" id="filterCollapseButton"
+               href="#filterCollapse" role="button" onclick="setCookie()"
+               aria-expanded="false"
+               aria-controls="filterCollapse">{% translate "Open additional filters" %}</a>
+        </p>
+        <div class="row" id="test">
+            <div class="col">
+                <div class="collapse"
+                     id="filterCollapse">
+                    <div class="card card-body">
+                        <div class="container">
+                            {% with filter.form.name as field %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    {{ field }}
+                                </div>
+                            {% endwith %}
+                            {% with filter.form.time_gt as field %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    {{ field }}
+                                </div>
+                            {% endwith %}
+                            {% with filter.form.time_lt as field %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    {{ field }}
+                                </div>
+                            {% endwith %}
+                            {% with filter.form.datatypes as field %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    {{ field }}
+                                </div>
+                            {% endwith %}
+                            <button type="submit" class="btn btn-primary">{% translate "Search" %}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script>
+
+        let filterButton = document.getElementById("filterCollapseButton");
+        let filterCollapse = document.getElementById("filterCollapse");
+
+        function setCookie() {
+            var status = filterButton.getAttribute('aria-expanded');
+            localStorage.setItem("filterButtonStatus", status);
+        }
+
+        function setCollapse() {
+            var button_value = localStorage.getItem("filterButtonStatus");
+            var bool_button_value = (button_value == 'true');
+            if (bool_button_value) {
+                filterCollapse.setAttribute("class", "collapse show");
+                filterButton.setAttribute('aria-expanded', "true");
+            } else {
+                filterCollapse.setAttribute("class", "collapse");
+                filterButton.setAttribute('aria-expanded', "false");
+            }
+        }
+
+        setCollapse()
+    </script>
+
 {% endblock %}
