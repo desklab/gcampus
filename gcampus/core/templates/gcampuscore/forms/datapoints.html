@@ -19,7 +19,7 @@
                     </div>
                     {% csrf_token %}
                     {{ formset.management_form }}
-                    <ol class="list-group list-group-numbered">
+                    <ol class="list-group list-group-numbered" id="id_{{ formset.prefix }}-FORM-CONTAINER">
                         {% for form in formset %}
                             {% include "gcampuscore/forms/components/datapoint_form.html" with form=form show=True only %}
                         {% endfor %}

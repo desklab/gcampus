@@ -117,8 +117,13 @@ class DynamicFormset {
     addForm() {
         let formNumber = this.totalFormCount;
         let newForm = this.template.replace(/__prefix__/g, String(formNumber));
-        let previousElement = this.getByID('FORM', formNumber - 1);
-        previousElement.insertAdjacentHTML('afterend', newForm);
+        if (formNumber > 0) {
+            let previousElement = this.getByID('FORM', formNumber - 1);
+            previousElement.insertAdjacentHTML('afterend', newForm);
+        } else {
+            let parent = this.getByID('FORM-CONTAINER');
+            parent.insertAdjacentHTML('afterbegin', newForm);
+        }
         // Find newly created element and immanently trigger collapse
         let newElement = this.getByID('FORM', formNumber);
         let collapse = new Collapse(newElement, {trigger: true});
