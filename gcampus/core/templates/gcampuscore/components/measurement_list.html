@@ -1,0 +1,134 @@
+{% extends "gcampuscore/base.html" %}
+{% load i18n static leaflet_tags %}
+{% block title %}
+    {% translate "All measurements" %}
+{% endblock %}
+{% block extra_head %}
+    {% leaflet_js plugins="forms" %}
+    {% leaflet_css plugins="forms" %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>{% translate "All measurements" %}</h2>
+        </div>
+    </div>
+
+    <div class="container">
+    <form method="GET">
+        {% with filter.form.name as field %}
+            <div class="mb-3">
+                {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                {% include "gcampuscore/forms/components/helptext.html" %}
+                {{ field }}
+            </div>
+        {% endwith %}
+        <div/>
+
+        <p>
+            <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" id="filterCollapseButton"
+               href="#filterCollapse" role="button" onclick="setCookie()"
+               aria-expanded="false"
+               aria-controls="filterCollapse">{% translate "Open additional filters" %}</a>
+        </p>
+        <div class="row" id="test">
+            <div class="col">
+                <div class="collapse"
+                     id="filterCollapse">
+                    <div class="card card-body">
+                        <div class="container">
+                            {% with filter.form.time_gt as field %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    {{ field }}
+                                </div>
+                            {% endwith %}
+                            {% with filter.form.time_lt as field %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    {{ field }}
+                                </div>
+                            {% endwith %}
+                            {% with filter.form.datatypes as field %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    {{ field }}
+                                </div>
+                            {% endwith %}
+                            {% with filter.form.location as field %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    {{ field }}
+                                </div>
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <button type="submit" class="btn btn-primary">{% translate "Search" %}</button>
+    <div class="row justify-content-center text-center">
+        <div class="col-auto">
+            <table class="table-responsive">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">{% translate "Name" %}</th>
+                    <th scope="col">{% translate "Location" %}</th>
+                    <th scope="col">{% translate "Date" %}</th>
+                    <th scope="col">{% translate "Number of Datapoints" %}</th>
+                    <th scope="col">{% translate "To the Measurement" %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for measurement in filter.qs %}
+                    <tr>
+                        <th scope="row"><input type="checkbox" id="scales" name="scales"></th>
+                        <td>
+                            {{ measurement.name }}
+                        </td>
+                        <td>{{ measurement.location_name }}</td>
+                        <td>{{ measurement.time }}</td>
+                        <td>{{ measurement.data_points.count }}</td>
+                        <td>
+                            <a href="{% url "gcampuscore:measurement_detail" pk=measurement.pk %}"
+                               class="btn btn-primary btn-md" role="button">
+                                {% translate "To the Measurement" %}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        let filterButton = document.getElementById("filterCollapseButton");
+        let filterCollapse = document.getElementById("filterCollapse");
+
+        function setCookie() {
+            var status = filterButton.getAttribute('aria-expanded');
+            localStorage.setItem("filterButtonStatus", status);
+        }
+
+        function setCollapse() {
+            var button_value = localStorage.getItem("filterButtonStatus");
+            var bool_button_value = (button_value == 'true');
+            if (bool_button_value) {
+                filterCollapse.setAttribute("class", "collapse show");
+                filterButton.setAttribute('aria-expanded', "true");
+            } else {
+                filterCollapse.setAttribute("class", "collapse");
+                filterButton.setAttribute('aria-expanded', "false");
+            }
+        }
+
+        setCollapse()
+    </script>
+{% endblock %}
+

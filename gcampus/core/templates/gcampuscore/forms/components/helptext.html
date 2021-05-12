@@ -1,0 +1,6 @@
+{% load icon %}
+{% if field.help_text %}
+<span data-bs-toggle="tooltip"{% if class %} class="{{ class }}"{% endif %} title="{{ field.help_text }}">
+    {% icon "help-circle" class="text-muted" height="16" width="16" %}
+</span>
+{% endif %}

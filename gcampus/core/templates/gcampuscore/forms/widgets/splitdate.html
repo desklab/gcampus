@@ -1,0 +1,15 @@
+{% load i18n %}
+<div class="row align-items-end{% if class %} {{ class }}{% endif %}">
+    <div class="col-3"><small>{% translate "Date" %}</small></div>
+    {% spaceless %}
+        {% for widget in widget.subwidgets %}
+            <label class="visually-hidden" for="{{ widget.id_for_label }}">{{ widget.attrs.placeholder }}</label>
+            <input type="number"
+                   class="autofocus text-center form-control appearance-textfield form-control-sm{% if not forloop.first %} ms-1{% endif %}{% if not forloop.last %} me-1{% endif %}"
+                   style="width: 4em;"
+                   name="{{ widget.name }}"
+                    {% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}
+                    {% include "django/forms/widgets/attrs.html" %}>{% if not forloop.last %}.{% endif %}
+        {% endfor %}
+    {% endspaceless %}
+</div>

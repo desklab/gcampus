@@ -1,0 +1,28 @@
+<li class="list-group-item list-group-item-action d-flex justify-content-between align-items-start py-3 collapse{% if show %} show{% endif %}" aria-expanded="{% if show %}true{% else %}false{% endif %}" id="id_{{ form.prefix }}-FORM">
+    <div class="ms-2 flex-fill">
+        <div class="row">
+            <div class="col-md">
+                {% with form.data_type as field %}
+                    {% include "gcampuscore/forms/components/label.html" with class="mb-1" %}
+                    {{ field }}
+                {% endwith %}
+            </div>
+            <div class="col-md">
+                {% with form.value as field %}
+                    {% include "gcampuscore/forms/components/label.html" with class="mb-1" %}
+                    {{ field }}
+                {% endwith %}
+            </div>
+        </div>
+        {% with form.comment as field %}
+            {% include "gcampuscore/forms/components/label.html" with class="my-1" %}
+            {{ field }}
+        {% endwith %}
+    </div>
+    <button type="button" id="{{ form.DELETE.id_for_label }}-button" class="btn-close" aria-label="Close"></button>
+    <div>
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+    </div>
+</li>

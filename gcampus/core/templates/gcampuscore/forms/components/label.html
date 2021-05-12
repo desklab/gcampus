@@ -1,0 +1,7 @@
+{% load i18n %}
+<label for="{{ field.id_for_label }}"{% if class %} class="{{ class }}"{% endif %}>
+    {{ field.label }}
+    {% if not field.field.required %}
+        <small class="text-muted">{% translate "(Optional)" %}</small>
+    {% endif %}
+</label>

@@ -1,3 +1,11 @@
 django>=3.1
 django-storages==1.11.1
 boto3==1.17.20
+psycopg2-binary==2.8.6
+geopy==2.1.0
+django-leaflet==0.27.1
+django-feather~=0.3.0
+djangorestframework==3.12.4
+djangorestframework-gis==0.17
+overpy~=0.4
+django-filter~=2.4.0

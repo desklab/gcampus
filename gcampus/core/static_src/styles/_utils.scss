@@ -1,0 +1,8 @@
+// Required by Safari to hide the spin buttons (up-caret and down-caret)
+input[type="number"].appearance-textfield {
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
