@@ -1,20 +1,18 @@
 from __future__ import annotations
 
-from django.db.models import Q
-from django.contrib.gis.measure import Distance
 from django.contrib.gis.geos import Point
+from django.contrib.gis.measure import Distance
 from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import DetailView
 from django.views.generic import ListView, View
-from django.views.generic.base import TemplateResponseMixin, TemplateView
+from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import FormView
 
-from gcampus.core.forms.measurement import MeasurementForm, DataPointFormSet
-from gcampus.core.models import DataPoint
-from gcampus.core.models import Measurement
 from gcampus.core.filters import MeasurementFilter
+from gcampus.core.forms.measurement import MeasurementForm, DataPointFormSet
+from gcampus.core.models import Measurement
 
 
 class MeasurementListView(ListView):
@@ -76,11 +74,14 @@ class MeasurementFormView(FormView):
 class DataPointFormSetView(TemplateResponseMixin, View):
     formset_class = DataPointFormSet
     template_name = "gcampuscore/forms/datapoints.html"
-    success_url = "/admin"
+    next_view_name = "gcampuscore:measurement_detail"
 
-    def form_valid(self, formset: DataPointFormSet):
+    def form_valid(self, formset: DataPointFormSet, measurement_id):
         formset.save()
-        return HttpResponseRedirect(self.success_url)
+        return HttpResponseRedirect(self.get_next_url(measurement_id))
+
+    def get_next_url(self, measurement_id):
+        return reverse(self.next_view_name, kwargs={"pk": measurement_id})
 
     def get_formset(
         self, request: HttpRequest, measurement_id: int
@@ -108,7 +109,7 @@ class DataPointFormSetView(TemplateResponseMixin, View):
     def post(self, request: HttpRequest, measurement_id: int, *args, **kwargs):
         formset = self.get_formset(request, measurement_id)
         if formset.is_valid():
-            return self.form_valid(formset)
+            return self.form_valid(formset, measurement_id)
         else:
             return self.render_to_response({"formset": formset})
 
