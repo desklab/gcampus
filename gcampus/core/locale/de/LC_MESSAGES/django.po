@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-27 21:21+0200\n"
+"POT-Creation-Date: 2021-05-12 12:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,7 +48,7 @@ msgstr "Nach Messungen mit bestimmten Datentypen suchen"
 
 #: gcampus/core/filters.py:97 gcampus/core/models/location.py:20
 #: gcampus/core/models/measurement.py:30
-#: gcampus/core/templates/gcampuscore/components/measurement_list.html:82
+#: gcampus/core/templates/gcampuscore/components/measurement_list.html:83
 msgid "Location"
 msgstr "Standort"
 
@@ -56,15 +56,25 @@ msgstr "Standort"
 msgid "Filter by radius after selecting a location"
 msgstr "Nach Messungen in einem bestimmten Radius suchen"
 
+#: gcampus/core/forms/measurement.py:40 gcampus/core/models/measurement.py:122
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:44
+msgid "Value"
+msgstr "Wert"
+
+#: gcampus/core/forms/measurement.py:44 gcampus/core/models/measurement.py:45
+#: gcampus/core/models/measurement.py:129
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:26
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:45
+msgid "Comment"
+msgstr "Kommentar"
+
 #: gcampus/core/models/location.py:21
-#, fuzzy
-#| msgid "Location"
 msgid "Locations"
-msgstr "Standort"
+msgstr "Standorte"
 
 #: gcampus/core/models/location.py:27 gcampus/core/models/measurement.py:27
 #: gcampus/core/models/measurement.py:106
-#: gcampus/core/templates/gcampuscore/components/measurement_list.html:81
+#: gcampus/core/templates/gcampuscore/components/measurement_list.html:82
 msgid "Name"
 msgstr "Name"
 
@@ -108,12 +118,6 @@ msgstr "Messzeitpunkt"
 msgid "Date and time of the measurement"
 msgstr "Datum und Uhrzeit der Messung"
 
-#: gcampus/core/models/measurement.py:45 gcampus/core/models/measurement.py:129
-#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:26
-#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:45
-msgid "Comment"
-msgstr "Kommentar"
-
 #: gcampus/core/models/measurement.py:69
 #, python-format
 msgid "Measurement in %(location)s by %(name)s"
@@ -156,11 +160,6 @@ msgstr "Messwert"
 msgid "Data points"
 msgstr "Messwerte"
 
-#: gcampus/core/models/measurement.py:122
-#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:44
-msgid "Value"
-msgstr "Wert"
-
 #: gcampus/core/models/measurement.py:126
 msgid "Associated measurement"
 msgstr "Verknüpfte Messung"
@@ -171,14 +170,24 @@ msgid "Data point %(pk)s"
 msgstr "Messwert %(pk)s"
 
 #: gcampus/core/templates/gcampuscore/components/mapview.html:4
-#: gcampus/core/templates/gcampuscore/components/measurement_list.html:4
-#: gcampus/core/templates/gcampuscore/components/measurement_list.html:13
-msgid "All measurements"
-msgstr "Alle Messungen"
+msgid "All measurements displayed on a map"
+msgstr "Alle Messungen auf der Karte"
 
 #: gcampus/core/templates/gcampuscore/components/mapview.html:17
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:87
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:96
 msgid "Measurement by"
 msgstr "Messung von"
+
+#: gcampus/core/templates/gcampuscore/components/mapview.html:44
+#: gcampus/core/templates/gcampuscore/components/measurement_list.html:32
+msgid "Open additional filters"
+msgstr "Weitere Suchmöglichkeiten öffnen"
+
+#: gcampus/core/templates/gcampuscore/components/mapview.html:80
+#: gcampus/core/templates/gcampuscore/components/measurement_list.html:75
+msgid "Search"
+msgstr "Suchen"
 
 #: gcampus/core/templates/gcampuscore/components/measurement_detail.html:22
 #, python-format
@@ -189,25 +198,22 @@ msgstr "Die Messung wurde am %(date)s um %(time)s durchgeführt"
 msgid "Expand comment"
 msgstr "Kommentar ansehen"
 
-#: gcampus/core/templates/gcampuscore/components/measurement_list.html:32
-msgid "Open additional filters"
-msgstr "Weitere Suchmöglichkeiten öffnen"
+#: gcampus/core/templates/gcampuscore/components/measurement_list.html:4
+#: gcampus/core/templates/gcampuscore/components/measurement_list.html:13
+msgid "All measurements"
+msgstr "Alle Messungen"
 
-#: gcampus/core/templates/gcampuscore/components/measurement_list.html:74
-msgid "Search"
-msgstr "Suchen"
-
-#: gcampus/core/templates/gcampuscore/components/measurement_list.html:83
+#: gcampus/core/templates/gcampuscore/components/measurement_list.html:84
 #: gcampus/core/templates/gcampuscore/forms/widgets/splitdate.html:3
 msgid "Date"
 msgstr "Datum"
 
-#: gcampus/core/templates/gcampuscore/components/measurement_list.html:84
+#: gcampus/core/templates/gcampuscore/components/measurement_list.html:85
 msgid "Number of Datapoints"
 msgstr "Anzahl der Datenpunkte"
 
-#: gcampus/core/templates/gcampuscore/components/measurement_list.html:85
-#: gcampus/core/templates/gcampuscore/components/measurement_list.html:101
+#: gcampus/core/templates/gcampuscore/components/measurement_list.html:86
+#: gcampus/core/templates/gcampuscore/components/measurement_list.html:102
 msgid "To the Measurement"
 msgstr "Zur Messung"
 
@@ -215,14 +221,39 @@ msgstr "Zur Messung"
 msgid "(Optional)"
 msgstr "(Optional)"
 
+#: gcampus/core/templates/gcampuscore/forms/datapoints.html:4
+#: gcampus/core/templates/gcampuscore/forms/datapoints.html:10
+msgid "Add Data Points"
+msgstr "Datenpunkte Hinzufügen"
+
+#: gcampus/core/templates/gcampuscore/forms/datapoints.html:30
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: gcampus/core/templates/gcampuscore/forms/datapoints.html:37
+msgid "Discard"
+msgstr "Verwerfen"
+
+#: gcampus/core/templates/gcampuscore/forms/datapoints.html:41
+msgid "Save"
+msgstr "Speichern"
+
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:4
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:14
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:13
 msgid "Create new Measurement"
 msgstr "Neue Messung Erstellen"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:76
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:81
 msgid "Save and Continue"
 msgstr "Speichern und Weiter"
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:90
+msgid "Water name"
+msgstr "Gewässername"
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:91
+msgid "Other Water:"
+msgstr "Anderes Gewässer:"
 
 #: gcampus/core/templates/gcampuscore/forms/widgets/splittime.html:3
 msgid "Time"
@@ -272,13 +303,3 @@ msgstr "Jahr"
 msgctxt "year input short"
 msgid "YYYY"
 msgstr "JJJJ"
-
-#, fuzzy
-#~| msgid "Measurement"
-#~ msgid "Measurement from"
-#~ msgstr "Messung"
-
-#, fuzzy
-#~| msgid "Location"
-#~ msgid "location"
-#~ msgstr "Standort"
