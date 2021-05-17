@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     # Other django apps
     # Sometimes the order is important
     "django.forms",
-    "django.contrib.sessions",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
