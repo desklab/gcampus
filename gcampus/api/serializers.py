@@ -3,6 +3,7 @@ from decimal import Decimal
 from typing import List, Tuple, Union
 
 from django.contrib.gis.geos import LineString, GeometryCollection, GEOSGeometry
+from django.utils.translation import gettext_lazy as _
 from overpy import Way, Node, Relation, RelationWay
 from rest_framework import serializers
 from rest_framework_gis.fields import GeometryField
@@ -75,6 +76,8 @@ class OverpassElementSerializer(serializers.Serializer):
             name = str(tags.pop("name"))
         except KeyError:
             name = ""  # Empty name if tag ``name`` does not exists
+        if name == "" or name is None:
+            name = self.get_generic_name(instance)
         name_field: serializers.CharField = self.fields["name"]
         tags_field: serializers.JSONField = self.fields["tags"]
         feature["properties"] = {
@@ -90,8 +93,32 @@ class OverpassElementSerializer(serializers.Serializer):
         raise NotImplementedError()
 
     @classmethod
+    def get_generic_name(cls, element: Union[Way, Relation]) -> str:
+        available_water_types: dict = {
+            # "river": _("Unnamed river %(id)s"),
+            "lake": _("Unnamed lake %(id)s"),
+            "canal": _("Unnamed canal %(id)s"),
+            "reservoir": _("Unnamed reservoir %(id)s"),
+            "basin": _("Unnamed basin %(id)s"),
+            "stream": _("Unnamed stream %(id)s"),
+            "pond": _("Unnamed pond %(id)s"),
+            "wetland": _("Unnamed wetland %(id)s"),
+        }
+        water_type = element.tags.get("water")
+        if water_type is not None and water_type in available_water_types:
+            return available_water_types[water_type] % {
+                "id": element.id
+            }
+        # return _("Unnamed Water %(id)s")
+        # Some ways may have duplicate elements (sometimes rivers have
+        # additional elements for their shoreline) that should be
+        # ignored. There has to be a tradeoff between quality and
+        # quantity of the data returned.
+        return ""
+
+    @classmethod
     def element_to_geometry(
-        cls, element: Union[Way, Relation], *, resolve_missing=True
+            cls, element: Union[Way, Relation], *, resolve_missing=True
     ) -> GEOSGeometry:
         if isinstance(element, Way):
             return cls.way_to_geometry(element, resolve_missing=resolve_missing)
@@ -110,7 +137,7 @@ class OverpassElementSerializer(serializers.Serializer):
 
     @classmethod
     def relation_to_geometry(
-        cls, relation: Relation, *, resolve_missing=True
+            cls, relation: Relation, *, resolve_missing=True
     ) -> GeometryCollection:
         relation_ways: List[RelationWay] = [
             member for member in relation.members if isinstance(member, RelationWay)
