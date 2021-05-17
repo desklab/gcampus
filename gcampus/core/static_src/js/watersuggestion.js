@@ -354,7 +354,7 @@ class WaterList extends Component {
                         if (e.target.id !== 'varWater') {
                             // The element has a feature ID associated
                             // with it.
-                            let featureID = e.target.value;
+                            let featureID = e.target.getAttribute("data-feature-id");
                             this.highlightFeature(featureID);
                             this.currentPermanentHighlight = featureID;
                         } else {
