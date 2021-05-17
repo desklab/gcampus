@@ -49,22 +49,24 @@ class Measurement(util.DateModelMixin):
     # generated column in migration ``0011``.
     search_vector = SearchVectorField(null=True, editable=False)
 
-    def is_location_changed(self):
-        try:
-            db_instance = self.__class__.objects.get(pk=self.pk)
-        except ObjectDoesNotExist:
-            return True
-        return self.location.coords != db_instance.location.coords
-
-    def save(self, **kwargs):
-        # Check if the location field has ben updated
-        update_fields = kwargs.get("update_fields", None)
-        if (
-            update_fields is not None and "location" in update_fields
-        ) or self.is_location_changed():
-            coordinates = getattr(self.location, "coords", None)
-            self.location_name = get_location_name(coordinates)
-        return super(Measurement, self).save(**kwargs)
+    # TODO the code below is temporarily disabled to ignore geo lookups
+    #   on location changes.
+    # def is_location_changed(self):
+    #     try:
+    #         db_instance = self.__class__.objects.get(pk=self.pk)
+    #     except ObjectDoesNotExist:
+    #         return True
+    #     return self.location.coords != db_instance.location.coords
+    #
+    # def save(self, **kwargs):
+    #     # Check if the location field has ben updated
+    #     update_fields = kwargs.get("update_fields", None)
+    #     if (
+    #         update_fields is not None and "location" in update_fields
+    #     ) or self.is_location_changed():
+    #         coordinates = getattr(self.location, "coords", None)
+    #         self.location_name = get_location_name(coordinates)
+    #     return super(Measurement, self).save(**kwargs)
 
     def __str__(self):
         if self.location_name not in util.EMPTY and self.name not in util.EMPTY:
