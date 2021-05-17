@@ -6,6 +6,7 @@ const DEFAULT_COLOR = '#33658A';
 const HIGHLIGHT_COLOR = '#F6AE2D';
 const VAR_LOCATION_PLACEHOLDER = window._varLocationPlaceholder;
 const VAR_LOCATION_TITLE = window._varLocationTitle;
+const LOADING_TEXT = window._loadingText;
 
 
 /**
@@ -383,7 +384,7 @@ class WaterList extends Component {
                 <div class="list-group-item">
                     <div class="spinner-border spinner-border-sm" role="status">
                     </div>
-                    <span class="ms-2">Loading...</span>
+                    <span class="ms-2">${LOADING_TEXT}</span>
                 </div>`
         }
         return html`

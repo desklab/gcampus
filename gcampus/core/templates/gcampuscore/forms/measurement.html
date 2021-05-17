@@ -86,8 +86,9 @@
 {% endblock %}
 {% block extra_body %}
     <script type="text/javascript">
-        window._varLocationPlaceholder = "{% translate "Water name" %}"
-        window._varLocationTitle = "{% translate "Other Water:" %}"
+        window._varLocationPlaceholder = "{% translate "Water name" %}";
+        window._varLocationTitle = "{% translate "Other Water:" %}";
+        window._loadingText = "{% translate "Loading ..." %}";
     </script>
     {% leaflet_js plugins="leafletsearch,forms,watersuggestion" %}
     <script type="text/javascript" src="{% static 'gcampuscore/js/autofocus.js' %}"></script>
