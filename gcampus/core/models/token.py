@@ -13,8 +13,8 @@ class TeacherToken(models.Model):
         return get_random_string(length=16)
 
     def save(self, *args, **kwargs):
-        if not self.key:
-            self.key = self.generate_teacher_token()
+        if not self.token:
+            self.token = self.generate_teacher_token()
         return super().save(*args, **kwargs)
 
     def __str__(self):
@@ -36,6 +36,6 @@ class StudentToken(models.Model):
             return None
 
     def save(self, *args, **kwargs):
-        if not self.key:
-            self.key = self.generate_student_token()
+        if not self.token:
+            self.token = self.generate_student_token()
         return super().save(*args, **kwargs)
