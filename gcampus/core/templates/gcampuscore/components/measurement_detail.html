@@ -78,25 +78,34 @@
             </tbody>
         </table>
     </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            {% leaflet_map "yourmap" callback="window.map_init_basic" %}
+        </div>
+    </div>
     <script>
         function map_init_basic(map) {
-            var close_locations = []
-            var location_long = "{{ measurement.location.coords.0 }}".replace(",", ".");
-            var location_lat = "{{ measurement.location.coords.1 }}".replace(",", ".");
-            var location = [parseFloat(location_lat), parseFloat(location_long)];
-            var name = "{% translate "Measurement by" %} " + "{{ measurement.name }}";
+            let close_locations = []
+            let location_long = "{{ measurement.location.coords.0 }}".replace(",", ".");
+            let location_lat = "{{ measurement.location.coords.1 }}".replace(",", ".");
+            let location = [parseFloat(location_lat), parseFloat(location_long)];
+            let name = "{% translate "Measurement by" %} " + "{{ measurement.name }}";
             marker = new L.marker(location)
                 .bindPopup(name)
                 .addTo(map);
 
-
+            let additional_long = null;
+            let additional_lat = null;
+            let additional_name = null;
+            let additional_link = null;
+            let additional_location = null;
             {% for measurement in close_measurements %}
-            var additional_long = "{{ measurement.location.coords.0 }}".replace(",", ".");
-            var additional_lat = "{{ measurement.location.coords.1 }}".replace(",", ".");
-            var additional_name = "{% translate "Measurement by" %} " + "{{ measurement.name }}";
-            var additional_link = "{% url "gcampuscore:measurement_detail" pk=measurement.pk %}";
-            var additional_location = [additional_name, parseFloat(additional_lat), parseFloat(additional_long), additional_link];
-            close_locations.push(additional_location)
+                additional_long = "{{ measurement.location.coords.0 }}".replace(",", ".");
+                additional_lat = "{{ measurement.location.coords.1 }}".replace(",", ".");
+                additional_name = "{% translate "Measurement by" %} " + "{{ measurement.name }}";
+                additional_link = "{% url "gcampuscore:measurement_detail" pk=measurement.pk %}";
+                additional_location = [additional_name, parseFloat(additional_lat), parseFloat(additional_long), additional_link];
+                close_locations.push(additional_location)
             {% endfor %}
 
             for (var i = 0; i < close_locations.length; i++) {
@@ -109,12 +118,6 @@
 
 
     </script>
-    <div class="row justify-content-center">
-    <div class="col-lg-6">
-    {% leaflet_map "yourmap" callback="window.map_init_basic" %}
-    <div/>
-    <div/>
-
 {% endblock %}
 
 
