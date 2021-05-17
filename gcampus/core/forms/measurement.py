@@ -1,8 +1,14 @@
-from django.forms import ModelForm, modelformset_factory, inlineformset_factory, \
-    BaseInlineFormSet
+from django.core.exceptions import ValidationError
+from django.forms import (
+    ModelForm,
+    inlineformset_factory,
+    BaseInlineFormSet,
+    IntegerField,
+    CharField,
+)
 from django.forms.widgets import Select, TextInput, Textarea, HiddenInput
-from leaflet.forms.widgets import LeafletWidget
 from django.utils.translation import gettext_lazy as _
+from leaflet.forms.widgets import LeafletWidget
 
 from gcampus.core.fields import SplitSplitDateTimeField
 from gcampus.core.models import Measurement, DataPoint
@@ -11,11 +17,33 @@ from gcampus.core.models import Measurement, DataPoint
 class MeasurementForm(ModelForm):
     class Meta:
         model = Measurement
-        fields = ["name", "time", "location", "comment"]
+        fields = ["name", "time", "location", "comment", "location_name", "osm_id"]
         field_classes = {"time": SplitSplitDateTimeField}
         widgets = {
             "location": LeafletWidget(),
         }
+
+    def _clean_fields(self):
+        super(MeasurementForm, self)._clean_fields()
+        location_name = self.cleaned_data["location_name"]
+        if "gcampus_osm_id" in location_name:
+            # The location_name includes a OpenStreetMap ID and will
+            # thus be parsed to save this ID in a separate column.
+            osm_id_field: IntegerField = self.fields["osm_id"]
+            location_name_field: CharField = self.fields["location_name"]
+            try:
+                name, osm_id = location_name.split(" gcampus_osm_id:")
+                # Make sure the fields are cleaned because the field may
+                # contain malicious user input. A gcampus_osm_id can be
+                # passed by any used when using the variable water name
+                # field.
+                name = location_name_field.clean(name)
+                osm_id = osm_id_field.clean(osm_id)
+                self.cleaned_data["location_name"] = name
+                self.cleaned_data["osm_id"] = osm_id
+            except (ValueError, OverflowError, TypeError, ValidationError):
+                error = ValidationError(_("Unable to parse OpenStreetMap ID!"))
+                self.add_error("location_name", error)
 
 
 class DataPointForm(ModelForm):
@@ -35,15 +63,19 @@ class DataPointForm(ModelForm):
         fields = ["data_type", "value", "comment"]
         widgets = {
             "data_type": Select(attrs={"class": "form-select form-select-sm"}),
-            "value": TextInput(attrs={
-                "class": "form-control form-control-sm",
-                "placeholder": _("Value")
-            }),
-            "comment": Textarea(attrs={
-                "class": "form-control form-control-sm",
-                "placeholder": _("Comment"),
-                "rows": 2
-            })
+            "value": TextInput(
+                attrs={
+                    "class": "form-control form-control-sm",
+                    "placeholder": _("Value"),
+                }
+            ),
+            "comment": Textarea(
+                attrs={
+                    "class": "form-control form-control-sm",
+                    "placeholder": _("Comment"),
+                    "rows": 2,
+                }
+            ),
         }
 
 
@@ -53,16 +85,20 @@ class DynamicInlineFormset(BaseInlineFormSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for form in self.forms:
-            form.fields['DELETE'].widget = HiddenInput()
+            form.fields["DELETE"].widget = HiddenInput()
 
     @property
     def empty_form(self):
         empty_form = super().empty_form
-        empty_form.fields['DELETE'].widget = HiddenInput()
+        empty_form.fields["DELETE"].widget = HiddenInput()
         return empty_form
 
 
 DataPointFormSet = inlineformset_factory(
-    Measurement, DataPoint, form=DataPointForm, can_delete=True,
-    extra=0, formset=DynamicInlineFormset
+    Measurement,
+    DataPoint,
+    form=DataPointForm,
+    can_delete=True,
+    extra=0,
+    formset=DynamicInlineFormset,
 )

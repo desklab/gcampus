@@ -35,8 +35,10 @@ class Measurement(util.DateModelMixin):
         verbose_name=_("Location name"),
         help_text=_("An approximated location for the measurement"),
     )
+    osm_id = models.BigIntegerField(
+        default=None, blank=True, null=True, verbose_name=_("OpenStreetMap ID")
+    )
 
-    # TODO think of a better name for this field
     time = models.DateTimeField(
         blank=False,
         verbose_name=_("Measurement Time"),

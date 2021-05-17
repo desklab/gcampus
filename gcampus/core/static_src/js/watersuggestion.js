@@ -58,7 +58,8 @@ function ListItem(props) {
                onMouseOver=${highlight} onMouseLeave=${resetHighlight}>
             <input class="form-check-input me-2" id="water${id}"
                    type="radio" name="location_name"
-                   value="${id}"/>
+                   data-feature-id="${id}"
+                   value="${name} gcampus_osm_id:${id}"/>
             ${name}
         </label>`;
 }
