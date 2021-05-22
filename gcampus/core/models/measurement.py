@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models import util
+from gcampus.core.models.token import StudentToken
 from gcampus.core.util import get_location_name
 
 
@@ -18,8 +19,9 @@ class Measurement(util.DateModelMixin):
         verbose_name_plural = _("Measurements")
         indexes = (GinIndex(fields=("search_vector",)),)
 
-    # Tokens are not yet implemented. This will be done in version 0.2
-    token: Optional[str] = None
+    # TODO: for now the token can be null and is by default null. This will be changed in the future after creating
+    #  a new database. Otherwise the migrations would be a pain.
+    token = models.ForeignKey(StudentToken, on_delete=models.PROTECT, blank=False, null=True, default=None)
 
     name = models.CharField(
         blank=True,

@@ -4,13 +4,10 @@ from django.utils.translation import gettext_lazy as _
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "dvx=99xop7b_hgkkmzb7oxml8au++k1-)bbisf&shy46&z57&b"
 
-
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -68,9 +65,7 @@ TEMPLATES = [
 
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
-
 WSGI_APPLICATION = "gcampus.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -81,7 +76,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -101,7 +95,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -116,12 +109,10 @@ LANGUAGES = (("en", _("English")), ("de", _("German")))
 
 LOCALE_PATHS = [BASE_DIR.joinpath("locale")]
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 from gcampus.settings.files import *  # noqa
-
 
 # Rest Framework
 REST_FRAMEWORK = {
@@ -156,3 +147,8 @@ LEAFLET_CONFIG = {
 
 # Full Text Search
 TSVECTOR_CONF = "german"
+
+# Allowed Chars in Tokens
+
+ALLOWED_TOKEN_CHARS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R',
+                       'S', 'T', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9']
