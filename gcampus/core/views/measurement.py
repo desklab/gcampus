@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
+from django.contrib.messages import error
 from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -12,7 +13,7 @@ from django.views.generic.edit import FormView
 
 from gcampus.core.filters import MeasurementFilter
 from gcampus.core.forms.measurement import MeasurementForm, DataPointFormSet
-from gcampus.core.models import Measurement
+from gcampus.core.models import Measurement, StudentToken
 
 
 class MeasurementListView(ListView):
@@ -63,12 +64,23 @@ class MeasurementFormView(FormView):
     form_class = MeasurementForm
     next_view_name = "gcampuscore:add_data_points"
 
+    def get(self, request, *args, **kwargs):
+        # TODO check and raise unauthorized error
+        return super(MeasurementFormView, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+         # TODO check and raise unauthorized error
+        return super(MeasurementFormView, self).post(request, *args, **kwargs)
+
     def form_valid(self, form: MeasurementForm):
-        instance: Measurement = form.save()
+        token = self.request.session["token"]
+        instance: Measurement = form.save(token)
         return HttpResponseRedirect(self.get_next_url(instance))
 
     def get_next_url(self, instance: Measurement):
         return reverse(self.next_view_name, kwargs={"measurement_id": instance.id})
+
+
 
 
 class DataPointFormSetView(TemplateResponseMixin, View):
@@ -77,6 +89,8 @@ class DataPointFormSetView(TemplateResponseMixin, View):
     next_view_name = "gcampuscore:measurement_detail"
 
     def form_valid(self, formset: DataPointFormSet, measurement_id):
+        token = self.request.session["token"]
+        #TODO Jonas change formset to accept token
         formset.save()
         return HttpResponseRedirect(self.get_next_url(measurement_id))
 
@@ -107,6 +121,7 @@ class DataPointFormSetView(TemplateResponseMixin, View):
             return self.formset_class(instance=instance)
 
     def post(self, request: HttpRequest, measurement_id: int, *args, **kwargs):
+        # TODO check and raise unauthorized error
         formset = self.get_formset(request, measurement_id)
         if formset.is_valid():
             return self.form_valid(formset, measurement_id)
@@ -114,5 +129,6 @@ class DataPointFormSetView(TemplateResponseMixin, View):
             return self.render_to_response({"formset": formset})
 
     def get(self, request: HttpRequest, measurement_id: int, *args, **kwargs):
+        # TODO check and raise unauthorized error
         formset = self.get_formset(request, measurement_id)
         return self.render_to_response({"formset": formset})

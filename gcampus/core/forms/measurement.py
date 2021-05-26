@@ -45,6 +45,13 @@ class MeasurementForm(ModelForm):
                 error = ValidationError(_("Unable to parse OpenStreetMap ID!"))
                 self.add_error("location_name", error)
 
+    def save(self, token, *args, **kwargs):  # noqa
+        # TODO check token call permission function
+
+        super(MeasurementForm, self).save(*args, **kwargs)
+
+
+
 
 class DataPointForm(ModelForm):
     """Data Point Form
