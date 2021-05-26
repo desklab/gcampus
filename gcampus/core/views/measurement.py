@@ -81,8 +81,6 @@ class MeasurementFormView(FormView):
         return reverse(self.next_view_name, kwargs={"measurement_id": instance.id})
 
 
-
-
 class DataPointFormSetView(TemplateResponseMixin, View):
     formset_class = DataPointFormSet
     template_name = "gcampuscore/forms/datapoints.html"

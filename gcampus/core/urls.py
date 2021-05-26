@@ -7,6 +7,7 @@ from gcampus.core.views.measurement import (
     MeasurementDetailView,
     MeasurementMapView,
 )
+from gcampus.core.views.token import SetStudentTokenFormView, SetTeacherTokenFormView
 
 urlpatterns = [
     path("add/", MeasurementFormView.as_view(), name="add_measurement"),
@@ -25,6 +26,16 @@ urlpatterns = [
         "mapview/",
         MeasurementMapView.as_view(),
         name="measurement_mapview",
+    ),
+    path(
+        "verification/student/",
+        SetStudentTokenFormView.as_view(),
+        name="student_token_form",
+    ),
+    path(
+        "verification/teacher/",
+        SetTeacherTokenFormView.as_view(),
+        name="teacher_token_form",
     ),
 ]
 

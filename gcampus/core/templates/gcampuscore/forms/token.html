@@ -1,0 +1,47 @@
+{% extends "gcampuscore/base.html" %}
+{% load i18n static %}
+{% block title %}
+    {% translate "Verification" %}
+{% endblock %}
+
+{% block body_class %}bg-light{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2> {% blocktranslate %}
+                Verify with a {{ token_type }} Token
+            {% endblocktranslate %}</h2>
+            {% comment %}
+                <p class="lead">
+                    {% blocktranslate %}
+                        Test
+                    {% endblocktranslate %}
+                </p>
+            {% endcomment %}
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="invalid-feedback">
+                    {{ form.non_field_errors }}
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    {# Token #}
+                    {% with form.token as field %}
+                        <div class="mb-3">
+                            {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                        </div>
+                    {% endwith %}
+                    <div class="row justify-content-center">
+                        <div class="col-lg-2">
+                            <button class="btn btn-primary btn-lg">
+                                {% translate "Confirm" %}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
