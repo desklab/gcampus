@@ -106,9 +106,7 @@ class OverpassElementSerializer(serializers.Serializer):
         }
         water_type = element.tags.get("water")
         if water_type is not None and water_type in available_water_types:
-            return available_water_types[water_type] % {
-                "id": element.id
-            }
+            return available_water_types[water_type] % {"id": element.id}
         # return _("Unnamed Water %(id)s")
         # Some ways may have duplicate elements (sometimes rivers have
         # additional elements for their shoreline) that should be
@@ -118,7 +116,7 @@ class OverpassElementSerializer(serializers.Serializer):
 
     @classmethod
     def element_to_geometry(
-            cls, element: Union[Way, Relation], *, resolve_missing=True
+        cls, element: Union[Way, Relation], *, resolve_missing=True
     ) -> GEOSGeometry:
         if isinstance(element, Way):
             return cls.way_to_geometry(element, resolve_missing=resolve_missing)
@@ -137,7 +135,7 @@ class OverpassElementSerializer(serializers.Serializer):
 
     @classmethod
     def relation_to_geometry(
-            cls, relation: Relation, *, resolve_missing=True
+        cls, relation: Relation, *, resolve_missing=True
     ) -> GeometryCollection:
         relation_ways: List[RelationWay] = [
             member for member in relation.members if isinstance(member, RelationWay)

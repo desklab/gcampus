@@ -20,7 +20,9 @@ class Measurement(util.DateModelMixin):
 
     # TODO: for now the token can be null and is by default null. This will be changed in the future after creating
     #  a new database. Otherwise the migrations would be a pain.
-    token = models.ForeignKey(StudentToken, on_delete=models.PROTECT, blank=False, null=True, default=None)
+    token = models.ForeignKey(
+        StudentToken, on_delete=models.PROTECT, blank=False, null=True, default=None
+    )
 
     name = models.CharField(
         blank=True,

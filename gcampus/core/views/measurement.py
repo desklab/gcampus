@@ -108,7 +108,7 @@ class DataPointFormSetView(TemplateResponseMixin, View):
         return reverse(self.next_view_name, kwargs={"pk": measurement_id})
 
     def get_formset(
-            self, request: HttpRequest, measurement_id: int
+        self, request: HttpRequest, measurement_id: int
     ) -> DataPointFormSetView.formset_class:
         """Get Formset
 

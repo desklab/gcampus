@@ -51,8 +51,6 @@ class MeasurementForm(ModelForm):
         super(MeasurementForm, self).save(*args, **kwargs)
 
 
-
-
 class DataPointForm(ModelForm):
     """Data Point Form
 

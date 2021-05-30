@@ -10,7 +10,7 @@ class SetStudentTokenFormView(FormView):
     template_name = "gcampuscore/forms/token.html"
     form_class = StudentTokenForm
     # TODO Create an intermediate site that tells you you logged in correctly and gives the option for several sites
-    success_url = '/mapview/'
+    success_url = "/mapview/"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -24,11 +24,12 @@ class SetStudentTokenFormView(FormView):
             return super(SetStudentTokenFormView, self).form_valid(form)
         raise PermissionDenied(_("Token does not exist"))
 
+
 class SetTeacherTokenFormView(FormView):
     template_name = "gcampuscore/forms/token.html"
     form_class = TeacherTokenForm
     # TODO Create an intermediate site that tells you you logged in correctly and gives the option for several sites
-    success_url = '/mapview/'
+    success_url = "/mapview/"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

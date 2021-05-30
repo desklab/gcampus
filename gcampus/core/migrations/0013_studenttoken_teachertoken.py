@@ -7,33 +7,65 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gcampuscore', '0012_measurement_osm_id'),
+        ("gcampuscore", "0012_measurement_osm_id"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='TeacherToken',
+            name="TeacherToken",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('token', models.CharField(max_length=12)),
-                ('deactivated', models.BooleanField(default=False)),
-                ('school_name', models.CharField(blank=True, max_length=140, verbose_name='School Name')),
-                ('teacher_name', models.CharField(blank=True, max_length=140, verbose_name='Teacher Name')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("token", models.CharField(max_length=12)),
+                ("deactivated", models.BooleanField(default=False)),
+                (
+                    "school_name",
+                    models.CharField(
+                        blank=True, max_length=140, verbose_name="School Name"
+                    ),
+                ),
+                (
+                    "teacher_name",
+                    models.CharField(
+                        blank=True, max_length=140, verbose_name="Teacher Name"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Teacher Token',
+                "verbose_name": "Teacher Token",
             },
         ),
         migrations.CreateModel(
-            name='StudentToken',
+            name="StudentToken",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('token', models.CharField(max_length=8)),
-                ('deactivated', models.BooleanField(default=False)),
-                ('parent_token', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='gcampuscore.teachertoken')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("token", models.CharField(max_length=8)),
+                ("deactivated", models.BooleanField(default=False)),
+                (
+                    "parent_token",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="gcampuscore.teachertoken",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Student Token',
+                "verbose_name": "Student Token",
             },
         ),
     ]

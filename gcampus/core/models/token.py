@@ -13,13 +13,13 @@ class TeacherToken(models.Model):
 
     deactivated = models.BooleanField(default=False)
 
-    school_name = models.CharField(blank=True,
-                                   max_length=140,
-                                   verbose_name=_("School Name"))
+    school_name = models.CharField(
+        blank=True, max_length=140, verbose_name=_("School Name")
+    )
 
-    teacher_name = models.CharField(blank=True,
-                                    max_length=140,
-                                    verbose_name=_("Teacher Name"))
+    teacher_name = models.CharField(
+        blank=True, max_length=140, verbose_name=_("Teacher Name")
+    )
 
     class Meta:
         verbose_name = _("Teacher Token")
@@ -43,7 +43,9 @@ class TeacherToken(models.Model):
 class StudentToken(models.Model):
     token = models.CharField(blank=False, max_length=8, unique=True)
 
-    parent_token = models.ForeignKey(TeacherToken, on_delete=models.PROTECT, blank=False, null=False)
+    parent_token = models.ForeignKey(
+        TeacherToken, on_delete=models.PROTECT, blank=False, null=False
+    )
 
     deactivated = models.BooleanField(default=False)
 

@@ -9,7 +9,9 @@ from django.core.exceptions import PermissionDenied
 
 
 class StudentTokenForm(forms.Form):
-    token = forms.CharField(label=_('Student Token'), max_length=8, required=True, min_length=8)
+    token = forms.CharField(
+        label=_("Student Token"), max_length=8, required=True, min_length=8
+    )
     fields = ["token"]
 
     def is_valid(self):
@@ -20,8 +22,11 @@ class StudentTokenForm(forms.Form):
         else:
             return False
 
+
 class TeacherTokenForm(forms.Form):
-    token = forms.CharField(label=_('Teacher Token'), max_length=12, required=True, min_length=12)
+    token = forms.CharField(
+        label=_("Teacher Token"), max_length=12, required=True, min_length=12
+    )
     fields = ["token"]
 
     def is_valid(self):
@@ -31,4 +36,3 @@ class TeacherTokenForm(forms.Form):
             return True
         else:
             return False
-

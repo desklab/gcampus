@@ -55,26 +55,27 @@ def get_geo_locator() -> Nominatim:
         domain=getattr(settings, "NOMINATIM_DOMAIN", "nominatim.openstreetmap.org"),
     )
 
+
 def check_permission(request, token, measurement_id=None):
     """Check Permission
 
-   This function checks if a by the user provided token is correct, thus checking if the user has
-   the correct permissions to create/alter a measurement.
+    This function checks if a by the user provided token is correct, thus checking if the user has
+    the correct permissions to create/alter a measurement.
 
-   First it is checked if the user is a superuser. If this is the case, True is returned, becuase a superuser
-   has all permission.
+    First it is checked if the user is a superuser. If this is the case, True is returned, becuase a superuser
+    has all permission.
 
-   Then the length tells which token type was provided. If this token is valid and no measurement_id was provided,
-   (a new measurement is being created) the acess is granted.
+    Then the length tells which token type was provided. If this token is valid and no measurement_id was provided,
+    (a new measurement is being created) the acess is granted.
 
-   If a measurement_id is provided, it is checked wether the token linked to the measurement matches the provided one.
+    If a measurement_id is provided, it is checked wether the token linked to the measurement matches the provided one.
 
-    :param request: The request object. Contains e.g. the POST form
-        data.
-     :param token: Either a teacher or student token.
-    :param measurement_id: This information comes from the URL and
-        contains the ID to the measurement entry that is being
-        edited.
+     :param request: The request object. Contains e.g. the POST form
+         data.
+      :param token: Either a teacher or student token.
+     :param measurement_id: This information comes from the URL and
+         contains the ID to the measurement entry that is being
+         edited.
     """
 
     if request.user.is_superuser:
@@ -97,9 +98,13 @@ def check_permission(request, token, measurement_id=None):
 
         if token_type == "student":
             if not measurement.token == token:
-                raise PermissionDenied("Wrong Student Authentication Token for requested Measurement")
+                raise PermissionDenied(
+                    "Wrong Student Authentication Token for requested Measurement"
+                )
         else:
             if not measurement.token.parent_token == token:
-                raise PermissionDenied("Wrong Teacher Authentication Token for requested Measurement")
+                raise PermissionDenied(
+                    "Wrong Teacher Authentication Token for requested Measurement"
+                )
 
     return True
