@@ -11,7 +11,6 @@ register = template.Library()
 
 
 class AuthTokenNode(Node):
-
     def __init__(self, prefix: Optional[FilterExpression] = None):
         self.prefix_token = prefix
         super(AuthTokenNode, self).__init__()
@@ -23,16 +22,17 @@ class AuthTokenNode(Node):
             prefix = f"{self.prefix_token.resolve(context)}-"
         else:
             prefix = ""
-        token = context.request.session.get('token', None)
+        token = context.request.session.get("token", None)
         if token in EMPTY_VALUES or token == "None":
             token = ""
         if auth_token:
             return format_html(
                 '<input type="hidden" name="{}gcampus_auth_token" value="{}">',
-                prefix, token
+                prefix,
+                token,
             )
         else:
-            return ''
+            return ""
 
 
 @register.tag

@@ -22,8 +22,8 @@ class Measurement(util.DateModelMixin):
     #  This will be changed in the future after creating a new database.
     #  Otherwise the migrations would be a pain.
     token = models.ForeignKey(
-		"StudentToken", on_delete=models.PROTECT, blank=False, null=True, default=None
-	)
+        "StudentToken", on_delete=models.PROTECT, blank=False, null=True, default=None
+    )
 
     name = models.CharField(
         blank=True,

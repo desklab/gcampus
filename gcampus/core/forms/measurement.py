@@ -8,7 +8,7 @@ from django.forms import (
     BaseInlineFormSet,
     IntegerField,
     CharField,
-    formsets
+    formsets,
 )
 from django.forms.formsets import ManagementForm
 from django.forms.widgets import Select, TextInput, Textarea, HiddenInput
@@ -43,7 +43,7 @@ class MeasurementForm(ModelForm):
     def non_field_errors(self):
         errors = super(MeasurementForm, self).non_field_errors()
         token_errors = self.errors.get(
-            TOKEN_FIELD_NAME, self.error_class(error_class='nonfield')
+            TOKEN_FIELD_NAME, self.error_class(error_class="nonfield")
         )
         return errors + token_errors
 
@@ -130,7 +130,6 @@ class DataPointForm(ModelForm):
 
 
 class TokenManagementForm(ManagementForm):
-
     def __init__(self, *args, **kwargs):
         self.base_fields[TOKEN_FIELD_NAME] = TokenField()
         super().__init__(*args, **kwargs)
@@ -158,16 +157,22 @@ class DynamicInlineFormset(BaseInlineFormSet):
     def management_form(self):
         """Return the ManagementForm instance for this FormSet."""
         if self.is_bound:
-            form = TokenManagementForm(self.data, auto_id=self.auto_id, prefix=self.prefix)
+            form = TokenManagementForm(
+                self.data, auto_id=self.auto_id, prefix=self.prefix
+            )
             # Trigger clean of management form
             form.full_clean()
         else:
-            form = TokenManagementForm(auto_id=self.auto_id, prefix=self.prefix, initial={
-                formsets.TOTAL_FORM_COUNT: self.total_form_count(),
-                formsets.INITIAL_FORM_COUNT: self.initial_form_count(),
-                formsets.MIN_NUM_FORM_COUNT: self.min_num,
-                formsets.MAX_NUM_FORM_COUNT: self.max_num
-            })
+            form = TokenManagementForm(
+                auto_id=self.auto_id,
+                prefix=self.prefix,
+                initial={
+                    formsets.TOTAL_FORM_COUNT: self.total_form_count(),
+                    formsets.INITIAL_FORM_COUNT: self.initial_form_count(),
+                    formsets.MIN_NUM_FORM_COUNT: self.min_num,
+                    formsets.MAX_NUM_FORM_COUNT: self.max_num,
+                },
+            )
         return form
 
     def full_clean(self):
@@ -183,8 +188,8 @@ class DynamicInlineFormset(BaseInlineFormSet):
                     raise ValidationError(TOKEN_EDIT_PERMISSION_ERROR)
                 else:
                     raise ValidationError(
-                        _('ManagementForm data is missing or has been tampered with'),
-                        code='missing_management_form',
+                        _("ManagementForm data is missing or has been tampered with"),
+                        code="missing_management_form",
                     )
             if not management_form.check_permission(self.instance):
                 raise ValidationError(TOKEN_EDIT_PERMISSION_ERROR)
