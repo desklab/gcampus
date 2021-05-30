@@ -10,7 +10,6 @@ from leaflet.forms.widgets import LeafletWidget
 
 
 class HiddenTokenInput(HiddenInput):
-    template_name = 'django/forms/widgets/hidden.html'
 
     def render(self, name, value, attrs=None, renderer=None):
         """Render Hidden Token Input
