@@ -86,7 +86,7 @@ class MeasurementFormView(FormView):
 
     def form_valid(self, form: MeasurementForm):
         token = self.request.session["token"]
-        instance: Measurement = form.save(token)
+        instance: Measurement = form.save()
         return HttpResponseRedirect(self.get_next_url(instance))
 
     def get_next_url(self, instance: Measurement):
@@ -100,7 +100,6 @@ class DataPointFormSetView(TemplateResponseMixin, View):
 
     def form_valid(self, formset: DataPointFormSet, measurement_id):
         token = self.request.session["token"]
-        # TODO Jonas change formset to accept token
         formset.save()
         return HttpResponseRedirect(self.get_next_url(measurement_id))
 
@@ -132,7 +131,6 @@ class DataPointFormSetView(TemplateResponseMixin, View):
 
     def post(self, request: HttpRequest, measurement_id: int, *args, **kwargs):
         # TODO only students can add datapoints atm
-        if "studentToken" not in request.session.keys():
             raise PermissionError("Please set a token first")
         token = request.session["studentToken"]
         if not util.check_permission(request, token, measurement_id):
