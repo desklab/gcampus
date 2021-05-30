@@ -5,10 +5,11 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.conf import settings
 
+from gcampus.core.models.util import DateModelMixin
 ALLOWED_TOKEN_CHARS = settings.ALLOWED_TOKEN_CHARS
 
 
-class TeacherToken(models.Model):
+class TeacherToken(DateModelMixin):
     token = models.CharField(blank=False, max_length=12, unique=True)
 
     deactivated = models.BooleanField(default=False)
@@ -40,7 +41,8 @@ class TeacherToken(models.Model):
         return str(self.pk)
 
 
-class StudentToken(models.Model):
+
+class StudentToken(DateModelMixin):
     token = models.CharField(blank=False, max_length=8, unique=True)
 
     parent_token = models.ForeignKey(
