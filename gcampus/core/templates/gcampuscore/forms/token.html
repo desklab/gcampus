@@ -19,29 +19,59 @@
                 </p>
             {% endcomment %}
         </div>
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="invalid-feedback">
-                    {{ form.non_field_errors }}
-                </div>
-                <form method="POST">
-                    {% csrf_token %}
-                    {# Token #}
-                    {% with form.token as field %}
-                        <div class="mb-3">
-                            {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
-                        </div>
-                    {% endwith %}
-                    <div class="row justify-content-center">
-                        <div class="col-lg-2">
-                            <button class="btn btn-primary btn-lg">
-                                {% translate "Confirm" %}
-                            </button>
-                        </div>
+        {% if token_type == "Student" %}
+            {% if "studentToken" in request.session %}
+                <h2> {% blocktranslate %}
+                You are currently logged in with a student Token
+            {% endblocktranslate %}</h2>
+                <div class="row justify-content-center">
+                    <div class="col-lg-2">
+                        <button type="submit" class="btn btn-danger btn-lg top-right" name="logout">
+                            {% translate "Log Out" %}
+                        </button>
                     </div>
-                </form>
+                </div>
+            {% endif %}
+        {% elif token_type == "Teacher" %}
+            {% if "teacherToken" in request.session %}
+                <h2> {% blocktranslate %}
+                You are currently logged in with a teacher Token
+            {% endblocktranslate %}</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-2">
+                    <button type="submit" class="btn btn-danger btn-lg top-right" name="logout">
+                        {% translate "Log Out" %}
+                    </button>
+                </div>
             </div>
+            {% endif %}
+        {% endif %}
+
+    {% if "studentToken" not in request.session and "teacherToken" not in request.session %}
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="invalid-feedback">
+                {{ form.non_field_errors }}
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                {# Token #}
+                {% with form.token as field %}
+                    <div class="mb-3">
+                        {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                    </div>
+                {% endwith %}
+                <div class="row justify-content-center">
+                    <div class="col-lg-2">
+                        <button class="btn btn-primary btn-lg">
+                            {% translate "Confirm" %}
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
+    </div>
+    {% endif %}
     </div>
 {% endblock %}
 

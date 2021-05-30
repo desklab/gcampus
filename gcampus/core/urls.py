@@ -28,12 +28,12 @@ urlpatterns = [
         name="measurement_mapview",
     ),
     path(
-        "verification/student/",
+        "verify/student/",
         SetStudentTokenFormView.as_view(),
         name="student_token_form",
     ),
     path(
-        "verification/teacher/",
+        "verify/teacher/",
         SetTeacherTokenFormView.as_view(),
         name="teacher_token_form",
     ),

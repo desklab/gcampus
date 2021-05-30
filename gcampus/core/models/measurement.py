@@ -5,12 +5,11 @@ from typing import Optional
 from django.contrib.gis.db import models
 from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField
-from django.core.exceptions import ObjectDoesNotExist
+
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models import util
 from gcampus.core.models.token import StudentToken
-from gcampus.core.util import get_location_name
 
 
 class Measurement(util.DateModelMixin):

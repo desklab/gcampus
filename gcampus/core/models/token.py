@@ -37,7 +37,7 @@ class TeacherToken(models.Model):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.pk
+        return str(self.pk)
 
 
 class StudentToken(models.Model):
@@ -63,4 +63,4 @@ class StudentToken(models.Model):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.pk
+        return str(self.pk)

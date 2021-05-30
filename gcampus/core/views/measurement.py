@@ -15,6 +15,8 @@ from gcampus.core.filters import MeasurementFilter
 from gcampus.core.forms.measurement import MeasurementForm, DataPointFormSet
 from gcampus.core.models import Measurement, StudentToken
 
+from gcampus.core import util
+
 
 class MeasurementListView(ListView):
     template_name = "gcampuscore/components/measurement_list.html"
@@ -65,11 +67,21 @@ class MeasurementFormView(FormView):
     next_view_name = "gcampuscore:add_data_points"
 
     def get(self, request, *args, **kwargs):
-        # TODO check and raise unauthorized error
+        # TODO only students can create a measurement atm
+        if "studentToken" not in request.session.keys():
+            raise PermissionError("Please set a token first")
+        token = request.session["studentToken"]
+        if not util.check_permission(request, token):
+            return False
         return super(MeasurementFormView, self).get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-         # TODO check and raise unauthorized error
+        # TODO only students can create a measurement atm
+        if "studentToken" not in request.session.keys():
+            raise PermissionError("Please set a token first")
+        token = request.session["token"]
+        if not util.check_permission(request, token):
+            return False
         return super(MeasurementFormView, self).post(request, *args, **kwargs)
 
     def form_valid(self, form: MeasurementForm):
@@ -88,7 +100,7 @@ class DataPointFormSetView(TemplateResponseMixin, View):
 
     def form_valid(self, formset: DataPointFormSet, measurement_id):
         token = self.request.session["token"]
-        #TODO Jonas change formset to accept token
+        # TODO Jonas change formset to accept token
         formset.save()
         return HttpResponseRedirect(self.get_next_url(measurement_id))
 
@@ -96,7 +108,7 @@ class DataPointFormSetView(TemplateResponseMixin, View):
         return reverse(self.next_view_name, kwargs={"pk": measurement_id})
 
     def get_formset(
-        self, request: HttpRequest, measurement_id: int
+            self, request: HttpRequest, measurement_id: int
     ) -> DataPointFormSetView.formset_class:
         """Get Formset
 
@@ -119,7 +131,12 @@ class DataPointFormSetView(TemplateResponseMixin, View):
             return self.formset_class(instance=instance)
 
     def post(self, request: HttpRequest, measurement_id: int, *args, **kwargs):
-        # TODO check and raise unauthorized error
+        # TODO only students can add datapoints atm
+        if "studentToken" not in request.session.keys():
+            raise PermissionError("Please set a token first")
+        token = request.session["studentToken"]
+        if not util.check_permission(request, token, measurement_id):
+            raise PermissionError("Wrong Token")
         formset = self.get_formset(request, measurement_id)
         if formset.is_valid():
             return self.form_valid(formset, measurement_id)
@@ -127,6 +144,11 @@ class DataPointFormSetView(TemplateResponseMixin, View):
             return self.render_to_response({"formset": formset})
 
     def get(self, request: HttpRequest, measurement_id: int, *args, **kwargs):
-        # TODO check and raise unauthorized error
+        # TODO only students can add datapoints atm
+        if "studentToken" not in request.session.keys():
+            raise PermissionError("Please set a token first")
+        token = request.session["studentToken"]
+        if not util.check_permission(request, token, measurement_id):
+            return False
         formset = self.get_formset(request, measurement_id)
         return self.render_to_response({"formset": formset})

@@ -1,12 +1,15 @@
 from django.views.generic.edit import FormView
 
+from django.core.exceptions import PermissionDenied
+from django.utils.translation import gettext_lazy as _
+
 from gcampus.core.forms.token import StudentTokenForm, TeacherTokenForm
 
 
 class SetStudentTokenFormView(FormView):
     template_name = "gcampuscore/forms/token.html"
     form_class = StudentTokenForm
-    # TODO change this
+    # TODO Create an intermediate site that tells you you logged in correctly and gives the option for several sites
     success_url = '/mapview/'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -19,11 +22,12 @@ class SetStudentTokenFormView(FormView):
             token = form.cleaned_data["token"]
             self.request.session["studentToken"] = token
             return super(SetStudentTokenFormView, self).form_valid(form)
+        raise PermissionDenied(_("Token does not exist"))
 
 class SetTeacherTokenFormView(FormView):
     template_name = "gcampuscore/forms/token.html"
     form_class = TeacherTokenForm
-    # TODO change this
+    # TODO Create an intermediate site that tells you you logged in correctly and gives the option for several sites
     success_url = '/mapview/'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -36,3 +40,4 @@ class SetTeacherTokenFormView(FormView):
             token = form.cleaned_data["token"]
             self.request.session["teacherToken"] = token
             return super(SetTeacherTokenFormView, self).form_valid(form)
+        raise PermissionDenied(_("Token does not exist"))
