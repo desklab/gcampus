@@ -1,5 +1,5 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n static leaflet_tags %}
+{% load i18n static leaflet_tags auth_token %}
 {% block title %}
     {% translate "Create new Measurement" %}
 {% endblock %}
@@ -21,11 +21,17 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="invalid-feedback">
-                    {{ form.non_field_errors }}
+                <div class="text-danger">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                    {% for error in form.token_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
                 </div>
                 <form method="POST">
                     {% csrf_token %}
+                    {% auth_token %}
                     {# Name #}
                     {% with form.name as field %}
                         <div class="mb-3">

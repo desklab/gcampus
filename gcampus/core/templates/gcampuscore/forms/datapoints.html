@@ -1,5 +1,5 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n static icon %}
+{% load i18n static icon auth_token %}
 {% block title %}
     {% translate "Add Data Points" %}
 {% endblock %}
@@ -12,13 +12,20 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <form method="POST">
-                    <div class="invalid-feedback">
+                    <div class="text-danger">
                         {% for error in formset.non_form_errors %}
                             <p>{{ error }}</p>
                         {% endfor %}
                     </div>
                     {% csrf_token %}
-                    {{ formset.management_form }}
+                    {% auth_token prefix=formset.prefix %}
+                    {% for field in formset.management_form  %}
+                        {% comment %}
+                        This is used instead of {{ formset.management_form }}
+                        to hide errors coming from the management form.
+                        {% endcomment %}
+                        {{ field }}
+                    {% endfor %}
                     <ol class="list-group list-group-numbered" id="id_{{ formset.prefix }}-FORM-CONTAINER">
                         {% for form in formset %}
                             {% include "gcampuscore/forms/components/datapoint_form.html" with form=form show=True only %}

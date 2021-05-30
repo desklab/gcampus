@@ -1,3 +1,5 @@
+from typing import Union, Optional
+
 from django.contrib.gis.db import models
 
 from django.utils.crypto import get_random_string
@@ -5,8 +7,15 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.conf import settings
 
+from gcampus.core.models import Measurement
 from gcampus.core.models.util import DateModelMixin
+
+
 ALLOWED_TOKEN_CHARS = settings.ALLOWED_TOKEN_CHARS
+TOKEN_EDIT_PERMISSION_ERROR = _("Token is not allowed to edit this measurement!")
+TOKEN_CREATE_PERMISSION_ERROR = _("Token is not allowed to edit this measurement!")
+TOKEN_EMPTY_ERROR = _("No token has been provided to create or edit a measurement!")
+TOKEN_INVALID_ERROR = _("Provided token is not invalid or does not exist.")
 
 
 class TeacherToken(DateModelMixin):
@@ -29,7 +38,7 @@ class TeacherToken(DateModelMixin):
         token_set = False
         while not token_set:
             token = get_random_string(length=12, allowed_chars=ALLOWED_TOKEN_CHARS)
-            if not TeacherToken.objects.filter(token=token).exist():
+            if not TeacherToken.objects.filter(token=token).exists():
                 return token
 
     def save(self, *args, **kwargs):
@@ -40,6 +49,11 @@ class TeacherToken(DateModelMixin):
     def __str__(self):
         return str(self.pk)
 
+    @property
+    def can_create_measurement(self):
+        # For now, teachers cannot create a measurement. This is
+        # something we might want to change in the future.
+        return False
 
 
 class StudentToken(DateModelMixin):
@@ -58,7 +72,7 @@ class StudentToken(DateModelMixin):
         token_set = False
         while not token_set:
             token = get_random_string(length=8, allowed_chars=ALLOWED_TOKEN_CHARS)
-            if not StudentToken.objects.filter(token=token).exist():
+            if not StudentToken.objects.filter(token=token).exists():
                 return token
 
     def save(self, *args, **kwargs):
@@ -68,3 +82,55 @@ class StudentToken(DateModelMixin):
 
     def __str__(self):
         return str(self.pk)
+
+    @property
+    def can_create_measurement(self):
+        # TODO check if the token is too old or has reached its limit
+        #   of creating measurements.
+        return not self.deactivated
+
+
+def get_any_token_class(token) -> Optional[Union[TeacherToken, StudentToken]]:
+    try:
+        return StudentToken.objects.get(token=token)
+    except StudentToken.DoesNotExist:
+        pass
+    # Try the same with a teacher token
+    try:
+        return TeacherToken.objects.get(token=token)
+    except StudentToken.DoesNotExist:
+        return None
+
+
+def can_token_create_measurement(token) -> bool:
+    token_instance = get_any_token_class(token)
+    if token_instance is None:
+        return False
+    if getattr(token, "can_create_measurement", False):
+        return True
+    else:
+        # The token has been deactivated or somehow now valid
+        return False
+
+
+def can_token_edit_measurement(token, measurement: Measurement) -> bool:
+    token_instance = get_any_token_class(token)
+    if token_instance is None:
+        return False
+
+    # In previous versions, this method required a measurement id
+    # instead of an instance. The code below might become useful and has
+    # thus not yet been removed.
+
+    # try:
+    #     measurement: Measurement = Measurement.objects.get(pk=measurement_id)
+    # except Measurement.DoesNotExist:
+    #     return False
+
+    measurement_token: Optional[StudentToken] = measurement.token
+    if not measurement_token:
+        return False
+    return (
+        measurement.token == token_instance
+        or measurement_token.parent_token == token_instance
+    )
