@@ -30,11 +30,11 @@ class Migration(migrations.Migration):
                 "verbose_name_plural": "Measurements",
             },
         ),
-        migrations.AddField(
-            model_name="datatype",
-            name="unit",
-            field=models.CharField(blank=True, max_length=10, verbose_name="Unit"),
-        ),
+        # migrations.AddField(
+        #     model_name="datatype",
+        #     name="unit",
+        #     field=models.CharField(blank=True, max_length=10, verbose_name="Unit"),
+        # ),
         migrations.AlterField(
             model_name="datapoint",
             name="comment",
