@@ -131,6 +131,7 @@ class DataPointFormSetView(TemplateResponseMixin, View):
 
     def post(self, request: HttpRequest, measurement_id: int, *args, **kwargs):
         # TODO only students can add datapoints atm
+        if "studentToken" not in request.session.keys():
             raise PermissionError("Please set a token first")
         token = request.session["studentToken"]
         if not util.check_permission(request, token, measurement_id):
