@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.views.generic.edit import FormView
 
 from django.core.exceptions import PermissionDenied
@@ -16,11 +17,18 @@ class SetStudentTokenFormView(FormView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
+        if len(self.request.session.get("token", "None")) == 12:
+            context["set_token_type"] = "Teacher"
+        elif len(self.request.session.get("token", "None")) == 8:
+            context["set_token_type"] = "Student"
         context["token_type"] = "Student"
         return context
 
     def form_valid(self, form: StudentTokenForm):
         if form.is_valid():
+            # Session is being cleared when new token is set
+            # TODO This does not work
+            #self.request.session = {}
             token = form.cleaned_data["token"]
             self.request.session["token"] = token
             self.request.session["token_type"] = STUDENT_TOKEN_TYPE
@@ -36,12 +44,24 @@ class SetTeacherTokenFormView(FormView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
+        if len(self.request.session.get("token", "None")) == 12:
+            context["set_token_type"] = "Teacher"
+        elif len(self.request.session.get("token", "None")) == 8:
+            context["set_token_type"] = "Student"
         context["token_type"] = "Teacher"
         return context
 
     def form_valid(self, form: TeacherTokenForm):
         if form.is_valid():
+            # Session is being cleared when new token is set
+            # TODO This does not work
+            # self.request.session = {}
             token = form.cleaned_data["token"]
-            self.request.session["teacherToken"] = token
+            self.request.session["token"] = token
             return super(SetTeacherTokenFormView, self).form_valid(form)
         raise PermissionDenied(_("Token does not exist"))
+
+def logout(request):
+    if request.session.get("token", None) is not None:
+        del request.session["token"]
+    return render(request, "gcampuscore/forms/logout.html")

@@ -11,67 +11,54 @@
             <h2> {% blocktranslate %}
                 Verify with a {{ token_type }} Token
             {% endblocktranslate %}</h2>
-            {% comment %}
-                <p class="lead">
-                    {% blocktranslate %}
-                        Test
-                    {% endblocktranslate %}
-                </p>
-            {% endcomment %}
         </div>
-        {% if token_type == "Student" %}
-            {% if "studentToken" in request.session %}
-                <h2> {% blocktranslate %}
-                You are currently logged in with a student Token
-            {% endblocktranslate %}</h2>
-                <div class="row justify-content-center">
-                    <div class="col-lg-2">
-                        <button type="submit" class="btn btn-danger btn-lg top-right" name="logout">
-                            {% translate "Log Out" %}
-                        </button>
+        {% if set_token_type == "Student" %}
+            {% if "token" in request.session %}
+                <div class="py-5 text-center">
+                    <h3> {% blocktranslate %}
+                        You are currently logged in with a Student Token
+                    {% endblocktranslate %}</h3>
+                </div>
+            {% endif %}
+        {% elif set_token_type == "Teacher" %}
+            <div class="py-5 text-center">
+                {% if "token" in request.session %}
+                    <h3> {% blocktranslate %}
+                        You are currently logged in with a Teacher Token
+                    {% endblocktranslate %}</h3>
                     </div>
-                </div>
-            {% endif %}
-        {% elif token_type == "Teacher" %}
-            {% if "teacherToken" in request.session %}
-                <h2> {% blocktranslate %}
-                You are currently logged in with a teacher Token
-            {% endblocktranslate %}</h2>
-            <div class="row justify-content-center">
-                <div class="col-lg-2">
-                    <button type="submit" class="btn btn-danger btn-lg top-right" name="logout">
-                        {% translate "Log Out" %}
-                    </button>
-                </div>
-            </div>
-            {% endif %}
+                {% endif %}
         {% endif %}
-
-    {% if "studentToken" not in request.session and "teacherToken" not in request.session %}
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
             <div class="invalid-feedback">
                 {{ form.non_field_errors }}
             </div>
-            <form method="POST">
-                {% csrf_token %}
-                {# Token #}
-                {% with form.token as field %}
-                    <div class="mb-3">
-                        {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
-                    </div>
-                {% endwith %}
-                <div class="row justify-content-center">
-                    <div class="col-lg-2">
-                        <button class="btn btn-primary btn-lg">
-                            {% translate "Confirm" %}
-                        </button>
-                    </div>
+                <form method="POST">
+                <div class="row justify-content-center text-center">
+                <div class="col-lg-4">
+                    {% csrf_token %}
+                    {# Token #}
+                    {% with form.token as field %}
+                        <div class="mb-3">
+                            {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                        </div>
+                    {% endwith %}
                 </div>
-            </form>
+                    {% if "token" not in request.session %}
+                        <div class="col-lg-2">
+                            <button class="btn btn-primary btn-lg">
+                                {% translate "Confirm" %}
+                            </button>
+                        </div>
+                    {% else %}
+                        <div class="button-box col-lg-12">
+                            <a href="/logout" class="btn btn-lg btn-danger" role="button">{% translate "Log Out" %}</a>
+                            <button class="btn btn-primary btn-lg">
+                                {% translate "Log in with new Token" %}
+                            </button>
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
         </div>
-    </div>
-    {% endif %}
-    </div>
 {% endblock %}
 
