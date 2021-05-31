@@ -129,12 +129,9 @@ class DataPointFormSetView(TemplateResponseMixin, View):
             return self.formset_class(instance=instance)
 
     def post(self, request: HttpRequest, measurement_id: int, *args, **kwargs):
-        # TODO only students can add datapoints atm
-        if "studentToken" not in request.session.keys():
-            raise PermissionError("Please set a token first")
-        token = request.session["studentToken"]
-        if not util.check_permission(request, token, measurement_id):
-            raise PermissionError("Wrong Token")
+        token = request.session.get("token", None)
+        if not can_token_create_measurement(token):
+            raise PermissionDenied(TOKEN_CREATE_PERMISSION_ERROR)
         formset = self.get_formset(request, measurement_id)
         if formset.is_valid():
             return self.form_valid(formset, measurement_id)
@@ -142,11 +139,8 @@ class DataPointFormSetView(TemplateResponseMixin, View):
             return self.render_to_response({"formset": formset})
 
     def get(self, request: HttpRequest, measurement_id: int, *args, **kwargs):
-        # TODO only students can add datapoints atm
-        if "studentToken" not in request.session.keys():
-            raise PermissionError("Please set a token first")
-        token = request.session["studentToken"]
-        if not util.check_permission(request, token, measurement_id):
-            return False
+        token = request.session.get("token", None)
+        if not can_token_create_measurement(token):
+            raise PermissionDenied(TOKEN_CREATE_PERMISSION_ERROR)
         formset = self.get_formset(request, measurement_id)
         return self.render_to_response({"formset": formset})
