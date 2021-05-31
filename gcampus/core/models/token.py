@@ -13,9 +13,12 @@ from gcampus.core.models.util import DateModelMixin
 
 ALLOWED_TOKEN_CHARS = settings.ALLOWED_TOKEN_CHARS
 TOKEN_EDIT_PERMISSION_ERROR = _("Token is not allowed to edit this measurement!")
-TOKEN_CREATE_PERMISSION_ERROR = _("Token is not allowed to edit this measurement!")
+TOKEN_CREATE_PERMISSION_ERROR = _("Token is not allowed to create a measurement!")
 TOKEN_EMPTY_ERROR = _("No token has been provided to create or edit a measurement!")
 TOKEN_INVALID_ERROR = _("Provided token is not invalid or does not exist.")
+
+STUDENT_TOKEN_TYPE = "student"
+TEACHER_TOKEN_TYPE = "teacher"
 
 
 class TeacherToken(DateModelMixin):
@@ -131,6 +134,6 @@ def can_token_edit_measurement(token, measurement: Measurement) -> bool:
     if not measurement_token:
         return False
     return (
-        measurement.token == token_instance
+        measurement_token == token_instance
         or measurement_token.parent_token == token_instance
     )
