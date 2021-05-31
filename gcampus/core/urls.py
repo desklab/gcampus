@@ -7,7 +7,7 @@ from gcampus.core.views.measurement import (
     MeasurementDetailView,
     MeasurementMapView,
 )
-from gcampus.core.views.token import SetStudentTokenFormView, SetTeacherTokenFormView
+from gcampus.core.views.token import SetStudentTokenFormView, SetTeacherTokenFormView, logout
 
 urlpatterns = [
     path("add/", MeasurementFormView.as_view(), name="add_measurement"),
@@ -37,6 +37,7 @@ urlpatterns = [
         SetTeacherTokenFormView.as_view(),
         name="teacher_token_form",
     ),
+    path('logout/', logout),
 ]
 
 app_name = "gcampuscore"

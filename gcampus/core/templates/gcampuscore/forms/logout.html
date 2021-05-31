@@ -1,0 +1,27 @@
+{% extends "gcampuscore/base.html" %}
+{% load i18n static %}
+{% block title %}
+    {% translate "Logout" %}
+{% endblock %}
+
+{% block body_class %}bg-light{% endblock %}
+{% block content %}
+    <div class="container">
+    <div class="py-5 text-center">
+        <h2> {% blocktranslate %}
+            You successfully logged out
+        {% endblocktranslate %}</h2>
+    </div>
+    </div>
+
+    <div class="container">
+    <div class="py-5 text-center">
+
+            <div class="button-box col-lg-12">
+                <a href="/verify/teacher" class="btn btn-lg btn-primary" role="button">{% translate "Log in as teacher" %}</a>
+                <a href="/verify/student" class="btn btn-lg btn-primary" role="button">{% translate "Log in as student" %}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
