@@ -42,14 +42,4 @@ class Migration(migrations.Migration):
             name="unit",
             field=models.CharField(blank=True, max_length=10, verbose_name="Unit"),
         ),
-        migrations.AlterField(
-            model_name="studenttoken",
-            name="token",
-            field=models.CharField(max_length=8, unique=True),
-        ),
-        migrations.AlterField(
-            model_name="teachertoken",
-            name="token",
-            field=models.CharField(max_length=12, unique=True),
-        ),
     ]
