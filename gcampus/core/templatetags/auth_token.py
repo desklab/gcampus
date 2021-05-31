@@ -1,6 +1,7 @@
 from typing import Optional
 
 from django import template
+from django.core.exceptions import PermissionDenied
 from django.template import Node
 from django.template.base import FilterExpression
 from django.utils.html import format_html
@@ -24,7 +25,8 @@ class AuthTokenNode(Node):
             prefix = ""
         token = context.request.session.get("token", None)
         if token in EMPTY_VALUES or token == "None":
-            token = ""
+            raise PermissionDenied("Please set a token first")
+            # token = ""
         if auth_token:
             return format_html(
                 '<input type="hidden" name="{}gcampus_auth_token" value="{}">',
