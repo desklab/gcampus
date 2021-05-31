@@ -9,7 +9,6 @@ from django.contrib.postgres.search import SearchVectorField
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models import util
-from gcampus.core.util import get_location_name
 
 
 class Measurement(util.DateModelMixin):

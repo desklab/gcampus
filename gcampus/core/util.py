@@ -77,7 +77,6 @@ def check_permission(request, token, measurement_id=None):
          contains the ID to the measurement entry that is being
          edited.
     """
-
     if request.user.is_superuser:
         return True
 
