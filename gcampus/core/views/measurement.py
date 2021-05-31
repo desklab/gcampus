@@ -3,6 +3,7 @@ from __future__ import annotations
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
 from django.contrib.messages import error
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -16,6 +17,8 @@ from gcampus.core.forms.measurement import MeasurementForm, DataPointFormSet
 from gcampus.core.models import Measurement, StudentToken
 
 from gcampus.core import util
+from gcampus.core.models.token import can_token_create_measurement, \
+    TOKEN_CREATE_PERMISSION_ERROR
 
 
 class MeasurementListView(ListView):
@@ -67,22 +70,18 @@ class MeasurementFormView(FormView):
     next_view_name = "gcampuscore:add_data_points"
 
     def get(self, request, *args, **kwargs):
-        # TODO only students can create a measurement atm
-        if "studentToken" not in request.session.keys():
-            raise PermissionError("Please set a token first")
-        token = request.session["studentToken"]
-        if not util.check_permission(request, token):
-            return False
-        return super(MeasurementFormView, self).get(request, *args, **kwargs)
+        token = request.session.get("token", None)
+        if can_token_create_measurement(token):
+            return super(MeasurementFormView, self).get(request, *args, **kwargs)
+        else:
+            raise PermissionDenied(TOKEN_CREATE_PERMISSION_ERROR)
 
     def post(self, request, *args, **kwargs):
-        # TODO only students can create a measurement atm
-        if "studentToken" not in request.session.keys():
-            raise PermissionError("Please set a token first")
-        token = request.session["token"]
-        if not util.check_permission(request, token):
-            return False
-        return super(MeasurementFormView, self).post(request, *args, **kwargs)
+        token = request.session.get("token", None)
+        if can_token_create_measurement(token):
+            return super(MeasurementFormView, self).post(request, *args, **kwargs)
+        else:
+            raise PermissionDenied(TOKEN_CREATE_PERMISSION_ERROR)
 
     def form_valid(self, form: MeasurementForm):
         token = self.request.session["token"]
