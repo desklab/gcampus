@@ -8,24 +8,22 @@
 {% block content %}
     <div class="container">
         <div class="py-5 text-center">
-            <h2> {% blocktranslate %}
-                Verify with a {{ token_type }} Token
-            {% endblocktranslate %}</h2>
+        {% if token_type == "Student" %}
+            <h2> {% blocktranslate %}Verify with a Student Token{% endblocktranslate %}</h2>
+        {%  else %}
+        <h2> {% blocktranslate %}Verify with a Teacher Token{% endblocktranslate %}</h2>
+        {% endif %}
         </div>
         {% if set_token_type == "Student" %}
             {% if "token" in request.session %}
                 <div class="py-5 text-center">
-                    <h3> {% blocktranslate %}
-                        You are currently logged in with a Student Token
-                    {% endblocktranslate %}</h3>
+                    <h3> {% blocktranslate %}You are currently logged in with a Student Token{% endblocktranslate %}</h3>
                 </div>
             {% endif %}
         {% elif set_token_type == "Teacher" %}
             <div class="py-5 text-center">
                 {% if "token" in request.session %}
-                    <h3> {% blocktranslate %}
-                        You are currently logged in with a Teacher Token
-                    {% endblocktranslate %}</h3>
+                    <h3> {% blocktranslate %}You are currently logged in with a Teacher Token{% endblocktranslate %}</h3>
                     </div>
                 {% endif %}
         {% endif %}

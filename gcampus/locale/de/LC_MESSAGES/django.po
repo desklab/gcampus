@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-27 21:21+0200\n"
+"POT-Creation-Date: 2021-05-31 21:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,12 +20,47 @@ msgstr ""
 
 #: gcampus/api/apps.py:8
 msgid "GCampus API"
+msgstr "GCampus API"
+
+#: gcampus/api/serializers.py:99
+#, python-format
+msgid "Unnamed lake %(id)s"
+msgstr "Unbenannter See %(id)s"
+
+#: gcampus/api/serializers.py:100
+#, python-format
+msgid "Unnamed canal %(id)s"
+msgstr "Unbenannter Kanal %(id)s"
+
+#: gcampus/api/serializers.py:101
+#, python-format
+msgid "Unnamed reservoir %(id)s"
+msgstr "Unbenannter Stausee %(id)s"
+
+#: gcampus/api/serializers.py:102
+#, python-format
+msgid "Unnamed basin %(id)s"
 msgstr ""
 
-#: gcampus/settings/base.py:115
+#: gcampus/api/serializers.py:103
+#, python-format
+msgid "Unnamed stream %(id)s"
+msgstr ""
+
+#: gcampus/api/serializers.py:104
+#, python-format
+msgid "Unnamed pond %(id)s"
+msgstr "Unbenannter Teich %(id)s"
+
+#: gcampus/api/serializers.py:105
+#, python-format
+msgid "Unnamed wetland %(id)s"
+msgstr ""
+
+#: gcampus/settings/base.py:108
 msgid "English"
-msgstr ""
+msgstr "Englisch"
 
-#: gcampus/settings/base.py:115
+#: gcampus/settings/base.py:108
 msgid "German"
 msgstr "Deutsch"

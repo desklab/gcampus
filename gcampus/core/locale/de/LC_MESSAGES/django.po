@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-17 15:23+0200\n"
+"POT-Creation-Date: 2021-05-31 21:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,8 +46,7 @@ msgstr "Datentyp"
 msgid "Filter for measurements containing a specific data type"
 msgstr "Nach Messungen mit bestimmten Datentypen suchen"
 
-#: gcampus/core/filters.py:97 gcampus/core/models/location.py:20
-#: gcampus/core/models/measurement.py:30
+#: gcampus/core/filters.py:97 gcampus/core/models/measurement.py:33
 #: gcampus/core/templates/gcampuscore/components/measurement_list.html:83
 msgid "Location"
 msgstr "Standort"
@@ -56,126 +55,160 @@ msgstr "Standort"
 msgid "Filter by radius after selecting a location"
 msgstr "Nach Messungen in einem bestimmten Radius suchen"
 
-#: gcampus/core/forms/measurement.py:40 gcampus/core/models/measurement.py:122
+#: gcampus/core/forms/measurement.py:95
+msgid "Unable to parse OpenStreetMap ID!"
+msgstr ""
+
+#: gcampus/core/forms/measurement.py:119 gcampus/core/models/measurement.py:129
 #: gcampus/core/templates/gcampuscore/components/measurement_detail.html:44
 msgid "Value"
 msgstr "Wert"
 
-#: gcampus/core/forms/measurement.py:44 gcampus/core/models/measurement.py:45
-#: gcampus/core/models/measurement.py:129
+#: gcampus/core/forms/measurement.py:125 gcampus/core/models/measurement.py:50
+#: gcampus/core/models/measurement.py:136
 #: gcampus/core/templates/gcampuscore/components/measurement_detail.html:26
 #: gcampus/core/templates/gcampuscore/components/measurement_detail.html:45
 msgid "Comment"
 msgstr "Kommentar"
 
-#: gcampus/core/models/location.py:21
-msgid "Locations"
-msgstr "Standorte"
+#: gcampus/core/forms/measurement.py:191
+msgid "ManagementForm data is missing or has been tampered with"
+msgstr ""
 
-#: gcampus/core/models/location.py:27 gcampus/core/models/measurement.py:27
-#: gcampus/core/models/measurement.py:106
+#: gcampus/core/forms/token.py:13 gcampus/core/models/token.py:72
+msgid "Student Token"
+msgstr "Schüler Token"
+
+#: gcampus/core/forms/token.py:28 gcampus/core/models/token.py:38
+msgid "Teacher Token"
+msgstr "Lehrer Token"
+
+#: gcampus/core/forms/token.py:34 gcampus/core/views/token.py:36
+#: gcampus/core/views/token.py:62
+msgid "Token does not exist"
+msgstr "Token existiert nicht"
+
+#: gcampus/core/models/measurement.py:16
+msgid "Measurement"
+msgstr "Messung"
+
+#: gcampus/core/models/measurement.py:17
+msgid "Measurements"
+msgstr "Messungen"
+
+#: gcampus/core/models/measurement.py:30 gcampus/core/models/measurement.py:113
 #: gcampus/core/templates/gcampuscore/components/measurement_list.html:82
 msgid "Name"
 msgstr "Name"
 
-#: gcampus/core/models/location.py:28
-msgid "Name of the location"
-msgstr "Standortname"
-
-#: gcampus/core/models/location.py:33
-msgid "Geometry"
-msgstr ""
-
-#: gcampus/core/models/location.py:34
-msgid "Geometry and Location"
-msgstr ""
-
-#: gcampus/core/models/measurement.py:17
-msgid "Measurement"
-msgstr "Messung"
-
-#: gcampus/core/models/measurement.py:18
-msgid "Measurements"
-msgstr "Messungen"
-
-#: gcampus/core/models/measurement.py:28
+#: gcampus/core/models/measurement.py:31
 msgid "Your name or team name"
 msgstr "Dein Name oder ein Team Name"
 
-#: gcampus/core/models/measurement.py:35
+#: gcampus/core/models/measurement.py:38
 msgid "Location name"
 msgstr "Standort name"
 
-#: gcampus/core/models/measurement.py:36
+#: gcampus/core/models/measurement.py:39
 msgid "An approximated location for the measurement"
 msgstr "Ein abgeschätzter Standort der Messung"
 
 #: gcampus/core/models/measurement.py:42
+msgid "OpenStreetMap ID"
+msgstr "OpenStreetMap ID"
+
+#: gcampus/core/models/measurement.py:47
 msgid "Measurement Time"
 msgstr "Messzeitpunkt"
 
-#: gcampus/core/models/measurement.py:43
+#: gcampus/core/models/measurement.py:48
 msgid "Date and time of the measurement"
 msgstr "Datum und Uhrzeit der Messung"
 
-#: gcampus/core/models/measurement.py:69
+#: gcampus/core/models/measurement.py:76
 #, python-format
 msgid "Measurement in %(location)s by %(name)s"
 msgstr "Messung in %(location)s von %(name)s"
 
-#: gcampus/core/models/measurement.py:74
+#: gcampus/core/models/measurement.py:81
 #, python-format
 msgid "Measurement by %(name)s"
 msgstr "Messung von %(name)s"
 
-#: gcampus/core/models/measurement.py:76
+#: gcampus/core/models/measurement.py:83
 #, python-format
 msgid "Measurement in %(location)s"
 msgstr "Messung in %(location)s"
 
-#: gcampus/core/models/measurement.py:80
+#: gcampus/core/models/measurement.py:87
 #, python-format
 msgid "Measurement %(id)s"
 msgstr "Messung %(id)s"
 
-#: gcampus/core/models/measurement.py:103
-#: gcampus/core/models/measurement.py:120
+#: gcampus/core/models/measurement.py:110
+#: gcampus/core/models/measurement.py:127
 #: gcampus/core/templates/gcampuscore/components/measurement_detail.html:43
 msgid "Data type"
 msgstr "Daten Typ"
 
-#: gcampus/core/models/measurement.py:104
+#: gcampus/core/models/measurement.py:111
 msgid "Data types"
 msgstr "Daten Typen"
 
-#: gcampus/core/models/measurement.py:108
+#: gcampus/core/models/measurement.py:115
 msgid "Unit"
 msgstr "Einheit"
 
-#: gcampus/core/models/measurement.py:116
+#: gcampus/core/models/measurement.py:123
 msgid "Data point"
 msgstr "Messwert"
 
-#: gcampus/core/models/measurement.py:117
+#: gcampus/core/models/measurement.py:124
 msgid "Data points"
 msgstr "Messwerte"
 
-#: gcampus/core/models/measurement.py:126
+#: gcampus/core/models/measurement.py:133
 msgid "Associated measurement"
 msgstr "Verknüpfte Messung"
 
-#: gcampus/core/models/measurement.py:132
+#: gcampus/core/models/measurement.py:139
 #, python-format
 msgid "Data point %(pk)s"
 msgstr "Messwert %(pk)s"
+
+#: gcampus/core/models/token.py:15
+msgid "Token is not allowed to edit this measurement!"
+msgstr "Der Token hat nicht die Berechtigung diese Messung zu verändern!"
+
+#: gcampus/core/models/token.py:16
+msgid "Token is not allowed to create a measurement!"
+msgstr "Der Token hat nicht die Berechtigung diese Messung zu erstellen!"
+
+#: gcampus/core/models/token.py:17
+#, fuzzy
+#| msgid "An approximated location for the measurement"
+msgid "No token has been provided to create or edit a measurement!"
+msgstr "Ein abgeschätzter Standort der Messung"
+
+#: gcampus/core/models/token.py:18
+msgid "Provided token is not invalid or does not exist."
+msgstr "Der eingegebene Token ist ungültig oder existiert nicht!"
+
+#: gcampus/core/models/token.py:30
+msgid "School Name"
+msgstr "Name der Schule"
+
+#: gcampus/core/models/token.py:34
+msgid "Teacher Name"
+msgstr "Name des Leherers/der Lehrerin"
 
 #: gcampus/core/templates/gcampuscore/components/mapview.html:4
 msgid "All measurements displayed on a map"
 msgstr "Alle Messungen auf der Karte"
 
 #: gcampus/core/templates/gcampuscore/components/mapview.html:17
-#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:87
-#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:96
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:92
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:105
 msgid "Measurement by"
 msgstr "Messung von"
 
@@ -226,84 +259,144 @@ msgstr "(Optional)"
 msgid "Add Data Points"
 msgstr "Datenpunkte Hinzufügen"
 
-#: gcampus/core/templates/gcampuscore/forms/datapoints.html:30
+#: gcampus/core/templates/gcampuscore/forms/datapoints.html:38
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: gcampus/core/templates/gcampuscore/forms/datapoints.html:37
+#: gcampus/core/templates/gcampuscore/forms/datapoints.html:45
 msgid "Discard"
 msgstr "Verwerfen"
 
-#: gcampus/core/templates/gcampuscore/forms/datapoints.html:41
+#: gcampus/core/templates/gcampuscore/forms/datapoints.html:49
 msgid "Save"
 msgstr "Speichern"
+
+#: gcampus/core/templates/gcampuscore/forms/logout.html:4
+msgid "Logout"
+msgstr "Logout"
+
+#: gcampus/core/templates/gcampuscore/forms/logout.html:11
+msgid "You successfully logged out"
+msgstr "Erfolgreich angemeldet"
+
+#: gcampus/core/templates/gcampuscore/forms/logout.html:19
+msgid "Log in as a Teacher"
+msgstr "Als Leherer/Lehrerin einloggen"
+
+#: gcampus/core/templates/gcampuscore/forms/logout.html:20
+msgid "Log in as a Student"
+msgstr "Als Schüler/Schülerin einloggen"
 
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:4
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:13
 msgid "Create new Measurement"
 msgstr "Neue Messung Erstellen"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:81
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:87
 msgid "Save and Continue"
 msgstr "Speichern und Weiter"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:90
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:96
 msgid "Water name"
 msgstr "Gewässername"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:91
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:97
 msgid "Other Water:"
 msgstr "Anderes Gewässer:"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:92
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:98
 msgid "Loading ..."
 msgstr "Lädt ..."
+
+#: gcampus/core/templates/gcampuscore/forms/token.html:4
+#, fuzzy
+#| msgid "Location"
+msgid "Verification"
+msgstr "Verifikation"
+
+#: gcampus/core/templates/gcampuscore/forms/token.html:12
+#, fuzzy
+#| msgid "Verify with a %(token_type)s Token"
+msgid "Verify with a Student Token"
+msgstr "Mit einem Schüler Token anmelden"
+
+#: gcampus/core/templates/gcampuscore/forms/token.html:14
+#, fuzzy
+#| msgid "Verify with a %(token_type)s Token"
+msgid "Verify with a Teacher Token"
+msgstr "Mit einem Leherer Token anmelden"
+
+#: gcampus/core/templates/gcampuscore/forms/token.html:20
+msgid "You are currently logged in with a Student Token"
+msgstr "Du bist momentan mit einem Schüler Token angemeldet"
+
+#: gcampus/core/templates/gcampuscore/forms/token.html:26
+msgid "You are currently logged in with a Teacher Token"
+msgstr "Du bist momentan mit einem Leherer Token angemeldet"
+
+#: gcampus/core/templates/gcampuscore/forms/token.html:47
+msgid "Confirm"
+msgstr "Bestätigen"
+
+#: gcampus/core/templates/gcampuscore/forms/token.html:52
+msgid "Log Out"
+msgstr "Ausloggen"
+
+#: gcampus/core/templates/gcampuscore/forms/token.html:54
+msgid "Log in with new Token"
+msgstr "Mit neuem Token einloggen"
 
 #: gcampus/core/templates/gcampuscore/forms/widgets/splittime.html:3
 msgid "Time"
 msgstr "Zeit"
 
-#: gcampus/core/widgets.py:19
+#: gcampus/core/widgets.py:52
 msgid "Hour"
 msgstr "Stunde"
 
-#: gcampus/core/widgets.py:23
+#: gcampus/core/widgets.py:56
 msgctxt "hour input short"
 msgid "HH"
 msgstr ""
 
-#: gcampus/core/widgets.py:26
+#: gcampus/core/widgets.py:59
 msgid "Minute"
 msgstr "Minute"
 
-#: gcampus/core/widgets.py:30
+#: gcampus/core/widgets.py:63
 msgctxt "minute input short"
 msgid "MM"
 msgstr "MM"
 
-#: gcampus/core/widgets.py:52
+#: gcampus/core/widgets.py:85
 msgid "Day"
 msgstr "Tag"
 
-#: gcampus/core/widgets.py:56
+#: gcampus/core/widgets.py:89
 msgctxt "day input short"
 msgid "DD"
 msgstr "TT"
 
-#: gcampus/core/widgets.py:59
+#: gcampus/core/widgets.py:92
 msgid "Month"
 msgstr "Monat"
 
-#: gcampus/core/widgets.py:63
+#: gcampus/core/widgets.py:96
 msgctxt "month input short"
 msgid "MM"
 msgstr "MM"
 
-#: gcampus/core/widgets.py:67
+#: gcampus/core/widgets.py:100
 msgid "Year"
 msgstr "Jahr"
 
-#: gcampus/core/widgets.py:68
+#: gcampus/core/widgets.py:101
 msgctxt "year input short"
 msgid "YYYY"
 msgstr "JJJJ"
+
+#~ msgid "Locations"
+#~ msgstr "Standorte"
+
+#~ msgid "Name of the location"
+#~ msgstr "Standortname"
