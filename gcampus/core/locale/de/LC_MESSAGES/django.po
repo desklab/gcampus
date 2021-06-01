@@ -81,7 +81,7 @@ msgstr "Schüler Token"
 
 #: gcampus/core/forms/token.py:28 gcampus/core/models/token.py:38
 msgid "Teacher Token"
-msgstr "Lehrer Token"
+msgstr "Lehrkraft Token"
 
 #: gcampus/core/forms/token.py:34 gcampus/core/views/token.py:36
 #: gcampus/core/views/token.py:62
@@ -200,7 +200,7 @@ msgstr "Name der Schule"
 
 #: gcampus/core/models/token.py:34
 msgid "Teacher Name"
-msgstr "Name des Leherers/der Lehrerin"
+msgstr "Name der Lehrkraft"
 
 #: gcampus/core/templates/gcampuscore/components/mapview.html:4
 msgid "All measurements displayed on a map"
@@ -277,11 +277,11 @@ msgstr "Logout"
 
 #: gcampus/core/templates/gcampuscore/forms/logout.html:11
 msgid "You successfully logged out"
-msgstr "Erfolgreich angemeldet"
+msgstr "Erfolgreich abgemeldet"
 
 #: gcampus/core/templates/gcampuscore/forms/logout.html:19
 msgid "Log in as a Teacher"
-msgstr "Als Leherer/Lehrerin einloggen"
+msgstr "Als Lehrkraft einloggen"
 
 #: gcampus/core/templates/gcampuscore/forms/logout.html:20
 msgid "Log in as a Student"
