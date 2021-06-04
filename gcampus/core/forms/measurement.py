@@ -10,7 +10,7 @@ from django.forms import (
     CharField,
     formsets,
 )
-from django.forms.formsets import ManagementForm
+from django.forms.formsets import ManagementForm  # noqa
 from django.forms.widgets import Select, TextInput, Textarea, HiddenInput
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
