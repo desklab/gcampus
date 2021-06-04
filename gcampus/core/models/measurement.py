@@ -5,10 +5,12 @@ from typing import Optional
 from django.contrib.gis.db import models
 from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models import util
+from gcampus.core.util import get_location_name
 
 
 class Measurement(util.DateModelMixin):
@@ -38,38 +40,50 @@ class Measurement(util.DateModelMixin):
         verbose_name=_("Location name"),
         help_text=_("An approximated location for the measurement"),
     )
+    water_name = models.CharField(
+        blank=True,
+        null=True,
+        max_length=280,
+        verbose_name=_("Water name"),
+        help_text=_("Name of the water the measurement was conducted at")
+    )
     osm_id = models.BigIntegerField(
         default=None, blank=True, null=True, verbose_name=_("OpenStreetMap ID")
     )
-
     time = models.DateTimeField(
         blank=False,
         verbose_name=_("Measurement Time"),
         help_text=_("Date and time of the measurement"),
     )
     comment = models.TextField(blank=True, verbose_name=_("Comment"))
+
     # The search vector will be overwritten and turned into a postgres
     # generated column in migration ``0011``.
     search_vector = SearchVectorField(null=True, editable=False)
 
-    # TODO the code below is temporarily disabled to ignore geo lookups
-    #   on location changes.
-    # def is_location_changed(self):
-    #     try:
-    #         db_instance = self.__class__.objects.get(pk=self.pk)
-    #     except ObjectDoesNotExist:
-    #         return True
-    #     return self.location.coords != db_instance.location.coords
-    #
-    # def save(self, **kwargs):
-    #     # Check if the location field has ben updated
-    #     update_fields = kwargs.get("update_fields", None)
-    #     if (
-    #         update_fields is not None and "location" in update_fields
-    #     ) or self.is_location_changed():
-    #         coordinates = getattr(self.location, "coords", None)
-    #         self.location_name = get_location_name(coordinates)
-    #     return super(Measurement, self).save(**kwargs)
+    def is_location_changed(self, update_fields=None):
+        if update_fields is not None and "location" in update_fields:
+            # The ``update_fields`` parameter explicitly states that the
+            # geographic location has been changed.
+            return True
+        if self.id is None:
+            # The model has just been created (i.e. it is not yet in the
+            # database).
+            return True
+        # Otherwise, check if the current instance differs from the
+        # instance found in the database.
+        try:
+            db_instance = self.__class__.objects.get(pk=self.pk)
+        except ObjectDoesNotExist:
+            return True
+        return self.location.coords != db_instance.location.coords
+
+    def save(self, **kwargs):
+        update_fields = kwargs.get("update_fields", None)
+        if self.is_location_changed(update_fields=update_fields):
+            coordinates = getattr(self.location, "coords", None)
+            self.location_name = get_location_name(coordinates)
+        return super(Measurement, self).save(**kwargs)
 
     def __str__(self):
         if self.location_name not in util.EMPTY and self.name not in util.EMPTY:

@@ -57,7 +57,7 @@ function ListItem(props) {
         <label class="list-group-item list-group-item-action" for="water${id}"
                onMouseOver=${highlight} onMouseLeave=${resetHighlight}>
             <input class="form-check-input me-2" id="water${id}"
-                   type="radio" name="location_name"
+                   type="radio" name="water_name"
                    data-feature-id="${id}"
                    value="${name} gcampus_osm_id:${id}"/>
             ${name}
@@ -102,7 +102,7 @@ class VariableWaterItem extends Component {
             <div class="list-group-item list-group-item-action"
                  onclick=${this.createClickListener()}>
                 <input class="form-check-input me-2" id="varWater"
-                       type="radio" name="location_name"
+                       type="radio" name="water_name"
                        style="vertical-align: text-bottom"
                        value="${name}"
                        aria-label="${VAR_LOCATION_TITLE}" />
@@ -339,8 +339,8 @@ class WaterList extends Component {
      * buttons.
      */
     registerChangeListener() {
-        if (document.querySelector('input[name="location_name"]')) {
-            document.querySelectorAll('input[name="location_name"]').forEach(el => {
+        if (document.querySelector('input[name="water_name"]')) {
+            document.querySelectorAll('input[name="water_name"]').forEach(el => {
                 el.addEventListener('change', (e) => {
                     if (e.target.checked) {
                         // The element has actually been checked
