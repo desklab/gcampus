@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
-from django.contrib.messages import error
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import get_object_or_404
@@ -14,9 +13,7 @@ from django.views.generic.edit import FormView
 
 from gcampus.core.filters import MeasurementFilter
 from gcampus.core.forms.measurement import MeasurementForm, DataPointFormSet
-from gcampus.core.models import Measurement, StudentToken
-
-from gcampus.core import util
+from gcampus.core.models import Measurement
 from gcampus.core.models.token import can_token_create_measurement, \
     TOKEN_CREATE_PERMISSION_ERROR
 
