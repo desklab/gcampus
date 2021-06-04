@@ -56,7 +56,7 @@ class TeacherToken(DateModelMixin):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return str(self.pk)
+        return _("Teacher Token %(id)s") % {"id": self.pk}
 
     @property
     def can_create_measurement(self):
@@ -93,7 +93,7 @@ class StudentToken(DateModelMixin):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return str(self.pk)
+        return _("Student Token %(id)s") % {"id": self.pk}
 
     @property
     def can_create_measurement(self):
