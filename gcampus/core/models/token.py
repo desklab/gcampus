@@ -1,4 +1,5 @@
 from typing import Union, Optional
+import logging
 
 from django.contrib.gis.db import models
 
@@ -20,6 +21,8 @@ TOKEN_INVALID_ERROR = _("Provided token is not invalid or does not exist.")
 STUDENT_TOKEN_TYPE = "student"
 TEACHER_TOKEN_TYPE = "teacher"
 
+logger = logging.getLogger("gcampus.core.token")
+
 
 class TeacherToken(DateModelMixin):
     token = models.CharField(blank=False, max_length=12, unique=True)
@@ -37,9 +40,12 @@ class TeacherToken(DateModelMixin):
     class Meta:
         verbose_name = _("Teacher Token")
 
-    def generate_teacher_token(self):
-        token_set = False
-        while not token_set:
+    @staticmethod
+    def generate_teacher_token():
+        _counter = 0
+        while True:
+            _counter += 1
+            logger.info(f"Generating random teacher token (attempt number {_counter})")
             token = get_random_string(length=12, allowed_chars=ALLOWED_TOKEN_CHARS)
             if not TeacherToken.objects.filter(token=token).exists():
                 return token
@@ -71,9 +77,12 @@ class StudentToken(DateModelMixin):
     class Meta:
         verbose_name = _("Student Token")
 
-    def generate_student_token(self):
-        token_set = False
-        while not token_set:
+    @staticmethod
+    def generate_student_token():
+        _counter = 0
+        while True:
+            _counter += 1
+            logger.info(f"Generating random student token (attempt number {_counter})")
             token = get_random_string(length=8, allowed_chars=ALLOWED_TOKEN_CHARS)
             if not StudentToken.objects.filter(token=token).exists():
                 return token
@@ -109,7 +118,7 @@ def can_token_create_measurement(token) -> bool:
     token_instance = get_any_token_class(token)
     if token_instance is None:
         return False
-    if getattr(token, "can_create_measurement", False):
+    if getattr(token_instance, "can_create_measurement", False):
         return True
     else:
         # The token has been deactivated or somehow now valid
