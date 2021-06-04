@@ -13,8 +13,14 @@ from gcampus.core.models import util
 from gcampus.core.util import get_location_name
 
 
+class HiddenManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(hidden=False)
+
+
 class Measurement(util.DateModelMixin):
     class Meta:
+        default_manager_name = "all_objects"
         verbose_name = _("Measurement")
         verbose_name_plural = _("Measurements")
         indexes = (GinIndex(fields=("search_vector",)),)
@@ -56,10 +62,18 @@ class Measurement(util.DateModelMixin):
         help_text=_("Date and time of the measurement"),
     )
     comment = models.TextField(blank=True, verbose_name=_("Comment"))
+    hidden = models.BooleanField(default=False, verbose_name=_("Hidden"))
 
     # The search vector will be overwritten and turned into a postgres
     # generated column in migration ``0011``.
     search_vector = SearchVectorField(null=True, editable=False)
+
+    # By default, ``objects`` should only return measurements that are
+    # not hidden.
+    # To get all measurements (e.g. in the admin interface), use
+    # the ``all_objects`` manager.
+    objects = HiddenManager()
+    all_objects = models.Manager()
 
     def is_location_changed(self, update_fields=None):
         if update_fields is not None and "location" in update_fields:
@@ -134,6 +148,7 @@ class DataType(models.Model):
 
 class DataPoint(util.DateModelMixin):
     class Meta:
+        default_manager_name = "all_objects"
         verbose_name = _("Data point")
         verbose_name_plural = _("Data points")
 
@@ -148,6 +163,14 @@ class DataPoint(util.DateModelMixin):
         related_name="data_points",
     )
     comment = models.TextField(blank=True, verbose_name=_("Comment"))
+    hidden = models.BooleanField(default=False, verbose_name=_("Hidden"))
+
+    # By default, ``objects`` should only return measurements that are
+    # not hidden.
+    # To get all measurements (e.g. in the admin interface), use
+    # the ``all_objects`` manager.
+    objects = HiddenManager()
+    all_objects = models.Manager()
 
     def __str__(self):
         return _("Data point %(pk)s") % {
