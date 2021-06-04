@@ -8,6 +8,8 @@ from django.utils.html import format_html
 from django.template.base import token_kwargs
 from django_filters.constants import EMPTY_VALUES
 
+from gcampus.core.models.token import TOKEN_EMPTY_ERROR
+
 register = template.Library()
 
 
@@ -19,15 +21,14 @@ class AuthTokenNode(Node):
     def render(self, context):
         if "request" not in context:
             raise ValueError("Unable to find 'request' in template context!")
+        token = context.request.session.get("token", None)
+        if token in EMPTY_VALUES or token == "None":
+            raise PermissionDenied(TOKEN_EMPTY_ERROR)
         if self.prefix_token is not None:
             prefix = f"{self.prefix_token.resolve(context)}-"
         else:
             prefix = ""
-        token = context.request.session.get("token", None)
-        if token in EMPTY_VALUES or token == "None":
-            raise PermissionDenied("Please set a token first")
-            # token = ""
-        if auth_token:
+        if token:
             return format_html(
                 '<input type="hidden" name="{}gcampus_auth_token" value="{}">',
                 prefix,
