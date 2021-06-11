@@ -28,67 +28,63 @@
             }
         }
     </script>
-            <div class="py-5 text-center">
-            <h2>{% translate "All measurements displayed in a map" %}</h2>
-        </div>
-    <div class="row justify-content-center">
+        <div class="row justify-content-center">
         <div class="col-lg-6">
             {% leaflet_map "yourmap" callback="window.map_init_basic" %}
         </div>
     </div>
     <div class="container">
-    <div class="py-5 text-center">
-        <form method="GET">
+    <form method="GET">
+        <div/>
 
-            <p>
-                <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" id="filterCollapseButton"
-                   href="#filterCollapse" role="button" onclick="setCookie()"
-                   aria-expanded="false"
-                   aria-controls="filterCollapse">{% translate "Open additional filters" %}</a>
-            </p>
-            <div class="row" id="test">
-                <div class="col">
-                    <div class="collapse"
-                         id="filterCollapse">
-                        <div class="card card-body">
-                            <div class="container">
-                                {% with filter.form.name as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {% include "gcampuscore/forms/components/helptext.html" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
-                                {% with filter.form.time_gt as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {% include "gcampuscore/forms/components/helptext.html" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
-                                {% with filter.form.time_lt as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {% include "gcampuscore/forms/components/helptext.html" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
-                                {% with filter.form.datatypes as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {% include "gcampuscore/forms/components/helptext.html" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
-                                <button type="submit" class="btn btn-lg btn-primary">{% translate "Search" %}</button>
-                            </div>
+        <p>
+            <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" id="filterCollapseButton"
+               href="#filterCollapse" role="button" onclick="setCookie()"
+               aria-expanded="false"
+               aria-controls="filterCollapse">{% translate "Open additional filters" %}</a>
+        </p>
+        <div class="row" id="test">
+            <div class="col">
+                <div class="collapse"
+                     id="filterCollapse">
+                    <div class="card card-body">
+                        <div class="container">
+                            {% with filter.form.name as field %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    {{ field }}
+                                </div>
+                            {% endwith %}
+                            {% with filter.form.time_gt as field %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    {{ field }}
+                                </div>
+                            {% endwith %}
+                            {% with filter.form.time_lt as field %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    {{ field }}
+                                </div>
+                            {% endwith %}
+                            {% with filter.form.datatypes as field %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    {{ field }}
+                                </div>
+                            {% endwith %}
+                            <button type="submit" class="btn btn-primary">{% translate "Search" %}</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
-    </div>
+        </div>
+    </form>
+
     <script>
 
         let filterButton = document.getElementById("filterCollapseButton");
