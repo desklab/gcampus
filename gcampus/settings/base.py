@@ -148,6 +148,11 @@ LEAFLET_CONFIG = {
 # Full Text Search
 TSVECTOR_CONF = "german"
 
+# Session expires when Browser is closed
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SAVE_EVERY_REQUEST = True
+
 # Allowed Chars in Tokens
 
 ALLOWED_TOKEN_CHARS = [
