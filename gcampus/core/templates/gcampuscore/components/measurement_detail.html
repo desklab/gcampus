@@ -83,6 +83,15 @@
             {% leaflet_map "yourmap" callback="window.map_init_basic" %}
         </div>
     </div>
+    {% if measurement.token.token == request.session.token %}
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <a href="{% url "gcampuscore:measurement_detail" pk=measurement.pk %}"
+                   class="btn btn-primary btn-md" role="button">
+                    {% translate "Edit Measurement" %}</a>
+            </div>
+        </div>
+    {% endif %}
     <script>
         function map_init_basic(map) {
             let close_locations = []
