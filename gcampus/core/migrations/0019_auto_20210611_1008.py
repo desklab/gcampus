@@ -7,28 +7,36 @@ import django.db.models.manager
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gcampuscore', '0018_auto_20210604_1052'),
+        ("gcampuscore", "0018_auto_20210604_1052"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='datapoint',
-            options={'default_manager_name': 'all_objects', 'verbose_name': 'Data point', 'verbose_name_plural': 'Data points'},
+            name="datapoint",
+            options={
+                "default_manager_name": "all_objects",
+                "verbose_name": "Data point",
+                "verbose_name_plural": "Data points",
+            },
         ),
         migrations.AlterModelOptions(
-            name='measurement',
-            options={'default_manager_name': 'all_objects', 'verbose_name': 'Measurement', 'verbose_name_plural': 'Measurements'},
+            name="measurement",
+            options={
+                "default_manager_name": "all_objects",
+                "verbose_name": "Measurement",
+                "verbose_name_plural": "Measurements",
+            },
         ),
         migrations.AlterModelManagers(
-            name='datapoint',
+            name="datapoint",
             managers=[
-                ('all_objects', django.db.models.manager.Manager()),
+                ("all_objects", django.db.models.manager.Manager()),
             ],
         ),
         migrations.AlterModelManagers(
-            name='measurement',
+            name="measurement",
             managers=[
-                ('all_objects', django.db.models.manager.Manager()),
+                ("all_objects", django.db.models.manager.Manager()),
             ],
         ),
     ]

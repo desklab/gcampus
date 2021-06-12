@@ -51,7 +51,7 @@ class Measurement(util.DateModelMixin):
         null=True,
         max_length=280,
         verbose_name=_("Water name"),
-        help_text=_("Name of the water the measurement was conducted at")
+        help_text=_("Name of the water the measurement was conducted at"),
     )
     osm_id = models.BigIntegerField(
         default=None, blank=True, null=True, verbose_name=_("OpenStreetMap ID")
