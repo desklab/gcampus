@@ -1,9 +1,8 @@
-from django.shortcuts import render
-from django.urls import reverse
-from django.views.generic.edit import FormView
-
 from django.core.exceptions import PermissionDenied
+from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
+from django.views.generic.edit import FormView
 
 from gcampus.core.forms.token import StudentTokenForm, TeacherTokenForm
 from gcampus.core.models.token import STUDENT_TOKEN_TYPE
@@ -14,7 +13,7 @@ class SetStudentTokenFormView(FormView):
     form_class = StudentTokenForm
     # TODO Create an intermediate site that tells you you logged in
     #   correctly and gives the option for several sites
-    success_url = reverse("mapview")
+    success_url = reverse_lazy("gcampuscore:mapview")
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -42,7 +41,7 @@ class SetTeacherTokenFormView(FormView):
     form_class = TeacherTokenForm
     # TODO Create an intermediate site that tells you you logged in
     #   correctly and gives the option for several sites
-    success_url = reverse("mapview")
+    success_url = reverse_lazy("gcampuscore:mapview")
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
