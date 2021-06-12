@@ -23,7 +23,7 @@ from gcampus.core.models.token import (
     can_token_edit_measurement,
     can_token_create_measurement,
     TOKEN_CREATE_PERMISSION_ERROR,
-    TOKEN_EDIT_PERMISSION_ERROR,
+    TOKEN_EDIT_PERMISSION_ERROR, get_token_and_create_permission,
 )
 
 TOKEN_FIELD_NAME = "gcampus_auth_token"
@@ -66,8 +66,14 @@ class MeasurementForm(ModelForm):
             current_instance: Optional[Measurement] = self.instance
             token_error: Optional[ValidationError] = None
             if current_instance is None or current_instance.id in EMPTY_VALUES:
-                if not can_token_create_measurement(current_token):
+                token_instance, permission = (
+                    get_token_and_create_permission(current_token)
+                )
+                if not permission:
                     token_error = ValidationError(TOKEN_CREATE_PERMISSION_ERROR)
+                else:
+                    # Save the current token in the instance
+                    self.instance.token = token_instance
             else:
                 # Measurement is not new but being edited
                 if not can_token_edit_measurement(current_token, current_instance):
