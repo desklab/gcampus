@@ -1,4 +1,4 @@
-from typing import Union, Optional
+from typing import Union, Optional, Tuple
 import logging
 
 from django.contrib.gis.db import models
@@ -102,7 +102,10 @@ class StudentToken(DateModelMixin):
         return not self.deactivated
 
 
-def get_any_token_class(token) -> Optional[Union[TeacherToken, StudentToken]]:
+AnyToken = Union[StudentToken, TeacherToken]
+
+
+def get_any_token_class(token) -> Optional[AnyToken]:
     try:
         return StudentToken.objects.get(token=token)
     except StudentToken.DoesNotExist:
@@ -114,15 +117,20 @@ def get_any_token_class(token) -> Optional[Union[TeacherToken, StudentToken]]:
         return None
 
 
-def can_token_create_measurement(token) -> bool:
+def get_token_and_create_permission(token) -> Tuple[Optional[AnyToken], bool]:
     token_instance = get_any_token_class(token)
     if token_instance is None:
-        return False
+        return None, False
     if getattr(token_instance, "can_create_measurement", False):
-        return True
+        return token_instance, True
     else:
         # The token has been deactivated or somehow now valid
-        return False
+        return token_instance, False
+
+
+def can_token_create_measurement(token) -> bool:
+    _token, permission = get_token_and_create_permission(token)
+    return permission
 
 
 def can_token_edit_measurement(token, measurement: Measurement) -> bool:
