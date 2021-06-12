@@ -149,42 +149,8 @@ LEAFLET_CONFIG = {
 TSVECTOR_CONF = "german"
 
 # Session expires when Browser is closed
-
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SAVE_EVERY_REQUEST = True
 
 # Allowed Chars in Tokens
-
-ALLOWED_TOKEN_CHARS = [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "P",
-    "Q",
-    "R",
-    "S",
-    "T",
-    "W",
-    "X",
-    "Y",
-    "Z",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-]
+ALLOWED_TOKEN_CHARS = list("ABCDEFGHJKLMNPQRSTWXYZ123456789")  # noqa
