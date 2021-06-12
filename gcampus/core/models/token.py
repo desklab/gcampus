@@ -110,7 +110,7 @@ def get_any_token_class(token) -> Optional[Union[TeacherToken, StudentToken]]:
     # Try the same with a teacher token
     try:
         return TeacherToken.objects.get(token=token)
-    except StudentToken.DoesNotExist:
+    except TeacherToken.DoesNotExist:
         return None
 
 
