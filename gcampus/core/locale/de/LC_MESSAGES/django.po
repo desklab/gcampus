@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-11 13:57+0200\n"
+"POT-Creation-Date: 2021-06-12 14:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -251,8 +251,6 @@ msgid "Measurement by"
 msgstr "Messung von"
 
 #: gcampus/core/templates/gcampuscore/components/mapview.html:32
-#, fuzzy
-#| msgid "All measurements displayed on a map"
 msgid "All measurements displayed in a map"
 msgstr "Alle Messungen auf der Karte"
 
@@ -278,8 +276,6 @@ msgstr "Kommentar ansehen"
 #: gcampus/core/templates/gcampuscore/components/measurement_detail.html:91
 #: gcampus/core/templates/gcampuscore/components/measurement_list.html:87
 #: gcampus/core/templates/gcampuscore/components/measurement_list.html:109
-#, fuzzy
-#| msgid "Measurement"
 msgid "Edit Measurement"
 msgstr "Messung bearbeiten"
 
@@ -388,9 +384,25 @@ msgstr "Abmelden"
 msgid "Log in with new Token"
 msgstr "Mit neuem Token anmelden"
 
-#: gcampus/core/templates/gcampuscore/forms/widgets/splittime.html:3
+#: gcampus/core/templates/gcampuscore/forms/widgets/splitdate.html:20
+msgid "Fill in the current date"
+msgstr "Aktuelles Datum einfügen"
+
+#: gcampus/core/templates/gcampuscore/forms/widgets/splitdate.html:21
+msgid "Today"
+msgstr "Heute"
+
+#: gcampus/core/templates/gcampuscore/forms/widgets/splittime.html:4
 msgid "Time"
 msgstr "Zeit"
+
+#: gcampus/core/templates/gcampuscore/forms/widgets/splittime.html:23
+msgid "Fill in the current time"
+msgstr "Aktuelle Uhrzeit einfügen"
+
+#: gcampus/core/templates/gcampuscore/forms/widgets/splittime.html:24
+msgid "Now"
+msgstr "Jetzt"
 
 #: gcampus/core/widgets.py:52
 msgid "Hour"
