@@ -103,13 +103,17 @@
                                 {% translate "To the Measurement" %}</a>
                         </td>
                         <td>
+                        {% if measurement.token.token is not None %}
                             {% if measurement.token.token == request.session.token %}
-                                <a href="{% url "gcampuscore:measurement_detail" pk=measurement.pk %}"
+                                <a href="{% url "gcampuscore:add_data_points" measurement_id=measurement.pk %}"
                                    class="btn btn-primary btn-md" role="button">
                                     {% translate "Edit Measurement" %}</a>
                             {% else %}
                                 -
                             {% endif %}
+                            {% else %}
+                                -
+                           {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
