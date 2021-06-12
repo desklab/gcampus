@@ -84,6 +84,7 @@
                     <th scope="col">{% translate "Date" %}</th>
                     <th scope="col">{% translate "Number of Datapoints" %}</th>
                     <th scope="col">{% translate "To the Measurement" %}</th>
+                    <th scope="col">{% translate "Edit Measurement" %}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -100,6 +101,15 @@
                             <a href="{% url "gcampuscore:measurement_detail" pk=measurement.pk %}"
                                class="btn btn-primary btn-md" role="button">
                                 {% translate "To the Measurement" %}</a>
+                        </td>
+                        <td>
+                            {% if measurement.token.token == request.session.token %}
+                                <a href="{% url "gcampuscore:measurement_detail" pk=measurement.pk %}"
+                                   class="btn btn-primary btn-md" role="button">
+                                    {% translate "Edit Measurement" %}</a>
+                            {% else %}
+                                -
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

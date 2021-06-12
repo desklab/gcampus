@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-04 11:06+0200\n"
+"POT-Creation-Date: 2021-06-11 13:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -231,10 +231,12 @@ msgid "Teacher Name"
 msgstr "Name der Lehrkraft"
 
 #: gcampus/core/models/token.py:59
+#, python-format
 msgid "Teacher Token %(id)s"
 msgstr "Lehrkraft Token %(id)s"
 
 #: gcampus/core/models/token.py:96
+#, python-format
 msgid "Student Token %(id)s"
 msgstr "Schüler Token %(id)s"
 
@@ -243,17 +245,23 @@ msgid "All measurements displayed on a map"
 msgstr "Alle Messungen auf der Karte"
 
 #: gcampus/core/templates/gcampuscore/components/mapview.html:17
-#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:92
-#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:105
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:101
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:114
 msgid "Measurement by"
 msgstr "Messung von"
 
-#: gcampus/core/templates/gcampuscore/components/mapview.html:44
+#: gcampus/core/templates/gcampuscore/components/mapview.html:32
+#, fuzzy
+#| msgid "All measurements displayed on a map"
+msgid "All measurements displayed in a map"
+msgstr "Alle Messungen auf der Karte"
+
+#: gcampus/core/templates/gcampuscore/components/mapview.html:47
 #: gcampus/core/templates/gcampuscore/components/measurement_list.html:32
 msgid "Open additional filters"
 msgstr "Weitere Suchmöglichkeiten öffnen"
 
-#: gcampus/core/templates/gcampuscore/components/mapview.html:80
+#: gcampus/core/templates/gcampuscore/components/mapview.html:83
 #: gcampus/core/templates/gcampuscore/components/measurement_list.html:75
 msgid "Search"
 msgstr "Suchen"
@@ -266,6 +274,14 @@ msgstr "Die Messung wurde am %(date)s um %(time)s durchgeführt"
 #: gcampus/core/templates/gcampuscore/components/measurement_detail.html:60
 msgid "Expand comment"
 msgstr "Kommentar ansehen"
+
+#: gcampus/core/templates/gcampuscore/components/measurement_detail.html:91
+#: gcampus/core/templates/gcampuscore/components/measurement_list.html:87
+#: gcampus/core/templates/gcampuscore/components/measurement_list.html:109
+#, fuzzy
+#| msgid "Measurement"
+msgid "Edit Measurement"
+msgstr "Messung bearbeiten"
 
 #: gcampus/core/templates/gcampuscore/components/measurement_list.html:4
 #: gcampus/core/templates/gcampuscore/components/measurement_list.html:13
@@ -282,7 +298,7 @@ msgid "Number of Datapoints"
 msgstr "Anzahl der Datenpunkte"
 
 #: gcampus/core/templates/gcampuscore/components/measurement_list.html:86
-#: gcampus/core/templates/gcampuscore/components/measurement_list.html:102
+#: gcampus/core/templates/gcampuscore/components/measurement_list.html:103
 msgid "To the Measurement"
 msgstr "Zur Messung"
 
