@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse
 from django.views.generic.edit import FormView
 
 from django.core.exceptions import PermissionDenied
@@ -13,7 +14,7 @@ class SetStudentTokenFormView(FormView):
     form_class = StudentTokenForm
     # TODO Create an intermediate site that tells you you logged in
     #   correctly and gives the option for several sites
-    success_url = "/mapview/"
+    success_url = reverse("mapview")
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -28,7 +29,7 @@ class SetStudentTokenFormView(FormView):
         if form.is_valid():
             # Session is being cleared when new token is set
             # TODO This does not work
-            #self.request.session = {}
+            # self.request.session = {}
             token = form.cleaned_data["token"]
             self.request.session["token"] = token
             self.request.session["token_type"] = STUDENT_TOKEN_TYPE
@@ -39,8 +40,9 @@ class SetStudentTokenFormView(FormView):
 class SetTeacherTokenFormView(FormView):
     template_name = "gcampuscore/forms/token.html"
     form_class = TeacherTokenForm
-    # TODO Create an intermediate site that tells you you logged in correctly and gives the option for several sites
-    success_url = "/mapview/"
+    # TODO Create an intermediate site that tells you you logged in
+    #   correctly and gives the option for several sites
+    success_url = reverse("mapview")
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -60,6 +62,7 @@ class SetTeacherTokenFormView(FormView):
             self.request.session["token"] = token
             return super(SetTeacherTokenFormView, self).form_valid(form)
         raise PermissionDenied(_("Token does not exist"))
+
 
 def logout(request):
     if request.session.get("token", None) is not None:
