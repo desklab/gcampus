@@ -1,15 +1,36 @@
 {% load i18n %}
-<div class="row align-items-end{% if class %} {{ class }}{% endif %}">
-    <div class="col-3"><small>{% translate "Date" %}</small></div>
-    {% spaceless %}
-        {% for widget in widget.subwidgets %}
-            <label class="visually-hidden" for="{{ widget.id_for_label }}">{{ widget.attrs.placeholder }}</label>
-            <input type="number"
-                   class="autofocus text-center form-control appearance-textfield form-control-sm{% if not forloop.first %} ms-1{% endif %}{% if not forloop.last %} me-1{% endif %}"
-                   style="width: 4em;"
-                   name="{{ widget.name }}"
-                    {% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}
-                    {% include "django/forms/widgets/attrs.html" %}>{% if not forloop.last %}.{% endif %}
-        {% endfor %}
-    {% endspaceless %}
+<div class="d-flex flex-row align-items-center{% if class %} {{ class }}{% endif %}">
+    <div class="pe-3 d-flex flex-row justify-content-end" style="min-width: 75px;"><small>{% translate "Date" %}</small></div>
+    <div class="pe-3 d-flex flex-row align-items-end">
+        {% spaceless %}
+            {% for sub_widget in widget.subwidgets %}
+                <label class="visually-hidden" for="{{ sub_widget.id_for_label }}">{{ sub_widget.attrs.placeholder }}</label>
+                <input type="number"
+                       class="autofocus text-center form-control appearance-textfield form-control-sm{% if not forloop.first %} ms-1{% endif %}{% if not forloop.last %} me-1{% endif %}"
+                       style="width: 4em;" id="{{ sub_widget.name }}" name="{{ sub_widget.name }}"
+                        {% if sub_widget.value != None %} value="{{ sub_widget.value|stringformat:'s' }}"{% endif %}
+                        {% include "django/forms/widgets/attrs.html" with widget=sub_widget only %}>{% if not forloop.last %}.{% endif %}
+            {% endfor %}
+        {% endspaceless %}
+    </div>
+    <div>
+        <button class="btn btn-sm btn-secondary me-2"
+                type="button" onclick="fillInToday()"
+                data-bs-toggle="tooltip" data-bs-placement="top"
+                title="{% translate "Fill in the current date" %}">
+            {% translate "Today" %}
+        </button>
+    </div>
 </div>
+<script>
+    const name_prefix = '{{ widget.name }}';
+    const day_field = document.getElementById(name_prefix + "_0");
+    const month_field = document.getElementById(name_prefix + "_1");
+    const year_field = document.getElementById(name_prefix + "_2");
+    function fillInToday() {
+        let date = new Date();
+        day_field.value = String(date.getDate()).padStart(2, "0");
+        month_field.value = String(date.getMonth() + 1).padStart(2, "0");
+        year_field.value = date.getFullYear();
+    }
+</script>

@@ -1,15 +1,37 @@
 {% load i18n %}
-<div class="row align-items-end{% if class %} {{ class }}{% endif %}">
-    <div class="col-3"><small>{% translate "Time" %}</small></div>
-    {% spaceless %}
-        {% for widget in widget.subwidgets %}
-            <label class="visually-hidden" for="{{ widget.id_for_label }}">{{ widget.attrs.placeholder }}</label>
-            <input type="number"
-                   class="autofocus text-center form-control appearance-textfield form-control-sm{% if not forloop.first %} ms-1{% endif %}{% if not forloop.last %} me-1{% endif %}"
-                   style="width: 4em;"
-                   name="{{ widget.name }}"
-                    {% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}
-                    {% include "django/forms/widgets/attrs.html" %}>{% if not forloop.last %}:{% endif %}
-        {% endfor %}
-    {% endspaceless %}
+<div class="d-flex flex-row align-items-center{% if class %} {{ class }}{% endif %}">
+    <div class="pe-3 d-flex flex-row justify-content-end" style="min-width: 75px;">
+        <small>{% translate "Time" %}</small>
+    </div>
+    <div class="pe-3 d-flex flex-row align-items-end">
+        {% spaceless %}
+            {% for widget in widget.subwidgets %}
+                <label class="visually-hidden" for="{{ widget.id_for_label }}">{{ widget.attrs.placeholder }}</label>
+                <input type="number"
+                       class="autofocus text-center form-control appearance-textfield form-control-sm{% if not forloop.first %} ms-1{% endif %}{% if not forloop.last %} me-1{% endif %}"
+                       style="width: 4em;" id="{{ widget.name }}"
+                       name="{{ widget.name }}"
+                        {% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}
+                        {% include "django/forms/widgets/attrs.html" %}>{% if not forloop.last %}:{% endif %}
+            {% endfor %}
+        {% endspaceless %}
+    </div>
+    <div>
+        <button class="btn btn-sm btn-secondary me-2"
+                type="button" onclick="fillInNow()"
+                data-bs-toggle="tooltip" data-bs-placement="top"
+                title="{% translate "Fill in the current time" %}">
+            {% translate "Now" %}
+        </button>
+    </div>
 </div>
+<script>
+    const namePrefix = '{{ widget.name }}';
+    const hourField = document.getElementById(namePrefix + "_0");
+    const monthField = document.getElementById(namePrefix + "_1");
+    function fillInNow() {
+        let date = new Date();
+        hourField.value = String(date.getHours()).padStart(2, "0");
+        monthField.value = String(date.getMinutes()).padStart(2, "0");
+    }
+</script>
