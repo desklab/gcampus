@@ -21,11 +21,15 @@ TOKEN_INVALID_ERROR = _("Provided token is not invalid or does not exist.")
 STUDENT_TOKEN_TYPE = "student"
 TEACHER_TOKEN_TYPE = "teacher"
 
+TEACHER_TOKEN_LENGTH = getattr(settings, "TEACHER_TOKEN_LENGTH", 12)
+STUDENT_TOKEN_LENGTH = getattr(settings, "STUDENT_TOKEN_LENGTH", 8)
+
+
 logger = logging.getLogger("gcampus.core.token")
 
 
 class TeacherToken(DateModelMixin):
-    token = models.CharField(blank=False, max_length=12, unique=True)
+    token = models.CharField(blank=False, max_length=TEACHER_TOKEN_LENGTH, unique=True)
 
     deactivated = models.BooleanField(default=False)
 
@@ -46,7 +50,10 @@ class TeacherToken(DateModelMixin):
         while True:
             _counter += 1
             logger.info(f"Generating random teacher token (attempt number {_counter})")
-            token = get_random_string(length=12, allowed_chars=ALLOWED_TOKEN_CHARS)
+            token = get_random_string(
+                length=TEACHER_TOKEN_LENGTH,
+                allowed_chars=ALLOWED_TOKEN_CHARS
+            )
             if not TeacherToken.objects.filter(token=token).exists():
                 return token
 
@@ -66,7 +73,7 @@ class TeacherToken(DateModelMixin):
 
 
 class StudentToken(DateModelMixin):
-    token = models.CharField(blank=False, max_length=8, unique=True)
+    token = models.CharField(blank=False, max_length=STUDENT_TOKEN_LENGTH, unique=True)
 
     parent_token = models.ForeignKey(
         TeacherToken, on_delete=models.PROTECT, blank=False, null=False
@@ -83,7 +90,10 @@ class StudentToken(DateModelMixin):
         while True:
             _counter += 1
             logger.info(f"Generating random student token (attempt number {_counter})")
-            token = get_random_string(length=8, allowed_chars=ALLOWED_TOKEN_CHARS)
+            token = get_random_string(
+                length=STUDENT_TOKEN_LENGTH,
+                allowed_chars=ALLOWED_TOKEN_CHARS
+            )
             if not StudentToken.objects.filter(token=token).exists():
                 return token
 

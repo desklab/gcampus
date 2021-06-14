@@ -10,14 +10,30 @@ from gcampus.core.models.token import (
 from gcampus.core.widgets import HiddenTokenInput
 
 
-def token_exists_validator(value):
+def student_token_exists_validator(value):
     if StudentToken.objects.filter(token=value).exists():
         # All good, token is a valid student token
         return
+    else:
+        raise ValidationError(TOKEN_INVALID_ERROR)
+
+
+def teacher_token_exists_validator(value):
     if TeacherToken.objects.filter(token=value).exists():
         # Also fine, token is a valid teacher token
         return
-    raise ValidationError(TOKEN_INVALID_ERROR)
+    else:
+        raise ValidationError(TOKEN_INVALID_ERROR)
+
+
+def any_token_exists_validator(value):
+    try:
+        student_token_exists_validator(value)
+    except ValidationError:
+        # Do not yet handle the exception. First check if a teacher token
+        # exists
+        teacher_token_exists_validator(value)
+    # At this point, a token has been found. Nothing is returned.
 
 
 class TokenField(CharField):
@@ -25,7 +41,7 @@ class TokenField(CharField):
     widget = HiddenTokenInput
 
     # This is the most important part: Validate the provided token
-    default_validators = [token_exists_validator]
+    default_validators = [any_token_exists_validator]
 
     def validate(self, value):
         # Strangely, this method 'validate' is only used to validate

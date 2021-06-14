@@ -19,7 +19,7 @@ from gcampus.core.models.token import (
 
 
 class MeasurementListView(ListView):
-    template_name = "gcampuscore/components/measurement_list.html"
+    template_name = "gcampuscore/sites/list/measurement_list.html"
     model = Measurement
     context_object_name = "measurement_list"
     paginate_by = 10
@@ -34,7 +34,7 @@ class MeasurementListView(ListView):
 
 class MeasurementDetailView(DetailView):
     model = Measurement
-    template_name = "gcampuscore/components/measurement_detail.html"
+    template_name = "gcampuscore/sites/detail/measurement_detail.html"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,7 +51,7 @@ class MeasurementDetailView(DetailView):
 
 class MeasurementMapView(ListView):
     model = Measurement
-    template_name = "gcampuscore/components/mapview.html"
+    template_name = "gcampuscore/sites/mapview.html"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
