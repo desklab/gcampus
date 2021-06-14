@@ -1,16 +1,13 @@
-from typing import Union, Optional, Tuple
 import logging
+from typing import Union, Optional, Tuple
 
+from django.conf import settings
 from django.contrib.gis.db import models
-
 from django.utils.crypto import get_random_string
 from django.utils.translation import ugettext_lazy as _
 
-from django.conf import settings
-
 from gcampus.core.models import Measurement
 from gcampus.core.models.util import DateModelMixin
-
 
 ALLOWED_TOKEN_CHARS = settings.ALLOWED_TOKEN_CHARS
 TOKEN_EDIT_PERMISSION_ERROR = _("Token is not allowed to edit this measurement!")
@@ -115,20 +112,27 @@ class StudentToken(DateModelMixin):
 AnyToken = Union[StudentToken, TeacherToken]
 
 
-def get_any_token_class(token) -> Optional[AnyToken]:
-    try:
-        return StudentToken.objects.get(token=token)
-    except StudentToken.DoesNotExist:
-        pass
+def get_any_token_class(token, token_type: Optional[str] = None) -> Optional[AnyToken]:
+    if not token_type == TEACHER_TOKEN_TYPE:
+        try:
+            return StudentToken.objects.get(token=token)
+        except StudentToken.DoesNotExist:
+            pass
     # Try the same with a teacher token
-    try:
-        return TeacherToken.objects.get(token=token)
-    except TeacherToken.DoesNotExist:
-        return None
+    if not token_type == STUDENT_TOKEN_TYPE:
+        try:
+            return TeacherToken.objects.get(token=token)
+        except TeacherToken.DoesNotExist:
+            return None
+    # No token was returned yet
+    return None
 
 
-def get_token_and_create_permission(token) -> Tuple[Optional[AnyToken], bool]:
-    token_instance = get_any_token_class(token)
+def get_token_and_create_permission(
+    token: str,
+    token_type: Optional[str] = None
+) -> Tuple[Optional[AnyToken], bool]:
+    token_instance = get_any_token_class(token, token_type=token_type)
     if token_instance is None:
         return None, False
     if getattr(token_instance, "can_create_measurement", False):
@@ -138,13 +142,20 @@ def get_token_and_create_permission(token) -> Tuple[Optional[AnyToken], bool]:
         return token_instance, False
 
 
-def can_token_create_measurement(token) -> bool:
-    _token, permission = get_token_and_create_permission(token)
+def can_token_create_measurement(
+    token: str,
+    token_type: Optional[str] = None
+) -> bool:
+    _token, permission = get_token_and_create_permission(token, token_type=token_type)
     return permission
 
 
-def can_token_edit_measurement(token, measurement: Measurement) -> bool:
-    token_instance = get_any_token_class(token)
+def can_token_edit_measurement(
+    token: str,
+    measurement: Measurement,
+    token_type: Optional[str] = None
+) -> bool:
+    token_instance = get_any_token_class(token, token_type=token_type)
     if token_instance is None:
         return False
 

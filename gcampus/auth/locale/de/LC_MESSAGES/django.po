@@ -1,0 +1,104 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-06-14 15:24+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: gcampus/auth/admin.py:20
+msgid "Deactivate selected tokens"
+msgstr "Ausgewählte Token deaktivieren"
+
+#: gcampus/auth/admin.py:21
+msgid "Reactivate selected tokens"
+msgstr "Ausgewählte Token reaktivieren"
+
+#: gcampus/auth/apps.py:8
+msgid "GCampus Auth"
+msgstr "GCampus Auth"
+
+#: gcampus/auth/forms/token.py:17 gcampus/auth/models/token.py:82
+msgid "Student Token"
+msgstr "Schüler Token"
+
+#: gcampus/auth/forms/token.py:28 gcampus/auth/models/token.py:42
+msgid "Teacher Token"
+msgstr "Lehrkraft Token"
+
+#: gcampus/auth/models/token.py:13
+msgid "Token is not allowed to edit this measurement!"
+msgstr "Der Token hat nicht die Berechtigung diese Messung zu verändern!"
+
+#: gcampus/auth/models/token.py:14
+msgid "Token is not allowed to create a measurement!"
+msgstr "Der Token hat nicht die Berechtigung eine Messung zu erstellen!"
+
+#: gcampus/auth/models/token.py:15
+msgid "No token has been provided to create or edit a measurement!"
+msgstr "Es wurde kein Token zum Erstellen oder Bearbeiten der Messung angegeben!"
+
+#: gcampus/auth/models/token.py:16
+msgid "Provided token is not invalid or does not exist."
+msgstr "Der eingegebene Token ist ungültig oder existiert nicht!"
+
+#: gcampus/auth/models/token.py:34
+msgid "School Name"
+msgstr "Name der Schule"
+
+#: gcampus/auth/models/token.py:38
+msgid "Teacher Name"
+msgstr "Name der Lehrkraft"
+
+#: gcampus/auth/models/token.py:63
+#, python-format
+msgid "Teacher Token %(id)s"
+msgstr "Lehrkraft Token %(id)s"
+
+#: gcampus/auth/models/token.py:103
+#, python-format
+msgid "Student Token %(id)s"
+msgstr "Schüler Token %(id)s"
+
+#: gcampus/auth/templates/gcampusauth/forms/token.html:4
+msgid "Verification"
+msgstr "Verifikation"
+
+#: gcampus/auth/templates/gcampusauth/forms/token.html:12
+msgid "Verify with a Student Token"
+msgstr "Mit einem Schüler Token anmelden"
+
+#: gcampus/auth/templates/gcampusauth/forms/token.html:14
+msgid "Verify with a Teacher Token"
+msgstr "Mit einem Leherer Token anmelden"
+
+#: gcampus/auth/templates/gcampusauth/forms/token.html:20
+msgid "You are currently logged in with a Student Token"
+msgstr "Du bist momentan mit einem Schüler Token angemeldet"
+
+#: gcampus/auth/templates/gcampusauth/forms/token.html:26
+msgid "You are currently logged in with a Teacher Token"
+msgstr "Du bist momentan mit einem Leherer Token angemeldet"
+
+#: gcampus/auth/templates/gcampusauth/forms/token.html:47
+msgid "Confirm"
+msgstr "Bestätigen"
+
+#: gcampus/auth/templates/gcampusauth/forms/token.html:52
+msgid "Logout"
+msgstr "Abmelden"
+
+#: gcampus/auth/templates/gcampusauth/forms/token.html:54
+msgid "Log in with new Token"
+msgstr "Mit neuem Token anmelden"

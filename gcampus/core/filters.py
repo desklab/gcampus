@@ -6,6 +6,8 @@ from django.contrib.gis.measure import Distance
 from django.contrib.postgres.search import SearchQuery
 from django.core.validators import EMPTY_VALUES
 from django.db.models import QuerySet
+from django.forms import CheckboxSelectMultiple
+from django.utils.translation import gettext_lazy as _
 from django_filters import (
     Filter,
     FilterSet,
@@ -13,11 +15,9 @@ from django_filters import (
     CharFilter,
     ModelMultipleChoiceFilter,
 )
-from django.forms import TextInput, CheckboxSelectMultiple
-from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.fields import SplitSplitDateTimeField, LocationRadiusField
-from gcampus.core.models import Measurement, DataType
+from gcampus.core.models import DataType
 from gcampus.core.models.util import EMPTY
 
 

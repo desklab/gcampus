@@ -1,16 +1,12 @@
 from django.urls import path
 
+from gcampus.core.apps import GCampusCoreAppConfig
 from gcampus.core.views.datapoint import DataPointFormSetView
 from gcampus.core.views.measurement import (
     MeasurementFormView,
     MeasurementListView,
     MeasurementDetailView,
     MeasurementMapView,
-)
-from gcampus.core.views.token import (
-    SetStudentTokenFormView,
-    SetTeacherTokenFormView,
-    logout,
 )
 
 # Turn off black formatting and pylint
@@ -28,12 +24,8 @@ urlpatterns = [
     # Measurement list and details
     path("measurements/", MeasurementListView.as_view(), name="measurements"),
     path("measurement/<int:pk>/detail", MeasurementDetailView.as_view(), name="measurement_detail"),
-    # Token
-    path("verify/student/", SetStudentTokenFormView.as_view(), name="student_token_form"),
-    path("verify/teacher/", SetTeacherTokenFormView.as_view(), name="teacher_token_form"),
-    path('logout/', logout),
 ]
 # fmt: on
 # pylint: enable=line-too-long
 
-app_name = "gcampuscore"
+app_name = GCampusCoreAppConfig.label

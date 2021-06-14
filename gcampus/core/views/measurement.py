@@ -9,13 +9,14 @@ from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic.edit import FormView
 
-from gcampus.core.filters import MeasurementFilter
-from gcampus.core.forms.measurement import MeasurementForm
-from gcampus.core.models import Measurement
-from gcampus.core.models.token import (
+from gcampus.auth import utils
+from gcampus.auth.models.token import (
     can_token_create_measurement,
     TOKEN_CREATE_PERMISSION_ERROR,
 )
+from gcampus.core.filters import MeasurementFilter
+from gcampus.core.forms.measurement import MeasurementForm
+from gcampus.core.models import Measurement
 
 
 class MeasurementListView(ListView):
@@ -67,15 +68,17 @@ class MeasurementFormView(FormView):
     next_view_name = "gcampuscore:add_data_points"
 
     def get(self, request, *args, **kwargs):
-        token = request.session.get("token", None)
-        if can_token_create_measurement(token):
+        token = utils.get_token(request)
+        token_type = utils.get_token_type(request)
+        if can_token_create_measurement(token, token_type=token_type):
             return super(MeasurementFormView, self).get(request, *args, **kwargs)
         else:
             raise PermissionDenied(TOKEN_CREATE_PERMISSION_ERROR)
 
     def post(self, request, *args, **kwargs):
-        token = request.session.get("token", None)
-        if can_token_create_measurement(token):
+        token = utils.get_token(request)
+        token_type = utils.get_token_type(request)
+        if can_token_create_measurement(token, token_type=token_type):
             return super(MeasurementFormView, self).post(request, *args, **kwargs)
         else:
             raise PermissionDenied(TOKEN_CREATE_PERMISSION_ERROR)

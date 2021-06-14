@@ -1,7 +1,7 @@
 import functools
 
-from django.utils.deconstruct import deconstructible
 from django.conf import settings
+from django.utils.deconstruct import deconstructible
 from storages.backends.s3boto3 import S3StaticStorage  # noqa
 
 

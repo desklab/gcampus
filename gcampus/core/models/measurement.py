@@ -1,12 +1,9 @@
 __ALL__ = ["Measurement", "DataType", "DataPoint"]
 
-from typing import Optional
-
 from django.contrib.gis.db import models
 from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField
 from django.core.exceptions import ObjectDoesNotExist
-
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models import util
@@ -29,7 +26,11 @@ class Measurement(util.DateModelMixin):
     #  This will be changed in the future after creating a new database.
     #  Otherwise the migrations would be a pain.
     token = models.ForeignKey(
-        "StudentToken", on_delete=models.PROTECT, blank=False, null=True, default=None
+        "gcampusauth.StudentToken",
+        on_delete=models.PROTECT,
+        blank=False,
+        null=True,
+        default=None
     )
 
     name = models.CharField(

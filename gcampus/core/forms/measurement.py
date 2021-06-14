@@ -16,15 +16,15 @@ from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from leaflet.forms.widgets import LeafletWidget
 
-from gcampus.core.fields import SplitSplitDateTimeField
-from gcampus.core.fields.token import TokenField
-from gcampus.core.models import Measurement, DataPoint
-from gcampus.core.models.token import (
-    can_token_edit_measurement,
-    can_token_create_measurement,
+from gcampus.auth.fields.token import TokenField
+from gcampus.auth.models.token import (
     TOKEN_CREATE_PERMISSION_ERROR,
-    TOKEN_EDIT_PERMISSION_ERROR, get_token_and_create_permission,
+    TOKEN_EDIT_PERMISSION_ERROR,
+    can_token_edit_measurement,
+    get_token_and_create_permission,
 )
+from gcampus.core.fields import SplitSplitDateTimeField
+from gcampus.core.models import Measurement, DataPoint
 
 TOKEN_FIELD_NAME = "gcampus_auth_token"
 

@@ -3,7 +3,3 @@ from gcampus.core.models.measurement import (
     DataType,
     DataPoint,
 )
-from gcampus.core.models.token import (
-    StudentToken,
-    TeacherToken,
-)

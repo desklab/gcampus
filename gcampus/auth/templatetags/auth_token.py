@@ -4,11 +4,12 @@ from django import template
 from django.core.exceptions import PermissionDenied
 from django.template import Node
 from django.template.base import FilterExpression
-from django.utils.html import format_html
 from django.template.base import token_kwargs
+from django.utils.html import format_html
 from django_filters.constants import EMPTY_VALUES
 
-from gcampus.core.models.token import TOKEN_EMPTY_ERROR
+from gcampus.auth import utils
+from gcampus.auth.models.token import TOKEN_EMPTY_ERROR
 
 register = template.Library()
 
@@ -21,7 +22,7 @@ class AuthTokenNode(Node):
     def render(self, context):
         if "request" not in context:
             raise ValueError("Unable to find 'request' in template context!")
-        token = context.request.session.get("token", None)
+        token = utils.get_token(context.request)
         if token in EMPTY_VALUES or token == "None":
             raise PermissionDenied(TOKEN_EMPTY_ERROR)
         if self.prefix_token is not None:

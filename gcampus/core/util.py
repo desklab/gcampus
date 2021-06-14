@@ -5,7 +5,6 @@ from geopy import Location
 from geopy.exc import GeocoderServiceError
 from geopy.geocoders import Nominatim
 
-
 """Address Options
 
 The address options are used for reverse geocoding. The response may

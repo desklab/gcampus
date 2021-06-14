@@ -1,13 +1,13 @@
 from django.core.exceptions import ValidationError
 from django.forms import CharField
 
-from gcampus.core.models import StudentToken
-from gcampus.core.models.token import (
+from gcampus.auth.models.token import (
+    StudentToken,
     TeacherToken,
     TOKEN_EMPTY_ERROR,
     TOKEN_INVALID_ERROR,
 )
-from gcampus.core.widgets import HiddenTokenInput
+from gcampus.auth.widgets import HiddenTokenInput
 
 
 def student_token_exists_validator(value):

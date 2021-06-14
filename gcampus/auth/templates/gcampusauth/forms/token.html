@@ -8,19 +8,19 @@
 {% block content %}
     <div class="container">
         <div class="py-5 text-center">
-        {% if token_type == "Student" %}
+        {% if token_type|lower == "student" %}
             <h2> {% blocktranslate %}Verify with a Student Token{% endblocktranslate %}</h2>
         {%  else %}
         <h2> {% blocktranslate %}Verify with a Teacher Token{% endblocktranslate %}</h2>
         {% endif %}
         </div>
-        {% if set_token_type == "Student" %}
+        {% if set_token_type|lower == "student" %}
             {% if "token" in request.session %}
                 <div class="py-5 text-center">
                     <h3> {% blocktranslate %}You are currently logged in with a Student Token{% endblocktranslate %}</h3>
                 </div>
             {% endif %}
-        {% elif set_token_type == "Teacher" %}
+        {% elif set_token_type|lower == "teacher" %}
             <div class="py-5 text-center">
                 {% if "token" in request.session %}
                     <h3> {% blocktranslate %}You are currently logged in with a Teacher Token{% endblocktranslate %}</h3>
@@ -41,7 +41,7 @@
                         </div>
                     {% endwith %}
                 </div>
-                    {% if "token" not in request.session %}
+                    {% if not request.session.gcampusauth_authenticated %}
                         <div class="col-lg-2">
                             <button class="btn btn-primary btn-lg">
                                 {% translate "Confirm" %}
@@ -49,7 +49,7 @@
                         </div>
                     {% else %}
                         <div class="button-box col-lg-12">
-                            <a href="/logout" class="btn btn-lg btn-danger" role="button">{% translate "Log Out" %}</a>
+                            <a href="/logout" class="btn btn-lg btn-danger" role="button">{% translate "Logout" %}</a>
                             <button class="btn btn-primary btn-lg">
                                 {% translate "Log in with new Token" %}
                             </button>

@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "django_filters",
     # gcampus specific apps
     "gcampus.core",
+    "gcampus.auth",
     "gcampus.api",
     # Other django apps
     # Sometimes the order is important

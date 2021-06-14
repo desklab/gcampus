@@ -104,7 +104,7 @@
                         </td>
                         <td>
                         {% if measurement.token.token is not None %}
-                            {% if measurement.token.token == request.session.token %}
+                            {% if measurement.token.token == request.session.gcampusauth_token.token %}
                                 <a href="{% url "gcampuscore:edit_data_points" measurement_id=measurement.pk %}"
                                    class="btn btn-primary btn-md" role="button">
                                     {% translate "Edit Measurement" %}</a>

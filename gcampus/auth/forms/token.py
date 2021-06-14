@@ -1,12 +1,14 @@
 from django import forms
-
-from gcampus.core.fields.token import student_token_exists_validator, \
-    teacher_token_exists_validator
-from gcampus.core.models import StudentToken
-from gcampus.core.models.token import TeacherToken, STUDENT_TOKEN_LENGTH, \
-    TEACHER_TOKEN_LENGTH
-
 from django.utils.translation import gettext_lazy as _
+
+from gcampus.auth.fields.token import (
+    student_token_exists_validator,
+    teacher_token_exists_validator,
+)
+from gcampus.auth.models.token import (
+    STUDENT_TOKEN_LENGTH,
+    TEACHER_TOKEN_LENGTH
+)
 
 
 class StudentTokenForm(forms.Form):
