@@ -154,8 +154,8 @@ class LocationRadiusWidget(MultiWidget):
     def _get_leaflet_map_attrs(self, name, attrs=None):
         """Get Leaflet Map Attributes
 
-        Replicates the functionality of the private method
-        :meth:`leaflet.forms.widgets.LeafletWidget._get_attr` which
+        Replicates the functionality of the method
+        :meth:`leaflet.forms.widgets.LeafletWidget.get_attr` which
         provides additional context variables used to render a leaflet
         map.
 
@@ -164,7 +164,7 @@ class LocationRadiusWidget(MultiWidget):
         :return: Dictionary of additional attributes
         :rtype: dict
         """
-        return self.map_widget._get_attrs(name, attrs=attrs)  # noqa
+        return self.map_widget.get_attrs(name, attrs=attrs)
 
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
