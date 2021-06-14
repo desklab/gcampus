@@ -1,0 +1,9 @@
+{% with current_view=request.resolver_match.view_name %}
+    <li class="nav-item">
+        <a href="{% url view_name %}"
+           class="nav-link link-dark px-2{% if current_view == view_name %} active" aria-current="page">{% else %}">{% endif %}
+            {{ title }}
+        </a>
+    </li>
+{% endwith %}
+

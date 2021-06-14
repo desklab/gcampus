@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-12 14:21+0200\n"
+"POT-Creation-Date: 2021-06-14 15:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,10 +57,20 @@ msgstr "Unbenannter Teich %(id)s"
 msgid "Unnamed wetland %(id)s"
 msgstr ""
 
-#: gcampus/settings/base.py:108
+#: gcampus/settings/base.py:109
 msgid "English"
 msgstr "Englisch"
 
-#: gcampus/settings/base.py:108
+#: gcampus/settings/base.py:109
 msgid "German"
 msgstr "Deutsch"
+
+#, fuzzy
+#~| msgid "GCampus API"
+#~ msgid "GCampus Auth"
+#~ msgstr "GCampus API"
+
+#, fuzzy
+#~| msgid "Unnamed lake %(id)s"
+#~ msgid "Teacher Token %(id)s"
+#~ msgstr "Unbenannter See %(id)s"
