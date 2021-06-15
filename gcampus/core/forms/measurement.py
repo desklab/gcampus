@@ -18,10 +18,12 @@ from leaflet.forms.widgets import LeafletWidget
 
 from gcampus.auth.fields.token import TokenField
 from gcampus.auth.models.token import (
-    TOKEN_CREATE_PERMISSION_ERROR,
-    TOKEN_EDIT_PERMISSION_ERROR,
     can_token_edit_measurement,
     get_token_and_create_permission,
+)
+from gcampus.auth.exceptions import (
+    TOKEN_CREATE_PERMISSION_ERROR,
+    TOKEN_EDIT_PERMISSION_ERROR,
 )
 from gcampus.core.fields import SplitSplitDateTimeField
 from gcampus.core.models import Measurement, DataPoint

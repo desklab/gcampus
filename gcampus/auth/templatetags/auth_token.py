@@ -9,7 +9,7 @@ from django.utils.html import format_html
 from django_filters.constants import EMPTY_VALUES
 
 from gcampus.auth import utils
-from gcampus.auth.models.token import TOKEN_EMPTY_ERROR
+from gcampus.auth.exceptions import TOKEN_EMPTY_ERROR
 
 register = template.Library()
 

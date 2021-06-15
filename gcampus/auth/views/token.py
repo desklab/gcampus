@@ -8,12 +8,9 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 
 from gcampus.auth import utils
+from gcampus.auth.exceptions import TOKEN_INVALID_ERROR
 from gcampus.auth.forms.token import StudentTokenForm, TeacherTokenForm
-from gcampus.auth.models.token import (
-    STUDENT_TOKEN_TYPE,
-    TEACHER_TOKEN_TYPE,
-    TOKEN_INVALID_ERROR,
-)
+from gcampus.auth.models.token import STUDENT_TOKEN_TYPE, TEACHER_TOKEN_TYPE
 
 
 class SetTokenFormView(FormView, ABC):

@@ -10,10 +10,8 @@ from django.views.generic import ListView
 from django.views.generic.edit import FormView
 
 from gcampus.auth import utils
-from gcampus.auth.models.token import (
-    can_token_create_measurement,
-    TOKEN_CREATE_PERMISSION_ERROR,
-)
+from gcampus.auth.models.token import can_token_create_measurement
+from gcampus.auth.exceptions import TOKEN_CREATE_PERMISSION_ERROR
 from gcampus.core.filters import MeasurementFilter
 from gcampus.core.forms.measurement import MeasurementForm
 from gcampus.core.models import Measurement

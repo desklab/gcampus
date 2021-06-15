@@ -10,10 +10,8 @@ from django.views.generic import DetailView
 from django.views.generic.base import TemplateResponseMixin, View
 
 from gcampus.auth import utils
-from gcampus.auth.models.token import (
-    can_token_edit_measurement,
-    TOKEN_EDIT_PERMISSION_ERROR,
-)
+from gcampus.auth.models.token import can_token_edit_measurement
+from gcampus.auth.exceptions import TOKEN_EDIT_PERMISSION_ERROR
 from gcampus.core.forms.measurement import DataPointFormSet
 from gcampus.core.models import DataPoint, Measurement
 
