@@ -3,7 +3,7 @@ from datetime import datetime
 from django.forms.utils import ErrorList
 from django.test import TestCase
 
-from gcampus.auth.models import TeacherToken, StudentToken
+from gcampus.auth.models import CourseToken, AccessKey
 from gcampus.auth.exceptions import (
     TOKEN_EMPTY_ERROR,
     TOKEN_INVALID_ERROR,
@@ -23,14 +23,14 @@ class MeasurementModelTest(TestCase):
     }
 
     def setUp(self) -> None:
-        self.parent_token = TeacherToken(
+        self.parent_token = CourseToken(
             school_name="GCampus Test Case",
             teacher_name="GCampus Testing"
         )
         self.parent_token.save()
         self.tokens = []
         for i in range(5):
-            _token = StudentToken(parent_token=self.parent_token)
+            _token = AccessKey(parent_token=self.parent_token)
             _token.save()
             self.tokens.append(_token)
 

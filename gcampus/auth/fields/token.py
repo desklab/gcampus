@@ -2,21 +2,21 @@ from django.core.exceptions import ValidationError
 from django.forms import CharField
 
 from gcampus.auth.exceptions import TOKEN_EMPTY_ERROR, TOKEN_INVALID_ERROR
-from gcampus.auth.models.token import StudentToken, TeacherToken
+from gcampus.auth.models.token import AccessKey, CourseToken
 from gcampus.auth.widgets import HiddenTokenInput
 
 
-def student_token_exists_validator(value):
-    if StudentToken.objects.filter(token=value).exists():
-        # All good, token is a valid student token
+def access_key_exists_validator(value):
+    if AccessKey.objects.filter(token=value).exists():
+        # All good, token is a valid access key
         return
     else:
         raise ValidationError(TOKEN_INVALID_ERROR)
 
 
-def teacher_token_exists_validator(value):
-    if TeacherToken.objects.filter(token=value).exists():
-        # Also fine, token is a valid teacher token
+def course_token_exists_validator(value):
+    if CourseToken.objects.filter(token=value).exists():
+        # Also fine, token is a valid course token
         return
     else:
         raise ValidationError(TOKEN_INVALID_ERROR)
@@ -24,11 +24,11 @@ def teacher_token_exists_validator(value):
 
 def any_token_exists_validator(value):
     try:
-        student_token_exists_validator(value)
+        access_key_exists_validator(value)
     except ValidationError:
-        # Do not yet handle the exception. First check if a teacher token
+        # Do not yet handle the exception. First check if a course token
         # exists
-        teacher_token_exists_validator(value)
+        course_token_exists_validator(value)
     # At this point, a token has been found. Nothing is returned.
 
 

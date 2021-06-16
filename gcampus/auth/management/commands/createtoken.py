@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
-from gcampus.auth.models import TeacherToken, StudentToken
+from gcampus.auth.models import CourseToken, AccessKey
 
 
 class Command(BaseCommand):
@@ -13,11 +13,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         number = options["number"]
         with transaction.atomic():
-            root_token = TeacherToken(teacher_name="GCampus Admin")
+            root_token = CourseToken(teacher_name="GCampus Admin")
             root_token.save()
-            print(f"Teacher Token: {root_token.token}")
+            print(f"Course Token: {root_token.token}")
             for i in range(number):
-                token = StudentToken()
+                token = AccessKey()
                 token.parent_token = root_token
                 token.save()
-                print(f"Token {i + 1:d}: {token.token}")
+                print(f"Access Key {i + 1:d}: {token.token}")

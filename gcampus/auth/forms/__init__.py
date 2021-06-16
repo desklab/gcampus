@@ -1,1 +1,1 @@
-from gcampus.auth.forms.token import TeacherTokenForm, StudentTokenForm
+from gcampus.auth.forms.token import CourseTokenForm, AccessKeyForm

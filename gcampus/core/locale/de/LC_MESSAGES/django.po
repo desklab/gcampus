@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-14 15:24+0200\n"
+"POT-Creation-Date: 2021-06-16 16:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -63,23 +63,23 @@ msgstr "Standort"
 msgid "Filter by radius after selecting a location"
 msgstr "Nach Messungen in einem bestimmten Radius suchen"
 
-#: gcampus/core/forms/measurement.py:101
+#: gcampus/core/forms/measurement.py:103
 msgid "Unable to parse OpenStreetMap ID!"
-msgstr ""
+msgstr "Fehler beim lesen der OpenStreetMap ID!"
 
-#: gcampus/core/forms/measurement.py:125 gcampus/core/models/measurement.py:159
+#: gcampus/core/forms/measurement.py:127 gcampus/core/models/measurement.py:159
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:44
 msgid "Value"
 msgstr "Wert"
 
-#: gcampus/core/forms/measurement.py:131 gcampus/core/models/measurement.py:65
+#: gcampus/core/forms/measurement.py:133 gcampus/core/models/measurement.py:65
 #: gcampus/core/models/measurement.py:166
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:26
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:45
 msgid "Comment"
 msgstr "Kommentar"
 
-#: gcampus/core/forms/measurement.py:197
+#: gcampus/core/forms/measurement.py:199
 msgid "ManagementForm data is missing or has been tampered with"
 msgstr ""
 
@@ -194,7 +194,6 @@ msgid "Create New Measurement"
 msgstr "Neue Messung Erstellen"
 
 #: gcampus/core/templates/gcampuscore/components/header.html:14
-#: gcampus/core/templates/gcampuscore/forms/logout.html:4
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -228,18 +227,6 @@ msgstr "Verwerfen"
 #: gcampus/core/templates/gcampuscore/forms/datapoints.html:49
 msgid "Save"
 msgstr "Speichern"
-
-#: gcampus/core/templates/gcampuscore/forms/logout.html:11
-msgid "You successfully logged out"
-msgstr "Erfolgreich abgemeldet"
-
-#: gcampus/core/templates/gcampuscore/forms/logout.html:19
-msgid "Log in as a Teacher"
-msgstr "Als Lehrkraft einloggen"
-
-#: gcampus/core/templates/gcampuscore/forms/logout.html:20
-msgid "Log in as a Student"
-msgstr "Als Schüler/Schülerin einloggen"
 
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:4
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:13

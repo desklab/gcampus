@@ -11,18 +11,18 @@ from gcampus.core.models.util import DateModelMixin
 
 ALLOWED_TOKEN_CHARS = settings.ALLOWED_TOKEN_CHARS
 
-STUDENT_TOKEN_TYPE = "student"
-TEACHER_TOKEN_TYPE = "teacher"
+ACCESS_TOKEN_TYPE = "access"
+COURSE_TOKEN_TYPE = "course"
 
-TEACHER_TOKEN_LENGTH = getattr(settings, "TEACHER_TOKEN_LENGTH", 12)
-STUDENT_TOKEN_LENGTH = getattr(settings, "STUDENT_TOKEN_LENGTH", 8)
+COURSE_TOKEN_LENGTH = getattr(settings, "COURSE_TOKEN_LENGTH", 12)
+ACCESS_KEY_LENGTH = getattr(settings, "ACCESS_KEY_LENGTH", 8)
 
 
 logger = logging.getLogger("gcampus.core.token")
 
 
-class TeacherToken(DateModelMixin):
-    token = models.CharField(blank=False, max_length=TEACHER_TOKEN_LENGTH, unique=True)
+class CourseToken(DateModelMixin):
+    token = models.CharField(blank=False, max_length=COURSE_TOKEN_LENGTH, unique=True)
 
     deactivated = models.BooleanField(default=False)
 
@@ -35,28 +35,28 @@ class TeacherToken(DateModelMixin):
     )
 
     class Meta:
-        verbose_name = _("Teacher Token")
+        verbose_name = _("Course Token")
 
     @staticmethod
-    def generate_teacher_token():
+    def generate_course_token():
         _counter = 0
         while True:
             _counter += 1
-            logger.info(f"Generating random teacher token (attempt number {_counter})")
+            logger.info(f"Generating random course token (attempt number {_counter})")
             token = get_random_string(
-                length=TEACHER_TOKEN_LENGTH,
+                length=COURSE_TOKEN_LENGTH,
                 allowed_chars=ALLOWED_TOKEN_CHARS
             )
-            if not TeacherToken.objects.filter(token=token).exists():
+            if not CourseToken.objects.filter(token=token).exists():
                 return token
 
     def save(self, *args, **kwargs):
         if not self.token:
-            self.token = self.generate_teacher_token()
+            self.token = self.generate_course_token()
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return _("Teacher Token %(id)s") % {"id": self.pk}
+        return _("Course Token %(id)s") % {"id": self.pk}
 
     @property
     def can_create_measurement(self):
@@ -65,38 +65,38 @@ class TeacherToken(DateModelMixin):
         return False
 
 
-class StudentToken(DateModelMixin):
-    token = models.CharField(blank=False, max_length=STUDENT_TOKEN_LENGTH, unique=True)
+class AccessKey(DateModelMixin):
+    token = models.CharField(blank=False, max_length=ACCESS_KEY_LENGTH, unique=True)
 
     parent_token = models.ForeignKey(
-        TeacherToken, on_delete=models.PROTECT, blank=False, null=False
+        CourseToken, on_delete=models.PROTECT, blank=False, null=False
     )
 
     deactivated = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = _("Student Token")
+        verbose_name = _("Access Key")
 
     @staticmethod
-    def generate_student_token():
+    def generate_access_key():
         _counter = 0
         while True:
             _counter += 1
-            logger.info(f"Generating random student token (attempt number {_counter})")
+            logger.info(f"Generating random access key (attempt number {_counter})")
             token = get_random_string(
-                length=STUDENT_TOKEN_LENGTH,
+                length=ACCESS_KEY_LENGTH,
                 allowed_chars=ALLOWED_TOKEN_CHARS
             )
-            if not StudentToken.objects.filter(token=token).exists():
+            if not AccessKey.objects.filter(token=token).exists():
                 return token
 
     def save(self, *args, **kwargs):
         if not self.token:
-            self.token = self.generate_student_token()
+            self.token = self.generate_access_key()
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return _("Student Token %(id)s") % {"id": self.pk}
+        return _("Access Key %(id)s") % {"id": self.pk}
 
     @property
     def can_create_measurement(self):
@@ -105,20 +105,20 @@ class StudentToken(DateModelMixin):
         return not self.deactivated
 
 
-AnyToken = Union[StudentToken, TeacherToken]
+AnyToken = Union[AccessKey, CourseToken]
 
 
 def get_any_token_class(token, token_type: Optional[str] = None) -> Optional[AnyToken]:
-    if not token_type == TEACHER_TOKEN_TYPE:
+    if not token_type == COURSE_TOKEN_TYPE:
         try:
-            return StudentToken.objects.get(token=token)
-        except StudentToken.DoesNotExist:
+            return AccessKey.objects.get(token=token)
+        except AccessKey.DoesNotExist:
             pass
-    # Try the same with a teacher token
-    if not token_type == STUDENT_TOKEN_TYPE:
+    # Try the same with a course token
+    if not token_type == ACCESS_TOKEN_TYPE:
         try:
-            return TeacherToken.objects.get(token=token)
-        except TeacherToken.DoesNotExist:
+            return CourseToken.objects.get(token=token)
+        except CourseToken.DoesNotExist:
             return None
     # No token was returned yet
     return None
@@ -164,7 +164,7 @@ def can_token_edit_measurement(
     # except Measurement.DoesNotExist:
     #     return False
 
-    measurement_token: Optional[StudentToken] = measurement.token
+    measurement_token: Optional[AccessKey] = measurement.token
     if not measurement_token:
         return False
     return (

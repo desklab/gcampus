@@ -3,8 +3,8 @@ from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.auth.models import (
-    StudentToken,
-    TeacherToken,
+    AccessKey,
+    CourseToken,
 )
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 
@@ -21,17 +21,17 @@ deactivate_token.short_description = _("Deactivate selected tokens")
 reactivate_token.short_description = _("Reactivate selected tokens")
 
 
-class StudentTokenAdmin(admin.ModelAdmin):
+class AccessKeyAdmin(admin.ModelAdmin):
     list_filter = ("deactivated",)
     readonly_fields = ADMIN_READ_ONLY_FIELDS
     actions = [deactivate_token, reactivate_token]
 
 
-class TeacherTokenAdmin(admin.ModelAdmin):
+class CourseTokenAdmin(admin.ModelAdmin):
     list_filter = ("deactivated",)
     readonly_fields = ADMIN_READ_ONLY_FIELDS
     actions = [deactivate_token, reactivate_token]
 
 
-admin.site.register(StudentToken, StudentTokenAdmin)
-admin.site.register(TeacherToken, TeacherTokenAdmin)
+admin.site.register(AccessKey, AccessKeyAdmin)
+admin.site.register(CourseToken, CourseTokenAdmin)

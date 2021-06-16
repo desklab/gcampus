@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-14 15:24+0200\n"
+"POT-Creation-Date: 2021-06-16 16:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: gcampus/auth/admin.py:20
 msgid "Deactivate selected tokens"
 msgstr "Ausgewählte Token deaktivieren"
@@ -29,75 +29,148 @@ msgstr "Ausgewählte Token reaktivieren"
 msgid "GCampus Auth"
 msgstr "GCampus Auth"
 
-#: gcampus/auth/forms/token.py:17 gcampus/auth/models/token.py:82
-msgid "Student Token"
-msgstr "Schüler Token"
-
-#: gcampus/auth/forms/token.py:28 gcampus/auth/models/token.py:42
-msgid "Teacher Token"
-msgstr "Lehrkraft Token"
-
-#: gcampus/auth/models/token.py:13
+#: gcampus/auth/exceptions.py:5
 msgid "Token is not allowed to edit this measurement!"
-msgstr "Der Token hat nicht die Berechtigung diese Messung zu verändern!"
+msgstr "Der Schlüssel hat nicht die Berechtigung diese Messung zu verändern!"
 
-#: gcampus/auth/models/token.py:14
+#: gcampus/auth/exceptions.py:6
 msgid "Token is not allowed to create a measurement!"
-msgstr "Der Token hat nicht die Berechtigung eine Messung zu erstellen!"
+msgstr "Der Schlüssel hat nicht die Berechtigung eine Messung zu erstellen!"
 
-#: gcampus/auth/models/token.py:15
+#: gcampus/auth/exceptions.py:7
 msgid "No token has been provided to create or edit a measurement!"
-msgstr "Es wurde kein Token zum Erstellen oder Bearbeiten der Messung angegeben!"
+msgstr ""
+"Es wurde kein Schlüssel zum Erstellen oder Bearbeiten der Messung angegeben!"
 
-#: gcampus/auth/models/token.py:16
+#: gcampus/auth/exceptions.py:8
 msgid "Provided token is not invalid or does not exist."
-msgstr "Der eingegebene Token ist ungültig oder existiert nicht!"
+msgstr "Der eingegebene Schlüssel ist ungültig oder existiert nicht!"
 
-#: gcampus/auth/models/token.py:34
+#: gcampus/auth/forms/token.py:19 gcampus/auth/models/token.py:78
+msgid "Access Key"
+msgstr "Zugangscode"
+
+#: gcampus/auth/forms/token.py:30 gcampus/auth/models/token.py:38
+msgid "Course Token"
+msgstr "Kursschlüssel"
+
+#: gcampus/auth/models/token.py:30
 msgid "School Name"
 msgstr "Name der Schule"
 
-#: gcampus/auth/models/token.py:38
+#: gcampus/auth/models/token.py:34
 msgid "Teacher Name"
 msgstr "Name der Lehrkraft"
 
-#: gcampus/auth/models/token.py:63
+#: gcampus/auth/models/token.py:59
 #, python-format
-msgid "Teacher Token %(id)s"
-msgstr "Lehrkraft Token %(id)s"
+msgid "Course Token %(id)s"
+msgstr "Kursschlüssel %(id)s"
 
-#: gcampus/auth/models/token.py:103
+#: gcampus/auth/models/token.py:99
 #, python-format
-msgid "Student Token %(id)s"
-msgstr "Schüler Token %(id)s"
+msgid "Access Key %(id)s"
+msgstr "Zugangscode %(id)s"
+
+#: gcampus/auth/templates/gcampusauth/forms/logout.html:4
+#: gcampus/auth/templates/gcampusauth/forms/token.html:52
+msgid "Logout"
+msgstr "Abmelden"
+
+#: gcampus/auth/templates/gcampusauth/forms/logout.html:11
+msgid "You successfully logged out"
+msgstr "Du wurdest erfolgreich abgemeldet"
+
+#: gcampus/auth/templates/gcampusauth/forms/logout.html:19
+#, fuzzy
+#| msgid "Verify with a access key"
+msgid "Log in with an access key"
+msgstr "Mit einem Zugangscode anmelden"
+
+#: gcampus/auth/templates/gcampusauth/forms/logout.html:22
+#, fuzzy
+#| msgid "Verify with a course token"
+msgid "Log in with a course token"
+msgstr "Mit einem Kursschlüssel anmelden"
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:4
+msgid "Request Access Keys"
+msgstr "Zugangscodes Anfordern"
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:12
+msgctxt "register heading"
+msgid "Register"
+msgstr "Registrieren"
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:14
+msgctxt "help text register"
+msgid ""
+"Register your class or\n"
+"course and generate a list of <b>access keys</b> for your students.\n"
+"These keys can be used to create and later edit measurements on\n"
+"GewässerCampus.\n"
+"<br>\n"
+"Alongside the generated access keys, you will also receive a\n"
+"<b>course key</b> that should be kept private. With this key you can\n"
+"view and edit all your student's measurements."
+msgstr ""
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:35
+msgctxt "help text school name"
+msgid ""
+"The name of the\n"
+"school or educational institution requesting new tokens. This\n"
+"information will not be shared publicly but helps us to associate\n"
+"measurements with your school or institution."
+msgstr ""
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:51
+msgctxt "help text teacher name"
+msgid ""
+"Your name or the\n"
+"name of a representative. This information will also be kept private and\n"
+"is only used for communication."
+msgstr ""
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:66
+#, python-format
+msgctxt "help text number of tokens"
+msgid ""
+"\n"
+"The number of access keys you want to generate. You can create a maximum\n"
+"of %(maximum)s access keys at once.\n"
+"<br>\n"
+"Students may share one access key in a group so not everyone needs their\n"
+"own access key."
+msgstr ""
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:76
+msgid "Register"
+msgstr "Registrieren"
 
 #: gcampus/auth/templates/gcampusauth/forms/token.html:4
 msgid "Verification"
 msgstr "Verifikation"
 
 #: gcampus/auth/templates/gcampusauth/forms/token.html:12
-msgid "Verify with a Student Token"
-msgstr "Mit einem Schüler Token anmelden"
+msgid "Verify with a access key"
+msgstr "Mit einem Zugangscode anmelden"
 
 #: gcampus/auth/templates/gcampusauth/forms/token.html:14
-msgid "Verify with a Teacher Token"
-msgstr "Mit einem Leherer Token anmelden"
+msgid "Verify with a course token"
+msgstr "Mit einem Kursschlüssel anmelden"
 
 #: gcampus/auth/templates/gcampusauth/forms/token.html:20
-msgid "You are currently logged in with a Student Token"
-msgstr "Du bist momentan mit einem Schüler Token angemeldet"
+msgid "You are currently logged in with an access key"
+msgstr "Du bist momentan mit einem Zugangscode angemeldet"
 
 #: gcampus/auth/templates/gcampusauth/forms/token.html:26
-msgid "You are currently logged in with a Teacher Token"
-msgstr "Du bist momentan mit einem Leherer Token angemeldet"
+msgid "You are currently logged in with a course token"
+msgstr "Du bist momentan mit einem Kursschlüssel angemeldet"
 
 #: gcampus/auth/templates/gcampusauth/forms/token.html:47
 msgid "Confirm"
 msgstr "Bestätigen"
-
-#: gcampus/auth/templates/gcampusauth/forms/token.html:52
-msgid "Logout"
-msgstr "Abmelden"
 
 #: gcampus/auth/templates/gcampusauth/forms/token.html:54
 msgid "Log in with new Token"

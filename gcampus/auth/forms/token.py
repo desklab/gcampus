@@ -1,33 +1,35 @@
 from django import forms
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.auth.fields.token import (
-    student_token_exists_validator,
-    teacher_token_exists_validator,
+    access_key_exists_validator,
+    course_token_exists_validator,
 )
 from gcampus.auth.models.token import (
-    STUDENT_TOKEN_LENGTH,
-    TEACHER_TOKEN_LENGTH
+    ACCESS_KEY_LENGTH,
+    COURSE_TOKEN_LENGTH,
+    CourseToken,
 )
 
 
-class StudentTokenForm(forms.Form):
+class AccessKeyForm(forms.Form):
     token = forms.CharField(
         required=True,
-        label=_("Student Token"),
-        max_length=STUDENT_TOKEN_LENGTH,
-        min_length=STUDENT_TOKEN_LENGTH,
-        validators=[student_token_exists_validator],
+        label=_("Access Key"),
+        max_length=ACCESS_KEY_LENGTH,
+        min_length=ACCESS_KEY_LENGTH,
+        validators=[access_key_exists_validator],
     )
     fields = ["token"]
 
 
-class TeacherTokenForm(forms.Form):
+class CourseTokenForm(forms.Form):
     token = forms.CharField(
         required=True,
-        label=_("Teacher Token"),
-        max_length=TEACHER_TOKEN_LENGTH,
-        min_length=TEACHER_TOKEN_LENGTH,
-        validators=[teacher_token_exists_validator],
+        label=_("Course Token"),
+        max_length=COURSE_TOKEN_LENGTH,
+        min_length=COURSE_TOKEN_LENGTH,
+        validators=[course_token_exists_validator],
     )
     fields = ["token"]

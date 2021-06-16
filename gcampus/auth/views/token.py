@@ -9,8 +9,8 @@ from django.views.generic.edit import FormView
 
 from gcampus.auth import utils
 from gcampus.auth.exceptions import TOKEN_INVALID_ERROR
-from gcampus.auth.forms.token import StudentTokenForm, TeacherTokenForm
-from gcampus.auth.models.token import STUDENT_TOKEN_TYPE, TEACHER_TOKEN_TYPE
+from gcampus.auth.forms.token import AccessKeyForm, CourseTokenForm
+from gcampus.auth.models.token import ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE
 
 
 class SetTokenFormView(FormView, ABC):
@@ -27,7 +27,7 @@ class SetTokenFormView(FormView, ABC):
         context["token_type"] = self.token_type
         return context
 
-    def form_valid(self, form: Union[StudentTokenForm, TeacherTokenForm]):
+    def form_valid(self, form: Union[AccessKeyForm, CourseTokenForm]):
         if form.is_valid():
             token = form.cleaned_data["token"]
             utils.logout(self.request)
@@ -36,16 +36,16 @@ class SetTokenFormView(FormView, ABC):
         raise PermissionDenied(TOKEN_INVALID_ERROR)
 
 
-class SetStudentTokenFormView(SetTokenFormView):
-    form_class = StudentTokenForm
-    token_type = STUDENT_TOKEN_TYPE
+class SetAccessKeyFormView(SetTokenFormView):
+    form_class = AccessKeyForm
+    token_type = ACCESS_TOKEN_TYPE
 
 
-class SetTeacherTokenFormView(SetTokenFormView):
-    form_class = TeacherTokenForm
-    token_type = TEACHER_TOKEN_TYPE
+class SetCourseTokenFormView(SetTokenFormView):
+    form_class = CourseTokenForm
+    token_type = COURSE_TOKEN_TYPE
 
 
 def logout(request: HttpRequest):
     utils.logout(request)
-    return render(request, "gcampuscore/forms/logout.html")
+    return render(request, "gcampusauth/forms/logout.html")

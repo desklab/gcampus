@@ -26,7 +26,7 @@ class Measurement(util.DateModelMixin):
     #  This will be changed in the future after creating a new database.
     #  Otherwise the migrations would be a pain.
     token = models.ForeignKey(
-        "gcampusauth.StudentToken",
+        "gcampusauth.AccessKey",
         on_delete=models.PROTECT,
         blank=False,
         null=True,

@@ -2,8 +2,8 @@ from django.urls import path
 
 from gcampus.auth.apps import GCampusAuthAppConfig
 from gcampus.auth.views.token import (
-    SetStudentTokenFormView,
-    SetTeacherTokenFormView,
+    SetAccessKeyFormView,
+    SetCourseTokenFormView,
     logout,
 )
 
@@ -12,9 +12,9 @@ from gcampus.auth.views.token import (
 # pylint: disable=line-too-long
 urlpatterns = [
     # Token
-    path("verify/", SetStudentTokenFormView.as_view(), name="verify"),
-    path("verify/student/", SetStudentTokenFormView.as_view(), name="student_token_form"),
-    path("verify/teacher/", SetTeacherTokenFormView.as_view(), name="teacher_token_form"),
+    path("verify/", SetAccessKeyFormView.as_view(), name="verify"),
+    path("verify/accesskey/", SetAccessKeyFormView.as_view(), name="access_key_form"),
+    path("verify/coursetoken/", SetCourseTokenFormView.as_view(), name="course_token_form"),
     path('logout/', logout, name="logout"),
 ]
 # fmt: on

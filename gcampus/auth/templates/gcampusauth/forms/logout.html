@@ -14,10 +14,13 @@
 
     <div class="container">
     <div class="py-5 text-center">
-
             <div class="button-box col-lg-12">
-                <a href="/verify/teacher" class="btn btn-lg btn-primary" role="button">{% translate "Log in as a Teacher" %}</a>
-                <a href="/verify/student" class="btn btn-lg btn-primary" role="button">{% translate "Log in as a Student" %}</a>
+                <a href="{% url 'gcampusauth:access_key_form' %}" class="btn btn-lg btn-primary" role="button">
+                    {% translate "Log in with an access key" %}
+                </a>
+                <a href="{% url 'gcampusauth:course_token_form' %}" class="btn btn-lg btn-primary" role="button">
+                    {% translate "Log in with a course token" %}
+                </a>
             </div>
         </div>
     </div>
