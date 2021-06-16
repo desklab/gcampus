@@ -1,0 +1,44 @@
+name: Test
+
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      GCAMPUS_DB_USER: 'gcampus'
+      GCAMPUS_DB_NAME: 'gcampustest'
+      GCAMPUS_DB_PASSWORD: 'test-password'
+      GCAMPUS_DB_HOST: 'postgis'
+    services:
+      postgis:
+        image: postgis/postgis:13-3.1
+        env:
+          POSTGRES_DB: ${{ env.GCAMPUS_DB_NAME }}
+          POSTGRES_USER: ${{ env.GCAMPUS_DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.GCAMPUS_DB_PASSWORD }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Add conda to system path
+        run: echo $CONDA/bin >> $GITHUB_PATH
+
+      - name: Install GDAL
+        run: conda install -y libgdal -c conda-forge
+
+      - name: Install Requirements
+        run: pip install -r requirements.txt
+
+      - name: Run Tests
+        run: python manage.py test
+        env:
+          DJANGO_SETTINGS_MODULE: 'gcampus.settings.test'
