@@ -1,5 +1,5 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n static leaflet_tags %}
+{% load i18n static leaflet_tags auth_token %}
 {% block title %}
     {% translate "All measurements" %}
 {% endblock %}
@@ -8,6 +8,7 @@
     {% leaflet_css plugins="forms" %}
 {% endblock %}
 {% block content %}
+    {% auth_token prefix=formset.prefix %}
     <div class="container">
         <div class="py-5 text-center">
             <h2>{% translate "My measurements" %}</h2>
