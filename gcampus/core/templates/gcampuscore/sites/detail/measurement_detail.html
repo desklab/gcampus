@@ -78,12 +78,13 @@
             </tbody>
         </table>
     </div>
-    <div class="row justify-content-center">
+    <div class="row justify-content-center py-5">
         <div class="col-lg-6">
             {% leaflet_map "yourmap" callback="window.map_init_basic" %}
         </div>
     </div>
     <div class="row justify-content-center">
+    <div class="py-5 text-center">
         <div class="col-lg-6">
         {% if measurement.token.token is not None %}
         {% if measurement.token.token == request.session.gcampusauth_token.token %}
@@ -93,6 +94,7 @@
         {% endif %}
     {% endif %}
         </div>
+    </div>
     </div>
 
     <script>
