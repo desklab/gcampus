@@ -51,7 +51,7 @@ class CourseMeasurementListView(ListView):
     template_name = "gcampuscore/sites/list/course_measurement_list.html"
     model = Measurement
     paginate_by = 10
-
+    # TODO change auth token tag in html to only show page when logged in with a course token
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         course_measurements = None
