@@ -1,0 +1,69 @@
+{% extends "gcampuscore/base.html" %}
+{% load i18n static leaflet_tags %}
+{% block title %}
+    {% translate "All measurements" %}
+{% endblock %}
+{% block extra_head %}
+    {% leaflet_js plugins="forms" %}
+    {% leaflet_css plugins="forms" %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>{% translate "My measurements" %}</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center text-center">
+        <div class="col-auto">
+            {% if personal_measurements is not empty %}
+                <table class="table-responsive">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">{% translate "Name" %}</th>
+                        <th scope="col">{% translate "Location" %}</th>
+                        <th scope="col">{% translate "Date" %}</th>
+                        <th scope="col">{% translate "Number of Datapoints" %}</th>
+                        <th scope="col">{% translate "To the Measurement" %}</th>
+                        <th scope="col">{% translate "Edit Measurement" %}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for measurement in personal_measurements %}
+                        <tr>
+                            <th scope="row"><input type="checkbox" id="scales" name="scales"></th>
+                            <td>
+                                {{ measurement.name }}
+                            </td>
+                            <td>{{ measurement.location_name }}</td>
+                            <td>{{ measurement.time }}</td>
+                            <td>{{ measurement.data_points.count }}</td>
+                            <td>
+                                <a href="{% url "gcampuscore:measurement_detail" pk=measurement.pk %}"
+                                   class="btn btn-primary btn-md" role="button">
+                                    {% translate "To the Measurement" %}</a>
+                            </td>
+                            <td>
+                                {% if measurement.token.token is not None %}
+                                    {% if measurement.token.token == request.session.gcampusauth_token.token %}
+                                        <a href="{% url "gcampuscore:edit_data_points" measurement_id=measurement.pk %}"
+                                           class="btn btn-primary btn-md" role="button">
+                                            {% translate "Edit Measurement" %}</a>
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <h2>{% translate "You don't have any conducted measurements" %}</h2>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+

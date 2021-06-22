@@ -6,7 +6,7 @@ from gcampus.core.views.measurement import (
     MeasurementFormView,
     MeasurementListView,
     MeasurementDetailView,
-    MeasurementMapView,
+    MeasurementMapView, PersonalMeasurementListView,
 )
 
 # Turn off black formatting and pylint
@@ -24,6 +24,7 @@ urlpatterns = [
     # Measurement list and details
     path("measurements/", MeasurementListView.as_view(), name="measurements"),
     path("measurement/<int:pk>/detail", MeasurementDetailView.as_view(), name="measurement_detail"),
+    path("personal/measurements", PersonalMeasurementListView.as_view(), name="personal_measuremets"),
 ]
 # fmt: on
 # pylint: enable=line-too-long
