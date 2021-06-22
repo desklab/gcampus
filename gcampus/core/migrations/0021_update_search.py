@@ -5,10 +5,11 @@ from django.db import migrations
 
 TSVECTOR_CONF = getattr(settings, "TSVECTOR_CONF", "german")
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gcampuscore', '0020_auto_20210614_1240'),
+        ("gcampuscore", "0020_auto_20210614_1240"),
     ]
 
     operations = [

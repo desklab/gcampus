@@ -6,7 +6,9 @@ from gcampus.core.views.measurement import (
     MeasurementFormView,
     MeasurementListView,
     MeasurementDetailView,
-    MeasurementMapView, PersonalMeasurementListView, CourseMeasurementListView,
+    MeasurementMapView,
+    PersonalMeasurementListView,
+    CourseMeasurementListView,
 )
 
 # Turn off black formatting and pylint

@@ -44,8 +44,7 @@ class CourseToken(DateModelMixin):
             _counter += 1
             logger.info(f"Generating random course token (attempt number {_counter})")
             token = get_random_string(
-                length=COURSE_TOKEN_LENGTH,
-                allowed_chars=ALLOWED_TOKEN_CHARS
+                length=COURSE_TOKEN_LENGTH, allowed_chars=ALLOWED_TOKEN_CHARS
             )
             if not CourseToken.objects.filter(token=token).exists():
                 return token
@@ -84,8 +83,7 @@ class AccessKey(DateModelMixin):
             _counter += 1
             logger.info(f"Generating random access key (attempt number {_counter})")
             token = get_random_string(
-                length=ACCESS_KEY_LENGTH,
-                allowed_chars=ALLOWED_TOKEN_CHARS
+                length=ACCESS_KEY_LENGTH, allowed_chars=ALLOWED_TOKEN_CHARS
             )
             if not AccessKey.objects.filter(token=token).exists():
                 return token
@@ -125,8 +123,7 @@ def get_any_token_class(token, token_type: Optional[str] = None) -> Optional[Any
 
 
 def get_token_and_create_permission(
-    token: str,
-    token_type: Optional[str] = None
+    token: str, token_type: Optional[str] = None
 ) -> Tuple[Optional[AnyToken], bool]:
     token_instance = get_any_token_class(token, token_type=token_type)
     if token_instance is None:
@@ -138,18 +135,13 @@ def get_token_and_create_permission(
         return token_instance, False
 
 
-def can_token_create_measurement(
-    token: str,
-    token_type: Optional[str] = None
-) -> bool:
+def can_token_create_measurement(token: str, token_type: Optional[str] = None) -> bool:
     _token, permission = get_token_and_create_permission(token, token_type=token_type)
     return permission
 
 
 def can_token_edit_measurement(
-    token: str,
-    measurement: Measurement,
-    token_type: Optional[str] = None
+    token: str, measurement: Measurement, token_type: Optional[str] = None
 ) -> bool:
     token_instance = get_any_token_class(token, token_type=token_type)
     if token_instance is None:

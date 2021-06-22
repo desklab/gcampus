@@ -68,8 +68,8 @@ class MeasurementForm(ModelForm):
             current_instance: Optional[Measurement] = self.instance
             token_error: Optional[ValidationError] = None
             if current_instance is None or current_instance.id in EMPTY_VALUES:
-                token_instance, permission = (
-                    get_token_and_create_permission(current_token)
+                token_instance, permission = get_token_and_create_permission(
+                    current_token
                 )
                 if not permission:
                     token_error = ValidationError(TOKEN_CREATE_PERMISSION_ERROR)

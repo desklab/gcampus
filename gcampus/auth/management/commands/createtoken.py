@@ -8,7 +8,7 @@ class Command(BaseCommand):
     help = "Create new tokens"
 
     def add_arguments(self, parser):
-        parser.add_argument('number', type=int)
+        parser.add_argument("number", type=int)
 
     def handle(self, *args, **options):
         number = options["number"]

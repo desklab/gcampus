@@ -37,10 +37,15 @@ class CourseTokenForm(forms.Form):
 
 class RegisterForm(forms.ModelForm):
     number_of_tokens = forms.IntegerField(
-        min_value=1, max_value=getattr(settings, "REGISTER_MAX_TOKEN_NUMBER", 30),
-        required=True, initial=5
+        min_value=1,
+        max_value=getattr(settings, "REGISTER_MAX_TOKEN_NUMBER", 30),
+        required=True,
+        initial=5,
     )
 
     class Meta:
         model = CourseToken
-        fields = ("school_name", "teacher_name",)
+        fields = (
+            "school_name",
+            "teacher_name",
+        )

@@ -1,4 +1,1 @@
-from gcampus.auth.models.token import (
-    AccessKey,
-    CourseToken
-)
+from gcampus.auth.models.token import AccessKey, CourseToken

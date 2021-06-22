@@ -30,7 +30,7 @@ class Measurement(util.DateModelMixin):
         on_delete=models.PROTECT,
         blank=False,
         null=True,
-        default=None
+        default=None,
     )
 
     name = models.CharField(

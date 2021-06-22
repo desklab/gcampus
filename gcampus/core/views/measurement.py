@@ -10,7 +10,11 @@ from django.views.generic import ListView
 from django.views.generic.edit import FormView
 
 from gcampus.auth import utils
-from gcampus.auth.models.token import can_token_create_measurement, CourseToken, AccessKey
+from gcampus.auth.models.token import (
+    can_token_create_measurement,
+    CourseToken,
+    AccessKey,
+)
 from gcampus.auth.exceptions import TOKEN_CREATE_PERMISSION_ERROR
 from gcampus.core.filters import MeasurementFilter
 from gcampus.core.forms.measurement import MeasurementForm
@@ -47,6 +51,7 @@ class PersonalMeasurementListView(ListView):
         context["personal_measurements"] = personal_measurements
         return context
 
+
 class CourseMeasurementListView(ListView):
     template_name = "gcampuscore/sites/list/course_measurement_list.html"
     model = Measurement
@@ -57,7 +62,9 @@ class CourseMeasurementListView(ListView):
         course_measurements = None
         if utils.TOKEN_STORE in self.request.session:
             token = self.request.session[utils.TOKEN_STORE].get("token", None)
-            course_measurements = Measurement.objects.filter(token__parent_token__token=token)
+            course_measurements = Measurement.objects.filter(
+                token__parent_token__token=token
+            )
             if not course_measurements:
                 course_measurements = None
         context["course_measurements"] = course_measurements
