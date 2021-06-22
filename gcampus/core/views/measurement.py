@@ -47,6 +47,22 @@ class PersonalMeasurementListView(ListView):
         context["personal_measurements"] = personal_measurements
         return context
 
+class CourseMeasurementListView(ListView):
+    template_name = "gcampuscore/sites/list/course_measurement_list.html"
+    model = Measurement
+    paginate_by = 10
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        course_measurements = None
+        if utils.TOKEN_STORE in self.request.session:
+            token = self.request.session[utils.TOKEN_STORE].get("token", None)
+            course_measurements = Measurement.objects.filter(token__parent_token__token=token)
+            if not course_measurements:
+                course_measurements = None
+        context["course_measurements"] = course_measurements
+        return context
+
 
 class MeasurementDetailView(DetailView):
     model = Measurement
