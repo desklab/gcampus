@@ -1,100 +1,111 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n leaflet_tags %}
+{% load i18n leaflet_tags l10n %}
 {% block extra_head %}
     {% leaflet_js plugins="forms" %}
     {% leaflet_css plugins="forms" %}
 {% endblock %}
 {% block content %}
-
-    <div>
-        <div class="container">
-            <div class="py-5 text-center">
-                <h3>{{ object }}</h3>
-
+    <div class="bg-light" id="measurement-head">
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-12 col-md-6 d-flex flex-column">
+                    <h3 class="mb-4 fw-light">{{ object }}</h3>
+                    <div class="d-flex flex-row justify-content-between mb-3">
+                        <div>
+                            <small class="text-muted">{% translate "Water name" %}</small>
+                            <br>
+                            <h4>
+                                {% if object.water_name %}
+                                    {{ object.water_name }}
+                                {% else %}
+                                    {% translate "N/A" context "no value provided (water name, comment, etc)" %}
+                                {% endif %}
+                            </h4>
+                        </div>
+                        <div>
+                            <small class="text-muted">{% translate "Time" %}</small>
+                            <br>
+                            <h4>{{ object.time|localize }}</h4>
+                        </div>
+                        <div></div> {# Add additional div for placing #}
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">{% translate "Comment" %}</small>
+                        <br>
+                        <p>
+                            {% if object.comment %}
+                                {{ object.comment }}
+                            {% else %}
+                                {% translate "N/A" context "no value provided (water name, comment, etc)" %}
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="mt-auto">
+                        {% if measurement.token.token is not None %}
+                            {% if measurement.token.token == request.session.gcampusauth_token.token %}
+                                <a href="{% url "gcampuscore:edit_data_points" measurement_id=measurement.pk %}"
+                                   class="btn btn-sm btn-secondary"
+                                   role="button">
+                                    {% translate "Edit Measurement" %}
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="shadow-sm">
+                        {% leaflet_map "measurement_map" callback="window.map_init_basic" %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <div>
+    <div class="py-4" id="measurement-body measurement-data">
         <div class="container">
-            <div class="py-5 text-right">
-                <p>
-                    {% blocktranslate trimmed with date=measurement.time|date:"d.m.y" time=measurement.time|date:"h:i" %}
-                        The measurement was conducted on {{ date }} at {{ time }}
-                    {% endblocktranslate %}
-                </p>
-                <h5>{% translate "Comment" %}</h5>
-                <p>
-                    {% if measurement.comment %}
-                        {{ measurement.comment }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-center text-center">
-
-        <table class="table">
-            <thead class="thead-dark">
-            <tr>
-            <tr>
-                <th style="width: 40%">{% translate "Data type" %}</th>
-                <th style="width: 20%">{% translate "Value" %}</th>
-                <th style="width: 40%">{% translate "Comment" %}</th>
-            </tr>
-            </tr>
-            </thead>
-            <tbody>
-            {% for datapoint in object.data_points.all %}
-                <tr>
-                    <td>{{ datapoint.data_type }}</td>
-                    <td>{{ datapoint.value }} {{ datapoint.data_type.unit }}</td>
-                    <td>
-                        {% if datapoint.comment %}
-                            <p>
-                                <a class="btn btn-primary btn-sm" data-bs-toggle="collapse"
-                                   href="#CommentCollapse{{ forloop.counter }}" role="button" onclick="setCookie()"
-                                   aria-expanded="false" id="CommentCollapseButton{{ forloop.counter }}"
-                                   aria-controls="multiCollapseExample1">{% translate "Expand comment" %}</a>
-                            </p>
-                            <div class="row">
-                                <div class="col">
+            <h3 class="mb-4 fw-light">{% translate "Data points" %}</h3>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">{% translate "Data type" %}</th>
+                        <th scope="col">{% translate "Value" %}</th>
+                        <th scope="col">{% translate "Comment" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for datapoint in object.data_points.all %}
+                        <tr>
+                            <td>{{ datapoint.data_type }}</td>
+                            <td class="font-monospace">
+                                {{ datapoint.value|localize }} {{ datapoint.data_type.unit }}
+                            </td>
+                            <td>
+                                {% if datapoint.comment %}
+                                    <div>
+                                        <a class="text-decoration-none"
+                                           data-bs-toggle="collapse"
+                                           href="#CommentCollapse{{ forloop.counter }}"
+                                           role="button"
+                                           onclick="setCookie()"
+                                           id="CommentCollapseButton{{ forloop.counter }}"
+                                           aria-controls="CommentCollapse{{ forloop.counter }}">
+                                            {% translate "Expand comment" %}
+                                        </a>
+                                    </div>
                                     <div class="collapse"
                                          id="CommentCollapse{{ forloop.counter }}">
                                         <div class="card card-body">
                                             <small>{{ datapoint.comment }}</small>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        {% else %}
-                            -
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <div class="row justify-content-center py-5">
-        <div class="col-lg-6">
-            {% leaflet_map "yourmap" callback="window.map_init_basic" %}
+                                {% else %}
+                                    {% translate "N/A" context "no value provided (water name, comment, etc)" %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-    </div>
-    <div class="row justify-content-center">
-    <div class="py-5 text-center">
-        <div class="col-lg-6">
-        {% if measurement.token.token is not None %}
-        {% if measurement.token.token == request.session.gcampusauth_token.token %}
-            <a href="{% url "gcampuscore:edit_data_points" measurement_id=measurement.pk %}"
-               class="btn btn-primary btn-md" role="button">
-                {% translate "Edit Measurement" %}</a>
-        {% endif %}
-    {% endif %}
-        </div>
-    </div>
     </div>
 
     <script>
