@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "gcampus.core",
     "gcampus.auth",
     "gcampus.api",
+    "gcampus.map",
     # Other django apps
     # Sometimes the order is important
     "django.forms",
@@ -144,6 +145,12 @@ LEAFLET_CONFIG = {
             "auto-include": False,
         },
     },
+}
+MAP_SETTINGS = {
+    "CENTER": (49.4922, 8.4430),
+    "ZOOM": 8,
+    "STYLE": "mapbox://styles/axelschlindwein/ckq9e6o4k06fn17o70d7j7l65",
+    "MAPBOX_ACCESS_TOKEN": os.environ.get("MAPBOX_ACCESS_TOKEN"),
 }
 
 # Full Text Search

@@ -1,117 +1,135 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n static leaflet_tags %}
-{% block title %}
-    {% translate "All measurements displayed on a map" %}
-{% endblock %}
+{% load map %}
 {% block extra_head %}
-    {% leaflet_js plugins="forms" %}
-    {% leaflet_css plugins="forms" %}
+    {% load_mapbox_css %}
+    {% load_mapbox_js %}
 {% endblock %}
+{% block body_class %}d-flex flex-column min-vh-100{% endblock %}
 {% block content %}
     <script>
-        function map_init_basic(map, options) {
-            var locations = []
-            {% for measurement in filter.qs %}
-                var location_N = "{{ measurement.location.coords.0 }}".replace(",", ".")
-                var location_E = "{{ measurement.location.coords.1 }}".replace(",", ".")
-                var name = "{% translate "Measurement by" %} " + "{{ measurement.name }}"
-                var link = "{% url "gcampuscore:measurement_detail" pk=measurement.pk %}"
-                var location = [name, parseFloat(location_E), parseFloat(location_N), link];
+        function loadCluster(event) {
+            let map = event.target;
+            map.addSource('measurements', {
+                type: 'geojson',
+                data: '/api/v1/measurements/',
+                cluster: true,
+                clusterMaxZoom: 14, // Max zoom to cluster points on
+                clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+            });
+            map.addLayer({
+                id: 'clusters',
+                type: 'circle',
+                source: 'measurements',
+                filter: ['has', 'point_count'],
+                paint: {
+                    // Use step expressions (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-step)
+                    // with three steps to implement three types of circles:
+                    //   * Blue, 20px circles when point count is less than 100
+                    //   * Yellow, 30px circles when point count is between 100 and 750
+                    //   * Pink, 40px circles when point count is greater than or equal to 750
+                    'circle-color': [
+                        'step',
+                        ['get', 'point_count'],
+                        '#51bbd6',
+                        100,
+                        '#f1f075',
+                        750,
+                        '#f28cb1'
+                    ],
+                    'circle-radius': [
+                        'step',
+                        ['get', 'point_count'],
+                        20,
+                        100,
+                        30,
+                        750,
+                        40
+                    ]
+                }
+            });
 
-                locations.push(location)
-            {% endfor %}
+            map.addLayer({
+                id: 'cluster-count',
+                type: 'symbol',
+                source: 'measurements',
+                filter: ['has', 'point_count'],
+                layout: {
+                    'text-field': '{point_count_abbreviated}',
+                    'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                    'text-size': 12
+                }
+            });
 
-            for (var i = 0; i < locations.length; i++) {
-                marker = new L.marker([locations[i][1], locations[i][2]])
-                    .bindPopup('<a href="' + locations[i][3] + '">' + locations[i][0] + '</a>')
+            map.addLayer({
+                id: 'unclustered-point',
+                type: 'circle',
+                source: 'measurements',
+                filter: ['!', ['has', 'point_count']],
+                paint: {
+                    'circle-color': '#11b4da',
+                    'circle-radius': 8,
+                    'circle-stroke-width': 3,
+                    'circle-stroke-color': '#fff'
+                }
+            });
+
+            // inspect a cluster on click
+            map.on('click', 'clusters', function (e) {
+                var features = map.queryRenderedFeatures(e.point, {
+                    layers: ['clusters']
+                });
+                var clusterId = features[0].properties.cluster_id;
+                map.getSource('measurements').getClusterExpansionZoom(
+                    clusterId,
+                    function (err, zoom) {
+                        if (err) return;
+
+                        map.easeTo({
+                            center: features[0].geometry.coordinates,
+                            zoom: zoom
+                        });
+                    }
+                );
+            });
+
+            // When a click event occurs on a feature in
+            // the unclustered-point layer, open a popup at
+            // the location of the feature, with
+            // description HTML from its properties.
+            map.on('click', 'unclustered-point', function (e) {
+                var coordinates = e.features[0].geometry.coordinates.slice();
+                var mag = e.features[0].properties.mag;
+                var tsunami;
+
+                if (e.features[0].properties.tsunami === 1) {
+                    tsunami = 'yes';
+                } else {
+                    tsunami = 'no';
+                }
+
+                // Ensure that if the map is zoomed out such that
+                // multiple copies of the feature are visible, the
+                // popup appears over the copy being pointed to.
+                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                }
+
+                new mapboxgl.Popup()
+                    .setLngLat(coordinates)
+                    .setHTML(
+                        'magnitude: ' + mag + '<br>Was there a tsunami?: ' + tsunami
+                    )
                     .addTo(map);
-            }
+            });
+
+            map.on('mouseenter', 'clusters', function () {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+            map.on('mouseleave', 'clusters', function () {
+                map.getCanvas().style.cursor = '';
+            });
+
         }
     </script>
-            <div class="py-5 text-center">
-            <h2>{% translate "All measurements displayed on a map" %}</h2>
-        </div>
-    <div class="row justify-content-center">
-        <div class="col-lg-6">
-            {% leaflet_map "yourmap" callback="window.map_init_basic" %}
-        </div>
-    </div>
-    <div class="container">
-    <div class="py-5 text-center">
-        <form method="GET">
-
-            <p>
-                <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" id="filterCollapseButton"
-                   href="#filterCollapse" role="button" onclick="setCookie()"
-                   aria-expanded="false"
-                   aria-controls="filterCollapse">{% translate "Open additional filters" %}</a>
-            </p>
-            <div class="row" id="test">
-                <div class="col">
-                    <div class="collapse"
-                         id="filterCollapse">
-                        <div class="card card-body">
-                            <div class="container">
-                                {% with filter.form.name as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {% include "gcampuscore/forms/components/helptext.html" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
-                                {% with filter.form.time_gt as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {% include "gcampuscore/forms/components/helptext.html" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
-                                {% with filter.form.time_lt as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {% include "gcampuscore/forms/components/helptext.html" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
-                                {% with filter.form.datatypes as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {% include "gcampuscore/forms/components/helptext.html" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
-                                <button type="submit" class="btn btn-lg btn-primary">{% translate "Search" %}</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-    </div>
-    <script>
-
-        let filterButton = document.getElementById("filterCollapseButton");
-        let filterCollapse = document.getElementById("filterCollapse");
-
-        function setCookie() {
-            var status = filterButton.getAttribute('aria-expanded');
-            localStorage.setItem("filterButtonStatus", status);
-        }
-
-        function setCollapse() {
-            var button_value = localStorage.getItem("filterButtonStatus");
-            var bool_button_value = (button_value == 'true');
-            if (bool_button_value) {
-                filterCollapse.setAttribute("class", "collapse show");
-                filterButton.setAttribute('aria-expanded', "true");
-            } else {
-                filterCollapse.setAttribute("class", "collapse");
-                filterButton.setAttribute('aria-expanded', "false");
-            }
-        }
-
-        setCollapse()
-    </script>
-
+    {% map onload="loadCluster" class="flex-grow-1" %}
 {% endblock %}

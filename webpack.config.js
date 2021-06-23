@@ -125,25 +125,58 @@ let gcampuscoreConfig = (env, options) => {
                 type: 'var'
             }
         },
-        plugins: [
-            ...(common.plugins || []),
-            new CopyWebpackPlugin({
-                patterns: [
-                    {
-                        from: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'assets'),
-                        to: path.resolve(__dirname, 'gcampus', 'core', 'static', 'gcampuscore', 'assets'),
-                    },
-                ]
-            })
-        ],
+        // Enable lines below if assets are needed
+        // plugins: [
+        //     ...(common.plugins || []),
+        //     new CopyWebpackPlugin({
+        //         patterns: [
+        //             {
+        //                 from: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'assets'),
+        //                 to: path.resolve(__dirname, 'gcampus', 'core', 'static', 'gcampuscore', 'assets'),
+        //             },
+        //         ]
+        //     })
+        // ],
     });
 }
 
-// TODO is this still needed?
-module.exports = [gcampuscoreConfig];
+let gcampusmapConfig = (env, options) => {
+    let common = commonConfig(env, options);
+    return Object.assign(common, {
+        name: 'gcampusmap',
+        entry: {
+            'mapbox-gl': path.resolve(__dirname, 'gcampus', 'map', 'static_src', 'js', 'mapbox-gl.js'),
+        },
+        output: {
+            path: path.resolve(__dirname, 'gcampus', 'map', 'static', 'gcampusmap'),
+            publicPath: '/static/gcampusmap',
+            filename: 'js/[name].js',
+            library: {
+                name: 'gcampus',
+                type: 'var'
+            }
+        },
+        // Enable lines below if assets are needed
+        // plugins: [
+        //     ...(common.plugins || []),
+        //     new CopyWebpackPlugin({
+        //         patterns: [
+        //             {
+        //                 from: path.resolve(__dirname, 'gcampus', 'map', 'static_src', 'assets'),
+        //                 to: path.resolve(__dirname, 'gcampus', 'map', 'static', 'gcampusmap', 'assets'),
+        //             },
+        //         ]
+        //     })
+        // ],
+    });
+}
+//
+// // TODO is this still needed?
+// module.exports = [gcampuscoreConfig];
 
 module.exports = (env, options) => {
     return [
-        gcampuscoreConfig(env, options)
+        gcampuscoreConfig(env, options),
+        gcampusmapConfig(env, options)
     ];
 };
