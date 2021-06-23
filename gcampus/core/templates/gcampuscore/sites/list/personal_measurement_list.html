@@ -1,14 +1,11 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n static leaflet_tags auth_token %}
+{% load i18n auth_token %}
 {% block title %}
     {% translate "All measurements" %}
 {% endblock %}
-{% block extra_head %}
-    {% leaflet_js plugins="forms" %}
-    {% leaflet_css plugins="forms" %}
-{% endblock %}
 {% block content %}
-    {% auth_token prefix=formset.prefix %}
+    {# TODO: Why do we need this here? Do we just check the permission with this? #}
+    {% auth_token %}
     <div class="container">
         <div class="py-5 text-center">
             <h2>{% translate "My measurements" %}</h2>
@@ -16,7 +13,7 @@
     </div>
     <div class="row justify-content-center text-center">
         <div class="col-auto">
-            {% if personal_measurements is not empty %}
+            {% if object_list is not empty %}
                 <table class="table-responsive">
                     <thead class="thead-dark">
                     <tr>
@@ -30,7 +27,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for measurement in personal_measurements %}
+                    {% for measurement in object_list %}
                         <tr>
                             <th scope="row"><input type="checkbox" id="scales" name="scales"></th>
                             <td>
@@ -62,7 +59,7 @@
                     </tbody>
                 </table>
             {% else %}
-                <h2>{% translate "You haven't registered any measurements yet" %}</h2>
+                <h2>{% translate "You haven't created any measurements yet" %}</h2>
             {% endif %}
         </div>
     </div>
