@@ -144,7 +144,7 @@ class DataType(models.Model):
     unit = models.CharField(blank=True, max_length=10, verbose_name=_("Unit"))
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.unit})"
 
 
 class DataPoint(util.DateModelMixin):
