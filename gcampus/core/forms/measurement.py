@@ -11,19 +11,19 @@ from django.forms import (
     formsets,
 )
 from django.forms.formsets import ManagementForm  # noqa
-from django.forms.widgets import Select, TextInput, Textarea, HiddenInput
+from django.forms.widgets import Select, Textarea, HiddenInput, NumberInput
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from leaflet.forms.widgets import LeafletWidget
 
+from gcampus.auth.exceptions import (
+    TOKEN_CREATE_PERMISSION_ERROR,
+    TOKEN_EDIT_PERMISSION_ERROR,
+)
 from gcampus.auth.fields.token import TokenField
 from gcampus.auth.models.token import (
     can_token_edit_measurement,
     get_token_and_create_permission,
-)
-from gcampus.auth.exceptions import (
-    TOKEN_CREATE_PERMISSION_ERROR,
-    TOKEN_EDIT_PERMISSION_ERROR,
 )
 from gcampus.core.fields import SplitSplitDateTimeField
 from gcampus.core.models import Measurement, DataPoint
@@ -121,7 +121,7 @@ class DataPointForm(ModelForm):
         fields = ["data_type", "value", "comment"]
         widgets = {
             "data_type": Select(attrs={"class": "form-select form-select-sm"}),
-            "value": TextInput(
+            "value": NumberInput(
                 attrs={
                     "class": "form-control form-control-sm",
                     "placeholder": _("Value"),
