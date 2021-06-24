@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models import util
+from gcampus.core.models.util import EMPTY
 from gcampus.core.util import get_location_name
 
 
@@ -144,7 +145,10 @@ class DataType(models.Model):
     unit = models.CharField(blank=True, max_length=10, verbose_name=_("Unit"))
 
     def __str__(self):
-        return f"{self.name} ({self.unit})"
+        if self.unit in EMPTY:
+            return f"{self.name}"
+        else:
+            return f"{self.name} ({self.unit})"
 
 
 class DataPoint(util.DateModelMixin):
