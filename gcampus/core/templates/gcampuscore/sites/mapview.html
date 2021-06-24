@@ -1,5 +1,5 @@
 {% extends "gcampuscore/base.html" %}
-{% load map %}
+{% load i18n map %}
 {% block extra_head %}
     {% load_mapbox_css %}
     {% load_mapbox_js %}
@@ -113,11 +113,12 @@
                 while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                 }
-
+                console.log(e.features[0].properties)
+                let measurement_string =  "{% translate 'Measurememnt by ' %}"
                 new mapboxgl.Popup()
                     .setLngLat(coordinates)
                     .setHTML(
-                        'magnitude: ' + mag + '<br>Was there a tsunami?: ' + tsunami
+                          measurement_string + e.features[0].properties.name
                     )
                     .addTo(map);
             });
