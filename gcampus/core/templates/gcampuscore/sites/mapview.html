@@ -114,7 +114,7 @@
                     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                 }
                 console.log(e.features[0].properties)
-                let measurement_string =  "{% translate 'Measurememnt by ' %}"
+                let measurement_string =  "{% translate "Measurement by" %} "
                 new mapboxgl.Popup()
                     .setLngLat(coordinates)
                     .setHTML(

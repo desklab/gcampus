@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-24 11:56+0200\n"
+"POT-Creation-Date: 2021-06-24 13:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,14 +82,10 @@ msgid "You successfully logged out"
 msgstr "Du wurdest erfolgreich abgemeldet"
 
 #: gcampus/auth/templates/gcampusauth/forms/logout.html:19
-#, fuzzy
-#| msgid "Verify with a access key"
 msgid "Log in with an access key"
 msgstr "Mit einem Zugangscode anmelden"
 
 #: gcampus/auth/templates/gcampusauth/forms/logout.html:22
-#, fuzzy
-#| msgid "Verify with a course token"
 msgid "Log in with a course token"
 msgstr "Mit einem Kursschlüssel anmelden"
 
