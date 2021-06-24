@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-22 23:29+0200\n"
+"POT-Creation-Date: 2021-06-24 11:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgstr ""
 msgid "Provided token is not invalid or does not exist."
 msgstr "Der eingegebene Schlüssel ist ungültig oder existiert nicht!"
 
-#: gcampus/auth/forms/token.py:19 gcampus/auth/models/token.py:78
+#: gcampus/auth/forms/token.py:19 gcampus/auth/models/token.py:77
 msgid "Access Key"
 msgstr "Zugangscode"
 
@@ -62,12 +62,12 @@ msgstr "Name der Schule"
 msgid "Teacher Name"
 msgstr "Name der Lehrkraft"
 
-#: gcampus/auth/models/token.py:59
+#: gcampus/auth/models/token.py:58
 #, python-format
 msgid "Course Token %(id)s"
 msgstr "Kursschlüssel %(id)s"
 
-#: gcampus/auth/models/token.py:99
+#: gcampus/auth/models/token.py:97
 #, python-format
 msgid "Access Key %(id)s"
 msgstr "Zugangscode %(id)s"
