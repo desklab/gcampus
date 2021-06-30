@@ -343,8 +343,6 @@ msgid "Open additional filters"
 msgstr "Weitere Suchmöglichkeiten öffnen"
 
 #: gcampus/core/templates/gcampuscore/sites/list/personal_measurement_list.html:11
-#, fuzzy
-#| msgid "Measurements"
 msgid "My measurements"
 msgstr "Meine Messungen"
 
