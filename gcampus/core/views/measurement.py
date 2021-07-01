@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, SuspiciousOperation
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import DetailView
@@ -17,7 +17,7 @@ from gcampus.auth.models.token import (
 )
 from gcampus.auth.exceptions import TOKEN_CREATE_PERMISSION_ERROR
 from gcampus.core.filters import MeasurementFilter
-from gcampus.core.forms.measurement import MeasurementForm
+from gcampus.core.forms.measurement import MeasurementForm, TOKEN_FIELD_NAME
 from gcampus.core.models import Measurement
 
 
@@ -122,6 +122,11 @@ class MeasurementFormView(FormView):
             raise PermissionDenied(TOKEN_CREATE_PERMISSION_ERROR)
 
     def form_valid(self, form: MeasurementForm):
+        form_token = form.cleaned_data[TOKEN_FIELD_NAME]
+        session_token = utils.get_token(self.request)
+        if form_token != session_token:
+            # Someone modified the session or token provided by the form
+            raise SuspiciousOperation()
         instance: Measurement = form.save()
         return HttpResponseRedirect(self.get_next_url(instance))
 

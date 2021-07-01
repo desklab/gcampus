@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, SuspiciousOperation
 from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -12,7 +12,7 @@ from django.views.generic.base import TemplateResponseMixin, View
 from gcampus.auth import utils
 from gcampus.auth.models.token import can_token_edit_measurement
 from gcampus.auth.exceptions import TOKEN_EDIT_PERMISSION_ERROR
-from gcampus.core.forms.measurement import DataPointFormSet
+from gcampus.core.forms.measurement import DataPointFormSet, TOKEN_FIELD_NAME
 from gcampus.core.models import DataPoint, Measurement
 
 
@@ -72,6 +72,12 @@ class DataPointFormSetView(TemplateResponseMixin, View):
         # insufficient permissions
         formset = self.get_formset(request, measurement_id)
         if formset.is_valid():
+            form_token = formset.management_form.cleaned_data[TOKEN_FIELD_NAME]
+            session_token = utils.get_token(request)
+            if form_token != session_token:
+                # Someone modified the session or token provided by the
+                # form
+                raise SuspiciousOperation()
             return self.form_valid(formset, measurement_id)
         else:
             return self.render_to_response({"formset": formset})
