@@ -12,7 +12,7 @@ from gcampus.auth.exceptions import (
 from gcampus.core.forms.measurement import MeasurementForm, TOKEN_FIELD_NAME
 
 
-class MeasurementModelTest(TestCase):
+class MeasurementFormTest(TestCase):
     today = datetime.today()
     form_data_stub: dict = {
         "time_0_0": today.day,
