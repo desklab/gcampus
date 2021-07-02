@@ -35,6 +35,9 @@ class SetTokenFormView(FormView, ABC):
             return super(SetTokenFormView, self).form_valid(form)
         raise PermissionDenied(TOKEN_INVALID_ERROR)
 
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form), status=200)
+
 
 class SetAccessKeyFormView(SetTokenFormView):
     form_class = AccessKeyForm
