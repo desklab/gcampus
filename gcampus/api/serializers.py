@@ -3,6 +3,7 @@ from decimal import Decimal
 from typing import List, Tuple, Union
 
 from django.contrib.gis.geos import LineString, GeometryCollection, GEOSGeometry
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from overpy import Way, Node, Relation, RelationWay
 from rest_framework import serializers
@@ -32,11 +33,20 @@ class DataPointSerializer(serializers.ModelSerializer):
 
 class MeasurementSerializer(GeoFeatureModelSerializer):
     data_points = DataPointSerializer(many=True, read_only=True)
+    url = serializers.SerializerMethodField(read_only=True)
+    title = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Measurement
         geo_field = "location"
-        fields = ("id", "name", "time", "comment", "data_points")
+        fields = ("id", "name", "time", "comment", "data_points", "url", "title")
+
+    def get_url(self, obj: Measurement) -> str:  # noqa
+        return reverse("gcampuscore:measurement_detail", kwargs=dict(pk=obj.pk))
+
+    def get_title(self, obj: Measurement) -> str:  # noqa
+        # Returns the string representation of the measurement
+        return str(obj)
 
 
 class OverpassElementSerializer(serializers.Serializer):
