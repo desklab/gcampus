@@ -98,29 +98,16 @@
             // description HTML from its properties.
             map.on('click', 'unclustered-point', function (e) {
                 var coordinates = e.features[0].geometry.coordinates.slice();
-                var mag = e.features[0].properties.mag;
-                var tsunami;
-
-                if (e.features[0].properties.tsunami === 1) {
-                    tsunami = 'yes';
-                } else {
-                    tsunami = 'no';
-                }
-
                 // Ensure that if the map is zoomed out such that
                 // multiple copies of the feature are visible, the
                 // popup appears over the copy being pointed to.
                 while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                 }
-                console.log(e.features[0].properties)
-                let measurement_string =  "{% translate "Measurement by" %} "
-                new mapboxgl.Popup()
-                    .setLngLat(coordinates)
-                    .setHTML(
-                          measurement_string + e.features[0].properties.name
-                    )
-                    .addTo(map);
+                let measurementName = String(e.features[0].properties.title);
+                let measurementURL = String(e.features[0].properties.url);
+                let html = "<a href=" + measurementURL + ">" + measurementName + "</a>";
+                new mapboxgl.Popup().setLngLat(coordinates).setHTML(html).addTo(map);
             });
 
             map.on('mouseenter', 'clusters', function () {
