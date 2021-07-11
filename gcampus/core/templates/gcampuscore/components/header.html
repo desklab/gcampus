@@ -14,7 +14,7 @@
                 {% translate "Logout" as logout_title %}
                 {% include "gcampuscore/components/nav_item.html" with title=logout_title view_name="gcampusauth:logout" %}
             {% else %}
-                {% translate "Authenticate" as auth_title %}
+                {% translate "Log in" as auth_title %}
                 {% include "gcampuscore/components/nav_item.html" with title=auth_title view_name="gcampusauth:verify" %}
             {% endif %}
         </ul>
