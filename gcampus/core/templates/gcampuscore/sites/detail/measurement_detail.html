@@ -42,7 +42,7 @@
                     </div>
                     <div class="mt-auto">
                         {% if measurement.token.token is not None %}
-                            {% if measurement.token.token == request.session.gcampusauth_token.token %}
+                            {% if measurement.token.token == request.session.gcampusauth_token.token or measurement.token.parent_token.token == request.session.gcampusauth_token.token %}
                                 <a href="{% url "gcampuscore:edit_data_points" measurement_id=measurement.pk %}"
                                    class="btn btn-sm btn-secondary"
                                    role="button">
