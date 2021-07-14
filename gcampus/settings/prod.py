@@ -6,7 +6,14 @@ DEBUG = False
 # specified. Thus, django will fail if SECRET_KEY is not set.
 SECRET_KEY = get_env_read_file("SECRET_KEY")
 
-ALLOWED_HOSTS = os.environ.get("GCAMPUS_ALLOWED_HOSTS").split(",")
+try:
+    ALLOWED_HOSTS = os.environ.get("GCAMPUS_ALLOWED_HOSTS").split(",")
+except AttributeError:
+    # An attribute error is raised because no value was provided and
+    # None has not attribute (i.e. method) called 'split'
+    raise ValueError(
+        "The GCAMPUS_ALLOWED_HOSTS environment variable has to be specified"
+    )
 
 DATABASES = {
     "default": {
