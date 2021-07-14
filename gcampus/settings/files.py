@@ -14,13 +14,14 @@ environment variables can be used:
 import os
 from pathlib import Path
 
+from gcampus.settings.util import get_env_read_file
 
 STATIC_LOCATION = "static"
 
 if os.environ.get("USE_S3_STORAGE", False):
     # Credentials
-    AWS_ACCESS_KEY_ID = os.environ.get("S3_ACCESS_KEY")
-    AWS_SECRET_ACCESS_KEY = os.environ.get("S3_SECRET_KEY")
+    AWS_ACCESS_KEY_ID = get_env_read_file("S3_ACCESS_KEY")
+    AWS_SECRET_ACCESS_KEY = get_env_read_file("S3_SECRET_KEY")
     # Location
     AWS_S3_ENDPOINT_URL = os.environ.get("S3_ENDPOINT_URL", "http://localhost:9000")
     AWS_STORAGE_BUCKET_NAME = os.environ.get("S3_BUCKET_NAME", "gcampus")

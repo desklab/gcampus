@@ -6,6 +6,7 @@ LABEL maintainer="Jonas Drotleff <j.drotleff@desk-lab.de>"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND noninteractive
+ENV DJANGO_SETTINGS_MODULE gcampus.settings.prod
 USER root
 
 ########################################################################
@@ -71,6 +72,8 @@ RUN conda install --quiet --yes -c conda-forge gdal && \
 
 ADD --chown=gcampus . /srv/gcampus
 
+RUN chmod +x /srv/gcampus/docker-entrypoint.sh
+
 USER gcampus
 EXPOSE 8000
-ENTRYPOINT ["gunicorn"]
+ENTRYPOINT ["./docker-entrypoint.sh"]

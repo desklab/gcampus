@@ -2,10 +2,14 @@ from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from gcampus.settings.util import get_env_read_file
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "dvx=99xop7b_hgkkmzb7oxml8au++k1-)bbisf&shy46&z57&b"
+SECRET_KEY = get_env_read_file(
+    "SECRET_KEY", default="dvx=99xop7b_hgkkmzb7oxml8au++k1-)bbisf&shy46&z57&b"
+)
 
 ALLOWED_HOSTS = []
 
@@ -113,7 +117,6 @@ LOCALE_PATHS = [BASE_DIR.joinpath("locale")]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
 from gcampus.settings.files import *  # noqa
 
 # Rest Framework
@@ -150,7 +153,7 @@ MAP_SETTINGS = {
     "CENTER": (49.4922, 8.4430),
     "ZOOM": 8,
     "STYLE": "mapbox://styles/axelschlindwein/ckq9e6o4k06fn17o70d7j7l65",
-    "MAPBOX_ACCESS_TOKEN": os.environ.get("MAPBOX_ACCESS_TOKEN"),
+    "MAPBOX_ACCESS_TOKEN": get_env_read_file("MAPBOX_ACCESS_TOKEN"),
 }
 
 # Full Text Search

@@ -14,6 +14,7 @@ from gcampus.auth.models.token import (
 
 TOKEN_FIELD_NAME = "token"
 
+
 class AccessKeyForm(forms.Form):
     token = forms.CharField(
         required=True,
