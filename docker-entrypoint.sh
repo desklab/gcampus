@@ -3,7 +3,7 @@ set -eo pipefail
 shopt -s nullglob
 
 # Migrate database
-python3 manage.py migrate
+/srv/gcampus/venv/bin/python3 manage.py migrate
 
 # Launch gunicorn server
-gunicorn
+/srv/gcampus/venv/bin/gunicorn
