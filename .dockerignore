@@ -1,0 +1,29 @@
+.DS_Store
+
+# Python
+*.pyc
+__pycache__
+/venv
+/.venv
+
+# Compiled Static Files
+static/
+
+# Node
+/node_modules
+
+# Database
+*.sqlite3
+*.db
+
+# IDE
+.idea
+.vscode
+package.json
+package-lock.json
+README.md
+requirements-dev.txt
+webpack.config.js
+artwork
+.github
+fixture.json

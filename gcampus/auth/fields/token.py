@@ -2,12 +2,18 @@ from django.core.exceptions import ValidationError
 from django.forms import CharField
 
 from gcampus.auth.exceptions import TOKEN_EMPTY_ERROR, TOKEN_INVALID_ERROR
-from gcampus.auth.models.token import AccessKey, CourseToken
+from gcampus.auth.models.token import (
+    AccessKey,
+    CourseToken,
+    COURSE_TOKEN_LENGTH,
+    ACCESS_KEY_LENGTH
+)
 from gcampus.auth.widgets import HiddenTokenInput
 
 
 def access_key_exists_validator(value):
-    if AccessKey.objects.filter(token=value).exists():
+    if (len(value) == ACCESS_KEY_LENGTH
+            and AccessKey.objects.filter(token=value).exists()):
         # All good, token is a valid access key
         return
     else:
@@ -15,7 +21,8 @@ def access_key_exists_validator(value):
 
 
 def course_token_exists_validator(value):
-    if CourseToken.objects.filter(token=value).exists():
+    if (len(value) == COURSE_TOKEN_LENGTH
+            and CourseToken.objects.filter(token=value).exists()):
         # Also fine, token is a valid course token
         return
     else:
