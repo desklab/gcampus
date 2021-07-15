@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxLengthValidator
+from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.forms.utils import ErrorList
 from django.test import TestCase
 from django.urls import reverse
@@ -178,13 +178,13 @@ class CourseTokenAuthTest(TestCase):
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(len(errors[TOKEN_FIELD_NAME]), 2)
-        error_message_max_len = MaxLengthValidator.message % {"limit_value": COURSE_TOKEN_LENGTH,
+        error_message_min_len = MinLengthValidator.message % {"limit_value": COURSE_TOKEN_LENGTH,
                                                               "show_value": ACCESS_KEY_LENGTH}
         self.assertIn(
             TOKEN_INVALID_ERROR, errors[TOKEN_FIELD_NAME]
         )
         self.assertIn(
-            error_message_max_len, errors[TOKEN_FIELD_NAME]
+            error_message_min_len, errors[TOKEN_FIELD_NAME]
         )
 
     def test_empty_token(self):
