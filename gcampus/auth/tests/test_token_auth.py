@@ -13,8 +13,10 @@ from gcampus.auth.exceptions import (
     TOKEN_INVALID_ERROR,
     TOKEN_CREATE_PERMISSION_ERROR,
 )
+from gcampus.auth.models.token import COURSE_TOKEN_LENGTH, ACCESS_KEY_LENGTH
 
 from django.utils.translation import ugettext_lazy as _
+
 
 
 class AcessKeyAuthTest(TestCase):
@@ -68,9 +70,14 @@ class AcessKeyAuthTest(TestCase):
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(len(errors[TOKEN_FIELD_NAME]), 2)
-        # TODO Check for MaxLenValidation error
+        error_message_max_len = MaxLengthValidator.message % {"limit_value": ACCESS_KEY_LENGTH,
+                                                              "show_value": ACCESS_KEY_LENGTH + 1}
+
         self.assertIn(
             TOKEN_INVALID_ERROR, errors[TOKEN_FIELD_NAME]
+        )
+        self.assertIn(
+            error_message_max_len, errors[TOKEN_FIELD_NAME]
         )
 
     def test_course_token(self):
@@ -82,9 +89,12 @@ class AcessKeyAuthTest(TestCase):
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(len(errors[TOKEN_FIELD_NAME]), 2)
-        # TODO Check for MaxLenValidation error
+        error_message_max_len = MaxLengthValidator.message % {"limit_value": ACCESS_KEY_LENGTH, "show_value": COURSE_TOKEN_LENGTH}
         self.assertIn(
             TOKEN_INVALID_ERROR, errors[TOKEN_FIELD_NAME]
+        )
+        self.assertIn(
+            error_message_max_len, errors[TOKEN_FIELD_NAME]
         )
 
     def test_empty_token(self):
@@ -150,9 +160,13 @@ class CourseTokenAuthTest(TestCase):
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(len(errors[TOKEN_FIELD_NAME]), 2)
-        # TODO Check for MaxLenValidation error
+        error_message_max_len = MaxLengthValidator.message % {"limit_value": COURSE_TOKEN_LENGTH,
+                                                              "show_value": COURSE_TOKEN_LENGTH+1}
         self.assertIn(
             TOKEN_INVALID_ERROR, errors[TOKEN_FIELD_NAME]
+        )
+        self.assertIn(
+            error_message_max_len, errors[TOKEN_FIELD_NAME]
         )
 
     def test_course_token(self):
@@ -164,9 +178,13 @@ class CourseTokenAuthTest(TestCase):
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(len(errors[TOKEN_FIELD_NAME]), 2)
-        # TODO Check for MaxLenValidation error
+        error_message_max_len = MaxLengthValidator.message % {"limit_value": COURSE_TOKEN_LENGTH,
+                                                              "show_value": ACCESS_KEY_LENGTH}
         self.assertIn(
             TOKEN_INVALID_ERROR, errors[TOKEN_FIELD_NAME]
+        )
+        self.assertIn(
+            error_message_max_len, errors[TOKEN_FIELD_NAME]
         )
 
     def test_empty_token(self):
