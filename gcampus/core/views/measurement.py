@@ -1,3 +1,18 @@
+#  Copyright (C) 2021 desklab gUG
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+#
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 from __future__ import annotations
 
 from django.contrib.gis.geos import Point
@@ -10,13 +25,11 @@ from django.views.generic import ListView
 from django.views.generic.edit import FormView
 
 from gcampus.auth import utils, exceptions
+from gcampus.auth.exceptions import TOKEN_CREATE_PERMISSION_ERROR
 from gcampus.auth.models.token import (
     can_token_create_measurement,
-    CourseToken,
-    AccessKey,
     COURSE_TOKEN_TYPE,
 )
-from gcampus.auth.exceptions import TOKEN_CREATE_PERMISSION_ERROR
 from gcampus.core.filters import MeasurementFilter
 from gcampus.core.forms.measurement import MeasurementForm, TOKEN_FIELD_NAME
 from gcampus.core.models import Measurement
