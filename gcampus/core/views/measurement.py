@@ -13,7 +13,8 @@ from gcampus.auth import utils, exceptions
 from gcampus.auth.models.token import (
     can_token_create_measurement,
     CourseToken,
-    AccessKey, COURSE_TOKEN_TYPE,
+    AccessKey,
+    COURSE_TOKEN_TYPE,
 )
 from gcampus.auth.exceptions import TOKEN_CREATE_PERMISSION_ERROR
 from gcampus.core.filters import MeasurementFilter

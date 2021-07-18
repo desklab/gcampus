@@ -36,7 +36,9 @@ class MeasurementViewTest(TestCase):
             self.tokens.append(_token)
 
     def login(self, token):
-        login_response = self.client.post(reverse("gcampusauth:access_key_form"), {"token": token})
+        login_response = self.client.post(
+            reverse("gcampusauth:access_key_form"), {"token": token}
+        )
         return login_response
 
     def test_valid_token(self):
@@ -70,9 +72,9 @@ class MeasurementViewTest(TestCase):
         self.assertEqual(login_response.status_code, 302)
 
         response = self.client.post(reverse("gcampuscore:add_measurement"), form_data)
-        errors = response.context['form'].errors
+        errors = response.context["form"].errors
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(response.context['form'].is_valid())
+        self.assertFalse(response.context["form"].is_valid())
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(
@@ -93,9 +95,9 @@ class MeasurementViewTest(TestCase):
         self.assertEqual(login_response.status_code, 302)
 
         response = self.client.post(reverse("gcampuscore:add_measurement"), form_data)
-        errors = response.context['form'].errors
+        errors = response.context["form"].errors
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(response.context['form'].is_valid())
+        self.assertFalse(response.context["form"].is_valid())
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(
@@ -108,7 +110,7 @@ class MeasurementViewTest(TestCase):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token+"0",
+            TOKEN_FIELD_NAME: self.tokens[0].token + "0",
             "water_name": "Foo Bar gcampus_osm_id:42",
         }
         form_data.update(self.form_data_stub)
@@ -116,17 +118,16 @@ class MeasurementViewTest(TestCase):
         self.assertEqual(login_response.status_code, 302)
 
         response = self.client.post(reverse("gcampuscore:add_measurement"), form_data)
-        errors = response.context['form'].errors
+        errors = response.context["form"].errors
 
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(response.context['form'].is_valid())
+        self.assertFalse(response.context["form"].is_valid())
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(
             errors[TOKEN_FIELD_NAME],
             ErrorList([TOKEN_INVALID_ERROR]),
         )
-
 
     def test_not_logged_in(self):
         form_data: dict = {
@@ -154,10 +155,10 @@ class MeasurementViewTest(TestCase):
         self.assertEqual(login_response.status_code, 302)
 
         response = self.client.post(reverse("gcampuscore:add_measurement"), form_data)
-        errors = response.context['form'].errors
+        errors = response.context["form"].errors
 
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(response.context['form'].is_valid())
+        self.assertFalse(response.context["form"].is_valid())
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(

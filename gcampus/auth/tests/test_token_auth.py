@@ -18,7 +18,6 @@ from gcampus.auth.models.token import COURSE_TOKEN_LENGTH, ACCESS_KEY_LENGTH
 from django.utils.translation import ugettext_lazy as _
 
 
-
 class AcessKeyAuthTest(TestCase):
     today = datetime.today()
     form_data_stub: dict = {
@@ -41,7 +40,9 @@ class AcessKeyAuthTest(TestCase):
             self.tokens.append(_token)
 
     def login(self, token):
-        login_response = self.client.post(reverse("gcampusauth:access_key_form"), {"token": token})
+        login_response = self.client.post(
+            reverse("gcampusauth:access_key_form"), {"token": token}
+        )
         return login_response
 
     def test_valid_token(self):
@@ -52,8 +53,8 @@ class AcessKeyAuthTest(TestCase):
         login_response = self.login("00000000")
         self.assertEqual(login_response.status_code, 200)
 
-        errors = login_response.context['form'].errors
-        self.assertFalse(login_response.context['form'].is_valid())
+        errors = login_response.context["form"].errors
+        self.assertFalse(login_response.context["form"].is_valid())
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(
@@ -65,44 +66,41 @@ class AcessKeyAuthTest(TestCase):
         login_response = self.login(self.tokens[0].token + "0")
         self.assertEqual(login_response.status_code, 200)
 
-        errors = login_response.context['form'].errors
-        self.assertFalse(login_response.context['form'].is_valid())
+        errors = login_response.context["form"].errors
+        self.assertFalse(login_response.context["form"].is_valid())
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(len(errors[TOKEN_FIELD_NAME]), 2)
-        error_message_max_len = MaxLengthValidator.message % {"limit_value": ACCESS_KEY_LENGTH,
-                                                              "show_value": ACCESS_KEY_LENGTH + 1}
+        error_message_max_len = MaxLengthValidator.message % {
+            "limit_value": ACCESS_KEY_LENGTH,
+            "show_value": ACCESS_KEY_LENGTH + 1,
+        }
 
-        self.assertIn(
-            TOKEN_INVALID_ERROR, errors[TOKEN_FIELD_NAME]
-        )
-        self.assertIn(
-            error_message_max_len, errors[TOKEN_FIELD_NAME]
-        )
+        self.assertIn(TOKEN_INVALID_ERROR, errors[TOKEN_FIELD_NAME])
+        self.assertIn(error_message_max_len, errors[TOKEN_FIELD_NAME])
 
     def test_course_token(self):
         login_response = self.login(self.parent_token.token)
         self.assertEqual(login_response.status_code, 200)
 
-        errors = login_response.context['form'].errors
-        self.assertFalse(login_response.context['form'].is_valid())
+        errors = login_response.context["form"].errors
+        self.assertFalse(login_response.context["form"].is_valid())
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(len(errors[TOKEN_FIELD_NAME]), 2)
-        error_message_max_len = MaxLengthValidator.message % {"limit_value": ACCESS_KEY_LENGTH, "show_value": COURSE_TOKEN_LENGTH}
-        self.assertIn(
-            TOKEN_INVALID_ERROR, errors[TOKEN_FIELD_NAME]
-        )
-        self.assertIn(
-            error_message_max_len, errors[TOKEN_FIELD_NAME]
-        )
+        error_message_max_len = MaxLengthValidator.message % {
+            "limit_value": ACCESS_KEY_LENGTH,
+            "show_value": COURSE_TOKEN_LENGTH,
+        }
+        self.assertIn(TOKEN_INVALID_ERROR, errors[TOKEN_FIELD_NAME])
+        self.assertIn(error_message_max_len, errors[TOKEN_FIELD_NAME])
 
     def test_empty_token(self):
         login_response = self.login("")
         self.assertEqual(login_response.status_code, 200)
 
-        errors = login_response.context['form'].errors
-        self.assertFalse(login_response.context['form'].is_valid())
+        errors = login_response.context["form"].errors
+        self.assertFalse(login_response.context["form"].is_valid())
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(len(errors[TOKEN_FIELD_NAME]), 1)
@@ -131,7 +129,9 @@ class CourseTokenAuthTest(TestCase):
             self.tokens.append(_token)
 
     def login(self, token):
-        login_response = self.client.post(reverse("gcampusauth:course_token_form"), {"token": token})
+        login_response = self.client.post(
+            reverse("gcampusauth:course_token_form"), {"token": token}
+        )
         return login_response
 
     def test_valid_token(self):
@@ -142,8 +142,8 @@ class CourseTokenAuthTest(TestCase):
         login_response = self.login("000000000000")
         self.assertEqual(login_response.status_code, 200)
 
-        errors = login_response.context['form'].errors
-        self.assertFalse(login_response.context['form'].is_valid())
+        errors = login_response.context["form"].errors
+        self.assertFalse(login_response.context["form"].is_valid())
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(
@@ -152,50 +152,44 @@ class CourseTokenAuthTest(TestCase):
         )
 
     def test_valid_extended_token(self):
-        login_response = self.login(self.parent_token.token+"0")
+        login_response = self.login(self.parent_token.token + "0")
         self.assertEqual(login_response.status_code, 200)
 
-        errors = login_response.context['form'].errors
-        self.assertFalse(login_response.context['form'].is_valid())
+        errors = login_response.context["form"].errors
+        self.assertFalse(login_response.context["form"].is_valid())
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(len(errors[TOKEN_FIELD_NAME]), 2)
-        error_message_max_len = MaxLengthValidator.message % {"limit_value": COURSE_TOKEN_LENGTH,
-                                                              "show_value": COURSE_TOKEN_LENGTH+1}
-        self.assertIn(
-            TOKEN_INVALID_ERROR, errors[TOKEN_FIELD_NAME]
-        )
-        self.assertIn(
-            error_message_max_len, errors[TOKEN_FIELD_NAME]
-        )
+        error_message_max_len = MaxLengthValidator.message % {
+            "limit_value": COURSE_TOKEN_LENGTH,
+            "show_value": COURSE_TOKEN_LENGTH + 1,
+        }
+        self.assertIn(TOKEN_INVALID_ERROR, errors[TOKEN_FIELD_NAME])
+        self.assertIn(error_message_max_len, errors[TOKEN_FIELD_NAME])
 
     def test_course_token(self):
         login_response = self.login(self.tokens[0].token)
         self.assertEqual(login_response.status_code, 200)
 
-        errors = login_response.context['form'].errors
-        self.assertFalse(login_response.context['form'].is_valid())
+        errors = login_response.context["form"].errors
+        self.assertFalse(login_response.context["form"].is_valid())
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(len(errors[TOKEN_FIELD_NAME]), 2)
-        error_message_min_len = MinLengthValidator.message % {"limit_value": COURSE_TOKEN_LENGTH,
-                                                              "show_value": ACCESS_KEY_LENGTH}
-        self.assertIn(
-            TOKEN_INVALID_ERROR, errors[TOKEN_FIELD_NAME]
-        )
-        self.assertIn(
-            error_message_min_len, errors[TOKEN_FIELD_NAME]
-        )
+        error_message_min_len = MinLengthValidator.message % {
+            "limit_value": COURSE_TOKEN_LENGTH,
+            "show_value": ACCESS_KEY_LENGTH,
+        }
+        self.assertIn(TOKEN_INVALID_ERROR, errors[TOKEN_FIELD_NAME])
+        self.assertIn(error_message_min_len, errors[TOKEN_FIELD_NAME])
 
     def test_empty_token(self):
         login_response = self.login("")
         self.assertEqual(login_response.status_code, 200)
 
-        errors = login_response.context['form'].errors
-        self.assertFalse(login_response.context['form'].is_valid())
+        errors = login_response.context["form"].errors
+        self.assertFalse(login_response.context["form"].is_valid())
         self.assertIn(TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(len(errors[TOKEN_FIELD_NAME]), 1)
         # TODO Check for This field is required error
-
-

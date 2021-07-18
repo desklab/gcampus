@@ -24,7 +24,7 @@ def map(**kwargs):
         "center_lng": center_lng,
         "center_lat": center_lat,
         "class": klass,
-        "onload": onload
+        "onload": onload,
     }
 
 
