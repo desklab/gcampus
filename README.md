@@ -122,4 +122,6 @@ production, this is done by using a S3 compatible object storage.
 
 ## License
 
-*TBA.*
+**GewässerCampus** (`gcampus`) is licensed under the Affero General
+Public License (AGPL) version 3. Its terms and conditions can be found
+in the `LICENSE` file.
