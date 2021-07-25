@@ -1,10 +1,12 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n static leaflet_tags auth_token %}
+{% load i18n static map auth_token %}
 {% block title %}
     {% translate "Create new Measurement" %}
 {% endblock %}
 {% block extra_head %}
-    {% leaflet_css plugins="leafletsearch,forms" %}
+{#    {% leaflet_css plugins="leafletsearch,forms" %}#}
+    {% load_mapbox_css %}
+    {% load_mapbox_js %}
 {% endblock %}
 {% block body_class %}bg-light{% endblock %}
 {% block content %}
@@ -96,6 +98,6 @@
         window._varLocationTitle = "{% translate "Other Water:" %}";
         window._loadingText = "{% translate "Loading ..." %}";
     </script>
-    {% leaflet_js plugins="leafletsearch,forms,watersuggestion" %}
+{#    {% leaflet_js plugins="leafletsearch,forms,watersuggestion" %}#}
     <script type="text/javascript" src="{% static 'gcampuscore/js/autofocus.js' %}"></script>
 {% endblock %}
