@@ -65,4 +65,6 @@ class RegisterForm(forms.ModelForm):
         fields = (
             "school_name",
             "teacher_name",
+            "teacher_email",
         )
+

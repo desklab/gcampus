@@ -16,7 +16,7 @@
 from django.urls import path
 
 from gcampus.auth.apps import GCampusAuthAppConfig
-from gcampus.auth.views.register import RegisterFormView
+from gcampus.auth.views.register import RegisterFormView, RegisterSuccessView
 from gcampus.auth.views.token import (
     SetAccessKeyFormView,
     SetCourseTokenFormView,
@@ -33,6 +33,7 @@ urlpatterns = [
     path("verify/accesskey/", SetAccessKeyFormView.as_view(), name="access_key_form"),
     path("verify/coursetoken/", SetCourseTokenFormView.as_view(), name="course_token_form"),
     path('logout/', logout, name="logout"),
+    path('register/success/<int:pk>/<str:token>', RegisterSuccessView.as_view(), name="register_success"),
 ]
 # fmt: on
 # pylint: enable=line-too-long

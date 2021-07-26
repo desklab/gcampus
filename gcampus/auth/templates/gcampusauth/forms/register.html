@@ -53,6 +53,22 @@ name of a representative. This information will also be kept private and
 is only used for communication.{% endblocktranslate %}
                     </p>
                 </div>
+             <div class="col-7 px-5 py-3">
+                    {% with form.teacher_email as field %}
+                        <div class="mb-3">
+                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                            {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                        </div>
+                    {% endwith %}
+                </div>
+                <div class="col-5 bg-light px-5 py-3">
+                    <p class="mt-4 text-muted">
+{% blocktranslate %}
+    Your Email address will only be used to send you the Course Token and the Access Keys.
+<br>
+In case we need to contact you this Email address wil be used. {% endblocktranslate %}
+                    </p>
+                </div>
                 <div class="col-7 px-5 py-3">
                     {% with form.number_of_tokens as field %}
                         <div class="mb-3">

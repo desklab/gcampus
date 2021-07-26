@@ -1,0 +1,39 @@
+{% extends "gcampuscore/base.html" %}
+{% load i18n icon %}
+{% block title %}
+    {% translate "Request Access Keys" %}
+{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+            {% csrf_token %}
+            <div class="row">
+
+                <div class="col-7 px-5 py-3">
+                    <h3>{% translate "This is your Coursetoken" %}</h3>
+                    {{ object.token }}
+                </div>
+                <div class="col-5  px-5 py-3">
+                <h3>{% translate "These are your Accesskeys" %}</h3>
+                    {% for access_key in children_token %}
+                        <li>{{ access_key.token }}</li>
+                    {% endfor %}
+                </div>
+
+
+            </div>
+    {% icon "file-text" class="css-class" height="12" width="12" %}
+    <button class="btn btn-lg btn-primary me-2"
+                type="button"
+                data-bs-toggle="tooltip" data-bs-placement="top"
+                title="{% translate "Download your Coursetoken and all Accesskeys in  a PDF" %}">
+            {% translate "Download" %}
+        </button>
+        {% icon "mail" class="css-class" height="12" width="12" %}
+    <button class="btn btn-lg btn-primary me-2"
+                type="button"
+                data-bs-toggle="tooltip" data-bs-placement="top"
+                title="{% translate "Send your Coursetoken and all Accesskeys in  a PDF via Email" %}">
+            {% translate "Send to my Email" %}
+        </button>
+    </div>
+{% endblock %}
