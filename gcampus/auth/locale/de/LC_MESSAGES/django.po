@@ -196,7 +196,7 @@ msgstr "Du hast dich erfolgreich angemeldet"
 
 #: gcampus/auth/templates/gcampusauth/sites/login_success.html:17
 msgid "Mapview"
-msgstr "Kartenasnicht"
+msgstr "Kartenansicht"
 
 #: gcampus/auth/templates/gcampusauth/sites/login_success.html:19
 msgid "All Measurements"
