@@ -17,13 +17,14 @@ from __future__ import annotations
 
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
-from django.core.exceptions import PermissionDenied, SuspiciousOperation, ObjectDoesNotExist
+from django.core.exceptions import PermissionDenied, SuspiciousOperation, ObjectDoesNotExist, FieldError
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic.edit import FormView
 from django.shortcuts import render
+from django.utils.translation import ugettext_lazy as _
 
 from gcampus.auth import utils, exceptions
 from gcampus.auth.exceptions import TOKEN_CREATE_PERMISSION_ERROR
@@ -118,7 +119,7 @@ def deactivate(request, pk):
             raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
     else:
         if not measurement:
-            raise ObjectDoesNotExist("The measurement is probably already deactivated")
+            raise ObjectDoesNotExist(_("The measurement is probably already deactivated"))
         if not parent_token:
             raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
 
@@ -127,6 +128,8 @@ def activate(request, pk):
     measurement = Measurement.all_objects.filter(pk=pk)
     parent_token = get_token(request)
     if parent_token is not None and measurement:
+        if measurement[0].hidden == False:
+            raise FieldError(_("Measurement is already activated"))
         measurement_token = measurement[0].token.parent_token
         if measurement_token.token == parent_token:
             context = {'measurement': measurement[0]}
