@@ -7,6 +7,7 @@
 
 {% block body_class %}bg-light{% endblock %}
 {% block content %}
+     {% auth_token %}
     <div class="container">
         <div class="py-5 text-center">
             <h2>{% translate "You logged in successfully" %}</h2>
