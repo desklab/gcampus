@@ -20,7 +20,8 @@ from gcampus.auth.views.register import RegisterFormView, RegisterSuccessView
 from gcampus.auth.views.token import (
     SetAccessKeyFormView,
     SetCourseTokenFormView,
-    logout, login_success,
+    logout,
+    login_success,
 )
 
 # Turn off black formatting and pylint

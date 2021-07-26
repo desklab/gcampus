@@ -67,4 +67,3 @@ class RegisterForm(forms.ModelForm):
             "teacher_name",
             "teacher_email",
         )
-

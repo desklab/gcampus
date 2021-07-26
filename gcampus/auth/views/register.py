@@ -23,7 +23,7 @@ from gcampus.auth.models import CourseToken, AccessKey
 class RegisterFormView(FormView):
     form_class = RegisterForm
     template_name = "gcampusauth/forms/register.html"
-    #success_url = reverse_lazy("gcampusauth:register_success")
+    # success_url = reverse_lazy("gcampusauth:register_success")
 
     def form_valid(self, form):
         if form.is_valid():
@@ -32,9 +32,11 @@ class RegisterFormView(FormView):
             teacher_name = form.cleaned_data["teacher_name"]
             teacher_email = form.cleaned_data["teacher_email"]
 
-
-            course_token = CourseToken(school_name=school_name,
-                        teacher_name=teacher_name, teacher_email=teacher_email)
+            course_token = CourseToken(
+                school_name=school_name,
+                teacher_name=teacher_name,
+                teacher_email=teacher_email,
+            )
             course_token.save()
             self.pk = course_token.pk
             for i in range(number_of_tokens):
@@ -49,7 +51,9 @@ class RegisterFormView(FormView):
 
     def get_success_url(self):
         token = CourseToken.objects.get(pk=self.pk)
-        return reverse_lazy('gcampusauth:register_success', kwargs={'pk': self.pk, "token": token.token})
+        return reverse_lazy(
+            "gcampusauth:register_success", kwargs={"pk": self.pk, "token": token.token}
+        )
 
 
 class RegisterSuccessView(DetailView):
