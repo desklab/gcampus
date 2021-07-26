@@ -53,11 +53,19 @@
                         {% endif %}
                         {% if measurement.token.token is not None %}
                             {% if measurement.token.parent_token.token == request.session.gcampusauth_token.token %}
+                                {% if not measurement.hidden %}
                                 <a href="{% url "gcampuscore:deactivate" pk=measurement.pk %}"
                                    class="btn btn-sm btn-danger"
                                    role="button">
                                     {% translate "Deactivate" %}
                                 </a>
+                                    {% else %}
+                                    <a href="{% url "gcampuscore:activate" pk=measurement.pk %}"
+                                   class="btn btn-sm btn-success"
+                                   role="button">
+                                    {% translate "Activate" %}
+                                </a>
+                                    {% endif %}
                             {% endif %}
                         {% endif %}
                         </form>

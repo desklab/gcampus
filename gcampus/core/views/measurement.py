@@ -110,7 +110,7 @@ def deactivate(request, pk):
     if parent_token is not None and measurement:
         measurement_token = measurement[0].token.parent_token
         if measurement_token.token == parent_token:
-            context = {'measurement': str(measurement[0])}
+            context = {'measurement': measurement[0]}
             measurement.update(hidden=True)
             return render(request, "gcampuscore/sites/detail/deactivate_success.html", context)
         else:
@@ -120,7 +120,26 @@ def deactivate(request, pk):
             raise ObjectDoesNotExist("The measurement is probably already deactivated")
         if not parent_token:
             raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
-        
+
+
+def activate(request, pk):
+    measurement = Measurement.all_objects.filter(pk=pk)
+    parent_token = get_token(request)
+    if parent_token is not None and measurement:
+        measurement_token = measurement[0].token.parent_token
+        if measurement_token.token == parent_token:
+            context = {'measurement': measurement[0]}
+            measurement.update(hidden=False)
+            return render(request, "gcampuscore/sites/detail/activate_success.html", context)
+        else:
+            raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
+    else:
+        if not measurement:
+            raise ObjectDoesNotExist("The measurement is probably already activated")
+        if not parent_token:
+            raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
+
+
 
 class MeasurementMapView(ListView):
     model = Measurement
@@ -166,3 +185,22 @@ class MeasurementFormView(FormView):
 
     def get_next_url(self, instance: Measurement):
         return reverse(self.next_view_name, kwargs={"measurement_id": instance.id})
+
+class DeactivatedCourseMeasurementListView(ListView):
+    template_name = "gcampuscore/sites/list/deactivated_course_measurement_list.html"
+    model = Measurement
+    paginate_by = 10
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        # Check if a token is provided
+        token = utils.get_token(self.request)
+        if token is None:
+            raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
+        # Check if provided token is actually a course token
+        token_type = utils.get_token_type(self.request)
+        if token_type != COURSE_TOKEN_TYPE:
+            raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
+        course_measurements = Measurement.all_objects.filter(
+            token__parent_token__token=token, hidden=True
+        )
+        return super().get_context_data(object_list=course_measurements, **kwargs)
