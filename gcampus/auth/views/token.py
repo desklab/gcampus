@@ -30,7 +30,7 @@ from gcampus.auth.models.token import ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE
 
 class SetTokenFormView(FormView, ABC):
     template_name = "gcampusauth/forms/token.html"
-    success_url = reverse_lazy("gcampuscore:mapview")
+    success_url = reverse_lazy("gcampusauth:login_success")
     token_type: Optional[str] = None
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -67,3 +67,7 @@ class SetCourseTokenFormView(SetTokenFormView):
 def logout(request: HttpRequest):
     utils.logout(request)
     return render(request, "gcampusauth/forms/logout.html")
+
+
+def login_success(request: HttpRequest):
+    return render(request, "gcampusauth/sites/login_success.html")
