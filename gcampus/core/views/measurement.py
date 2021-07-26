@@ -17,12 +17,13 @@ from __future__ import annotations
 
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
-from django.core.exceptions import PermissionDenied, SuspiciousOperation
+from django.core.exceptions import PermissionDenied, SuspiciousOperation, ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic.edit import FormView
+from django.shortcuts import render
 
 from gcampus.auth import utils, exceptions
 from gcampus.auth.exceptions import TOKEN_CREATE_PERMISSION_ERROR
@@ -30,6 +31,7 @@ from gcampus.auth.models.token import (
     can_token_create_measurement,
     COURSE_TOKEN_TYPE,
 )
+from gcampus.auth.utils import get_token
 from gcampus.core.filters import MeasurementFilter
 from gcampus.core.forms.measurement import MeasurementForm, TOKEN_FIELD_NAME
 from gcampus.core.models import Measurement
@@ -101,6 +103,24 @@ class MeasurementDetailView(DetailView):
         context["close_measurements"] = close_measurements
         return context
 
+
+def deactivate(request, pk):
+    measurement = Measurement.objects.filter(pk=pk)
+    parent_token = get_token(request)
+    if parent_token is not None and measurement:
+        measurement_token = measurement[0].token.parent_token
+        if measurement_token.token == parent_token:
+            context = {'measurement': str(measurement[0])}
+            measurement.update(hidden=True)
+            return render(request, "gcampuscore/sites/detail/deactivate_success.html", context)
+        else:
+            raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
+    else:
+        if not measurement:
+            raise ObjectDoesNotExist("The measurement is probably already deactivated")
+        if not parent_token:
+            raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
+        
 
 class MeasurementMapView(ListView):
     model = Measurement

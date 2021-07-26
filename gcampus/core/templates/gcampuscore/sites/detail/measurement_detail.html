@@ -27,7 +27,8 @@
                             <br>
                             <h4>{{ object.time|localize }}</h4>
                         </div>
-                        <div></div> {# Add additional div for placing #}
+                        <div></div>
+                        {# Add additional div for placing #}
                     </div>
                     <div class="mb-3">
                         <small class="text-muted">{% translate "Comment" %}</small>
@@ -50,6 +51,16 @@
                                 </a>
                             {% endif %}
                         {% endif %}
+                        {% if measurement.token.token is not None %}
+                            {% if measurement.token.parent_token.token == request.session.gcampusauth_token.token %}
+                                <a href="{% url "gcampuscore:deactivate" pk=measurement.pk %}"
+                                   class="btn btn-sm btn-danger"
+                                   role="button">
+                                    {% translate "Deactivate" %}
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                        </form>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -65,44 +76,44 @@
             <h3 class="mb-4 fw-light">{% translate "Data points" %}</h3>
             <table class="table table-striped table-hover">
                 <thead>
-                    <tr>
-                        <th scope="col">{% translate "Data type" %}</th>
-                        <th scope="col">{% translate "Value" %}</th>
-                        <th scope="col">{% translate "Comment" %}</th>
-                    </tr>
+                <tr>
+                    <th scope="col">{% translate "Data type" %}</th>
+                    <th scope="col">{% translate "Value" %}</th>
+                    <th scope="col">{% translate "Comment" %}</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {% for datapoint in object.data_points.all %}
-                        <tr>
-                            <td>{{ datapoint.data_type }}</td>
-                            <td class="font-monospace">
-                                {{ datapoint.value|localize }} {{ datapoint.data_type.unit }}
-                            </td>
-                            <td>
-                                {% if datapoint.comment %}
-                                    <div>
-                                        <a class="text-decoration-none"
-                                           data-bs-toggle="collapse"
-                                           href="#CommentCollapse{{ forloop.counter }}"
-                                           role="button"
-                                           onclick="setCookie()"
-                                           id="CommentCollapseButton{{ forloop.counter }}"
-                                           aria-controls="CommentCollapse{{ forloop.counter }}">
-                                            {% translate "Expand comment" %}
-                                        </a>
+                {% for datapoint in object.data_points.all %}
+                    <tr>
+                        <td>{{ datapoint.data_type }}</td>
+                        <td class="font-monospace">
+                            {{ datapoint.value|localize }} {{ datapoint.data_type.unit }}
+                        </td>
+                        <td>
+                            {% if datapoint.comment %}
+                                <div>
+                                    <a class="text-decoration-none"
+                                       data-bs-toggle="collapse"
+                                       href="#CommentCollapse{{ forloop.counter }}"
+                                       role="button"
+                                       onclick="setCookie()"
+                                       id="CommentCollapseButton{{ forloop.counter }}"
+                                       aria-controls="CommentCollapse{{ forloop.counter }}">
+                                        {% translate "Expand comment" %}
+                                    </a>
+                                </div>
+                                <div class="collapse"
+                                     id="CommentCollapse{{ forloop.counter }}">
+                                    <div class="card card-body">
+                                        <small>{{ datapoint.comment }}</small>
                                     </div>
-                                    <div class="collapse"
-                                         id="CommentCollapse{{ forloop.counter }}">
-                                        <div class="card card-body">
-                                            <small>{{ datapoint.comment }}</small>
-                                        </div>
-                                    </div>
-                                {% else %}
-                                    {% translate "N/A" context "no value provided (water name, comment, etc)" %}
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {% translate "N/A" context "no value provided (water name, comment, etc)" %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
