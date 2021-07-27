@@ -37,7 +37,7 @@ class GeoPointWidget(BaseGeometryWidget):
         context.update({
             "input_id": input_id,
             "map_container_id": map_container_id,
-            "onload": f"onMapLoad{module_name}",
+            "onload": f"{module_name}_onMapLoad",
         })
         return context
 
