@@ -106,7 +106,7 @@ class MeasurementDetailView(DetailView):
         return context
 
 
-def deactivate(request, pk):
+def hide(request, pk):
     measurement = Measurement.objects.filter(pk=pk)
     parent_token = get_token(request)
     if parent_token is not None and measurement:
@@ -114,32 +114,32 @@ def deactivate(request, pk):
         if measurement_token.token == parent_token:
             context = {'measurement': measurement[0]}
             measurement.update(hidden=True)
-            return render(request, "gcampuscore/sites/detail/deactivate_success.html", context)
+            return render(request, "gcampuscore/sites/detail/hidden_success.html", context)
         else:
             raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
     else:
         if not measurement:
-            raise ObjectDoesNotExist(_("The measurement is probably already deactivated"))
+            raise ObjectDoesNotExist(_("The measurement is probably already hidden"))
         if not parent_token:
             raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
 
 
-def activate(request, pk):
+def show(request, pk):
     measurement = Measurement.all_objects.filter(pk=pk)
     parent_token = get_token(request)
     if parent_token is not None and measurement:
         if measurement[0].hidden == False:
-            raise FieldError(_("Measurement is already activated"))
+            raise FieldError(_("Measurement is already public"))
         measurement_token = measurement[0].token.parent_token
         if measurement_token.token == parent_token:
             context = {'measurement': measurement[0]}
             measurement.update(hidden=False)
-            return render(request, "gcampuscore/sites/detail/activate_success.html", context)
+            return render(request, "gcampuscore/sites/detail/show_success.html", context)
         else:
             raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
     else:
         if not measurement:
-            raise ObjectDoesNotExist("The measurement is probably already activated")
+            raise ObjectDoesNotExist("The measurement is probably already public")
         if not parent_token:
             raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
 
@@ -190,8 +190,8 @@ class MeasurementFormView(FormView):
     def get_next_url(self, instance: Measurement):
         return reverse(self.next_view_name, kwargs={"measurement_id": instance.id})
 
-class DeactivatedCourseMeasurementListView(ListView):
-    template_name = "gcampuscore/sites/list/deactivated_course_measurement_list.html"
+class HiddenCourseMeasurementListView(ListView):
+    template_name = "gcampuscore/sites/list/hidden_course_measurement_list.html"
     model = Measurement
     paginate_by = 10
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-26 15:13+0200\n"
+"POT-Creation-Date: 2021-07-27 11:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,11 +46,11 @@ msgstr ""
 msgid "Provided token is not invalid or does not exist."
 msgstr "Der eingegebene Schlüssel ist ungültig oder existiert nicht!"
 
-#: gcampus/auth/forms/token.py:36 gcampus/auth/models/token.py:95
+#: gcampus/auth/forms/token.py:36 gcampus/auth/models/token.py:96
 msgid "Access Key"
 msgstr "Zugangscode"
 
-#: gcampus/auth/forms/token.py:47 gcampus/auth/models/token.py:56
+#: gcampus/auth/forms/token.py:47 gcampus/auth/models/token.py:57
 msgid "Course Token"
 msgstr "Kursschlüssel"
 
@@ -62,16 +62,16 @@ msgstr "Name der Schule"
 msgid "Teacher Name"
 msgstr "Name der Lehrkraft"
 
-#: gcampus/auth/models/token.py:52
+#: gcampus/auth/models/token.py:53
 msgid "Email Adress"
 msgstr ""
 
-#: gcampus/auth/models/token.py:76
+#: gcampus/auth/models/token.py:77
 #, python-format
 msgid "Course Token %(id)s"
 msgstr "Kursschlüssel %(id)s"
 
-#: gcampus/auth/models/token.py:115
+#: gcampus/auth/models/token.py:116
 #, python-format
 msgid "Access Key %(id)s"
 msgstr "Zugangscode %(id)s"
@@ -190,23 +190,23 @@ msgstr "Mit neuem Token anmelden"
 msgid "Successful Login"
 msgstr "Erfolgreich angemeldet"
 
-#: gcampus/auth/templates/gcampusauth/sites/login_success.html:12
+#: gcampus/auth/templates/gcampusauth/sites/login_success.html:13
 msgid "You logged in successfully"
 msgstr "Du hast dich erfolgreich angemeldet"
 
-#: gcampus/auth/templates/gcampusauth/sites/login_success.html:17
+#: gcampus/auth/templates/gcampusauth/sites/login_success.html:18
 msgid "Mapview"
 msgstr "Kartenansicht"
 
-#: gcampus/auth/templates/gcampusauth/sites/login_success.html:19
+#: gcampus/auth/templates/gcampusauth/sites/login_success.html:20
 msgid "All Measurements"
 msgstr "Alle Messungen"
 
-#: gcampus/auth/templates/gcampusauth/sites/login_success.html:22
+#: gcampus/auth/templates/gcampusauth/sites/login_success.html:23
 msgid "Course Measurements"
 msgstr "Messungen des Kurses"
 
-#: gcampus/auth/templates/gcampusauth/sites/login_success.html:25
+#: gcampus/auth/templates/gcampusauth/sites/login_success.html:26
 msgid "My Measurements"
 msgstr "Meine Messungen"
 
