@@ -34,7 +34,7 @@ urlpatterns = [
     path("verify/accesskey/", SetAccessKeyFormView.as_view(), name="access_key_form"),
     path("verify/coursetoken/", SetCourseTokenFormView.as_view(), name="course_token_form"),
     path('logout/', logout, name="logout"),
-    path('register/success/<int:pk>/<str:token>', RegisterSuccessView.as_view(), name="register_success"),
+    path('course/<int:pk>/<str:token>', RegisterSuccessView.as_view(), name="register_success"),
     path('login/success/', login_success, name="login_success"),
 ]
 # fmt: on
