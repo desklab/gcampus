@@ -32,11 +32,11 @@
 <script type="text/javascript">
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new gcampus.Tooltip(tooltipTriggerEl)
+        return new gcampuscore.Tooltip(tooltipTriggerEl)
     })
     var collapseTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="collapse"]'))
     var collapseList = collapseTriggerList.map(function (collapseTriggerEl) {
-        return new gcampus.Collapse(collapseTriggerEl)
+        return new gcampuscore.Collapse(collapseTriggerEl)
     })
 </script>
 {% block extra_body %}

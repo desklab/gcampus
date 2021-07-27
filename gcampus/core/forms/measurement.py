@@ -29,7 +29,6 @@ from django.forms.formsets import ManagementForm  # noqa
 from django.forms.widgets import Select, Textarea, HiddenInput, NumberInput
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-from leaflet.forms.widgets import LeafletWidget
 
 from gcampus.auth.exceptions import (
     TOKEN_CREATE_PERMISSION_ERROR,
@@ -42,6 +41,7 @@ from gcampus.auth.models.token import (
 )
 from gcampus.core.fields import SplitSplitDateTimeField
 from gcampus.core.models import Measurement, DataPoint
+from gcampus.map.widgets import GeoPointWidget
 
 TOKEN_FIELD_NAME = "gcampus_auth_token"
 
@@ -54,7 +54,7 @@ class MeasurementForm(ModelForm):
         fields = ["name", "time", "location", "comment", "water_name", "osm_id"]
         field_classes = {"time": SplitSplitDateTimeField}
         widgets = {
-            "location": LeafletWidget(),
+            "location": GeoPointWidget(),
         }
 
     def non_field_errors(self):

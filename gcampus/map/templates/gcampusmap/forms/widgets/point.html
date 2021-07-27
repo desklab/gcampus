@@ -1,0 +1,16 @@
+{% load map %}
+<style>
+    #{{ map_container_id }} {
+        width: 100%;
+        height: 400px;
+    }
+</style>
+<textarea name="{{ name }}" style="display: none; visibility: hidden;" id="{{ input_id }}" autocomplete="off">{{ serialized }}</textarea>
+<script type="text/javascript">
+    function {{ onload }}(e) {
+        let map = e.target;
+        let input = document.getElementById('{{ input_id }}');
+        new gcampusmap.MapboxGLPointWidget(map, input);
+    }
+</script>
+{% map name=modulemodule onload=onload container=map_container_id %}

@@ -60,7 +60,7 @@
     <script type="text/javascript" src="{% static 'gcampuscore/js/dynamicformset.js' %}"></script>
     <script type="text/javascript">
         window.addEventListener('load', () => {
-            let formset = new gcampus.DynamicFormset("{{ formset.prefix }}");
+            let formset = new gcampuscore.DynamicFormset("{{ formset.prefix }}");
         });
     </script>
 {% endblock %}
