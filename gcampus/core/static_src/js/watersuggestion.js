@@ -15,15 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+//import mapboxgl from 'mapbox-gl'; // noqa
 import {Component, render} from 'preact';
 import {html} from 'htm/preact';
 
 
-const DEFAULT_COLOR = '#33658A';
-const HIGHLIGHT_COLOR = '#F6AE2D';
-const VAR_LOCATION_PLACEHOLDER = window._varLocationPlaceholder;
-const VAR_LOCATION_TITLE = window._varLocationTitle;
-const LOADING_TEXT = window._loadingText;
+const DEFAULT_COLOR: String = '#33658A';
+const HIGHLIGHT_COLOR: String = '#F6AE2D';
+const VAR_LOCATION_PLACEHOLDER: String = window._varLocationPlaceholder;
+const VAR_LOCATION_TITLE: String = window._varLocationTitle;
+const LOADING_TEXT: String = window._loadingText;
+const EMPTY_GEO_JSON: Object = {
+    'type': 'FeatureCollection',
+    'features': []  // Empty data for now
+};
 
 
 /**
@@ -136,23 +141,46 @@ class VariableWaterItem extends Component {
 
 
 class WaterList extends Component {
+    state: Object;
+    map;
+    _layerID: String = 'waterLayer';
+    _sourceID: String = 'waterList';
+    _sourceIDHighlight: String = 'waterItemHighlighted';
+    _layerIDHighlight: String = 'waterLayerHighlighted';
+    _requestTimeout: ?Number = null;
+
     constructor() {
         super();
         this.state = {features: [], loading: false};
         this.currentPermanentHighlight = null;
-        window.addEventListener('map:init', this.mapInit.bind(this));
+        window.addEventListener('map:load', this.mapLoad.bind(this));
     }
 
     setFeatures(features) {
         this.setLoading(false);
-        this.layer.clearLayers();
         features = features || [];
         features = features.filter(
             f => f.properties.hasOwnProperty('name') && f.properties.name
         );
-        if (features.hasOwnProperty('length') && features.length > 0) {
-            this.layer.addData(features);
-            this.layer.setStyle({color: DEFAULT_COLOR});
+        this.map.getSource(this._sourceID).setData({
+            'type': 'FeatureCollection',
+            'features': features
+        });
+        if (this.currentPermanentHighlight !== null) {
+            console.log(features);
+            console.log(this.currentPermanentHighlight);
+            let highlightedFeature = features.filter(
+                f => this.validFeatureID(f.id) === this.validFeatureID(this.currentPermanentHighlight)
+            );
+            console.log(highlightedFeature);
+            if (highlightedFeature.length === 0) {
+                // The last selected water could not be found in the new
+                // suggestion.
+                // Thus, the selection is reset.
+                console.log("reset");
+                this.currentPermanentHighlight = null;
+                this.resetHighlight();
+            }
         }
         this.setState({features: features});
     }
@@ -166,26 +194,6 @@ class WaterList extends Component {
      */
     setLoading(loading) {
         this.setState({loading: loading});
-    }
-
-    /**
-     * Update Style
-     *
-     * Update the styling (fill and edge color) of a feature layer.
-     * Used to highlight and reset features once they are hovered or
-     * selected.
-     *
-     * @param layer: Map layer of the feature
-     * @param color {String}: Fill and edge color
-     */
-    updateStyle(layer, color) {
-        let options = {
-            fill: layer.options.fill,
-            fillColor: color,
-            fillOpacity: layer.options.fillOpacity,
-            color: color
-        }
-        layer.setStyle(options);
     }
 
     /**
@@ -212,23 +220,29 @@ class WaterList extends Component {
     }
 
     /**
-     * Get Feature Layer
+     * Get GeoJSON Feature
      *
-     * Return the feature layer for a given feature ID. If no layer with
-     * matching ID can be found, an error is thrown.
+     * Return the GeoJSON feature where the ID matches the passed
+     * feature ID. Note that this will only return features that are
+     * in the current state. Features that have been in the state
+     * previously will not be returned.
      *
-     * @param featureID {number|string}: Feature ID
-     * @returns: A map layer
+     * If a feature can not be found, an exception is thrown.
+     *
+     * @param featureID {Number|String}: Feature ID
+     * @returns {Object} GeoJSON of the requested feature
+     * @throws Error
      */
-    getFeatureLayer(featureID) {
+    getGeoJSONFeature(featureID: Number|String) {
         featureID = this.validFeatureID(featureID);
-        let featureLayer = this.layer.getLayers().filter(
-            l => l.feature.id === featureID
-        );
-        if (featureLayer.length !== 1) {
-            throw Error(`Expected one layer with matching feature ID but got ${featureLayer.length}`);
+        let feature = this.state.features.filter(f => f.id === featureID);
+        if (feature.length === 0) {
+            throw Error(`Unable to find feature with ID ${featureID}!`);
         }
-        return featureLayer[0];
+        if (feature.length > 1) {
+            throw Error(`Found more than one feature with ID ${featureID}!`);
+        }
+        return feature[0];
     }
 
     /**
@@ -241,39 +255,22 @@ class WaterList extends Component {
      * @param featureID {number|string}: Feature ID
      */
     highlightFeature(featureID) {
-        let featureLayer = this.getFeatureLayer(featureID);
-        this.updateStyle(featureLayer, HIGHLIGHT_COLOR);
+        this.map.getSource(this._sourceIDHighlight).setData(
+            this.getGeoJSONFeature(featureID)
+        );
     }
 
     /**
-     * Reset Highlight Feature
+     * Reset Highlight
      *
-     * Resets the highlighting of a given feature. This will always
-     * remove the highlighting, whether or not the feature is
-     * permanently highlighted (e.g. by being selected).
-     *
-     * @param featureID {number|string}: Feature ID
+     * Resets the highlighting
      */
-    resetHighlightFeature(featureID) {
-        let featureLayer = this.getFeatureLayer(featureID);
-        this.updateStyle(featureLayer, DEFAULT_COLOR);
-    }
-
-    /**
-     *  Maybe Reset Highlight Feature
-     *
-     *  Only resets the highlighting of a given feature if the feature
-     *  is not currently permanently highlighted. Used for when the
-     *  element is no longer hovered.
-     *
-     * @param featureID {number|string}: Feature ID
-     */
-    maybeResetHighlightFeature(featureID) {
-        if (this.validFeatureID(featureID) === this.validFeatureID(this.currentPermanentHighlight)) {
-            // Do nothing
-            return;
+    resetHighlight() {
+        // Set source data for the highlight layer to be empty
+        this.map.getSource(this._sourceIDHighlight).setData(EMPTY_GEO_JSON);
+        if (this.currentPermanentHighlight !== null) {
+            this.highlightFeature(this.currentPermanentHighlight);
         }
-        this.resetHighlightFeature(featureID);
     }
 
     /**
@@ -286,13 +283,26 @@ class WaterList extends Component {
      * @param e {Event}: Event, passed by the event listener
      */
     mapUpdate(e) {
-        this.setFeatures([]);
-        let marker = e.layer;
-        let {lat, lng} = marker.getLatLng();
+        let pointWidget = e.detail.widget;
+        let {lng, lat} = pointWidget.getLngLat();
         this.setLoading(true)
-        fetchWaterSuggestion(lat, lng)
-            .then(data => this.setFeatures(data.features))
-            .catch(this.onError.bind(this));
+        if (this._requestTimeout !== null) {
+            // Stop the last timeout and thereby abort the request
+            clearTimeout(this._requestTimeout);
+        }
+        // Start a timeout and wait for 300ms. After this timeout, do
+        // the actual request. This delay is acceptable as the Overpass
+        // API request is quite lengthy and thus another 300ms will not
+        // matter.
+        // This is done to avoid spamming requests when the user double
+        // clicks on the map e.g. to zoom. Only the last click will go
+        // through to the server.
+        this._requestTimeout = setTimeout(() => {
+            this._requestTimeout = null;
+            fetchWaterSuggestion(lat, lng)
+                .then(data => this.setFeatures(data.features))
+                .catch(this.onError.bind(this));
+        }, 300);
     }
 
     onError(err) {
@@ -309,10 +319,43 @@ class WaterList extends Component {
      * @param e {Event}: Passed by the event listener for map
      *      initialisation.
      */
-    mapInit(e) {
+    mapLoad(e) {
         this.map = e.detail.map;
-        this.layer = L.geoJSON().addTo(this.map);
-        this.map.on('draw:created draw:edited', this.mapUpdate.bind(this));
+        this.map.addSource(this._sourceID, {
+            'type': 'geojson',
+            'data': EMPTY_GEO_JSON,
+        });
+        this.map.addSource(this._sourceIDHighlight, {
+            'type': 'geojson',
+            'data': EMPTY_GEO_JSON,
+        });
+        // Add the default water layer. This layer will show all waters
+        // suggested to the user. It automatically updates once the
+        // source data is changed. There is thus no need to access this
+        // layer later on.
+        map.addLayer({
+            'id': this._layerID,
+            'type': 'line',
+            'source': this._sourceID,
+            'layout': {},
+            'paint': {
+                'line-color': DEFAULT_COLOR,
+                'line-width': 3
+            }
+        });
+        // Add highlight layer. This will automatically update once the
+        // highlighted data source is set.
+        map.addLayer({
+            'id': this._layerIDHighlight,
+            'type': 'line',
+            'source': this._sourceIDHighlight,
+            'layout': {},
+            'paint': {
+                'line-color': HIGHLIGHT_COLOR,
+                'line-width': 4
+            }
+        });
+        this.map.on('edit', this.mapUpdate.bind(this));
     }
 
     /**
@@ -332,22 +375,6 @@ class WaterList extends Component {
     }
 
     /**
-     * Create mouseleave Listener
-     *
-     * Returns a callable function that is used for registering event
-     * listeners in the ``render`` method.
-     *
-     * @param feature {Object}: Feature object. Only the id attribute
-     *      will be used.
-     * @returns {(function(Event): void)}
-     */
-    createMouseLeaveListener(feature) {
-        return (e) => {
-            this.maybeResetHighlightFeature.bind(this)(feature.id);
-        };
-    }
-
-    /**
      * Register Change Listener of Radio Buttons
      *
      * Iterates over all radio buttons and adds an event listener to
@@ -355,31 +382,32 @@ class WaterList extends Component {
      * permanently highlights the features associated with those radio
      * buttons.
      */
-    registerChangeListener() {
+    setupWaterList() {
         if (document.querySelector('input[name="water_name"]')) {
             document.querySelectorAll('input[name="water_name"]').forEach(el => {
+                let featureID = null;
+                if (el.id !== 'varWater') {
+                    featureID = this.validFeatureID(
+                        el.getAttribute("data-feature-id")
+                    );
+                }
+                if (featureID === this.currentPermanentHighlight) {
+                    el.checked = true;
+                }
                 el.addEventListener('change', (e) => {
                     if (e.target.checked) {
-                        // The element has actually been checked
-                        if (this.currentPermanentHighlight) {
-                            // There was a previously checked element
-                            // that has been permanently highlighted.
-                            // Reset the highlighting of the old
-                            // feature.
-                            this.resetHighlightFeature(this.currentPermanentHighlight)
-                        }
-                        if (e.target.id !== 'varWater') {
-                            // The element has a feature ID associated
-                            // with it.
-                            let featureID = e.target.getAttribute("data-feature-id");
-                            this.highlightFeature(featureID);
-                            this.currentPermanentHighlight = featureID;
-                        } else {
-                            // The element is a variable water name item
-                            // and thus has no feature associated with
-                            // it.
-                            this.currentPermanentHighlight = null;
-                        }
+                        // The element has actually been checked.
+                        // All other elements will be ignored.
+
+                        // If the current element is the variable water
+                        // name item, then the variable below will be
+                        // set to 'null'. Otherwise, it will have the
+                        // correct ID.
+                        this.currentPermanentHighlight = featureID;
+                        // Reset highlight will remove all highlighting
+                        // and highlight only the current selection
+                        // given it is not null.
+                        this.resetHighlight();
                     }
                 });
             });
@@ -387,35 +415,36 @@ class WaterList extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        this.registerChangeListener();
+        this.setupWaterList();
     }
 
     componentDidMount() {
-        this.registerChangeListener();
+        this.setupWaterList();
     }
 
     render(props, state, context) {
         let {features, loading} = state;
-        let spinner = '';
+        let content = '';
         if (loading) {
-            spinner = html`
+            content = html`
                 <div class="list-group-item">
                     <div class="spinner-border spinner-border-sm" role="status">
                     </div>
                     <span class="ms-2">${LOADING_TEXT}</span>
                 </div>`
+        } else {
+            content = features.map(feature => html`
+                <${ListItem}
+                    feature=${feature}
+                    highlight=${this.createMouseOverListener(feature)}
+                    resetHighlight=${this.resetHighlight.bind(this)}
+                />`
+            );
         }
         return html`
             <div class="list-group bg-white"
                 style="border-top-left-radius: 0; border-top-right-radius: 0;">
-                ${features.map(feature => html`
-                    <${ListItem}
-                            feature=${feature}
-                            highlight=${this.createMouseOverListener(feature)}
-                            resetHighlight=${this.createMouseLeaveListener(feature)}
-                    />
-                `)}
-                ${spinner}
+                ${content}
                 <${VariableWaterItem} />
             </div>`;
     }

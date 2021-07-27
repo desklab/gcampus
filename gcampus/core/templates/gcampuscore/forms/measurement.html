@@ -4,7 +4,6 @@
     {% translate "Create new Measurement" %}
 {% endblock %}
 {% block extra_head %}
-{#    {% leaflet_css plugins="leafletsearch,forms" %}#}
     {% load_mapbox_css %}
     {% load_mapbox_js %}
 {% endblock %}
@@ -13,13 +12,6 @@
     <div class="container">
         <div class="py-5 text-center">
             <h2>{% translate "Create new Measurement" %}</h2>
-            {% comment %}
-                <p class="lead">
-                    {% blocktranslate %}
-                        Test
-                    {% endblocktranslate %}
-                </p>
-            {% endcomment %}
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-8">
@@ -55,11 +47,6 @@
                         <div class="mb-3">
                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
                             {% include "gcampuscore/forms/components/helptext.html" %}
-                            <style>
-                                #{{ field.id_for_label }}-map {
-                                    height: 400px;
-                                }
-                            </style>
                             <div class="rounded-2">
                                 {{ field }}
                                 <div id="watersuggestion"></div>
@@ -98,6 +85,6 @@
         window._varLocationTitle = "{% translate "Other Water:" %}";
         window._loadingText = "{% translate "Loading ..." %}";
     </script>
-{#    {% leaflet_js plugins="leafletsearch,forms,watersuggestion" %}#}
+    <script type="text/javascript" src="{% static 'gcampuscore/js/watersuggestion.js' %}"></script>
     <script type="text/javascript" src="{% static 'gcampuscore/js/autofocus.js' %}"></script>
 {% endblock %}
