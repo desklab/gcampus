@@ -11,6 +11,11 @@
         </ul>
         <ul class="nav">
             {% if request.session.gcampusauth_authenticated %}
+                {% with key=request.session.gcampusauth_token.token|slice:"-3:" %}
+                    {% include "gcampuscore/components/nav_item.html" with title=key view_name="gcampusauth:login_success" %}
+                {% endwith %}
+            {% endif %}
+            {% if request.session.gcampusauth_authenticated %}
                 {% translate "Logout" as logout_title %}
                 {% include "gcampuscore/components/nav_item.html" with title=logout_title view_name="gcampusauth:logout" %}
             {% else %}
@@ -26,7 +31,8 @@
             <span class="fs-4">GewässerCampus</span>
         </a>
         <form class="col-12 col-lg-auto mb-3 mb-lg-0">
-            <input type="search" class="form-control" placeholder="{% translate "Search" %}" aria-label="{% translate "Search" %}">
+            <input type="search" class="form-control" placeholder="{% translate "Search" %}"
+                   aria-label="{% translate "Search" %}">
         </form>
     </div>
 </header>
