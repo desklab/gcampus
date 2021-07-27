@@ -138,7 +138,7 @@ let gcampuscoreConfig = (env, options) => {
             publicPath: '/static/gcampuscore',
             filename: 'js/[name].js',
             library: {
-                name: 'gcampus',
+                name: 'gcampuscore',
                 type: 'var'
             }
         },
@@ -169,7 +169,7 @@ let gcampusmapConfig = (env, options) => {
             publicPath: '/static/gcampusmap',
             filename: 'js/[name].js',
             library: {
-                name: 'gcampus',
+                name: 'gcampusmap',
                 type: 'var'
             }
         },
