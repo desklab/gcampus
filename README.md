@@ -3,7 +3,7 @@
 <br>
 <br>
 
-**GewässerCampus** (`gcampus`) is part of an educational project on Limnology aiming to provide students the possibility to analyse, publish and discuss results of self-conducted measurements of water-quality in rivers and lakes. It is developed by [desklab](www.desk-lab.de) in cooperation with the [TU Kaiserslautern](https://www.mv.uni-kl.de/biovt/) and funded by the [DBU](https://www.dbu.de/). See [gewaessercampus.de](https:/gewaessercampus.de) for more information.
+**GewässerCampus** (`gcampus`) is part of an educational project on Limnology aiming to provide students the possibility to analyse, publish and discuss results of self-conducted measurements of water-quality in rivers and lakes. It is developed by [desklab](www.desk-lab.de) in cooperation with the [TU Kaiserslautern](https://www.mv.uni-kl.de/biovt/) and funded by the [DBU](https://www.dbu.de/). See [gewaessercampus.de](https://gewaessercampus.de) for more information.
 
 
 <hr>
