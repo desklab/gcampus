@@ -80,7 +80,7 @@ const commonConfig = (env, options) => {
                     loader: 'babel-loader',
                     exclude: /node_modules/,
                     options: {
-                        presets: ['@babel/preset-env'],
+                        presets: ['@babel/preset-flow'],
                         // outputPath: 'js'
                     }
                 },
