@@ -43,6 +43,15 @@ const cssFileLoader = (env, options) => {
     };
 };
 
+const cssLoader = (env, options) => {
+    return {
+        loader: 'css-loader',
+        // ES modules had to be disabled because extract-loader is
+        // not able to parse the file otherwise.
+        options: {esModule: false},
+    };
+}
+
 const commonConfig = (env, options) => {
     let isProduction = options.mode === 'production';
     return {
@@ -60,7 +69,7 @@ const commonConfig = (env, options) => {
                     use: [
                         cssFileLoader(env, options),
                         'extract-loader',
-                        'css-loader',
+                        cssLoader(env, options),
                         postcssLoader(env, options)
                     ]
                 },
@@ -70,7 +79,7 @@ const commonConfig = (env, options) => {
                     use: [
                         cssFileLoader(env, options),
                         'extract-loader',
-                        'css-loader',
+                        cssLoader(env, options),
                         postcssLoader(env, options),
                         {loader: 'sass-loader'}
                     ]
