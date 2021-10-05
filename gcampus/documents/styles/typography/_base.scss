@@ -1,0 +1,47 @@
+html {
+    color: $grey-900;
+    font-family: "Calibri";
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+body {
+    hyphens: auto;
+}
+
+
+h1 {
+    font-size: 36pt;
+}
+
+
+.accesskey-key {
+    font-family:'JetBrains Mono', monospace;
+    font-weight: lighter;
+}
+
+.coursetoken {
+    font-family:'JetBrains Mono', monospace;
+    font-weight: lighter;
+}
+
+.color-white {
+    color: white;
+}
+
+.color-primary {
+    color: $primary;
+}
+
+.color-lightgrey {
+    color: $grey-200;
+}
+
+.color-grey {
+    color: $grey-500;
+}
+
+.color-darkgrey {
+    color: $grey-800;
+}
