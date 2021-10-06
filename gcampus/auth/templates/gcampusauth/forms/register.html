@@ -53,6 +53,20 @@ name of a representative. This information will also be kept private and
 is only used for communication.{% endblocktranslate %}
                     </p>
                 </div>
+            <div class="col-7 px-5 py-3">
+                    {% with form.token_name as field %}
+                        <div class="mb-3">
+                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                            {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                        </div>
+                    {% endwith %}
+                </div>
+                <div class="col-5 bg-light px-5 py-3">
+                    <p class="mt-4 text-muted">
+{% blocktranslate context "help text course key name" %}You can choose to assign a name to the course key to
+    better differentiate the tokens from one another.{% endblocktranslate %}
+                    </p>
+                </div>
              <div class="col-7 px-5 py-3">
                     {% with form.teacher_email as field %}
                         <div class="mb-3">

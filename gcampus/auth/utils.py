@@ -33,8 +33,9 @@ def get_token_type(request: HttpRequest, default: str = None) -> Optional[str]:
     return default
 
 
-def set_token(request: HttpRequest, token: str, token_type: str):
-    request.session[TOKEN_STORE] = {"token": token, "token_type": token_type}
+
+def set_token(request: HttpRequest, token: str, token_type: str, token_name):
+    request.session[TOKEN_STORE] = {"token": token, "token_type": token_type, "token_name": token_name}
     request.session[AUTHENTICATION_BOOLEAN] = True
 
 

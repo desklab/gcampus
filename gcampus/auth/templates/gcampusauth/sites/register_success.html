@@ -4,7 +4,11 @@
     {% translate "Request Access Keys" %}
 {% endblock %}
 {% block content %}
+
     <div class="container-fluid">
+        {% if object.token_name %}
+        <h2>{% blocktrans  with name=object.token_name %} These are the tokens registered under the name: {{ name }} {% endblocktrans %}</h2>
+    {% endif %}
             {% csrf_token %}
             <div class="row">
 

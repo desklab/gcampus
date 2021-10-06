@@ -66,4 +66,5 @@ class RegisterForm(forms.ModelForm):
             "school_name",
             "teacher_name",
             "teacher_email",
+            "token_name",
         )

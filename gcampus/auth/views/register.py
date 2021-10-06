@@ -31,11 +31,13 @@ class RegisterFormView(FormView):
             school_name = form.cleaned_data["school_name"]
             teacher_name = form.cleaned_data["teacher_name"]
             teacher_email = form.cleaned_data["teacher_email"]
+            token_name = form.cleaned_data["token_name"]
 
             course_token = CourseToken(
                 school_name=school_name,
                 teacher_name=teacher_name,
                 teacher_email=teacher_email,
+                token_name=token_name,
             )
             course_token.save()
             self.pk = course_token.pk

@@ -39,6 +39,8 @@ logger = logging.getLogger("gcampus.core.token")
 class CourseToken(DateModelMixin):
     token = models.CharField(blank=False, max_length=COURSE_TOKEN_LENGTH, unique=True)
 
+    token_name = models.CharField(blank=True, max_length=140, verbose_name=_("Course Token Name"))
+
     deactivated = models.BooleanField(default=False)
 
     school_name = models.CharField(

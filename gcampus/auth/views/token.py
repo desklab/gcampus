@@ -25,7 +25,7 @@ from django.views.generic.edit import FormView
 from gcampus.auth import utils
 from gcampus.auth.exceptions import TOKEN_INVALID_ERROR
 from gcampus.auth.forms.token import AccessKeyForm, CourseTokenForm
-from gcampus.auth.models.token import ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE
+from gcampus.auth.models.token import ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE, CourseToken
 
 
 class SetTokenFormView(FormView, ABC):
@@ -45,8 +45,10 @@ class SetTokenFormView(FormView, ABC):
     def form_valid(self, form: Union[AccessKeyForm, CourseTokenForm]):
         if form.is_valid():
             token = form.cleaned_data["token"]
+            if self.token_type == "course":
+                token_name = CourseToken.objects.get(token=token).token_name
             utils.logout(self.request)
-            utils.set_token(self.request, token, self.token_type)
+            utils.set_token(self.request, token, self.token_type, token_name)
             return super(SetTokenFormView, self).form_valid(form)
         raise PermissionDenied(TOKEN_INVALID_ERROR)
 
