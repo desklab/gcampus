@@ -21,6 +21,11 @@
                    role="button">{% translate "Course Measurements" %}</a>
                 <a href="/measurement/{{ measurement.pk }}/detail" class="btn btn-lg btn-primary"
                    role="button">{% translate "Hidden Measurement" %}</a>
+                {% if request.session.gcampusauth_token.token_type == "course"%}
+                 <a href="{% url "gcampuscore:associated_accesskeys" %}"
+                                   class="btn btn-lg btn-primary"
+                    role="button">{% translate "Associated AccesKeys" %}</a>
+                {% endif %}
             </div>
         </div>
     </div>

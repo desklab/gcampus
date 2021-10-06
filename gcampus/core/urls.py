@@ -49,6 +49,7 @@ urlpatterns = [
     path("measurement/<int:pk>/show", show, name="show"),
     path("course/measurements/hidden", HiddenCourseMeasurementListView.as_view(), name="course_hidden"),
     path("course/tokens", AssociatedAccessKeys.as_view(), name="associated_accesskeys"),
+    path("course/overview", course_overview, name="course_token_landing"),
     path("course/tokens/<int:pk>/deactivate", deactivate_accesskey, name="deactivate"),
     path("course/tokens/<int:pk>/activate", activate_accesskey, name="activate"),
 ]
