@@ -1,4 +1,3 @@
-
 #  Copyright (C) 2021 desklab gUG
 #
 #  This program is free software: you can redistribute it and/or modify
@@ -41,7 +40,6 @@ class AssociatedAccessKeys(ListView):
     context_object_name = "measurement_list"
     paginate_by = 10
 
-
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         token = utils.get_token(self.request)
@@ -54,27 +52,27 @@ class AssociatedAccessKeys(ListView):
         token_type = utils.get_token_type(self.request)
         if token_type != COURSE_TOKEN_TYPE:
             raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
-        access_keys = AccessKey.objects.filter(
-            parent_token__token=token
-        )
-        measurements = Measurement.all_objects.filter(
-            token__parent_token__token=token
-        )
+        access_keys = AccessKey.objects.filter(parent_token__token=token)
+        measurements = Measurement.all_objects.filter(token__parent_token__token=token)
         context["access_keys"] = access_keys
         context["measurements"] = measurements
         return context
 
+
 def course_overview(request):
     return render(request, "gcampuscore/sites/overview/coursetoken_navpage.html")
+
 
 def deactivate_accesskey(request, pk):
     access_key = AccessKey.objects.filter(pk=pk)
     parent_token = get_token(request)
     if parent_token is not None and access_key:
         if access_key.parent_token == parent_token:
-            #context = {'measurement': measurement[0]}
+            # context = {'measurement': measurement[0]}
             access_key.update(deactivated=True)
-            return render(request, "gcampuscore/sites/overview/associated_accesskeys.html")
+            return render(
+                request, "gcampuscore/sites/overview/associated_accesskeys.html"
+            )
         else:
             raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
     else:
@@ -83,6 +81,7 @@ def deactivate_accesskey(request, pk):
         if not parent_token:
             raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
 
+
 def activate_accesskey(request, pk):
     access_key = AccessKey.objects.filter(pk=pk)
     parent_token = get_token(request)
@@ -90,7 +89,9 @@ def activate_accesskey(request, pk):
         if access_key.parent_token == parent_token:
             # context = {'measurement': measurement[0]}
             access_key.update(deactivated=False)
-            return render(request, "gcampuscore/sites/overview/associated_accesskeys.html")
+            return render(
+                request, "gcampuscore/sites/overview/associated_accesskeys.html"
+            )
         else:
             raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
     else:

@@ -50,7 +50,6 @@ class MeasurementModelTest(TestCase):
         measurement.location = LOCATION_OCEAN
         self.assertTrue(measurement.is_location_changed())
 
-
     def test_hidden_measurement(self):
         measurement = Measurement(location=LOCATION_HEIDELBERG, time=timezone.now())
         time.sleep(1.5)  # Sleep because geocoding is rate-limited
@@ -60,4 +59,3 @@ class MeasurementModelTest(TestCase):
         filter_result_all = Measurement.all_objects.filter(pk=measurement.pk)
         self.assertFalse(filter_result)
         self.assertIn(measurement, filter_result_all)
-

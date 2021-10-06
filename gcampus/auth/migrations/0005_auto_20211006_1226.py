@@ -6,13 +6,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gcampusauth', '0004_coursetoken_name'),
+        ("gcampusauth", "0004_coursetoken_name"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='coursetoken',
-            old_name='name',
-            new_name='token_name',
+            model_name="coursetoken",
+            old_name="name",
+            new_name="token_name",
         ),
     ]

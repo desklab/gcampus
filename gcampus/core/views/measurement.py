@@ -17,7 +17,12 @@ from __future__ import annotations
 
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
-from django.core.exceptions import PermissionDenied, SuspiciousOperation, ObjectDoesNotExist, FieldError
+from django.core.exceptions import (
+    PermissionDenied,
+    SuspiciousOperation,
+    ObjectDoesNotExist,
+    FieldError,
+)
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import DetailView
@@ -112,9 +117,11 @@ def hide(request, pk):
     if parent_token is not None and measurement:
         measurement_token = measurement[0].token.parent_token
         if measurement_token.token == parent_token:
-            context = {'measurement': measurement[0]}
+            context = {"measurement": measurement[0]}
             measurement.update(hidden=True)
-            return render(request, "gcampuscore/sites/detail/hidden_success.html", context)
+            return render(
+                request, "gcampuscore/sites/detail/hidden_success.html", context
+            )
         else:
             raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
     else:
@@ -132,9 +139,11 @@ def show(request, pk):
             raise FieldError(_("Measurement is already public"))
         measurement_token = measurement[0].token.parent_token
         if measurement_token.token == parent_token:
-            context = {'measurement': measurement[0]}
+            context = {"measurement": measurement[0]}
             measurement.update(hidden=False)
-            return render(request, "gcampuscore/sites/detail/show_success.html", context)
+            return render(
+                request, "gcampuscore/sites/detail/show_success.html", context
+            )
         else:
             raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
     else:
@@ -142,7 +151,6 @@ def show(request, pk):
             raise ObjectDoesNotExist("The measurement is probably already public")
         if not parent_token:
             raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
-
 
 
 class MeasurementMapView(ListView):
@@ -189,6 +197,7 @@ class MeasurementFormView(FormView):
 
     def get_next_url(self, instance: Measurement):
         return reverse(self.next_view_name, kwargs={"measurement_id": instance.id})
+
 
 class HiddenCourseMeasurementListView(ListView):
     template_name = "gcampuscore/sites/list/hidden_course_measurement_list.html"

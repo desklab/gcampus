@@ -16,8 +16,12 @@
 from django.urls import path
 
 from gcampus.core.apps import GCampusCoreAppConfig
-from gcampus.core.views.course_overview import AssociatedAccessKeys, course_overview, deactivate_accesskey, \
-    activate_accesskey
+from gcampus.core.views.course_overview import (
+    AssociatedAccessKeys,
+    course_overview,
+    deactivate_accesskey,
+    activate_accesskey,
+)
 from gcampus.core.views.datapoint import DataPointFormSetView
 from gcampus.core.views.measurement import (
     MeasurementFormView,
@@ -25,7 +29,10 @@ from gcampus.core.views.measurement import (
     MeasurementDetailView,
     MeasurementMapView,
     PersonalMeasurementListView,
-    CourseMeasurementListView, show, HiddenCourseMeasurementListView, hide,
+    CourseMeasurementListView,
+    show,
+    HiddenCourseMeasurementListView,
+    hide,
 )
 
 # Turn off black formatting and pylint
