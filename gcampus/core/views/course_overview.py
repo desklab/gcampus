@@ -67,3 +67,34 @@ class AssociatedAccessKeys(ListView):
 def course_overview(request):
     return render(request, "gcampuscore/sites/overview/coursetoken_navpage.html")
 
+def deactivate_accesskey(request, pk):
+    access_key = AccessKey.objects.filter(pk=pk)
+    parent_token = get_token(request)
+    if parent_token is not None and access_key:
+        if access_key.parent_token == parent_token:
+            #context = {'measurement': measurement[0]}
+            access_key.update(deactivated=True)
+            return render(request, "gcampuscore/sites/overview/associated_accesskeys.html")
+        else:
+            raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
+    else:
+        if not access_key:
+            raise ObjectDoesNotExist(_("The Accesskey is probably already deactivated"))
+        if not parent_token:
+            raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
+
+def activate_accesskey(request, pk):
+    access_key = AccessKey.objects.filter(pk=pk)
+    parent_token = get_token(request)
+    if parent_token is not None and access_key:
+        if access_key.parent_token == parent_token:
+            # context = {'measurement': measurement[0]}
+            access_key.update(deactivated=False)
+            return render(request, "gcampuscore/sites/overview/associated_accesskeys.html")
+        else:
+            raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
+    else:
+        if not access_key:
+            raise ObjectDoesNotExist(_("The Accesskey is probably already deactivated"))
+        if not parent_token:
+            raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
