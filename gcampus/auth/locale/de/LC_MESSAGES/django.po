@@ -64,7 +64,7 @@ msgstr "Name der Lehrkraft"
 
 #: gcampus/auth/models/token.py:53
 msgid "Email Adress"
-msgstr ""
+msgstr "E-Mail-Adresse"
 
 #: gcampus/auth/models/token.py:77
 #, python-format
@@ -123,7 +123,8 @@ msgid ""
 "school or educational institution requesting new tokens. This\n"
 "information will not be shared publicly but helps us to associate\n"
 "measurements with your school or institution."
-msgstr ""
+msgstr "Der Name der Schule oder Institution, für die die Zugangscodes generiert werden sollen. Diese \n"
+"Daten werden nur für eine bessere Zuordnung der Zugangscodes intern von Desklab verwendet und nicht veröffentlicht."
 
 #: gcampus/auth/templates/gcampusauth/forms/register.html:51
 msgctxt "help text teacher name"
@@ -131,28 +132,31 @@ msgid ""
 "Your name or the\n"
 "name of a representative. This information will also be kept private and\n"
 "is only used for communication."
-msgstr ""
+msgstr "Ihr Name oder der Name der Person welche verantwortlich für die Registrierung ist. Dieser Name wird auch \n"
+"nicht veröffentlicht und dient lediglich für die Kommunikation zwischen der Lehrkraft und Desklab."
 
 #: gcampus/auth/templates/gcampusauth/forms/register.html:66
-msgid ""
-"\n"
-"    Your Email address will only be used to send you the Course Token and "
+msgid "Your Email address will only be used to send you the Course Token and "
 "the Access Keys.\n"
 "<br>\n"
 "In case we need to contact you this Email address wil be used. "
-msgstr ""
+msgstr "Diese E-Mail Adresse wird nur dafür verwendet, die Zugangscodes und den Kursschlüssel zu versenden \n"
+"<br>\n"
+"Diese E-Mail adresse wird auch verwendet, falls wir Sie kontaktieren müssen."
 
 #: gcampus/auth/templates/gcampusauth/forms/register.html:82
 #, python-format
 msgctxt "help text number of tokens"
-msgid ""
-"\n"
-"The number of access keys you want to generate. You can create a maximum\n"
+msgid "The number of access keys you want to generate. You can create a maximum\n"
 "of %(maximum)s access keys at once.\n"
 "<br>\n"
 "Students may share one access key in a group so not everyone needs their\n"
 "own access key."
-msgstr ""
+msgstr "Die Anzahl der zu generierenden Zugangscodes. Es können maximal \n"
+"%(maximum)s Zugangscodes auf einmal erzeugt werden.\n"
+"<br>\n"
+"Nicht jede/r Schüler/in benötigt einen eigenen Zugangscode, ein Zugangscode kann\n"
+"auch von einer Gruppe verwendet werden."
 
 #: gcampus/auth/templates/gcampusauth/forms/register.html:92
 msgid "Register"
