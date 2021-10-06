@@ -16,6 +16,8 @@
 from django.urls import path
 
 from gcampus.core.apps import GCampusCoreAppConfig
+from gcampus.core.views.course_overview import AssociatedAccessKeys, course_overview, deactivate_accesskey, \
+    activate_accesskey
 from gcampus.core.views.datapoint import DataPointFormSetView
 from gcampus.core.views.measurement import (
     MeasurementFormView,
@@ -46,6 +48,7 @@ urlpatterns = [
     path("measurement/<int:pk>/hide", hide, name="hide"),
     path("measurement/<int:pk>/show", show, name="show"),
     path("course/measurements/hidden", HiddenCourseMeasurementListView.as_view(), name="course_hidden"),
+    path("course/tokens", AssociatedAccessKeys.as_view(), name="associated_accesskeys"),
 ]
 # fmt: on
 # pylint: enable=line-too-long
