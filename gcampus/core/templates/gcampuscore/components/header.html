@@ -13,11 +13,11 @@
             {% if request.session.gcampusauth_authenticated %}
                 {% if request.session.gcampusauth_token.token_type == "course" %}
                  {% with name=request.session.gcampusauth_token.token_name %}
-                    {% include "gcampuscore/components/nav_item.html" with title=name view_name="gcampusauth:login_success" %}
+                    {% include "gcampuscore/components/nav_item.html" with title=name view_name="gcampuscore:course_token_landing" %}
                  {% endwith %}
                 {% endif %}
                 {% with key=request.session.gcampusauth_token.token|slice:"-3:" %}
-                    {% include "gcampuscore/components/nav_item.html" with title=key view_name="gcampusauth:login_success" %}
+                    {% include "gcampuscore/components/nav_item.html" with title=key view_name="gcampuscore:course_token_landing" %}
                 {% endwith %}
             {% endif %}
             {% if request.session.gcampusauth_authenticated %}
