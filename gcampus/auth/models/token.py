@@ -54,7 +54,7 @@ class CourseToken(DateModelMixin):
     )
 
     teacher_email = models.EmailField(
-        max_length=254, blank=False, verbose_name=_("Email Adress"), default=False
+        max_length=254, blank=False, verbose_name=_("E-Mail Address"), default=False
     )
 
     class Meta:

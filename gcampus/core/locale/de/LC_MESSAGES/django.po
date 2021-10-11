@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-27 11:01+0200\n"
+"POT-Creation-Date: 2021-10-11 22:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,8 +46,8 @@ msgid "Filter for measurements conducted after a specified time"
 msgstr ""
 "Nach Messungen suchen die nach einem bestimmten Datum aufgenommen wurden"
 
-#: gcampus/core/filters.py:106
-msgid "Data Type"
+#: gcampus/core/filters.py:106 gcampus/core/models/measurement.py:172
+msgid "Parameter"
 msgstr "Parameter"
 
 #: gcampus/core/filters.py:107
@@ -57,7 +57,7 @@ msgstr "Nach Messungen mit bestimmten Parameter suchen"
 #: gcampus/core/filters.py:112 gcampus/core/models/measurement.py:58
 #: gcampus/core/templates/gcampuscore/sites/list/course_measurement_list.html:22
 #: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:22
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:84
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:85
 #: gcampus/core/templates/gcampuscore/sites/list/personal_measurement_list.html:22
 msgid "Location"
 msgstr "Standort"
@@ -70,13 +70,13 @@ msgstr "Nach Messungen in einem bestimmten Radius suchen"
 msgid "Unable to parse OpenStreetMap ID!"
 msgstr "Fehler beim lesen der OpenStreetMap ID!"
 
-#: gcampus/core/forms/measurement.py:142 gcampus/core/models/measurement.py:178
+#: gcampus/core/forms/measurement.py:142 gcampus/core/models/measurement.py:179
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:92
 msgid "Value"
 msgstr "Wert"
 
 #: gcampus/core/forms/measurement.py:148 gcampus/core/models/measurement.py:81
-#: gcampus/core/models/measurement.py:185
+#: gcampus/core/models/measurement.py:186
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:37
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:93
 msgid "Comment"
@@ -87,6 +87,7 @@ msgid "ManagementForm data is missing or has been tampered with"
 msgstr ""
 
 #: gcampus/core/models/measurement.py:37
+#: gcampus/core/templates/gcampuscore/sites/overview/associated_accesskeys.html:19
 msgid "Measurement"
 msgstr "Messung"
 
@@ -98,7 +99,7 @@ msgstr "Messungen"
 #: gcampus/core/models/measurement.py:55 gcampus/core/models/measurement.py:158
 #: gcampus/core/templates/gcampuscore/sites/list/course_measurement_list.html:21
 #: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:21
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:83
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:84
 #: gcampus/core/templates/gcampuscore/sites/list/personal_measurement_list.html:21
 msgid "Name"
 msgstr "Name"
@@ -116,7 +117,7 @@ msgid "An approximated location for the measurement"
 msgstr "Ein abgeschätzter Standort der Messung"
 
 #: gcampus/core/models/measurement.py:70
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:96
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:84
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:18
 msgid "Water name"
 msgstr "Gewässername"
@@ -137,7 +138,7 @@ msgstr "Messzeitpunkt"
 msgid "Date and time of the measurement"
 msgstr "Datum und Uhrzeit der Messung"
 
-#: gcampus/core/models/measurement.py:82 gcampus/core/models/measurement.py:186
+#: gcampus/core/models/measurement.py:82 gcampus/core/models/measurement.py:187
 msgid "Hidden"
 msgstr "Versteckt"
 
@@ -163,35 +164,30 @@ msgstr "Messung %(id)s"
 
 #: gcampus/core/models/measurement.py:155
 #: gcampus/core/models/measurement.py:176
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:91
-msgid "Data type"
-msgstr "Parameter"
+msgid "Parameter type"
+msgstr "Parameter Typ"
 
 #: gcampus/core/models/measurement.py:156
-msgid "Data types"
-msgstr "Parameter"
+msgid "Parameter types"
+msgstr "Parameter Typen"
 
 #: gcampus/core/models/measurement.py:160
 msgid "Unit"
 msgstr "Einheit"
 
-#: gcampus/core/models/measurement.py:172
-msgid "Data point"
-msgstr "Messwert"
-
 #: gcampus/core/models/measurement.py:173
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:87
-msgid "Data points"
-msgstr "Messwerte"
+msgid "Parameters"
+msgstr "Parameter"
 
-#: gcampus/core/models/measurement.py:182
+#: gcampus/core/models/measurement.py:183
 msgid "Associated measurement"
 msgstr "Verknüpfte Messung"
 
-#: gcampus/core/models/measurement.py:196
-#, python-format
-msgid "Data point %(pk)s"
-msgstr "Messwert %(pk)s"
+#: gcampus/core/models/measurement.py:197
+#, fuzzy, python-format
+#| msgid "Measurement by %(name)s"
+msgid "Parameter %(pk)s (%(name)s)"
+msgstr "Messung von %(name)s"
 
 #: gcampus/core/templates/gcampuscore/components/header.html:5
 msgid "Map"
@@ -201,16 +197,17 @@ msgstr "Karte"
 msgid "Create New Measurement"
 msgstr "Neue Messung Erstellen"
 
-#: gcampus/core/templates/gcampuscore/components/header.html:14
+#: gcampus/core/templates/gcampuscore/components/header.html:24
 msgid "Logout"
 msgstr "Abmelden"
 
-#: gcampus/core/templates/gcampuscore/components/header.html:17
+#: gcampus/core/templates/gcampuscore/components/header.html:27
 msgid "Log in"
 msgstr "Anmelden"
 
-#: gcampus/core/templates/gcampuscore/components/header.html:29
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:75
+#: gcampus/core/templates/gcampuscore/components/header.html:39
+#: gcampus/core/templates/gcampuscore/components/header.html:40
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:76
 msgid "Search"
 msgstr "Suchen"
 
@@ -218,44 +215,44 @@ msgstr "Suchen"
 msgid "(Optional)"
 msgstr "(Optional)"
 
-#: gcampus/core/templates/gcampuscore/forms/datapoints.html:4
-#: gcampus/core/templates/gcampuscore/forms/datapoints.html:10
-msgid "Add Data Points"
-msgstr "Parameter Hinzufügen"
-
-#: gcampus/core/templates/gcampuscore/forms/datapoints.html:38
-msgid "Add"
-msgstr "Hinzufügen"
-
-#: gcampus/core/templates/gcampuscore/forms/datapoints.html:45
-msgid "Discard"
-msgstr "Verwerfen"
-
-#: gcampus/core/templates/gcampuscore/forms/datapoints.html:49
-msgid "Save"
-msgstr "Speichern"
-
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:4
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:13
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:14
 msgid "Create new Measurement"
 msgstr "Neue Messung Erstellen"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:87
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:75
 msgid "Save and Continue"
 msgstr "Speichern und Weiter"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:97
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:85
 msgid "Other Water:"
 msgstr "Anderes Gewässer:"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:98
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:86
 msgid "Loading ..."
 msgstr "Lädt ..."
+
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:4
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:10
+msgid "Add Parameters"
+msgstr "Parameter Hinzufügen"
+
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:38
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:45
+msgid "Discard"
+msgstr "Verwerfen"
+
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:49
+msgid "Save"
+msgstr "Speichern"
 
 #: gcampus/core/templates/gcampuscore/forms/widgets/splitdate.html:3
 #: gcampus/core/templates/gcampuscore/sites/list/course_measurement_list.html:23
 #: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:23
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:85
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:86
 #: gcampus/core/templates/gcampuscore/sites/list/personal_measurement_list.html:23
 msgid "Date"
 msgstr "Datum"
@@ -286,9 +283,9 @@ msgstr "Jetzt"
 msgid "Successful Login"
 msgstr "Erfolgreich angemeldet"
 
-#: gcampus/core/templates/gcampuscore/sites/detail/hidden_success.html:12%
+#: gcampus/core/templates/gcampuscore/sites/detail/hidden_success.html:12
 #, python-format
-msgid " You successfully hid the measurement \"%(measurement)s\" "
+msgid "You successfully hid the measurement \"%(measurement)s\""
 msgstr "Du hast die Messung \"%(measurement)s\" erfolgreich versteckt."
 
 #: gcampus/core/templates/gcampuscore/sites/detail/hidden_success.html:17
@@ -298,29 +295,28 @@ msgstr "Kartenansicht"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/hidden_success.html:19
 #: gcampus/core/templates/gcampuscore/sites/detail/show_success.html:19
-#, fuzzy
-#| msgid "All measurements"
 msgid "All Measurements"
 msgstr "Alle Messungen"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/hidden_success.html:21
 #: gcampus/core/templates/gcampuscore/sites/detail/show_success.html:21
-#, fuzzy
-#| msgid "Measurements"
 msgid "Course Measurements"
-msgstr "Messungen"
+msgstr "Kurs-Messungen"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/hidden_success.html:23
-#, fuzzy
-#| msgid "Edit Measurement"
 msgid "Hidden Measurement"
-msgstr "Messung bearbeiten"
+msgstr "Versteckte Messungen"
+
+#: gcampus/core/templates/gcampuscore/sites/detail/hidden_success.html:27
+#: gcampus/core/templates/gcampuscore/sites/detail/show_success.html:27
+#, fuzzy
+#| msgid "Associated access key"
+msgid "Associated access keys"
+msgstr "Verknüpfte Zugangscodes"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:14
-#, fuzzy
-#| msgid "My measurements"
 msgid "This measurement is hidden"
-msgstr "Meine Messungen"
+msgstr "Diese Messungen ist versteckt"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:24
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:43
@@ -334,8 +330,8 @@ msgstr ""
 #: gcampus/core/templates/gcampuscore/sites/list/course_measurement_list.html:49
 #: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:26
 #: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:47
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:88
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:111
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:89
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:112
 #: gcampus/core/templates/gcampuscore/sites/list/personal_measurement_list.html:26
 #: gcampus/core/templates/gcampuscore/sites/list/personal_measurement_list.html:49
 msgid "Edit Measurement"
@@ -347,7 +343,15 @@ msgstr "Verstecken"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:69
 msgid "Make public"
-msgstr ""
+msgstr "Veröffentlichen"
+
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:87
+msgid "Data points"
+msgstr "Messwerte"
+
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:91
+msgid "Data type"
+msgstr "Parameter"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:113
 msgid "Expand comment"
@@ -360,7 +364,7 @@ msgstr "Messung von"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/show_success.html:12
 #, python-format
-msgid " You successfully made the measurement \"%(measurement)s\" public "
+msgid "You successfully made the measurement \"%(measurement)s\" public"
 msgstr ""
 
 #: gcampus/core/templates/gcampuscore/sites/detail/show_success.html:23
@@ -371,9 +375,11 @@ msgstr "Messung von"
 
 #: gcampus/core/templates/gcampuscore/sites/list/course_measurement_list.html:4
 #: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:4
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:4
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:13
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:5
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:14
 #: gcampus/core/templates/gcampuscore/sites/list/personal_measurement_list.html:4
+#: gcampus/core/templates/gcampuscore/sites/overview/associated_accesskeys.html:4
+#: gcampus/core/templates/gcampuscore/sites/overview/coursetoken_navpage.html:4
 msgid "All measurements"
 msgstr "Alle Messungen"
 
@@ -385,7 +391,7 @@ msgstr "Messzeitpunkt"
 
 #: gcampus/core/templates/gcampuscore/sites/list/course_measurement_list.html:24
 #: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:24
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:86
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:87
 #: gcampus/core/templates/gcampuscore/sites/list/personal_measurement_list.html:24
 msgid "Number of Datapoints"
 msgstr "Anzahl der Parameter"
@@ -394,8 +400,8 @@ msgstr "Anzahl der Parameter"
 #: gcampus/core/templates/gcampuscore/sites/list/course_measurement_list.html:42
 #: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:25
 #: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:42
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:87
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:104
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:88
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:105
 #: gcampus/core/templates/gcampuscore/sites/list/personal_measurement_list.html:25
 #: gcampus/core/templates/gcampuscore/sites/list/personal_measurement_list.html:42
 msgid "To the Measurement"
@@ -407,22 +413,18 @@ msgid "Your course hasn't created any measurements yet"
 msgstr "Dein Kurs hat noch keine Messungen registriert"
 
 #: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:11
-#, fuzzy
-#| msgid "Measurement Time"
 msgid "Hidden measurements of my course"
-msgstr "Messzeitpunkt"
+msgstr "Versteckte Messungen des Kurses"
 
 #: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:52
-#, fuzzy
-#| msgid "Measurement"
 msgid "Show Measurement"
-msgstr "Messung"
+msgstr ""
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:32
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:33
 msgid "Open additional filters"
 msgstr "Weitere Suchmöglichkeiten öffnen"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:124
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:125
 msgid "No measurements with the desired attributes"
 msgstr "Keine Messung mit den gewünschten Attributen gefunden."
 
@@ -434,15 +436,52 @@ msgstr "Meine Messungen"
 msgid "You haven't created any measurements yet"
 msgstr "Du hast noch keine Messungen registriert"
 
-#: gcampus/core/views/measurement.py:122
+#: gcampus/core/templates/gcampuscore/sites/overview/associated_accesskeys.html:9
+msgid "Accesskeys associatted to my Coursetoken"
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/overview/associated_accesskeys.html:17
+msgid "Access Key"
+msgstr "Zugangscode"
+
+#: gcampus/core/templates/gcampuscore/sites/overview/associated_accesskeys.html:33
+msgid "Deactivate Token"
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/overview/associated_accesskeys.html:39
+msgid "Activate Token"
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/overview/coursetoken_navpage.html:11
+msgid "Accesskeys associatted to my Coursetoken:"
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/overview/coursetoken_navpage.html:19
+#, fuzzy
+#| msgid "Measurement Time"
+msgid "All Measurements of the Course"
+msgstr "Messzeitpunkt"
+
+#: gcampus/core/templates/gcampuscore/sites/overview/coursetoken_navpage.html:24
+msgid "All associated Accesskeys"
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/overview/coursetoken_navpage.html:29
+msgid "List of all generated Tokens"
+msgstr ""
+
+#: gcampus/core/views/course_overview.py:97
+#: gcampus/core/views/course_overview.py:116
+msgid "The Accesskey is probably already deactivated"
+msgstr "Die Messung ist wahrscheinlich schon versteckt."
+
+#: gcampus/core/views/measurement.py:129
 msgid "The measurement is probably already hidden"
 msgstr "Die Messung ist wahrscheinlich schon versteckt."
 
-#: gcampus/core/views/measurement.py:132
-#, fuzzy
-#| msgid "Measurement Time"
+#: gcampus/core/views/measurement.py:139
 msgid "Measurement is already public"
-msgstr "Messzeitpunkt"
+msgstr ""
 
 #: gcampus/core/widgets.py:34
 msgid "Hour"
@@ -488,6 +527,18 @@ msgstr "Jahr"
 msgctxt "year input short"
 msgid "YYYY"
 msgstr "JJJJ"
+
+#~ msgid "Data Type"
+#~ msgstr "Parameter"
+
+#~ msgid "Data point"
+#~ msgstr "Messwert"
+
+#~ msgid "Data point %(pk)s"
+#~ msgstr "Messwert %(pk)s"
+
+#~ msgid "Add Data Points"
+#~ msgstr "Parameter Hinzufügen"
 
 #~ msgid "Authenticate"
 #~ msgstr "Authentifizieren"

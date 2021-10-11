@@ -11,9 +11,9 @@
     <div class="container">
         <div class="py-5 text-center">
             {% if request.session.gcampusauth_token.token_type == "course" %}
-            <h2>{% translate "You successfully logged in with a coursetoken" %}</h2>
+            <h2>{% translate "You successfully logged in with a course token" %}</h2>
             {% elif request.session.gcampusauth_token.token_type == "access"  %}
-                <h2>{% translate "You successfully logged in with an accesskey" %}</h2>
+                <h2>{% translate "You successfully logged in with an access key" %}</h2>
             {% endif %}
         </div>
 

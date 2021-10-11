@@ -77,9 +77,7 @@ is only used for communication.{% endblocktranslate %}
                 </div>
                 <div class="col-5 bg-light px-5 py-3">
                     <p class="mt-4 text-muted">
-{% blocktranslate %}
-    Your Email address will only be used to send you the Course Token and the Access Keys.
-<br>
+{% blocktranslate %}Your Email address will only be used to send you the Course Token and the Access Keys.<br>
 In case we need to contact you this Email address wil be used. {% endblocktranslate %}
                     </p>
                 </div>
@@ -93,8 +91,7 @@ In case we need to contact you this Email address wil be used. {% endblocktransl
                 </div>
                 <div class="col-5 bg-light px-5 py-3">
                     <p class="mt-4 text-muted">
-{% blocktranslate with maximum=form.number_of_tokens.field.max_value context "help text number of tokens" %}
-The number of access keys you want to generate. You can create a maximum
+{% blocktranslate with maximum=form.number_of_tokens.field.max_value context "help text number of tokens" %}The number of access keys you want to generate. You can create a maximum
 of {{ maximum }} access keys at once.
 <br>
 Students may share one access key in a group so not everyone needs their

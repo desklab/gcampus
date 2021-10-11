@@ -103,7 +103,7 @@ class MeasurementFilter(FilterSet):
         field_name="parameter_types",
         queryset=ParameterType.objects.all(),
         widget=CheckboxSelectMultiple,
-        label=_("Data Type"),
+        label=_("Parameter"),
         help_text=_("Filter for measurements containing a specific data type"),
     )
     location = GeolocationFilter(
