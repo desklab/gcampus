@@ -59,8 +59,25 @@ class AssociatedAccessKeys(ListView):
         return context
 
 
-def course_overview(request):
-    return render(request, "gcampuscore/sites/overview/coursetoken_navpage.html")
+class CourseOverview(ListView):
+    template_name = "gcampuscore/sites/overview/coursetoken_navpage.html"
+    model = CourseToken
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        token = utils.get_token(self.request)
+        if token is None:
+            raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
+        # TODO: We might want to check whether the provided token exists
+        #   and whether or not it is disabled. If it does not exists,
+        #   the page will just be empty which is also ok.
+        # Check if provided token is actually a course token
+        token_type = utils.get_token_type(self.request)
+        if token_type != COURSE_TOKEN_TYPE:
+            raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
+        key_id = CourseToken.objects.get(token=token).id
+        context["key_id"] = key_id
+        return context
 
 
 def deactivate_accesskey(request, pk):

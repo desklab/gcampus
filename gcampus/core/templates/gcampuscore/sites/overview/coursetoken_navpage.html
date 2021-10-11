@@ -14,14 +14,19 @@
     <div class="row justify-content-center text-center">
         <div class="col-auto">
             <a href="{% url "gcampuscore:course_measuremets" %}"
-               class="btn btn-sm btn-primary"
+               class="btn btn-lg btn-primary"
                role="button">
                 {% translate "All Measurements of the Course" %}
             </a>
             <a href="{% url "gcampuscore:associated_accesskeys" %}"
-               class="btn btn-sm btn-primary"
+               class="btn btn-lg btn-primary"
                role="button">
                 {% translate "All associated Accesskeys" %}
+            </a>
+            <a href="{% url "gcampusauth:register_success" pk=key_id token=request.session.gcampusauth_token.token %}"
+               class="btn btn-lg btn-primary"
+               role="button">
+                {% translate "List of all generated Tokens" %}
             </a>
         </div>
     </div>
