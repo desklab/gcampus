@@ -4,8 +4,6 @@
     {% translate "All measurements" %}
 {% endblock %}
 {% block content %}
-    {# TODO: Why do we need this here? Do we just check the permission with this? #}
-    {% auth_token %}
     <div class="container">
         <div class="py-5 text-center">
             <h2>{% translate "Accesskeys associatted to my Coursetoken" %}</h2>
@@ -42,7 +40,7 @@
                                 </a>
                             {%  endif %}
                         </td>
-                        <td>
+                        <td class="text-center">
                             {% for measurement in measurements %}
                                 {% if measurement.token.token == key.token %}
                                      <a href="{% url "gcampuscore:measurement_detail" pk=measurement.pk %}"
@@ -50,21 +48,7 @@
                                    role="button">
                                     {{ measurement }}
                                 </a>
-                                    {% if measurement.hidden == False %}
-                             <a href="{% url "gcampuscore:hide" pk=measurement.pk %}"
-                                   class="btn btn-sm btn-danger"
-                                   role="button">
-                                    {% translate "Hide Measurement" %}
-                                </a>
-                                                                        <br>
-                            {% else %}
-                            <a href="{% url "gcampuscore:show" pk=measurement.pk %}"
-                                   class="btn btn-sm btn-success"
-                                   role="button">
-                                    {% translate "Show Measurement" %}
-                                </a>
-                                                                        <br>
-                            {%  endif %}
+                                  <br>
                                 {% endif %}
 
                             {% endfor %}
