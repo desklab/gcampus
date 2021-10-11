@@ -16,7 +16,10 @@
 from typing import Optional
 
 from django import template
+from django.contrib.sessions.backends.base import SessionBase
+from django.contrib.sessions.models import Session
 from django.core.exceptions import PermissionDenied
+from django.http import HttpRequest
 from django.template import Node
 from django.template.base import FilterExpression
 from django.template.base import token_kwargs
@@ -25,6 +28,9 @@ from django_filters.constants import EMPTY_VALUES
 
 from gcampus.auth import utils
 from gcampus.auth.exceptions import TOKEN_EMPTY_ERROR
+from gcampus.auth.models.token import can_token_edit_measurement
+from gcampus.auth.utils import get_token, get_token_type
+from gcampus.core.models import Measurement
 
 register = template.Library()
 
@@ -64,3 +70,33 @@ def auth_token(parser, token):  # noqa
         return AuthTokenNode()
     else:
         raise ValueError("'auth_token' takes only one keyword argument 'prefix'")
+
+
+@register.filter
+def can_edit(measurement: Measurement, request: HttpRequest) -> bool:
+    """Can Edit Authentication Filter
+
+    Django template filter used to check whether a measurement can be
+    edited by the user of the current request.
+
+    Usage:
+
+    .. code::
+
+        {% load auth_token %}
+        ...
+        {% if measurement|can_edit:request %}
+            ...
+        {% endif %}
+
+    :param measurement: The measurement used to check the permission.
+    :param request: Additional parameter passed to the filter to provide
+        the current session which may contain the token of the user.
+    :returns: Boolean whether or not the current user is allowed to edit
+        the provided measurement.
+    """
+    token = get_token(request)
+    if token is None:
+        return False
+    token_type = get_token_type(request)
+    return can_token_edit_measurement(token, measurement, token_type=token_type)

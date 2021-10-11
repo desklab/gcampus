@@ -1,4 +1,5 @@
 {% extends "gcampuscore/base.html" %}
+{% load auth_token %}
 {% load i18n static leaflet_tags %}
 {% block title %}
     {% translate "All measurements" %}
@@ -105,8 +106,8 @@
                             </td>
                             <td>
                                 {% if measurement.token.token is not None %}
-                                    {% if measurement.token.token == request.session.gcampusauth_token.token or measurement.token.parent_token.token == request.session.gcampusauth_token.token %}
-                                        <a href="{% url "gcampuscore:edit_data_points" measurement_id=measurement.pk %}"
+                                    {% if measurement|can_edit:request %}
+                                        <a href="{% url "gcampuscore:edit_parameters" measurement_id=measurement.pk %}"
                                            class="btn btn-primary btn-md" role="button">
                                             {% translate "Edit Measurement" %}</a>
                                     {% else %}
