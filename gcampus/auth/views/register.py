@@ -13,9 +13,11 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from django.http import HttpResponseBadRequest
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, resolve
 from django.views.generic import FormView, ListView, DetailView
-from django.core.exceptions import SuspiciousOperation
+from django.core.exceptions import SuspiciousOperation, PermissionDenied
+
+from gcampus.auth import exceptions
 from gcampus.auth.forms.token import RegisterForm
 from gcampus.auth.models import CourseToken, AccessKey
 
@@ -63,6 +65,9 @@ class RegisterSuccessView(DetailView):
     template_name = "gcampusauth/sites/register_success.html"
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        url_token = self.request.path.split("/")[-1]
+        if url_token != kwargs["object"].token:
+            raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
         context = super().get_context_data(**kwargs)
         course_token = self.object
         context["children_token"] = AccessKey.objects.filter(parent_token=course_token)
