@@ -16,6 +16,6 @@
 from gcampus.api.views.functions import GeoLookupViewSet
 from gcampus.api.views.models import (
     MeasurementAPIViewSet,
-    DataTypeAPIViewSet,
-    DataPointAPIViewSet,
+    ParameterTypeAPIViewSet,
+    ParameterAPIViewSet,
 )

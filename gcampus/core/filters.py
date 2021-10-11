@@ -32,7 +32,7 @@ from django_filters import (
 )
 
 from gcampus.core.fields import SplitSplitDateTimeField, LocationRadiusField
-from gcampus.core.models import DataType
+from gcampus.core.models import ParameterType
 from gcampus.core.models.util import EMPTY
 
 
@@ -40,16 +40,16 @@ class SplitDateTimeFilter(DateTimeFilter):
     field_class = SplitSplitDateTimeField
 
 
-class DataTypeFilter(ModelMultipleChoiceFilter):
+class ParameterTypeFilter(ModelMultipleChoiceFilter):
     def filter(self, qs, value: List[int]):
-        datatype_ids = [data_type.id for data_type in value]
-        if datatype_ids in EMPTY or None in datatype_ids:
+        parameter_type_ids = [parameter_type.id for parameter_type in value]
+        if parameter_type_ids in EMPTY or None in parameter_type_ids:
             return qs
         if self.distinct:
             qs = qs.distinct()
-        query_name = f"data_points__data_type__pk__in"
-        for datatype_id in datatype_ids:
-            qs = self.get_method(qs)(**{query_name: [datatype_id]})
+        query_name = f"parameters__parameter_type__pk__in"
+        for parameter_type_id in parameter_type_ids:
+            qs = self.get_method(qs)(**{query_name: [parameter_type_id]})
         return qs
 
 
@@ -99,9 +99,9 @@ class MeasurementFilter(FilterSet):
         lookup_expr="lt",
         help_text=_("Filter for measurements conducted after a specified time"),
     )
-    datatypes = DataTypeFilter(
-        field_name="datatype",
-        queryset=DataType.objects.all(),
+    parameter_types = ParameterTypeFilter(
+        field_name="parameter_types",
+        queryset=ParameterType.objects.all(),
         widget=CheckboxSelectMultiple,
         label=_("Data Type"),
         help_text=_("Filter for measurements containing a specific data type"),

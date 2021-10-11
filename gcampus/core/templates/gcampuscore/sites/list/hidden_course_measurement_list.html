@@ -35,14 +35,14 @@
                             </td>
                             <td>{{ measurement.location_name }}</td>
                             <td>{{ measurement.time }}</td>
-                            <td>{{ measurement.data_points.count }}</td>
+                            <td>{{ measurement.parameters.count }}</td>
                             <td>
                                 <a href="{% url "gcampuscore:measurement_detail" pk=measurement.pk %}"
                                    class="btn btn-primary btn-md" role="button">
                                     {% translate "To the Measurement" %}</a>
                             </td>
                             <td>
-                                <a href="{% url "gcampuscore:edit_data_points" measurement_id=measurement.pk %}"
+                                <a href="{% url "gcampuscore:edit_parameters" measurement_id=measurement.pk %}"
                                    class="btn btn-primary btn-md" role="button">
                                     {% translate "Edit Measurement" %}</a>
                             </td>

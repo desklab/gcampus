@@ -22,7 +22,7 @@ from gcampus.core.views.course_overview import (
     deactivate_accesskey,
     activate_accesskey,
 )
-from gcampus.core.views.datapoint import DataPointFormSetView
+from gcampus.core.views.parameter import ParameterFormSetView
 from gcampus.core.views.measurement import (
     MeasurementFormView,
     MeasurementListView,
@@ -42,11 +42,11 @@ urlpatterns = [
     path("", MeasurementMapView.as_view(), name="mapview"),
     # Add measurement and data
     path("add/", MeasurementFormView.as_view(), name="add_measurement"),
-    path("add/<int:measurement_id>/data/", DataPointFormSetView.as_view(), name="add_data_points"),
+    path("add/<int:measurement_id>/data/", ParameterFormSetView.as_view(), name="add_parameters"),
     # Edit measurement and data
     # TODO @jnsdrtlf: editable measurement form
     # path("edit/<int:measurement_id>", MeasurementFormView.as_view(), name="edit_measurement"),
-    path("edit/<int:measurement_id>/data/", DataPointFormSetView.as_view(), name="edit_data_points"),
+    path("edit/<int:measurement_id>/data/", ParameterFormSetView.as_view(), name="edit_parameters"),
     # Measurement list and details
     path("measurements/", MeasurementListView.as_view(), name="measurements"),
     path("measurement/<int:pk>/detail", MeasurementDetailView.as_view(), name="measurement_detail"),

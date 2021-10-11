@@ -27,24 +27,24 @@ from django.views.generic.base import TemplateResponseMixin, View
 from gcampus.auth import utils
 from gcampus.auth.exceptions import TOKEN_EDIT_PERMISSION_ERROR
 from gcampus.auth.models.token import can_token_edit_measurement
-from gcampus.core.forms.measurement import DataPointFormSet, TOKEN_FIELD_NAME
+from gcampus.core.forms.measurement import ParameterFormSet, TOKEN_FIELD_NAME
 from gcampus.core.models import Parameter, Measurement
 
 
-class DatapointDetailView(DetailView):
+class ParameterDetailView(DetailView):
     model = Parameter
 
 
-class DataPointFormSetView(TemplateResponseMixin, View):
-    formset_class = DataPointFormSet
-    template_name = "gcampuscore/forms/datapoints.html"
+class ParameterFormSetView(TemplateResponseMixin, View):
+    formset_class = ParameterFormSet
+    template_name = "gcampuscore/forms/parameters.html"
     next_view_name = "gcampuscore:measurement_detail"
 
     def __init__(self, **kwargs):
-        super(DataPointFormSetView, self).__init__(**kwargs)
+        super(ParameterFormSetView, self).__init__(**kwargs)
         self.instance: Optional[Parameter] = None
 
-    def form_valid(self, formset: DataPointFormSet, measurement_id):
+    def form_valid(self, formset: ParameterFormSet, measurement_id):
         formset.save()
         return HttpResponseRedirect(self.get_next_url(measurement_id))
 
@@ -53,7 +53,7 @@ class DataPointFormSetView(TemplateResponseMixin, View):
 
     def get_formset(
         self, request: HttpRequest, measurement_id: int
-    ) -> DataPointFormSetView.formset_class:
+    ) -> ParameterFormSetView.formset_class:
         """Get Formset
 
         Get the formset for the current request based on the instance of

@@ -47,7 +47,7 @@
                     <div class="mt-auto">
                         {% if measurement.token.token is not None %}
                             {% if measurement.token.token == request.session.gcampusauth_token.token or measurement.token.parent_token.token == request.session.gcampusauth_token.token %}
-                                <a href="{% url "gcampuscore:edit_data_points" measurement_id=measurement.pk %}"
+                                <a href="{% url "gcampuscore:edit_parameters" measurement_id=measurement.pk %}"
                                    class="btn btn-sm btn-secondary"
                                    role="button">
                                     {% translate "Edit Measurement" %}
@@ -94,14 +94,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for datapoint in object.data_points.all %}
+                {% for parameter in object.parameters.all %}
                     <tr>
-                        <td>{{ datapoint.data_type }}</td>
+                        <td>{{ parameter.parameter_type }}</td>
                         <td class="font-monospace">
-                            {{ datapoint.value|localize }} {{ datapoint.data_type.unit }}
+                            {{ parameter.value|localize }} {{ parameter.parameter_type.unit }}
                         </td>
                         <td>
-                            {% if datapoint.comment %}
+                            {% if parameter.comment %}
                                 <div>
                                     <a class="text-decoration-none"
                                        data-bs-toggle="collapse"
@@ -116,7 +116,7 @@
                                 <div class="collapse"
                                      id="CommentCollapse{{ forloop.counter }}">
                                     <div class="card card-body">
-                                        <small>{{ datapoint.comment }}</small>
+                                        <small>{{ parameter.comment }}</small>
                                     </div>
                                 </div>
                             {% else %}

@@ -119,8 +119,8 @@ class MeasurementForm(ModelForm):
                 self.add_error("water_name", error)
 
 
-class DataPointForm(ModelForm):
-    """Data Point Form
+class ParameterForm(ModelForm):
+    """Parameter Form
 
     Data points (see :class:`gcampus.core.models.DataPoint`) are used
     to add data to a measurement. A data point form is always served
@@ -132,10 +132,10 @@ class DataPointForm(ModelForm):
     """
 
     class Meta:
-        fields = ["data_type", "value", "comment"]
         model = Parameter
+        fields = ["parameter_type", "value", "comment"]
         widgets = {
-            "data_type": Select(attrs={"class": "form-select form-select-sm"}),
+            "parameter_type": Select(attrs={"class": "form-select form-select-sm"}),
             "value": NumberInput(
                 attrs={
                     "class": "form-control form-control-sm",
@@ -223,10 +223,10 @@ class DynamicInlineFormset(BaseInlineFormSet):
                 self._non_form_errors = self.error_class(e.error_list)
 
 
-DataPointFormSet: Type[DynamicInlineFormset] = inlineformset_factory(
+ParameterFormSet: Type[DynamicInlineFormset] = inlineformset_factory(
     Measurement,
     Parameter,
-    form=DataPointForm,
+    form=ParameterForm,
     can_delete=True,
     extra=0,
     formset=DynamicInlineFormset,

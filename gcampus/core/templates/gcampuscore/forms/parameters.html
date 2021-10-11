@@ -1,13 +1,13 @@
 {% extends "gcampuscore/base.html" %}
 {% load i18n static icon auth_token %}
 {% block title %}
-    {% translate "Add Data Points" %}
+    {% translate "Add Parameters" %}
 {% endblock %}
 {% block body_class %}bg-light{% endblock %}
 {% block content %}
     <div class="container pb-3">
         <div class="py-5 text-center">
-            <h2>{% translate "Add Data Points" %}</h2>
+            <h2>{% translate "Add Parameters" %}</h2>
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-8">
@@ -28,7 +28,7 @@
                     {% endfor %}
                     <ol class="list-group list-group-numbered" id="id_{{ formset.prefix }}-FORM-CONTAINER">
                         {% for form in formset %}
-                            {% include "gcampuscore/forms/components/datapoint_form.html" with form=form show=True only %}
+                            {% include "gcampuscore/forms/components/parameter_form.html" with form=form show=True only %}
                         {% endfor %}
                         <div class="list-group-item text-center">
                             <button type="button" id="id_{{ formset.prefix }}-ADD"
@@ -53,7 +53,7 @@
         </div>
     </div>
     <template id="id_{{ formset.prefix }}-EMPTY_FORM_TEMPLATE">
-        {% include "gcampuscore/forms/components/datapoint_form.html" with form=formset.empty_form show=False only %}
+        {% include "gcampuscore/forms/components/parameter_form.html" with form=formset.empty_form show=False only %}
     </template>
 {% endblock %}
 {% block extra_body %}

@@ -168,7 +168,7 @@ class MeasurementMapView(ListView):
 class MeasurementFormView(FormView):
     template_name = "gcampuscore/forms/measurement.html"
     form_class = MeasurementForm
-    next_view_name = "gcampuscore:add_data_points"
+    next_view_name = "gcampuscore:add_parameters"
 
     def get(self, request, *args, **kwargs):
         token = utils.get_token(request)
