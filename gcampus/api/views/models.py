@@ -22,7 +22,7 @@ from gcampus.api.serializers import (
     DataTypeSerializer,
     DataPointSerializer,
 )
-from gcampus.core.models import Measurement, DataType, DataPoint
+from gcampus.core.models import Measurement, ParameterType, Parameter
 
 
 class MeasurementAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
@@ -32,12 +32,12 @@ class MeasurementAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
 
 
 class DataTypeAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    queryset = DataType.objects.order_by("name").all()
+    queryset = ParameterType.objects.order_by("name").all()
     serializer_class = DataTypeSerializer
     pagination_class = PageNumberPagination
 
 
 class DataPointAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    queryset = DataPoint.objects.order_by("measurement__time").all()
+    queryset = Parameter.objects.order_by("measurement__time").all()
     serializer_class = DataPointSerializer
     pagination_class = PageNumberPagination

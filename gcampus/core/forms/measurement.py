@@ -40,7 +40,7 @@ from gcampus.auth.models.token import (
     get_token_and_create_permission,
 )
 from gcampus.core.fields import SplitSplitDateTimeField
-from gcampus.core.models import Measurement, DataPoint
+from gcampus.core.models import Measurement, Parameter
 from gcampus.map.widgets import GeoPointWidget
 
 TOKEN_FIELD_NAME = "gcampus_auth_token"
@@ -132,8 +132,8 @@ class DataPointForm(ModelForm):
     """
 
     class Meta:
-        model = DataPoint
         fields = ["data_type", "value", "comment"]
+        model = Parameter
         widgets = {
             "data_type": Select(attrs={"class": "form-select form-select-sm"}),
             "value": NumberInput(
@@ -225,7 +225,7 @@ class DynamicInlineFormset(BaseInlineFormSet):
 
 DataPointFormSet: Type[DynamicInlineFormset] = inlineformset_factory(
     Measurement,
-    DataPoint,
+    Parameter,
     form=DataPointForm,
     can_delete=True,
     extra=0,

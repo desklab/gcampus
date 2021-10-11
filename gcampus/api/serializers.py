@@ -28,7 +28,7 @@ from rest_framework_gis.serializers import (
     GeoFeatureModelListSerializer,
 )
 
-from gcampus.core.models import Measurement, DataPoint, DataType
+from gcampus.core.models import Measurement, Parameter, DataType
 
 
 class DataTypeSerializer(serializers.ModelSerializer):
@@ -42,7 +42,7 @@ class DataPointSerializer(serializers.ModelSerializer):
     measurement = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
 
     class Meta:
-        model = DataPoint
+        model = Parameter
         fields = ("id", "value", "measurement", "data_type")
 
 

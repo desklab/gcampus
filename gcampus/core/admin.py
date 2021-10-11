@@ -21,7 +21,7 @@ from leaflet.admin import LeafletGeoAdmin
 from gcampus.core.models import (
     Measurement,
     DataType,
-    DataPoint,
+    Parameter,
 )
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 
@@ -57,4 +57,4 @@ class DataPointAdmin(admin.ModelAdmin):
 
 admin.site.register(Measurement, MeasurementAdmin)
 admin.site.register(DataType, DataTypeAdmin)
-admin.site.register(DataPoint, DataPointAdmin)
+admin.site.register(Parameter, DataPointAdmin)

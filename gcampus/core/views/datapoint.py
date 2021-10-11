@@ -28,11 +28,11 @@ from gcampus.auth import utils
 from gcampus.auth.exceptions import TOKEN_EDIT_PERMISSION_ERROR
 from gcampus.auth.models.token import can_token_edit_measurement
 from gcampus.core.forms.measurement import DataPointFormSet, TOKEN_FIELD_NAME
-from gcampus.core.models import DataPoint, Measurement
+from gcampus.core.models import Parameter, Measurement
 
 
 class DatapointDetailView(DetailView):
-    model = DataPoint
+    model = Parameter
 
 
 class DataPointFormSetView(TemplateResponseMixin, View):
@@ -42,7 +42,7 @@ class DataPointFormSetView(TemplateResponseMixin, View):
 
     def __init__(self, **kwargs):
         super(DataPointFormSetView, self).__init__(**kwargs)
-        self.instance: Optional[DataPoint] = None
+        self.instance: Optional[Parameter] = None
 
     def form_valid(self, formset: DataPointFormSet, measurement_id):
         formset.save()

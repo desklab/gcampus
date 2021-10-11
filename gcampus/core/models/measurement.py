@@ -166,11 +166,11 @@ class DataType(models.Model):
             return f"{self.name} ({self.unit})"
 
 
-class DataPoint(util.DateModelMixin):
+class Parameter(util.DateModelMixin):
     class Meta:
         default_manager_name = "all_objects"
-        verbose_name = _("Data point")
-        verbose_name_plural = _("Data points")
+        verbose_name = _("Parameter")
+        verbose_name_plural = _("Parameters")
 
     data_type = models.ForeignKey(
         DataType, on_delete=models.PROTECT, verbose_name=_("Data type")
