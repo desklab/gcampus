@@ -35,7 +35,7 @@ from gcampus.auth import utils, exceptions
 from gcampus.auth.exceptions import TOKEN_CREATE_PERMISSION_ERROR
 from gcampus.auth.models.token import (
     can_token_create_measurement,
-    COURSE_TOKEN_TYPE,
+    COURSE_TOKEN_TYPE, CourseToken,
 )
 from gcampus.auth.utils import get_token
 from gcampus.core.filters import MeasurementFilter
@@ -84,12 +84,13 @@ class CourseMeasurementListView(ListView):
         # TODO: We might want to check whether the provided token exists
         #   and whether or not it is disabled. If it does not exists,
         #   the page will just be empty which is also ok.
-        # Check if provided token is actually a course token
         token_type = utils.get_token_type(self.request)
         if token_type != COURSE_TOKEN_TYPE:
-            raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
+            course_token = CourseToken.objects.get(accesskey__token=token).token
+        else:
+            course_token = token
         course_measurements = Measurement.objects.filter(
-            token__parent_token__token=token
+            token__parent_token__token=course_token
         )
         return super().get_context_data(object_list=course_measurements, **kwargs)
 
