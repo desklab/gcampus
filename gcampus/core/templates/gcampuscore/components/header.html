@@ -9,25 +9,18 @@
             {% include "gcampuscore/components/nav_item.html" with title=measurements_title view_name="gcampuscore:measurements" %}
             {% include "gcampuscore/components/nav_item.html" with title=create_title view_name="gcampuscore:add_measurement" %}
         </ul>
-        <ul class="nav">
-            {% if request.session.gcampusauth_authenticated %}
-                {% if request.session.gcampusauth_token.token_type == "course" %}
-                 {% with name=request.session.gcampusauth_token.token_name %}
-                    {% include "gcampuscore/components/nav_item.html" with title=name view_name="gcampuscore:course_token_landing" %}
-                 {% endwith %}
-                {% endif %}
-                {% with key=request.session.gcampusauth_token.token|slice:"-3:" %}
-                    {% include "gcampuscore/components/nav_item.html" with title=key view_name="gcampuscore:course_token_landing" %}
-                {% endwith %}
-            {% endif %}
-            {% if request.session.gcampusauth_authenticated %}
-                {% translate "Logout" as logout_title %}
-                {% include "gcampuscore/components/nav_item.html" with title=logout_title view_name="gcampusauth:logout" %}
-            {% else %}
+
+        {% if request.session.gcampusauth_authenticated %}
+            {% with token_slice=request.session.gcampusauth_token.token|slice:"-3:" token_type=request.session.gcampusauth_token.token_type %}
+                {% include "gcampuscore/components/dropdown.html" with name=token_slice token_type=token_type token_name=request.session.gcampusauth_token.token_name %}
+            {% endwith %}
+        {% else %}
+            <ul class="nav">
                 {% translate "Log in" as auth_title %}
                 {% include "gcampuscore/components/nav_item.html" with title=auth_title view_name="gcampusauth:verify" %}
-            {% endif %}
-        </ul>
+            </ul>
+        {% endif %}
+
     </div>
 </nav>
 <header class="py-3 border-bottom bg-white">

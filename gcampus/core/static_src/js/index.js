@@ -17,6 +17,9 @@
 
 import Tooltip from 'bootstrap/js/src/tooltip';
 import Collapse from 'bootstrap/js/src/collapse';
+import Dropdown from 'bootstrap/js/src/dropdown';
+import 'bootstrap/js/src/util'
+
 
 import '../styles/main.scss';
 
