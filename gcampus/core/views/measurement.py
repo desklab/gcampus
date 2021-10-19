@@ -98,17 +98,17 @@ class MeasurementDetailView(DetailView):
     model = Measurement
     template_name = "gcampuscore/sites/detail/measurement_detail.html"
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["measurement_list"] = Measurement.objects.all()
-        current_measurement = self.object
-        point = Point(current_measurement.location.coords)
-        close_measurements = Measurement.objects.filter(
-            location__distance_lte=(point, Distance(km=2))
-        ).all()
-        close_measurements = close_measurements.exclude(pk=self.object.pk)
-        context["close_measurements"] = close_measurements
-        return context
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context["measurement_list"] = Measurement.objects.all()
+    #     current_measurement = self.object
+    #     point = Point(current_measurement.location.coords)
+    #     close_measurements = Measurement.objects.filter(
+    #         location__distance_lte=(point, Distance(km=2))
+    #     ).all()
+    #     close_measurements = close_measurements.exclude(pk=self.object.pk)
+    #     context["close_measurements"] = close_measurements
+    #     return context
 
 
 def hide(request, pk):

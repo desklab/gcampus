@@ -9,9 +9,11 @@
     <script>
         function loadCluster(event) {
             let map = event.target;
-            $('#mapdiv').show();
-            map.resize();
-            map.invalidateSize();
+            var lng = {{ measurement.location.x|unlocalize }};
+            var lat = {{ measurement.location.y|unlocalize }};
+            const marker = new gcampusmap.mapboxgl.Marker()
+                .setLngLat([lng, lat])
+                .addTo(map);
             map.addSource('measurements', {
                 type: 'geojson',
                 data: '/api/v1/measurements/',
@@ -198,7 +200,7 @@
                             height: 320px;
                         }
                     </style>
-                    {% map onload="loadCluster" container="map-detail" class="shadow-sm" %}
+                    {% map onload="loadCluster" container="map-detail" class="shadow-sm" center=measurement.location.tuple %}
                 </div>
             </div>
         </div>
