@@ -18,7 +18,6 @@ from django.urls import path
 from gcampus.core.apps import GCampusCoreAppConfig
 from gcampus.core.views.course_overview import (
     AssociatedAccessKeys,
-    CourseOverview,
     CourseOverviewFormView,
     deactivate_accesskey,
     activate_accesskey,
@@ -51,13 +50,12 @@ urlpatterns = [
     # Measurement list and details
     path("measurements/", MeasurementListView.as_view(), name="measurements"),
     path("measurement/<int:pk>/detail", MeasurementDetailView.as_view(), name="measurement_detail"),
-    path("personal/measurements", PersonalMeasurementListView.as_view(), name="personal_measuremets"),
-    path("course/measurements", CourseMeasurementListView.as_view(), name="course_measuremets"),
+    path("personal/measurements", PersonalMeasurementListView.as_view(), name="personal_measurements"),
+    path("course/measurements", CourseMeasurementListView.as_view(), name="course_measurements"),
     path("measurement/<int:pk>/hide", hide, name="hide"),
     path("measurement/<int:pk>/show", show, name="show"),
     path("course/measurements/hidden", HiddenCourseMeasurementListView.as_view(), name="course_hidden"),
     path("course/tokens", AssociatedAccessKeys.as_view(), name="associated_accesskeys"),
-    path("course/overview", CourseOverview.as_view(), name="course_token_landing"),
     path("course/overview", CourseOverviewFormView.as_view(), name="course_overview"),
     path("course/tokens/<int:pk>/deactivate", deactivate_accesskey, name="deactivate"),
     path("course/tokens/<int:pk>/activate", activate_accesskey, name="activate"),

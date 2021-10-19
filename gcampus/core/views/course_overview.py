@@ -16,23 +16,25 @@
 from abc import ABC
 from typing import Union, Optional
 
-from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
-from django.http import HttpRequest
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist, SuspiciousOperation
+from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 from django.utils.translation import ugettext_lazy as _
 
 from gcampus.auth import utils, exceptions
-from gcampus.auth.exceptions import TOKEN_INVALID_ERROR
-from gcampus.auth.forms.token import AccessKeyForm, CourseTokenForm
-from gcampus.auth.models.token import ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE, CourseToken
+from gcampus.auth.exceptions import TOKEN_INVALID_ERROR, TOKEN_CREATE_PERMISSION_ERROR
+from gcampus.auth.forms.token import AccessKeyForm, CourseTokenForm, TOKEN_FIELD_NAME
+from gcampus.auth.models.token import ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE, CourseToken, can_token_create_measurement
 from gcampus.auth.utils import get_token
+from gcampus.core.forms.course_overview import CourseOverviewForm
 from gcampus.core.models import Measurement
 from gcampus.auth.models.token import AccessKey, CourseToken
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
 
+TOKEN_FIELD_NAME = "gcampus_auth_token"
 
 class AssociatedAccessKeys(ListView):
     template_name = "gcampuscore/sites/overview/associated_accesskeys.html"
@@ -59,24 +61,52 @@ class AssociatedAccessKeys(ListView):
         return context
 
 
-class CourseOverview(ListView):
+class CourseOverviewFormView(FormView):
     template_name = "gcampuscore/sites/overview/coursetoken_navpage.html"
-    model = CourseToken
+    form_class = CourseOverviewForm
+    next_view_name = "gcampuscore/sites/overview/coursetoken_navpage.html"
+
+    def __init__(self, *args, **kwargs):
+        super(CourseOverviewFormView, self).__init__(*args, **kwargs)
+        self.instance: Optional[CourseToken] = None
+
+    def get_form_kwargs(self) -> dict:
+        kwargs: dict = super(CourseOverviewFormView, self).get_form_kwargs()
+        kwargs["instance"] = self.instance
+        return kwargs
+
+    def get(self, request, *args, **kwargs):
+        token = utils.get_token(request)
+        token_type = utils.get_token_type(request)
+        if token_type == "course" and token is not None:
+            self.instance = CourseToken.objects.get(token=token)
+            return super(CourseOverviewFormView, self).get(request, *args, **kwargs)
+        else:
+            raise PermissionDenied()
+
+    def post(self, request, *args, **kwargs):
+        token = utils.get_token(request)
+        token_type = utils.get_token_type(request)
+        if token_type == "course" and token is not None:
+            self.instance = CourseToken.objects.get(token=token)
+            return super(CourseOverviewFormView, self).post(request, *args, **kwargs)
+        else:
+            raise PermissionDenied()
+
+    def form_valid(self, form: CourseOverviewForm):
+        form_token = form.cleaned_data[TOKEN_FIELD_NAME]
+        session_token = utils.get_token(self.request)
+        if form_token != session_token:
+            # Someone modified the session or token provided by the form
+            raise SuspiciousOperation()
+        form.save()
+        return HttpResponseRedirect(self.request.path_info)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         token = utils.get_token(self.request)
-        if token is None:
-            raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
-        # TODO: We might want to check whether the provided token exists
-        #   and whether or not it is disabled. If it does not exists,
-        #   the page will just be empty which is also ok.
-        # Check if provided token is actually a course token
-        token_type = utils.get_token_type(self.request)
-        if token_type != COURSE_TOKEN_TYPE:
-            raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
-        key_id = CourseToken.objects.get(token=token).id
-        context["key_id"] = key_id
+        access_keys = AccessKey.objects.filter(parent_token__token=token)
+        context["access_keys"] = access_keys
         return context
 
 
