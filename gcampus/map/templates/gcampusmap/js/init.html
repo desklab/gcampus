@@ -24,7 +24,7 @@
     const map = new mapboxgl.Map({
         container: '{{ container }}',
         style: '{{ mapbox_style }}',
-        center: [{{ center_lng|unlocalize }}, {{ center_lat }}],
+        center: [{{ center_lng|unlocalize }}, {{ center_lat|unlocalize }}],
         zoom: {{ zoom }},
         logoPosition: 'bottom-right'
     });
