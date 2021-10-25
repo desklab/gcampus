@@ -113,7 +113,7 @@ def __get_location_name(location: Tuple[float, float]) -> Optional[str]:
     """
     long, lat = location
     geo_loc = get_geo_locator()
-    loc: Optional[Location] = geo_loc.reverse((lat, long), exactly_one=True)
+    loc: Optional[Location] = geo_loc.reverse((lat, long), exactly_one=True, timeout=5)
     if loc is not None and "address" in loc.raw:
         address = loc.raw["address"]
         for opt in ADDRESS_OPTIONS:
