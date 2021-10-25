@@ -145,6 +145,8 @@ REST_FRAMEWORK = {
 # Geo Settings
 NOMINATIM_USER_AGENT = "gcampus"
 NOMINATIM_DOMAIN = "nominatim.openstreetmap.org"
+GEOLOCKUP_CACHE_TIMEOUT = 60 * 60 * 24 * 100  # 100 days
+
 # OVERPASS_SERVER = "https://overpass-api.de/api/interpreter"
 OVERPASS_SERVER = "https://overpass.kumi.systems/api/interpreter"
 OVERPASS_CACHE = 60 * 60 * 24 * 2

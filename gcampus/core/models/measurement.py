@@ -112,8 +112,7 @@ class Measurement(util.DateModelMixin):
     def save(self, **kwargs):
         update_fields = kwargs.get("update_fields", None)
         if self.is_location_changed(update_fields=update_fields):
-            coordinates = getattr(self.location, "coords", None)
-            self.location_name = get_location_name(coordinates)
+            self.location_name = get_location_name(self.location)
         return super(Measurement, self).save(**kwargs)
 
     def __str__(self):
