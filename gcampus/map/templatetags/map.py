@@ -24,7 +24,7 @@ register = template.Library()
 def map(**kwargs):
     map_name = kwargs.pop("name", "map")
     map_container = kwargs.pop("container", "map")
-    center_lat, center_lng = kwargs.pop("center", MAP_SETTINGS["CENTER"])
+    center_lng, center_lat = kwargs.pop("center", MAP_SETTINGS["CENTER"])
     style = kwargs.pop("style", MAP_SETTINGS["STYLE"])
     zoom = kwargs.pop("zoom", MAP_SETTINGS["ZOOM"])
     mapbox_access_token = MAP_SETTINGS["MAPBOX_ACCESS_TOKEN"]
