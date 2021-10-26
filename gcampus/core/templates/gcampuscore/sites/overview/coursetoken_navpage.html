@@ -1,9 +1,12 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n auth_token %}
+{% load i18n auth_token icon %}
 {% block title %}
-    {% translate "All measurements" %}
+    {% translate "Course Overview" %}
 {% endblock %}
 {% block content %}
+        <div class="alert alert-success" role="alert" id="alert_register">
+        {% blocktranslate %}You successfully registered yourself. This page is an overview over all of your Accesskeys.{% endblocktranslate %}
+    </div>
     <div class="container">
         <div class="py-5 text-center">
             <h2>{% translate "Your Coursetoken is" %}
@@ -14,6 +17,31 @@
     </div>
     <div class="container">
         <div class="py-5 text-center">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                Launch demo modal
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <form method="POST">
                 {% csrf_token %}
                 {% auth_token %}
@@ -75,18 +103,46 @@
                 {% endfor %}
                 </tbody>
             </table>
+        <div class="py-5 text-center">
+            {% icon "file-text" class="css-class" height="42" width="42" %}
+    <button class="btn btn-lg btn-primary me-2"
+                type="button"
+                data-bs-toggle="tooltip" data-bs-placement="top"
+                title="{% translate "Download your course token and all access keys in  a PDF" %}">
+            {% translate "Download" %}
+        </button>
+        {% icon "mail" class="css-class" height="42" width="42" %}
+    <button class="btn btn-lg btn-primary me-2"
+                type="button"
+                data-bs-toggle="tooltip" data-bs-placement="top"
+                title="{% translate "Send your course token and all access keys in a PDF via Email" %}">
+            {% translate "Send to my E-Mail" %}
+        </button>
         </div>
     </div>
+    </div>
+
     <script>
         function ShowAndHide() {
-            var x = document.getElementById('token_hide');
-            if (x.innerHTML.includes("*")) {
-                x.innerText = "{{request.session.gcampusauth_token.token}}";
+            var token_div = document.getElementById('token_hide');
+            if (token_div.innerHTML.includes("*")) {
+                token_div.innerText = "{{request.session.gcampusauth_token.token}}";
             } else {
-                x.innerText = '****-****-*' + "{{request.session.gcampusauth_token.token|slice:"-3:"}}";
+                token_div.innerText = '****-****-*' + "{{request.session.gcampusauth_token.token|slice:"-3:"}}";
+            }
+        }
+
+        function Alert() {
+            var alert = document.getElementById('alert_register');
+            var previous_page = String(document.referrer);
+            if (previous_page.includes("register")) {
+                alert.hidden = false;
+            } else {
+                alert.hidden = true;
             }
         }
         ShowAndHide("{{request.session.gcampusauth_token.token}}")
+        Alert()
     </script>
 {% endblock %}
 
