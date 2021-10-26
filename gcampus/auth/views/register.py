@@ -12,10 +12,12 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from django.http import HttpResponseBadRequest
-from django.urls import reverse_lazy, resolve
-from django.views.generic import FormView, ListView, DetailView
+
+from django.contrib import messages
 from django.core.exceptions import SuspiciousOperation, PermissionDenied
+from django.urls import reverse_lazy
+from django.utils.translation import gettext as _
+from django.views.generic import FormView, DetailView
 
 from gcampus.auth import exceptions
 from gcampus.auth.forms.token import RegisterForm
@@ -25,7 +27,7 @@ from gcampus.auth.models import CourseToken, AccessKey
 class RegisterFormView(FormView):
     form_class = RegisterForm
     template_name = "gcampusauth/forms/register.html"
-    # success_url = reverse_lazy("gcampusauth:register_success")
+    success_url = reverse_lazy("gcampuscore:course_overview")
 
     def form_valid(self, form):
         if form.is_valid():
@@ -46,18 +48,20 @@ class RegisterFormView(FormView):
             for i in range(number_of_tokens):
                 access_key = AccessKey.generate_access_key()
                 AccessKey(token=access_key, parent_token=course_token).save()
+            messages.success(
+                self.request,
+                _(
+                    "You successfully registered a course. "
+                    "This page serves as an overview and allows you to view your "
+                    "course's access keys"
+                )
+            )
             return super(RegisterFormView, self).form_valid(form)
         # TODO choose better exception
         raise SuspiciousOperation("Something went wrong")
 
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form), status=200)
-
-    def get_success_url(self):
-        token = CourseToken.objects.get(pk=self.pk)
-        return reverse_lazy(
-            "gcampusauth:register_success", kwargs={"pk": self.pk, "token": token.token}
-        )
 
 
 class RegisterSuccessView(DetailView):

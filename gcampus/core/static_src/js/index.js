@@ -20,9 +20,10 @@ import Collapse from 'bootstrap/js/src/collapse';
 import Dropdown from 'bootstrap/js/src/dropdown';
 import 'bootstrap/js/src/modal';
 import Alert from 'bootstrap/js/src/alert';
+import Toast from 'bootstrap/js/src/toast';
 import 'bootstrap/js/src/util';
 
 
 import '../styles/main.scss';
 
-export {Tooltip, Collapse, Dropdown, Alert};
+export {Toast, Tooltip, Collapse, Dropdown, Alert};

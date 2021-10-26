@@ -85,6 +85,7 @@ TEMPLATES = [
         },
     },
 ]
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
