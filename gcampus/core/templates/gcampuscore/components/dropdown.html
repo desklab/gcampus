@@ -1,14 +1,10 @@
-{% load i18n %}
+{% load i18n auth_token %}
 {% with current_view=request.resolver_match.view_name %}
     <ul class="navbar-nav">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                data-bs-toggle="dropdown" aria-expanded="false">
-                {% if token_type == "course" %}
-                    <small>{{ token_name }}<br>****-****-*{{ token_slice }}</small>
-                {% else %}
-                    <small>****-*{{ token_slice }}</small>
-                {% endif %}
+                {% displaytoken token hidden=True %}
             </a>
             <ul class="dropdown-menu dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 {% if token_type == "course" %}

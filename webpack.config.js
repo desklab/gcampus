@@ -196,13 +196,39 @@ let gcampusmapConfig = (env, options) => {
         // ],
     });
 }
-//
-// // TODO is this still needed?
-// module.exports = [gcampuscoreConfig];
+
+let gcampusauthConfig = (env, options) => {
+    let common = commonConfig(env, options);
+    return Object.assign(common, {
+        name: 'gcampusauth',
+        entry: {},
+        output: {
+            path: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth'),
+            publicPath: '/static/gcampusauth',
+            filename: 'js/[name].js',
+            library: {
+                name: 'gcampusauth',
+                type: 'var'
+            }
+        },
+        plugins: [
+            ...(common.plugins || []),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.resolve(__dirname, 'gcampus', 'auth', 'static_src', 'fonts'),
+                        to: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth', 'fonts'),
+                    },
+                ]
+            })
+        ],
+    });
+}
 
 module.exports = (env, options) => {
     return [
         gcampuscoreConfig(env, options),
-        gcampusmapConfig(env, options)
+        gcampusmapConfig(env, options),
+        gcampusauthConfig(env, options),
     ];
 };

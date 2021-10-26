@@ -11,7 +11,7 @@
         </ul>
 
         {% if request.session.gcampusauth_authenticated %}
-            {% with token_slice=request.session.gcampusauth_token.token|slice:"-3:" token_type=request.session.gcampusauth_token.token_type %}
+            {% with token=request.session.gcampusauth_token.token token_type=request.session.gcampusauth_token.token_type %}
                 {% include "gcampuscore/components/dropdown.html" with name=token_slice token_type=token_type token_name=request.session.gcampusauth_token.token_name %}
             {% endwith %}
         {% else %}

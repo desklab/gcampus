@@ -3,6 +3,9 @@
 {% block title %}
     {% translate "Course Overview" %}
 {% endblock %}
+{% block extra_head %}
+    {% displaytoken_head %}
+{% endblock %}
 {% block content %}
         <div class="alert alert-success" role="alert" id="alert_register">
         {% blocktranslate %}You successfully registered yourself. This page is an overview over all of your Accesskeys.{% endblocktranslate %}
@@ -10,7 +13,8 @@
     <div class="container">
         <div class="py-5 text-center">
             <h2>{% translate "Your Coursetoken is" %}
-                <div id="token_hide"></div>
+{#                <div id="token_hide"></div>#}
+                {% displaytoken request.session.gcampusauth_token.token hidden=True toggle=True %}
             </h2>
         </div>
         <button class="btn btn-primary btn-lg" onclick="ShowAndHide()">Show Coursetoken</button>
@@ -80,7 +84,7 @@
                 {% for key in access_keys %}
                     <tr>
                         <td>
-                            {{ key.token }}
+                            {% displaytoken key.token hidden=False %}
                         </td>
                         <td>
                             {% if key.deactivated == False %}
@@ -121,15 +125,6 @@
     </div>
 
     <script>
-        function ShowAndHide() {
-            var token_div = document.getElementById('token_hide');
-            if (token_div.innerHTML.includes("*")) {
-                token_div.innerText = "{{request.session.gcampusauth_token.token}}";
-            } else {
-                token_div.innerText = '****-****-*' + "{{request.session.gcampusauth_token.token|slice:"-3:"}}";
-            }
-        }
-
         function Alert() {
             var alert = document.getElementById('alert_register');
             var previous_page = String(document.referrer);
@@ -139,8 +134,8 @@
                 alert.hidden = true;
             }
         }
-        ShowAndHide("{{request.session.gcampusauth_token.token}}")
         Alert()
     </script>
+    {% displaytoken_js %}
 {% endblock %}
 
