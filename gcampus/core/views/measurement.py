@@ -35,7 +35,8 @@ from gcampus.auth import utils, exceptions
 from gcampus.auth.exceptions import TOKEN_CREATE_PERMISSION_ERROR
 from gcampus.auth.models.token import (
     can_token_create_measurement,
-    COURSE_TOKEN_TYPE, CourseToken,
+    COURSE_TOKEN_TYPE,
+    CourseToken,
 )
 from gcampus.auth.utils import get_token
 from gcampus.core.filters import MeasurementFilter

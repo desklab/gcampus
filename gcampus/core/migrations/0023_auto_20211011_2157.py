@@ -31,9 +31,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.RenameField(
-            model_name="parameter",
-            old_name="data_type",
-            new_name="parameter_type"
+            model_name="parameter", old_name="data_type", new_name="parameter_type"
         ),
         migrations.AlterField(
             model_name="parameter",

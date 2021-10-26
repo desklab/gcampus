@@ -28,7 +28,6 @@ LOCATION_OCEAN = GEOSGeometry("POINT(-32 42)")
 
 
 class MeasurementModelTest(TestCase):
-
     @unittest.skip("API timeout")
     def test_location_name(self):
         measurement = Measurement(location=LOCATION_HEIDELBERG, time=timezone.now())

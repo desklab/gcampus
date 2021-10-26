@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gcampuscore', '0021_update_search'),
+        ("gcampuscore", "0021_update_search"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='DataPoint',
-            new_name='Parameter',
+            old_name="DataPoint",
+            new_name="Parameter",
         ),
     ]
