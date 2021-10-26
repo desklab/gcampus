@@ -5,15 +5,15 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                data-bs-toggle="dropdown" aria-expanded="false">
                 {% if token_type == "course" %}
-                    {{ token_name }}/*********{{ token_slice }}
+                    <small>{{ token_name }}<br>****-****-*{{ token_slice }}</small>
                 {% else %}
-                    *****{{ token_slice }}
+                    <small>****-*{{ token_slice }}</small>
                 {% endif %}
             </a>
             <ul class="dropdown-menu dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 {% if token_type == "course" %}
                     <li><a class="dropdown-item"
-                           href={% url "gcampuscore:course_measurements" %}>{% translate "Your Measurements" %}</a>
+                           href={% url "gcampuscore:course_measurements" %}>{% translate "Measurements of your Course" %}</a>
                     </li>
                     <li>
                     <a class="dropdown-item" href={% url "gcampuscore:course_overview" %}>{% translate "Course Overview" %}</a>
