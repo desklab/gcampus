@@ -11,9 +11,7 @@
         </ul>
 
         {% if request.session.gcampusauth_authenticated %}
-            {% with token=request.session.gcampusauth_token.token token_type=request.session.gcampusauth_token.token_type %}
-                {% include "gcampuscore/components/dropdown.html" with name=token_slice token_type=token_type token_name=request.session.gcampusauth_token.token_name %}
-            {% endwith %}
+            {% include "gcampusauth/components/auth_menu.html" with name=token_slice token_type=token_type token_name=request.session.gcampusauth_token.token_name %}
         {% else %}
             <ul class="nav">
                 {% translate "Log in" as auth_title %}

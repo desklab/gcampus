@@ -1,4 +1,4 @@
-{% load static %}
+{% load static auth_token%}
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -17,7 +17,7 @@
 
     {# Global stylesheets #}
     <link rel="stylesheet" type="text/css" href="{% static 'gcampuscore/styles/main.css' %}">
-
+    {% displaytoken_head %} {# Required for header #}
     {% block extra_head %}
         {# Override this in templates to add extra stylesheets #}
     {% endblock %}

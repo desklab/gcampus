@@ -1,5 +1,7 @@
 {% load i18n auth_token %}
 {% with current_view=request.resolver_match.view_name %}
+    {% save_token as token %}
+    {% save_token_type as token_type %}
     <ul class="navbar-nav">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
