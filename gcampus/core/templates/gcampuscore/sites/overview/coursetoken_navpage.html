@@ -3,16 +3,9 @@
 {% block title %}
     {% translate "Course Overview" %}
 {% endblock %}
-{% block extra_head %}
-    {% displaytoken_head %}
-{% endblock %}
 {% block content %}
-    <div class="alert alert-success" role="alert" id="alert_register">
-        {% blocktranslate %}You successfully registered yourself. This page is an overview over all of your
-            Accesskeys.{% endblocktranslate %}
-    </div>
-    <div class="container-fluid">
 
+    <div class="container-fluid">
         {% csrf_token %}
         <div class="row">
             <div class="col-7 p-5">
@@ -142,22 +135,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        function Alert() {
-            // This function puts the alert sign at the top of the site
-            // if the user is redirected from the register page.
-            var alert = document.getElementById('alert_register');
-            var previous_page = String(document.referrer);
-            if (previous_page.includes("register")) {
-                alert.hidden = false;
-            } else {
-                alert.hidden = true;
-            }
-        }
-
-        Alert()
-    </script>
     {% displaytoken_js %}
 {% endblock %}
 
