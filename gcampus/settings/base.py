@@ -15,6 +15,7 @@
 
 from pathlib import Path
 
+from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -86,6 +87,14 @@ TEMPLATES = [
     },
 ]
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+# Use bootstrap colors
+MESSAGE_TAGS = {
+    messages.DEBUG: 'secondary',
+    messages.INFO: 'light',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
 
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
