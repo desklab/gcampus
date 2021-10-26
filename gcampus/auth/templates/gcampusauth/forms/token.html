@@ -41,7 +41,7 @@
                         </div>
                     {% endwith %}
                 </div>
-                {% if not request.session.gcampusauth_authenticated %}
+                {% if not authenticated %}
                     <div class="col-lg-2">
                         <button class="btn btn-primary btn-lg">
                             {% translate "Confirm" %}

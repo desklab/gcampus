@@ -10,8 +10,8 @@
             {% include "gcampuscore/components/nav_item.html" with title=create_title view_name="gcampuscore:add_measurement" %}
         </ul>
 
-        {% if request.session.gcampusauth_authenticated %}
-            {% include "gcampusauth/components/auth_menu.html" with name=token_slice token_type=token_type token_name=request.session.gcampusauth_token.token_name %}
+        {% if authenticated %}
+            {% include "gcampusauth/components/auth_menu.html" %}
         {% else %}
             <ul class="nav">
                 {% translate "Log in" as auth_title %}

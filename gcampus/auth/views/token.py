@@ -45,7 +45,7 @@ class SetTokenFormView(FormView, ABC):
     def form_valid(self, form: Union[AccessKeyForm, CourseTokenForm]):
         if form.is_valid():
             token = form.cleaned_data["token"]
-            if self.token_type == "course":
+            if self.token_type == COURSE_TOKEN_TYPE:
                 token_name = CourseToken.objects.get(token=token).token_name
             else:
                 token_name = None

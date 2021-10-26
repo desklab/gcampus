@@ -10,22 +10,23 @@
      {% auth_token %}
     <div class="container">
         <div class="py-5 text-center">
-            {% if request.session.gcampusauth_token.token_type == "course" %}
+            {% if user_token_is_course_token %}
             <h2>{% translate "You successfully logged in with a course token" %}</h2>
-            {% elif request.session.gcampusauth_token.token_type == "access"  %}
+            {% elif user_token_is_access_key  %}
                 <h2>{% translate "You successfully logged in with an access key" %}</h2>
             {% endif %}
         </div>
 
         <div class="row justify-content-center text-center">
             <div class="button-box col-lg-12">
+{#                TODO fix hard coded urls #}
                 <a href="/" class="btn btn-lg btn-primary" role="button">{% translate "Mapview" %}</a>
                 <a href="/measurements" class="btn btn-lg btn-primary"
                    role="button">{% translate "All Measurements" %}</a>
-                {% if request.session.gcampusauth_token.token_type == "course" %}
+                {% if user_token_is_course_token %}
                     <a href="/course/measurements" class="btn btn-lg btn-primary"
                        role="button">{% translate "Course Measurements" %}</a>
-                {% elif request.session.gcampusauth_token.token_type == "access" %}
+                {% elif user_token_is_access_key %}
                     <a href="/personal/measurements" class="btn btn-lg btn-primary"
                        role="button">{% translate "My Measurements" %}</a>
                 {% endif %}
