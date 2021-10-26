@@ -15,12 +15,21 @@
 
 from django.http import HttpRequest
 
-from gcampus.auth.utils import is_authenticated, get_token, get_token_type
+from gcampus.auth.models.token import ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE
+from gcampus.auth.utils import (
+    is_authenticated,
+    get_token,
+    get_token_type,
+    get_token_name,
+)
 
 
 def auth(request: HttpRequest) -> dict:
     return {
         "authenticated": is_authenticated(request),
         "user_token": get_token(request),
-        "user_token_type": get_token_type(request)
+        "user_token_type": get_token_type(request),
+        "user_token_name": get_token_name(request),
+        "user_token_is_access_key": get_token_type(request) == ACCESS_TOKEN_TYPE,
+        "user_token_is_course_token": get_token_type(request) == COURSE_TOKEN_TYPE,
     }
