@@ -172,8 +172,10 @@ class Parameter(util.DateModelMixin):
         verbose_name_plural = _("Parameters")
 
     parameter_type = models.ForeignKey(
-        ParameterType, on_delete=models.PROTECT, verbose_name=_("Parameter type"),
-        related_name="parameters"
+        ParameterType,
+        on_delete=models.PROTECT,
+        verbose_name=_("Parameter type"),
+        related_name="parameters",
     )
     value = models.FloatField(blank=False, verbose_name=_("Value"))
     measurement = models.ForeignKey(
@@ -195,5 +197,5 @@ class Parameter(util.DateModelMixin):
     def __str__(self):
         return _("Parameter %(pk)s (%(name)s)") % {
             "pk": self.pk,
-            "name": self.parameter_type.name
+            "name": self.parameter_type.name,
         }

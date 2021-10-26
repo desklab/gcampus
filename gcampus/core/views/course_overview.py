@@ -16,7 +16,11 @@
 from abc import ABC
 from typing import Union, Optional
 
-from django.core.exceptions import PermissionDenied, ObjectDoesNotExist, SuspiciousOperation
+from django.core.exceptions import (
+    PermissionDenied,
+    ObjectDoesNotExist,
+    SuspiciousOperation,
+)
 from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -26,7 +30,12 @@ from django.utils.translation import ugettext_lazy as _
 from gcampus.auth import utils, exceptions
 from gcampus.auth.exceptions import TOKEN_INVALID_ERROR, TOKEN_CREATE_PERMISSION_ERROR
 from gcampus.auth.forms.token import AccessKeyForm, CourseTokenForm, TOKEN_FIELD_NAME
-from gcampus.auth.models.token import ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE, CourseToken, can_token_create_measurement
+from gcampus.auth.models.token import (
+    ACCESS_TOKEN_TYPE,
+    COURSE_TOKEN_TYPE,
+    CourseToken,
+    can_token_create_measurement,
+)
 from gcampus.auth.utils import get_token
 from gcampus.core.forms.course_overview import CourseOverviewForm
 from gcampus.core.models import Measurement
@@ -35,6 +44,7 @@ from gcampus.auth.models.token import AccessKey, CourseToken
 from django.views.generic import ListView
 
 TOKEN_FIELD_NAME = "gcampus_auth_token"
+
 
 class AssociatedAccessKeys(ListView):
     template_name = "gcampuscore/sites/overview/associated_accesskeys.html"
@@ -100,7 +110,9 @@ class CourseOverviewFormView(FormView):
             # Someone modified the session or token provided by the form
             raise SuspiciousOperation()
         form.save()
-        utils.set_token(self.request, form.instance.token, "course", form.instance.token_name)
+        utils.set_token(
+            self.request, form.instance.token, "course", form.instance.token_name
+        )
         return HttpResponseRedirect(self.request.path_info)
 
     def get_context_data(self, *, object_list=None, **kwargs):

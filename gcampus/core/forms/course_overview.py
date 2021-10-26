@@ -37,7 +37,8 @@ from gcampus.auth.exceptions import (
 from gcampus.auth.fields.token import TokenField
 from gcampus.auth.models.token import (
     can_token_edit_measurement,
-    get_token_and_create_permission, CourseToken,
+    get_token_and_create_permission,
+    CourseToken,
 )
 from gcampus.core.fields import SplitSplitDateTimeField
 from gcampus.core.models import Measurement, Parameter
@@ -97,7 +98,6 @@ class CourseOverviewForm(ModelForm):
     class Meta:
         model = CourseToken
         fields = ["token_name", "teacher_email"]
-
 
     def non_field_errors(self):
         errors = super(CourseOverviewForm, self).non_field_errors()

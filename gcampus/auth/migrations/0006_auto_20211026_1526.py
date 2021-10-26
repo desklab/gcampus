@@ -6,18 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gcampusauth', '0005_auto_20211006_1226'),
+        ("gcampusauth", "0005_auto_20211006_1226"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='coursetoken',
-            name='teacher_email',
-            field=models.EmailField(default=False, max_length=254, verbose_name='E-Mail Address'),
+            model_name="coursetoken",
+            name="teacher_email",
+            field=models.EmailField(
+                default=False, max_length=254, verbose_name="E-Mail Address"
+            ),
         ),
         migrations.AlterField(
-            model_name='coursetoken',
-            name='token_name',
-            field=models.CharField(blank=True, max_length=30, verbose_name='Course Token Name'),
+            model_name="coursetoken",
+            name="token_name",
+            field=models.CharField(
+                blank=True, max_length=30, verbose_name="Course Token Name"
+            ),
         ),
     ]
