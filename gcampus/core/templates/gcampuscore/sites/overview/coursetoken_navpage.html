@@ -6,8 +6,11 @@
 {% block content %}
     <div class="container">
         <div class="py-5 text-center">
-            <h2>{% translate "Your Coursetoken is" %} "{{ request.session.gcampusauth_token.token }}"</h2>
+            <h2>{% translate "Your Coursetoken is" %}
+                <div id="token_hide"></div>
+            </h2>
         </div>
+        <button class="btn btn-primary btn-lg" onclick="ShowAndHide()">Show Coursetoken</button>
     </div>
     <div class="container">
         <div class="py-5 text-center">
@@ -39,7 +42,7 @@
                 </button>
             </form>
         </div>
-    <div class="col-auto">
+        <div class="col-auto">
             <table class="table table-responsive">
                 <thead class="thead-dark">
                 <tr>
@@ -55,18 +58,18 @@
                         </td>
                         <td>
                             {% if key.deactivated == False %}
-                             <a href="{% url "gcampuscore:deactivate" pk=key.pk %}"
+                                <a href="{% url "gcampuscore:deactivate" pk=key.pk %}"
                                    class="btn btn-sm btn-danger"
                                    role="button">
                                     {% translate "Deactivate Token" %}
                                 </a>
                             {% else %}
-                            <a href="{% url "gcampuscore:activate" pk=key.pk %}"
+                                <a href="{% url "gcampuscore:activate" pk=key.pk %}"
                                    class="btn btn-sm btn-success"
                                    role="button">
                                     {% translate "Activate Token" %}
                                 </a>
-                            {%  endif %}
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
@@ -74,6 +77,16 @@
             </table>
         </div>
     </div>
-    
+    <script>
+        function ShowAndHide() {
+            var x = document.getElementById('token_hide');
+            if (x.innerHTML.includes("*")) {
+                x.innerText = "{{request.session.gcampusauth_token.token}}";
+            } else {
+                x.innerText = '****-****-*' + "{{request.session.gcampusauth_token.token|slice:"-3:"}}";
+            }
+        }
+        ShowAndHide("{{request.session.gcampusauth_token.token}}")
+    </script>
 {% endblock %}
 
