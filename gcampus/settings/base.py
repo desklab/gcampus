@@ -169,7 +169,7 @@ LEAFLET_CONFIG = {
     },
 }
 MAP_SETTINGS = {
-    "CENTER": (49.4922, 8.4430),
+    "CENTER": (8.4430, 49.4922),
     "ZOOM": 8,
     "STYLE": "mapbox://styles/axelschlindwein/ckq9e6o4k06fn17o70d7j7l65",
     "MAPBOX_ACCESS_TOKEN": get_env_read_file("MAPBOX_ACCESS_TOKEN"),
