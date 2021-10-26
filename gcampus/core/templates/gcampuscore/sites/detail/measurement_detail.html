@@ -1,5 +1,5 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n map l10n %}
+{% load i18n map l10n icon %}
 {% block extra_head %}
     {% load_mapbox_css %}
     {% load_mapbox_js %}
@@ -165,7 +165,7 @@
                     </div>
                     <div class="mt-auto">
                         {% if measurement.token.token is not None %}
-                            {% if measurement.token.token == request.session.gcampusauth_token.token or measurement.token.parent_token.token == request.session.gcampusauth_token.token %}
+                            {% if measurement.token.token == user_token or measurement.token.parent_token.token == user_token %}
                                 <a href="{% url "gcampuscore:edit_parameters" measurement_id=measurement.pk %}"
                                    class="btn btn-sm btn-secondary"
                                    role="button">
@@ -174,23 +174,22 @@
                             {% endif %}
                         {% endif %}
                         {% if measurement.token.token is not None %}
-                            {% if measurement.token.parent_token.token == request.session.gcampusauth_token.token %}
-                                {% if not measurement.hidden %}
-                                    <a href="{% url "gcampuscore:hide" pk=measurement.pk %}"
-                                       class="btn btn-sm btn-danger"
-                                       role="button">
-                                        {% translate "Hide" %}
-                                    </a>
-                                {% else %}
-                                    <a href="{% url "gcampuscore:show" pk=measurement.pk %}"
-                                       class="btn btn-sm btn-success"
-                                       role="button">
-                                        {% translate "Make public" %}
-                                    </a>
-                                {% endif %}
+                            {% if measurement.token.parent_token.token == user_token %}
+                                <form class="d-inline-block" method="post" action="{% if measurement.hidden %}{% url "gcampuscore:show" %}{% else %}{% url "gcampuscore:hide" %}{% endif %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="measurement" value="{{ measurement.pk }}"/>
+                                    <button class="btn btn-sm">
+                                        {% if measurement.hidden %}
+                                            {% icon "eye" height="16px" width="16px" %}
+                                            {% translate "Make public" %}
+                                        {% else %}
+                                            {% icon "eye-off" height="16px" width="16px"%}
+                                            {% translate "Hide" %}
+                                        {% endif %}
+                                    </button>
+                                </form>
                             {% endif %}
                         {% endif %}
-                        </form>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">

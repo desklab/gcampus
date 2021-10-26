@@ -30,10 +30,9 @@ from gcampus.core.views.measurement import (
     MeasurementMapView,
     PersonalMeasurementListView,
     CourseMeasurementListView,
-    show,
     HiddenCourseMeasurementListView,
-    hide,
 )
+from gcampus.core.views.measurement_visibility import show, hide
 
 # Turn off black formatting and pylint
 # fmt: off
@@ -52,8 +51,8 @@ urlpatterns = [
     path("measurement/<int:pk>/detail", MeasurementDetailView.as_view(), name="measurement_detail"),
     path("personal/measurements", PersonalMeasurementListView.as_view(), name="personal_measurements"),
     path("course/measurements", CourseMeasurementListView.as_view(), name="course_measurements"),
-    path("measurement/<int:pk>/hide", hide, name="hide"),
-    path("measurement/<int:pk>/show", show, name="show"),
+    path("measurement/hide", hide, name="hide"),
+    path("measurement/show", show, name="show"),
     path("course/measurements/hidden", HiddenCourseMeasurementListView.as_view(), name="course_hidden"),
     path("course/tokens", AssociatedAccessKeys.as_view(), name="associated_accesskeys"),
     path("course/overview", CourseOverviewFormView.as_view(), name="course_overview"),
