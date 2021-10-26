@@ -33,6 +33,10 @@ def get_token_type(request: HttpRequest, default: str = None) -> Optional[str]:
     return default
 
 
+def is_authenticated(request: HttpRequest) -> bool:
+    return request.session.get(AUTHENTICATION_BOOLEAN, False)
+
+
 def set_token(request: HttpRequest, token: str, token_type: str, token_name):
     request.session[TOKEN_STORE] = {
         "token": token,

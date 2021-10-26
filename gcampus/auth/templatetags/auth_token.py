@@ -16,9 +16,8 @@ import string
 from typing import Optional, List
 
 from django import template
-from django.contrib.sessions.backends.base import SessionBase
-from django.contrib.sessions.models import Session
 from django.core.exceptions import PermissionDenied
+from django.template import Context
 from django.http import HttpRequest
 from django.template import Node
 from django.template.base import FilterExpression
@@ -60,6 +59,18 @@ class AuthTokenNode(Node):
             )
         else:
             return ""
+
+
+@register.simple_tag(takes_context=True)
+def save_token(context: Context) -> str:
+    request: HttpRequest = context["request"]
+    return get_token(request)
+
+
+@register.simple_tag(takes_context=True)
+def save_token_type(context: Context) -> str:
+    request: HttpRequest = context["request"]
+    return get_token_type(request)
 
 
 @register.tag
