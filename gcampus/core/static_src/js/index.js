@@ -18,11 +18,11 @@
 import Tooltip from 'bootstrap/js/src/tooltip';
 import Collapse from 'bootstrap/js/src/collapse';
 import Dropdown from 'bootstrap/js/src/dropdown';
-import Modal from 'bootstrap/js/src/modal';
+import 'bootstrap/js/src/modal';
 import Alert from 'bootstrap/js/src/alert';
 import 'bootstrap/js/src/util';
 
 
 import '../styles/main.scss';
 
-export {Tooltip, Collapse, Dropdown, Modal, Alert};
+export {Tooltip, Collapse, Dropdown, Alert};
