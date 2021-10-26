@@ -100,6 +100,7 @@ class CourseOverviewFormView(FormView):
             # Someone modified the session or token provided by the form
             raise SuspiciousOperation()
         form.save()
+        utils.set_token(self.request, form.instance.token, "course", form.instance.token_name)
         return HttpResponseRedirect(self.request.path_info)
 
     def get_context_data(self, *, object_list=None, **kwargs):
