@@ -24,7 +24,6 @@
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
-{% include "gcampuscore/components/header.html" %}
 {% if messages %}
     <div role="alert" aria-live="assertive" aria-atomic="true" class="position-absolute bottom-0 end-0">
         <div class="toast-container p-3">
@@ -41,8 +40,17 @@
         </div>
     </div>
 {% endif %}
-{% block content %}
-{% endblock %}
+<div class="container-fluid">
+    <div class="row">
+        {% include "gcampuscore/components/sidebar.html" %}
+        <main>
+            {% include "gcampuscore/components/header.html" %}
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+</div>
+
 {# Global javascript #}
 <script type="text/javascript" src="{% static 'gcampuscore/js/main.js' %}"></script>
 <script type="text/javascript">
@@ -50,10 +58,11 @@
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new gcampuscore.Tooltip(tooltipTriggerEl);
     });
-    var collapseTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="collapse"]'));
-    var collapseList = collapseTriggerList.map(function (collapseTriggerEl) {
-        return new gcampuscore.Collapse(collapseTriggerEl);
-    });
+
+    const sidebarElement = document.getElementById('sidebar');
+    function toggleSidebar() {
+        sidebarElement.classList.toggle('show');
+    }
     {% if messages %}
         var toastElList = [].slice.call(document.querySelectorAll('.toast'));
         var toastList = toastElList.map(function (toastEl) {

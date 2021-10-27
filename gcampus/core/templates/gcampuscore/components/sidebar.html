@@ -1,0 +1,22 @@
+{% load icon %}
+{% load i18n %}
+<div class="sidebar collapse show text-white bg-dark" id="sidebar">
+    <div class="navbar">
+        <div class="py-2">
+            <button class="btn text-white d-md-inline-block d-none" type="button" onclick="toggleSidebar()" aria-controls="sidebar">
+                {% icon "menu" %}
+            </button>
+            <a href="/" class="btn text-white sidebar-title">GewässerCampus</a>
+        </div>
+    </div>
+    <hr class="mt-0">
+    <ul class="nav nav-pills flex-column mb-auto">
+        {% translate "Map" as map_title %}
+        {% translate "Measurements" as measurements_title %}
+        {% translate "Analysis" as analysis_title %}
+        {% include "gcampuscore/components/sidebar_item.html" with icon="map" title=map_title view_name="gcampuscore:mapview" %}
+        {% include "gcampuscore/components/sidebar_item.html" with icon="list" title=measurements_title view_name="gcampuscore:measurements" %}
+        {% include "gcampuscore/components/sidebar_item.html" with icon="bar-chart-2" title=analysis_title view_name="" %}
+    </ul>
+    <hr>
+</div>

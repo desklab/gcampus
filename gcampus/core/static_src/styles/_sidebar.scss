@@ -1,0 +1,78 @@
+/*!
+ * Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+.sidebar {
+  @include media-breakpoint-up(md) {
+    display: block !important; // Overwrite collapse's display: none
+    position: fixed;
+    z-index: $zindex-offcanvas;
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+
+    &.collapse {
+      width: $sidebar-closed-width;
+
+      .sidebar-item-title {
+        display: none;
+      }
+
+      .sidebar-title {
+        display: none;
+      }
+
+      ~ main {
+        width: calc(100% - $sidebar-closed-width);
+
+        .navbar {
+          padding-left: $sidebar-closed-width !important;
+        }
+      }
+
+      &.show {
+        width: $sidebar-opened-width;
+
+        .sidebar-item-title {
+          display: inline-block;
+        }
+
+        .sidebar-title {
+          display: inline-block;
+        }
+
+        .sidebar-item-icon {
+          margin-right: map-get($spacers, 2);
+        }
+
+        ~ main {
+          width: calc(100% - $sidebar-opened-width);
+
+          .navbar {
+            padding-left: $sidebar-opened-width !important;
+          }
+        }
+      }
+    }
+
+    ~ main {
+      flex: 0 0 auto;
+      margin-left: auto;
+      width: calc(100% - $sidebar-opened-width);
+    }
+  }
+}
