@@ -47,7 +47,7 @@ TOKEN_FIELD_NAME = "gcampus_auth_token"
 
 
 class AssociatedAccessKeys(ListView):
-    template_name = "gcampuscore/sites/overview/associated_accesskeys.html"
+    template_name = "gcampuscore/sites/overview/course_overview.html"
     model = Measurement
     context_object_name = "measurement_list"
     paginate_by = 10
@@ -72,9 +72,9 @@ class AssociatedAccessKeys(ListView):
 
 
 class CourseOverviewFormView(FormView):
-    template_name = "gcampuscore/sites/overview/coursetoken_navpage.html"
+    template_name = "gcampuscore/sites/overview/course_overview.html"
     form_class = CourseOverviewForm
-    next_view_name = "gcampuscore/sites/overview/coursetoken_navpage.html"
+    next_view_name = "gcampuscore/sites/overview/course_overview.html"
 
     def __init__(self, *args, **kwargs):
         super(CourseOverviewFormView, self).__init__(*args, **kwargs)
@@ -131,7 +131,7 @@ def deactivate_accesskey(request, pk):
             # context = {'measurement': measurement[0]}
             access_key.update(deactivated=True)
             return render(
-                request, "gcampuscore/sites/overview/associated_accesskeys.html"
+                request, "gcampuscore/sites/overview/course_overview.html"
             )
         else:
             raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
@@ -150,7 +150,7 @@ def activate_accesskey(request, pk):
             # context = {'measurement': measurement[0]}
             access_key.update(deactivated=False)
             return render(
-                request, "gcampuscore/sites/overview/associated_accesskeys.html"
+                request, "gcampuscore/sites/overview/course_overview.html"
             )
         else:
             raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
