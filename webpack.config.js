@@ -21,6 +21,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const autoprefixer = require('autoprefixer');
+const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
 
 
 const postcssLoader = (env, options) => {
@@ -225,10 +226,44 @@ let gcampusauthConfig = (env, options) => {
     });
 }
 
+
+let gcampusprintConfig = (env, options) => {
+    let common = commonConfig(env, options);
+    return Object.assign(common, {
+        name: 'gcampusprint',
+        entry: {
+            'gcampus': path.resolve(__dirname, 'gcampus', 'print', 'static_src', 'styles', 'gcampus.scss'),
+        },
+        output: {
+            path: path.resolve(__dirname, 'gcampus', 'print', 'static', 'gcampusprint'),
+            publicPath: '/static/gcampusprint',
+            filename: 'js/[name].js',
+            library: {
+                name: 'gcampusprint',
+                type: 'var'
+            }
+        },
+        plugins: [
+            ...(common.plugins || []),
+            new FixStyleOnlyEntriesPlugin(),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.resolve(__dirname, 'gcampus', 'print', 'static_src', 'assets'),
+                        to: path.resolve(__dirname, 'gcampus', 'print', 'static', 'gcampusprint', 'assets'),
+                    },
+                ]
+            }),
+        ],
+    });
+}
+
+
 module.exports = (env, options) => {
     return [
         gcampuscoreConfig(env, options),
         gcampusmapConfig(env, options),
         gcampusauthConfig(env, options),
+        gcampusprintConfig(env, options),
     ];
 };

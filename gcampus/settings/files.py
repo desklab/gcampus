@@ -62,5 +62,5 @@ else:
     # for more information.
     _BASE_DIR = Path(__file__).resolve().parent.parent
     STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
-    STATIC_ROOT = os.path.join(_BASE_DIR.parent, "static")
+    # STATIC_ROOT = os.path.join(_BASE_DIR.parent, "static")
     STATIC_URL = "/static/"

@@ -1,0 +1,10 @@
+body {
+    margin: 0;
+}
+
+head, head > title, head > meta {
+    display: inline;
+    visibility: hidden;
+    position: absolute;
+    top: -1000px;
+}

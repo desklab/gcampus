@@ -19,3 +19,6 @@ static/
 # IDE
 .idea
 .vscode
+
+# Generated PDF files
+/*.pdf

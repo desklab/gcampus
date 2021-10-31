@@ -54,6 +54,14 @@ To install GDAL, run the following command:
 conda install -c conda-forge libgdal
 ```
 
+#### WeasyPrint
+
+[WeasyPrint](https://doc.courtbouillon.org/weasyprint/stable/index.html)
+is used to generate PDF documents e.g. for the token list. Install
+instructions can be found in
+[WeasyPrint's documentation](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#installation).
+
+
 ### Static Files (JavaScript, Stylesheets)
 
 Make sure you have **Node.js** installed. We use `webpack` to build

@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "gcampus.auth",
     "gcampus.api",
     "gcampus.map",
+    "gcampus.print",
     # Other django apps
     # Sometimes the order is important
     "django.forms",
