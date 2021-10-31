@@ -8,98 +8,42 @@
     <meta name="id" content="gcampus-doc-01">
     {% displaytoken_head %}
     <style>
-        @page :first{
-            margin: 0cm;
-            background: url("{% print_static 'gcampusprint/assets/background-frontpage.svg' %}");
-            background-position: -0.02cm -0.02cm;
-            background-size: 21cm;
-            background-repeat: no-repeat;
-        }
-
-        @page {
-            margin: 0cm;
-            background: url("{% print_static 'gcampusprint/assets/top-right-qrcode-gcampus.svg' %}");
-            background-position: 13.02cm -0.02cm;
-            background-size: 8cm;
-            background-repeat: no-repeat;
-        }
+        
     </style>
 </head>
 <body>
-
 <article>
-    <div class="header-container">
-        <h1><span class="color-white">Gewässer</span><span class="color-primary">Campus</span></h1>
-        <h4 class="color-grey">Ein Projekt von <span class="color-primary">desklab</span> in Zusammenarbeit mit der <span class="color-primary">TU Kaiserslautern</span></h4>
-    </div>
+    
+    <h2>Kursschlüssel</h2>
 
-    <div class="frontpage-container">
-        <h2>Kursschlüssel</h2>
+    ToDo: Erklärung zu Kursschlüssel
 
-        ToDo: Erklärung zu Kursschlüssel
-
-        {% displaytoken "F2BT4E87AC5D" hidden=False toggle=False %}
+    {% displaytoken "F2BT4E87AC5D" hidden=False toggle=False %}
 
     <h2>Zugangscodes</h2>
 
     ToDo: Erklärung zu Zugangscodes
 
-
-    {% displaytoken "A3F8HPL2" hidden=False toggle=False %}
-
-
-    {% displaytoken "45GH9F2M" hidden=False toggle=False %}
-
-
-    {% displaytoken "2K85PD31" hidden=False toggle=False %}
-
-
-    {% displaytoken "HE3FL24W" hidden=False toggle=False %}
-
-
-    {% displaytoken "K9MCAB3N" hidden=False toggle=False %}
-
-
-    {% displaytoken "CT6HF8EC" hidden=False toggle=False %}
-
-
-    {% displaytoken "AS284PXL" hidden=False toggle=False %}
-
-
-    {% displaytoken "B7C1S5AP" hidden=False toggle=False %}
-
-
-    {% displaytoken "1R84ZECL" hidden=False toggle=False %}
-    </div>
-</article>
-
-<article>
-    <div class="page-container">
-        ToDo: Erklärung zu Zugangscodes
-
+    {% with ''|center:15 as range %} 
+    {% for _ in range %}
+        {{ forloop.counter }}
         {% displaytoken "A3F8HPL2" hidden=False toggle=False %}
+        <br>
+    {% endfor %}
+    {% endwith %}
 
-        ToDo: Erklärung zu ersten Schritten
-    </div>
+    
+    <!--  
+    {% displaytoken "45GH9F2M" hidden=False toggle=False %}
+    {% displaytoken "2K85PD31" hidden=False toggle=False %}
+    {% displaytoken "HE3FL24W" hidden=False toggle=False %}
+    {% displaytoken "K9MCAB3N" hidden=False toggle=False %}
+    {% displaytoken "CT6HF8EC" hidden=False toggle=False %}
+    {% displaytoken "AS284PXL" hidden=False toggle=False %}
+    {% displaytoken "B7C1S5AP" hidden=False toggle=False %}
+    {% displaytoken "1R84ZECL" hidden=False toggle=False %} 
+    -->
+    
 </article>
-
-<article>
-    <div class="page-container">
-        ToDo: Erklärung zu Zugangscodes
-
-        {% displaytoken "45GH9F2M" hidden=False toggle=False %}
-        ToDo: Erklärung zu ersten Schritten
-    </div>
-</article>
-
-<article>
-    <div class="page-container">
-        ToDo: Erklärung zu Zugangscodes
-
-        {% displaytoken "2K85PD31" hidden=False toggle=False %}
-        ToDo: Erklärung zu ersten Schritten
-    </div>
-</article>
-
 </body>
 </html>

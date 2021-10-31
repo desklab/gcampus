@@ -15,23 +15,16 @@ h1 {
     font-size: 36pt;
 }
 
-
-.accesskey-key {
-    font-family:'JetBrains Mono', monospace;
-    font-weight: lighter;
-}
-
-.coursetoken {
-    font-family:'JetBrains Mono', monospace;
-    font-weight: lighter;
-}
-
 .color-white {
     color: white;
 }
 
 .color-primary {
     color: $primary;
+}
+
+.color-secondary {
+    color: $secondary;
 }
 
 .color-lightgrey {

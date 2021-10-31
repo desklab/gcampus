@@ -2,19 +2,16 @@ $spacer: 1cm !default;
 $spacers: () !default;
 $spacers: map-merge(
     (
-        0: 0,
-        1: ($spacer * .25),
-        2: ($spacer * .5),
-        3: $spacer,
-        4: ($spacer * 1.5),
-        5: ($spacer * 3),
-        6: ($spacer * 4),
-        7: ($spacer * 5),
-        8: ($spacer * 6),
-        9: ($spacer * 8),
-        10: ($spacer * 10),
-        11: ($spacer * 12),
-        14: ($spacer * 14)
+        000: 0,
+        025: ($spacer *  0.25),
+        050: ($spacer *  0.50),
+        075: ($spacer *  0.75),
+        100: ($spacer *  1.00),
+        150: ($spacer *  1.50)
+        200: ($spacer *  2.00),
+        300: ($spacer *  3.00),
+        400: ($spacer *  4.00),
+        800: ($spacer *  8.00),
     ),
     $spacers
 );
