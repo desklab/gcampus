@@ -15,6 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+$sidebar-transition: .12s;
+
 .sidebar {
   @include media-breakpoint-up(md) {
     display: block !important; // Overwrite collapse's display: none
@@ -27,19 +29,26 @@
 
     &.collapse {
       width: $sidebar-closed-width;
+      transition: width $sidebar-transition ease-in;
+      overflow-x: hidden;
+      white-space: nowrap;
 
-      .sidebar-item-title {
-        display: none;
+      .sidebar-item-icon {
+        margin-right: map-get($spacers, 2);
       }
 
-      .sidebar-title {
-        display: none;
+      .sidebar-item-title, .sidebar-title {
+        transition: opacity $sidebar-transition ease-in;
+        opacity: 0;
       }
 
       ~ main {
-        width: calc(100% - $sidebar-closed-width);
+        transition: margin-left $sidebar-transition ease-in, width $sidebar-transition ease-in;
+        width: calc(100% - #{$sidebar-closed-width});
+        margin-left: $sidebar-closed-width !important;
 
         .navbar {
+          transition: padding-left $sidebar-transition ease-in;
           padding-left: $sidebar-closed-width !important;
         }
       }
@@ -47,20 +56,13 @@
       &.show {
         width: $sidebar-opened-width;
 
-        .sidebar-item-title {
-          display: inline-block;
-        }
-
-        .sidebar-title {
-          display: inline-block;
-        }
-
-        .sidebar-item-icon {
-          margin-right: map-get($spacers, 2);
+        .sidebar-item-title, .sidebar-title {
+          opacity: 1;
         }
 
         ~ main {
-          width: calc(100% - $sidebar-opened-width);
+          width: calc(100% - #{$sidebar-opened-width});
+          margin-left: $sidebar-opened-width !important;
 
           .navbar {
             padding-left: $sidebar-opened-width !important;
@@ -69,10 +71,10 @@
       }
     }
 
-    ~ main {
-      flex: 0 0 auto;
-      margin-left: auto;
-      width: calc(100% - $sidebar-opened-width);
-    }
+    //~ main {
+    //  flex: 0 0 auto;
+    //  margin-left: auto;
+    //  width: calc(100% - #{$sidebar-opened-width});
+    //}
   }
 }

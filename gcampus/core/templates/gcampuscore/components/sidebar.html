@@ -1,13 +1,11 @@
 {% load icon %}
 {% load i18n %}
-<div class="sidebar collapse show text-white bg-dark" id="sidebar">
-    <div class="navbar">
-        <div class="py-2">
-            <button class="btn text-white d-md-inline-block d-none" type="button" onclick="toggleSidebar()" aria-controls="sidebar">
-                {% icon "menu" %}
-            </button>
-            <a href="/" class="btn text-white sidebar-title">GewässerCampus</a>
-        </div>
+<div class="sidebar collapse text-white bg-dark{% if sidebar_open %} show{% endif %}" id="sidebar">
+    <div class="navbar gcampus-navbar justify-content-start flex-nowrap">
+        <button class="btn text-white d-md-inline-block d-none" type="button" id="sidebarToggleButton" onclick="toggleSidebar()" aria-controls="sidebar">
+            {% icon "menu" %}
+        </button>
+        <a href="/" class="btn text-white sidebar-title">GewässerCampus</a>
     </div>
     <hr class="mt-0">
     <ul class="nav nav-pills flex-column mb-auto">
