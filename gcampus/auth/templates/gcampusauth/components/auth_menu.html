@@ -6,8 +6,7 @@
            data-bs-toggle="dropdown" aria-expanded="false">
             {% displaytoken user_token hidden=True %}
         </a>
-        <ul class="dropdown-menu dropdown-menu"
-            aria-labelledby="navbarDropdownMenuLink">
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
             {% if user_token_is_course_token %}
                 <li><a class="dropdown-item"
                        href={% url "gcampuscore:course_measurements" %}>{% translate "Measurements of your Course" %}</a>
