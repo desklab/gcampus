@@ -4,11 +4,18 @@
     {% load_mapbox_css %}
     {% load_mapbox_js %}
 {% endblock %}
-{% block body_class %}d-flex flex-column min-vh-100{% endblock %}
+{% block main_class %}min-vh-100 px-0{% endblock %}
 {% block content %}
     <script>
         function loadCluster(event) {
             let map = event.target;
+            const mainContent = document.querySelector('main');
+            if (mainContent !== undefined) {
+                mainContent.addEventListener('transitionend', function() {
+                    window._maps.map.resize();
+                });
+            }
+
             map.addSource('measurements', {
                 type: 'geojson',
                 data: '/api/v1/measurements/',
@@ -116,8 +123,7 @@
             map.on('mouseleave', 'clusters', function () {
                 map.getCanvas().style.cursor = '';
             });
-
         }
     </script>
-    {% map onload="loadCluster" class="flex-grow-1" %}
+    {% map onload="loadCluster" class="h-100 w-100" %}
 {% endblock %}
