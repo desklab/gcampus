@@ -23,6 +23,9 @@ from typing import Optional
 
 from django.http import StreamingHttpResponse
 from django.template.loader import render_to_string
+from django.contrib.sessions.middleware import SessionMiddleware
+from django.http import HttpRequest
+
 from weasyprint import HTML, Document
 
 from gcampus.print.static import url_fetcher
@@ -32,8 +35,15 @@ STATIC_FILES_PATH = Path(__file__).resolve().parent / "static"
 
 
 def render(document: str, context: Optional[dict] = None) -> Document:
+    request = HttpRequest()
+    middleware = SessionMiddleware()
+    middleware.process_request(request)
+    request.session.save()
+
     document_str = render_to_string(
-        f"gcampusprint/documents/{document}.html", context=context
+        f"gcampusprint/documents/{document}.html", 
+        context=context,
+        request=request,
     )
     html = HTML(string=document_str, url_fetcher=url_fetcher)
     return html.render()

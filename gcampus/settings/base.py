@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+GCAMPUS_VERSION = "0.2.1"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -83,6 +84,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "gcampus.auth.context_processors.auth",
+                "gcampus.core.context_processors.get_version",
             ],
         },
     },
