@@ -20,6 +20,7 @@ from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from gcampus.settings.util import get_env_read_file
+from gcampus import __version__
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -31,8 +32,7 @@ SECRET_KEY = get_env_read_file(
 ALLOWED_HOSTS = []
 
 # Application definition
-
-GCAMPUS_VERSION = "0.2.1"
+GCAMPUS_VERSION = __version__
 
 INSTALLED_APPS = [
     "django.contrib.admin",

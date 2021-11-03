@@ -12,3 +12,9 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+from django.utils.version import get_version
+
+
+VERSION = (0, 3, 0, "alpha", 1)
+__version__ = get_version(VERSION)

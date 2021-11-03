@@ -33,7 +33,7 @@ jobs:
           # In the code below, we enable the 'dev' or 'latest' tag depending
           # on the release type.
           tags: |
-            type=semver,pattern={{version}}
+            type=pep440,pattern={{version}}
             type=raw,value=dev,enable=${{ github.event.release.prerelease }}
           flavor: |
             latest=${{ !github.event.release.prerelease }}

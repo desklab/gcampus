@@ -35,6 +35,7 @@ STATIC_FILES_PATH = Path(__file__).resolve().parent / "static"
 
 
 def render(document: str, context: Optional[dict] = None) -> Document:
+    # Add dummy request to enable context processors
     request = HttpRequest()
     middleware = SessionMiddleware()
     middleware.process_request(request)
