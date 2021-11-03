@@ -42,7 +42,7 @@ article {
     }
 }
 
-@each $prop, $abbrev in (height: h-abs) {
+@each $prop, $abbrev in (width: w-abs, height: h-abs) {
     @each $size, $length in $spacers {
         .#{$abbrev}-#{$size} {
             #{$prop}: $length;

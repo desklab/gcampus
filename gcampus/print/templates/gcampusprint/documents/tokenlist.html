@@ -8,32 +8,48 @@
     <meta name="id" content="gcampus-doc-01">
     {% displaytoken_head %}
     <style>
-        
     </style>
 </head>
 <body>
 <article>
+ 
+    <h2>Informationen</h2>
     
+    Name der Schule <br>
+    E-Mail der Lehrkraft <br>
+
+    Name des Kurses <br>
+    Anzahl tokens <br>
+
     <h2>Kursschlüssel</h2>
+ 
+    Erklärung zu Kursschlüssel... 
 
-    ToDo: Erklärung zu Kursschlüssel
-
-    {% displaytoken "F2BT4E87AC5D" hidden=False toggle=False %}
+    {% displaytoken "F2BT4E87AC5D" hidden=False toggle=False %} <!-- TODO: replace with actual code for tokenlist -->
 
     <h2>Zugangscodes</h2>
 
-    ToDo: Erklärung zu Zugangscodes
+    Erklärung zu Zugangscodes ...
 
-    {% with ''|center:15 as range %} 
+    {% with ''|center:15 as range %}     <!-- TODO: remove after testing, replace with actual code for tokenlist -->
     {% for _ in range %}
-        {{ forloop.counter }}
-        {% displaytoken "A3F8HPL2" hidden=False toggle=False %}
-        <br>
+        <div class="">
+            <div class="float-left w-abs-100">
+                {{ forloop.counter }}
+            </div>
+            <div class="float-left w-abs-300">
+                {% displaytoken "A3F8HPL2" hidden=False toggle=False %} <!-- TODO: replace with actual code for tokenlist -->
+            </div>
+            <div>
+                ___________________________________
+            </div>
+        </div>
     {% endfor %}
-    {% endwith %}
-
+    {% endwith %} <!-- TODO: remove after testing -->
     
-    gcampus version {{ GCAMPUS_VERSION }} <!-- TODO: get version dynamically-->
+    Datum/Zeitpunkt der Anmeldung: {% now "d/m/Y H:i:s" %} <br>
+    
+    gcampus version {{ GCAMPUS_VERSION }}
 
 </article>
 </body>

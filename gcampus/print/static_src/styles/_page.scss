@@ -1,5 +1,5 @@
 body {
-    margin: 0;
+    margin: 1cm;
 }
 
 head, head > title, head > meta {
@@ -7,4 +7,11 @@ head, head > title, head > meta {
     visibility: hidden;
     position: absolute;
     top: -1000px;
+}
+@page {
+    @bottom-center {
+    content: counter(page)"/"counter(pages);
+    font-size: 10pt;
+    color: $grey-800;
+    }
 }
