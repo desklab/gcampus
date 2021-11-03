@@ -85,6 +85,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "gcampus.auth.context_processors.auth",
                 "gcampus.core.context_processors.get_version",
+                "gcampus.core.context_processors.sidebar",
             ],
         },
     },

@@ -43,7 +43,7 @@
 <div class="container-fluid">
     <div class="row">
         {% include "gcampuscore/components/sidebar.html" %}
-        <main>
+        <main class="{% block main_class %}{% endblock %}">
             {% include "gcampuscore/components/header.html" %}
             {% block content %}
             {% endblock %}
@@ -54,15 +54,41 @@
 {# Global javascript #}
 <script type="text/javascript" src="{% static 'gcampuscore/js/main.js' %}"></script>
 <script type="text/javascript">
+    const SIDEBAR_STATE_COOKIE_NAME = '{{ sidebar_cookie_name }}';
+
+    function setSidebarCookie(state) {
+        gcampuscore.setCookie(SIDEBAR_STATE_COOKIE_NAME, (state) ? "1" : "0", 90);
+    }
+
+    let desiredSidebarState = gcampuscore.getCookie(SIDEBAR_STATE_COOKIE_NAME);
+
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new gcampuscore.Tooltip(tooltipTriggerEl);
     });
 
     const sidebarElement = document.getElementById('sidebar');
+    const sidebarControl = document.querySelector('[aria-controls="sidebar"]');
     function toggleSidebar() {
-        sidebarElement.classList.toggle('show');
+        let open = sidebarElement.classList.toggle('show');
+        setSidebarCookie(open);
+        sidebarControl.setAttribute("aria-expanded", open);
     }
+    if (desiredSidebarState === '1') {
+        document.getElementById('sidebar').classList.add('show');
+        sidebarControl.setAttribute("aria-expanded", true);
+    } else if (desiredSidebarState === '0') {
+        document.getElementById('sidebar').classList.remove('show');
+        sidebarControl.setAttribute("aria-expanded", false);
+    }
+
+    sidebarElement.addEventListener('hide.bs.collapse', function() {
+        setSidebarCookie(false);
+    });
+    sidebarElement.addEventListener('show.bs.collapse', function() {
+        setSidebarCookie(true);
+    });
+
     {% if messages %}
         var toastElList = [].slice.call(document.querySelectorAll('.toast'));
         var toastList = toastElList.map(function (toastEl) {
