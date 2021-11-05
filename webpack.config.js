@@ -153,17 +153,17 @@ let gcampuscoreConfig = (env, options) => {
             }
         },
         // Enable lines below if assets are needed
-        // plugins: [
-        //     ...(common.plugins || []),
-        //     new CopyWebpackPlugin({
-        //         patterns: [
-        //             {
-        //                 from: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'assets'),
-        //                 to: path.resolve(__dirname, 'gcampus', 'core', 'static', 'gcampuscore', 'assets'),
-        //             },
-        //         ]
-        //     })
-        // ],
+        plugins: [
+            ...(common.plugins || []),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'assets'),
+                        to: path.resolve(__dirname, 'gcampus', 'core', 'static', 'gcampuscore', 'assets'),
+                    },
+                ]
+            })
+        ],
     });
 }
 
