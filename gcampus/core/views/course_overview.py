@@ -110,6 +110,7 @@ class CourseOverviewFormView(FormView):
             # Someone modified the session or token provided by the form
             raise SuspiciousOperation()
         form.save()
+        # Update token name
         utils.set_token(
             self.request, form.instance.token, "course", form.instance.token_name
         )

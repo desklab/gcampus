@@ -24,10 +24,11 @@ from gcampus.auth.exceptions import (
     TOKEN_INVALID_ERROR,
 )
 from gcampus.auth.models import CourseToken, AccessKey
+from gcampus.auth.tests.test_token_auth import BaseAuthTest
 from gcampus.core.forms.measurement import TOKEN_FIELD_NAME
 
 
-class MeasurementViewTest(TestCase):
+class MeasurementViewTest(BaseAuthTest):
     today = datetime.today()
     form_data_stub: dict = {
         "time_0_0": today.day,
@@ -36,17 +37,6 @@ class MeasurementViewTest(TestCase):
         "time_1_0": today.hour,
         "time_1_1": today.minute,
     }
-
-    def setUp(self) -> None:
-        self.parent_token = CourseToken(
-            school_name="GCampus Test Case", teacher_name="GCampus Testing"
-        )
-        self.parent_token.save()
-        self.tokens = []
-        for i in range(5):
-            _token = AccessKey(parent_token=self.parent_token)
-            _token.save()
-            self.tokens.append(_token)
 
     def login(self, token):
         login_response = self.client.post(
