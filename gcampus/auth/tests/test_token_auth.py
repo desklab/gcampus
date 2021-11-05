@@ -72,14 +72,6 @@ class BaseTokenKeyTest(BaseAuthTest, ABC):
     def login(self, token: str):
         raise NotImplementedError()
 
-    def test_empty_token(self):
-        login_response = self.login("")
-        self.assertEqual(login_response.status_code, 200)
-        self.check_form_errors(
-            login_response,
-            {TOKEN_FIELD_NAME: [Field.default_error_messages["required"]]}
-        )
-
 
 class AccessKeyAuthTest(BaseTokenKeyTest):
     def login(self, token):
@@ -139,6 +131,14 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
             _token.deactivated = False
             _token.save()
 
+    def test_empty_token(self):
+        login_response = self.login("")
+        self.assertEqual(login_response.status_code, 200)
+        self.check_form_errors(
+            login_response,
+            {TOKEN_FIELD_NAME: [Field.default_error_messages["required"]]}
+        )
+
 
 class CourseTokenAuthTest(BaseTokenKeyTest):
     def login(self, token):
@@ -197,3 +197,11 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
         finally:
             self.parent_token.deactivated = False
             self.parent_token.save()
+
+    def test_empty_token(self):
+        login_response = self.login("")
+        self.assertEqual(login_response.status_code, 200)
+        self.check_form_errors(
+            login_response,
+            {TOKEN_FIELD_NAME: [Field.default_error_messages["required"]]}
+        )
