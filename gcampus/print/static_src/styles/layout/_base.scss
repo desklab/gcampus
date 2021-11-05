@@ -5,6 +5,10 @@ article {
     }
 }
 
+.gcampus-print-page {
+    padding: 0.8cm 0cm 0.8cm 0cm; //top right bottom left
+}
+
 @each $prop, $abbrev in (width: w, height: h) {
     @each $size, $length in $sizes {
       .#{$abbrev}-#{$size} { #{$prop}: $length !important; }

@@ -2,7 +2,7 @@ html {
     color: $grey-900;
     font-family: "Calibri";
     font-size: 11pt;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.4;
 }
 
@@ -21,10 +21,21 @@ h2 {
 
 h3 {
     font-size: 14pt;
+    font-weight: 500;
+    color: $secondary;
 }
 
 a {
     color: $secondary;
+    text-decoration: none;
+}
+
+.bold {
+    font-weight: 800;
+}
+
+.footer-link {
+    color: $grey-500;
     text-decoration: none;
 }
 

@@ -10,12 +10,39 @@ head, head > title, head > meta {
 }
 
 @page {
-    margin: 3cm 2cm 2cm 2cm; //top right bottom left
+    margin: 3cm 2cm 2.2cm 2cm; //top right bottom left
     @bottom-center {
-        content: "Die Entwicklung der Webanwendung GewässerCampus durch die gemeinnützige desklab UG (haftungsbeschränkt) \A wird durch die Deutsche Bundesstiftung Umwelt finanziell gefördert.";
-        font-size: 6pt;
-        padding-top: 0.8cm;
-        width: 13cm;
-        color: #606060;
+        //content: "Die Webanwendung GewässerCampus durch die gemeinnützige desklab UG (haftungsbeschränkt) in Zusammenarbeit mit der AG Bioverfahrenstechnik der TU Kaiserslautern entwickelt und durch die Deutsche Bundesstiftung Umwelt finanziell gefördert.";
+        content: "";
+        font-size: 7pt;
+        text-align: justify;
+        text-align-last: center;
+        padding: 1cm 0cm 1cm 0cm;
+        width: 100%;
+        color: $grey-500;
+        box-sizing: border-box;
+        //border-top: .02cm solid $grey-400;
     }
+}
+
+.footer-left {
+    position: fixed;
+    bottom: 0cm;
+    left: 0cm;
+    margin-bottom: -0.6cm;
+    width: 8cm;
+    font-size: 9pt;
+    color: $grey-500;
+    text-align: left;
+}
+
+.footer-right {
+    position: fixed;
+    bottom: 0cm;
+    right: 0cm;
+    margin-bottom: -0.6cm;
+    width: 6cm;
+    font-size: 9pt;
+    color: $grey-500;
+    text-align: right;
 }
