@@ -175,7 +175,7 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
         token = self.tokens[0].token
         login_response = self.login(token)
         self.assertEqual(login_response.status_code, 200)
-        error_message_max_len = MaxLengthValidator.message % {
+        error_message_max_len = MinLengthValidator.message % {
             "limit_value": COURSE_TOKEN_LENGTH,
             "show_value": len(token),
         }
