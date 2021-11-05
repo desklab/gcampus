@@ -1,5 +1,5 @@
 body {
-    margin: 1cm;
+    margin: 0cm;
 }
 
 head, head > title, head > meta {
@@ -8,10 +8,14 @@ head, head > title, head > meta {
     position: absolute;
     top: -1000px;
 }
+
 @page {
+    margin: 3cm 2cm 2cm 2cm; //top right bottom left
     @bottom-center {
-    content: counter(page)"/"counter(pages);
-    font-size: 10pt;
-    color: $grey-800;
+        content: "Die Entwicklung der Webanwendung GewässerCampus durch die gemeinnützige desklab UG (haftungsbeschränkt) \A wird durch die Deutsche Bundesstiftung Umwelt finanziell gefördert.";
+        font-size: 6pt;
+        padding-top: 0.8cm;
+        width: 13cm;
+        color: #606060;
     }
 }

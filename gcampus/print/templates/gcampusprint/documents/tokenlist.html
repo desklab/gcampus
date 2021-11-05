@@ -8,6 +8,25 @@
     <meta name="id" content="gcampus-doc-01">
     {% displaytoken_head %}
     <style>
+        @page {
+            @top-right {
+                content: "{% now "d/m/Y H:i:s" %} \A Version {{ GCAMPUS_VERSION }} \A Seite " counter(page) " von " counter(pages);
+                white-space: pre-line;
+                color: #606060;
+                font-size: 7pt;
+                padding-top: 1.2cm;
+            }
+            @top-left {
+                background: url("{% print_static 'gcampusprint/assets/gcampus-print-header-left.png' %}");
+                background-repeat: no-repeat;
+                background-position: left;
+                background-size: 100% auto;
+                display: block;
+                height: 1.6cm;
+                width: 13cm;
+                content: '';
+            }
+        }
     </style>
 </head>
 <body>

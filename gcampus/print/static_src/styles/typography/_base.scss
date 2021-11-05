@@ -12,7 +12,24 @@ body {
 
 
 h1 {
-    font-size: 36pt;
+    font-size: 24pt;
+}
+
+h2 {
+    font-size: 18pt;
+}
+
+h3 {
+    font-size: 14pt;
+}
+
+a {
+    color: $secondary;
+    text-decoration: none;
+}
+
+.text-justify {
+    text-align: justify;
 }
 
 .color-white {
