@@ -18,7 +18,12 @@ from django.core.exceptions import ValidationError
 from django.db.models import QuerySet
 from django.forms import CharField
 
-from gcampus.auth.exceptions import TOKEN_EMPTY_ERROR, TOKEN_INVALID_ERROR
+from gcampus.auth.exceptions import (
+    TOKEN_EMPTY_ERROR,
+    TOKEN_INVALID_ERROR,
+    COURSE_TOKEN_DEACTIVATED_ERROR,
+    ACCESS_KEY_DEACTIVATED_ERROR,
+)
 from gcampus.auth.models.token import (
     AccessKey,
     CourseToken,
@@ -31,7 +36,6 @@ from gcampus.auth.widgets import HiddenTokenInput
 def _exists_validator(
     value: str,
     model: Union[Type[AccessKey], Type[CourseToken]],
-    length: int,
     check_deactivated: bool = True,
 ):
     """Existence Validator
@@ -39,24 +43,33 @@ def _exists_validator(
     :param value: Key to check the existence for
     :param model: The database model
         (either :class:`AccessKey` or :class:`CourseToken`)
-    :param length: The required length of the token. The is a first
-        indicator for an invalid token and speeds up the check.
     :param check_deactivated: Also check whether the key is deactivated.
         Deactivated keys will also raise a :class:`ValidationError`.
     :raises: :class:`ValidationError`
     """
+    deactivation_message: str
+    if model == AccessKey:
+        length = ACCESS_KEY_LENGTH
+        deactivation_message = ACCESS_KEY_DEACTIVATED_ERROR
+    elif model == CourseToken:
+        length = COURSE_TOKEN_LENGTH
+        deactivation_message = COURSE_TOKEN_DEACTIVATED_ERROR
+    else:
+        raise ValueError("Invalid token model! Expected 'CourseToken' or 'AccessKey'")
     if not len(value) == length:
         raise ValidationError(TOKEN_INVALID_ERROR)
-    query_set: QuerySet
-    if check_deactivated:
-        # Only allow keys that are not deactivated
-        query_set = model.objects.filter(token=value, deactivated=False)
+    if model.objects.filter(token=value).exists():
+        if not check_deactivated:
+            # All good, no need to check for deactivation
+            return
+        elif model.objects.filter(token=value, deactivated=False).exists():
+            # All good, token is a valid access key and not deactivated
+            return
+        else:
+            # Token/key is deactivated: Change error message accordingly
+            raise ValidationError(deactivation_message)
     else:
-        query_set = model.objects.filter(token=value)
-    if query_set.exists():
-        # All good, token is a valid access key
-        return
-    else:
+        # Token/key does not exist
         raise ValidationError(TOKEN_INVALID_ERROR)
 
 
@@ -68,9 +81,7 @@ def access_key_exists_validator(value: str, check_deactivated: bool = True):
         Deactivated keys will also raise a :class:`ValidationError`.
     :raises: :class:`ValidationError`
     """
-    _exists_validator(
-        value, AccessKey, ACCESS_KEY_LENGTH, check_deactivated=check_deactivated
-    )
+    _exists_validator(value, AccessKey, check_deactivated=check_deactivated)
 
 
 def course_token_exists_validator(value: str, check_deactivated: bool = True):
@@ -82,9 +93,7 @@ def course_token_exists_validator(value: str, check_deactivated: bool = True):
         a :class:`ValidationError`.
     :raises: :class:`ValidationError`
     """
-    _exists_validator(
-        value, CourseToken, COURSE_TOKEN_LENGTH, check_deactivated=check_deactivated
-    )
+    _exists_validator(value, CourseToken, check_deactivated=check_deactivated)
 
 
 def any_token_exists_validator(value: str, check_deactivated: bool = True):
