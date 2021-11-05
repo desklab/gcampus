@@ -14,54 +14,43 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from django.contrib import messages
-from django.core.exceptions import SuspiciousOperation, PermissionDenied
+from django.core.exceptions import PermissionDenied, BadRequest
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
-from django.views.generic import FormView, DetailView
+from django.views.generic import FormView, DetailView, CreateView
+from django.views.generic.edit import FormMixin
 
-from gcampus.auth import exceptions
+from gcampus.auth import exceptions, utils
 from gcampus.auth.forms.token import RegisterForm
-from gcampus.auth.models import CourseToken, AccessKey
+from gcampus.auth.models.token import CourseToken, AccessKey, COURSE_TOKEN_TYPE
 
 
-class RegisterFormView(FormView):
+class RegisterFormView(CreateView):
     form_class = RegisterForm
     template_name = "gcampusauth/forms/register.html"
     success_url = reverse_lazy("gcampuscore:course_overview")
 
     def form_valid(self, form):
-        if form.is_valid():
-            number_of_tokens = form.cleaned_data["number_of_tokens"]
-            school_name = form.cleaned_data["school_name"]
-            teacher_name = form.cleaned_data["teacher_name"]
-            teacher_email = form.cleaned_data["teacher_email"]
-            token_name = form.cleaned_data["token_name"]
-
-            course_token = CourseToken(
-                school_name=school_name,
-                teacher_name=teacher_name,
-                teacher_email=teacher_email,
-                token_name=token_name,
+        self.object = form.save()
+        number_of_tokens: int = form.instance.number_of_tokens
+        for i in range(number_of_tokens):
+            access_key = AccessKey.generate_access_key()
+            AccessKey(token=access_key, parent_token=self.object).save()
+        messages.success(
+            self.request,
+            _(
+                "You successfully registered a course. "
+                "This page serves as an overview and allows you to view your "
+                "course's access keys"
             )
-            course_token.save()
-            self.pk = course_token.pk
-            for i in range(number_of_tokens):
-                access_key = AccessKey.generate_access_key()
-                AccessKey(token=access_key, parent_token=course_token).save()
-            messages.success(
-                self.request,
-                _(
-                    "You successfully registered a course. "
-                    "This page serves as an overview and allows you to view your "
-                    "course's access keys"
-                )
-            )
-            return super(RegisterFormView, self).form_valid(form)
-        # TODO choose better exception
-        raise SuspiciousOperation("Something went wrong")
-
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form), status=200)
+        )
+        # Login with course token
+        utils.set_token(
+            self.request, self.object.token, COURSE_TOKEN_TYPE, self.object.token_name
+        )
+        # return super(FormMixin, self).form_valid(form)
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class RegisterSuccessView(DetailView):
