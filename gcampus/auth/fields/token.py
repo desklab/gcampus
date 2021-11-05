@@ -111,7 +111,10 @@ def any_token_exists_validator(value: str, check_deactivated: bool = True):
     """
     try:
         access_key_exists_validator(value, check_deactivated=check_deactivated)
-    except ValidationError:
+    except ValidationError as e:
+        if e.message == ACCESS_KEY_DEACTIVATED_ERROR:
+            # Key found but deactivated
+            raise  # This will re-raise the exception
         # Do not yet handle the exception. First check if a course token
         # exists
         course_token_exists_validator(value, check_deactivated=check_deactivated)
