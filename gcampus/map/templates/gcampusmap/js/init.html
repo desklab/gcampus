@@ -18,7 +18,7 @@
      */
     'use strict';
 
-    let mapboxgl = gcampusmap.mapboxgl;
+    let mapboxgl = gcampusmap['mapbox-gl'].mapboxgl;
 
     mapboxgl.accessToken = '{{ mapbox_access_token }}'
     const map = new mapboxgl.Map({
@@ -26,7 +26,7 @@
         style: '{{ mapbox_style }}',
         center: [{{ center_lng|unlocalize }}, {{ center_lat|unlocalize }}],
         zoom: {{ zoom }},
-        logoPosition: 'bottom-right'
+        logoPosition: 'bottom-left'
     });
     let nav = new mapboxgl.NavigationControl();
     map.addControl(nav, 'top-left');

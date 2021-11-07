@@ -31,7 +31,13 @@ def _is_current_view(request: HttpRequest, view_name: str) -> bool:
 @register.simple_tag(takes_context=True)
 def active_link(context: Context, view_name: str, yesno: str = "active,") -> str:
     request: HttpRequest = context["request"]
-    yes, no = yesno.split(",")
+    yes: str
+    no: str
+    if "," in yesno:
+        yes, no = yesno.split(",")
+    else:
+        yes = yesno
+        no = ""
     if _is_current_view(request, view_name):
         return yes
     else:

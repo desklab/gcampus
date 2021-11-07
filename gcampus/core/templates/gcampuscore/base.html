@@ -1,4 +1,4 @@
-{% load static auth_token%}
+{% load static auth_token i18n %}
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -10,7 +10,11 @@
     <meta charset="utf-8"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>{% block title %}
-        GewässerCampus
+        {% if page_title %}
+            {{ page_title }} - GewässerCampus
+        {% else %}
+            GewässerCampus
+        {% endif %}
     {% endblock %}</title>
     <meta name="description" content="{% block description %}{% endblock %}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -46,7 +50,28 @@
     <div class="row">
         {% include "gcampuscore/components/sidebar.html" %}
         <main class="{% block main_class %}{% endblock %}">
-            {% include "gcampuscore/components/header.html" %}
+            <nav class="navbar gcampus-navbar navbar-light bg-white fixed-top border-bottom navbar-expand">
+                <div class="container-fluid flex-nowrap">
+                    <div class="mw-75 flex-shrink-1" id="navbar-title">
+                        <button class="btn d-block d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-expanded="{{ sidebar_open|yesno:"true,false" }}" aria-controls="sidebar">
+                            Menu
+                        </button>
+                        <span class="navbar-brand">
+                            {% block navbar_title %}{% firstof page_title "No Page Title Provided" %}{% endblock %}
+                        </span>
+                    </div>
+                    <ul class="nav navbar-nav text-nowrap flex-nowrap">
+                        {% translate "New Measurement" as new_title %}
+                        {% include "gcampuscore/components/nav_item.html" with title=new_title icon="plus" view_name="gcampuscore:add_measurement" %}
+                        {% if authenticated %}
+                            {% include "gcampusauth/components/auth_menu.html" %}
+                        {% else %}
+                            {% translate "Log in" as auth_title %}
+                            {% include "gcampuscore/components/nav_item.html" with title=auth_title view_name="gcampusauth:verify" %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
             {% block content %}
             {% endblock %}
         </main>
@@ -59,14 +84,14 @@
     const SIDEBAR_STATE_COOKIE_NAME = '{{ sidebar_cookie_name }}';
 
     function setSidebarCookie(state) {
-        gcampuscore.setCookie(SIDEBAR_STATE_COOKIE_NAME, (state) ? "1" : "0", 90);
+        gcampuscore.main.setCookie(SIDEBAR_STATE_COOKIE_NAME, (state) ? "1" : "0", 90);
     }
 
-    let desiredSidebarState = gcampuscore.getCookie(SIDEBAR_STATE_COOKIE_NAME);
+    let desiredSidebarState = gcampuscore.main.getCookie(SIDEBAR_STATE_COOKIE_NAME);
 
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new gcampuscore.Tooltip(tooltipTriggerEl);
+        return new gcampuscore.main.Tooltip(tooltipTriggerEl);
     });
 
     const sidebarElement = document.getElementById('sidebar');
@@ -90,11 +115,18 @@
     sidebarElement.addEventListener('show.bs.collapse', function() {
         setSidebarCookie(true);
     });
-
+    const mainContent = document.querySelector('main');
+    if (mainContent !== undefined) {
+        mainContent.addEventListener('transitionend', function() {
+            for (let map in window._maps) {
+                window._maps[map].resize();
+            }
+        });
+    }
     {% if messages %}
         var toastElList = [].slice.call(document.querySelectorAll('.toast'));
         var toastList = toastElList.map(function (toastEl) {
-            let toast = new gcampuscore.Toast(toastEl, {delay: 10000});
+            let toast = new gcampuscore.main.Toast(toastEl, {delay: 10000});
             toast.show();
             return toast
         });

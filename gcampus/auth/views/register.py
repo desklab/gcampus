@@ -18,16 +18,19 @@ from django.core.exceptions import PermissionDenied, BadRequest
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 from django.views.generic import FormView, DetailView, CreateView
 from django.views.generic.edit import FormMixin
 
 from gcampus.auth import exceptions, utils
 from gcampus.auth.forms.token import RegisterForm
 from gcampus.auth.models.token import CourseToken, AccessKey, COURSE_TOKEN_TYPE
+from gcampus.core.views.base import TitleMixin
 
 
-class RegisterFormView(CreateView):
+class RegisterFormView(TitleMixin, CreateView):
     form_class = RegisterForm
+    title = gettext_lazy("Request Access Keys")
     template_name = "gcampusauth/forms/register.html"
     success_url = reverse_lazy("gcampuscore:course_overview")
 

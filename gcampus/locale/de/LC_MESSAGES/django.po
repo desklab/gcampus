@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-27 11:01+0200\n"
+"POT-Creation-Date: 2021-11-07 14:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,10 +62,14 @@ msgstr ""
 msgid "GCampus Map"
 msgstr "GCampus API"
 
-#: gcampus/settings/base.py:130
+#: gcampus/print/apps.py:23
+msgid "GCampus Print"
+msgstr "GCampus Print"
+
+#: gcampus/settings/base.py:146
 msgid "English"
 msgstr "Englisch"
 
-#: gcampus/settings/base.py:130
+#: gcampus/settings/base.py:146
 msgid "German"
 msgstr "Deutsch"

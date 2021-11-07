@@ -1,36 +1,31 @@
 {% load i18n auth_token %}
-<ul class="navbar-nav">
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-           role="button"
-           data-bs-toggle="dropdown" aria-expanded="false">
-            {% displaytoken user_token hidden=True %}
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-            {% if user_token_is_course_token %}
-                <li><a class="dropdown-item"
-                       href={% url "gcampuscore:course_measurements" %}>{% translate "Measurements of your Course" %}</a>
-                </li>
-                <li>
-                    <a class="dropdown-item"
-                       href={% url "gcampuscore:course_overview" %}>{% translate "Course Overview" %}</a>
-                </li>
-
-            {% else %}
-                <li><a class="dropdown-item"
-                       href={% url "gcampuscore:personal_measurements" %}>{% translate "Your Measurements" %}</a>
-                </li>
-                <li>
-                    <a class="dropdown-item"
-                       href={% url "gcampuscore:course_measurements" %}>{% translate "Course Measurements" %}</a>
-                </li>
-            {% endif %}
-
-
+<li class="nav-item dropdown ms-4">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+       role="button"
+       data-bs-toggle="dropdown" aria-expanded="false">
+        {% displaytoken user_token hidden=True %}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="navbarDropdownMenuLink">
+        {% if user_token_is_course_token %}
             <li><a class="dropdown-item"
-                   href={% url "gcampusauth:logout" %}>{% translate "Logout" %}</a>
+                   href={% url "gcampuscore:course_measurements" %}>{% translate "Measurements of your Course" %}</a>
             </li>
-
-        </ul>
-    </li>
-</ul>
+            <li>
+                <a class="dropdown-item"
+                   href={% url "gcampuscore:course_overview" %}>{% translate "Course Overview" %}</a>
+            </li>
+        {% else %}
+            <li><a class="dropdown-item"
+                   href={% url "gcampuscore:personal_measurements" %}>{% translate "Your Measurements" %}</a>
+            </li>
+            <li>
+                <a class="dropdown-item"
+                   href={% url "gcampuscore:course_measurements" %}>{% translate "Course Measurements" %}</a>
+            </li>
+        {% endif %}
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item"
+               href={% url "gcampusauth:logout" %}>{% translate "Logout" %}</a>
+        </li>
+    </ul>
+</li>

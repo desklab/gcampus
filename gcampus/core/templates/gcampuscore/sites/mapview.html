@@ -4,17 +4,11 @@
     {% load_mapbox_css %}
     {% load_mapbox_js %}
 {% endblock %}
-{% block main_class %}min-vh-100 px-0{% endblock %}
+{% block main_class %}min-vh-100 px-0 main-pt-0{% endblock %}
 {% block content %}
     <script>
         function loadCluster(event) {
             let map = event.target;
-            const mainContent = document.querySelector('main');
-            if (mainContent !== undefined) {
-                mainContent.addEventListener('transitionend', function() {
-                    window._maps.map.resize();
-                });
-            }
 
             map.addSource('measurements', {
                 type: 'geojson',

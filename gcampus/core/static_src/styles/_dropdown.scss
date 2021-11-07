@@ -15,18 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-.gcampus-navbar {
-  height: $gcampus-navbar-height;
-}
-
-#navbar-title {
-  overflow-x: hidden;
-  overflow-y: scroll;
-}
-
-main {
-  padding-top: calc(#{$gcampus-navbar-height} + #{map-get($spacers, 3)});
-  &.main-pt-0 {
-    padding-top: $gcampus-navbar-height;
-  }
+.dropdown-menu.show {
+  display: grid;
+  gap: .25rem;
+  padding: .5rem;
 }

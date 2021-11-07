@@ -148,7 +148,7 @@ let gcampuscoreConfig = (env, options) => {
             publicPath: '/static/gcampuscore',
             filename: 'js/[name].js',
             library: {
-                name: 'gcampuscore',
+                name: ['gcampuscore', '[name]'],
                 type: 'var'
             }
         },
@@ -179,7 +179,7 @@ let gcampusmapConfig = (env, options) => {
             publicPath: '/static/gcampusmap',
             filename: 'js/[name].js',
             library: {
-                name: 'gcampusmap',
+                name: ['gcampusmap', '[name]'],
                 type: 'var'
             }
         },
@@ -208,7 +208,7 @@ let gcampusauthConfig = (env, options) => {
             publicPath: '/static/gcampusauth',
             filename: 'js/[name].js',
             library: {
-                name: 'gcampusauth',
+                name: ['gcampusauth', '[name]'],
                 type: 'var'
             }
         },
@@ -239,7 +239,7 @@ let gcampusprintConfig = (env, options) => {
             publicPath: '/static/gcampusprint',
             filename: 'js/[name].js',
             library: {
-                name: 'gcampusprint',
+                name: ['gcampusprint', '[name]'],
                 type: 'var'
             }
         },

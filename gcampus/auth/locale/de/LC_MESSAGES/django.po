@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-11 22:24+0200\n"
+"POT-Creation-Date: 2021-11-07 14:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,6 +46,19 @@ msgstr ""
 msgid "Provided token is not invalid or does not exist."
 msgstr "Der eingegebene Schlüssel ist ungültig oder existiert nicht!"
 
+#: gcampus/auth/exceptions.py:26
+msgid ""
+"This access key has been deactivated and can no longer be used. Please "
+"contact the responsible teacher for more information."
+msgstr ""
+"Dieser Zugangscode wurde deaktiviert und kann nicht mehr verwendet "
+"werden. Bitte kontaktiere deine Lehrkraft für mehr Informationen."
+
+#: gcampus/auth/exceptions.py:30
+msgid "This course token has been deactivated and can no longer be used."
+msgstr "Dieser Kursschlüssel wurde deaktiviert und kann nicht mehr "
+"verwendet werden."
+
 #: gcampus/auth/forms/token.py:36 gcampus/auth/models/token.py:100
 msgid "Access Key"
 msgstr "Zugangscode"
@@ -80,10 +93,38 @@ msgstr "Kursschlüssel %(id)s"
 msgid "Access Key %(id)s"
 msgstr "Zugangscode %(id)s"
 
+#: gcampus/auth/templates/gcampusauth/components/auth_menu.html:11
+msgid "Measurements of your Course"
+msgstr ""
+
+#: gcampus/auth/templates/gcampusauth/components/auth_menu.html:15
+msgid "Course Overview"
+msgstr "Kursübersicht"
+
+#: gcampus/auth/templates/gcampusauth/components/auth_menu.html:19
+#, fuzzy
+#| msgid "Course Measurements"
+msgid "Your Measurements"
+msgstr "Messungen des Kurses"
+
+#: gcampus/auth/templates/gcampusauth/components/auth_menu.html:23
+#: gcampus/auth/templates/gcampusauth/sites/login_success.html:28
+msgid "Course Measurements"
+msgstr "Messungen des Kurses"
+
+#: gcampus/auth/templates/gcampusauth/components/auth_menu.html:28
 #: gcampus/auth/templates/gcampusauth/forms/logout.html:4
 #: gcampus/auth/templates/gcampusauth/forms/token.html:52
 msgid "Logout"
 msgstr "Abmelden"
+
+#: gcampus/auth/templates/gcampusauth/components/token.html:16
+msgid "Hide"
+msgstr "Verstecken"
+
+#: gcampus/auth/templates/gcampusauth/components/token.html:17
+msgid "Show"
+msgstr "Anzeigen"
 
 #: gcampus/auth/templates/gcampusauth/forms/logout.html:11
 msgid "You successfully logged out"
@@ -97,96 +138,82 @@ msgstr "Mit einem Zugangscode anmelden"
 msgid "Log in with a course token"
 msgstr "Mit einem Kursschlüssel anmelden"
 
-#: gcampus/auth/templates/gcampusauth/forms/register.html:4
-#: gcampus/auth/templates/gcampusauth/sites/register_success.html:4
-msgid "Request Access Keys"
-msgstr "Zugangscodes Anfordern"
-
-#: gcampus/auth/templates/gcampusauth/forms/register.html:12
-msgctxt "register heading"
-msgid "Register"
-msgstr "Registrieren"
-
-#: gcampus/auth/templates/gcampusauth/forms/register.html:14
+#: gcampus/auth/templates/gcampusauth/forms/register.html:11
 msgctxt "help text register"
 msgid ""
 "Register your class or\n"
-"course and generate a list of <b>access keys</b> for your students.\n"
-"These keys can be used to create and later edit measurements on\n"
-"GewässerCampus.\n"
-"<br>\n"
-"Alongside the generated access keys, you will also receive a\n"
-"<b>course key</b> that should be kept private. With this key you can\n"
-"view and edit all your student's measurements."
+"                            course and generate a list of <b>access keys</b> "
+"for your students.\n"
+"                            These keys can be used to create and later edit "
+"measurements on\n"
+"                            GewässerCampus.\n"
+"                            <br>\n"
+"                            Alongside the generated access keys, you will "
+"also receive a\n"
+"                            <b>course key</b> that should be kept private. "
+"With this key you can\n"
+"                            view and edit all your student's measurements."
 msgstr ""
 
-#: gcampus/auth/templates/gcampusauth/forms/register.html:35
+#: gcampus/auth/templates/gcampusauth/forms/register.html:33
 msgctxt "help text school name"
 msgid ""
 "The name of the\n"
-"school or educational institution requesting new tokens. This\n"
-"information will not be shared publicly but helps us to associate\n"
-"measurements with your school or institution."
+"                            school or educational institution requesting new "
+"tokens. This\n"
+"                            information will not be shared publicly but "
+"helps us to associate\n"
+"                            measurements with your school or institution."
 msgstr ""
 "Der Name der Schule oder Institution, für die die Zugangscodes generiert "
 "werden sollen. Diese \n"
 "Daten werden nur für eine bessere Zuordnung der Zugangscodes intern von "
 "desklab verwendet und nicht veröffentlicht."
 
-#: gcampus/auth/templates/gcampusauth/forms/register.html:51
+#: gcampus/auth/templates/gcampusauth/forms/register.html:49
 msgctxt "help text teacher name"
 msgid ""
 "Your name or the\n"
-"name of a representative. This information will also be kept private and\n"
-"is only used for communication."
+"                            name of a representative. This information will "
+"also be kept private and\n"
+"                            is only used for communication."
 msgstr ""
-"Ihr Name oder der Name der Person welche verantwortlich für die "
+"Dein Name oder der Name der Person welche verantwortlich für die "
 "Registrierung ist. Dieser Name wird \n"
 "nicht veröffentlicht und dient lediglich für die Kommunikation zwischen der "
 "Lehrkraft und desklab."
 
-#: gcampus/auth/templates/gcampusauth/forms/register.html:66
+#: gcampus/auth/templates/gcampusauth/forms/register.html:64
 msgctxt "help text course key name"
 msgid ""
-"You can choose to assign a name to the course key to\n"
-"    better differentiate the tokens from one another."
-msgstr "Vergeben Sie einen Namen für diesen Kurs um den Überblick zu behalten."
+"You can choose to assign a name to the\n"
+"                            course key to\n"
+"                            better differentiate the tokens from one another."
+msgstr "Vergebe einen Namen für diesen Kurs um den Überblick zu behalten."
 
-#: gcampus/auth/templates/gcampusauth/forms/register.html:80
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "    Your Email address will only be used to send you the Course Token and "
-#| "the Access Keys.\n"
-#| "<br>\n"
-#| "In case we need to contact you this Email address wil be used. "
+#: gcampus/auth/templates/gcampusauth/forms/register.html:79
 msgid ""
-"Your Email address will only be used to send you the Course Token and the "
-"Access Keys.<br>\n"
-"In case we need to contact you this Email address wil be used. "
+"Your Email address will only be used to send you the Course Token and the\n"
+"                            Access Keys.<br>\n"
+"                            In case we need to contact you this Email "
+"address wil be used. "
 msgstr ""
 "Diese E-Mail Adresse wird nur dafür verwendet, die Zugangscodes und den "
 "Kursschlüssel zu versenden \n"
 "<br>\n"
-"Diese E-Mail adresse wird auch verwendet, falls wir Sie kontaktieren müssen."
+"Diese E-Mail adresse wird auch verwendet, falls wir dich kontaktieren müssen."
 
 #: gcampus/auth/templates/gcampusauth/forms/register.html:94
-#, fuzzy, python-format
-#| msgctxt "help text number of tokens"
-#| msgid ""
-#| "\n"
-#| "The number of access keys you want to generate. You can create a maximum\n"
-#| "of %(maximum)s access keys at once.\n"
-#| "<br>\n"
-#| "Students may share one access key in a group so not everyone needs their\n"
-#| "own access key."
 msgctxt "help text number of tokens"
 msgid ""
-"The number of access keys you want to generate. You can create a maximum\n"
-"of %(maximum)s access keys at once.\n"
-"<br>\n"
-"Students may share one access key in a group so not everyone needs their\n"
-"own access key."
+"\n"
+"                            The number of access keys you want to generate. "
+"You can create a maximum\n"
+"                            of %(maximum)s access keys at once.\n"
+"                            <br>\n"
+"                            Students may share one access key in a group so "
+"not everyone needs their\n"
+"                            own access key."
 msgstr ""
 "Die Anzahl der zu generierenden Zugangscodes. Es können maximal \n"
 "%(maximum)s Zugangscodes auf einmal erzeugt werden.\n"
@@ -195,7 +222,7 @@ msgstr ""
 "kann\n"
 "auch von einer Gruppe verwendet werden."
 
-#: gcampus/auth/templates/gcampusauth/forms/register.html:103
+#: gcampus/auth/templates/gcampusauth/forms/register.html:104
 msgid "Register"
 msgstr "Registrieren"
 
@@ -239,21 +266,22 @@ msgstr "Du wurdest erfolgreich mit einem Kursschlüssel angemeldet"
 msgid "You successfully logged in with an access key"
 msgstr "Du wurdest erfolgreich mit einem Zugangscode angemeldet"
 
-#: gcampus/auth/templates/gcampusauth/sites/login_success.html:22
+#: gcampus/auth/templates/gcampusauth/sites/login_success.html:23
 msgid "Mapview"
 msgstr "Kartenansicht"
 
-#: gcampus/auth/templates/gcampusauth/sites/login_success.html:24
+#: gcampus/auth/templates/gcampusauth/sites/login_success.html:25
 msgid "All Measurements"
 msgstr "Alle Messungen"
 
-#: gcampus/auth/templates/gcampusauth/sites/login_success.html:27
-msgid "Course Measurements"
-msgstr "Messungen des Kurses"
-
-#: gcampus/auth/templates/gcampusauth/sites/login_success.html:30
+#: gcampus/auth/templates/gcampusauth/sites/login_success.html:31
 msgid "My Measurements"
 msgstr "Meine Messungen"
+
+#: gcampus/auth/templates/gcampusauth/sites/register_success.html:4
+#: gcampus/auth/views/register.py:33
+msgid "Request Access Keys"
+msgstr "Zugangscodes Anfordern"
 
 #: gcampus/auth/templates/gcampusauth/sites/register_success.html:10
 #, python-format
@@ -283,6 +311,18 @@ msgstr ""
 #: gcampus/auth/templates/gcampusauth/sites/register_success.html:40
 msgid "Send to my E-Mail"
 msgstr ""
+
+#: gcampus/auth/views/register.py:46
+msgid ""
+"You successfully registered a course. This page serves as an overview and "
+"allows you to view your course's access keys"
+msgstr ""
+"Der Kurs wurde erfolgreich registriert! Diese Seite dient als Übersicht "
+"über den Kurs und den damit verbundenen Zugangscodes."
+
+#~ msgctxt "register heading"
+#~ msgid "Register"
+#~ msgstr "Registrieren"
 
 #~ msgid "You logged in successfully"
 #~ msgstr "Du hast dich erfolgreich angemeldet"

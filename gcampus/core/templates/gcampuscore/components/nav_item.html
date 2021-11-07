@@ -1,9 +1,10 @@
-{% with current_view=request.resolver_match.view_name %}
-    <li class="nav-item">
-        <a href="{% url view_name %}"
-           class="nav-link link-dark px-2{% if current_view == view_name %} active" aria-current="page">{% else %}">{% endif %}
-            {{ title }}
-        </a>
-    </li>
-{% endwith %}
-
+{% load menu icon %}
+<li class="nav-item">
+    <a href="{% if view_name %}{% url view_name %}{% else %}#{% endif %}"
+       class="nav-link link-dark ms-4 {% active_link view_name yesno="active" %}" {% aria_current view_name %}>
+        {% if icon %}
+            {% icon icon width="18px" height="18px" %}
+        {% endif %}
+        {{ title }}
+    </a>
+</li>
