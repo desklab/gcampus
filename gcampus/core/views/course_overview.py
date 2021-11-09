@@ -20,12 +20,17 @@ from django.core.exceptions import (
     PermissionDenied,
     ObjectDoesNotExist,
     SuspiciousOperation,
+    FieldError
 )
 from django.http import HttpRequest, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.views.decorators.http import require_POST
 from django.views.generic.edit import FormView
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext
+
+from django.contrib import messages
 
 from gcampus.auth import utils, exceptions
 from gcampus.auth.exceptions import TOKEN_INVALID_ERROR, TOKEN_CREATE_PERMISSION_ERROR
@@ -42,6 +47,8 @@ from gcampus.core.models import Measurement
 from gcampus.auth.models.token import AccessKey, CourseToken
 
 from django.views.generic import ListView
+
+from gcampus.core.views.measurement_visibility import _check_general_permission
 
 TOKEN_FIELD_NAME = "gcampus_auth_token"
 
@@ -160,3 +167,22 @@ def activate_accesskey(request, pk):
             raise ObjectDoesNotExist(_("The Accesskey is probably already deactivated"))
         if not parent_token:
             raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
+
+@require_POST
+def generate_new_accesskeys(request):
+    token = get_token(request)
+    coursetoken: CourseToken = get_object_or_404(CourseToken, token=token)
+    num_new_accesskeys = request.POST.get("num_new_accesskeys")
+    if num_new_accesskeys is None:
+        raise PermissionDenied(FieldError)
+    else:
+        num_new_accesskeys = int(num_new_accesskeys)
+        for i in range(num_new_accesskeys):
+            access_key = AccessKey.generate_access_key()
+            AccessKey(token=access_key, parent_token=coursetoken).save()
+
+        messages.success(
+            request,
+            gettext(f'You successfully generated "{num_new_accesskeys}" new Accesskeys.'))
+        return redirect("gcampuscore:course_overview")
+

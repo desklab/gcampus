@@ -4,7 +4,6 @@
     {% translate "Course Overview" %}
 {% endblock %}
 {% block content %}
-
     <div class="container-fluid">
         {% csrf_token %}
         <div class="row">
@@ -15,7 +14,7 @@
             </div>
             <div class="col-5 bg-light">
                 <div class="col-7 p-5">
-{#                    TODO Remove this code #}
+                    {#                    TODO Remove this code #}
                     <button class="btn btn-primary btn">Show Coursetoken</button>
                 </div>
             </div>
@@ -116,6 +115,13 @@
                 {% endfor %}
                 </tbody>
             </table>
+        <div class="py-3 text-center">
+                <form method="post" action="{% url "gcampuscore:generate_new_accesskeys"%}">
+                    {% csrf_token %}
+                    <input type="number" min="1" step="1" max="30" placeholder="0" name="num_new_accesskeys"/>
+                    <input class="btn btn-success" type="submit" value="Generate new Accesskeys"/>
+                </form>
+            </div>
             <div class="py-5 text-center">
                 {% icon "file-text" class="css-class" height="42" width="42" %}
                 <button class="btn btn-lg btn-primary me-2"
@@ -132,6 +138,7 @@
                     {% translate "Send to my E-Mail" %}
                 </button>
             </div>
+
         </div>
     </div>
     {% displaytoken_js %}

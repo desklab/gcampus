@@ -20,7 +20,7 @@ from gcampus.core.views.course_overview import (
     AssociatedAccessKeys,
     CourseOverviewFormView,
     deactivate_accesskey,
-    activate_accesskey,
+    activate_accesskey, generate_new_accesskeys,
 )
 from gcampus.core.views.parameter import ParameterFormSetView
 from gcampus.core.views.measurement import (
@@ -57,6 +57,7 @@ urlpatterns = [
     path("course/overview", CourseOverviewFormView.as_view(), name="course_overview"),
     path("course/tokens/<int:pk>/deactivate", deactivate_accesskey, name="deactivate"),
     path("course/tokens/<int:pk>/activate", activate_accesskey, name="activate"),
+    path("course/overview/generate", generate_new_accesskeys, name="generate_new_accesskeys"),
 ]
 # fmt: on
 # pylint: enable=line-too-long
