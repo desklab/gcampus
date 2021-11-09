@@ -12,12 +12,6 @@
                     {% displaytoken form.instance.token hidden=True toggle=True %}
                 </h3>
             </div>
-            <div class="col-5 bg-light">
-                <div class="col-7 p-5">
-                    {#                    TODO Remove this code #}
-                    <button class="btn btn-primary btn">Show Coursetoken</button>
-                </div>
-            </div>
             {# Placeholder #}
             <div class="col-7 px-5 py-3">
                 <h4>{% translate "Coursetoken Name" %}
@@ -27,7 +21,7 @@
                 <h4>{% translate "E-Mail" %}</h4>
                 {{ form.instance.teacher_email }}
             </div>
-            <div class="col-5 bg-light px-5 py-3">
+            <div class="col-5  px-5 py-3">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     {% translate "Edit" %}
                 </button>
@@ -44,7 +38,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Edit E-Mail and Coursetoken name</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Edit E-Mail and Coursetoken Name</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
