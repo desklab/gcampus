@@ -96,7 +96,7 @@ class CourseOverviewFormView(FormView):
     def get(self, request, *args, **kwargs):
         token = utils.get_token(request)
         token_type = utils.get_token_type(request)
-        if token_type == "course" and token is not None:
+        if token_type == COURSE_TOKEN_TYPE and token is not None:
             self.instance = CourseToken.objects.get(token=token)
             return super(CourseOverviewFormView, self).get(request, *args, **kwargs)
         else:
@@ -105,7 +105,7 @@ class CourseOverviewFormView(FormView):
     def post(self, request, *args, **kwargs):
         token = utils.get_token(request)
         token_type = utils.get_token_type(request)
-        if token_type == "course" and token is not None:
+        if token_type == COURSE_TOKEN_TYPE and token is not None:
             self.instance = CourseToken.objects.get(token=token)
             return super(CourseOverviewFormView, self).post(request, *args, **kwargs)
         else:
@@ -175,7 +175,7 @@ def generate_new_accesskeys(request):
         form = GenerateAccesskeysForm(request.POST)
 
         if form.is_valid():
-            num_generate_accesskeys = int(form.data["generate_accesskeys"])
+            num_generate_accesskeys = form.cleaned_data["generate_accesskeys"]
             token = get_token(request)
             coursetoken: CourseToken = get_object_or_404(CourseToken, token=token)
             for i in range(num_generate_accesskeys):
