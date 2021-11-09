@@ -20,7 +20,7 @@ from django.core.exceptions import (
     PermissionDenied,
     ObjectDoesNotExist,
     SuspiciousOperation,
-    FieldError
+    FieldError, ValidationError
 )
 from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -132,6 +132,7 @@ class CourseOverviewFormView(FormView):
         context["generate_accesskeys_form"] = GenerateAccesskeysForm()
         return context
 
+
 @require_POST
 def deactivate_accesskey(request, pk):
     access_key = AccessKey.objects.get(pk=pk)
@@ -149,6 +150,7 @@ def deactivate_accesskey(request, pk):
             raise ObjectDoesNotExist(_("The Accesskey is probably already deactivated"))
         if not parent_token:
             raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
+
 
 @require_POST
 def activate_accesskey(request, pk):
@@ -168,15 +170,27 @@ def activate_accesskey(request, pk):
         if not parent_token:
             raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
 
+
 @require_POST
 def generate_new_accesskeys(request):
-
     if request.method == 'POST':
         form = GenerateAccesskeysForm(request.POST)
-
+        token = get_token(request)
+        coursetoken_object = CourseToken.objects.get(token=token)
         if form.is_valid():
             num_generate_accesskeys = form.cleaned_data["generate_accesskeys"]
-            token = get_token(request)
+
+            old_accesskeys = AccessKey.objects.filter(parent_token=coursetoken_object)
+            num_old_accesskeys = len(old_accesskeys)
+
+            if num_old_accesskeys + num_generate_accesskeys > 50:
+                messages.warning(
+                    request,
+                    gettext(
+                        f"You are only allowed to generate 50 Accesskeys per Coursetoken. You currently have registered {num_old_accesskeys} Accesskeys. You can only generate {50 - num_old_accesskeys} additional Accesskeys."
+                    ))
+                return redirect("gcampuscore:course_overview")
+
             coursetoken: CourseToken = get_object_or_404(CourseToken, token=token)
             for i in range(num_generate_accesskeys):
                 access_key = AccessKey.generate_access_key()
@@ -192,4 +206,3 @@ def generate_new_accesskeys(request):
         form = GenerateAccesskeysForm()
 
     return render(request, "gcampuscore/sites/overview/course_overview.html", {'form': form})
-
