@@ -132,7 +132,7 @@ class CourseOverviewFormView(FormView):
         context["generate_accesskeys_form"] = GenerateAccesskeysForm()
         return context
 
-
+@require_POST
 def deactivate_accesskey(request, pk):
     access_key = AccessKey.objects.get(pk=pk)
     parent_token = get_token(request)
@@ -141,9 +141,7 @@ def deactivate_accesskey(request, pk):
             # context = {'measurement': measurement[0]}
             access_key.deactivated = True
             access_key.save()
-            return render(
-                request, "gcampuscore/sites/overview/course_overview.html"
-            )
+            return redirect("gcampuscore:course_overview")
         else:
             raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
     else:
@@ -152,7 +150,7 @@ def deactivate_accesskey(request, pk):
         if not parent_token:
             raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
 
-
+@require_POST
 def activate_accesskey(request, pk):
     access_key = AccessKey.objects.get(pk=pk)
     parent_token = get_token(request)
@@ -161,9 +159,7 @@ def activate_accesskey(request, pk):
             # context = {'measurement': measurement[0]}
             access_key.deactivated = False
             access_key.save()
-            return render(
-                request, "gcampuscore/sites/overview/course_overview.html"
-            )
+            return redirect("gcampuscore:course_overview")
         else:
             raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
     else:

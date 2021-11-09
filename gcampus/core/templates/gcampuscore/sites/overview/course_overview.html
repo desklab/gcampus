@@ -91,7 +91,23 @@
                             {% displaytoken key.token hidden=False %}
                         </td>
                         <td>
+                            <form class="d-inline-block" method="post" action="
+                                    {% if key.deactivated %}{% url "gcampuscore:activate" pk=key.pk %}{% else %}{% url "gcampuscore:deactivate" pk=key.pk %}{% endif %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="measurement" value="{{ key.pk }}"/>
+
+                                {% if key.deactivated %}
+                                    <button class="btn btn-success">
+                                    {% translate "Activate" %}
+                                {% else %}
+                                    <button class="btn btn-danger">
+                                    {% translate "Deactivate" %}
+                                {% endif %}
+                                </button>
+                            </form>
+                            {% comment %}
                             {% if key.deactivated == False %}
+
                                 <a href="{% url "gcampuscore:deactivate" pk=key.pk %}"
                                    class="btn btn-sm btn-danger"
                                    role="button">
@@ -104,6 +120,7 @@
                                     {% translate "Activate Key" %}
                                 </a>
                             {% endif %}
+                            {% endcomment %}
                         </td>
                     </tr>
                 {% endfor %}
@@ -111,7 +128,7 @@
             </table>
             <div>
                 <form method="post" action="{% url "gcampuscore:generate_new_accesskeys" %}">
-                {% csrf_token %}
+                    {% csrf_token %}
                     {% with field=generate_accesskeys_form.generate_accesskeys %}
                         <div class="mb-3">
                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
@@ -121,7 +138,7 @@
                                 <div id="generate_accesskeys"></div>
                             </div>
                         </div>
-                         <button type="submit" class="btn btn-primary">{% translate "Generate new Accesskeys" %}</button>
+                        <button type="submit" class="btn btn-primary">{% translate "Generate new Accesskeys" %}</button>
                     {% endwith %}
                 </form>
             </div>
