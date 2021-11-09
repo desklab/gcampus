@@ -133,11 +133,15 @@ class CourseOverviewFormView(FormView):
 
 def deactivate_accesskey(request, pk):
     access_key = AccessKey.objects.filter(pk=pk)
+    access_key = AccessKey.objects.get(pk=pk)
     parent_token = get_token(request)
     if parent_token is not None and access_key:
         if access_key.parent_token == parent_token:
+        if access_key.parent_token.token == parent_token:
             # context = {'measurement': measurement[0]}
             access_key.update(deactivated=True)
+            access_key.deactivated = True
+            access_key.save()
             return render(
                 request, "gcampuscore/sites/overview/course_overview.html"
             )
@@ -152,11 +156,15 @@ def deactivate_accesskey(request, pk):
 
 def activate_accesskey(request, pk):
     access_key = AccessKey.objects.filter(pk=pk)
+    access_key = AccessKey.objects.get(pk=pk)
     parent_token = get_token(request)
     if parent_token is not None and access_key:
         if access_key.parent_token == parent_token:
+        if access_key.parent_token.token == parent_token:
             # context = {'measurement': measurement[0]}
             access_key.update(deactivated=False)
+            access_key.deactivated = False
+            access_key.save()
             return render(
                 request, "gcampuscore/sites/overview/course_overview.html"
             )
