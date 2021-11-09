@@ -50,6 +50,7 @@ from django.views.generic import ListView
 from django import forms
 
 from gcampus.core.views.measurement_visibility import _check_general_permission
+from gcampus.settings.base import REGISTER_MAX_TOKEN_NUMBER
 
 TOKEN_FIELD_NAME = "gcampus_auth_token"
 
@@ -183,11 +184,13 @@ def generate_new_accesskeys(request):
             old_accesskeys = AccessKey.objects.filter(parent_token=coursetoken_object)
             num_old_accesskeys = len(old_accesskeys)
 
-            if num_old_accesskeys + num_generate_accesskeys > 50:
+            if num_old_accesskeys + num_generate_accesskeys > REGISTER_MAX_TOKEN_NUMBER:
                 messages.warning(
                     request,
                     gettext(
-                        f"You are only allowed to generate 50 Accesskeys per Coursetoken. You currently have registered {num_old_accesskeys} Accesskeys. You can only generate {50 - num_old_accesskeys} additional Accesskeys."
+                        f"You are only allowed to generate {REGISTER_MAX_TOKEN_NUMBER} Accesskeys per Coursetoken. "
+                        f"You currently have registered {num_old_accesskeys} Accesskeys. You can only "
+                        f"generate {REGISTER_MAX_TOKEN_NUMBER - num_old_accesskeys} additional Accesskeys."
                     ))
                 return redirect("gcampuscore:course_overview")
 
