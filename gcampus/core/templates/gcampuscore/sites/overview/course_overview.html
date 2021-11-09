@@ -95,13 +95,13 @@
                                 <a href="{% url "gcampuscore:deactivate" pk=key.pk %}"
                                    class="btn btn-sm btn-danger"
                                    role="button">
-                                    {% translate "Deactivate Token" %}
+                                    {% translate "Deactivate Key" %}
                                 </a>
                             {% else %}
                                 <a href="{% url "gcampuscore:activate" pk=key.pk %}"
                                    class="btn btn-sm btn-success"
                                    role="button">
-                                    {% translate "Activate Token" %}
+                                    {% translate "Activate Key" %}
                                 </a>
                             {% endif %}
                         </td>
@@ -109,11 +109,20 @@
                 {% endfor %}
                 </tbody>
             </table>
-        <div class="py-3 text-center">
-                <form method="post" action="{% url "gcampuscore:generate_new_accesskeys"%}">
-                    {% csrf_token %}
-                    <input type="number" min="1" step="1" max="30" placeholder="0" name="num_new_accesskeys"/>
-                    <input class="btn btn-success" type="submit" value="Generate new Accesskeys"/>
+            <div>
+                <form method="post" action="{% url "gcampuscore:generate_new_accesskeys" %}">
+                {% csrf_token %}
+                    {% with field=generate_accesskeys_form.generate_accesskeys %}
+                        <div class="mb-3">
+                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                            {% include "gcampuscore/forms/components/helptext.html" %}
+                            <div class="rounded-2">
+                                {{ field }}
+                                <div id="generate_accesskeys"></div>
+                            </div>
+                        </div>
+                         <button type="submit" class="btn btn-primary">{% translate "Generate new Accesskeys" %}</button>
+                    {% endwith %}
                 </form>
             </div>
             <div class="py-5 text-center">
