@@ -21,7 +21,7 @@ from django.core.exceptions import PermissionDenied, SuspiciousOperation
 from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic import DetailView
+from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import TemplateResponseMixin, View
 
 from gcampus.auth import utils
@@ -29,16 +29,23 @@ from gcampus.auth.exceptions import TOKEN_EDIT_PERMISSION_ERROR
 from gcampus.auth.models.token import can_token_edit_measurement
 from gcampus.core.forms.measurement import ParameterFormSet, TOKEN_FIELD_NAME
 from gcampus.core.models import Parameter, Measurement
+from gcampus.core.views.base import TitleMixin
 
 
-class ParameterDetailView(DetailView):
-    model = Parameter
-
-
-class ParameterFormSetView(TemplateResponseMixin, View):
+class ParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
     formset_class = ParameterFormSet
     template_name = "gcampuscore/forms/parameters.html"
     next_view_name = "gcampuscore:measurement_detail"
+
+    def get_title(self) -> str:
+        return _("Edit Measurement {pk:d} - Measured Parameters").format(
+            pk=self.instance.pk
+        )
+
+    def get_context_data(self, **kwargs):
+        if "object" not in kwargs:
+            kwargs["object"] = self.instance
+        return super().get_context_data(**kwargs)
 
     def __init__(self, **kwargs):
         super(ParameterFormSetView, self).__init__(**kwargs)
@@ -48,11 +55,11 @@ class ParameterFormSetView(TemplateResponseMixin, View):
         formset.save()
         return HttpResponseRedirect(self.get_next_url(measurement_id))
 
-    def get_next_url(self, measurement_id):
-        return reverse(self.next_view_name, kwargs={"pk": measurement_id})
+    def get_next_url(self, pk):
+        return reverse(self.next_view_name, kwargs={"pk": pk})
 
     def get_formset(
-        self, request: HttpRequest, measurement_id: int
+        self, request: HttpRequest, pk: int
     ) -> ParameterFormSetView.formset_class:
         """Get Formset
 
@@ -66,11 +73,11 @@ class ParameterFormSetView(TemplateResponseMixin, View):
 
         :param request: The request object. Contains e.g. the POST form
             data.
-        :param measurement_id: This information comes from the URL and
+        :param pk: This information comes from the URL and
             contains the ID to the measurement entry that is being
             edited.
         """
-        self.instance = get_object_or_404(Measurement, id=measurement_id)
+        self.instance = get_object_or_404(Measurement, id=pk)
         token = utils.get_token(request)
         token_type = utils.get_token_type(request)
         if not can_token_edit_measurement(token, self.instance, token_type=token_type):
@@ -82,10 +89,10 @@ class ParameterFormSetView(TemplateResponseMixin, View):
         else:
             return self.formset_class(instance=self.instance)
 
-    def post(self, request: HttpRequest, measurement_id: int, *args, **kwargs):
+    def post(self, request: HttpRequest, pk: int, *args, **kwargs):
         # This will raise an exception if the provided token has
         # insufficient permissions
-        formset = self.get_formset(request, measurement_id)
+        formset = self.get_formset(request, pk)
         if formset.is_valid():
             form_token = formset.management_form.cleaned_data[TOKEN_FIELD_NAME]
             session_token = utils.get_token(request)
@@ -93,12 +100,12 @@ class ParameterFormSetView(TemplateResponseMixin, View):
                 # Someone modified the session or token provided by the
                 # form
                 raise SuspiciousOperation()
-            return self.form_valid(formset, measurement_id)
+            return self.form_valid(formset, pk)
         else:
-            return self.render_to_response({"formset": formset})
+            return self.render_to_response(self.get_context_data(formset=formset))
 
-    def get(self, request: HttpRequest, measurement_id: int, *args, **kwargs):
+    def get(self, request: HttpRequest, pk: int, *args, **kwargs):
         # This will raise an exception if the provided token has
         # insufficient permissions
-        formset = self.get_formset(request, measurement_id)
-        return self.render_to_response({"formset": formset})
+        formset = self.get_formset(request, pk)
+        return self.render_to_response(self.get_context_data(formset=formset))

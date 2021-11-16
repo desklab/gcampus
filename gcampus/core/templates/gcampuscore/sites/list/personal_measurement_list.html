@@ -44,7 +44,7 @@
                             <td>
                                 {% if measurement.token.token is not None %}
                                    {% if measurement|can_edit:request %}
-                                        <a href="{% url "gcampuscore:edit_parameters" measurement_id=measurement.pk %}"
+                                        <a href="{% url "gcampuscore:edit_parameters" pk=measurement.pk %}"
                                            class="btn btn-primary btn-md" role="button">
                                             {% translate "Edit Measurement" %}</a>
                                     {% else %}

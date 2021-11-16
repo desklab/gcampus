@@ -1,17 +1,18 @@
 {% extends "gcampuscore/base.html" %}
 {% load i18n static map auth_token %}
-{% block title %}
-    {% translate "Create new Measurement" %}
-{% endblock %}
 {% block extra_head %}
     {% load_mapbox_css %}
     {% load_mapbox_js %}
 {% endblock %}
 {% block main_class %}main-pt-0{% endblock %}
 {% block navbar_title %}
-    <span class="">{% translate "1. Information" %}</span>
+    <span>{% translate "1. Information" %}</span>
     <span class="text-muted ms-3">{% translate "2. Environment Parameters" %}</span>
-    <span class="text-muted ms-3">{% translate "3. Measured Parameters" %}</span>
+    {% if request.resolver_match.view_name == "gcampuscore:edit_measurement" %}
+        <a href="{% url "gcampuscore:edit_parameters" pk=object.pk %}" class="text-muted text-decoration-none ms-3">{% translate "3. Measured Parameters" %}</a>
+    {% else %}
+        <span class="text-muted text-decoration-none ms-3">{% translate "3. Measured Parameters" %}</span>
+    {% endif %}
 {% endblock %}
 {% block content %}
     <div class="container-fluid px-0">

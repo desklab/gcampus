@@ -19,18 +19,18 @@ from gcampus.core.apps import GCampusCoreAppConfig
 from gcampus.core.views.course_overview import (
     AssociatedAccessKeys,
     CourseOverviewFormView,
-    deactivate_accesskey,
-    activate_accesskey, generate_new_accesskeys,
+    deactivate_access_key,
+    activate_access_key, generate_new_access_keys,
 )
 from gcampus.core.views.parameter import ParameterFormSetView
 from gcampus.core.views.measurement import (
-    MeasurementFormView,
+    MeasurementCreateView,
     MeasurementListView,
     MeasurementDetailView,
     MeasurementMapView,
     PersonalMeasurementListView,
     CourseMeasurementListView,
-    HiddenCourseMeasurementListView,
+    HiddenCourseMeasurementListView, MeasurementEditView,
 )
 from gcampus.core.views.measurement_visibility import show, hide
 
@@ -39,25 +39,24 @@ from gcampus.core.views.measurement_visibility import show, hide
 # pylint: disable=line-too-long
 urlpatterns = [
     path("", MeasurementMapView.as_view(), name="mapview"),
-    # Add measurement and data
-    path("add/", MeasurementFormView.as_view(), name="add_measurement"),
-    path("add/<int:measurement_id>/data/", ParameterFormSetView.as_view(), name="add_parameters"),
-    # Edit measurement and data
-    # TODO @jnsdrtlf: editable measurement form
-    # path("edit/<int:measurement_id>", MeasurementFormView.as_view(), name="edit_measurement"),
-    path("edit/<int:measurement_id>/data/", ParameterFormSetView.as_view(), name="edit_parameters"),
+    # Add measurement and parameters
+    path("add/", MeasurementCreateView.as_view(), name="add_measurement"),
+    path("add/<int:pk>/parameters/", ParameterFormSetView.as_view(), name="add_parameters"),
+    # Edit measurement and parameters
+    path("edit/<int:pk>", MeasurementEditView.as_view(), name="edit_measurement"),
+    path("edit/<int:pk>/parameters/", ParameterFormSetView.as_view(), name="edit_parameters"),
     # Measurement list and details
     path("measurements/", MeasurementListView.as_view(), name="measurements"),
-    path("measurement/<int:pk>/detail", MeasurementDetailView.as_view(), name="measurement_detail"),
+    path("measurement/<int:pk>", MeasurementDetailView.as_view(), name="measurement_detail"),
     path("personal/measurements", PersonalMeasurementListView.as_view(), name="personal_measurements"),
     path("course/measurements", CourseMeasurementListView.as_view(), name="course_measurements"),
     path("measurement/hide", hide, name="hide"),
     path("measurement/show", show, name="show"),
     path("course/measurements/hidden", HiddenCourseMeasurementListView.as_view(), name="course_hidden"),
     path("course/overview", CourseOverviewFormView.as_view(), name="course_overview"),
-    path("course/tokens/<int:pk>/deactivate", deactivate_accesskey, name="deactivate"),
-    path("course/tokens/<int:pk>/activate", activate_accesskey, name="activate"),
-    path("course/overview/generate", generate_new_accesskeys, name="generate_new_accesskeys"),
+    path("course/tokens/<int:pk>/deactivate", deactivate_access_key, name="deactivate"),
+    path("course/tokens/<int:pk>/activate", activate_access_key, name="activate"),
+    path("course/overview/generate", generate_new_access_keys, name="generate_new_accesskeys"),
 ]
 # fmt: on
 # pylint: enable=line-too-long

@@ -135,7 +135,7 @@ class CourseOverviewFormView(FormView):
 
 
 @require_POST
-def deactivate_accesskey(request, pk):
+def deactivate_access_key(request, pk):
     access_key = AccessKey.objects.get(pk=pk)
     parent_token = get_token(request)
     if parent_token is not None and access_key:
@@ -154,7 +154,7 @@ def deactivate_accesskey(request, pk):
 
 
 @require_POST
-def activate_accesskey(request, pk):
+def activate_access_key(request, pk):
     access_key = AccessKey.objects.get(pk=pk)
     parent_token = get_token(request)
     if parent_token is not None and access_key:
@@ -173,7 +173,7 @@ def activate_accesskey(request, pk):
 
 
 @require_POST
-def generate_new_accesskeys(request):
+def generate_new_access_keys(request):
     if request.method == 'POST':
         form = GenerateAccesskeysForm(request.POST)
         token = get_token(request)

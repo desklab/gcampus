@@ -17,18 +17,17 @@ from __future__ import annotations
 
 from django.core.exceptions import (
     PermissionDenied,
-    SuspiciousOperation,
+    BadRequest,
 )
-from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView
 from django.views.generic import ListView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import CreateView, UpdateView
 
 from gcampus.auth import utils, exceptions
-from gcampus.auth.exceptions import TOKEN_CREATE_PERMISSION_ERROR
 from gcampus.auth.models.token import (
-    can_token_create_measurement,
     COURSE_TOKEN_TYPE,
     CourseToken,
 )
@@ -39,6 +38,7 @@ from gcampus.core.decorators import (
 from gcampus.core.filters import MeasurementFilter
 from gcampus.core.forms.measurement import MeasurementForm, TOKEN_FIELD_NAME
 from gcampus.core.models import Measurement
+from gcampus.core.views.base import TitleMixin
 
 
 class MeasurementListView(ListView):
@@ -110,9 +110,10 @@ class MeasurementMapView(ListView):
         return context
 
 
-class MeasurementFormView(FormView):
-    template_name = "gcampuscore/forms/measurement.html"
+class MeasurementCreateView(CreateView):
     form_class = MeasurementForm
+    title = _("Create new Measurement")
+    template_name = "gcampuscore/forms/measurement.html"
     next_view_name = "gcampuscore:add_parameters"
 
     @method_decorator(require_permission_create_measurement)
@@ -124,12 +125,24 @@ class MeasurementFormView(FormView):
         session_token = utils.get_token(self.request)
         if form_token != session_token:
             # Someone modified the session or token provided by the form
-            raise SuspiciousOperation()
-        instance: Measurement = form.save()
-        return HttpResponseRedirect(self.get_next_url(instance))
+            raise BadRequest()
+        return super(MeasurementCreateView, self).form_valid(form)
 
-    def get_next_url(self, instance: Measurement):
-        return reverse(self.next_view_name, kwargs={"measurement_id": instance.id})
+    def get_success_url(self):
+        return reverse(self.next_view_name, kwargs={"measurement_id": self.object.id})
+
+
+class MeasurementEditView(TitleMixin, UpdateView):
+    model = Measurement
+    form_class = MeasurementForm
+    template_name = "gcampuscore/forms/measurement.html"
+
+    def get_title(self) -> str:
+        return _("Edit Measurement {pk:d} - Information").format(pk=self.object.pk)
+
+    @method_decorator(require_permission_edit_measurement)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 class HiddenCourseMeasurementListView(ListView):

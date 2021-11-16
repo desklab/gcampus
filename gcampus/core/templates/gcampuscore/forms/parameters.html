@@ -5,15 +5,12 @@
 {% endblock %}
 {% block body_class %}bg-light{% endblock %}
 {% block navbar_title %}
-    <span class="text-muted">{% translate "1. Information" %}</span>
+    <a href="{% url "gcampuscore:edit_measurement" pk=object.pk %}" class="text-muted text-decoration-none">{% translate "1. Information" %}</a>
     <span class="text-muted ms-3">{% translate "2. Environment Parameters" %}</span>
     <span class="ms-3">{% translate "3. Measured Parameters" %}</span>
 {% endblock %}
 {% block content %}
     <div class="container pb-3">
-        <div class="py-5 text-center">
-            <h2>{% translate "Add Parameters" %}</h2>
-        </div>
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <form method="POST">

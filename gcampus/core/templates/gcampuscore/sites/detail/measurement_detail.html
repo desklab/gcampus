@@ -169,7 +169,7 @@
                     <div class="mt-auto">
                         {% if measurement.token.token is not None %}
                             {% if measurement.token.token == user_token or measurement.token.parent_token.token == user_token %}
-                                <a href="{% url "gcampuscore:edit_parameters" measurement_id=measurement.pk %}"
+                                <a href="{% url "gcampuscore:edit_parameters" pk=measurement.pk %}"
                                    class="btn btn-sm btn-secondary"
                                    role="button">
                                     {% translate "Edit Measurement" %}
