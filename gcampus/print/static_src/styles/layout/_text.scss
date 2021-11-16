@@ -1,0 +1,102 @@
+.rotated-section-heading {
+    transform-origin: top left;
+    left:0;
+    top:0;
+    transform: rotate(-90deg) translateX(-100%);
+    text-align: right;
+}
+
+.accesskey-container {
+    margin-left: 2cm;
+}
+
+.accesskey-element {
+    margin-bottom: 0.1cm;
+    width: 7.99cm;
+}
+
+.accesskey-counter {
+    padding-right: 0.2cm;
+    width: 0.4cm;
+    text-align: right;
+    color: $grey-600;
+}
+
+.accesskey-key {
+    background-color: $secondary;
+    border-radius: 0.1cm 0cm 0cm 0.1cm;
+    border: 0.02cm $secondary solid;
+    height: 0.45;
+    width: 2.2cm;
+    text-align: center;
+}
+
+.accesskey-notice {
+    color: white;
+    border: 0.02cm $secondary solid;
+    border-radius: 0cm 0.1cm 0.1cm 0cm;
+    height: 0.45;
+    width: 4cm;
+}
+
+.accesskey-description {
+    margin-left: 2cm;
+    margin-top: -1.2cm;
+    text-align: justify;
+}
+
+.coursedata-container {
+    overflow: hidden;
+    margin-left: 2cm;
+    margin-top: -1.2cm;
+}
+
+.coursetoken {
+    background-color: $primary;
+    border-radius: 0.2cm 0.2cm 0.2cm 0.2cm;
+    border: 0.02cm $primary solid;
+    height: 0.9;
+    width: 6cm;
+    text-align: center;
+}
+
+.document-description {
+    margin-left: 2cm;
+    margin-top: -1.2cm;
+}
+
+.student-document-description {
+    margin-left: 2cm;
+    margin-top: -1.2cm;
+}
+
+.coursetoken-description{
+    margin-top: 0.2cm;
+}
+
+.coursedata-content {
+    margin-bottom: 0.3cm;
+}
+
+.firststeps-content {
+    margin-bottom: 0.5cm;
+}
+
+.firststeps {
+    margin-left: 2cm;
+    margin-top: -1.2cm;
+}
+
+.accesskey-single {
+    background-color: $secondary;
+    border-radius: 0.2cm 0.2cm 0.2cm 0.2cm;
+    border: 0.02cm $secondary solid;
+    height: 1.1;
+    width: 5.2cm;
+    margin: 0.4cm 0.4cm 0.4cm 0.4cm;
+    text-align: center;
+}
+.access-description {
+    margin-top: 2.6cm;
+    text-align: justify;
+}
