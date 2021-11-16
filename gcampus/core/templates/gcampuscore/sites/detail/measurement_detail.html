@@ -5,6 +5,9 @@
     {% load_mapbox_js %}
 {% endblock %}
 {% block body_class %}d-flex flex-column min-vh-100{% endblock %}
+{% block navbar_title %}
+    <span class="">{{object}}</span>
+{% endblock %}
 {% block content %}
     <script>
         function loadCluster(event) {
@@ -128,7 +131,7 @@
         <div class="container py-4">
             <div class="row">
                 <div class="col-12 col-md-6 d-flex flex-column">
-                    <h3 class="mb-4 fw-light">{{ object }}</h3>
+                    {% comment %}<h3 class="mb-4 fw-light">{{ object }}</h3>{%  endcomment %}
                     {% if object.hidden %}
                         <h3 class="mb-4 text-danger"> {% translate "This measurement is hidden" %} </h3>
                     {% endif %}

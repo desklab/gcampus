@@ -3,6 +3,9 @@
 {% block title %}
     {% translate "Course Overview" %}
 {% endblock %}
+{% block navbar_title %}
+    <span class="">{% translate "Course Overview" %}</span>
+{% endblock %}
 {% block content %}
     <div class="container-fluid">
         {% csrf_token %}
