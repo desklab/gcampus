@@ -75,4 +75,29 @@
     border-bottom: 2pt solid var(--bs-gray-500);
 }
 
+@media print {
+    .token-char {
+        font-weight: 500;
+        font-family: 'JetBrains Mono', monospace;
+    }
+    
+    .token-digit {
+        color: #ffffff;
+    }
+    
+    .token-letter {
+        color: #ffffff;
+    }
+    
+    .token-separator {
+        display: inline-block;
+        font-family: 'JetBrains Mono', monospace;
+        width: 0.08cm;
+        margin-left: 0.04cm;
+        margin-right: 0.04cm;
+        margin-bottom: 0.06cm;
+        vertical-align: middle;
+    }
+}
+
 </style>

@@ -1,4 +1,4 @@
-<img width="100%" src="./artwork/Readme-Head.png">
+<img width="100%" src="./artwork/readme/readme-head.png">
 
 <br>
 <br>
