@@ -215,19 +215,17 @@ msgstr "Neue Messung Erstellen"
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:12
 #: gcampus/core/templates/gcampuscore/forms/parameters.html:8
 msgid "1. Information"
-msgstr ""
+msgstr "1. Informationen"
 
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:13
 #: gcampus/core/templates/gcampuscore/forms/parameters.html:9
 msgid "2. Environment Parameters"
-msgstr ""
+msgstr "2. Umwelt-Parameter"
 
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:14
 #: gcampus/core/templates/gcampuscore/forms/parameters.html:10
-#, fuzzy
-#| msgid "Add Parameters"
-msgid "2. Measured Parameters"
-msgstr "Parameter Hinzufügen"
+msgid "3. Measured Parameters"
+msgstr "3. Mess-Parameter"
 
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:110
 msgid "Save and Continue"
