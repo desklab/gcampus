@@ -16,14 +16,14 @@
 from typing import Type, Optional
 
 from django.core.exceptions import ValidationError
-from django.core.validators import EMPTY_VALUES
+from django.core.validators import EMPTY_VALUES, MaxValueValidator, MinValueValidator
 from django.forms import (
     ModelForm,
     inlineformset_factory,
     BaseInlineFormSet,
     IntegerField,
     CharField,
-    formsets,
+    formsets, Form,
 )
 from django.forms.formsets import ManagementForm  # noqa
 from django.forms.widgets import Select, Textarea, HiddenInput, NumberInput
@@ -65,6 +65,7 @@ from typing import Type, Optional
 
 from django.core.exceptions import ValidationError
 from django.core.validators import EMPTY_VALUES
+from django import forms
 from django.forms import (
     ModelForm,
     inlineformset_factory,
@@ -91,6 +92,8 @@ from gcampus.core.fields import SplitSplitDateTimeField
 from gcampus.core.models import Measurement, Parameter
 from gcampus.map.widgets import GeoPointWidget
 
+class GenerateAccesskeysForm(forms.Form):
+    generate_accesskeys = forms.IntegerField(label='Generate Accesskeys', min_value=1, max_value=30)
 
 class CourseOverviewForm(ModelForm):
     gcampus_auth_token = TokenField()

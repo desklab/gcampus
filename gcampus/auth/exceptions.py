@@ -15,7 +15,6 @@
 
 from django.utils.translation import ugettext_lazy as _
 
-
 TOKEN_EDIT_PERMISSION_ERROR = _("Token is not allowed to edit this measurement!")
 TOKEN_CREATE_PERMISSION_ERROR = _("Token is not allowed to create a measurement!")
 TOKEN_EMPTY_ERROR = _("No token has been provided to create or edit a measurement!")
@@ -29,3 +28,4 @@ ACCESS_KEY_DEACTIVATED_ERROR = _(
 COURSE_TOKEN_DEACTIVATED_ERROR = _(
     "This course token has been deactivated and can no longer be used."
 )
+

@@ -20,12 +20,17 @@ from django.core.exceptions import (
     PermissionDenied,
     ObjectDoesNotExist,
     SuspiciousOperation,
+    FieldError, ValidationError
 )
 from django.http import HttpRequest, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.views.decorators.http import require_POST
 from django.views.generic.edit import FormView
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext
+
+from django.contrib import messages
 
 from gcampus.auth import utils, exceptions
 from gcampus.auth.exceptions import TOKEN_INVALID_ERROR, TOKEN_CREATE_PERMISSION_ERROR
@@ -37,11 +42,15 @@ from gcampus.auth.models.token import (
     can_token_create_measurement,
 )
 from gcampus.auth.utils import get_token
-from gcampus.core.forms.course_overview import CourseOverviewForm
+from gcampus.core.forms.course_overview import CourseOverviewForm, GenerateAccesskeysForm
 from gcampus.core.models import Measurement
 from gcampus.auth.models.token import AccessKey, CourseToken
 
 from django.views.generic import ListView
+from django import forms
+
+from gcampus.core.views.measurement_visibility import _check_general_permission
+from gcampus.settings.base import REGISTER_MAX_TOKEN_NUMBER
 
 TOKEN_FIELD_NAME = "gcampus_auth_token"
 
@@ -88,7 +97,7 @@ class CourseOverviewFormView(FormView):
     def get(self, request, *args, **kwargs):
         token = utils.get_token(request)
         token_type = utils.get_token_type(request)
-        if token_type == "course" and token is not None:
+        if token_type == COURSE_TOKEN_TYPE and token is not None:
             self.instance = CourseToken.objects.get(token=token)
             return super(CourseOverviewFormView, self).get(request, *args, **kwargs)
         else:
@@ -97,7 +106,7 @@ class CourseOverviewFormView(FormView):
     def post(self, request, *args, **kwargs):
         token = utils.get_token(request)
         token_type = utils.get_token_type(request)
-        if token_type == "course" and token is not None:
+        if token_type == COURSE_TOKEN_TYPE and token is not None:
             self.instance = CourseToken.objects.get(token=token)
             return super(CourseOverviewFormView, self).post(request, *args, **kwargs)
         else:
@@ -121,19 +130,20 @@ class CourseOverviewFormView(FormView):
         token = utils.get_token(self.request)
         access_keys = AccessKey.objects.filter(parent_token__token=token)
         context["access_keys"] = access_keys
+        context["generate_accesskeys_form"] = GenerateAccesskeysForm()
         return context
 
 
+@require_POST
 def deactivate_accesskey(request, pk):
-    access_key = AccessKey.objects.filter(pk=pk)
+    access_key = AccessKey.objects.get(pk=pk)
     parent_token = get_token(request)
     if parent_token is not None and access_key:
-        if access_key.parent_token == parent_token:
+        if access_key.parent_token.token == parent_token:
             # context = {'measurement': measurement[0]}
-            access_key.update(deactivated=True)
-            return render(
-                request, "gcampuscore/sites/overview/course_overview.html"
-            )
+            access_key.deactivated = True
+            access_key.save()
+            return redirect("gcampuscore:course_overview")
         else:
             raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
     else:
@@ -143,16 +153,16 @@ def deactivate_accesskey(request, pk):
             raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
 
 
+@require_POST
 def activate_accesskey(request, pk):
-    access_key = AccessKey.objects.filter(pk=pk)
+    access_key = AccessKey.objects.get(pk=pk)
     parent_token = get_token(request)
     if parent_token is not None and access_key:
-        if access_key.parent_token == parent_token:
+        if access_key.parent_token.token == parent_token:
             # context = {'measurement': measurement[0]}
-            access_key.update(deactivated=False)
-            return render(
-                request, "gcampuscore/sites/overview/course_overview.html"
-            )
+            access_key.deactivated = False
+            access_key.save()
+            return redirect("gcampuscore:course_overview")
         else:
             raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
     else:
@@ -160,3 +170,42 @@ def activate_accesskey(request, pk):
             raise ObjectDoesNotExist(_("The Accesskey is probably already deactivated"))
         if not parent_token:
             raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
+
+
+@require_POST
+def generate_new_accesskeys(request):
+    if request.method == 'POST':
+        form = GenerateAccesskeysForm(request.POST)
+        token = get_token(request)
+        coursetoken_object = CourseToken.objects.get(token=token)
+        if form.is_valid():
+            num_generate_accesskeys = form.cleaned_data["generate_accesskeys"]
+
+            old_accesskeys = AccessKey.objects.filter(parent_token=coursetoken_object)
+            num_old_accesskeys = len(old_accesskeys)
+
+            if num_old_accesskeys + num_generate_accesskeys > REGISTER_MAX_TOKEN_NUMBER:
+                messages.warning(
+                    request,
+                    gettext(
+                        f"You are only allowed to generate {REGISTER_MAX_TOKEN_NUMBER} Accesskeys per Coursetoken. "
+                        f"You currently have registered {num_old_accesskeys} Accesskeys. You can only "
+                        f"generate {REGISTER_MAX_TOKEN_NUMBER - num_old_accesskeys} additional Accesskeys."
+                    ))
+                return redirect("gcampuscore:course_overview")
+
+            coursetoken: CourseToken = get_object_or_404(CourseToken, token=token)
+            for i in range(num_generate_accesskeys):
+                access_key = AccessKey.generate_access_key()
+                AccessKey(token=access_key, parent_token=coursetoken).save()
+
+            messages.success(
+                request,
+                gettext(f'You successfully generated {num_generate_accesskeys} new Accesskeys.'))
+            return redirect("gcampuscore:course_overview")
+
+    # Return blank form if GET request
+    else:
+        form = GenerateAccesskeysForm()
+
+    return render(request, "gcampuscore/sites/overview/course_overview.html", {'form': form})
