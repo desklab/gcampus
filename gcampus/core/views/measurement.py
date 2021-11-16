@@ -32,6 +32,10 @@ from gcampus.auth.models.token import (
     COURSE_TOKEN_TYPE,
     CourseToken,
 )
+from gcampus.core.decorators import (
+    require_permission_create_measurement,
+    require_permission_edit_measurement
+)
 from gcampus.core.filters import MeasurementFilter
 from gcampus.core.forms.measurement import MeasurementForm, TOKEN_FIELD_NAME
 from gcampus.core.models import Measurement
@@ -111,21 +115,9 @@ class MeasurementFormView(FormView):
     form_class = MeasurementForm
     next_view_name = "gcampuscore:add_parameters"
 
-    def get(self, request, *args, **kwargs):
-        token = utils.get_token(request)
-        token_type = utils.get_token_type(request)
-        if can_token_create_measurement(token, token_type=token_type):
-            return super(MeasurementFormView, self).get(request, *args, **kwargs)
-        else:
-            raise PermissionDenied(TOKEN_CREATE_PERMISSION_ERROR)
-
-    def post(self, request, *args, **kwargs):
-        token = utils.get_token(request)
-        token_type = utils.get_token_type(request)
-        if can_token_create_measurement(token, token_type=token_type):
-            return super(MeasurementFormView, self).post(request, *args, **kwargs)
-        else:
-            raise PermissionDenied(TOKEN_CREATE_PERMISSION_ERROR)
+    @method_decorator(require_permission_create_measurement)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
     def form_valid(self, form: MeasurementForm):
         form_token = form.cleaned_data[TOKEN_FIELD_NAME]
