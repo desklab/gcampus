@@ -1,11 +1,5 @@
 {% extends "gcampuscore/base.html" %}
 {% load i18n auth_token icon %}
-{% block title %}
-    {% translate "Course Overview" %}
-{% endblock %}
-{% block navbar_title %}
-    <span class="">{% translate "Course Overview" %}</span>
-{% endblock %}
 {% block content %}
     <div class="container-fluid">
         {% csrf_token %}
@@ -132,7 +126,7 @@
             <div>
                 <form method="post" action="{% url "gcampuscore:generate_new_accesskeys" %}">
                     {% csrf_token %}
-                    {% with field=generate_accesskeys_form.generate_accesskeys %}
+                    {% with field=generate_accesskeys_form.count %}
                         <div class="mb-3">
                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
                             {% include "gcampuscore/forms/components/helptext.html" %}

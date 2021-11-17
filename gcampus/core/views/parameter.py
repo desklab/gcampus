@@ -26,8 +26,10 @@ from django.views.generic.base import TemplateResponseMixin, View
 
 from gcampus.auth import utils
 from gcampus.auth.exceptions import TOKEN_EDIT_PERMISSION_ERROR
+from gcampus.auth.fields.token import HIDDEN_TOKEN_FIELD_NAME, \
+    check_form_and_request_token
 from gcampus.auth.models.token import can_token_edit_measurement
-from gcampus.core.forms.measurement import ParameterFormSet, TOKEN_FIELD_NAME
+from gcampus.core.forms.measurement import ParameterFormSet
 from gcampus.core.models import Parameter, Measurement
 from gcampus.core.views.base import TitleMixin
 
@@ -94,12 +96,7 @@ class ParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
         # insufficient permissions
         formset = self.get_formset(request, pk)
         if formset.is_valid():
-            form_token = formset.management_form.cleaned_data[TOKEN_FIELD_NAME]
-            session_token = utils.get_token(request)
-            if form_token != session_token:
-                # Someone modified the session or token provided by the
-                # form
-                raise SuspiciousOperation()
+            check_form_and_request_token(formset.management_form, self.request)
             return self.form_valid(formset, pk)
         else:
             return self.render_to_response(self.get_context_data(formset=formset))

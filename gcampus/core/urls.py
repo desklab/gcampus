@@ -17,7 +17,6 @@ from django.urls import path
 
 from gcampus.core.apps import GCampusCoreAppConfig
 from gcampus.core.views.course_overview import (
-    AssociatedAccessKeys,
     CourseOverviewFormView,
     deactivate_access_key,
     activate_access_key, generate_new_access_keys,

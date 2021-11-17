@@ -12,12 +12,14 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 from typing import Union, Type
 
-from django.core.exceptions import ValidationError
-from django.db.models import QuerySet
-from django.forms import CharField
+from django.core.exceptions import ValidationError, BadRequest
+from django.forms import CharField, BaseForm
+from django.http import HttpRequest
 
+from gcampus.auth import utils
 from gcampus.auth.exceptions import (
     TOKEN_EMPTY_ERROR,
     TOKEN_INVALID_ERROR,
@@ -31,6 +33,8 @@ from gcampus.auth.models.token import (
     ACCESS_KEY_LENGTH,
 )
 from gcampus.auth.widgets import HiddenTokenInput
+
+HIDDEN_TOKEN_FIELD_NAME = "gcampus_auth_token"
 
 
 def _exists_validator(
@@ -138,3 +142,15 @@ class TokenField(CharField):
             super(TokenField, self).validate(value)
         except ValidationError:
             raise ValidationError(TOKEN_EMPTY_ERROR)
+
+
+def check_form_and_request_token(form: BaseForm, request: HttpRequest):
+    if HIDDEN_TOKEN_FIELD_NAME not in form.cleaned_data:
+        raise ValueError(
+            "Form does not provide a hidden token field with the "
+            "name 'gcampus.auth.fields.token.HIDDEN_TOKEN_FIELD_NAME'"
+        )
+    request_token = utils.get_token(request)
+    form_token = form.cleaned_data[HIDDEN_TOKEN_FIELD_NAME]
+    if request_token != form_token:
+        raise BadRequest()

@@ -38,7 +38,7 @@ class AccessKeyForm(forms.Form):
         min_length=ACCESS_KEY_LENGTH,
         validators=[access_key_exists_validator],
     )
-    fields = ["token"]
+    fields = (TOKEN_FIELD_NAME,)
 
 
 class CourseTokenForm(forms.Form):
@@ -49,7 +49,7 @@ class CourseTokenForm(forms.Form):
         min_length=COURSE_TOKEN_LENGTH,
         validators=[course_token_exists_validator],
     )
-    fields = ["token"]
+    fields = (TOKEN_FIELD_NAME,)
 
 
 class RegisterForm(forms.ModelForm):

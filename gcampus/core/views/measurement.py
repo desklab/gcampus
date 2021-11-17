@@ -27,6 +27,8 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 
 from gcampus.auth import utils, exceptions
+from gcampus.auth.fields.token import HIDDEN_TOKEN_FIELD_NAME, \
+    check_form_and_request_token
 from gcampus.auth.models.token import (
     COURSE_TOKEN_TYPE,
     CourseToken,
@@ -36,7 +38,7 @@ from gcampus.core.decorators import (
     require_permission_edit_measurement
 )
 from gcampus.core.filters import MeasurementFilter
-from gcampus.core.forms.measurement import MeasurementForm, TOKEN_FIELD_NAME
+from gcampus.core.forms.measurement import MeasurementForm
 from gcampus.core.models import Measurement
 from gcampus.core.views.base import TitleMixin
 
@@ -110,7 +112,7 @@ class MeasurementMapView(ListView):
         return context
 
 
-class MeasurementCreateView(CreateView):
+class MeasurementCreateView(TitleMixin, CreateView):
     form_class = MeasurementForm
     title = _("Create new Measurement")
     template_name = "gcampuscore/forms/measurement.html"
@@ -121,11 +123,7 @@ class MeasurementCreateView(CreateView):
         return super().dispatch(*args, **kwargs)
 
     def form_valid(self, form: MeasurementForm):
-        form_token = form.cleaned_data[TOKEN_FIELD_NAME]
-        session_token = utils.get_token(self.request)
-        if form_token != session_token:
-            # Someone modified the session or token provided by the form
-            raise BadRequest()
+        check_form_and_request_token(form, self.request)
         return super(MeasurementCreateView, self).form_valid(form)
 
     def get_success_url(self):
@@ -136,6 +134,10 @@ class MeasurementEditView(TitleMixin, UpdateView):
     model = Measurement
     form_class = MeasurementForm
     template_name = "gcampuscore/forms/measurement.html"
+
+    def form_valid(self, form: MeasurementForm):
+        check_form_and_request_token(form, self.request)
+        return super(MeasurementEditView, self).form_valid(form)
 
     def get_title(self) -> str:
         return _("Edit Measurement {pk:d} - Information").format(pk=self.object.pk)

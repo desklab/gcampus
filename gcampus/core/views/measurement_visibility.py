@@ -20,6 +20,7 @@ from django.utils.translation import gettext
 from django.views.decorators.http import require_POST
 
 from gcampus.auth import exceptions
+from gcampus.auth.decorators import require_course_token
 from gcampus.auth.models.token import COURSE_TOKEN_TYPE
 from gcampus.auth.utils import (
     is_authenticated,
@@ -30,21 +31,13 @@ from gcampus.core.models import Measurement
 
 
 def _check_general_permission(request: HttpRequest):
-    if not is_authenticated(request):
-        # User is not authenticated
-        raise PermissionDenied()
-    token = get_token(request)
-    if token is None:
-        raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
-    if not get_token_type(request) == COURSE_TOKEN_TYPE:
-        # User does not have the correct token type
-        raise PermissionDenied(exceptions.TOKEN_EDIT_PERMISSION_ERROR)
     pk = request.POST.get("measurement", None)
     if pk is None:
         raise BadRequest()
 
 
 @require_POST
+@require_course_token
 def hide(request):
     _check_general_permission(request)
     token = get_token(request)
@@ -67,6 +60,7 @@ def hide(request):
 
 
 @require_POST
+@require_course_token
 def show(request):
     _check_general_permission(request)
     token = get_token(request)
