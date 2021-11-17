@@ -17,7 +17,6 @@ from __future__ import annotations
 
 from django.core.exceptions import (
     PermissionDenied,
-    BadRequest,
 )
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -27,8 +26,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 
 from gcampus.auth import utils, exceptions
-from gcampus.auth.fields.token import HIDDEN_TOKEN_FIELD_NAME, \
-    check_form_and_request_token
+from gcampus.auth.fields.token import check_form_and_request_token
 from gcampus.auth.models.token import (
     COURSE_TOKEN_TYPE,
     CourseToken,

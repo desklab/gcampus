@@ -64,7 +64,7 @@ class Measurement(util.DateModelMixin):
         help_text=_("An approximated location for the measurement"),
     )
     water_name = models.CharField(
-        blank=True,
+        blank=False,
         null=True,
         max_length=280,
         verbose_name=_("Water name"),
