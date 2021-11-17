@@ -53,9 +53,9 @@ class ParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
         super(ParameterFormSetView, self).__init__(**kwargs)
         self.instance: Optional[Parameter] = None
 
-    def form_valid(self, formset: ParameterFormSet, measurement_id):
+    def form_valid(self, formset: ParameterFormSet, pk):
         formset.save()
-        return HttpResponseRedirect(self.get_next_url(measurement_id))
+        return HttpResponseRedirect(self.get_next_url(pk))
 
     def get_next_url(self, pk):
         return reverse(self.next_view_name, kwargs={"pk": pk})

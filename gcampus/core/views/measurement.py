@@ -127,7 +127,7 @@ class MeasurementCreateView(TitleMixin, CreateView):
         return super(MeasurementCreateView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse(self.next_view_name, kwargs={"measurement_id": self.object.id})
+        return reverse(self.next_view_name, kwargs={"pk": self.object.id})
 
 
 class MeasurementEditView(TitleMixin, UpdateView):

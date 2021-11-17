@@ -23,9 +23,10 @@ from gcampus.auth.exceptions import (
     TOKEN_INVALID_ERROR,
     TOKEN_CREATE_PERMISSION_ERROR, ACCESS_KEY_DEACTIVATED_ERROR,
 )
+from gcampus.auth.fields.token import HIDDEN_TOKEN_FIELD_NAME
 from gcampus.auth.models import CourseToken, AccessKey
 from gcampus.auth.tests.test_token_auth import BaseAuthTest
-from gcampus.core.forms.measurement import MeasurementForm, TOKEN_FIELD_NAME
+from gcampus.core.forms.measurement import MeasurementForm
 
 
 class MeasurementFormTest(BaseAuthTest):
@@ -49,16 +50,16 @@ class MeasurementFormTest(BaseAuthTest):
         form_data.update(self.form_data_stub)
         form = MeasurementForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertIn(TOKEN_FIELD_NAME, form.errors)
+        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, form.errors)
         self.assertEqual(len(form.errors), 1)
-        self.assertEqual(form.errors[TOKEN_FIELD_NAME], ErrorList([TOKEN_EMPTY_ERROR]))
+        self.assertEqual(form.errors[HIDDEN_TOKEN_FIELD_NAME], ErrorList([TOKEN_EMPTY_ERROR]))
 
     def test_valid_token(self):
         form_data: dict = {
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": "Foo Bar",
         }
         form_data.update(self.form_data_stub)
@@ -70,16 +71,16 @@ class MeasurementFormTest(BaseAuthTest):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: "This Token Should Definitely Be Invalid",
+            HIDDEN_TOKEN_FIELD_NAME: "This Token Should Definitely Be Invalid",
             "water_name": "Foo Bar",
         }
         form_data.update(self.form_data_stub)
         form = MeasurementForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertIn(TOKEN_FIELD_NAME, form.errors)
+        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, form.errors)
         self.assertEqual(len(form.errors), 1)
         self.assertEqual(
-            form.errors[TOKEN_FIELD_NAME], ErrorList([TOKEN_INVALID_ERROR])
+            form.errors[HIDDEN_TOKEN_FIELD_NAME], ErrorList([TOKEN_INVALID_ERROR])
         )
 
     def test_deactivated_token(self):
@@ -91,16 +92,16 @@ class MeasurementFormTest(BaseAuthTest):
                 "name": "",
                 "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
                 "comment": "",
-                TOKEN_FIELD_NAME: token.token,
+                HIDDEN_TOKEN_FIELD_NAME: token.token,
                 "water_name": "Foo Bar",
             }
             form_data.update(self.form_data_stub)
             form = MeasurementForm(data=form_data)
             self.assertFalse(form.is_valid())
-            self.assertIn(TOKEN_FIELD_NAME, form.errors)
+            self.assertIn(HIDDEN_TOKEN_FIELD_NAME, form.errors)
             self.assertEqual(len(form.errors), 1)
             self.assertEqual(
-                form.errors[TOKEN_FIELD_NAME],
+                form.errors[HIDDEN_TOKEN_FIELD_NAME],
                 ErrorList([ACCESS_KEY_DEACTIVATED_ERROR]),
             )
         finally:
@@ -112,7 +113,7 @@ class MeasurementFormTest(BaseAuthTest):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": "Foo Bar gcampus_osm_id:42",
         }
         form_data.update(self.form_data_stub)
@@ -126,7 +127,7 @@ class MeasurementFormTest(BaseAuthTest):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": "Foo Bar",
         }
         form_data.update(self.form_data_stub)
@@ -141,7 +142,7 @@ class MeasurementFormTest(BaseAuthTest):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": f"Foo Bar gcampus_osm_id:{1e20:.0f}",
         }
         form_data.update(self.form_data_stub)
@@ -154,7 +155,7 @@ class MeasurementFormTest(BaseAuthTest):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": f"Foo Bar gcampus_osm_id:A BC",
         }
         form_data.update(self.form_data_stub)
@@ -167,7 +168,7 @@ class MeasurementFormTest(BaseAuthTest):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": f"Foo Bar gcampus_osm_id:",
         }
         form_data.update(self.form_data_stub)

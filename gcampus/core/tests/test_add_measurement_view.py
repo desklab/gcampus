@@ -16,16 +16,14 @@
 from datetime import datetime
 
 from django.forms.utils import ErrorList
-from django.test import TestCase
 from django.urls import reverse
 
 from gcampus.auth.exceptions import (
     TOKEN_EMPTY_ERROR,
     TOKEN_INVALID_ERROR,
 )
-from gcampus.auth.models import CourseToken, AccessKey
+from gcampus.auth.fields.token import HIDDEN_TOKEN_FIELD_NAME
 from gcampus.auth.tests.test_token_auth import BaseAuthTest
-from gcampus.core.forms.measurement import TOKEN_FIELD_NAME
 
 
 class MeasurementViewTest(BaseAuthTest):
@@ -49,7 +47,7 @@ class MeasurementViewTest(BaseAuthTest):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": "Foo Bar gcampus_osm_id:42",
         }
 
@@ -67,7 +65,7 @@ class MeasurementViewTest(BaseAuthTest):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: "00000000",
+            HIDDEN_TOKEN_FIELD_NAME: "00000000",
             "water_name": "Foo Bar gcampus_osm_id:42",
         }
         form_data.update(self.form_data_stub)
@@ -78,10 +76,10 @@ class MeasurementViewTest(BaseAuthTest):
         errors = response.context["form"].errors
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.context["form"].is_valid())
-        self.assertIn(TOKEN_FIELD_NAME, errors)
+        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(
-            errors[TOKEN_FIELD_NAME],
+            errors[HIDDEN_TOKEN_FIELD_NAME],
             ErrorList([TOKEN_INVALID_ERROR]),
         )
 
@@ -90,7 +88,7 @@ class MeasurementViewTest(BaseAuthTest):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.parent_token,
+            HIDDEN_TOKEN_FIELD_NAME: self.parent_token,
             "water_name": "Foo Bar gcampus_osm_id:42",
         }
         form_data.update(self.form_data_stub)
@@ -101,10 +99,10 @@ class MeasurementViewTest(BaseAuthTest):
         errors = response.context["form"].errors
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.context["form"].is_valid())
-        self.assertIn(TOKEN_FIELD_NAME, errors)
+        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(
-            errors[TOKEN_FIELD_NAME],
+            errors[HIDDEN_TOKEN_FIELD_NAME],
             ErrorList([TOKEN_INVALID_ERROR]),
         )
 
@@ -113,7 +111,7 @@ class MeasurementViewTest(BaseAuthTest):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token + "0",
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token + "0",
             "water_name": "Foo Bar gcampus_osm_id:42",
         }
         form_data.update(self.form_data_stub)
@@ -125,10 +123,10 @@ class MeasurementViewTest(BaseAuthTest):
 
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.context["form"].is_valid())
-        self.assertIn(TOKEN_FIELD_NAME, errors)
+        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(
-            errors[TOKEN_FIELD_NAME],
+            errors[HIDDEN_TOKEN_FIELD_NAME],
             ErrorList([TOKEN_INVALID_ERROR]),
         )
 
@@ -137,7 +135,7 @@ class MeasurementViewTest(BaseAuthTest):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": "Foo Bar gcampus_osm_id:42",
         }
         form_data.update(self.form_data_stub)
@@ -162,9 +160,9 @@ class MeasurementViewTest(BaseAuthTest):
 
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.context["form"].is_valid())
-        self.assertIn(TOKEN_FIELD_NAME, errors)
+        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(
-            errors[TOKEN_FIELD_NAME],
+            errors[HIDDEN_TOKEN_FIELD_NAME],
             ErrorList([TOKEN_EMPTY_ERROR]),
         )
