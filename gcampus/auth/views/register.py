@@ -36,7 +36,7 @@ class RegisterFormView(TitleMixin, CreateView):
 
     def form_valid(self, form):
         self.object = form.save()
-        number_of_tokens: int = form.instance.number_of_tokens
+        number_of_tokens: int = form.cleaned_data["number_of_tokens"]
         for i in range(number_of_tokens):
             access_key = AccessKey.generate_access_key()
             AccessKey(token=access_key, parent_token=self.object).save()
