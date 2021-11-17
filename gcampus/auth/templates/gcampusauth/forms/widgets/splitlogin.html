@@ -1,0 +1,19 @@
+{% load i18n %}
+<div class="d-flex flex-row align-items-center{% if class %} {{ class }}{% endif %}">
+    <div class="pe-3 d-flex flex-row justify-content-end" style="min-width: 75px;">
+
+    </div>
+    <div class="pe-3 d-flex flex-row align-items-end">
+        {% spaceless %}
+            {% for widget in widget.subwidgets %}
+                <input type="text"
+                       class="autofocus text-center form-control appearance-textfield form-control-sm{% if not forloop.first %} ms-1{% endif %}{% if not forloop.last %} me-1{% endif %}"
+                       style="width: 4em;" id="{{ widget.name }}"
+                       name="{{ widget.name }}"
+                        {% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}
+                        {% include "django/forms/widgets/attrs.html" %}>{% if not forloop.last %}-{% endif %}
+            {% endfor %}
+        {% endspaceless %}
+    </div>
+</div>
+

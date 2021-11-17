@@ -13,7 +13,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from django.forms import HiddenInput
+from django.forms import HiddenInput, TextInput, MultiWidget
 
 
 class HiddenTokenInput(HiddenInput):
@@ -45,3 +45,41 @@ class HiddenTokenInput(HiddenInput):
             the token value.
         """
         return ""
+
+
+class SplitTokenWidget(MultiWidget):
+    template_name = "gcampusauth/forms/widgets/splitlogin.html"
+
+    def __init__(self):
+        attrs = {
+            "maxlength": 4,
+        }
+        widgets = (
+            TextInput(attrs=attrs),
+            TextInput(attrs=attrs),
+            TextInput(attrs=attrs),
+        )
+        super().__init__(widgets)
+
+    def decompress(self, value):
+        if value:
+            return [f"{value[:4]}", f"{value[4:8]}", f"{value[8:]}"]
+        return [None, None, None]
+
+class SplitKeyWidget(MultiWidget):
+    template_name = "gcampusauth/forms/widgets/splitlogin.html"
+
+    def __init__(self):
+        attrs = {
+            "maxlength": 4,
+        }
+        widgets = (
+            TextInput(attrs=attrs),
+            TextInput(attrs=attrs),
+        )
+        super().__init__(widgets)
+
+    def decompress(self, value):
+        if value:
+            return [f"{value[:4]}", f"{value[4:]}"]
+        return [None, None]

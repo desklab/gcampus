@@ -32,7 +32,7 @@ from gcampus.auth.models.token import (
     COURSE_TOKEN_LENGTH,
     ACCESS_KEY_LENGTH,
 )
-from gcampus.auth.widgets import HiddenTokenInput
+from gcampus.auth.widgets import HiddenTokenInput, SplitTokenWidget, SplitKeyWidget
 
 HIDDEN_TOKEN_FIELD_NAME = "gcampus_auth_token"
 
@@ -154,3 +154,33 @@ def check_form_and_request_token(form: BaseForm, request: HttpRequest):
     form_token = form.cleaned_data[HIDDEN_TOKEN_FIELD_NAME]
     if request_token != form_token:
         raise BadRequest()
+
+class SplitTokenField(CharField):
+    widget = SplitTokenWidget
+
+    def to_python(self, value):
+        """
+        Validate that the input is of the correct length.
+        """
+        if isinstance(value, list):
+            if len(value) == 3:
+                return "".join(value)
+            else:
+                raise ValueError("Expected SplitTokenWidget to return a list of length 3 but"
+                    f" got {len(value)}")
+        return super(SplitTokenField, self).to_python(value)
+
+class SplitKeyField(CharField):
+    widget = SplitKeyWidget
+
+    def to_python(self, value):
+        """
+        Validate that the input is of the correct length.
+        """
+        if isinstance(value, list):
+            if len(value) == 2:
+                return "".join(value)
+            else:
+                raise ValueError("Expected SplitTokenWidget to return a list of length 3 but"
+                    f" got {len(value)}")
+        return super(SplitKeyField, self).to_python(value)

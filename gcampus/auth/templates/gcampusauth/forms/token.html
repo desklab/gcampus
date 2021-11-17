@@ -36,10 +36,21 @@
                     {% csrf_token %}
                     {# Token #}
                     {% with form.token as field %}
+                <div class="mb-3">
+                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                    {{ field }}
+                    {% if field.errors %}
+                        <small class="text-danger">{{ field.errors }}</small>
+                    {% endif %}
+                </div>
+            {% endwith %}
+                {% comment %}
+                    {% with form.token as field %}
                         <div class="mb-3">
                             {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
                         </div>
                     {% endwith %}
+                    {% endcomment %}
                 </div>
                 {% if not authenticated %}
                     <div class="col-lg-2">
@@ -49,18 +60,16 @@
                     </div>
                 {% else %}
                     <div class="button-box col-lg-12">
-                        <a href="/logout" class="btn btn-lg btn-danger" role="button">{% translate "Logout" %}</a>
+                        <a href="/logout" class="btn btn btn-danger" role="button">{% translate "Logout" %}</a>
                         <button class="btn btn-primary btn-lg">
                             {% translate "Log in with new Token" %}
                         </button>
                     </div>
                 {% endif %}
             </div>
-        {% for error, msg in form.errors.items %}
-                        <span class="text-danger">{{ msg }}</span>
-                    {% endfor %}
         </form>
     </div>
-    </div>
 {% endblock %}
-
+{% block extra_body %}
+    <script type="text/javascript" src="{% static 'gcampuscore/js/autofocus.js' %}"></script>
+{% endblock %}
