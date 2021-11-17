@@ -31,7 +31,7 @@
 
 <body class="{% block body_class %}{% endblock %}">
 {% if messages %}
-    <div role="alert" aria-live="assertive" aria-atomic="true" class="position-absolute bottom-0 end-0">
+    <div role="alert" aria-live="assertive" aria-atomic="true" class="position-fixed bottom-0 end-0">
         <div class="toast-container p-3">
             {% for message in messages %}
                 <div class="toast align-items-center text-white {% if message.tags %}bg-{{ message.tags }}{% else %}bg-light{% endif %} border-0" role="alert" aria-live="assertive" aria-atomic="true">
