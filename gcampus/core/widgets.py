@@ -96,7 +96,7 @@ class SplitDateWidget(MultiWidget):
     def decompress(self, value: datetime.date):
         if value:
             return [f"{value.day:02d}", f"{value.month:02d}", f"{value.year:02d}"]
-        return [None, None]
+        return [None, None, None]
 
 
 class SplitSplitDateTimeWidget(MultiWidget):
