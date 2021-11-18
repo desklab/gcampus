@@ -49,3 +49,4 @@ def require_token_type(token_type: Union[str, List[str]]):
 
 require_access_key = require_token_type([ACCESS_TOKEN_TYPE])
 require_course_token = require_token_type([COURSE_TOKEN_TYPE])
+require_any_token = require_token_type([ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE])
