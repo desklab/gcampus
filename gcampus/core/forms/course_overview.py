@@ -19,7 +19,7 @@ from django.forms.formsets import ManagementForm  # noqa
 from gcampus.auth.fields.token import (
     TokenField,
     course_token_exists_validator,
-    HIDDEN_TOKEN_FIELD_NAME
+    HIDDEN_TOKEN_FIELD_NAME,
 )
 from gcampus.auth.models.token import (
     CourseToken,
@@ -27,7 +27,7 @@ from gcampus.auth.models.token import (
 
 
 class GenerateAccessKeysForm(forms.Form):
-    count = forms.IntegerField(label='Generate Accesskeys', min_value=1, max_value=30)
+    count = forms.IntegerField(label="Generate Accesskeys", min_value=1, max_value=30)
 
 
 class CourseOverviewForm(forms.ModelForm):

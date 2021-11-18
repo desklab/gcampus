@@ -30,4 +30,3 @@ ACCESS_KEY_DEACTIVATED_ERROR = _(
 COURSE_TOKEN_DEACTIVATED_ERROR = _(
     "This course token has been deactivated and can no longer be used."
 )
-

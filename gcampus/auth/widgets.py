@@ -49,10 +49,7 @@ class HiddenTokenInput(HiddenInput):
 
 
 def split_token_chunks(token: str, chunk_size: int = 4) -> List[Optional[str]]:
-    return [
-        token[i:i + chunk_size]
-        for i in range(0, len(token), chunk_size)
-    ]
+    return [token[i : i + chunk_size] for i in range(0, len(token), chunk_size)]
 
 
 class SplitTokenWidget(MultiWidget):

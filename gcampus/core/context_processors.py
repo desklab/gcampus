@@ -3,16 +3,11 @@ from django.http import HttpRequest
 
 
 def get_version(request: HttpRequest) -> dict:
-    return {
-        "GCAMPUS_VERSION": settings.GCAMPUS_VERSION
-    }
+    return {"GCAMPUS_VERSION": settings.GCAMPUS_VERSION}
 
 
 def sidebar(request: HttpRequest) -> dict:
     cookie_name: str = getattr(settings, "SIDEBAR_STATE_COOKIE_NAME", "gcampus_sidebar")
     # Sidebar is open by default
     sidebar_open: bool = bool(request.COOKIES.get(cookie_name, "1") == "1")
-    return {
-        "sidebar_cookie_name": cookie_name,
-        "sidebar_open": sidebar_open
-    }
+    return {"sidebar_cookie_name": cookie_name, "sidebar_open": sidebar_open}

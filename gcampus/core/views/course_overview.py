@@ -14,9 +14,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from django.contrib import messages
-from django.core.exceptions import (
-    PermissionDenied
-)
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
 from django.utils.decorators import method_decorator
@@ -32,7 +30,7 @@ from gcampus.auth.models.token import AccessKey, CourseToken
 from gcampus.auth.utils import get_token
 from gcampus.core.forms.course_overview import (
     CourseOverviewForm,
-    GenerateAccessKeysForm
+    GenerateAccessKeysForm,
 )
 from gcampus.core.views.base import TitleMixin
 from gcampus.settings.base import REGISTER_MAX_TOKEN_NUMBER
@@ -122,7 +120,8 @@ def generate_new_access_keys(request):
                 ).format(
                     max_count=max_count,
                     current_count=current_count,
-                    allowed_count=allowed_count)
+                    allowed_count=allowed_count,
+                ),
             )
             return redirect("gcampuscore:course_overview")
 
@@ -134,7 +133,7 @@ def generate_new_access_keys(request):
             request,
             gettext("You successfully generated {count:d} new access keys").format(
                 count=count
-            )
+            ),
         )
     else:
         for errors in form.errors.values():

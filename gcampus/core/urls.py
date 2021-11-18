@@ -19,7 +19,8 @@ from gcampus.core.apps import GCampusCoreAppConfig
 from gcampus.core.views.course_overview import (
     CourseOverviewFormView,
     deactivate_access_key,
-    activate_access_key, generate_new_access_keys,
+    activate_access_key,
+    generate_new_access_keys,
 )
 from gcampus.core.views.parameter import ParameterFormSetView
 from gcampus.core.views.measurement import (
@@ -29,7 +30,8 @@ from gcampus.core.views.measurement import (
     MeasurementMapView,
     PersonalMeasurementListView,
     CourseMeasurementListView,
-    HiddenCourseMeasurementListView, MeasurementEditView,
+    HiddenCourseMeasurementListView,
+    MeasurementEditView,
 )
 from gcampus.core.views.measurement_visibility import show, hide
 

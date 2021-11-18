@@ -33,7 +33,7 @@ from gcampus.auth.models.token import (
 )
 from gcampus.core.decorators import (
     require_permission_create_measurement,
-    require_permission_edit_measurement
+    require_permission_edit_measurement,
 )
 from gcampus.core.filters import MeasurementFilter
 from gcampus.core.forms.measurement import MeasurementForm
@@ -43,7 +43,7 @@ from gcampus.core.views.base import TitleMixin
 from gcampus.core.views.measurement.list import (
     MeasurementListView,
     PersonalMeasurementListView,
-    CourseMeasurementListView
+    CourseMeasurementListView,
 )
 
 

@@ -168,7 +168,6 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
         self.check_form_errors(login_response, error_dict)
 
 
-
 class CourseTokenAuthTest(BaseTokenKeyTest):
     def get_login_url(self) -> str:
         return "gcampusauth:course_token_form"

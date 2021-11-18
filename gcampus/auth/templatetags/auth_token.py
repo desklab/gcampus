@@ -27,8 +27,13 @@ from django_filters.constants import EMPTY_VALUES
 
 from gcampus.auth import utils
 from gcampus.auth.exceptions import TOKEN_EMPTY_ERROR
-from gcampus.auth.models.token import can_token_edit_measurement, COURSE_TOKEN_LENGTH, \
-    COURSE_TOKEN_TYPE, ACCESS_TOKEN_TYPE, ACCESS_KEY_LENGTH
+from gcampus.auth.models.token import (
+    can_token_edit_measurement,
+    COURSE_TOKEN_LENGTH,
+    COURSE_TOKEN_TYPE,
+    ACCESS_TOKEN_TYPE,
+    ACCESS_KEY_LENGTH,
+)
 from gcampus.auth.utils import get_token, get_token_type
 from gcampus.core.models import Measurement
 
@@ -130,7 +135,7 @@ def displaytoken(
     token: str,
     css_class: Optional[str] = None,
     hidden: bool = True,
-    toggle: bool = False
+    toggle: bool = False,
 ) -> dict:
     token_length: int = len(token)
     token_type: str
@@ -188,4 +193,3 @@ def _wrap_token_character(character: str, hide: bool = False) -> str:
     if hide:
         return f'<span class="token-char token-hidden">*</span>'
     return f'<span class="token-char token-{character_type}">{character}</span>'
-

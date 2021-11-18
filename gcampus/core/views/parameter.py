@@ -26,8 +26,10 @@ from django.views.generic.base import TemplateResponseMixin, View
 
 from gcampus.auth import utils
 from gcampus.auth.exceptions import TOKEN_EDIT_PERMISSION_ERROR
-from gcampus.auth.fields.token import HIDDEN_TOKEN_FIELD_NAME, \
-    check_form_and_request_token
+from gcampus.auth.fields.token import (
+    HIDDEN_TOKEN_FIELD_NAME,
+    check_form_and_request_token,
+)
 from gcampus.auth.models.token import can_token_edit_measurement
 from gcampus.core.forms.measurement import ParameterFormSet
 from gcampus.core.models import Parameter, Measurement

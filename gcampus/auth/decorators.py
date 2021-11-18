@@ -21,7 +21,9 @@ from django.http import HttpRequest
 
 from gcampus.auth import utils
 from gcampus.auth.exceptions import (
-    TOKEN_PERMISSION_ERROR, TOKEN_EMPTY_ERROR, UNAUTHENTICATED_ERROR
+    TOKEN_PERMISSION_ERROR,
+    TOKEN_EMPTY_ERROR,
+    UNAUTHENTICATED_ERROR,
 )
 from gcampus.auth.models.token import ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE
 from gcampus.core.models.util import EMPTY
@@ -43,7 +45,9 @@ def require_token_type(token_type: Union[str, List[str]]):
             if request_token_type not in token_type:
                 raise PermissionDenied(TOKEN_PERMISSION_ERROR)
             return f(request, *args, **kwargs)
+
         return wrapper
+
     return decorator
 
 

@@ -42,7 +42,7 @@ def render(document: str, context: Optional[dict] = None) -> Document:
     request.session.save()
 
     document_str = render_to_string(
-        f"gcampusprint/documents/{document}.html", 
+        f"gcampusprint/documents/{document}.html",
         context=context,
         request=request,
     )

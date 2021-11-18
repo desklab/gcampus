@@ -12,20 +12,3 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-from typing import Optional
-
-from django.views.generic.base import ContextMixin
-
-
-class TitleMixin(ContextMixin):
-    title: Optional[str] = None
-
-    def get_title(self) -> str:
-        return self.title
-
-    def get_context_data(self, **kwargs):
-        """Insert the page title into the context dict."""
-        if "page_title" not in kwargs:
-            kwargs["page_title"] = self.get_title()
-        return super().get_context_data(**kwargs)

@@ -46,7 +46,7 @@ class RegisterFormView(TitleMixin, CreateView):
                 "You successfully registered a course. "
                 "This page serves as an overview and allows you to view your "
                 "course's access keys"
-            )
+            ),
         )
         # Login with course token
         utils.set_token(

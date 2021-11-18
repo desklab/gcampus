@@ -20,7 +20,9 @@ from django.utils.translation import gettext_lazy as _
 
 from gcampus.auth.fields.token import (
     access_key_exists_validator,
-    course_token_exists_validator, SplitTokenField, SplitKeyField,
+    course_token_exists_validator,
+    SplitTokenField,
+    SplitKeyField,
 )
 from gcampus.auth.models.token import (
     ACCESS_KEY_LENGTH,
@@ -39,7 +41,7 @@ class AccessKeyForm(forms.Form):
         validators=[
             access_key_exists_validator,
             MaxLengthValidator(ACCESS_KEY_LENGTH),
-            MinLengthValidator(ACCESS_KEY_LENGTH)
+            MinLengthValidator(ACCESS_KEY_LENGTH),
         ],
     )
     fields = (TOKEN_FIELD_NAME,)
@@ -52,7 +54,7 @@ class CourseTokenForm(forms.Form):
         validators=[
             course_token_exists_validator,
             MaxLengthValidator(COURSE_TOKEN_LENGTH),
-            MinLengthValidator(COURSE_TOKEN_LENGTH)
+            MinLengthValidator(COURSE_TOKEN_LENGTH),
         ],
     )
     fields = (TOKEN_FIELD_NAME,)

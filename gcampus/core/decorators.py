@@ -22,11 +22,11 @@ from django.shortcuts import get_object_or_404
 from gcampus.auth import utils
 from gcampus.auth.exceptions import (
     TOKEN_CREATE_PERMISSION_ERROR,
-    TOKEN_EDIT_PERMISSION_ERROR
+    TOKEN_EDIT_PERMISSION_ERROR,
 )
 from gcampus.auth.models.token import (
     can_token_create_measurement,
-    can_token_edit_measurement
+    can_token_edit_measurement,
 )
 from gcampus.core.models import Measurement
 
@@ -39,6 +39,7 @@ def require_permission_create_measurement(f):
         if not can_token_create_measurement(token, token_type=token_type):
             raise PermissionDenied(TOKEN_CREATE_PERMISSION_ERROR)
         return f(request, *args, **kwargs)
+
     return wrapper
 
 
@@ -51,4 +52,5 @@ def require_permission_edit_measurement(f):
         if not can_token_edit_measurement(token, measurement, token_type=token_type):
             raise PermissionDenied(TOKEN_EDIT_PERMISSION_ERROR)
         return f(request, pk, *args, **kwargs)
+
     return wrapper
