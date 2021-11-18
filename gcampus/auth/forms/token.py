@@ -36,9 +36,11 @@ class AccessKeyForm(forms.Form):
     token = SplitKeyField(
         required=True,
         label=_("Access Key"),
-        #max_length=ACCESS_KEY_LENGTH,
-        #min_length=ACCESS_KEY_LENGTH,
-        validators=[access_key_exists_validator, MaxLengthValidator(COURSE_TOKEN_LENGTH), MinLengthValidator(COURSE_TOKEN_LENGTH)],
+        validators=[
+            access_key_exists_validator,
+            MaxLengthValidator(ACCESS_KEY_LENGTH),
+            MinLengthValidator(ACCESS_KEY_LENGTH)
+        ],
     )
     fields = (TOKEN_FIELD_NAME,)
 
@@ -47,9 +49,11 @@ class CourseTokenForm(forms.Form):
     token = SplitTokenField(
         required=True,
         label=_("Course Token"),
-        #max_length=COURSE_TOKEN_LENGTH,
-        #min_length=COURSE_TOKEN_LENGTH,
-        validators=[course_token_exists_validator, MaxLengthValidator(COURSE_TOKEN_LENGTH), MinLengthValidator(COURSE_TOKEN_LENGTH)],
+        validators=[
+            course_token_exists_validator,
+            MaxLengthValidator(COURSE_TOKEN_LENGTH),
+            MinLengthValidator(COURSE_TOKEN_LENGTH)
+        ],
     )
     fields = (TOKEN_FIELD_NAME,)
 

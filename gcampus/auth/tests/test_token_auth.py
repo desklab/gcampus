@@ -14,6 +14,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from abc import ABC
 from datetime import datetime
+from typing import List, Union
 
 from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.forms import Field
@@ -22,11 +23,14 @@ from django.test import TestCase
 from django.urls import reverse
 
 from gcampus.auth.exceptions import (
-    TOKEN_INVALID_ERROR, COURSE_TOKEN_DEACTIVATED_ERROR, ACCESS_KEY_DEACTIVATED_ERROR,
+    TOKEN_INVALID_ERROR,
+    COURSE_TOKEN_DEACTIVATED_ERROR,
+    ACCESS_KEY_DEACTIVATED_ERROR,
 )
 from gcampus.auth.forms.token import TOKEN_FIELD_NAME
 from gcampus.auth.models import CourseToken, AccessKey
 from gcampus.auth.models.token import COURSE_TOKEN_LENGTH, ACCESS_KEY_LENGTH
+from gcampus.auth.widgets import split_token_chunks
 
 
 class BaseAuthTest(TestCase, ABC):
@@ -69,16 +73,26 @@ class BaseAuthTest(TestCase, ABC):
 
 
 class BaseTokenKeyTest(BaseAuthTest, ABC):
-    def login(self, token: str):
+    def get_login_url(self) -> str:
         raise NotImplementedError()
+
+    def login(self, token: Union[str, List[str]]):
+        if isinstance(token, str):
+            token_chunks = split_token_chunks(token)
+        elif isinstance(token, list):
+            token_chunks = token
+        else:
+            raise ValueError("Expected string or list of strings")
+        login_response = self.client.post(
+            reverse(self.get_login_url()),
+            {f"token_{i}": chunk for i, chunk in enumerate(token_chunks)},
+        )
+        return login_response
 
 
 class AccessKeyAuthTest(BaseTokenKeyTest):
-    def login(self, token):
-        login_response = self.client.post(
-            reverse("gcampusauth:access_key_form"), {"token": token}
-        )
-        return login_response
+    def get_login_url(self) -> str:
+        return "gcampusauth:access_key_form"
 
     def test_valid_token(self):
         login_response = self.login(self.tokens[0].token)
@@ -88,32 +102,30 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
         login_response = self.login("0" * ACCESS_KEY_LENGTH)
         # Should return 200 but contain errors
         self.assertEqual(login_response.status_code, 200)
-        self.check_form_errors(login_response, {
-            TOKEN_FIELD_NAME: [TOKEN_INVALID_ERROR]
-        })
+        self.check_form_errors(
+            login_response, {TOKEN_FIELD_NAME: [TOKEN_INVALID_ERROR]}
+        )
 
     def test_valid_extended_token(self):
-        login_response = self.login(self.tokens[0].token + "0")
+        token = self.tokens[0].token
+        login_response = self.login([token[:4], token[4:] + "0"])
         self.assertEqual(login_response.status_code, 200)
         error_message_max_len = MaxLengthValidator.message % {
             "limit_value": ACCESS_KEY_LENGTH,
             "show_value": ACCESS_KEY_LENGTH + 1,
         }
-        error_dict = {
-            TOKEN_FIELD_NAME: [error_message_max_len, TOKEN_INVALID_ERROR]
-        }
+        error_dict = {TOKEN_FIELD_NAME: [error_message_max_len, TOKEN_INVALID_ERROR]}
         self.check_form_errors(login_response, error_dict)
 
     def test_course_token(self):
-        login_response = self.login(self.parent_token.token)
+        token = self.parent_token.token
+        login_response = self.login([token[:4], token[4:]])
         self.assertEqual(login_response.status_code, 200)
         error_message_max_len = MaxLengthValidator.message % {
             "limit_value": ACCESS_KEY_LENGTH,
             "show_value": len(self.parent_token.token),
         }
-        error_dict = {
-            TOKEN_FIELD_NAME: [error_message_max_len, TOKEN_INVALID_ERROR]
-        }
+        error_dict = {TOKEN_FIELD_NAME: [error_message_max_len, TOKEN_INVALID_ERROR]}
         self.check_form_errors(login_response, error_dict)
 
     def test_deactivated_token(self):
@@ -123,29 +135,24 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
             _token.save()
             login_response = self.login(_token.token)
             self.assertEqual(login_response.status_code, 200)
-            error_dict = {
-                TOKEN_FIELD_NAME: [ACCESS_KEY_DEACTIVATED_ERROR]
-            }
+            error_dict = {TOKEN_FIELD_NAME: [ACCESS_KEY_DEACTIVATED_ERROR]}
             self.check_form_errors(login_response, error_dict)
         finally:
             _token.deactivated = False
             _token.save()
 
     def test_empty_token(self):
-        login_response = self.login("")
+        login_response = self.login(["", ""])
         self.assertEqual(login_response.status_code, 200)
         self.check_form_errors(
             login_response,
-            {TOKEN_FIELD_NAME: [Field.default_error_messages["required"]]}
+            {TOKEN_FIELD_NAME: [Field.default_error_messages["required"]]},
         )
 
 
 class CourseTokenAuthTest(BaseTokenKeyTest):
-    def login(self, token):
-        login_response = self.client.post(
-            reverse("gcampusauth:course_token_form"), {"token": token}
-        )
-        return login_response
+    def get_login_url(self) -> str:
+        return "gcampusauth:course_token_form"
 
     def test_valid_token(self):
         login_response = self.login(self.parent_token.token)
@@ -155,33 +162,30 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
         login_response = self.login("0" * COURSE_TOKEN_LENGTH)
         # Should return 200 but contain errors
         self.assertEqual(login_response.status_code, 200)
-        self.check_form_errors(login_response, {
-            TOKEN_FIELD_NAME: [TOKEN_INVALID_ERROR]
-        })
+        self.check_form_errors(
+            login_response, {TOKEN_FIELD_NAME: [TOKEN_INVALID_ERROR]}
+        )
 
     def test_valid_extended_token(self):
-        login_response = self.login(self.parent_token.token + "0")
+        token = self.parent_token.token
+        login_response = self.login([token[:4], token[4:8], token[8:] + "0"])
         self.assertEqual(login_response.status_code, 200)
         error_message_max_len = MaxLengthValidator.message % {
             "limit_value": COURSE_TOKEN_LENGTH,
             "show_value": COURSE_TOKEN_LENGTH + 1,
         }
-        error_dict = {
-            TOKEN_FIELD_NAME: [error_message_max_len, TOKEN_INVALID_ERROR]
-        }
+        error_dict = {TOKEN_FIELD_NAME: [error_message_max_len, TOKEN_INVALID_ERROR]}
         self.check_form_errors(login_response, error_dict)
 
     def test_access_key(self):
         token = self.tokens[0].token
-        login_response = self.login(token)
+        login_response = self.login([token[:4], token[4:], ""])
         self.assertEqual(login_response.status_code, 200)
         error_message_max_len = MinLengthValidator.message % {
             "limit_value": COURSE_TOKEN_LENGTH,
             "show_value": len(token),
         }
-        error_dict = {
-            TOKEN_FIELD_NAME: [error_message_max_len, TOKEN_INVALID_ERROR]
-        }
+        error_dict = {TOKEN_FIELD_NAME: [error_message_max_len, TOKEN_INVALID_ERROR]}
         self.check_form_errors(login_response, error_dict)
 
     def test_deactivated_token(self):
@@ -190,18 +194,16 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
             self.parent_token.save()
             login_response = self.login(self.parent_token.token)
             self.assertEqual(login_response.status_code, 200)
-            error_dict = {
-                TOKEN_FIELD_NAME: [COURSE_TOKEN_DEACTIVATED_ERROR]
-            }
+            error_dict = {TOKEN_FIELD_NAME: [COURSE_TOKEN_DEACTIVATED_ERROR]}
             self.check_form_errors(login_response, error_dict)
         finally:
             self.parent_token.deactivated = False
             self.parent_token.save()
 
     def test_empty_token(self):
-        login_response = self.login("")
+        login_response = self.login(["", "", ""])
         self.assertEqual(login_response.status_code, 200)
         self.check_form_errors(
             login_response,
-            {TOKEN_FIELD_NAME: [Field.default_error_messages["required"]]}
+            {TOKEN_FIELD_NAME: [Field.default_error_messages["required"]]},
         )

@@ -170,6 +170,7 @@ class SplitTokenField(CharField):
                     f" got {len(value)}")
         return super(SplitTokenField, self).to_python(value)
 
+
 class SplitKeyField(CharField):
     widget = SplitKeyWidget
 

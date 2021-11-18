@@ -21,7 +21,8 @@ from django.test import TestCase
 from gcampus.auth.exceptions import (
     TOKEN_EMPTY_ERROR,
     TOKEN_INVALID_ERROR,
-    TOKEN_CREATE_PERMISSION_ERROR, ACCESS_KEY_DEACTIVATED_ERROR,
+    TOKEN_CREATE_PERMISSION_ERROR,
+    ACCESS_KEY_DEACTIVATED_ERROR,
 )
 from gcampus.auth.fields.token import HIDDEN_TOKEN_FIELD_NAME
 from gcampus.auth.models import CourseToken, AccessKey
@@ -52,7 +53,9 @@ class MeasurementFormTest(BaseAuthTest):
         self.assertFalse(form.is_valid())
         self.assertIn(HIDDEN_TOKEN_FIELD_NAME, form.errors)
         self.assertEqual(len(form.errors), 1)
-        self.assertEqual(form.errors[HIDDEN_TOKEN_FIELD_NAME], ErrorList([TOKEN_EMPTY_ERROR]))
+        self.assertEqual(
+            form.errors[HIDDEN_TOKEN_FIELD_NAME], ErrorList([TOKEN_EMPTY_ERROR])
+        )
 
     def test_valid_token(self):
         form_data: dict = {

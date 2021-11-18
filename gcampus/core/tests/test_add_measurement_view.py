@@ -24,6 +24,7 @@ from gcampus.auth.exceptions import (
 )
 from gcampus.auth.fields.token import HIDDEN_TOKEN_FIELD_NAME
 from gcampus.auth.tests.test_token_auth import BaseAuthTest
+from gcampus.auth.widgets import split_token_chunks
 
 
 class MeasurementViewTest(BaseAuthTest):
@@ -37,8 +38,10 @@ class MeasurementViewTest(BaseAuthTest):
     }
 
     def login(self, token):
+        token_chunks = split_token_chunks(token)
         login_response = self.client.post(
-            reverse("gcampusauth:access_key_form"), {"token": token}
+            reverse("gcampusauth:access_key_form"),
+            {"token_0": token_chunks[0], "token_1": token_chunks[1]},
         )
         return login_response
 

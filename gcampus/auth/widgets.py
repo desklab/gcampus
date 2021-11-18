@@ -12,6 +12,7 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from typing import List, Optional
 
 from django.forms import HiddenInput, TextInput, MultiWidget
 
@@ -47,6 +48,13 @@ class HiddenTokenInput(HiddenInput):
         return ""
 
 
+def split_token_chunks(token: str, chunk_size: int = 4) -> List[Optional[str]]:
+    return [
+        token[i:i + chunk_size]
+        for i in range(0, len(token), chunk_size)
+    ]
+
+
 class SplitTokenWidget(MultiWidget):
     template_name = "gcampusauth/forms/widgets/splitlogin.html"
 
@@ -61,10 +69,15 @@ class SplitTokenWidget(MultiWidget):
         )
         super().__init__(widgets)
 
-    def decompress(self, value):
+    def decompress(self, value) -> List[Optional[str]]:
         if value:
-            return [f"{value[:4]}", f"{value[4:8]}", f"{value[8:]}"]
+            chunks = split_token_chunks(value)
+            if len(chunks) > 3:
+                return chunks[:3]
+            # make sure to return correct length
+            return chunks + [None] * (3 - len(chunks))
         return [None, None, None]
+
 
 class SplitKeyWidget(MultiWidget):
     template_name = "gcampusauth/forms/widgets/splitlogin.html"
@@ -79,7 +92,12 @@ class SplitKeyWidget(MultiWidget):
         )
         super().__init__(widgets)
 
-    def decompress(self, value):
+    def decompress(self, value) -> List[Optional[str]]:
         if value:
-            return [f"{value[:4]}", f"{value[4:]}"]
+            chunks = split_token_chunks(value)
+            if len(chunks) > 2:
+                # Make sure to return only two chunks
+                return chunks[:2]
+            # make sure to return correct length
+            return chunks + [None] * (2 - len(chunks))
         return [None, None]
