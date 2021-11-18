@@ -40,57 +40,11 @@ from gcampus.core.forms.measurement import MeasurementForm
 from gcampus.core.models import Measurement
 from gcampus.core.views.base import TitleMixin
 
-
-class MeasurementListView(ListView):
-    template_name = "gcampuscore/sites/list/measurement_list.html"
-    model = Measurement
-    context_object_name = "measurement_list"
-    paginate_by = 10
-    queryset = Measurement.objects.all()
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["filter"] = MeasurementFilter(
-            self.request.GET, queryset=self.get_queryset()
-        )
-        return context
-
-
-class PersonalMeasurementListView(ListView):
-    template_name = "gcampuscore/sites/list/personal_measurement_list.html"
-    model = Measurement
-    paginate_by = 10
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        token = utils.get_token(self.request)
-        if token is None:
-            raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
-        personal_measurements = Measurement.objects.filter(token__token=token)
-        return super().get_context_data(object_list=personal_measurements, **kwargs)
-
-
-class CourseMeasurementListView(ListView):
-    template_name = "gcampuscore/sites/list/course_measurement_list.html"
-    model = Measurement
-    paginate_by = 10
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        # Check if a token is provided
-        token = utils.get_token(self.request)
-        if token is None:
-            raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
-        # TODO: We might want to check whether the provided token exists
-        #   and whether or not it is disabled. If it does not exists,
-        #   the page will just be empty which is also ok.
-        token_type = utils.get_token_type(self.request)
-        if token_type != COURSE_TOKEN_TYPE:
-            course_token = CourseToken.objects.get(accesskey__token=token).token
-        else:
-            course_token = token
-        course_measurements = Measurement.objects.filter(
-            token__parent_token__token=course_token
-        )
-        return super().get_context_data(object_list=course_measurements, **kwargs)
+from gcampus.core.views.measurement.list import (
+    MeasurementListView,
+    PersonalMeasurementListView,
+    CourseMeasurementListView
+)
 
 
 class MeasurementDetailView(DetailView):
