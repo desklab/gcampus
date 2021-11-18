@@ -149,6 +149,25 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
             {TOKEN_FIELD_NAME: [Field.default_error_messages["required"]]},
         )
 
+    def test_missing_token_field(self):
+        login_response = self.login([""])
+        self.assertEqual(login_response.status_code, 200)
+        self.check_form_errors(
+            login_response,
+            {TOKEN_FIELD_NAME: [Field.default_error_messages["required"]]},
+        )
+
+    def test_empty_token_field(self):
+        login_response = self.login(["ABCD", ""])
+        self.assertEqual(login_response.status_code, 200)
+        error_message_max_len = MinLengthValidator.message % {
+            "limit_value": ACCESS_KEY_LENGTH,
+            "show_value": 4,
+        }
+        error_dict = {TOKEN_FIELD_NAME: [error_message_max_len, TOKEN_INVALID_ERROR]}
+        self.check_form_errors(login_response, error_dict)
+
+
 
 class CourseTokenAuthTest(BaseTokenKeyTest):
     def get_login_url(self) -> str:
@@ -207,3 +226,21 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
             login_response,
             {TOKEN_FIELD_NAME: [Field.default_error_messages["required"]]},
         )
+
+    def test_missing_token_field(self):
+        login_response = self.login([""])
+        self.assertEqual(login_response.status_code, 200)
+        self.check_form_errors(
+            login_response,
+            {TOKEN_FIELD_NAME: [Field.default_error_messages["required"]]},
+        )
+
+    def test_empty_token_field(self):
+        login_response = self.login(["ABCD", "", ""])
+        self.assertEqual(login_response.status_code, 200)
+        error_message_max_len = MinLengthValidator.message % {
+            "limit_value": COURSE_TOKEN_LENGTH,
+            "show_value": 4,
+        }
+        error_dict = {TOKEN_FIELD_NAME: [error_message_max_len, TOKEN_INVALID_ERROR]}
+        self.check_form_errors(login_response, error_dict)

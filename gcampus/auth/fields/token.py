@@ -155,6 +155,7 @@ def check_form_and_request_token(form: BaseForm, request: HttpRequest):
     if request_token != form_token:
         raise BadRequest()
 
+
 class SplitTokenField(CharField):
     widget = SplitTokenWidget
 
@@ -164,10 +165,12 @@ class SplitTokenField(CharField):
         """
         if isinstance(value, list):
             if len(value) == 3:
-                return "".join(value)
+                return "".join(filter(None, value))
             else:
-                raise ValueError("Expected SplitTokenWidget to return a list of length 3 but"
-                    f" got {len(value)}")
+                raise ValueError(
+                    "Expected SplitTokenWidget to return a list of length 3 but"
+                    f" got {len(value)}"
+                )
         return super(SplitTokenField, self).to_python(value)
 
 
@@ -180,8 +183,10 @@ class SplitKeyField(CharField):
         """
         if isinstance(value, list):
             if len(value) == 2:
-                return "".join(value)
+                return "".join(filter(None, value))
             else:
-                raise ValueError("Expected SplitTokenWidget to return a list of length 3 but"
-                    f" got {len(value)}")
+                raise ValueError(
+                    "Expected SplitTokenWidget to return a list of length 2 but"
+                    f" got {len(value)}"
+                )
         return super(SplitKeyField, self).to_python(value)
