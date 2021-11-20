@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-20 12:19+0100\n"
+"POT-Creation-Date: 2021-11-20 12:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -129,6 +129,78 @@ msgstr "Verstecken"
 msgid "Show"
 msgstr "Anzeigen"
 
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:6
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:5
+msgid "You are currently logged in with the following access key:"
+msgstr "Du bist momentan mit folgendem Zugangscode angemeldet:"
+
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:10
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:9
+msgid "You are currently logged in with the following course token:"
+msgstr "Du bist momentan mit folgendem Kursschlüssel angemeldet:"
+
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:20
+msgid ""
+"It seems like your access key currently does not have the permission to "
+"create a measurement. Please contact your teacher for help."
+msgstr ""
+"Scheinbar hat dein Zugangscode zurzeit nicht die Berechtigung, eine neue "
+"Messung zu erstellen. Bitte wende dich an deine Lehrkraft für mehr "
+"Informationen."
+
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:26
+#, python-format
+msgid ""
+"To create a measurement, you have to login using an access key. As a "
+"teacher, you can generate a new access key for your own measurement on the "
+"<a class=\"text-dark\" href=\"%(course_overview_url)s\">course overview</a> "
+"page."
+msgstr ""
+"Um eine neue Messung zu erstellen, musst du dich mit einem Zugangscode "
+"anmelden. Als Lehrkraft kannst du dir dazu einen neuen Zugangscode auf der "
+"<a class=\"text-dark\" href=\"%(course_overview_url)s\">Kurs-Übersicht</a> "
+"generieren."
+
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:39
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:28
+#: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:19
+#: gcampus/auth/views/token.py:72
+msgid "Login as Student"
+msgstr "Als Schüler:in Anmelden"
+
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:43
+msgid ""
+"If you login with a different access key, you will automatically be logged "
+"out from your old key."
+msgstr ""
+"Wenn du dich mit einem anderen Zugangscode anmeldest, "
+"wist du automatisch von deinem alten Schlüssel abgemedet."
+
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:17
+msgid ""
+"To edit a measurement, you have to login using the same access key that has "
+"been used to create the measurement. Alternatively, teachers can login with "
+"a course token to edit all measurements of their course."
+msgstr ""
+"Um eine Messung zu berarbeiten, musst du dich mit dem gleichen Zugangscode "
+"anmelden, mit dem diese Messung erstellt wurde. Alternativ können sich "
+"Lehrkräfte mit dem Kursschlüssel anmelden um alle Messungen eines Kurses "
+"zu bearbeiten."
+
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:32
+#: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:23
+#: gcampus/auth/views/token.py:78
+msgid "Login as Teacher"
+msgstr "Als Lehrkraft Anmelden"
+
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:36
+msgid ""
+"If you login with a different access key or course token, you will "
+"automatically be logged out from your old key."
+msgstr ""
+"Wenn du dich mit einem anderen Zugangscode oder Kursschlüssel anmeldest, "
+"wist du automatisch von deinem alten Schlüssel abgemedet."
+
 #: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:5
 #, python-format
 msgid ""
@@ -144,14 +216,6 @@ msgstr ""
 "kannst du deine Lehrkraft darum bitten, einen neuen Zugangscode zu "
 "generieren. Als Lehrkraft kannst du einen neuen Kurs <a class=\"text-dark\" "
 "href=\"%(regsister_url)s\">registrieren</a>."
-
-#: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:19
-msgid "Login as Student"
-msgstr "Als Schüler:in Anmelden"
-
-#: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:23
-msgid "Login as Teacher"
-msgstr "Als Lehrkraft Anmelden"
 
 #: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:28
 msgid "Register new Course"
@@ -178,6 +242,12 @@ msgid ""
 "receive a <b>course token</b> that should be kept private. With this key you "
 "can view and edit all your student's measurements."
 msgstr ""
+"Registriere deine Klasse oder Kurs und generiere eine Liste an "
+"<b>access keys</b> für deine Schüler:innen. Diese Zugangscodes können "
+"verwendet werden, um neue Messungen auf GewässerCampus zu erstellen und "
+"diese zu bearbeiten. <br> Neben den generierten Zugangscodes wirst du "
+"außerdem einen <b>Kursschlüssel</b> erhalten. Dieser sollte privat bleiben, "
+"da du damit alle Messungen deines Kurses verwalten kannst."
 
 #: gcampus/auth/templates/gcampusauth/forms/register.html:35
 msgctxt "help text school name"
@@ -323,6 +393,10 @@ msgid ""
 msgstr ""
 "Der Kurs wurde erfolgreich registriert! Diese Seite dient als Übersicht über "
 "den Kurs und den damit verbundenen Zugangscodes."
+
+#: gcampus/auth/views/token.py:42
+msgid "Login"
+msgstr "Anmelden"
 
 #~ msgctxt "register heading"
 #~ msgid "Register"

@@ -24,7 +24,6 @@ __all__ = [
 
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpRequest
-from django.shortcuts import redirect
 from django.views.defaults import permission_denied, ERROR_403_TEMPLATE_NAME
 
 from gcampus.auth.exceptions import (
