@@ -23,7 +23,9 @@ from gcampus.auth import utils
 from gcampus.auth.exceptions import (
     TOKEN_PERMISSION_ERROR,
     TOKEN_EMPTY_ERROR,
-    UnauthenticatedError, TokenPermissionError, TokenEmptyError,
+    UnauthenticatedError,
+    TokenPermissionError,
+    TokenEmptyError,
 )
 from gcampus.auth.models.token import ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE
 from gcampus.core.models.util import EMPTY

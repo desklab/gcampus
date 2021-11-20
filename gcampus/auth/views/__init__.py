@@ -29,7 +29,7 @@ from django.views.defaults import permission_denied, ERROR_403_TEMPLATE_NAME
 from gcampus.auth.exceptions import (
     UnauthenticatedError,
     TokenCreatePermissionError,
-    TokenEditPermissionError
+    TokenEditPermissionError,
 )
 from gcampus.auth.views.register import RegisterFormView
 from gcampus.auth.views.token import (
@@ -43,7 +43,7 @@ from gcampus.auth.views.token import (
 def permission_denied_error_handler(
     request: HttpRequest,
     exception: PermissionDenied,
-    template_name: str = ERROR_403_TEMPLATE_NAME
+    template_name: str = ERROR_403_TEMPLATE_NAME,
 ) -> HttpResponse:
     if isinstance(exception, UnauthenticatedError):
         template_name = "gcampusauth/error/403_unauthenticated.html"

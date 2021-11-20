@@ -21,7 +21,8 @@ from django.shortcuts import get_object_or_404
 from gcampus.auth import utils
 from gcampus.auth.exceptions import (
     TokenEditPermissionError,
-    TokenCreatePermissionError, UnauthenticatedError,
+    TokenCreatePermissionError,
+    UnauthenticatedError,
 )
 from gcampus.auth.models.token import (
     can_token_create_measurement,
