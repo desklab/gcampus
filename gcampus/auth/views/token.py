@@ -13,6 +13,13 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+__all__ = [
+    "SetAccessKeyFormView",
+    "SetCourseTokenFormView",
+    "logout",
+    "login_success",
+]
+
 from abc import ABC
 from typing import Union, Optional
 
@@ -20,16 +27,19 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy
 from django.views.generic.edit import FormView
 
 from gcampus.auth import utils
 from gcampus.auth.exceptions import TOKEN_INVALID_ERROR
 from gcampus.auth.forms.token import AccessKeyForm, CourseTokenForm
 from gcampus.auth.models.token import ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE, CourseToken
+from gcampus.core.views.base import TitleMixin
 
 
-class SetTokenFormView(FormView, ABC):
+class SetTokenFormView(TitleMixin, FormView, ABC):
     template_name = "gcampusauth/forms/token.html"
+    title = gettext_lazy("Login")
     success_url = reverse_lazy("gcampusauth:login_success")
     token_type: Optional[str] = None
 
@@ -59,11 +69,13 @@ class SetTokenFormView(FormView, ABC):
 
 
 class SetAccessKeyFormView(SetTokenFormView):
+    title = gettext_lazy("Login as Student")
     form_class = AccessKeyForm
     token_type = ACCESS_TOKEN_TYPE
 
 
 class SetCourseTokenFormView(SetTokenFormView):
+    title = gettext_lazy("Login as Teacher")
     form_class = CourseTokenForm
     token_type = COURSE_TOKEN_TYPE
 

@@ -23,7 +23,7 @@ from gcampus.auth import utils
 from gcampus.auth.exceptions import (
     TOKEN_PERMISSION_ERROR,
     TOKEN_EMPTY_ERROR,
-    UNAUTHENTICATED_ERROR,
+    UnauthenticatedError, TokenPermissionError, TokenEmptyError,
 )
 from gcampus.auth.models.token import ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE
 from gcampus.core.models.util import EMPTY
@@ -37,13 +37,13 @@ def require_token_type(token_type: Union[str, List[str]]):
         @wraps(f)
         def wrapper(request: HttpRequest, *args, **kwargs):
             if not utils.is_authenticated(request):
-                raise PermissionDenied(UNAUTHENTICATED_ERROR)
+                raise UnauthenticatedError()
             request_token = utils.get_token(request)
             request_token_type = utils.get_token_type(request)
             if request_token in EMPTY:
-                raise PermissionDenied(TOKEN_EMPTY_ERROR)
+                raise TokenEmptyError()
             if request_token_type not in token_type:
-                raise PermissionDenied(TOKEN_PERMISSION_ERROR)
+                raise TokenPermissionError()
             return f(request, *args, **kwargs)
 
         return wrapper

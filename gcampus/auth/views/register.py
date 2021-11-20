@@ -13,18 +13,20 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+__all__ = [
+    "RegisterFormView",
+]
+
 from django.contrib import messages
-from django.core.exceptions import PermissionDenied, BadRequest
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
-from django.views.generic import FormView, DetailView, CreateView
-from django.views.generic.edit import FormMixin
+from django.views.generic import CreateView
 
-from gcampus.auth import exceptions, utils
+from gcampus.auth import utils
 from gcampus.auth.forms.token import RegisterForm
-from gcampus.auth.models.token import CourseToken, AccessKey, COURSE_TOKEN_TYPE
+from gcampus.auth.models.token import AccessKey, COURSE_TOKEN_TYPE
 from gcampus.core.views.base import TitleMixin
 
 
@@ -54,17 +56,3 @@ class RegisterFormView(TitleMixin, CreateView):
         )
         # return super(FormMixin, self).form_valid(form)
         return HttpResponseRedirect(self.get_success_url())
-
-
-class RegisterSuccessView(DetailView):
-    model = CourseToken
-    template_name = "gcampusauth/sites/register_success.html"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        url_token = self.request.path.split("/")[-1]
-        if url_token != kwargs["object"].token:
-            raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
-        context = super().get_context_data(**kwargs)
-        course_token = self.object
-        context["children_token"] = AccessKey.objects.filter(parent_token=course_token)
-        return context

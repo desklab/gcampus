@@ -12,15 +12,18 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from abc import ABC
+from typing import Optional
 
+from django.core.exceptions import PermissionDenied
 from django.utils.translation import gettext_lazy as _
 
-UNAUTHENTICATED_ERROR = _("You need to login first!")
-TOKEN_EDIT_PERMISSION_ERROR = _("Token is not allowed to edit this measurement!")
-TOKEN_CREATE_PERMISSION_ERROR = _("Token is not allowed to create a measurement!")
-TOKEN_EMPTY_ERROR = _("No token has been provided to create or edit a measurement!")
-TOKEN_PERMISSION_ERROR = _("Token has no permission to access this site!")
-TOKEN_INVALID_ERROR = _("Provided token is not invalid or does not exist.")
+UNAUTHENTICATED_ERROR = _("This page can only be accessed by authenticated users")
+TOKEN_EDIT_PERMISSION_ERROR = _("Token is not allowed to edit this measurement")
+TOKEN_CREATE_PERMISSION_ERROR = _("Token is not allowed to create a measurement")
+TOKEN_EMPTY_ERROR = _("No token has been provided to create or edit a measurement")
+TOKEN_PERMISSION_ERROR = _("Token has no permission to access this site")
+TOKEN_INVALID_ERROR = _("Provided token is not invalid or does not exist")
 
 # Deactivation messages
 ACCESS_KEY_DEACTIVATED_ERROR = _(
@@ -30,3 +33,37 @@ ACCESS_KEY_DEACTIVATED_ERROR = _(
 COURSE_TOKEN_DEACTIVATED_ERROR = _(
     "This course token has been deactivated and can no longer be used."
 )
+
+
+class TokenPermissionDenied(PermissionDenied, ABC):
+    _default_message = None
+
+    def __init__(self, message: Optional[str] = None):
+        if message is not None:
+            super().__init__(message)
+        else:
+            super().__init__(self._default_message)
+
+
+class UnauthenticatedError(TokenPermissionDenied):
+    _default_message = UNAUTHENTICATED_ERROR
+
+
+class TokenInvalidError(TokenPermissionDenied):
+    _default_message = TOKEN_INVALID_ERROR
+
+
+class TokenEmptyError(TokenPermissionDenied):
+    _default_message = TOKEN_EMPTY_ERROR
+
+
+class TokenPermissionError(TokenPermissionDenied):
+    _default_message = TOKEN_PERMISSION_ERROR
+
+
+class TokenEditPermissionError(TokenPermissionDenied):
+    _default_message = TOKEN_EDIT_PERMISSION_ERROR
+
+
+class TokenCreatePermissionError(TokenPermissionDenied):
+    _default_message = TOKEN_CREATE_PERMISSION_ERROR

@@ -40,7 +40,7 @@ class MeasurementViewTest(BaseAuthTest):
     def login(self, token):
         token_chunks = split_token_chunks(token)
         login_response = self.client.post(
-            reverse("gcampusauth:access_key_form"),
+            reverse("gcampusauth:loginaccesskey"),
             {"token_0": token_chunks[0], "token_1": token_chunks[1]},
         )
         return login_response

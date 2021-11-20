@@ -1,0 +1,45 @@
+{% extends "gcampuscore/base_error.html" %}
+{% load i18n auth_token %}
+{% block exception_message %}
+    {% if user_token_is_access_key %}
+        {% blocktranslate trimmed %}
+            You are currently logged in with the following access key:
+        {% endblocktranslate %}
+    {% elif user_token_is_course_token %}
+        {% blocktranslate trimmed %}
+            You are currently logged in with the following course token:
+        {% endblocktranslate %}
+    {% endif %}
+    <br>
+    <div class="my-2">
+        {% displaytoken user_token hidden=True toggle=True %}
+    </div>
+    {% blocktranslate trimmed %}
+        To edit a measurement, you have to login using the same access
+        key that has been used to create the measurement. Alternatively,
+        teachers can login with a course token to edit all measurements
+        of their course.
+    {% endblocktranslate %}
+{% endblock %}
+{% block exception_options %}
+    <div class="p-4 p-md-5 border rounded-3 bg-light">
+        <a class="w-100 btn btn-lg btn-primary mb-4" role="button"
+           href="{% url "gcampusauth:loginaccesskey" %}">
+            {% translate "Login as Student" %}
+        </a>
+        <a class="w-100 btn btn-lg btn-primary" role="button"
+           href="{% url "gcampusauth:logincoursetoken" %}">
+            {% translate "Login as Teacher" %}
+        </a>
+        <hr class="my-4">
+        <small class="text-muted">
+            {% blocktranslate %}
+                If you login with a different access key or course token,
+                you will automatically be logged out from your old key.
+            {% endblocktranslate %}
+        </small>
+    </div>
+{% endblock %}
+{% block extra_body %}
+    {% displaytoken_js %}
+{% endblock %}

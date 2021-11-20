@@ -1,0 +1,31 @@
+{% extends "gcampuscore/base_error.html" %}
+{% load i18n %}
+{% block exception_message %}
+    {% url "gcampusauth:register" as regsister_url %}
+    {% blocktranslate trimmed %}
+        Some features, for example adding a new measurement, are limited to
+        authenticated users. Please use your access key or the course token
+        to log in. <br>
+        If you don't have an access key, your teacher can generate one for you.
+        As a teacher you can
+        <a class="text-dark" href="{{ regsister_url }}">register</a> a new
+        course.
+    {% endblocktranslate %}
+{% endblock %}
+{% block exception_options %}
+    <div class="p-4 p-md-5 border rounded-3 bg-light">
+        <a class="w-100 btn btn-lg btn-primary mb-4" role="button"
+           href="{% url "gcampusauth:loginaccesskey" %}">
+            {% translate "Login as Student" %}
+        </a>
+        <a class="w-100 btn btn-lg btn-primary" role="button"
+           href="{% url "gcampusauth:logincoursetoken" %}">
+            {% translate "Login as Teacher" %}
+        </a>
+        <hr class="my-4">
+        <a class="w-100 btn btn-lg" role="button"
+           href="{% url "gcampusauth:register" %}">
+            {% translate "Register new Course" %}
+        </a>
+    </div>
+{% endblock %}

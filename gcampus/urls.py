@@ -38,3 +38,5 @@ urlpatterns = [
     path("api/v1/", include("gcampus.api.urls", namespace="v1")),
     path("admin/", admin.site.urls),
 ]
+
+handler403 = "gcampus.auth.views.permission_denied_error_handler"

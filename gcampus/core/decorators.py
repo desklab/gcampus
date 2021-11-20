@@ -15,14 +15,13 @@
 
 from functools import wraps
 
-from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 
 from gcampus.auth import utils
 from gcampus.auth.exceptions import (
-    TOKEN_CREATE_PERMISSION_ERROR,
-    TOKEN_EDIT_PERMISSION_ERROR,
+    TokenEditPermissionError,
+    TokenCreatePermissionError, UnauthenticatedError,
 )
 from gcampus.auth.models.token import (
     can_token_create_measurement,
@@ -34,10 +33,15 @@ from gcampus.core.models import Measurement
 def require_permission_create_measurement(f):
     @wraps(f)
     def wrapper(request: HttpRequest, *args, **kwargs):
+        if not utils.is_authenticated(request):
+            # Handle unauthenticated users.
+            # This assumes that all unauthenticated users do not have
+            # the permission to create a measurement.
+            raise UnauthenticatedError()
         token = utils.get_token(request)
         token_type = utils.get_token_type(request)
         if not can_token_create_measurement(token, token_type=token_type):
-            raise PermissionDenied(TOKEN_CREATE_PERMISSION_ERROR)
+            raise TokenCreatePermissionError()
         return f(request, *args, **kwargs)
 
     return wrapper
@@ -46,11 +50,16 @@ def require_permission_create_measurement(f):
 def require_permission_edit_measurement(f):
     @wraps(f)
     def wrapper(request: HttpRequest, pk: int, *args, **kwargs):
+        if not utils.is_authenticated(request):
+            # Handle unauthenticated users.
+            # This assumes that all unauthenticated users do not have
+            # the permission to edit a measurement.
+            raise UnauthenticatedError()
         token = utils.get_token(request)
         token_type = utils.get_token_type(request)
         measurement: Measurement = get_object_or_404(Measurement, id=pk)
         if not can_token_edit_measurement(token, measurement, token_type=token_type):
-            raise PermissionDenied(TOKEN_EDIT_PERMISSION_ERROR)
+            raise TokenEditPermissionError()
         return f(request, pk, *args, **kwargs)
 
     return wrapper
