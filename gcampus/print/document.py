@@ -23,8 +23,8 @@ from typing import Optional
 
 from django.http import StreamingHttpResponse
 from django.template.loader import render_to_string
-from django.contrib.sessions.middleware import SessionMiddleware
-from django.http import HttpRequest
+#from django.contrib.sessions.middleware import SessionMiddleware
+#from django.http import HttpRequest
 
 from weasyprint import HTML, Document
 
@@ -36,10 +36,10 @@ STATIC_FILES_PATH = Path(__file__).resolve().parent / "static"
 
 def render(document: str, context: Optional[dict] = None) -> Document:
     # Add dummy request to enable context processors
-    request = HttpRequest()
-    middleware = SessionMiddleware()
-    middleware.process_request(request)
-    request.session.save()
+    # request = HttpRequest()
+    # middleware = SessionMiddleware()
+    # middleware.process_request(request)
+    # request.session.save()
 
     document_str = render_to_string(
         f"gcampusprint/documents/{document}.html",

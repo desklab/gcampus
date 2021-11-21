@@ -140,18 +140,20 @@
                 </form>
             </div>
             <div class="py-5 text-center">
-                {% icon "file-text" class="css-class" height="42" width="42" %}
-                <button class="btn btn-lg btn-primary me-2"
+                <a class="btn btn-lg btn-primary me-2"
+                        href="{% url "gcampusprint:course_overview_pdf" %}
                         type="button"
                         data-bs-toggle="tooltip" data-bs-placement="top"
                         title="{% translate "Download your course token and all access keys in  a PDF" %}">
+                    {% icon "file-text" class="css-class" height="42" width="42" %}
                     {% translate "Download" %}
-                </button>
-                {% icon "mail" class="css-class" height="42" width="42" %}
+                </a>
+                
                 <button class="btn btn-lg btn-primary me-2"
                         type="button"
                         data-bs-toggle="tooltip" data-bs-placement="top"
                         title="{% translate "Send your course token and all access keys in a PDF via Email" %}">
+                    {% icon "mail" class="css-class" height="42" width="42" %}
                     {% translate "Send to my E-Mail" %}
                 </button>
             </div>
