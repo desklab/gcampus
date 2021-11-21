@@ -14,7 +14,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from django.core.management import BaseCommand
-from gcampus.print.document import render, as_file
+from gcampus.print.document import render_document, as_file
 
 
 class Command(BaseCommand):
@@ -24,10 +24,10 @@ class Command(BaseCommand):
         parser.add_argument(
             "document",
             type=str,
-            help="Document name (templates/gcampusprint/documents/<name>.html)",
+            help="Document path",
         )
         parser.add_argument("output", type=str, help="Output file name")
 
     def handle(self, document, output, **kwargs):
-        document = render(document)
+        document = render_document(document)
         as_file(document, output)

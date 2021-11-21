@@ -31,14 +31,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from gcampus.print.views.print import course_overview_pdf
 
 urlpatterns = [
     path("", include("gcampus.core.urls")),
     path("", include("gcampus.auth.urls")),
+    path("", include("gcampus.print.urls")),
     path("api/v1/", include("gcampus.api.urls", namespace="v1")),
     path("admin/", admin.site.urls),
-    path("print/access_course/", course_overview_pdf, name="course_overview_pdf"),
 ]
 
 handler403 = "gcampus.auth.views.permission_denied_error_handler"

@@ -17,7 +17,7 @@ from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
 
 
-class GCampusMapAppConfig(AppConfig):
+class GCampusPrintAppConfig(AppConfig):
     name = "gcampus.print"
     label = "gcampusprint"
     verbose_name = _("GCampus Print")

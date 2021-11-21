@@ -9,4 +9,4 @@ djangorestframework==3.12.4
 djangorestframework-gis==0.17
 overpy~=0.4
 django-filter~=2.4.0
-weasyprint==53.3
+weasyprint==53.4

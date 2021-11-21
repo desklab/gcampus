@@ -13,17 +13,39 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+__all__ = ["CourseOverviewPDF"]
+
 from django.shortcuts import get_object_or_404
-from django.http import HttpRequest
+from django.utils.decorators import method_decorator
+from django.utils.text import slugify
+from django.utils.translation import gettext_lazy
 
 from gcampus.auth import utils
 from gcampus.auth.decorators import require_course_token
-from gcampus.print.document import render, as_response
+from gcampus.auth.models import CourseToken
+from gcampus.core.models.util import EMPTY
+from gcampus.print.views.generic import SingleObjectDocumentView
 
-@require_course_token
-def course_overview_pdf(request: HttpRequest, *args, **kwargs):
-    token = utils.get_token(request)
-    token_obj = get_object_or_404(CourseToken, token=token)
 
-    #document = render("access_course",context = )
-    #return as_response(document)
+class CourseOverviewPDF(SingleObjectDocumentView):
+    template_name = "gcampusprint/documents/access_course.html"
+    filename = gettext_lazy("gewaessercampus-course-overview.pdf")
+    context_object_name = "course_token"
+    model = CourseToken
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        token = utils.get_token(self.request)
+        return get_object_or_404(queryset, token=token)
+
+    @method_decorator(require_course_token)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CourseOverviewPDF, self).dispatch(request, *args, **kwargs)
+
+    def get_filename(self):
+        if self.object.token_name in EMPTY:
+            return self.filename
+        return gettext_lazy("gewaessercampus-overview-{course_name:s}.pdf").format(
+            course_name=slugify(self.object.token_name)
+        )

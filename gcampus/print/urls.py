@@ -12,3 +12,21 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+from django.urls import path
+
+from gcampus.print.apps import GCampusPrintAppConfig
+from gcampus.print.views import (
+    CourseOverviewPDF,
+)
+
+# Turn off black formatting and pylint
+# fmt: off
+# pylint: disable=line-too-long
+urlpatterns = [
+    path("documents/overview", CourseOverviewPDF.as_view(), name="documents-overview"),
+]
+# fmt: on
+# pylint: enable=line-too-long
+
+app_name = GCampusPrintAppConfig.label
