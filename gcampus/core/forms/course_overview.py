@@ -14,6 +14,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from django import forms
+from django.conf import settings
 from django.forms.formsets import ManagementForm  # noqa
 
 from gcampus.auth.fields.token import (
@@ -27,7 +28,11 @@ from gcampus.auth.models.token import (
 
 
 class GenerateAccessKeysForm(forms.Form):
-    count = forms.IntegerField(label="Generate Accesskeys", min_value=1, max_value=30)
+    count = forms.IntegerField(
+        label="Generate Accesskeys",
+        min_value=1,
+        max_value=getattr(settings, "REGISTER_MAX_ACCESS_KEY_NUMBER", 30)
+    )
 
 
 class CourseOverviewForm(forms.ModelForm):

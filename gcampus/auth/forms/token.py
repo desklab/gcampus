@@ -30,7 +30,6 @@ from gcampus.auth.models.token import (
     CourseToken,
 )
 
-
 TOKEN_FIELD_NAME = "token"
 
 
@@ -63,7 +62,7 @@ class CourseTokenForm(forms.Form):
 class RegisterForm(forms.ModelForm):
     number_of_tokens = forms.IntegerField(
         min_value=1,
-        max_value=getattr(settings, "REGISTER_MAX_TOKEN_NUMBER", 30),
+        max_value=getattr(settings, "REGISTER_MAX_ACCESS_KEY_NUMBER", 30),
         required=True,
         initial=5,
     )

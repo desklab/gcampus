@@ -12,7 +12,7 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
+from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
@@ -33,7 +33,6 @@ from gcampus.core.forms.course_overview import (
     GenerateAccessKeysForm,
 )
 from gcampus.core.views.base import TitleMixin
-from gcampus.settings.base import REGISTER_MAX_TOKEN_NUMBER
 
 TOKEN_FIELD_NAME = "gcampus_auth_token"
 
@@ -106,7 +105,7 @@ def generate_new_access_keys(request):
     course_token = CourseToken.objects.get(token=token)
     if form.is_valid():
         count = form.cleaned_data["count"]
-        max_count = REGISTER_MAX_TOKEN_NUMBER
+        max_count = getattr(settings, "REGISTER_MAX_ACCESS_KEY_NUMBER", 30)
         current_count = AccessKey.objects.filter(parent_token=course_token).count()
 
         allowed_count = max_count - current_count
