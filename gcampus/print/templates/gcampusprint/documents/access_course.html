@@ -112,7 +112,8 @@
                     können den gleichen Zugangscode nutzen.
                 </div> 
                 <div class="accesskey-container overflow-hidden w-abs-1600 h-abs-1100">
-                    {% for token in course_token.access_keys.all %}
+                    {% for token in course_token.access_keys.all|dictsort:"deactivated" %}
+                    {% if token.deactivated == False %}
                         <div class="accesskey-element float-left overflow-hidden">
                             <div class="accesskey-counter float-left">
                                 {{ forloop.counter }}
@@ -124,6 +125,7 @@
                                 .
                             </div>
                         </div>
+                    {% endif %}
                     {% endfor %}
                 </div>
             </div>

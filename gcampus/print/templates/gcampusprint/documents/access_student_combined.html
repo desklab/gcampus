@@ -41,7 +41,7 @@
     </div>
 
     {% for token in course_token.access_keys.all %}
-
+    {% if token.deactivated == False %}
         <article>
             
             <div class="gcampus-print-page">
@@ -149,6 +149,7 @@
 
             </div>
         </article>
+    {% endif %}
     {% endfor %}
 
 </body>
