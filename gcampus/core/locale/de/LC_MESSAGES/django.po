@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-20 12:51+0100\n"
+"POT-Creation-Date: 2021-11-22 12:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -204,6 +204,10 @@ msgstr "Karte"
 msgid "Analysis"
 msgstr "Analyse"
 
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:15
+msgid "User"
+msgstr ""
+
 #: gcampus/core/templates/gcampuscore/forms/components/label.html:5
 msgid "(Optional)"
 msgstr "(Optional)"
@@ -387,59 +391,103 @@ msgstr "Meine Messungen"
 msgid "You haven't created any measurements yet"
 msgstr "Du hast noch keine Messungen registriert"
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:8
-msgid "Your Coursetoken is"
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:10
+msgid "Coursedata"
 msgstr ""
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:14
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:27
 msgid "Coursetoken Name"
 msgstr ""
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:18
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:31
 msgid "E-Mail"
 msgstr ""
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:23
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:35
+msgid "School Name"
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:42
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:80
-msgid "Access Key"
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:107
+#, fuzzy
+#| msgid "Access Key"
+msgid "Accesskeys"
 msgstr "Zugangscode"
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:98
-msgid "Activate"
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:164
+msgid "Generate new Accesskeys for this course"
 msgstr ""
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:101
-msgid "Deactivate"
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:166
+#, python-format
+msgid ""
+" You can generate new accesskeys for this course without the need to "
+"register again. The number of accesskeys is limited to "
+"%(register_max_access_key\")s per course. "
 msgstr ""
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:139
-msgid "Generate new Accesskeys"
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:173
+#, fuzzy
+#| msgid "Associated access key"
+msgid "Generate Accesskeys"
+msgstr "Verknüpfte Zugangscodes"
+
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:184
+msgid "Save as PDF"
 msgstr ""
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:148
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:186
+msgid ""
+"Download a PDF with a summary of your registration data, your coursetoken "
+"and the all accesskeys of your course."
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:195
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:215
 msgid "Download your course token and all access keys in  a PDF"
 msgstr ""
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:149
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:197
 msgid "Download"
 msgstr ""
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:155
-msgid "Send your course token and all access keys in a PDF via Email"
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:206
+msgid "Send to my E-Mail"
 msgstr ""
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:156
-msgid "Send to my E-Mail"
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:208
+msgid ""
+"Send your course token and all access keys in a PDF via Email. You can "
+"change the E-Mail in the Coursedata Section."
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:217
+msgid "Send E-Mail"
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:226
+msgid "Share a link"
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:228
+msgid ""
+"Get a link to share the PDF with a summary of your registration data, your "
+"coursetoken and the all accesskeys of your course"
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:235
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:237
+msgid "Create Link"
 msgstr ""
 
 #: gcampus/core/views/course_overview.py:43
 msgid "Course Overview"
 msgstr "Kursübersicht"
 
-#: gcampus/core/views/course_overview.py:117
+#: gcampus/core/views/course_overview.py:121
 #, python-brace-format
 msgid ""
 "You are only allowed to generate a total of {max_count:d} access keys. You "
@@ -447,7 +495,7 @@ msgid ""
 "generate {allowed_count:d} more."
 msgstr ""
 
-#: gcampus/core/views/course_overview.py:134
+#: gcampus/core/views/course_overview.py:138
 #, python-brace-format
 msgid "You successfully generated {count:d} new access keys"
 msgstr ""
@@ -462,11 +510,11 @@ msgstr "Neue Messung Erstellen"
 msgid "Edit Measurement {pk:d} - Information"
 msgstr "Messung bearbeiten"
 
-#: gcampus/core/views/measurement_visibility.py:53
+#: gcampus/core/views/measurement/visibility.py:51
 msgid "You successfully hid the measurement \"{measurement:s}\""
 msgstr "Du hast die Messung \"%(measurement)s\" erfolgreich versteckt."
 
-#: gcampus/core/views/measurement_visibility.py:77
+#: gcampus/core/views/measurement/visibility.py:75
 msgid "You successfully made the measurement \"{measurement:s}\" public"
 msgstr "Du hast die Messung \"%(measurement)s\" veröffentlicht."
 
@@ -545,11 +593,6 @@ msgstr "JJJJ"
 
 #~ msgid "Hidden Measurement"
 #~ msgstr "Versteckte Messungen"
-
-#, fuzzy
-#~| msgid "Associated access key"
-#~ msgid "Associated access keys"
-#~ msgstr "Verknüpfte Zugangscodes"
 
 #~ msgid "Measurement by"
 #~ msgstr "Messung von"
