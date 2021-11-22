@@ -91,7 +91,11 @@ class AccessKey(DateModelMixin):
     token = models.CharField(blank=False, max_length=ACCESS_KEY_LENGTH, unique=True)
 
     parent_token = models.ForeignKey(
-        CourseToken, on_delete=models.PROTECT, blank=False, null=False
+        CourseToken, 
+        on_delete=models.PROTECT, 
+        blank=False, 
+        null=False, 
+        related_name="access_keys",
     )
 
     deactivated = models.BooleanField(default=False)
