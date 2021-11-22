@@ -90,7 +90,7 @@ class CourseMeasurementListView(ListView):
             course_token = CourseToken.objects.get(accesskey__token=token).token
         else:
             course_token = token
-        self.queryset = Measurement.objects.filter(
+        self.queryset = Measurement.all_objects.filter(
             token__parent_token__token=course_token
         )
         return super().get_queryset()
