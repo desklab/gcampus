@@ -19,7 +19,6 @@ from django.templatetags.static import do_static, StaticNode
 
 from gcampus.print.document import URI_IDENTIFIER
 
-
 register = template.Library()
 
 

@@ -16,13 +16,10 @@
 from functools import wraps
 from typing import Union, List
 
-from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest
 
 from gcampus.auth import utils
 from gcampus.auth.exceptions import (
-    TOKEN_PERMISSION_ERROR,
-    TOKEN_EMPTY_ERROR,
     UnauthenticatedError,
     TokenPermissionError,
     TokenEmptyError,

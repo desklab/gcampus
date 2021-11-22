@@ -14,7 +14,7 @@
             let map = event.target;
             var lng = {{ measurement.location.x|unlocalize }};
             var lat = {{ measurement.location.y|unlocalize }};
-            const marker = new gcampusmap.mapboxgl.Marker()
+            const marker = new gcampusmap['mapbox-gl'].mapboxgl.Marker()
                 .setLngLat([lng, lat])
                 .addTo(map);
             map.addSource('measurements', {

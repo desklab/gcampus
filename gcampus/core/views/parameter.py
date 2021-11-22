@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-from django.core.exceptions import PermissionDenied, SuspiciousOperation
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -27,7 +27,6 @@ from django.views.generic.base import TemplateResponseMixin, View
 from gcampus.auth import utils
 from gcampus.auth.exceptions import TOKEN_EDIT_PERMISSION_ERROR
 from gcampus.auth.fields.token import (
-    HIDDEN_TOKEN_FIELD_NAME,
     check_form_and_request_token,
 )
 from gcampus.auth.models.token import can_token_edit_measurement

@@ -16,16 +16,13 @@
 from datetime import datetime
 
 from django.forms.utils import ErrorList
-from django.test import TestCase
 
 from gcampus.auth.exceptions import (
     TOKEN_EMPTY_ERROR,
     TOKEN_INVALID_ERROR,
-    TOKEN_CREATE_PERMISSION_ERROR,
     ACCESS_KEY_DEACTIVATED_ERROR,
 )
 from gcampus.auth.fields.token import HIDDEN_TOKEN_FIELD_NAME
-from gcampus.auth.models import CourseToken, AccessKey
 from gcampus.auth.tests.test_token_auth import BaseAuthTest
 from gcampus.core.forms.measurement import MeasurementForm
 

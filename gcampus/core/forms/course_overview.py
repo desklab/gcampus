@@ -31,7 +31,7 @@ class GenerateAccessKeysForm(forms.Form):
     count = forms.IntegerField(
         label="Generate Accesskeys",
         min_value=1,
-        max_value=getattr(settings, "REGISTER_MAX_ACCESS_KEY_NUMBER", 30)
+        max_value=getattr(settings, "REGISTER_MAX_ACCESS_KEY_NUMBER", 30),
     )
 
 

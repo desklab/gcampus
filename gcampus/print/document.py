@@ -39,7 +39,7 @@ def render_document(
     template: str,
     context: Optional[dict] = None,
     request: Optional[HttpRequest] = None,
-    using=None
+    using=None,
 ) -> Document:
     # Add dummy request to enable context processors
     if request is None:
@@ -49,10 +49,7 @@ def render_document(
         request.session.save()
 
     document_str = render_to_string(
-        template,
-        context=context,
-        request=request,
-        using=using
+        template, context=context, request=request, using=using
     )
     html = HTML(string=document_str, url_fetcher=url_fetcher)
     return html.render()

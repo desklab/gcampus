@@ -29,7 +29,6 @@ from gcampus.auth import utils, exceptions
 from gcampus.auth.fields.token import check_form_and_request_token
 from gcampus.auth.models.token import (
     COURSE_TOKEN_TYPE,
-    CourseToken,
 )
 from gcampus.core.decorators import (
     require_permission_create_measurement,
@@ -39,7 +38,6 @@ from gcampus.core.filters import MeasurementFilter
 from gcampus.core.forms.measurement import MeasurementForm
 from gcampus.core.models import Measurement
 from gcampus.core.views.base import TitleMixin
-
 from gcampus.core.views.measurement.list import (
     MeasurementListView,
     PersonalMeasurementListView,

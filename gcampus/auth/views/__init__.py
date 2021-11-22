@@ -29,7 +29,8 @@ from django.views.defaults import permission_denied, ERROR_403_TEMPLATE_NAME
 from gcampus.auth.exceptions import (
     UnauthenticatedError,
     TokenCreatePermissionError,
-    TokenEditPermissionError, TokenPermissionError,
+    TokenEditPermissionError,
+    TokenPermissionError,
 )
 from gcampus.auth.views.register import RegisterFormView
 from gcampus.auth.views.token import (
