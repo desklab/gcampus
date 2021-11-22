@@ -25,6 +25,7 @@ from django.views.decorators.cache import cache_page
 from overpy.exception import OverpassTooManyRequests, OverpassGatewayTimeout
 from rest_framework import viewsets, serializers, status
 from rest_framework.exceptions import ParseError, Throttled
+from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 
@@ -32,6 +33,7 @@ from gcampus.api.serializers import GeoLookupSerializer
 
 
 class GeoLookupViewSet(viewsets.ViewSet):
+    permission_classes = [AllowAny]
     api = overpy.Overpass(url=getattr(settings, "OVERPASS_SERVER", None))
     serializer = GeoLookupSerializer
 
