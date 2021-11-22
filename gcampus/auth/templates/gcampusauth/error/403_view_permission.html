@@ -2,7 +2,6 @@
 {% load auth_token %}
 {% load i18n %}
 {% block exception_message %}
-    {% url "gcampusauth:register" as regsister_url %}
     {% if user_token_is_access_key %}
         {% blocktranslate trimmed %}
             You are currently logged in with the following access key:
