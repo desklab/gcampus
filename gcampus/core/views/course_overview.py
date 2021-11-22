@@ -71,6 +71,8 @@ class CourseOverviewFormView(TitleMixin, UpdateView):
             kwargs["access_keys"] = AccessKey.objects.filter(parent_token=self.object)
         if "generate_accesskeys_form" not in kwargs:
             kwargs["generate_accesskeys_form"] = GenerateAccessKeysForm()
+        if "register_max_access_key" not in kwargs:
+            kwargs["register_max_access_key"] = settings.REGISTER_MAX_ACCESS_KEY_NUMBER
         return super().get_context_data(**kwargs)
 
 

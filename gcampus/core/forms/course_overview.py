@@ -40,7 +40,7 @@ class CourseOverviewForm(forms.ModelForm):
 
     class Meta:
         model = CourseToken
-        fields = ["token_name", "teacher_email"]
+        fields = ["token_name", "school_name", "teacher_email"]
 
     def non_field_errors(self):
         errors = super(CourseOverviewForm, self).non_field_errors()
