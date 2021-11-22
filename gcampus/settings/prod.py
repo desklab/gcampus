@@ -44,4 +44,6 @@ DATABASES = {
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = ["DjangoModelPermissionsOrAnonReadOnly"]
+REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = [
+    "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+]
