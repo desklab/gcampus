@@ -79,7 +79,7 @@ class CourseMeasurementListView(ListView):
     model = Measurement
     paginate_by = 10
 
-    @method_decorator(require_access_key)
+    @method_decorator(require_any_token)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
