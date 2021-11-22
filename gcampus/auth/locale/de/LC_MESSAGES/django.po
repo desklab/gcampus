@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-27 11:01+0200\n"
+"POT-Creation-Date: 2021-11-22 12:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,57 +29,225 @@ msgstr "Ausgewählte Token reaktivieren"
 msgid "GCampus Auth"
 msgstr "GCampus Auth"
 
-#: gcampus/auth/exceptions.py:19
-msgid "Token is not allowed to edit this measurement!"
-msgstr "Der Schlüssel hat nicht die Berechtigung diese Messung zu verändern!"
-
-#: gcampus/auth/exceptions.py:20
-msgid "Token is not allowed to create a measurement!"
-msgstr "Der Schlüssel hat nicht die Berechtigung eine Messung zu erstellen!"
-
 #: gcampus/auth/exceptions.py:21
-msgid "No token has been provided to create or edit a measurement!"
-msgstr ""
-"Es wurde kein Schlüssel zum Erstellen oder Bearbeiten der Messung angegeben!"
+msgid "This page can only be accessed by authenticated users"
+msgstr "Diese Seite ist nur für angemeldete Benutzer zugänglich"
 
 #: gcampus/auth/exceptions.py:22
-msgid "Provided token is not invalid or does not exist."
-msgstr "Der eingegebene Schlüssel ist ungültig oder existiert nicht!"
+msgid "Token is not allowed to edit this measurement"
+msgstr "Der Schlüssel hat nicht die Berechtigung diese Messung zu verändern"
 
-#: gcampus/auth/forms/token.py:36 gcampus/auth/models/token.py:96
+#: gcampus/auth/exceptions.py:23
+msgid "Token is not allowed to create a measurement"
+msgstr "Der Schlüssel hat nicht die Berechtigung eine Messung zu erstellen"
+
+#: gcampus/auth/exceptions.py:24
+msgid "No token has been provided to create or edit a measurement"
+msgstr ""
+"Es wurde kein Schlüssel zum Erstellen oder Bearbeiten der Messung angegeben"
+
+#: gcampus/auth/exceptions.py:25
+msgid "Token has no permission to access this site"
+msgstr "Der Schlüssel hat nicht die Berechtigung auf diese Seite zuzugreifen"
+
+#: gcampus/auth/exceptions.py:26
+msgid "Provided token is not invalid or does not exist"
+msgstr "Der eingegebene Schlüssel ist ungültig oder existiert nicht"
+
+#: gcampus/auth/exceptions.py:30
+msgid ""
+"This access key has been deactivated and can no longer be used. Please "
+"contact the responsible teacher for more information."
+msgstr ""
+"Dieser Zugangscode wurde deaktiviert und kann nicht mehr verwendet werden. "
+"Bitte kontaktiere deine Lehrkraft für mehr Informationen."
+
+#: gcampus/auth/exceptions.py:34
+msgid "This course token has been deactivated and can no longer be used."
+msgstr ""
+"Dieser Kursschlüssel wurde deaktiviert und kann nicht mehr verwendet werden."
+
+#: gcampus/auth/forms/token.py:39 gcampus/auth/models/token.py:104
 msgid "Access Key"
 msgstr "Zugangscode"
 
-#: gcampus/auth/forms/token.py:47 gcampus/auth/models/token.py:57
+#: gcampus/auth/forms/token.py:52 gcampus/auth/models/token.py:61
 msgid "Course Token"
 msgstr "Kursschlüssel"
 
-#: gcampus/auth/models/token.py:45
+#: gcampus/auth/models/token.py:43
+msgid "Course Token Name"
+msgstr "Kursschlüssel Name"
+
+#: gcampus/auth/models/token.py:49
 msgid "School Name"
 msgstr "Name der Schule"
 
-#: gcampus/auth/models/token.py:49
+#: gcampus/auth/models/token.py:53
 msgid "Teacher Name"
 msgstr "Name der Lehrkraft"
 
-#: gcampus/auth/models/token.py:53
-msgid "Email Adress"
-msgstr ""
+#: gcampus/auth/models/token.py:57
+msgid "E-Mail Address"
+msgstr "E-Mail-Adresse"
 
-#: gcampus/auth/models/token.py:77
+#: gcampus/auth/models/token.py:81
 #, python-format
 msgid "Course Token %(id)s"
 msgstr "Kursschlüssel %(id)s"
 
-#: gcampus/auth/models/token.py:116
+#: gcampus/auth/models/token.py:124
 #, python-format
 msgid "Access Key %(id)s"
 msgstr "Zugangscode %(id)s"
 
+#: gcampus/auth/templates/gcampusauth/components/auth_menu.html:11
+#: gcampus/auth/templates/gcampusauth/components/auth_menu.html:23
+#: gcampus/auth/templates/gcampusauth/sites/login_success.html:28
+msgid "Course Measurements"
+msgstr "Messungen des Kurses"
+
+#: gcampus/auth/templates/gcampusauth/components/auth_menu.html:15
+msgid "Course Overview"
+msgstr "Kursübersicht"
+
+#: gcampus/auth/templates/gcampusauth/components/auth_menu.html:19
+msgid "Your Measurements"
+msgstr "Deine Messungen"
+
+#: gcampus/auth/templates/gcampusauth/components/auth_menu.html:28
 #: gcampus/auth/templates/gcampusauth/forms/logout.html:4
-#: gcampus/auth/templates/gcampusauth/forms/token.html:52
+#: gcampus/auth/templates/gcampusauth/forms/token.html:60
 msgid "Logout"
 msgstr "Abmelden"
+
+#: gcampus/auth/templates/gcampusauth/components/token.html:16
+msgid "Hide"
+msgstr "Verstecken"
+
+#: gcampus/auth/templates/gcampusauth/components/token.html:17
+msgid "Show"
+msgstr "Anzeigen"
+
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:6
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:5
+#: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:7
+msgid "You are currently logged in with the following access key:"
+msgstr "Du bist momentan mit folgendem Zugangscode angemeldet:"
+
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:10
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:9
+#: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:11
+msgid "You are currently logged in with the following course token:"
+msgstr "Du bist momentan mit folgendem Kursschlüssel angemeldet:"
+
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:20
+msgid ""
+"It seems like your access key currently does not have the permission to "
+"create a measurement. Please contact your teacher for help."
+msgstr ""
+"Scheinbar hat dein Zugangscode zurzeit nicht die Berechtigung, eine neue "
+"Messung zu erstellen. Bitte wende dich an deine Lehrkraft für mehr "
+"Informationen."
+
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:26
+#, python-format
+msgid ""
+"To create a measurement, you have to login using an access key. As a "
+"teacher, you can generate a new access key for your own measurement on the "
+"<a class=\"text-dark\" href=\"%(course_overview_url)s\">course overview</a> "
+"page."
+msgstr ""
+"Um eine neue Messung zu erstellen, musst du dich mit einem Zugangscode "
+"anmelden. Als Lehrkraft kannst du dir dazu einen neuen Zugangscode auf der "
+"<a class=\"text-dark\" href=\"%(course_overview_url)s\">Kurs-Übersicht</a> "
+"generieren."
+
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:39
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:28
+#: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:19
+#: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:40
+#: gcampus/auth/views/token.py:72
+msgid "Login as Student"
+msgstr "Als Schüler:in Anmelden"
+
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:43
+msgid ""
+"If you login with a different access key, you will automatically be logged "
+"out from your old key."
+msgstr ""
+"Wenn du dich mit einem anderen Zugangscode anmeldest, wist du automatisch "
+"von deinem alten Schlüssel abgemedet."
+
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:17
+msgid ""
+"To edit a measurement, you have to login using the same access key that has "
+"been used to create the measurement. Alternatively, teachers can login with "
+"a course token to edit all measurements of their course."
+msgstr ""
+"Um eine Messung zu berarbeiten, musst du dich mit dem gleichen Zugangscode "
+"anmelden, mit dem diese Messung erstellt wurde. Alternativ können sich "
+"Lehrkräfte mit dem Kursschlüssel anmelden um alle Messungen eines Kurses zu "
+"bearbeiten."
+
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:32
+#: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:23
+#: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:44
+#: gcampus/auth/views/token.py:78
+msgid "Login as Teacher"
+msgstr "Als Lehrkraft Anmelden"
+
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:36
+#: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:48
+msgid ""
+"If you login with a different access key or course token, you will "
+"automatically be logged out from your old key."
+msgstr ""
+"Wenn du dich mit einem anderen Zugangscode oder Kursschlüssel anmeldest, "
+"wist du automatisch von deinem alten Schlüssel abgemedet."
+
+#: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:5
+#, python-format
+msgid ""
+"Some features, for example adding a new measurement, are limited to "
+"authenticated users. Please use your access key or the course token to log "
+"in. <br> If you don't have an access key, your teacher can generate one for "
+"you. As a teacher you can <a class=\"text-dark\" href=\"%(regsister_url)s"
+"\">register</a> a new course."
+msgstr ""
+"Einige Funktionen wie zum Beispiel das Hinzufügen von Messungen sind nur für "
+"angemeldete Nutzer zugänglich. Bitte verwende deinen Zugangscode oder einen "
+"Kursschlüssel um dich anzumelden. <br>Solltest du keinen Zugangscode haben, "
+"kannst du deine Lehrkraft darum bitten, einen neuen Zugangscode zu "
+"generieren. Als Lehrkraft kannst du einen neuen Kurs <a class=\"text-dark\" "
+"href=\"%(regsister_url)s\">registrieren</a>."
+
+#: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:28
+msgid "Register new Course"
+msgstr "Neuen Kurs Registrieren"
+
+#: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:20
+msgid ""
+"Your access key does not have the permission to view this page. Please try "
+"again with a different access key or login as a teacher using a course "
+"token. <br> If the issue persists, ask your teacher for assistance."
+msgstr ""
+"Dein Zugangscode hat nicht die Berechtigung um auf diese Seite zuzugreifen. "
+"Bitte versuche es mit einem anderen Zugangscode erneut oder melde dich als "
+"Lehrkraft mit einem Kursschlüssel an. <br>"
+"Bitte wende dich an deine Lehrkraft falls du weiterhin Probleme mit dieser "
+"Seite hast."
+
+#: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:27
+msgid ""
+"Your course token does not have the permission to view this page. Please try "
+"again with a different course token or login as a student using an access "
+"key. <br> If you need further assistance, please contact us."
+msgstr ""
+"Dein Kursschlüssel hat nicht die Berechtigung um auf diese Seite zuzugreifen. "
+"Bitte versuche es mit einem anderen Kursschlüssel erneut oder melde dich als "
+"Schüler:in mit einem Zugangscode an. <br>"
+"Bitte kontaktiere uns falls du weiterhin Probleme mit dieser Seite hast."
 
 #: gcampus/auth/templates/gcampusauth/forms/logout.html:11
 msgid "You successfully logged out"
@@ -93,96 +261,98 @@ msgstr "Mit einem Zugangscode anmelden"
 msgid "Log in with a course token"
 msgstr "Mit einem Kursschlüssel anmelden"
 
-#: gcampus/auth/templates/gcampusauth/forms/register.html:4
-#: gcampus/auth/templates/gcampusauth/sites/register_success.html:4
-msgid "Request Access Keys"
-msgstr "Zugangscodes Anfordern"
-
-#: gcampus/auth/templates/gcampusauth/forms/register.html:12
-msgctxt "register heading"
-msgid "Register"
-msgstr "Registrieren"
-
-#: gcampus/auth/templates/gcampusauth/forms/register.html:14
+#: gcampus/auth/templates/gcampusauth/forms/register.html:11
 msgctxt "help text register"
 msgid ""
-"Register your class or\n"
-"course and generate a list of <b>access keys</b> for your students.\n"
-"These keys can be used to create and later edit measurements on\n"
-"GewässerCampus.\n"
-"<br>\n"
-"Alongside the generated access keys, you will also receive a\n"
-"<b>course key</b> that should be kept private. With this key you can\n"
-"view and edit all your student's measurements."
+"Register your class or course and generate a list of <b>access keys</b> for "
+"your students. These keys can be used to create and later edit measurements "
+"on GewässerCampus. <br> Alongside the generated access keys, you will also "
+"receive a <b>course token</b> that should be kept private. With this key you "
+"can view and edit all your student's measurements."
 msgstr ""
+"Registriere deine Klasse oder Kurs und generiere eine Liste an <b>access "
+"keys</b> für deine Schüler:innen. Diese Zugangscodes können verwendet "
+"werden, um neue Messungen auf GewässerCampus zu erstellen und diese zu "
+"bearbeiten. <br> Neben den generierten Zugangscodes wirst du außerdem einen "
+"<b>Kursschlüssel</b> erhalten. Dieser sollte privat bleiben, da du damit "
+"alle Messungen deines Kurses verwalten kannst."
 
 #: gcampus/auth/templates/gcampusauth/forms/register.html:35
 msgctxt "help text school name"
 msgid ""
-"The name of the\n"
-"school or educational institution requesting new tokens. This\n"
-"information will not be shared publicly but helps us to associate\n"
+"The name of the school or educational institution requesting new tokens. "
+"This information will not be shared publicly but helps us to associate "
 "measurements with your school or institution."
 msgstr ""
+"Der Name der Schule oder Institution, für die die Zugangscodes generiert "
+"werden sollen. Diese Daten werden nur für eine bessere Zuordnung der "
+"Zugangscodes intern von desklab verwendet und nicht veröffentlicht."
 
-#: gcampus/auth/templates/gcampusauth/forms/register.html:51
+#: gcampus/auth/templates/gcampusauth/forms/register.html:53
 msgctxt "help text teacher name"
 msgid ""
-"Your name or the\n"
-"name of a representative. This information will also be kept private and\n"
-"is only used for communication."
+"Your name or the name of a representative. This information will also be "
+"kept private and is only used for communication."
 msgstr ""
+"Dein Name oder der Name der Person welche verantwortlich für die "
+"Registrierung ist. Dieser Name wird nicht veröffentlicht und dient lediglich "
+"für die Kommunikation zwischen der Lehrkraft und desklab."
 
-#: gcampus/auth/templates/gcampusauth/forms/register.html:66
+#: gcampus/auth/templates/gcampusauth/forms/register.html:70
+msgctxt "help text course key name"
 msgid ""
-"\n"
-"    Your Email address will only be used to send you the Course Token and "
-"the Access Keys.\n"
-"<br>\n"
-"In case we need to contact you this Email address wil be used. "
-msgstr ""
+"You can choose to assign a name to the course key to better differentiate "
+"the tokens from one another."
+msgstr "Vergebe einen Namen für diesen Kurs um den Überblick zu behalten."
 
-#: gcampus/auth/templates/gcampusauth/forms/register.html:82
+#: gcampus/auth/templates/gcampusauth/forms/register.html:86
+msgid ""
+"Your Email address will only be used to send you the Course Token and the "
+"Access Keys. <br> In case we need to contact you this Email address wil be "
+"used."
+msgstr ""
+"Diese E-Mail Adresse wird nur dafür verwendet, um die Zugangscodes und den "
+"Kursschlüssel zu versenden. <br>Diese E-Mail Adresse wird auch verwendet, "
+"falls wir dich kontaktieren müssen."
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:104
 #, python-format
 msgctxt "help text number of tokens"
 msgid ""
-"\n"
-"The number of access keys you want to generate. You can create a maximum\n"
-"of %(maximum)s access keys at once.\n"
-"<br>\n"
-"Students may share one access key in a group so not everyone needs their\n"
-"own access key."
+"The number of access keys you want to generate. You can create a maximum of "
+"%(maximum)s access keys at once. <br> Students may share one access key in a "
+"group so not everyone needs their own access key."
 msgstr ""
+"Die Anzahl der zu generierenden Zugangscodes. Es können maximal %(maximum)s "
+"Zugangscodes auf einmal erzeugt werden. <br>Nicht jede:r Schüler:in benötigt "
+"einen eigenen Zugangscode, ein Zugangscode kann auch von einer Gruppe "
+"verwendet werden."
 
-#: gcampus/auth/templates/gcampusauth/forms/register.html:92
+#: gcampus/auth/templates/gcampusauth/forms/register.html:115
 msgid "Register"
 msgstr "Registrieren"
 
-#: gcampus/auth/templates/gcampusauth/forms/token.html:4
-msgid "Verification"
-msgstr "Verifikation"
-
-#: gcampus/auth/templates/gcampusauth/forms/token.html:12
+#: gcampus/auth/templates/gcampusauth/forms/token.html:8
 msgid "Verify with a access key"
 msgstr "Mit einem Zugangscode anmelden"
 
-#: gcampus/auth/templates/gcampusauth/forms/token.html:14
+#: gcampus/auth/templates/gcampusauth/forms/token.html:10
 msgid "Verify with a course token"
 msgstr "Mit einem Kursschlüssel anmelden"
 
-#: gcampus/auth/templates/gcampusauth/forms/token.html:20
+#: gcampus/auth/templates/gcampusauth/forms/token.html:16
 msgid "You are currently logged in with an access key"
 msgstr "Du bist momentan mit einem Zugangscode angemeldet"
 
-#: gcampus/auth/templates/gcampusauth/forms/token.html:26
+#: gcampus/auth/templates/gcampusauth/forms/token.html:22
 msgid "You are currently logged in with a course token"
 msgstr "Du bist momentan mit einem Kursschlüssel angemeldet"
 
-#: gcampus/auth/templates/gcampusauth/forms/token.html:47
+#: gcampus/auth/templates/gcampusauth/forms/token.html:55
 msgid "Confirm"
 msgstr "Bestätigen"
 
-#: gcampus/auth/templates/gcampusauth/forms/token.html:54
+#: gcampus/auth/templates/gcampusauth/forms/token.html:62
 msgid "Log in with new Token"
 msgstr "Mit neuem Token anmelden"
 
@@ -190,48 +360,75 @@ msgstr "Mit neuem Token anmelden"
 msgid "Successful Login"
 msgstr "Erfolgreich angemeldet"
 
-#: gcampus/auth/templates/gcampusauth/sites/login_success.html:13
-msgid "You logged in successfully"
-msgstr "Du hast dich erfolgreich angemeldet"
+#: gcampus/auth/templates/gcampusauth/sites/login_success.html:14
+msgid "You successfully logged in with a course token"
+msgstr "Du wurdest erfolgreich mit einem Kursschlüssel angemeldet"
 
-#: gcampus/auth/templates/gcampusauth/sites/login_success.html:18
+#: gcampus/auth/templates/gcampusauth/sites/login_success.html:16
+msgid "You successfully logged in with an access key"
+msgstr "Du wurdest erfolgreich mit einem Zugangscode angemeldet"
+
+#: gcampus/auth/templates/gcampusauth/sites/login_success.html:23
 msgid "Mapview"
 msgstr "Kartenansicht"
 
-#: gcampus/auth/templates/gcampusauth/sites/login_success.html:20
+#: gcampus/auth/templates/gcampusauth/sites/login_success.html:25
 msgid "All Measurements"
 msgstr "Alle Messungen"
 
-#: gcampus/auth/templates/gcampusauth/sites/login_success.html:23
-msgid "Course Measurements"
-msgstr "Messungen des Kurses"
-
-#: gcampus/auth/templates/gcampusauth/sites/login_success.html:26
+#: gcampus/auth/templates/gcampusauth/sites/login_success.html:31
 msgid "My Measurements"
 msgstr "Meine Messungen"
 
-#: gcampus/auth/templates/gcampusauth/sites/register_success.html:12
-#, fuzzy
-#| msgid "Log in with a course token"
-msgid "This is your Coursetoken"
-msgstr "Mit einem Kursschlüssel anmelden"
+#: gcampus/auth/templates/gcampusauth/sites/register_success.html:4
+#: gcampus/auth/views/register.py:35
+msgid "Request Access Keys"
+msgstr "Zugangscodes Anfordern"
+
+#: gcampus/auth/templates/gcampusauth/sites/register_success.html:10
+#, python-format
+msgid "These are the tokens registered under the name: %(name)s "
+msgstr ""
 
 #: gcampus/auth/templates/gcampusauth/sites/register_success.html:16
-msgid "These are your Accesskeys"
+msgid "This is your course token"
+msgstr "Dies ist Ihr Kursschlüssel"
+
+#: gcampus/auth/templates/gcampusauth/sites/register_success.html:20
+msgid "These are your access keys"
+msgstr "Dies sind Ihre Zugangscodes"
+
+#: gcampus/auth/templates/gcampusauth/sites/register_success.html:32
+msgid "Download your course token and all access keys in  a PDF"
 msgstr ""
 
-#: gcampus/auth/templates/gcampusauth/sites/register_success.html:28
-msgid "Download your Coursetoken and all Accesskeys in  a PDF"
-msgstr ""
-
-#: gcampus/auth/templates/gcampusauth/sites/register_success.html:29
+#: gcampus/auth/templates/gcampusauth/sites/register_success.html:33
 msgid "Download"
 msgstr ""
 
-#: gcampus/auth/templates/gcampusauth/sites/register_success.html:35
-msgid "Send your Coursetoken and all Accesskeys in  a PDF via Email"
+#: gcampus/auth/templates/gcampusauth/sites/register_success.html:39
+msgid "Send your course token and all access keys in a PDF via Email"
 msgstr ""
 
-#: gcampus/auth/templates/gcampusauth/sites/register_success.html:36
-msgid "Send to my Email"
+#: gcampus/auth/templates/gcampusauth/sites/register_success.html:40
+msgid "Send to my E-Mail"
 msgstr ""
+
+#: gcampus/auth/views/register.py:48
+msgid ""
+"You successfully registered a course. This page serves as an overview and "
+"allows you to view your course's access keys"
+msgstr ""
+"Der Kurs wurde erfolgreich registriert! Diese Seite dient als Übersicht über "
+"den Kurs und den damit verbundenen Zugangscodes."
+
+#: gcampus/auth/views/token.py:42
+msgid "Login"
+msgstr "Anmelden"
+
+#~ msgctxt "register heading"
+#~ msgid "Register"
+#~ msgstr "Registrieren"
+
+#~ msgid "You logged in successfully"
+#~ msgstr "Du hast dich erfolgreich angemeldet"

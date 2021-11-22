@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -16,18 +16,18 @@
 from datetime import datetime
 
 from django.forms.utils import ErrorList
-from django.test import TestCase
 from django.urls import reverse
 
 from gcampus.auth.exceptions import (
     TOKEN_EMPTY_ERROR,
     TOKEN_INVALID_ERROR,
 )
-from gcampus.auth.models import CourseToken, AccessKey
-from gcampus.core.forms.measurement import TOKEN_FIELD_NAME
+from gcampus.auth.fields.token import HIDDEN_TOKEN_FIELD_NAME
+from gcampus.auth.tests.test_token_auth import BaseAuthTest
+from gcampus.auth.widgets import split_token_chunks
 
 
-class MeasurementViewTest(TestCase):
+class MeasurementViewTest(BaseAuthTest):
     today = datetime.today()
     form_data_stub: dict = {
         "time_0_0": today.day,
@@ -37,20 +37,11 @@ class MeasurementViewTest(TestCase):
         "time_1_1": today.minute,
     }
 
-    def setUp(self) -> None:
-        self.parent_token = CourseToken(
-            school_name="GCampus Test Case", teacher_name="GCampus Testing"
-        )
-        self.parent_token.save()
-        self.tokens = []
-        for i in range(5):
-            _token = AccessKey(parent_token=self.parent_token)
-            _token.save()
-            self.tokens.append(_token)
-
     def login(self, token):
+        token_chunks = split_token_chunks(token)
         login_response = self.client.post(
-            reverse("gcampusauth:access_key_form"), {"token": token}
+            reverse("gcampusauth:loginaccesskey"),
+            {"token_0": token_chunks[0], "token_1": token_chunks[1]},
         )
         return login_response
 
@@ -59,7 +50,7 @@ class MeasurementViewTest(TestCase):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": "Foo Bar gcampus_osm_id:42",
         }
 
@@ -77,7 +68,7 @@ class MeasurementViewTest(TestCase):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: "00000000",
+            HIDDEN_TOKEN_FIELD_NAME: "00000000",
             "water_name": "Foo Bar gcampus_osm_id:42",
         }
         form_data.update(self.form_data_stub)
@@ -88,10 +79,10 @@ class MeasurementViewTest(TestCase):
         errors = response.context["form"].errors
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.context["form"].is_valid())
-        self.assertIn(TOKEN_FIELD_NAME, errors)
+        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(
-            errors[TOKEN_FIELD_NAME],
+            errors[HIDDEN_TOKEN_FIELD_NAME],
             ErrorList([TOKEN_INVALID_ERROR]),
         )
 
@@ -100,7 +91,7 @@ class MeasurementViewTest(TestCase):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.parent_token,
+            HIDDEN_TOKEN_FIELD_NAME: self.parent_token,
             "water_name": "Foo Bar gcampus_osm_id:42",
         }
         form_data.update(self.form_data_stub)
@@ -111,10 +102,10 @@ class MeasurementViewTest(TestCase):
         errors = response.context["form"].errors
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.context["form"].is_valid())
-        self.assertIn(TOKEN_FIELD_NAME, errors)
+        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(
-            errors[TOKEN_FIELD_NAME],
+            errors[HIDDEN_TOKEN_FIELD_NAME],
             ErrorList([TOKEN_INVALID_ERROR]),
         )
 
@@ -123,7 +114,7 @@ class MeasurementViewTest(TestCase):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token + "0",
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token + "0",
             "water_name": "Foo Bar gcampus_osm_id:42",
         }
         form_data.update(self.form_data_stub)
@@ -135,10 +126,10 @@ class MeasurementViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.context["form"].is_valid())
-        self.assertIn(TOKEN_FIELD_NAME, errors)
+        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(
-            errors[TOKEN_FIELD_NAME],
+            errors[HIDDEN_TOKEN_FIELD_NAME],
             ErrorList([TOKEN_INVALID_ERROR]),
         )
 
@@ -147,7 +138,7 @@ class MeasurementViewTest(TestCase):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": "Foo Bar gcampus_osm_id:42",
         }
         form_data.update(self.form_data_stub)
@@ -172,9 +163,9 @@ class MeasurementViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.context["form"].is_valid())
-        self.assertIn(TOKEN_FIELD_NAME, errors)
+        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, errors)
         self.assertEqual(len(errors), 1)
         self.assertEqual(
-            errors[TOKEN_FIELD_NAME],
+            errors[HIDDEN_TOKEN_FIELD_NAME],
             ErrorList([TOKEN_EMPTY_ERROR]),
         )

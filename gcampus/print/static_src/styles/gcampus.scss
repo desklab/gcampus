@@ -1,0 +1,21 @@
+// VARIABLES -------------------------------------------------------------------
+@import "vars/colors";
+@import "vars/sizes";
+@import "vars/spacers";
+
+// BASE ------------------------------------------------------------------------
+@import "layout/base";
+@import "typography/base";
+
+// LAYOUT ----------------------------------------------------------------------
+@import "layout/float";
+@import "layout/qrcode";
+@import "layout/text";
+
+// TYPOGRAPHY ------------------------------------------------------------------
+@import "typography/qrcode";
+@import "typography/text";
+
+// META/PAGE -------------------------------------------------------------------
+@import "meta"; //str-set of meta-data
+@import "page"; //style of header and footer

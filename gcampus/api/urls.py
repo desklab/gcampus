@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -18,15 +18,15 @@ from rest_framework import routers
 
 from gcampus.api.views import (
     MeasurementAPIViewSet,
-    DataTypeAPIViewSet,
-    DataPointAPIViewSet,
+    ParameterTypeAPIViewSet,
+    ParameterAPIViewSet,
     GeoLookupViewSet,
 )
 
 router_v1 = routers.DefaultRouter()
 router_v1.register(r"measurements", MeasurementAPIViewSet)
-router_v1.register(r"datatypes", DataTypeAPIViewSet)
-router_v1.register(r"datapoints", DataPointAPIViewSet)
+router_v1.register(r"datatypes", ParameterTypeAPIViewSet)
+router_v1.register(r"datapoints", ParameterAPIViewSet)
 router_v1.register(r"geolookup", GeoLookupViewSet, basename="geolookup")
 
 urlpatterns = [path("", include(router_v1.urls))]

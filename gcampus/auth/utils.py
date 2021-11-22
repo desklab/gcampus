@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -33,8 +33,22 @@ def get_token_type(request: HttpRequest, default: str = None) -> Optional[str]:
     return default
 
 
-def set_token(request: HttpRequest, token: str, token_type: str):
-    request.session[TOKEN_STORE] = {"token": token, "token_type": token_type}
+def get_token_name(request: HttpRequest, default: str = None) -> Optional[str]:
+    if TOKEN_STORE in request.session:
+        return request.session[TOKEN_STORE].get("token_name", default)
+    return default
+
+
+def is_authenticated(request: HttpRequest) -> bool:
+    return request.session.get(AUTHENTICATION_BOOLEAN, False)
+
+
+def set_token(request: HttpRequest, token: str, token_type: str, token_name):
+    request.session[TOKEN_STORE] = {
+        "token": token,
+        "token_type": token_type,
+        "token_name": token_name,
+    }
     request.session[AUTHENTICATION_BOOLEAN] = True
 
 

@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -34,16 +34,14 @@ from gcampus.auth.exceptions import (
     TOKEN_CREATE_PERMISSION_ERROR,
     TOKEN_EDIT_PERMISSION_ERROR,
 )
-from gcampus.auth.fields.token import TokenField
+from gcampus.auth.fields.token import TokenField, HIDDEN_TOKEN_FIELD_NAME
 from gcampus.auth.models.token import (
     can_token_edit_measurement,
     get_token_and_create_permission,
 )
 from gcampus.core.fields import SplitSplitDateTimeField
-from gcampus.core.models import Measurement, DataPoint
+from gcampus.core.models import Measurement, Parameter
 from gcampus.map.widgets import GeoPointWidget
-
-TOKEN_FIELD_NAME = "gcampus_auth_token"
 
 
 class MeasurementForm(ModelForm):
@@ -60,7 +58,7 @@ class MeasurementForm(ModelForm):
     def non_field_errors(self):
         errors = super(MeasurementForm, self).non_field_errors()
         token_errors = self.errors.get(
-            TOKEN_FIELD_NAME, self.error_class(error_class="nonfield")
+            HIDDEN_TOKEN_FIELD_NAME, self.error_class(error_class="nonfield")
         )
         return errors + token_errors
 
@@ -74,15 +72,17 @@ class MeasurementForm(ModelForm):
         super(MeasurementForm, self)._clean_fields()
 
         # Validate token field
-        if TOKEN_FIELD_NAME in self._errors:
+        if HIDDEN_TOKEN_FIELD_NAME in self._errors:
             # No need to further validate the token. It is already
             # marked as invalid
             pass
         else:
-            current_token = self.cleaned_data[TOKEN_FIELD_NAME]
+            current_token = self.cleaned_data[HIDDEN_TOKEN_FIELD_NAME]
             current_instance: Optional[Measurement] = self.instance
             token_error: Optional[ValidationError] = None
             if current_instance is None or current_instance.id in EMPTY_VALUES:
+                # Measurement is being created, i.e. the form is used to
+                # create a new measurement
                 token_instance, permission = get_token_and_create_permission(
                     current_token
                 )
@@ -96,31 +96,32 @@ class MeasurementForm(ModelForm):
                 if not can_token_edit_measurement(current_token, current_instance):
                     token_error = ValidationError(TOKEN_EDIT_PERMISSION_ERROR)
             if token_error is not None:
-                self.add_error(TOKEN_FIELD_NAME, token_error)
+                self.add_error(HIDDEN_TOKEN_FIELD_NAME, token_error)
 
-        water_name = self.cleaned_data["water_name"]
-        if "gcampus_osm_id" in water_name:
-            # The water_name includes a OpenStreetMap ID and will
-            # thus be parsed to save this ID in a separate column.
-            osm_id_field: IntegerField = self.fields["osm_id"]
-            water_name_field: CharField = self.fields["water_name"]
-            try:
-                name, osm_id = water_name.split(" gcampus_osm_id:")
-                # Make sure the fields are cleaned because the field may
-                # contain malicious user input. A gcampus_osm_id can be
-                # passed by any used when using the variable water name
-                # field.
-                name = water_name_field.clean(name)
-                osm_id = osm_id_field.clean(osm_id)
-                self.cleaned_data["water_name"] = name
-                self.cleaned_data["osm_id"] = osm_id
-            except (ValueError, OverflowError, TypeError, ValidationError):
-                error = ValidationError(_("Unable to parse OpenStreetMap ID!"))
-                self.add_error("water_name", error)
+        if "water_name" not in self.errors:
+            water_name = self.cleaned_data["water_name"]
+            if "gcampus_osm_id" in water_name:
+                # The water_name includes a OpenStreetMap ID and will
+                # thus be parsed to save this ID in a separate column.
+                osm_id_field: IntegerField = self.fields["osm_id"]
+                water_name_field: CharField = self.fields["water_name"]
+                try:
+                    name, osm_id = water_name.split(" gcampus_osm_id:")
+                    # Make sure the fields are cleaned because the field may
+                    # contain malicious user input. A gcampus_osm_id can be
+                    # passed by any used when using the variable water name
+                    # field.
+                    name = water_name_field.clean(name)
+                    osm_id = osm_id_field.clean(osm_id)
+                    self.cleaned_data["water_name"] = name
+                    self.cleaned_data["osm_id"] = osm_id
+                except (ValueError, OverflowError, TypeError, ValidationError):
+                    error = ValidationError(_("Unable to parse OpenStreetMap ID!"))
+                    self.add_error("water_name", error)
 
 
-class DataPointForm(ModelForm):
-    """Data Point Form
+class ParameterForm(ModelForm):
+    """Parameter Form
 
     Data points (see :class:`gcampus.core.models.DataPoint`) are used
     to add data to a measurement. A data point form is always served
@@ -132,10 +133,10 @@ class DataPointForm(ModelForm):
     """
 
     class Meta:
-        model = DataPoint
-        fields = ["data_type", "value", "comment"]
+        model = Parameter
+        fields = ["parameter_type", "value", "comment"]
         widgets = {
-            "data_type": Select(attrs={"class": "form-select form-select-sm"}),
+            "parameter_type": Select(attrs={"class": "form-select form-select-sm"}),
             "value": NumberInput(
                 attrs={
                     "class": "form-control form-control-sm",
@@ -154,11 +155,11 @@ class DataPointForm(ModelForm):
 
 class TokenManagementForm(ManagementForm):
     def __init__(self, *args, **kwargs):
-        self.base_fields[TOKEN_FIELD_NAME] = TokenField()
+        self.base_fields[HIDDEN_TOKEN_FIELD_NAME] = TokenField()
         super().__init__(*args, **kwargs)
 
     def check_permission(self, measurement: Measurement) -> bool:
-        token = self.cleaned_data[TOKEN_FIELD_NAME]
+        token = self.cleaned_data[HIDDEN_TOKEN_FIELD_NAME]
         return can_token_edit_measurement(token, measurement)
 
 
@@ -205,7 +206,7 @@ class DynamicInlineFormset(BaseInlineFormSet):
         management_form = self.management_form
         try:
             if not management_form.is_valid():
-                if TOKEN_FIELD_NAME in management_form.errors:
+                if HIDDEN_TOKEN_FIELD_NAME in management_form.errors:
                     # The error is not due to a tampered management form
                     # but due to a missing or invalid auth token.
                     raise ValidationError(TOKEN_EDIT_PERMISSION_ERROR)
@@ -223,10 +224,10 @@ class DynamicInlineFormset(BaseInlineFormSet):
                 self._non_form_errors = self.error_class(e.error_list)
 
 
-DataPointFormSet: Type[DynamicInlineFormset] = inlineformset_factory(
+ParameterFormSet: Type[DynamicInlineFormset] = inlineformset_factory(
     Measurement,
-    DataPoint,
-    form=DataPointForm,
+    Parameter,
+    form=ParameterForm,
     can_delete=True,
     extra=0,
     formset=DynamicInlineFormset,

@@ -5,5 +5,25 @@ $utilities: (
       none: none,
       textfield: textfield
     )
-  )
+  ),
+  "max-width": (
+    property: max-width,
+    class: mw,
+    values: (
+      100: 100%,
+      75: 75%,
+      60: 60%,
+      50: 50%,
+    )
+  ),
+  //"min-height": (
+  //  property: min-height,
+  //  class: min-h,
+  //  values: (100: 100%)
+  //),
 );
+
+$sidebar-opened-width: 260px;
+$sidebar-closed-width: 4.5rem;
+
+$gcampus-navbar-height: 72px;

@@ -1,27 +1,27 @@
 {% extends "gcampuscore/base.html" %}
 {% load i18n %}
-{% block title %}
-    {% translate "Request Access Keys" %}
-{% endblock %}
+{% block main_class %}px-0 main-pt-0 min-vh-100{% endblock %}
 {% block content %}
-    <div class="container-fluid">
+    <div class="container-fluid px-0">
         <form method="POST">
             {% csrf_token %}
             <div class="row">
-                <div class="col-7 p-5">
-                    <h3>{% translate "Register" context "register heading" %}</h3>
+                <div class="col-7 px-5">
                     <p class="mt-3">
-{% blocktranslate context "help text register" %}Register your class or
-course and generate a list of <b>access keys</b> for your students.
-These keys can be used to create and later edit measurements on
-GewässerCampus.
-<br>
-Alongside the generated access keys, you will also receive a
-<b>course key</b> that should be kept private. With this key you can
-view and edit all your student's measurements.{% endblocktranslate %}
+                        {% blocktranslate context "help text register" trimmed %}
+                            Register your class or course and generate a list
+                            of <b>access keys</b> for your students.
+                            These keys can be used to create and later edit
+                            measurements on GewässerCampus. <br>
+                            Alongside the generated access keys, you will also
+                            receive a <b>course token</b> that should be kept
+                            private. With this key you can view and edit all
+                            your student's measurements.
+                        {% endblocktranslate %}
                     </p>
                 </div>
-                <div class="col-5 bg-light"></div> {# Placeholder #}
+                <div class="col-5 bg-light"></div>
+                {# Placeholder #}
                 <div class="col-7 px-5 py-3">
                     {% with form.school_name as field %}
                         <div class="mb-3">
@@ -32,10 +32,12 @@ view and edit all your student's measurements.{% endblocktranslate %}
                 </div>
                 <div class="col-5 bg-light px-5 py-3">
                     <p class="mt-4 text-muted">
-{% blocktranslate context "help text school name" %}The name of the
-school or educational institution requesting new tokens. This
-information will not be shared publicly but helps us to associate
-measurements with your school or institution.{% endblocktranslate %}
+                        {% blocktranslate context "help text school name" trimmed %}
+                            The name of the school or educational institution
+                            requesting new tokens. This information will not be
+                            shared publicly but helps us to associate
+                            measurements with your school or institution.
+                        {% endblocktranslate %}
                     </p>
                 </div>
                 <div class="col-7 px-5 py-3">
@@ -48,12 +50,30 @@ measurements with your school or institution.{% endblocktranslate %}
                 </div>
                 <div class="col-5 bg-light px-5 py-3">
                     <p class="mt-4 text-muted">
-{% blocktranslate context "help text teacher name" %}Your name or the
-name of a representative. This information will also be kept private and
-is only used for communication.{% endblocktranslate %}
+                        {% blocktranslate context "help text teacher name" trimmed %}
+                            Your name or the name of a representative. This
+                            information will also be kept private and is only
+                            used for communication.
+                        {% endblocktranslate %}
                     </p>
                 </div>
-             <div class="col-7 px-5 py-3">
+                <div class="col-7 px-5 py-3">
+                    {% with form.token_name as field %}
+                        <div class="mb-3">
+                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                            {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                        </div>
+                    {% endwith %}
+                </div>
+                <div class="col-5 bg-light px-5 py-3">
+                    <p class="mt-4 text-muted">
+                        {% blocktranslate context "help text course key name" trimmed %}
+                            You can choose to assign a name to the course key to
+                            better differentiate the tokens from one another.
+                        {% endblocktranslate %}
+                    </p>
+                </div>
+                <div class="col-7 px-5 py-3">
                     {% with form.teacher_email as field %}
                         <div class="mb-3">
                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
@@ -63,10 +83,12 @@ is only used for communication.{% endblocktranslate %}
                 </div>
                 <div class="col-5 bg-light px-5 py-3">
                     <p class="mt-4 text-muted">
-{% blocktranslate %}
-    Your Email address will only be used to send you the Course Token and the Access Keys.
-<br>
-In case we need to contact you this Email address wil be used. {% endblocktranslate %}
+                        {% blocktranslate trimmed %}
+                            Your Email address will only be used to send you the
+                            Course Token and the Access Keys. <br>
+                            In case we need to contact you this Email address
+                            wil be used.
+                        {% endblocktranslate %}
                     </p>
                 </div>
                 <div class="col-7 px-5 py-3">
@@ -79,12 +101,13 @@ In case we need to contact you this Email address wil be used. {% endblocktransl
                 </div>
                 <div class="col-5 bg-light px-5 py-3">
                     <p class="mt-4 text-muted">
-{% blocktranslate with maximum=form.number_of_tokens.field.max_value context "help text number of tokens" %}
-The number of access keys you want to generate. You can create a maximum
-of {{ maximum }} access keys at once.
-<br>
-Students may share one access key in a group so not everyone needs their
-own access key.{% endblocktranslate %}
+                        {% blocktranslate with maximum=form.number_of_tokens.field.max_value context "help text number of tokens" trimmed %}
+                            The number of access keys you want to generate. You
+                            can create a maximum of {{ maximum }} access keys at
+                            once. <br>
+                            Students may share one access key in a group so not
+                            everyone needs their own access key.
+                        {% endblocktranslate %}
                     </p>
                 </div>
                 <div class="col-7 px-5 pb-5">
@@ -92,7 +115,8 @@ own access key.{% endblocktranslate %}
                         {% translate "Register" %}
                     </button>
                 </div>
-                <div class="col-5 bg-light"></div> {# Placeholder #}
+                <div class="col-5 bg-light"></div>
+                {# Placeholder #}
             </div>
         </form>
     </div>

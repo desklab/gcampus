@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -35,6 +35,9 @@ from django.urls import path, include
 urlpatterns = [
     path("", include("gcampus.core.urls")),
     path("", include("gcampus.auth.urls")),
+    path("", include("gcampus.print.urls")),
     path("api/v1/", include("gcampus.api.urls", namespace="v1")),
     path("admin/", admin.site.urls),
 ]
+
+handler403 = "gcampus.auth.views.permission_denied_error_handler"

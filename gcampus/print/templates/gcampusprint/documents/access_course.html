@@ -1,0 +1,169 @@
+{% load auth_token print_static i18n %}
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <link href="{% print_static "gcampusprint/styles/gcampus.css" %}" rel="stylesheet">
+    <title>gcampus Document</title>
+    <meta name="id" content="gcampus-doc-01">
+    {% displaytoken_head %}
+    <style>
+        @page {
+            @top-right {
+                content: "{% now "d/m/Y H:i:s" %} \A Version {{ GCAMPUS_VERSION }} \A Seite " counter(page) " von " counter(pages);
+                white-space: pre-line;
+                color: #606060;
+                font-size: 7pt;
+                padding-top: 1.2cm;
+            }
+            @top-left {
+                background: url("{% print_static 'gcampusprint/assets/gcampus-print-header-left.png' %}");
+                background-repeat: no-repeat;
+                background-position: left;
+                background-size: 100% auto;
+                display: block;
+                height: 1.6cm;
+                width: 13cm;
+                content: '';
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- TODO: add and use translations -->
+
+    <div class="footer-left">
+        <span class="bold">Dokument ID</span> GC-AC-{{ course_token.token }}
+    </div>
+
+    <div class="footer-right">
+        <a href="https://gewaessercampus.de" class="footer-link">www.gewaessercampus.de</a>
+    </div>
+
+    <article>
+        <div class="gcampus-print-page">
+
+            <!-- general information -->
+            <div class="w-100">
+                <div class="rotated-section-heading color-grey w-abs-250">
+                    Info
+                </div>        
+                <div class="text-justify h-abs-250 document-description">
+                    Dieses Dokument wurde automatisch erstellt und enhält 
+                    eine Zusammenfassung der Registrierung, die Zugangscodes 
+                    zur Benutzung der GewässerCampus Webanwendung sowie 
+                    den Kursschlüssel zur Verwaltung des Kurses.
+                </div>
+            </div>
+   
+            <!-- course data and token -->
+            <div class="w-100">
+                <div class="rotated-section-heading color-primary w-abs-550">
+                    Kursdaten
+                </div>        
+                <div class="coursedata-container overflow-hidden h-abs-550 w-abs-1600">
+
+                    <div class="float-left w-abs-900 coursedata">
+                        <div class="coursedata-heading">
+                            Name der Schule
+                        </div>
+                        <div class="coursedata-content">
+                            {{ course_token.school_name }}
+                        </div>    
+                        <div class="coursedata-heading">
+                            E-Mail-Adresse
+                        </div>
+                        <div class="coursedata-content">
+                            {{ course_token.teacher_email }}
+                        </div> 
+                        <div class="coursedata-heading">
+                            Name des Kurses
+                        </div>
+                        <div class="coursedata-content">
+                            {{ course_token.token_name }}
+                        </div>
+                    </div>
+
+                    <div class="float-left w-abs-600">
+                        <div class="coursetoken">
+                            {% displaytoken course_token.token hidden=False toggle=False %}  
+                        </div>
+                        <div class="coursetoken-description">
+                            Der Kursschlüssel wird benötigt, um alle Messungen der 
+                            dazugehörigen Zugangscodes (siehe unten) verwalten zu können. 
+                            Deshalb sollte er nicht an die Schüler:innen weitergegeben werden.
+                        </div>  
+                    </div>
+   
+                </div>
+            </div>
+        
+            <!-- access keys for students -->
+            <div class="w-100">
+                <div class="rotated-section-heading color-secondary w-abs-1300">
+                    Zugangscodes
+                </div> 
+                <div class="accesskey-description w-abs-1500 h-abs-250">
+                    Zugangscodes werden benötigt, um neue Messungen zu erstellen 
+                    und im Anschluss auch zu bearbeiten. Ein Zugangscode 
+                    kann ähnlich wie ein Passwort mehrfach verwendet werden, 
+                    ein Benutzername ist dabei nicht nötig.
+                    Schüler:innen, die in einer Gruppe zusammenarbeiten, 
+                    können den gleichen Zugangscode nutzen.
+                </div> 
+                <div class="accesskey-container overflow-hidden w-abs-1600 h-abs-1100">
+                    {% for token in course_token.access_keys.all %}
+                        <div class="accesskey-element float-left overflow-hidden">
+                            <div class="accesskey-counter float-left">
+                                {{ forloop.counter }}
+                            </div>
+                            <div class="accesskey-key float-left">
+                                {% displaytoken token.token hidden=False toggle=False %}
+                            </div>
+                            <div class="accesskey-notice float-left">
+                                .
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- qrcodes with links and information -->
+            <div class="w-100 overflow-hidden">
+                <div class="w-abs-800 float-left">
+                    <div class="qrcode float-left">
+                        <img src="{% print_static 'gcampusprint/assets/gcampus-qr-code.png' %}" alt="">                
+                    </div>
+                    <div>
+                        <div class="qrcode-heading">
+                            digitale Kopie öffnen
+                        </div>  
+                        <div class="qrcode-description text-justify">
+                            Dieser Link führt zu der digitalen Datei dieses Dokuments. 
+                            Die dort hinterlegte Datei kann dann heruntergeladen, 
+                            verschickt oder auch neu ausgedruckt werden.
+                        </div>
+                    </div>
+                </div>
+                <div class="w-abs-800 float-right">
+                    <div class="qrcode float-left">
+                        <img src="{% print_static 'gcampusprint/assets/gcampus-qr-code.png' %}" alt="">                
+                    </div>
+                    <div>
+                        <div class="qrcode-heading">
+                            zum Login der Webanwendung
+                        </div>  
+                        <div class="qrcode-description text-justify">
+                            Dieser Link führt zur Login-Seite der Webanwendung 
+                            (www.gewaessercampus.de/login). Nach der Eingabe des 
+                            Zugangscodes können Messungen erstellt oder bearbeitet werden.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+       </div>
+
+    </article>
+</body>
+</html>

@@ -1,0 +1,8 @@
+head {
+    meta[name="id"] {
+        string-set: id attr(content);
+    }
+    title {
+        string-set: title content(); 
+    }
+}

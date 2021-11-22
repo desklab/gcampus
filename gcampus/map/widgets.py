@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -27,17 +27,18 @@ class GeoPointWidget(BaseGeometryWidget):
     map_height = 400
     display_raw = False
     supports_3d = False
-    template_name = 'gcampusmap/forms/widgets/point.html'
+    template_name = "gcampusmap/forms/widgets/point.html"
 
     def get_context(self, name, value, attrs: dict) -> dict:
         context = super(GeoPointWidget, self).get_context(name, value, attrs)
         input_id: str = slugify(f"input-{name.replace('_', '-')}")
         map_container_id: str = slugify(f"map-{name.replace('_', '-')}")
         module_name: str = context["module"]
-        context.update({
-            "input_id": input_id,
-            "map_container_id": map_container_id,
-            "onload": f"{module_name}_onMapLoad",
-        })
+        context.update(
+            {
+                "input_id": input_id,
+                "map_container_id": map_container_id,
+                "onload": f"{module_name}_onMapLoad",
+            }
+        )
         return context
-

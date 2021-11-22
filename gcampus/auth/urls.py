@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -16,12 +16,12 @@
 from django.urls import path
 
 from gcampus.auth.apps import GCampusAuthAppConfig
-from gcampus.auth.views.register import RegisterFormView, RegisterSuccessView
-from gcampus.auth.views.token import (
+from gcampus.auth.views import (
     SetAccessKeyFormView,
     SetCourseTokenFormView,
     logout,
     login_success,
+    RegisterFormView,
 )
 
 # Turn off black formatting and pylint
@@ -30,11 +30,10 @@ from gcampus.auth.views.token import (
 urlpatterns = [
     # Token
     path("register/", RegisterFormView.as_view(), name="register"),
-    path("verify/", SetAccessKeyFormView.as_view(), name="verify"),
-    path("verify/accesskey/", SetAccessKeyFormView.as_view(), name="access_key_form"),
-    path("verify/coursetoken/", SetCourseTokenFormView.as_view(), name="course_token_form"),
+    path("login/", SetAccessKeyFormView.as_view(), name="login"),
+    path("login/accesskey/", SetAccessKeyFormView.as_view(), name="loginaccesskey"),
+    path("login/coursetoken/", SetCourseTokenFormView.as_view(), name="logincoursetoken"),
     path('logout/', logout, name="logout"),
-    path('course/<int:pk>/<str:token>', RegisterSuccessView.as_view(), name="register_success"),
     path('login/success/', login_success, name="login_success"),
 ]
 # fmt: on

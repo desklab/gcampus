@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -19,10 +19,10 @@ from rest_framework_gis.pagination import GeoJsonPagination
 
 from gcampus.api.serializers import (
     MeasurementSerializer,
-    DataTypeSerializer,
-    DataPointSerializer,
+    ParameterTypeSerializer,
+    ParameterSerializer,
 )
-from gcampus.core.models import Measurement, DataType, DataPoint
+from gcampus.core.models import Measurement, ParameterType, Parameter
 
 
 class MeasurementAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
@@ -31,13 +31,13 @@ class MeasurementAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     pagination_class = GeoJsonPagination
 
 
-class DataTypeAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    queryset = DataType.objects.order_by("name").all()
-    serializer_class = DataTypeSerializer
+class ParameterTypeAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    queryset = ParameterType.objects.order_by("name").all()
+    serializer_class = ParameterTypeSerializer
     pagination_class = PageNumberPagination
 
 
-class DataPointAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    queryset = DataPoint.objects.order_by("measurement__time").all()
-    serializer_class = DataPointSerializer
+class ParameterAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    queryset = Parameter.objects.order_by("measurement__time").all()
+    serializer_class = ParameterSerializer
     pagination_class = PageNumberPagination

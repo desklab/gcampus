@@ -1,4 +1,4 @@
-{% load static %}
+{% load static auth_token i18n %}
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -10,34 +10,133 @@
     <meta charset="utf-8"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>{% block title %}
-        GewässerCampus
+        {% if page_title %}
+            {{ page_title }} - GewässerCampus
+        {% else %}
+            GewässerCampus
+        {% endif %}
     {% endblock %}</title>
     <meta name="description" content="{% block description %}{% endblock %}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+    <link rel="icon" href="{% static 'gcampuscore/assets/favicon.ico' %}">
+
     {# Global stylesheets #}
     <link rel="stylesheet" type="text/css" href="{% static 'gcampuscore/styles/main.css' %}">
-
+    {% displaytoken_head %} {# Required for header #}
     {% block extra_head %}
         {# Override this in templates to add extra stylesheets #}
     {% endblock %}
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
-{% include "gcampuscore/components/header.html" %}
-{% block content %}
-{% endblock %}
+{% if messages %}
+    <div role="alert" aria-live="assertive" aria-atomic="true" class="position-fixed bottom-0 end-0">
+        <div class="toast-container p-3">
+            {% for message in messages %}
+                <div class="toast align-items-center text-white {% if message.tags %}bg-{{ message.tags }}{% else %}bg-light{% endif %} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            {{ message }}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            {% include "gcampuscore/components/sidebar.html" %}
+            <main class="{% block main_class %}{% endblock %}">
+                <nav class="navbar gcampus-navbar navbar-light bg-white fixed-top border-bottom navbar-expand">
+                    <div class="container-fluid flex-nowrap">
+                        <div class="mw-75 flex-shrink-1" id="navbar-title">
+                            <button class="btn d-block d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-expanded="{{ sidebar_open|yesno:"true,false" }}" aria-controls="sidebar">
+                                Menu
+                            </button>
+                            <span class="navbar-brand">
+                            {% block navbar_title %}{% firstof page_title "No Page Title Provided" %}{% endblock %}
+                        </span>
+                        </div>
+                        <ul class="nav navbar-nav text-nowrap flex-nowrap">
+                            {% translate "New Measurement" as new_title %}
+                            {% include "gcampuscore/components/nav_item.html" with title=new_title icon="plus" view_name="gcampuscore:add_measurement" %}
+                            {% if authenticated %}
+                                {% include "gcampusauth/components/auth_menu.html" %}
+                            {% else %}
+                                {% translate "Log in" as auth_title %}
+                                {% include "gcampuscore/components/nav_item.html" with title=auth_title view_name="gcampusauth:login" %}
+                            {% endif %}
+                        </ul>
+                    </div>
+                </nav>
+                {% block content %}
+                {% endblock %}
+            </main>
+        </div>
+    </div>
+{% endblock body %}
+
 {# Global javascript #}
 <script type="text/javascript" src="{% static 'gcampuscore/js/main.js' %}"></script>
+{% block body_js %}
+    <script type="text/javascript">
+        const SIDEBAR_STATE_COOKIE_NAME = '{{ sidebar_cookie_name }}';
+
+        function setSidebarCookie(state) {
+            gcampuscore.main.setCookie(SIDEBAR_STATE_COOKIE_NAME, (state) ? "1" : "0", 90);
+        }
+
+        let desiredSidebarState = gcampuscore.main.getCookie(SIDEBAR_STATE_COOKIE_NAME);
+
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new gcampuscore.main.Tooltip(tooltipTriggerEl);
+        });
+
+        const sidebarElement = document.getElementById('sidebar');
+        const sidebarControl = document.querySelector('[aria-controls="sidebar"]');
+        function toggleSidebar() {
+            let open = sidebarElement.classList.toggle('show');
+            setSidebarCookie(open);
+            sidebarControl.setAttribute("aria-expanded", open);
+        }
+        if (desiredSidebarState === '1') {
+            document.getElementById('sidebar').classList.add('show');
+            sidebarControl.setAttribute("aria-expanded", true);
+        } else if (desiredSidebarState === '0') {
+            document.getElementById('sidebar').classList.remove('show');
+            sidebarControl.setAttribute("aria-expanded", false);
+        }
+
+        sidebarElement.addEventListener('hide.bs.collapse', function() {
+            setSidebarCookie(false);
+        });
+        sidebarElement.addEventListener('show.bs.collapse', function() {
+            setSidebarCookie(true);
+        });
+        const mainContent = document.querySelector('main');
+        if (mainContent !== undefined) {
+            mainContent.addEventListener('transitionend', function() {
+                for (let map in window._maps) {
+                    window._maps[map].resize();
+                }
+            });
+        }
+    </script>
+{% endblock body_js %}
 <script type="text/javascript">
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new gcampuscore.Tooltip(tooltipTriggerEl)
-    })
-    var collapseTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="collapse"]'))
-    var collapseList = collapseTriggerList.map(function (collapseTriggerEl) {
-        return new gcampuscore.Collapse(collapseTriggerEl)
-    })
+    {% if messages %}
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        var toastList = toastElList.map(function (toastEl) {
+            let toast = new gcampuscore.main.Toast(toastEl, {delay: 10000});
+            toast.show();
+            return toast
+        });
+    {% endif %}
 </script>
 {% block extra_body %}
     {# Override this in templates to add extra javascript #}
@@ -58,6 +157,6 @@
             </span>
         </div>
     {% endif %}
-  {% endblock %}
+{% endblock %}
 </body>
 </html>

@@ -1,0 +1,245 @@
+{% extends "gcampuscore/base.html" %}
+{% load i18n auth_token icon %}
+{% block content %}
+
+    <div class="container-fluid w-75">
+        {% csrf_token %}
+
+        <div class="row mb-3">
+            <div class="col">
+                <h3>{% translate "Coursedata" %}</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-7 py-5">
+                <h5>Coursetoken</h5>
+                <h3>
+                    {% displaytoken form.instance.token hidden=True toggle=True %}
+                </h3>
+                Mit diesem Kursschlüssel können alle Messungen der dazugehörigen Zugangscodes verwaltet werden. 
+                Deshalb sollte er nicht an die Schüler:innen weitergegeben werden. 
+            </div>
+
+            {# Placeholder #}
+
+            <div class="col-7 py-3">
+                <h5>{% translate "Coursetoken Name" %}</h5>
+                {{ form.instance.token_name }}
+                <br>
+
+                <h5>{% translate "E-Mail" %}</h5>
+                {{ form.instance.teacher_email }}
+                <br>
+
+                <h5>{% translate "School Name" %}</h5>
+                {{ form.instance.school_name }}
+                <br>
+            </div>
+
+            <div class="col-5  px-5 py-3">
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#CourseDataModal">
+                    {% translate "Edit" %}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="containers">
+        <div class="modal modal-lg fade" 
+                id="CourseDataModal" 
+                tabindex="-1" 
+                aria-labelledby="CourseDataModal"
+                aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="CourseDataModal">Edit E-Mail and Coursetoken Name</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            {% auth_token %}
+                            {% with field=form.token_name %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    <div class="rounded-2">
+                                        {{ field }}
+                                        <div id="token_name"></div>
+                                    </div>
+                                </div>
+                            {% endwith %}
+                            {% with field=form.school_name %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    <div class="rounded-2">
+                                        {{ field }}
+                                        <div id="school_name"></div>
+                                    </div>
+                                </div>
+                            {% endwith %}
+                            {% with field=form.teacher_email %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    <div class="rounded-2">
+                                        {{ field }}
+                                        <div id="token_name"></div>
+                                    </div>
+                                </div>
+                            {% endwith %}
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                </button>
+                                <button class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container w-75 my-5">
+        <h3>{% translate "Accesskeys" %}</h3>
+
+        {% for key in access_keys|dictsort:"created_at" %}
+            <hr class="my-1">
+            <div class="row align-items-center">
+                <div class="col-1">
+                    <div class="text-sm text-muted">
+                        {{ forloop.counter }}
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="py-1">
+                        <span class="fs-5">{% displaytoken key.token hidden=False %}</span>
+                    
+                        {% if key.deactivated == True %}
+                            <span class="badge bg-warning text-dark mx-3">
+                                {% icon "alert-circle" class="css-class" height="16" width="16" %} &nbsp; deactivated
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="float-end">
+                        <form class="d-inline-block" method="post" action="
+                                {% if key.deactivated %}{% url "gcampuscore:activate" pk=key.pk %}{% else %}{% url "gcampuscore:deactivate" pk=key.pk %}{% endif %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="measurement" value="{{ key.pk }}"/>
+                            <div class="dropdown">      
+                                <button class="btn btn-white dropdown-toggle" 
+                                        type="button" 
+                                        id="dropdownMenuButtonEditKey" 
+                                        data-bs-toggle="dropdown" 
+                                        aria-expanded="false">
+                                        Options
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonEditKey">
+                                    {% if key.deactivated %}
+                                        <li><button type="submit" class="dropdown-item text-success" href="#">{% icon "unlock" class="css-class" height="16" width="16" %} &nbsp; Activate Accesskey</button></li>
+                                    {% else %}
+                                        <li><button type="submit" class="dropdown-item text-warning" href="#">{% icon "lock" class="css-class" height="16" width="16" %} &nbsp; Deactivate Accesskey</button></li>
+                                    {% endif %}
+                                    <li><a class="dropdown-item {% if key.deactivated %}disabled{% endif %}" href="{% url "gcampusauth:logout" %}">{% icon "external-link" class="css-class" height="16" width="16" %} &nbsp; Login with this Key</a></li> <!-- TODO: login with key-->
+                                    <li><a class="dropdown-item" href="#">{% icon "copy" class="css-class" height="16" width="16" %} &nbsp; Copy Key to Clipboard</a></li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div> 
+        {% endfor %}
+        <hr class="my-1">
+    </div>
+
+    <div class="container w-75 my-5">
+        <form method="post" action="{% url "gcampuscore:generate_new_accesskeys" %}">
+            {% csrf_token %}
+            <h6>{% translate "Generate new Accesskeys for this course" %}</h6>
+            <div class="text-sm text-muted">
+                {% blocktrans %} You can generate new accesskeys for this course without the need to register again. The number of accesskeys is limited to {{ register_max_access_key" }} per course. {% endblocktrans %}
+            </div>
+            {% with field=generate_accesskeys_form.count %}
+                <div class="row py-4 align-items-center">
+                    <div class="col">
+                        {{ field }}
+                        <button type="submit" class="btn btn-sm btn-secondary mx-3">
+                            {% translate "Generate Accesskeys" %}
+                        </button>
+                    </div>
+                </div>
+            {% endwith %}
+        </form>
+    </div>
+
+    <div class="my-5 bg-light border border-primary rounded-3 container-fluid w-75">
+        <div class="row align-items-center pb-3 mt-3">
+            <div class="col-10">
+                <h5>{% translate "Save as PDF" %}</h5>
+                <div class="text-sm text-muted">
+                    {% translate "Download a PDF with a summary of your registration data, your coursetoken and the all accesskeys of your course." %}
+                </div>
+            </div>
+            <div class="col-2">
+                <a class="btn btn-sm btn-primary me-2 float-end"
+                        href="{% url "gcampusprint:documents-overview" %}"
+                        role="button" 
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="top"
+                        title="{% translate "Download your course token and all access keys in  a PDF" %}">
+                    {% icon "file-text" class="css-class" height="20" width="20" %} &nbsp; 
+                    {% translate "Download" %}
+                </a>
+            </div>
+        </div>
+
+        <hr class="my-3">
+
+        <div class="row align-items-center py-3">
+            <div class="col-10">
+                <h5>{% translate "Send to my E-Mail" %}</h5>
+                <div class="text-sm text-muted">
+                    {% translate "Send your course token and all access keys in a PDF via Email. You can change the E-Mail in the Coursedata Section." %}
+                </div>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-sm btn-primary me-2 text-center float-end"
+                        type="button"
+                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="{% translate "Download your course token and all access keys in  a PDF" %}">
+                    {% icon "mail" class="css-class" height="20" width="20" %} &nbsp; 
+                    {% translate "Send E-Mail" %}
+                </button>
+            </div>
+        </div>
+
+        <hr class="my-3">
+
+        <div class="row align-items-center pt-3 mb-3">
+            <div class="col-10">
+                <h5>{% translate "Share a link" %}</h5>
+                <div class="text-sm text-muted">
+                    {% translate "Get a link to share the PDF with a summary of your registration data, your coursetoken and the all accesskeys of your course" %}
+                </div>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-sm btn-primary me-2 text-center float-end"
+                        type="button"
+                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="{% translate "Create Link" %}">
+                    {% icon "link" class="css-class" height="20" width="20" %} &nbsp; 
+                    {% translate "Create Link" %}
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+{% displaytoken_js %}
+{% endblock %}

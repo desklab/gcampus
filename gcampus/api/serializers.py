@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -28,33 +28,33 @@ from rest_framework_gis.serializers import (
     GeoFeatureModelListSerializer,
 )
 
-from gcampus.core.models import Measurement, DataPoint, DataType
+from gcampus.core.models import Measurement, Parameter, ParameterType
 
 
-class DataTypeSerializer(serializers.ModelSerializer):
+class ParameterTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = DataType
+        model = ParameterType
         fields = ("name", "unit")
 
 
-class DataPointSerializer(serializers.ModelSerializer):
-    data_type = DataTypeSerializer(many=False, read_only=True)
+class ParameterSerializer(serializers.ModelSerializer):
+    parameter_type = ParameterTypeSerializer(many=False, read_only=True)
     measurement = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
 
     class Meta:
-        model = DataPoint
-        fields = ("id", "value", "measurement", "data_type")
+        model = Parameter
+        fields = ("id", "value", "measurement", "parameter_type")
 
 
 class MeasurementSerializer(GeoFeatureModelSerializer):
-    data_points = DataPointSerializer(many=True, read_only=True)
+    parameters = ParameterSerializer(many=True, read_only=True)
     url = serializers.SerializerMethodField(read_only=True)
     title = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Measurement
         geo_field = "location"
-        fields = ("id", "name", "time", "comment", "data_points", "url", "title")
+        fields = ("id", "name", "time", "comment", "parameters", "url", "title")
 
     def get_url(self, obj: Measurement) -> str:  # noqa
         return reverse("gcampuscore:measurement_detail", kwargs=dict(pk=obj.pk))

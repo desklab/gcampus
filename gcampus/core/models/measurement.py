@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -13,7 +13,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__ALL__ = ["Measurement", "DataType", "DataPoint"]
+__ALL__ = ["Measurement", "ParameterType", "Parameter"]
 
 from django.contrib.gis.db import models
 from django.contrib.postgres.indexes import GinIndex
@@ -64,7 +64,7 @@ class Measurement(util.DateModelMixin):
         help_text=_("An approximated location for the measurement"),
     )
     water_name = models.CharField(
-        blank=True,
+        blank=False,
         null=True,
         max_length=280,
         verbose_name=_("Water name"),
@@ -112,8 +112,7 @@ class Measurement(util.DateModelMixin):
     def save(self, **kwargs):
         update_fields = kwargs.get("update_fields", None)
         if self.is_location_changed(update_fields=update_fields):
-            coordinates = getattr(self.location, "coords", None)
-            self.location_name = get_location_name(coordinates)
+            self.location_name = get_location_name(self.location)
         return super(Measurement, self).save(**kwargs)
 
     def __str__(self):
@@ -150,10 +149,10 @@ class Measurement(util.DateModelMixin):
         )
 
 
-class DataType(models.Model):
+class ParameterType(models.Model):
     class Meta:
-        verbose_name = _("Data type")
-        verbose_name_plural = _("Data types")
+        verbose_name = _("Parameter type")
+        verbose_name_plural = _("Parameter types")
 
     name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
 
@@ -166,21 +165,24 @@ class DataType(models.Model):
             return f"{self.name} ({self.unit})"
 
 
-class DataPoint(util.DateModelMixin):
+class Parameter(util.DateModelMixin):
     class Meta:
         default_manager_name = "all_objects"
-        verbose_name = _("Data point")
-        verbose_name_plural = _("Data points")
+        verbose_name = _("Parameter")
+        verbose_name_plural = _("Parameters")
 
-    data_type = models.ForeignKey(
-        DataType, on_delete=models.PROTECT, verbose_name=_("Data type")
+    parameter_type = models.ForeignKey(
+        ParameterType,
+        on_delete=models.PROTECT,
+        verbose_name=_("Parameter type"),
+        related_name="parameters",
     )
     value = models.FloatField(blank=False, verbose_name=_("Value"))
     measurement = models.ForeignKey(
         Measurement,
         on_delete=models.CASCADE,
         verbose_name=_("Associated measurement"),
-        related_name="data_points",
+        related_name="parameters",
     )
     comment = models.TextField(blank=True, verbose_name=_("Comment"))
     hidden = models.BooleanField(default=False, verbose_name=_("Hidden"))
@@ -193,6 +195,7 @@ class DataPoint(util.DateModelMixin):
     all_objects = models.Manager()
 
     def __str__(self):
-        return _("Data point %(pk)s") % {
+        return _("Parameter %(pk)s (%(name)s)") % {
             "pk": self.pk,
+            "name": self.parameter_type.name,
         }

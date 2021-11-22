@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 desklab gUG
+ * Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -18,11 +18,22 @@
 let autofocusFields = document.querySelectorAll('.autofocus');
 let autofocusCount = autofocusFields.length;
 autofocusFields.forEach((element, i) => {
-    element.oninput = function(event) {
-        if (element.value.length > element.maxLength)
-            element.value = String(element.value).slice(0, element.maxLength);
-        // TODO handle copy paste
+    element.addEventListener('input', function(event) {
+        if (event.data !== null && event.data.length > element.maxLength) {
+            let val = event.data;
+            let inputCounter = i;
+            let addedLength = 0;
+            while (inputCounter < autofocusFields.length && addedLength <= val.length) {
+                let currentField = autofocusFields[inputCounter]
+                let maxLength = currentField.maxLength;
+                currentField.value = String(val).slice(
+                    addedLength, addedLength + maxLength
+                );
+                addedLength += maxLength;
+                inputCounter++;
+            }
+        }
         if (element.value.length >= element.maxLength && (i + 1) < autofocusCount)
             autofocusFields[i + 1].focus(function() { this.select(); } );
-    };
+    });
 });

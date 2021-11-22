@@ -1,0 +1,32 @@
+$spacer: 1cm !default;
+$spacers: () !default;
+$spacers: map-merge(
+    (
+        000: 0,
+        025: ($spacer *  0.25),
+        050: ($spacer *  0.50),
+        075: ($spacer *  0.75),
+        100: ($spacer *  1.00),
+        150: ($spacer *  1.50),
+        200: ($spacer *  2.00),
+        250: ($spacer *  2.50),
+        300: ($spacer *  3.00),
+        350: ($spacer *  3.50),
+        400: ($spacer *  4.00),
+        450: ($spacer *  4.50),
+        500: ($spacer *  5.00),
+        550: ($spacer *  5.50),
+        600: ($spacer *  6.00),
+        700: ($spacer *  7.00),
+        800: ($spacer *  8.00),
+        900: ($spacer *  9.00),
+        1000:($spacer * 10.00),
+        1100:($spacer * 11.00),
+        1200:($spacer * 12.00),
+        1300:($spacer * 13.00),
+        1400:($spacer * 14.00),
+        1500:($spacer * 15.00),
+        1600:($spacer * 16.00),
+    ),
+    $spacers
+);

@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -15,11 +15,14 @@
 
 from django import forms
 from django.conf import settings
+from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.auth.fields.token import (
     access_key_exists_validator,
     course_token_exists_validator,
+    SplitTokenField,
+    SplitKeyField,
 )
 from gcampus.auth.models.token import (
     ACCESS_KEY_LENGTH,
@@ -31,31 +34,35 @@ TOKEN_FIELD_NAME = "token"
 
 
 class AccessKeyForm(forms.Form):
-    token = forms.CharField(
+    token = SplitKeyField(
         required=True,
         label=_("Access Key"),
-        max_length=ACCESS_KEY_LENGTH,
-        min_length=ACCESS_KEY_LENGTH,
-        validators=[access_key_exists_validator],
+        validators=[
+            access_key_exists_validator,
+            MaxLengthValidator(ACCESS_KEY_LENGTH),
+            MinLengthValidator(ACCESS_KEY_LENGTH),
+        ],
     )
-    fields = ["token"]
+    fields = (TOKEN_FIELD_NAME,)
 
 
 class CourseTokenForm(forms.Form):
-    token = forms.CharField(
+    token = SplitTokenField(
         required=True,
         label=_("Course Token"),
-        max_length=COURSE_TOKEN_LENGTH,
-        min_length=COURSE_TOKEN_LENGTH,
-        validators=[course_token_exists_validator],
+        validators=[
+            course_token_exists_validator,
+            MaxLengthValidator(COURSE_TOKEN_LENGTH),
+            MinLengthValidator(COURSE_TOKEN_LENGTH),
+        ],
     )
-    fields = ["token"]
+    fields = (TOKEN_FIELD_NAME,)
 
 
 class RegisterForm(forms.ModelForm):
     number_of_tokens = forms.IntegerField(
         min_value=1,
-        max_value=getattr(settings, "REGISTER_MAX_TOKEN_NUMBER", 30),
+        max_value=getattr(settings, "REGISTER_MAX_ACCESS_KEY_NUMBER", 30),
         required=True,
         initial=5,
     )
@@ -66,4 +73,5 @@ class RegisterForm(forms.ModelForm):
             "school_name",
             "teacher_name",
             "teacher_email",
+            "token_name",
         )

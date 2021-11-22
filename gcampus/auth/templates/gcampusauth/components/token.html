@@ -1,0 +1,26 @@
+{% load icon i18n %}
+<span class="displaytoken" data-gcampusauth-toggle="{{ toggle|yesno:"1,0" }}">
+    <span class="badge bg-light text-dark border{% if class %} {{ class }}{% endif %}">
+        {% if hidden or toggle %}
+            <div class="token-field-hidden{% if not hidden %} d-none{% endif %}">
+                {{ token_hidden_html|safe }}
+            </div>
+        {% endif %}
+        {% if has_clear %}
+            <div class="token-field-clear{% if hidden %} d-none{% endif %}">
+                {{ token_html|safe }}
+            </div>
+        {% endif %}
+    </span>
+    {% if toggle %}
+        {% translate "Hide" as hide_text %}
+        {% translate "Show" as show_text %}
+        <button class="btn btn-sm btn-token-show{% if not hidden %} d-none{% endif %}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ show_text }}">
+            {% icon "eye-off" height="16px" width="16px"  class="text-dark" %}
+        </button>
+        <button class="btn btn-sm btn-token-hide{% if hidden %} d-none{% endif %}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ hide_text }}">
+            {% icon "eye" height="16px" width="16px"  class="text-dark" %}
+        </button>
+    {% endif %}
+</span>
+

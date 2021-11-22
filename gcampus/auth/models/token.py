@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -39,6 +39,10 @@ logger = logging.getLogger("gcampus.core.token")
 class CourseToken(DateModelMixin):
     token = models.CharField(blank=False, max_length=COURSE_TOKEN_LENGTH, unique=True)
 
+    token_name = models.CharField(
+        blank=True, max_length=30, verbose_name=_("Course Token Name")
+    )
+
     deactivated = models.BooleanField(default=False)
 
     school_name = models.CharField(
@@ -50,7 +54,7 @@ class CourseToken(DateModelMixin):
     )
 
     teacher_email = models.EmailField(
-        max_length=254, blank=False, verbose_name=_("Email Adress"), default=False
+        max_length=254, blank=False, verbose_name=_("E-Mail Address")
     )
 
     class Meta:
@@ -87,7 +91,11 @@ class AccessKey(DateModelMixin):
     token = models.CharField(blank=False, max_length=ACCESS_KEY_LENGTH, unique=True)
 
     parent_token = models.ForeignKey(
-        CourseToken, on_delete=models.PROTECT, blank=False, null=False
+        CourseToken, 
+        on_delete=models.PROTECT, 
+        blank=False, 
+        null=False, 
+        related_name="access_keys",
     )
 
     deactivated = models.BooleanField(default=False)

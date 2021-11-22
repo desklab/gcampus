@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -15,10 +15,12 @@
 
 from pathlib import Path
 
+from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from gcampus.settings.util import get_env_read_file
+from gcampus import __version__
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,7 +32,7 @@ SECRET_KEY = get_env_read_file(
 ALLOWED_HOSTS = []
 
 # Application definition
-
+GCAMPUS_VERSION = __version__
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -52,6 +54,7 @@ INSTALLED_APPS = [
     "gcampus.auth",
     "gcampus.api",
     "gcampus.map",
+    "gcampus.print",
     # Other django apps
     # Sometimes the order is important
     "django.forms",
@@ -80,10 +83,22 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "gcampus.auth.context_processors.auth",
+                "gcampus.core.context_processors.get_version",
+                "gcampus.core.context_processors.sidebar",
             ],
         },
     },
 ]
+MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
+# Use bootstrap colors
+MESSAGE_TAGS = {
+    messages.DEBUG: "secondary",
+    messages.INFO: "light",
+    messages.SUCCESS: "success",
+    messages.WARNING: "warning",
+    messages.ERROR: "danger",
+}
 
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
@@ -98,6 +113,7 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -145,6 +161,8 @@ REST_FRAMEWORK = {
 # Geo Settings
 NOMINATIM_USER_AGENT = "gcampus"
 NOMINATIM_DOMAIN = "nominatim.openstreetmap.org"
+GEOLOCKUP_CACHE_TIMEOUT = 60 * 60 * 24 * 100  # 100 days
+
 # OVERPASS_SERVER = "https://overpass-api.de/api/interpreter"
 OVERPASS_SERVER = "https://overpass.kumi.systems/api/interpreter"
 OVERPASS_CACHE = 60 * 60 * 24 * 2
@@ -166,7 +184,7 @@ LEAFLET_CONFIG = {
     },
 }
 MAP_SETTINGS = {
-    "CENTER": (49.4922, 8.4430),
+    "CENTER": (8.4430, 49.4922),
     "ZOOM": 8,
     "STYLE": "mapbox://styles/axelschlindwein/ckq9e6o4k06fn17o70d7j7l65",
     "MAPBOX_ACCESS_TOKEN": get_env_read_file("MAPBOX_ACCESS_TOKEN"),
@@ -184,4 +202,4 @@ ALLOWED_TOKEN_CHARS = list("ABCDEFGHJKLMNPQRSTWXYZ123456789")  # noqa
 ACCESS_KEY_LENGTH = 8
 COURSE_TOKEN_LENGTH = 12
 # Maximum number of tokens that one can request
-REGISTER_MAX_TOKEN_NUMBER = 50
+REGISTER_MAX_ACCESS_KEY_NUMBER = 30

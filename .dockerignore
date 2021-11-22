@@ -7,7 +7,8 @@ __pycache__
 /.venv
 
 # Compiled Static Files
-static/
+# Enabled again for compiling static files in multiple steps
+# static/
 
 # Node
 /node_modules
@@ -19,11 +20,11 @@ static/
 # IDE
 .idea
 .vscode
-package.json
-package-lock.json
 README.md
 requirements-dev.txt
-webpack.config.js
 artwork
 .github
 fixture.json
+
+# Generated PDF files
+/*.pdf

@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -22,12 +22,15 @@ from gcampus.auth.exceptions import (
     TOKEN_EMPTY_ERROR,
     TOKEN_INVALID_ERROR,
     TOKEN_CREATE_PERMISSION_ERROR,
+    ACCESS_KEY_DEACTIVATED_ERROR,
 )
+from gcampus.auth.fields.token import HIDDEN_TOKEN_FIELD_NAME
 from gcampus.auth.models import CourseToken, AccessKey
-from gcampus.core.forms.measurement import MeasurementForm, TOKEN_FIELD_NAME
+from gcampus.auth.tests.test_token_auth import BaseAuthTest
+from gcampus.core.forms.measurement import MeasurementForm
 
 
-class MeasurementFormTest(TestCase):
+class MeasurementFormTest(BaseAuthTest):
     today = datetime.today()
     form_data_stub: dict = {
         "time_0_0": today.day,
@@ -36,17 +39,6 @@ class MeasurementFormTest(TestCase):
         "time_1_0": today.hour,
         "time_1_1": today.minute,
     }
-
-    def setUp(self) -> None:
-        self.parent_token = CourseToken(
-            school_name="GCampus Test Case", teacher_name="GCampus Testing"
-        )
-        self.parent_token.save()
-        self.tokens = []
-        for i in range(5):
-            _token = AccessKey(parent_token=self.parent_token)
-            _token.save()
-            self.tokens.append(_token)
 
     def test_no_token(self):
         """Submitting a form without providing a valid token"""
@@ -59,16 +51,18 @@ class MeasurementFormTest(TestCase):
         form_data.update(self.form_data_stub)
         form = MeasurementForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertIn(TOKEN_FIELD_NAME, form.errors)
+        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, form.errors)
         self.assertEqual(len(form.errors), 1)
-        self.assertEqual(form.errors[TOKEN_FIELD_NAME], ErrorList([TOKEN_EMPTY_ERROR]))
+        self.assertEqual(
+            form.errors[HIDDEN_TOKEN_FIELD_NAME], ErrorList([TOKEN_EMPTY_ERROR])
+        )
 
     def test_valid_token(self):
         form_data: dict = {
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": "Foo Bar",
         }
         form_data.update(self.form_data_stub)
@@ -80,16 +74,16 @@ class MeasurementFormTest(TestCase):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: "This Token Should Definitely Be Invalid",
+            HIDDEN_TOKEN_FIELD_NAME: "This Token Should Definitely Be Invalid",
             "water_name": "Foo Bar",
         }
         form_data.update(self.form_data_stub)
         form = MeasurementForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertIn(TOKEN_FIELD_NAME, form.errors)
+        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, form.errors)
         self.assertEqual(len(form.errors), 1)
         self.assertEqual(
-            form.errors[TOKEN_FIELD_NAME], ErrorList([TOKEN_INVALID_ERROR])
+            form.errors[HIDDEN_TOKEN_FIELD_NAME], ErrorList([TOKEN_INVALID_ERROR])
         )
 
     def test_deactivated_token(self):
@@ -101,17 +95,17 @@ class MeasurementFormTest(TestCase):
                 "name": "",
                 "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
                 "comment": "",
-                TOKEN_FIELD_NAME: token.token,
+                HIDDEN_TOKEN_FIELD_NAME: token.token,
                 "water_name": "Foo Bar",
             }
             form_data.update(self.form_data_stub)
             form = MeasurementForm(data=form_data)
             self.assertFalse(form.is_valid())
-            self.assertIn(TOKEN_FIELD_NAME, form.errors)
+            self.assertIn(HIDDEN_TOKEN_FIELD_NAME, form.errors)
             self.assertEqual(len(form.errors), 1)
             self.assertEqual(
-                form.errors[TOKEN_FIELD_NAME],
-                ErrorList([TOKEN_CREATE_PERMISSION_ERROR]),
+                form.errors[HIDDEN_TOKEN_FIELD_NAME],
+                ErrorList([ACCESS_KEY_DEACTIVATED_ERROR]),
             )
         finally:
             token.deactivated = False
@@ -122,7 +116,7 @@ class MeasurementFormTest(TestCase):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": "Foo Bar gcampus_osm_id:42",
         }
         form_data.update(self.form_data_stub)
@@ -136,7 +130,7 @@ class MeasurementFormTest(TestCase):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": "Foo Bar",
         }
         form_data.update(self.form_data_stub)
@@ -151,7 +145,7 @@ class MeasurementFormTest(TestCase):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": f"Foo Bar gcampus_osm_id:{1e20:.0f}",
         }
         form_data.update(self.form_data_stub)
@@ -164,7 +158,7 @@ class MeasurementFormTest(TestCase):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": f"Foo Bar gcampus_osm_id:A BC",
         }
         form_data.update(self.form_data_stub)
@@ -177,7 +171,7 @@ class MeasurementFormTest(TestCase):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            TOKEN_FIELD_NAME: self.tokens[0].token,
+            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
             "water_name": f"Foo Bar gcampus_osm_id:",
         }
         form_data.update(self.form_data_stub)

@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -20,8 +20,8 @@ from leaflet.admin import LeafletGeoAdmin
 
 from gcampus.core.models import (
     Measurement,
-    DataType,
-    DataPoint,
+    ParameterType,
+    Parameter,
 )
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 
@@ -44,11 +44,11 @@ class MeasurementAdmin(LeafletGeoAdmin):
     actions = [hide, show]
 
 
-class DataTypeAdmin(admin.ModelAdmin):
+class ParameterTypeAdmin(admin.ModelAdmin):
     pass
 
 
-class DataPointAdmin(admin.ModelAdmin):
+class ParameterAdmin(admin.ModelAdmin):
     readonly_fields = ADMIN_READ_ONLY_FIELDS
     list_filter = ("hidden",)
     default_manager_name = "all_objects"
@@ -56,5 +56,5 @@ class DataPointAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Measurement, MeasurementAdmin)
-admin.site.register(DataType, DataTypeAdmin)
-admin.site.register(DataPoint, DataPointAdmin)
+admin.site.register(ParameterType, ParameterTypeAdmin)
+admin.site.register(Parameter, ParameterAdmin)

@@ -1,0 +1,52 @@
+{% extends "gcampuscore/base_error.html" %}
+{% load i18n auth_token %}
+{% block exception_message %}
+    {% url "gcampuscore:course_overview" as course_overview_url %}
+    {% if user_token_is_access_key %}
+        {% blocktranslate trimmed %}
+            You are currently logged in with the following access key:
+        {% endblocktranslate %}
+    {% elif user_token_is_course_token %}
+        {% blocktranslate trimmed %}
+            You are currently logged in with the following course token:
+        {% endblocktranslate %}
+    {% endif %}
+    <br>
+    <div class="my-2">
+        {% displaytoken user_token hidden=True toggle=True %}
+    </div>
+    {% if user_token_is_access_key %}
+        {# Token deactivated, expired, etc. #}
+        {% blocktranslate trimmed %}
+            It seems like your access key currently does not have the
+            permission to create a measurement. Please contact your
+            teacher for help.
+        {% endblocktranslate %}
+    {% elif user_token_is_course_token %}
+        {% blocktranslate trimmed %}
+            To create a measurement, you have to login using an access
+            key. As a teacher, you can generate a new access key for your
+            own measurement on the
+            <a class="text-dark" href="{{ course_overview_url }}">course overview</a>
+            page.
+        {% endblocktranslate %}
+    {% endif %}
+{% endblock %}
+{% block exception_options %}
+    <div class="p-4 p-md-5 border rounded-3 bg-light">
+        <a class="w-100 btn btn-lg btn-primary" role="button"
+           href="{% url "gcampusauth:loginaccesskey" %}">
+            {% translate "Login as Student" %}
+        </a>
+        <hr class="my-4">
+        <small class="text-muted">
+            {% blocktranslate trimmed %}
+                If you login with a different access key,
+                you will automatically be logged out from your old key.
+            {% endblocktranslate %}
+        </small>
+    </div>
+{% endblock %}
+{% block extra_body %}
+    {% displaytoken_js %}
+{% endblock %}

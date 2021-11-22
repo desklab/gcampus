@@ -2,7 +2,7 @@
     <div class="ms-2 flex-fill">
         <div class="row">
             <div class="col-md">
-                {% with form.data_type as field %}
+                {% with form.parameter_type as field %}
                     {% include "gcampuscore/forms/components/label.html" with class="mb-1" %}
                     {{ field }}
                     {% for error in field.errors %}

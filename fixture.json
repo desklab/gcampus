@@ -123,7 +123,7 @@
     }
   },
   {
-    "model": "gcampuscore.datatype",
+    "model": "gcampuscore.parametertype",
     "pk": 1,
     "fields": {
       "name": "pH-Wert",
@@ -131,7 +131,7 @@
     }
   },
   {
-    "model": "gcampuscore.datatype",
+    "model": "gcampuscore.parametertype",
     "pk": 2,
     "fields": {
       "name": "Nitratgehalt",
@@ -139,7 +139,7 @@
     }
   },
   {
-    "model": "gcampuscore.datatype",
+    "model": "gcampuscore.parametertype",
     "pk": 3,
     "fields": {
       "name": "Sauerstoffgehalt",
@@ -147,7 +147,7 @@
     }
   },
   {
-    "model": "gcampuscore.datatype",
+    "model": "gcampuscore.parametertype",
     "pk": 4,
     "fields": {
       "name": "Sauerstoffsättigung",
@@ -155,108 +155,108 @@
     }
   },
   {
-    "model": "gcampuscore.datapoint",
+    "model": "gcampuscore.parameter",
     "pk": 1,
     "fields": {
       "created_at": "2021-04-20T13:11:31.591Z",
       "updated_at": "2021-04-20T13:11:31.591Z",
-      "data_type": 1,
+      "parameter_type": 1,
       "value": 5.0,
       "measurement": 1,
       "comment": ""
     }
   },
   {
-    "model": "gcampuscore.datapoint",
+    "model": "gcampuscore.parameter",
     "pk": 2,
     "fields": {
       "created_at": "2021-04-20T13:11:53.167Z",
       "updated_at": "2021-04-20T13:11:53.167Z",
-      "data_type": 1,
+      "parameter_type": 1,
       "value": 5.7,
       "measurement": 2,
       "comment": ""
     }
   },
   {
-    "model": "gcampuscore.datapoint",
+    "model": "gcampuscore.parameter",
     "pk": 3,
     "fields": {
       "created_at": "2021-04-20T13:12:07.823Z",
       "updated_at": "2021-04-20T13:12:07.823Z",
-      "data_type": 4,
+      "parameter_type": 4,
       "value": 84.0,
       "measurement": 3,
       "comment": ""
     }
   },
   {
-    "model": "gcampuscore.datapoint",
+    "model": "gcampuscore.parameter",
     "pk": 4,
     "fields": {
       "created_at": "2021-04-20T13:12:18.411Z",
       "updated_at": "2021-04-20T13:12:18.412Z",
-      "data_type": 1,
+      "parameter_type": 1,
       "value": 6.0,
       "measurement": 3,
       "comment": ""
     }
   },
   {
-    "model": "gcampuscore.datapoint",
+    "model": "gcampuscore.parameter",
     "pk": 5,
     "fields": {
       "created_at": "2021-04-20T13:12:29.063Z",
       "updated_at": "2021-04-20T13:12:29.063Z",
-      "data_type": 4,
+      "parameter_type": 4,
       "value": 77.0,
       "measurement": 2,
       "comment": ""
     }
   },
   {
-    "model": "gcampuscore.datapoint",
+    "model": "gcampuscore.parameter",
     "pk": 6,
     "fields": {
       "created_at": "2021-04-20T13:12:49.832Z",
       "updated_at": "2021-04-20T13:12:49.832Z",
-      "data_type": 3,
+      "parameter_type": 3,
       "value": 2.5,
       "measurement": 1,
       "comment": ""
     }
   },
   {
-    "model": "gcampuscore.datapoint",
+    "model": "gcampuscore.parameter",
     "pk": 7,
     "fields": {
       "created_at": "2021-04-20T13:13:02.383Z",
       "updated_at": "2021-04-20T13:14:11.607Z",
-      "data_type": 4,
+      "parameter_type": 4,
       "value": 42.0,
       "measurement": 4,
       "comment": ""
     }
   },
   {
-    "model": "gcampuscore.datapoint",
+    "model": "gcampuscore.parameter",
     "pk": 8,
     "fields": {
       "created_at": "2021-04-20T13:13:13.165Z",
       "updated_at": "2021-04-20T13:13:13.165Z",
-      "data_type": 4,
+      "parameter_type": 4,
       "value": 52.0,
       "measurement": 1,
       "comment": ""
     }
   },
   {
-    "model": "gcampuscore.datapoint",
+    "model": "gcampuscore.parameter",
     "pk": 9,
     "fields": {
       "created_at": "2021-04-20T13:14:21.295Z",
       "updated_at": "2021-04-20T13:14:21.295Z",
-      "data_type": 1,
+      "parameter_type": 1,
       "value": 6.8,
       "measurement": 4,
       "comment": ""

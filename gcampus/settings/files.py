@@ -11,7 +11,7 @@ environment variables can be used:
   - S3_BUCKET_NAME: String - Bucket to store files.
   - S3_SECURE_URLS: Boolean - Whether to use "https" for requests to S3.
 """
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -62,5 +62,5 @@ else:
     # for more information.
     _BASE_DIR = Path(__file__).resolve().parent.parent
     STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
-    STATIC_ROOT = os.path.join(_BASE_DIR.parent, "static")
+    # STATIC_ROOT = os.path.join(_BASE_DIR.parent, "static")
     STATIC_URL = "/static/"

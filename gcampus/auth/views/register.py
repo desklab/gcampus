@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -12,56 +12,47 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from django.http import HttpResponseBadRequest
+
+__all__ = [
+    "RegisterFormView",
+]
+
+from django.contrib import messages
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import FormView, ListView, DetailView
-from django.core.exceptions import SuspiciousOperation
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
+from django.views.generic import CreateView
+
+from gcampus.auth import utils
 from gcampus.auth.forms.token import RegisterForm
-from gcampus.auth.models import CourseToken, AccessKey
+from gcampus.auth.models.token import AccessKey, COURSE_TOKEN_TYPE
+from gcampus.core.views.base import TitleMixin
 
 
-class RegisterFormView(FormView):
+class RegisterFormView(TitleMixin, CreateView):
     form_class = RegisterForm
+    title = gettext_lazy("Request Access Keys")
     template_name = "gcampusauth/forms/register.html"
-    # success_url = reverse_lazy("gcampusauth:register_success")
+    success_url = reverse_lazy("gcampuscore:course_overview")
 
     def form_valid(self, form):
-        if form.is_valid():
-            number_of_tokens = form.cleaned_data["number_of_tokens"]
-            school_name = form.cleaned_data["school_name"]
-            teacher_name = form.cleaned_data["teacher_name"]
-            teacher_email = form.cleaned_data["teacher_email"]
-
-            course_token = CourseToken(
-                school_name=school_name,
-                teacher_name=teacher_name,
-                teacher_email=teacher_email,
-            )
-            course_token.save()
-            self.pk = course_token.pk
-            for i in range(number_of_tokens):
-                access_key = AccessKey.generate_access_key()
-                AccessKey(token=access_key, parent_token=course_token).save()
-            return super(RegisterFormView, self).form_valid(form)
-        # TODO choose better exception
-        raise SuspiciousOperation("Something went wrong")
-
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form), status=200)
-
-    def get_success_url(self):
-        token = CourseToken.objects.get(pk=self.pk)
-        return reverse_lazy(
-            "gcampusauth:register_success", kwargs={"pk": self.pk, "token": token.token}
+        self.object = form.save()
+        number_of_tokens: int = form.cleaned_data["number_of_tokens"]
+        for i in range(number_of_tokens):
+            access_key = AccessKey.generate_access_key()
+            AccessKey(token=access_key, parent_token=self.object).save()
+        messages.success(
+            self.request,
+            _(
+                "You successfully registered a course. "
+                "This page serves as an overview and allows you to view your "
+                "course's access keys"
+            ),
         )
-
-
-class RegisterSuccessView(DetailView):
-    model = CourseToken
-    template_name = "gcampusauth/sites/register_success.html"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        course_token = self.object
-        context["children_token"] = AccessKey.objects.filter(parent_token=course_token)
-        return context
+        # Login with course token
+        utils.set_token(
+            self.request, self.object.token, COURSE_TOKEN_TYPE, self.object.token_name
+        )
+        # return super(FormMixin, self).form_valid(form)
+        return HttpResponseRedirect(self.get_success_url())

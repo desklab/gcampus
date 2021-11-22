@@ -1,0 +1,68 @@
+html {
+    color: $grey-900;
+    font-family: "Calibri";
+    font-size: 11pt;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+body {
+    hyphens: auto;
+}
+
+
+h1 {
+    font-size: 24pt;
+}
+
+h2 {
+    font-size: 18pt;
+}
+
+h3 {
+    font-size: 14pt;
+    font-weight: 500;
+    color: $secondary;
+}
+
+a {
+    color: $secondary;
+    text-decoration: none;
+}
+
+.bold {
+    font-weight: 800;
+}
+
+.footer-link {
+    color: $grey-500;
+    text-decoration: none;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+.color-white {
+    color: white;
+}
+
+.color-primary {
+    color: $primary;
+}
+
+.color-secondary {
+    color: $secondary;
+}
+
+.color-lightgrey {
+    color: $grey-200;
+}
+
+.color-grey {
+    color: $grey-500;
+}
+
+.color-darkgrey {
+    color: $grey-800;
+}

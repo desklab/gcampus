@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -12,8 +12,9 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from typing import List, Optional
 
-from django.forms import HiddenInput
+from django.forms import HiddenInput, TextInput, MultiWidget
 
 
 class HiddenTokenInput(HiddenInput):
@@ -45,3 +46,55 @@ class HiddenTokenInput(HiddenInput):
             the token value.
         """
         return ""
+
+
+def split_token_chunks(token: str, chunk_size: int = 4) -> List[Optional[str]]:
+    return [token[i : i + chunk_size] for i in range(0, len(token), chunk_size)]
+
+
+class SplitTokenWidget(MultiWidget):
+    template_name = "gcampusauth/forms/widgets/splitlogin.html"
+
+    def __init__(self):
+        attrs = {
+            "maxlength": 4,
+        }
+        widgets = (
+            TextInput(attrs=attrs),
+            TextInput(attrs=attrs),
+            TextInput(attrs=attrs),
+        )
+        super().__init__(widgets)
+
+    def decompress(self, value) -> List[Optional[str]]:
+        if value:
+            chunks = split_token_chunks(value)
+            if len(chunks) > 3:
+                return chunks[:3]
+            # make sure to return correct length
+            return chunks + [None] * (3 - len(chunks))
+        return [None, None, None]
+
+
+class SplitKeyWidget(MultiWidget):
+    template_name = "gcampusauth/forms/widgets/splitlogin.html"
+
+    def __init__(self):
+        attrs = {
+            "maxlength": 4,
+        }
+        widgets = (
+            TextInput(attrs=attrs),
+            TextInput(attrs=attrs),
+        )
+        super().__init__(widgets)
+
+    def decompress(self, value) -> List[Optional[str]]:
+        if value:
+            chunks = split_token_chunks(value)
+            if len(chunks) > 2:
+                # Make sure to return only two chunks
+                return chunks[:2]
+            # make sure to return correct length
+            return chunks + [None] * (2 - len(chunks))
+        return [None, None]

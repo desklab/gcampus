@@ -1,0 +1,11 @@
+{% load menu icon %}
+<li class="nav-item">
+    <a href="{% if view_name %}{% url view_name %}{% else %}#{% endif %}" class="my-1 nav-link {% active_link view_name yesno="active,text-white" %}" {% aria_current view_name %}>
+        {% if icon %}
+            <span class="sidebar-item-icon">
+                {% icon icon width="16px" height="16px" class="d-inline-block align-text-top" %}
+            </span>
+        {% endif %}
+        <span class="sidebar-item-title">{{ title }}</span>
+    </a>
+</li>

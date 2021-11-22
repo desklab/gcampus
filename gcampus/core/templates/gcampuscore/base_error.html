@@ -1,0 +1,37 @@
+{% extends "gcampuscore/base.html" %}
+{% load static %}
+{% block title %}
+    {% if exception %}
+        {{ exception }} - GewässerCampus
+    {% else %}
+        GewässerCampus
+    {% endif %}
+{% endblock %}
+{% block body %}
+    <nav class="navbar navbar-expand navbar-light bg-white fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand ms-2" href="/">
+                <img src="{% static "gcampuscore/assets/favicon.ico" %}" width="28" height="28" class="d-inline-block align-text-bottom me-2">
+                <h3 class="d-inline-block">GewässerCampus</h3>
+            </a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row align-items-center g-lg-5 py-5 min-vh-100">
+            <div class="col-lg-7 text-center text-lg-start">
+                <h2 class="display-3 fw-bold lh-1 mb-3">
+                    {% block exception_title %}
+                        {{ exception }}
+                    {% endblock %}
+                </h2>
+                <div class="col-lg-10 fs-4">
+                    {% block exception_message %}{% endblock %}
+                </div>
+            </div>
+            <div class="col-md-10 mx-auto col-lg-5">
+                {% block exception_options %}{% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block body_js %}{% endblock %}

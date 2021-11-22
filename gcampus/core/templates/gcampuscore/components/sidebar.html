@@ -1,0 +1,24 @@
+{% load icon %}
+{% load i18n %}
+<div class="sidebar collapse text-white bg-dark{% if sidebar_open %} show{% endif %}" id="sidebar">
+    <div class="navbar gcampus-navbar justify-content-start flex-nowrap">
+        <button class="btn text-white d-md-inline-block d-none" type="button" id="sidebarToggleButton" onclick="toggleSidebar()" aria-controls="sidebar">
+            {% icon "menu" class="d-inline-block" %}
+        </button>
+        <a href="/" class="btn text-white sidebar-title">GewässerCampus</a>
+    </div>
+    <hr class="mt-0">
+    <ul class="nav nav-pills flex-column mb-auto">
+        {% translate "Map" as map_title %}
+        {% translate "Measurements" as measurements_title %}
+        {% translate "Analysis" as analysis_title %}
+        {% translate "User" as user_title %}
+        {% include "gcampuscore/components/sidebar_item.html" with icon="map" title=map_title view_name="gcampuscore:mapview" %}
+        {% include "gcampuscore/components/sidebar_item.html" with icon="list" title=measurements_title view_name="gcampuscore:measurements" %}
+        {% include "gcampuscore/components/sidebar_item.html" with icon="bar-chart-2" title=analysis_title view_name="" %}
+        {% if user_token_is_course_token%}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="user" title=user_title view_name="gcampuscore:course_overview" %}
+        {% endif %}
+    </ul>
+    <hr>
+</div>

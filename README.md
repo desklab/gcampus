@@ -1,4 +1,4 @@
-<img width="100%" src="./artwork/Readme-Head.png">
+<img width="100%" src="./artwork/readme/readme-head.png">
 
 <br>
 <br>
@@ -53,6 +53,14 @@ To install GDAL, run the following command:
 ```shell
 conda install -c conda-forge libgdal
 ```
+
+#### WeasyPrint
+
+[WeasyPrint](https://doc.courtbouillon.org/weasyprint/stable/index.html)
+is used to generate PDF documents e.g. for the token list. Install
+instructions can be found in
+[WeasyPrint's documentation](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#installation).
+
 
 ### Static Files (JavaScript, Stylesheets)
 

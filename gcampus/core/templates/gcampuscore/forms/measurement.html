@@ -1,82 +1,124 @@
 {% extends "gcampuscore/base.html" %}
 {% load i18n static map auth_token %}
-{% block title %}
-    {% translate "Create new Measurement" %}
-{% endblock %}
 {% block extra_head %}
     {% load_mapbox_css %}
     {% load_mapbox_js %}
 {% endblock %}
-{% block body_class %}bg-light{% endblock %}
+{% block main_class %}main-pt-0{% endblock %}
+{% block navbar_title %}
+    <span>{% translate "1. Information" %}</span>
+    <span class="text-muted ms-3">{% translate "2. Environment Parameters" %}</span>
+    {% if request.resolver_match.view_name == "gcampuscore:edit_measurement" %}
+        <a href="{% url "gcampuscore:edit_parameters" pk=object.pk %}" class="text-muted text-decoration-none ms-3">{% translate "3. Measured Parameters" %}</a>
+    {% else %}
+        <span class="text-muted text-decoration-none ms-3">{% translate "3. Measured Parameters" %}</span>
+    {% endif %}
+{% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="py-5 text-center">
-            <h2>{% translate "Create new Measurement" %}</h2>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="text-danger">
-                    {% for error in form.non_field_errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                    {% for error in form.token_errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
+    <div class="container-fluid px-0">
+        <form method="POST" class="{% if form.errors %}has-validation{% endif %}">
+            {% csrf_token %}
+            {% auth_token %}
+            <div class="row">
+                <div class="col-7 px-5">
+                    <div class="text-danger">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                        {% for error in form.token_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
                 </div>
-                <form method="POST">
-                    {% csrf_token %}
-                    {% auth_token %}
+                <div class="col-5 bg-light px-5 py-3"></div>
+
+                <div class="col-7 px-5 py-3">
                     {# Name #}
                     {% with form.name as field %}
                         <div class="mb-3">
                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                            {% include "gcampuscore/forms/components/helptext.html" %}
+                            {# {% include "gcampuscore/forms/components/helptext.html" %} #}
                             {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                            {% if field.errors %}
+                                <small class="text-danger">{{ field.errors }}</small>
+                            {% endif %}
                         </div>
                     {% endwith %}
+                </div>
+                <div class="col-5 bg-light px-5 py-3">
+                    <p class="mt-4 text-muted">
+                        {{ form.name.help_text }}
+                    </p>
+                </div>
+
+                <div class="col-7 px-5 py-3">
                     {# Date and time of measurement #}
                     {% with form.time as field %}
                         <div class="mb-3">
                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                            {% include "gcampuscore/forms/components/helptext.html" %}
                             {{ field }}
+                            {% if field.errors %}
+                                <small class="text-danger">{{ field.errors }}</small>
+                            {% endif %}
                         </div>
                     {% endwith %}
+                </div>
+                <div class="col-5 bg-light px-5 py-3">
+                    <p class="mt-4 text-muted">
+                        {{ form.time.help_text }}
+                    </p>
+                </div>
+
+                <div class="col-7 px-5 py-3">
                     {# Location (map) #}
                     {% with field=form.location map_height=400 %}
                         <div class="mb-3">
                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                            {% include "gcampuscore/forms/components/helptext.html" %}
                             <div class="rounded-2">
                                 {{ field }}
                                 <div id="watersuggestion"></div>
                             </div>
+                            {% if field.errors %}
+                                <small class="text-danger">{{ field.errors }}</small>
+                            {% endif %}
+                            {% if form.water_name.errors %}
+                                <small class="text-danger">{{ form.water_name.errors }}</small>
+                            {% endif %}
                         </div>
                     {% endwith %}
+                </div>
+                <div class="col-5 bg-light px-5 py-3">
+                    <p class="mt-4 text-muted">
+                        {{ form.location.help_text }}
+                    </p>
+                </div>
+
+                <div class="col-7 px-5 py-3">
                     {# Comment #}
                     {% with form.comment as field %}
                         <div class="mb-3">
                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                            {% include "gcampuscore/forms/components/helptext.html" %}
                             {% include "gcampuscore/forms/widgets/textarea.html" with widget=field.subwidgets.0.data %}
-                        </div>
-                    {% endwith %}
-                    {% for field in form %}
-                        <div class="mb-2">
                             {% if field.errors %}
-                                <div class="invalid-feedback">
-                                    {{ field.errors }}
-                                </div>
+                                <small class="text-danger">{{ field.errors }}</small>
                             {% endif %}
                         </div>
-                    {% endfor %}
+                    {% endwith %}
+                </div>
+                <div class="col-5 bg-light px-5 py-3">
+                    <p class="mt-4 text-muted">
+                        {{ form.comment.help_text }}
+                    </p>
+                </div>
 
+                <div class="col-7 px-5 pb-5">
                     <button class="btn btn-primary btn-lg">
                         {% translate "Save and Continue" %}
                     </button>
-                </form>
+                </div>
+                <div class="col-5 bg-light px-5 py-3"></div>
             </div>
-        </div>
+        </form>
     </div>
 {% endblock %}
 {% block extra_body %}

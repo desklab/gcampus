@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -96,7 +96,7 @@ class SplitDateWidget(MultiWidget):
     def decompress(self, value: datetime.date):
         if value:
             return [f"{value.day:02d}", f"{value.month:02d}", f"{value.year:02d}"]
-        return [None, None]
+        return [None, None, None]
 
 
 class SplitSplitDateTimeWidget(MultiWidget):

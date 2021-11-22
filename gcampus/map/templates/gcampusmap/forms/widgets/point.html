@@ -10,7 +10,7 @@
     function {{ onload }}(e) {
         let map = e.target;
         let input = document.getElementById('{{ input_id }}');
-        new gcampusmap.MapboxGLPointWidget(map, input);
+        new gcampusmap['mapbox-gl'].MapboxGLPointWidget(map, input);
     }
 </script>
 {% map name=modulemodule onload=onload container=map_container_id %}
