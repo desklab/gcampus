@@ -49,3 +49,26 @@ class CourseOverviewPDF(SingleObjectDocumentView):
         return gettext_lazy("gewaessercampus-overview-{course_name:s}.pdf").format(
             course_name=slugify(self.object.token_name)
         )
+
+class AccesskeyCombinedPDF(SingleObjectDocumentView):
+    template_name = "gcampusprint/documents/access_student_combined.html"
+    filename = gettext_lazy("gewaessercampus-accesskey-combined.pdf")
+    context_object_name = "course_token"
+    model = CourseToken
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        token = utils.get_token(self.request)
+        return get_object_or_404(queryset, token=token)
+
+    @method_decorator(require_course_token)
+    def dispatch(self, request, *args, **kwargs):
+        return super(AccesskeyCombinedPDF, self).dispatch(request, *args, **kwargs)
+
+    def get_filename(self):
+        if self.object.token_name in EMPTY:
+            return self.filename
+        return gettext_lazy("gewaessercampus-accesskey-combined-{course_name:s}.pdf").format(
+            course_name=slugify(self.object.token_name)
+        )

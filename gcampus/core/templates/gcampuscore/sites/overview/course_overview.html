@@ -181,7 +181,7 @@
     <div class="my-5 bg-light border border-primary rounded-3 container-fluid w-75">
         <div class="row align-items-center pb-3 mt-3">
             <div class="col-10">
-                <h5>{% translate "Save as PDF" %}</h5>
+                <h5>{% translate "Save Course Overview as PDF" %}</h5>
                 <div class="text-sm text-muted">
                     {% translate "Download a PDF with a summary of your registration data, your coursetoken and the all accesskeys of your course." %}
                 </div>
@@ -189,6 +189,28 @@
             <div class="col-2">
                 <a class="btn btn-sm btn-primary me-2 float-end"
                         href="{% url "gcampusprint:documents-overview" %}"
+                        role="button" 
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="top"
+                        title="{% translate "Download your course token and all access keys in  a PDF" %}">
+                    {% icon "file-text" class="css-class" height="20" width="20" %} &nbsp; 
+                    {% translate "Download" %}
+                </a>
+            </div>
+        </div>
+
+        <hr class="my-3">
+
+        <div class="row align-items-center pb-3 mt-3">
+            <div class="col-10">
+                <h5>{% translate "Save Access Keys with instructions as PDF" %}</h5>
+                <div class="text-sm text-muted">
+                    {% translate "Download a PDF with all accesskeys (one key per page/student) of your course and instructions for your students." %}
+                </div>
+            </div>
+            <div class="col-2">
+                <a class="btn btn-sm btn-primary me-2 float-end"
+                        href="{% url "gcampusprint:accesskey-combined" %}"
                         role="button" 
                         data-bs-toggle="tooltip" 
                         data-bs-placement="top"

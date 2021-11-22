@@ -16,8 +16,9 @@
 from django.urls import path
 
 from gcampus.print.apps import GCampusPrintAppConfig
-from gcampus.print.views import (
+from gcampus.print.views.print import (
     CourseOverviewPDF,
+    AccesskeyCombinedPDF,
 )
 
 # Turn off black formatting and pylint
@@ -25,6 +26,9 @@ from gcampus.print.views import (
 # pylint: disable=line-too-long
 urlpatterns = [
     path("documents/overview", CourseOverviewPDF.as_view(), name="documents-overview"),
+    path("documents/accesskeys_combined", 
+         AccesskeyCombinedPDF.as_view(), 
+         name = "accesskey-combined"),
 ]
 # fmt: on
 # pylint: enable=line-too-long
