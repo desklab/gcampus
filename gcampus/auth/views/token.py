@@ -86,4 +86,4 @@ def logout(request: HttpRequest):
 
 
 def login_success(request: HttpRequest):
-    return render(request, "gcampusauth/sites/login_success.html")
+    return render(request, "gcampusauth/sites/login_success.html", context={"page_title": gettext_lazy("Logged in Successfully")})

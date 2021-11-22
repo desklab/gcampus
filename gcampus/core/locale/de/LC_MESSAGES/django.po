@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-22 12:22+0100\n"
+"POT-Creation-Date: 2021-11-22 18:14+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -500,11 +500,11 @@ msgstr ""
 msgid "You successfully generated {count:d} new access keys"
 msgstr ""
 
-#: gcampus/core/views/measurement/__init__.py:69
+#: gcampus/core/views/measurement/__init__.py:67
 msgid "Create new Measurement"
 msgstr "Neue Messung Erstellen"
 
-#: gcampus/core/views/measurement/__init__.py:95
+#: gcampus/core/views/measurement/__init__.py:93
 #, fuzzy, python-brace-format
 #| msgid "Edit Measurement"
 msgid "Edit Measurement {pk:d} - Information"
@@ -518,7 +518,7 @@ msgstr "Du hast die Messung \"%(measurement)s\" erfolgreich versteckt."
 msgid "You successfully made the measurement \"{measurement:s}\" public"
 msgstr "Du hast die Messung \"%(measurement)s\" veröffentlicht."
 
-#: gcampus/core/views/parameter.py:45
+#: gcampus/core/views/parameter.py:44
 #, python-brace-format
 msgid "Edit Measurement {pk:d} - Measured Parameters"
 msgstr ""
