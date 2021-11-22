@@ -220,6 +220,10 @@ let gcampusauthConfig = (env, options) => {
                         from: path.resolve(__dirname, 'gcampus', 'auth', 'static_src', 'fonts'),
                         to: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth', 'fonts'),
                     },
+                    {
+                        from: path.resolve(__dirname, 'gcampus', 'auth', 'static_src', 'assets'),
+                        to: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth', 'assets'),
+                    },
                 ]
             })
         ],
