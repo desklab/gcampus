@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-22 18:14+0100\n"
+"POT-Creation-Date: 2021-11-22 18:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -436,8 +436,10 @@ msgid "Generate Accesskeys"
 msgstr "Verknüpfte Zugangscodes"
 
 #: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:184
-msgid "Save as PDF"
-msgstr ""
+#, fuzzy
+#| msgid "Course Overview"
+msgid "Save Course Overview as PDF"
+msgstr "Kursübersicht"
 
 #: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:186
 msgid ""
@@ -446,40 +448,52 @@ msgid ""
 msgstr ""
 
 #: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:195
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:215
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:217
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:237
 msgid "Download your course token and all access keys in  a PDF"
 msgstr ""
 
 #: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:197
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:219
 msgid "Download"
 msgstr ""
 
 #: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:206
-msgid "Send to my E-Mail"
+msgid "Save Access Keys with instructions as PDF"
 msgstr ""
 
 #: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:208
+msgid ""
+"Download a PDF with all accesskeys (one key per page/student) of your course "
+"and instructions for your students."
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:228
+msgid "Send to my E-Mail"
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:230
 msgid ""
 "Send your course token and all access keys in a PDF via Email. You can "
 "change the E-Mail in the Coursedata Section."
 msgstr ""
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:217
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:239
 msgid "Send E-Mail"
 msgstr ""
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:226
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:248
 msgid "Share a link"
 msgstr ""
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:228
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:250
 msgid ""
 "Get a link to share the PDF with a summary of your registration data, your "
 "coursetoken and the all accesskeys of your course"
 msgstr ""
 
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:235
-#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:237
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:257
+#: gcampus/core/templates/gcampuscore/sites/overview/course_overview.html:259
 msgid "Create Link"
 msgstr ""
 
@@ -510,13 +524,13 @@ msgstr "Neue Messung Erstellen"
 msgid "Edit Measurement {pk:d} - Information"
 msgstr "Messung bearbeiten"
 
-#: gcampus/core/views/measurement/visibility.py:51
-msgid "You successfully hid the measurement \"{measurement:s}\""
-msgstr "Du hast die Messung \"%(measurement)s\" erfolgreich versteckt."
+#: gcampus/core/views/measurement/visibility.py:49
+msgid "You successfully hid the measurement '{measurement:s}'."
+msgstr "Du hast die Messung '{measurement:s}' erfolgreich versteckt."
 
-#: gcampus/core/views/measurement/visibility.py:75
-msgid "You successfully made the measurement \"{measurement:s}\" public"
-msgstr "Du hast die Messung \"%(measurement)s\" veröffentlicht."
+#: gcampus/core/views/measurement/visibility.py:74
+msgid "You successfully made the  measurement '{measurement:s}' public."
+msgstr "Du hast die Messung '{measurement:s}' erfolgreich veröffentlicht."
 
 #: gcampus/core/views/parameter.py:44
 #, python-brace-format
