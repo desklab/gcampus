@@ -13,11 +13,20 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from django.apps import AppConfig
-from django.utils.translation import gettext_lazy as _
+from django.urls import path
 
+from gcampus.print.apps import GCampusPrintAppConfig
+from gcampus.print.views import (
+    CourseOverviewPDF,
+)
 
-class GCampusPrintAppConfig(AppConfig):
-    name = "gcampus.print"
-    label = "gcampusprint"
-    verbose_name = _("GCampus Print")
+# Turn off black formatting and pylint
+# fmt: off
+# pylint: disable=line-too-long
+urlpatterns = [
+    path("documents/overview", CourseOverviewPDF.as_view(), name="documents-overview"),
+]
+# fmt: on
+# pylint: enable=line-too-long
+
+app_name = GCampusPrintAppConfig.label

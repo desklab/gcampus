@@ -39,6 +39,7 @@ TOKEN_FIELD_NAME = "gcampus_auth_token"
 
 class CourseOverviewFormView(TitleMixin, UpdateView):
     form_class = CourseOverviewForm
+    model = CourseToken
     title = _("Course Overview")
     template_name = "gcampuscore/sites/overview/course_overview.html"
     next_view_name = "gcampuscore/sites/overview/course_overview.html"
@@ -47,8 +48,10 @@ class CourseOverviewFormView(TitleMixin, UpdateView):
         super(CourseOverviewFormView, self).__init__(*args, **kwargs)
 
     def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
         token = utils.get_token(self.request)
-        return CourseToken.objects.get(token=token)
+        return get_object_or_404(queryset, token=token)
 
     @method_decorator(require_course_token)
     def dispatch(self, request, *args, **kwargs):

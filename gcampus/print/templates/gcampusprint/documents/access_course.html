@@ -33,7 +33,7 @@
     <!-- TODO: add and use translations -->
 
     <div class="footer-left">
-        <span class="bold">Dokument ID</span> GC-AC-FDS324FL8AE4LT4M 
+        <span class="bold">Dokument ID</span> GC-AC-{{ course_token.token }}
     </div>
 
     <div class="footer-right">
@@ -49,8 +49,10 @@
                     Info
                 </div>        
                 <div class="text-justify h-abs-250 document-description">
-                    Dieses Dokument wurde automatisch erstellt und enhält eine Zusammenfassung der Registrierung, 
-                    die Zugangscodes zur Benutzung der GewässerCampus Webanwendung sowie den Kursschlüssel zur Verwaltung des Kurses.
+                    Dieses Dokument wurde automatisch erstellt und enhält 
+                    eine Zusammenfassung der Registrierung, die Zugangscodes 
+                    zur Benutzung der GewässerCampus Webanwendung sowie 
+                    den Kursschlüssel zur Verwaltung des Kurses.
                 </div>
             </div>
    
@@ -61,33 +63,34 @@
                 </div>        
                 <div class="coursedata-container overflow-hidden h-abs-550 w-abs-1600">
 
-                    <div class="float-left w-abs-900 coursedata"> <!-- TODO: replace with actual code for course data -->
+                    <div class="float-left w-abs-900 coursedata">
                         <div class="coursedata-heading">
                             Name der Schule
                         </div>
                         <div class="coursedata-content">
-                            HG Heidelberg
+                            {{ course_token.school_name }}
                         </div>    
                         <div class="coursedata-heading">
                             E-Mail-Adresse
                         </div>
                         <div class="coursedata-content">
-                            lehrkraft@hgh.de
+                            {{ course_token.teacher_email }}
                         </div> 
                         <div class="coursedata-heading">
                             Name des Kurses
                         </div>
                         <div class="coursedata-content">
-                            Bio LK 11/2
+                            {{ course_token.token_name }}
                         </div>
                     </div>
 
                     <div class="float-left w-abs-600">
                         <div class="coursetoken">
-                            {% displaytoken "F2BT4E87AC5D" hidden=False toggle=False %} <!-- TODO: replace with actual code for token -->  
+                            {% displaytoken course_token.token hidden=False toggle=False %}  
                         </div>
                         <div class="coursetoken-description">
-                            Der Kursschlüssel wird benötigt, um alle Messungen der dazugehörigen Zugangscodes (siehe unten) verwalten zu können. 
+                            Der Kursschlüssel wird benötigt, um alle Messungen der 
+                            dazugehörigen Zugangscodes (siehe unten) verwalten zu können. 
                             Deshalb sollte er nicht an die Schüler:innen weitergegeben werden.
                         </div>  
                     </div>
@@ -101,26 +104,27 @@
                     Zugangscodes
                 </div> 
                 <div class="accesskey-description w-abs-1500 h-abs-250">
-                    Zugangscodes werden benötigt, um neue Messungen zu erstellen und im Anschluss auch zu bearbeiten. 
-                    Ein Zugangscode kann ähnlich wie ein Passwort mehrfach verwendet werden, ein Benutzername ist dabei nicht nötig.
-                    Schüler:innen, die in einer Gruppe zusammenarbeiten, können den gleichen Zugangscode nutzen.
+                    Zugangscodes werden benötigt, um neue Messungen zu erstellen 
+                    und im Anschluss auch zu bearbeiten. Ein Zugangscode 
+                    kann ähnlich wie ein Passwort mehrfach verwendet werden, 
+                    ein Benutzername ist dabei nicht nötig.
+                    Schüler:innen, die in einer Gruppe zusammenarbeiten, 
+                    können den gleichen Zugangscode nutzen.
                 </div> 
                 <div class="accesskey-container overflow-hidden w-abs-1600 h-abs-1100">
-                    {% with 'A3F8HPL2 X14E7S19 EYBGGMF2 SFQR4E1Z B72YJ2G9 LDYE1AKZ DYE1AKZ8 BXPNQF9J 229Q1FHD FEW29RSF J4K28FW9 Z9NW5JQS RFL8C2DW ZR83MFB9 6TLNA7GT KDF3MP8G 4HREC2P2 MPPNB4YK NH7XZ3S6 Z2N7QQF9 XFHQG6FL JZ98C2DJ QSA7WZR8 524K98FW RFLQF2NT LNWM7Q3F B96GTZN9 E1A2PNQF LDJ2GYK4 EW28QF9R' as tokenlist %}     <!-- TODO: remove after testing, replace with actual code for keylist -->
-                    {% for token in tokenlist.split %}
+                    {% for token in course_token.access_keys.all %}
                         <div class="accesskey-element float-left overflow-hidden">
                             <div class="accesskey-counter float-left">
                                 {{ forloop.counter }}
                             </div>
                             <div class="accesskey-key float-left">
-                                {% displaytoken token hidden=False toggle=False %} <!-- TODO: replace with actual code for keylist -->
+                                {% displaytoken token.token hidden=False toggle=False %}
                             </div>
                             <div class="accesskey-notice float-left">
                                 .
                             </div>
                         </div>
                     {% endfor %}
-                    {% endwith %} <!-- TODO: remove after testing -->
                 </div>
             </div>
 
@@ -135,7 +139,9 @@
                             digitale Kopie öffnen
                         </div>  
                         <div class="qrcode-description text-justify">
-                            Dieser Link führt zu der digitalen Datei dieses Dokuments. Die dort hinterlegte Datei kann dann heruntergeladen, verschickt oder auch neu ausgedruckt werden.
+                            Dieser Link führt zu der digitalen Datei dieses Dokuments. 
+                            Die dort hinterlegte Datei kann dann heruntergeladen, 
+                            verschickt oder auch neu ausgedruckt werden.
                         </div>
                     </div>
                 </div>
@@ -148,7 +154,9 @@
                             zum Login der Webanwendung
                         </div>  
                         <div class="qrcode-description text-justify">
-                            Dieser Link führt zur Login-Seite der Webanwendung (www.gewaessercampus.de/login). Nach der Eingabe des Zugangscodes können Messungen erstellt oder bearbeitet werden.
+                            Dieser Link führt zur Login-Seite der Webanwendung 
+                            (www.gewaessercampus.de/login). Nach der Eingabe des 
+                            Zugangscodes können Messungen erstellt oder bearbeitet werden.
                         </div>
                     </div>
                 </div>

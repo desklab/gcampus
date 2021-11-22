@@ -13,38 +13,46 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__all__ = ["render", "as_bytes_io", "as_response", "as_file"]
-
+# __all__ = ["render_document", "as_bytes_io", "as_file"]
+import mimetypes
+import os
 import pathlib
+import posixpath
 from io import BytesIO
 from pathlib import Path
-from typing import Union
 from typing import Optional
+from typing import Union
 
-from django.http import StreamingHttpResponse
-from django.template.loader import render_to_string
+from django.conf import settings
 from django.contrib.sessions.middleware import SessionMiddleware
+from django.contrib.staticfiles import finders
 from django.http import HttpRequest
-
+from django.template.loader import render_to_string
 from weasyprint import HTML, Document
-
-from gcampus.print.static import url_fetcher
-
+from weasyprint.urls import URLFetchingError, default_url_fetcher
 
 STATIC_FILES_PATH = Path(__file__).resolve().parent / "static"
+URI_IDENTIFIER = "gcampusprint"
 
 
-def render(document: str, context: Optional[dict] = None) -> Document:
+def render_document(
+    template: str,
+    context: Optional[dict] = None,
+    request: Optional[HttpRequest] = None,
+    using=None
+) -> Document:
     # Add dummy request to enable context processors
-    request = HttpRequest()
-    middleware = SessionMiddleware()
-    middleware.process_request(request)
-    request.session.save()
+    if request is None:
+        request = HttpRequest()
+        middleware = SessionMiddleware()
+        middleware.process_request(request)
+        request.session.save()
 
     document_str = render_to_string(
-        f"gcampusprint/documents/{document}.html",
+        template,
         context=context,
         request=request,
+        using=using
     )
     html = HTML(string=document_str, url_fetcher=url_fetcher)
     return html.render()
@@ -56,24 +64,29 @@ def as_bytes_io(document: Document, **kwargs) -> BytesIO:
     return filelike_obj
 
 
-def as_response(
-    document: Document,
-    filename: str,
-    content_type: str = "application/pdf",
-) -> StreamingHttpResponse:
-    filelike_obj: BytesIO = as_bytes_io(document)
-    # Jump to the end of the file-like object
-    filelike_obj.seek(0, 2)
-    # File position corresponds to the file size
-    content_size = filelike_obj.tell()
-    # Go back to the beginning
-    filelike_obj.seek(0)
-
-    response = StreamingHttpResponse(filelike_obj, content_type=content_type)
-    response["Content-Disposition"] = f"attachment; filename={filename}"
-    response["Content-Length"] = content_size
-    return response
-
-
 def as_file(document: Document, target: Union[str, pathlib.Path]):
     document.write_pdf(target)
+
+
+def url_fetcher(url: str, **kwargs):
+    if url.startswith(f"{URI_IDENTIFIER}:"):
+        # Remove the URI identifier only used to trigger the URL fetcher
+        url = url[len(URI_IDENTIFIER) + 1 :]
+    if url.startswith(settings.STATIC_URL):
+        path = url.replace(settings.STATIC_URL, "", 1)
+        normalized_path = posixpath.normpath(path).lstrip("/")
+        absolute_path = finders.find(normalized_path)
+        if not absolute_path:
+            raise FileNotFoundError()
+        if not os.path.isfile(absolute_path):
+            raise URLFetchingError(
+                f"File '{url}' (resolved to '{absolute_path}') not found!"
+            )
+        mime_type, encoding = mimetypes.guess_type(absolute_path, strict=True)
+        return {
+            "mime_type": mime_type,
+            "encoding": encoding,
+            "file_obj": open(absolute_path, "rb"),
+        }
+    else:
+        return default_url_fetcher(url, **kwargs)
