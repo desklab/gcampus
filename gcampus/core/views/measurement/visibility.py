@@ -12,6 +12,7 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied, BadRequest
 from django.http import HttpRequest
@@ -21,11 +22,8 @@ from django.views.decorators.http import require_POST
 
 from gcampus.auth import exceptions
 from gcampus.auth.decorators import require_course_token
-from gcampus.auth.models.token import COURSE_TOKEN_TYPE
 from gcampus.auth.utils import (
-    is_authenticated,
     get_token,
-    get_token_type,
 )
 from gcampus.core.models import Measurement
 

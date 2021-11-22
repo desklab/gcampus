@@ -33,7 +33,7 @@ from gcampus.core.views.measurement import (
     HiddenCourseMeasurementListView,
     MeasurementEditView,
 )
-from gcampus.core.views.measurement_visibility import show, hide
+from gcampus.core.views.measurement.visibility import show, hide
 
 # Turn off black formatting and pylint
 # fmt: off
