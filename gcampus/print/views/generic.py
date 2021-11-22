@@ -27,17 +27,24 @@ __all__ = [
     "DocumentResponse",
     "DocumentView",
     "FileNameMixin",
-    "SingleObjectDocumentView"
+    "SingleObjectDocumentView",
 ]
 
 
 class DocumentResponse(StreamingHttpResponse):
     def __init__(
-        self, request: HttpRequest, template, context=None, content_type=None,
-        filename=None, using=None, headers=None
+        self,
+        request: HttpRequest,
+        template,
+        context=None,
+        content_type=None,
+        filename=None,
+        using=None,
+        headers=None,
     ):
-        document = render_document(template, context=context, request=request,
-                                   using=using)
+        document = render_document(
+            template, context=context, request=request, using=using
+        )
         filelike_obj: BytesIO = as_bytes_io(document)
         # Jump to the end of the file-like object
         filelike_obj.seek(0, 2)
@@ -72,7 +79,6 @@ class DocumentView(FileNameMixin, TemplateView):
 
 
 class SingleObjectDocumentView(SingleObjectMixin, DocumentView):
-
     def __init__(self, *args, **kwargs):
         self.object = None
         super(SingleObjectDocumentView, self).__init__(*args, **kwargs)

@@ -14,6 +14,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from django.core.management import BaseCommand
+
 from gcampus.print.document import render_document, as_file
 
 

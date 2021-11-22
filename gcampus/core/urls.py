@@ -22,7 +22,6 @@ from gcampus.core.views.course_overview import (
     activate_access_key,
     generate_new_access_keys,
 )
-from gcampus.core.views.parameter import ParameterFormSetView
 from gcampus.core.views.measurement import (
     MeasurementCreateView,
     MeasurementListView,
@@ -34,6 +33,7 @@ from gcampus.core.views.measurement import (
     MeasurementEditView,
 )
 from gcampus.core.views.measurement.visibility import show, hide
+from gcampus.core.views.parameter import ParameterFormSetView
 
 # Turn off black formatting and pylint
 # fmt: off

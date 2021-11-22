@@ -18,9 +18,9 @@ from pathlib import Path
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 
+from gcampus import __version__
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from gcampus.settings.util import get_env_read_file
-from gcampus import __version__
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
