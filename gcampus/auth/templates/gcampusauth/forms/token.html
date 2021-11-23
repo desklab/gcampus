@@ -21,15 +21,22 @@
                     {% url "gcampusauth:loginaccesskey" as login_accesskey_url %}
                     {% url "gcampusauth:register" as register_url %}
                     {% blocktranslate trimmed %}
-                        Some features, for example adding a new measurement, are limited to
-                        authenticated users. Please use your access key to 
+                        Some features, for example adding a new measurement,
+                        are limited to authenticated users.
+                        Please use your access key to
                         <a class="text-dark" href="{{ login_accesskey_url }}">
-                            log in as a student</a>.
-                        If you don't have an access key, your teacher can generate one for you. <br><br>
+                            log in as a student
+                        </a>.
+                        If you don't have an access key, your teacher can generate one for you.
+                        <br><br>
                         As a teacher you can 
                         <a class="text-dark" href="{{ login_coursetoken_url }}">
-                            login with a coursetoken</a> or 
-                        <a class="text-dark" href="{{ register_url }}">register</a> 
+                            login with a course token
+                        </a>
+                        or
+                        <a class="text-dark" href="{{ register_url }}">
+                            register
+                        </a>
                         a new course.
                     {% endblocktranslate %}
                 </div>
@@ -39,7 +46,7 @@
 
                     <form method="POST">
                         <div class="row justify-content-center text-center">
-                            <div class="col-lg-4">
+                            <div class="col">
                                 {% csrf_token %}
                                 {# Token #}
                                 {% with form.token as field %}
