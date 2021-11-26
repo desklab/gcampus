@@ -40,7 +40,7 @@ class CourseToken(DateModelMixin):
     token = models.CharField(blank=False, max_length=COURSE_TOKEN_LENGTH, unique=True)
 
     token_name = models.CharField(
-        blank=True, max_length=30, verbose_name=_("Course Token Name")
+        blank=True, max_length=30, verbose_name=_("Course Name")
     )
 
     deactivated = models.BooleanField(default=False)
@@ -96,12 +96,14 @@ class AccessKey(DateModelMixin):
         blank=False,
         null=False,
         related_name="access_keys",
+
     )
 
     deactivated = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = _("Access Key")
+        ordering = ("created_at",)
 
     @staticmethod
     def generate_access_key():

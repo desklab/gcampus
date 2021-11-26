@@ -37,6 +37,7 @@ class Measurement(util.DateModelMixin):
         verbose_name = _("Measurement")
         verbose_name_plural = _("Measurements")
         indexes = (GinIndex(fields=("search_vector",)),)
+        ordering = ("created_at", "name")
 
     # TODO: for now the token can be null and is by default null.
     #  This will be changed in the future after creating a new database.
@@ -47,6 +48,7 @@ class Measurement(util.DateModelMixin):
         blank=False,
         null=True,
         default=None,
+        related_name="measurements"
     )
 
     name = models.CharField(
