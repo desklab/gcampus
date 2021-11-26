@@ -50,14 +50,17 @@
                                 {% csrf_token %}
                                 {# Token #}
                                 {% with form.token as field %}
-                            <div class="mb-3">
-                                {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                {{ field }}
-                                {% if field.errors %}
-                                    <small class="text-danger">{{ field.errors }}</small>
-                                {% endif %}
-                            </div>
-                        {% endwith %}
+                                    <div class="mb-3">
+                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            <small class="text-danger">{{ field.errors }}</small>
+                                        {% endif %}
+                                    </div>
+                                {% endwith %}
+                                {% with form.next_url as field %}
+                                    {{ field }}
+                                {% endwith %}
                             {% comment %}
                                 {% with form.token as field %}
                                     <div class="mb-3">

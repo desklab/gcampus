@@ -16,6 +16,7 @@
 from django import forms
 from django.conf import settings
 from django.core.validators import MaxLengthValidator, MinLengthValidator
+from django.forms import CharField
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.auth.fields.token import (
@@ -31,6 +32,7 @@ from gcampus.auth.models.token import (
 )
 
 TOKEN_FIELD_NAME = "token"
+NEXT_URL_FIELD_NAME = "next_url"
 
 
 class AccessKeyForm(forms.Form):
@@ -43,7 +45,13 @@ class AccessKeyForm(forms.Form):
             MinLengthValidator(ACCESS_KEY_LENGTH),
         ],
     )
-    fields = (TOKEN_FIELD_NAME,)
+    next_url = CharField(
+        required=False,
+        max_length=255,
+        widget=forms.HiddenInput()
+    )
+
+    fields = (TOKEN_FIELD_NAME, NEXT_URL_FIELD_NAME)
 
 
 class CourseTokenForm(forms.Form):
@@ -56,7 +64,13 @@ class CourseTokenForm(forms.Form):
             MinLengthValidator(COURSE_TOKEN_LENGTH),
         ],
     )
-    fields = (TOKEN_FIELD_NAME,)
+    next_url = CharField(
+        required=False,
+        max_length=255,
+        widget=forms.HiddenInput()
+    )
+
+    fields = (TOKEN_FIELD_NAME, NEXT_URL_FIELD_NAME)
 
 
 class RegisterForm(forms.ModelForm):

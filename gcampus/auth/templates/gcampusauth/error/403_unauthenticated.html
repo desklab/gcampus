@@ -1,5 +1,5 @@
 {% extends "gcampuscore/base_error.html" %}
-{% load i18n %}
+{% load i18n next_url %}
 {% block exception_message %}
     {% url "gcampusauth:register" as register_url %}
     {% blocktranslate trimmed %}
@@ -15,11 +15,11 @@
 {% block exception_options %}
     <div class="p-4 p-md-5 border rounded-3 bg-light">
         <a class="w-100 btn btn-lg btn-primary mb-4" role="button"
-           href="{% url "gcampusauth:loginaccesskey" %}">
+           href="{% url "gcampusauth:loginaccesskey" %}{% next_url %}">
             {% translate "Login as Student" %}
         </a>
         <a class="w-100 btn btn-lg btn-primary" role="button"
-           href="{% url "gcampusauth:logincoursetoken" %}">
+           href="{% url "gcampusauth:logincoursetoken" %}{% next_url %}">
             {% translate "Login as Teacher" %}
         </a>
         <hr class="my-4">
