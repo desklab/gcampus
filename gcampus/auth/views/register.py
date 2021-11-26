@@ -34,7 +34,7 @@ class RegisterFormView(TitleMixin, CreateView):
     form_class = RegisterForm
     title = gettext_lazy("Request Access Keys")
     template_name = "gcampusauth/forms/register.html"
-    success_url = reverse_lazy("gcampuscore:course_overview")
+    success_url = reverse_lazy("gcampusauth:course-overview")
 
     def form_valid(self, form):
         self.object = form.save()
@@ -47,7 +47,7 @@ class RegisterFormView(TitleMixin, CreateView):
             _(
                 "You successfully registered a course. "
                 "This page serves as an overview and allows you to view your "
-                "course's access keys"
+                "course's access keys."
             ),
         )
         # Login with course token

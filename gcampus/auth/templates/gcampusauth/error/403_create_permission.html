@@ -1,7 +1,7 @@
 {% extends "gcampuscore/base_error.html" %}
 {% load i18n auth_token %}
 {% block exception_message %}
-    {% url "gcampuscore:course_overview" as course_overview_url %}
+    {% url "gcampusauth:course-overview" as course_overview_url %}
     {% if user_token_is_access_key %}
         {% blocktranslate trimmed %}
             You are currently logged in with the following access key:
@@ -35,7 +35,7 @@
 {% block exception_options %}
     <div class="p-4 p-md-5 border rounded-3 bg-light">
         <a class="w-100 btn btn-lg btn-primary" role="button"
-           href="{% url "gcampusauth:loginaccesskey" %}">
+           href="{% url "gcampusauth:login-access-key" %}">
             {% translate "Login as Student" %}
         </a>
         <hr class="my-4">

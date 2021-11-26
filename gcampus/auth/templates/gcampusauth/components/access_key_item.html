@@ -7,14 +7,14 @@
             </small>
             {% displaytoken access_key.token hidden=False %}
         </h5>
-        {% url "gcampuscore:activate" pk=access_key.pk as activate_url %}
-        {% url "gcampuscore:deactivate" pk=access_key.pk as deactivate_url %}
+        {% url "gcampusauth:activate" pk=access_key.pk as activate_url %}
+        {% url "gcampusauth:deactivate" pk=access_key.pk as deactivate_url %}
         <form class="d-inline-block" method="post" action="{% if access_key.deactivated %}{{ activate_url }}{% else %}{{ deactivate_url }}{% endif %}">
             {% csrf_token %}
             <input type="hidden" name="measurement" value="{{ access_key.pk }}"/>
             <div class="dropdown">
                 <button class="btn btn-sm dropdown-toggle" type="button" id="dropdownMenuButtonEditKey" data-bs-toggle="dropdown" aria-expanded="false">
-                    Options
+                    {% translate "Options" %}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButtonEditKey">
                     <li>
@@ -52,7 +52,7 @@
             </span>
         {% endif %}
         <small class="text-muted">
-            {% blocktranslate with count=access_key.measurements.count %}
+            {% blocktranslate trimmed with count=access_key.measurements.count %}
                 {{ count }} measurements so far.
             {% endblocktranslate %}
         </small>

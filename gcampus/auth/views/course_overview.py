@@ -12,6 +12,14 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+__all__ = [
+    "CourseOverviewFormView",
+    "deactivate_access_key",
+    "activate_access_key",
+    "generate_new_access_keys",
+]
+
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
@@ -41,8 +49,7 @@ class CourseOverviewFormView(TitleMixin, UpdateView):
     form_class = CourseOverviewForm
     model = CourseToken
     title = _("Course Overview")
-    template_name = "gcampuscore/sites/overview/course_overview.html"
-    next_view_name = "gcampuscore/sites/overview/course_overview.html"
+    template_name = "gcampusauth/sites/course_overview.html"
 
     def __init__(self, *args, **kwargs):
         super(CourseOverviewFormView, self).__init__(*args, **kwargs)
@@ -84,7 +91,7 @@ def deactivate_access_key(request, pk):
     if access_key.parent_token.token == parent_token:
         access_key.deactivated = True
         access_key.save()
-        return redirect("gcampuscore:course_overview")
+        return redirect("gcampusauth:course-overview")
     else:
         raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
 
@@ -97,7 +104,7 @@ def activate_access_key(request, pk):
     if access_key.parent_token.token == parent_token:
         access_key.deactivated = False
         access_key.save()
-        return redirect("gcampuscore:course_overview")
+        return redirect("gcampusauth:course-overview")
     else:
         raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
 
@@ -127,7 +134,7 @@ def generate_new_access_keys(request):
                     allowed_count=allowed_count,
                 ),
             )
-            return redirect("gcampuscore:course_overview")
+            return redirect("gcampusauth:course-overview")
 
         for i in range(count):
             access_key = AccessKey.generate_access_key()
@@ -143,4 +150,4 @@ def generate_new_access_keys(request):
         for errors in form.errors.values():
             for error in errors:
                 messages.error(request, error)
-    return redirect("gcampuscore:course_overview")
+    return redirect("gcampusauth:course-overview")

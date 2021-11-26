@@ -46,7 +46,9 @@ def hide(request):
     if course_token.token == token:
         measurement.hidden = True
         measurement.save()
-        message_text = gettext("You successfully hid the measurement '{measurement:s}'.").format(measurement=str(measurement))
+        message_text = gettext(
+            "You successfully hid the measurement \"{measurement}\"."
+        ).format(measurement=str(measurement))
         messages.success(
             request,
             message_text,
@@ -71,7 +73,7 @@ def show(request):
         messages.success(
             request,
             gettext(
-                "You successfully made the  measurement '{measurement:s}' public."
+                "You successfully made the measurement \"{measurement}\" public."
             ).format(measurement=str(measurement)),
         )
         return redirect("gcampuscore:measurement_detail", pk=pk)

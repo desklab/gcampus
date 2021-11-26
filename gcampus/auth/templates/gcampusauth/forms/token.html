@@ -17,8 +17,8 @@
                     {% blocktranslate %}Login{% endblocktranslate %}
                 </h2>
                 <div class="col-lg-10 fs-4">
-                    {% url "gcampusauth:logincoursetoken" as login_coursetoken_url %}
-                    {% url "gcampusauth:loginaccesskey" as login_accesskey_url %}
+                    {% url "gcampusauth:login-course-token" as login_coursetoken_url %}
+                    {% url "gcampusauth:login-access-key" as login_accesskey_url %}
                     {% url "gcampusauth:register" as register_url %}
                     {% blocktranslate trimmed %}
                         Some features, for example adding a new measurement,

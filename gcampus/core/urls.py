@@ -16,7 +16,7 @@
 from django.urls import path
 
 from gcampus.core.apps import GCampusCoreAppConfig
-from gcampus.core.views.course_overview import (
+from gcampus.auth.views.course_overview import (
     CourseOverviewFormView,
     deactivate_access_key,
     activate_access_key,
@@ -54,10 +54,6 @@ urlpatterns = [
     path("measurement/hide", hide, name="hide"),
     path("measurement/show", show, name="show"),
     path("course/measurements/hidden", HiddenCourseMeasurementListView.as_view(), name="course_hidden"),
-    path("course/overview", CourseOverviewFormView.as_view(), name="course_overview"),
-    path("course/tokens/<int:pk>/deactivate", deactivate_access_key, name="deactivate"),
-    path("course/tokens/<int:pk>/activate", activate_access_key, name="activate"),
-    path("course/overview/generate", generate_new_access_keys, name="generate_new_accesskeys"),
 ]
 # fmt: on
 # pylint: enable=line-too-long

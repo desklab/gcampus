@@ -69,7 +69,7 @@
             </div>
             <div class="col-lg-5">
                 {% blocktranslate trimmed %}
-                    With this <b>Course Token</b>, you can manage your
+                    With this <b>course token</b>, you can manage your
                     course and edit your student's measurements. Thus,
                     this key should be kept private.
                 {% endblocktranslate %}
@@ -138,7 +138,7 @@
     </div>
 
     <div class="container-fluid mt-4">
-        <h6>{% translate "Generate new Accesskeys for this course" %}</h6>
+        <h6>{% translate "Generate new Access Keys for this Course" %}</h6>
         <small class="text-sm text-muted">
             {% blocktrans trimmed %}
                 You can generate new access keys for this course without
@@ -146,7 +146,7 @@
                 limited to {{ register_max_access_key }} per course.
             {% endblocktrans %}
         </small>
-        <form class="mt-2" method="post" action="{% url "gcampuscore:generate_new_accesskeys" %}">
+        <form class="mt-2" method="post" action="{% url "gcampusauth:generate-new-access-keys" %}">
             {% csrf_token %}
             <div class="row">
                 <div class="col-auto">
@@ -262,5 +262,5 @@
     </div>
 
 
-{% displaytoken_js %}
+    {% displaytoken_js %}
 {% endblock %}

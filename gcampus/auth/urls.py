@@ -21,18 +21,28 @@ from gcampus.auth.views import (
     CourseTokenLoginFormView,
     logout,
     RegisterFormView,
+    CourseOverviewFormView,
+    deactivate_access_key,
+    activate_access_key,
+    generate_new_access_keys,
 )
 
 # Turn off black formatting and pylint
 # fmt: off
 # pylint: disable=line-too-long
+
 urlpatterns = [
     # Token
     path("register/", RegisterFormView.as_view(), name="register"),
     path("login/", AccessKeyLoginFormView.as_view(), name="login"),
-    path("login/accesskey/", AccessKeyLoginFormView.as_view(), name="loginaccesskey"),
-    path("login/coursetoken/", CourseTokenLoginFormView.as_view(), name="logincoursetoken"),
+    path("login/accesskey/", AccessKeyLoginFormView.as_view(), name="login-access-key"),
+    path("login/coursetoken/", CourseTokenLoginFormView.as_view(), name="login-course-token"),
     path('logout/', logout, name="logout"),
+    # Course Overview
+    path("course/overview", CourseOverviewFormView.as_view(), name="course-overview"),
+    path("course/tokens/<int:pk>/deactivate", deactivate_access_key, name="deactivate"),
+    path("course/tokens/<int:pk>/activate", activate_access_key, name="activate"),
+    path("course/overview/generate", generate_new_access_keys, name="generate-new-access-keys"),
 ]
 # fmt: on
 # pylint: enable=line-too-long

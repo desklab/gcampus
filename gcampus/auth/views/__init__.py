@@ -19,6 +19,10 @@ __all__ = [
     "CourseTokenLoginFormView",
     "logout",
     "permission_denied_error_handler",
+    "CourseOverviewFormView",
+    "deactivate_access_key",
+    "activate_access_key",
+    "generate_new_access_keys",
 ]
 
 from django.core.exceptions import PermissionDenied
@@ -36,6 +40,12 @@ from gcampus.auth.views.token import (
     AccessKeyLoginFormView,
     CourseTokenLoginFormView,
     logout,
+)
+from gcampus.auth.views.course_overview import (
+    CourseOverviewFormView,
+    deactivate_access_key,
+    activate_access_key,
+    generate_new_access_keys,
 )
 
 

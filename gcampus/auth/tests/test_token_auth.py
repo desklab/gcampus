@@ -92,7 +92,7 @@ class BaseTokenKeyTest(BaseAuthTest, ABC):
 
 class AccessKeyAuthTest(BaseTokenKeyTest):
     def get_login_url(self) -> str:
-        return "gcampusauth:loginaccesskey"
+        return "gcampusauth:login-access-key"
 
     def test_valid_token(self):
         login_response = self.login(self.tokens[0].token)
@@ -170,7 +170,7 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
 
 class CourseTokenAuthTest(BaseTokenKeyTest):
     def get_login_url(self) -> str:
-        return "gcampusauth:logincoursetoken"
+        return "gcampusauth:login-course-token"
 
     def test_valid_token(self):
         login_response = self.login(self.parent_token.token)
