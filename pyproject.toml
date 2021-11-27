@@ -17,3 +17,13 @@ line_length = 88
 py_version = "37"
 only_sections = true
 skip = "frontend"
+
+[tool.coverage.run]
+command_line = "manage.py test"
+include = ["gcampus/*"]
+omit = [
+    "*/migrations/*",
+    "*/tests/*",
+    "*/settings/*.py",
+    "gcampus/[aw]sgi.py",
+]

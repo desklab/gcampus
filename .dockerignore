@@ -5,6 +5,7 @@
 __pycache__
 /venv
 /.venv
+.coverage
 
 # Compiled Static Files
 # Enabled again for compiling static files in multiple steps

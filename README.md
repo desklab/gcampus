@@ -120,6 +120,16 @@ Testing can be done using django's built in test command:
 python manage.py test
 ```
 
+Support for [`coverage.py`](https://coverage.readthedocs.io/) is provided
+through the configuration in the `pyproject.toml` file. You can run the
+tests and get the results using the following commands:
+
+```shell
+coverage run
+# Preview coverage results:
+coverage report
+```
+
 ## Deploy
 
 A ``Dockerfile`` is provided to easily build `gcampus` for production
