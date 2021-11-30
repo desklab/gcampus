@@ -23,7 +23,7 @@ app.layout = html.Div([
             dcc.Dropdown(
                 id='parameter_type',
                 options=[{'label': i, 'value': i} for i, j in zip(parameter_types_names, parameter_types)],
-                value=parameter_types[0].name
+                value=parameter_types[0].name if parameter_types else None
             ),
             dcc.RadioItems(
                 id='yaxis-type',
@@ -37,7 +37,7 @@ app.layout = html.Div([
             dcc.Dropdown(
                 id='water_name',
                 options=[{'label': i, 'value': i} for i in water_names],
-                value=water_names[0]
+                value=water_names[0] if water_names else None
             ),
 
         ], style={'width': '48%', 'float': 'right', 'display': 'inline-block'}),
