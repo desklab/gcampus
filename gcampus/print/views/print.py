@@ -23,6 +23,7 @@ from django.utils.translation import gettext_lazy
 from gcampus.auth import utils
 from gcampus.auth.decorators import require_course_token
 from gcampus.auth.models import CourseToken
+from gcampus.core.models import Measurement
 from gcampus.core.models.util import EMPTY
 from gcampus.print.views.generic import SingleObjectDocumentView
 
@@ -71,4 +72,21 @@ class AccesskeyCombinedPDF(SingleObjectDocumentView):
             return self.filename
         return gettext_lazy("gewaessercampus-accesskey-combined-{course_name:s}.pdf").format(
             course_name=slugify(self.object.token_name)
+        )
+
+class MeasurementDetailPDF(SingleObjectDocumentView):
+    template_name = "gcampusprint/documents/measurement_detail.html"
+    filename = gettext_lazy("gewaessercampus-measurement-detail.pdf")
+    context_object_name = "measurement"
+    model = Measurement
+
+    @method_decorator(require_course_token)
+    def dispatch(self, request, *args, **kwargs):
+        return super(MeasurementDetailPDF, self).dispatch(request, *args, **kwargs)
+
+    def get_filename(self):
+        if self.object.name in EMPTY:
+            return self.filename
+        return gettext_lazy("gewaessercampus-measurement-detail-{name:s}.pdf").format(
+            name=slugify(self.object.name)
         )

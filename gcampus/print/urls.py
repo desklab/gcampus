@@ -19,6 +19,7 @@ from gcampus.print.apps import GCampusPrintAppConfig
 from gcampus.print.views.print import (
     CourseOverviewPDF,
     AccesskeyCombinedPDF,
+    MeasurementDetailPDF,
 )
 
 # Turn off black formatting and pylint
@@ -26,9 +27,8 @@ from gcampus.print.views.print import (
 # pylint: disable=line-too-long
 urlpatterns = [
     path("documents/overview", CourseOverviewPDF.as_view(), name="documents-overview"),
-    path("documents/accesskeys_combined", 
-         AccesskeyCombinedPDF.as_view(), 
-         name = "accesskey-combined"),
+    path("documents/accesskeys_combined", AccesskeyCombinedPDF.as_view(), name = "accesskey-combined"),
+    path("documents/measurement_detail/<int:pk>", MeasurementDetailPDF.as_view(), name = "measurement-detail"),
 ]
 # fmt: on
 # pylint: enable=line-too-long
