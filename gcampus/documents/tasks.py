@@ -13,12 +13,28 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from django.apps import AppConfig
-from django.utils.translation import gettext_lazy as _
+from typing import Type
+
+from celery import shared_task
+from django.core.files import File
+from django.db.models import Model
+from weasyprint import HTML
+
+from gcampus.documents.document import url_fetcher, as_bytes_io
 
 
-class GcampusTasksConfig(AppConfig):
-    default_auto_field = "django.db.models.BigAutoField"
-    name = "gcampus.tasks"
-    label = "gcampustasks"
-    verbose_name = _("GCampus Tasks")
+@shared_task
+def create_document_for_view(
+    template: str,
+    filename: str,
+    instance_pk,
+    model: Type[Model],
+    model_file_field: str,
+):
+    instance: Model = model.objects.get(pk=instance_pk)
+    html = HTML(string=template, url_fetcher=url_fetcher)
+    document = html.render()
+    filelike_obj = as_bytes_io(document)
+    setattr(instance, model_file_field, File(filelike_obj, name=filename))
+    instance.save()
+    return getattr(instance, model_file_field).url

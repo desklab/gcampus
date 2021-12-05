@@ -14,16 +14,21 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from io import BytesIO
-from typing import Optional
+from typing import Optional, Type
 
-from django.http import StreamingHttpResponse, HttpRequest
+from django.db.models import Model
+from django.http import StreamingHttpResponse, HttpRequest, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.utils.text import get_valid_filename
 from django.views.generic import TemplateView
 from django.views.generic.detail import SingleObjectMixin
 
 from gcampus.core.models.util import EMPTY
-from gcampus.documents.document import render_document, as_bytes_io
+from gcampus.documents.document import (
+    render_document,
+    as_bytes_io,
+    render_document_template,
+)
 
 __all__ = [
     "DocumentResponse",
@@ -32,6 +37,8 @@ __all__ = [
     "SingleObjectDocumentView",
     "CachedDocumentView",
 ]
+
+from gcampus.documents.tasks import create_document_for_view
 
 
 class DocumentResponse(StreamingHttpResponse):
@@ -65,6 +72,28 @@ class DocumentResponse(StreamingHttpResponse):
         super().__init__(filelike_obj, content_type=content_type, headers=headers)
 
 
+class DocumentRedirectResponse(HttpResponseRedirect):
+    def __init__(
+        self,
+        request: HttpRequest,
+        template,
+        filename: str,
+        instance: Model,
+        model: Type[Model],
+        model_file_field: str,
+        context=None,
+        using=None,
+        **kwargs,
+    ):
+        document_template = render_document_template(
+            template, context=context, request=request, using=using
+        )
+        redirect_to = create_document_for_view(
+            document_template, filename, instance.pk, model, model_file_field
+        )
+        super().__init__(redirect_to, **kwargs)
+
+
 class FileNameMixin:
     filename: Optional[str] = None
 
@@ -94,6 +123,7 @@ class SingleObjectDocumentView(SingleObjectMixin, DocumentView):
 
 class CachedDocumentView(SingleObjectDocumentView):
     model_file_field: Optional[str] = None
+    response_class = DocumentRedirectResponse
 
     @classmethod
     def as_view(cls, **initkwargs):
@@ -115,5 +145,18 @@ class CachedDocumentView(SingleObjectDocumentView):
         file = getattr(self.object, self.model_file_field)
         if file is not None and file.url not in EMPTY:
             return redirect(file.url)
-        else:
-            context = self.get_context_data(object=self.object)
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
+
+    def render_to_response(self, context, **response_kwargs):
+        return self.response_class(
+            self.request,
+            self.get_template_names(),
+            get_valid_filename(self.get_filename()),
+            self.object,
+            self.model,
+            self.model_file_field,
+            context=context,
+            using=self.template_engine,
+            **response_kwargs,
+        )

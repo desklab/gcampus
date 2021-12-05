@@ -71,9 +71,9 @@ class AccessKeyCombinedPDF(SingleObjectDocumentView):
     def get_filename(self):
         if self.object.token_name in EMPTY:
             return self.filename
-        return gettext_lazy("gewaessercampus-accesskey-combined-{course_name:s}.pdf").format(
-            course_name=slugify(self.object.token_name)
-        )
+        return gettext_lazy(
+            "gewaessercampus-accesskey-combined-{course_name:s}.pdf"
+        ).format(course_name=slugify(self.object.token_name))
 
 
 class MeasurementDetailPDF(SingleObjectDocumentView):

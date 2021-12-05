@@ -35,12 +35,12 @@ STATIC_FILES_PATH = Path(__file__).resolve().parent / "static"
 URI_IDENTIFIER = "gcampusprint"
 
 
-def render_document(
+def render_document_template(
     template: str,
     context: Optional[dict] = None,
     request: Optional[HttpRequest] = None,
     using=None,
-) -> Document:
+) -> str:
     # Add dummy request to enable context processors
     if request is None:
         request = HttpRequest()
@@ -48,9 +48,16 @@ def render_document(
         middleware.process_request(request)
         request.session.save()
 
-    document_str = render_to_string(
-        template, context=context, request=request, using=using
-    )
+    return render_to_string(template, context=context, request=request, using=using)
+
+
+def render_document(
+    template: str,
+    context: Optional[dict] = None,
+    request: Optional[HttpRequest] = None,
+    using=None,
+) -> Document:
+    document_str = render_document_template(template, context, request, using)
     html = HTML(string=document_str, url_fetcher=url_fetcher)
     return html.render()
 
