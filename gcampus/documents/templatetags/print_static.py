@@ -12,25 +12,25 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+import os
 
-from django.urls import path
+from django import template
+from django.templatetags.static import do_static, StaticNode
 
-from gcampus.print.apps import GCampusPrintAppConfig
-from gcampus.print.views.print import (
-    CourseOverviewPDF,
-    AccesskeyCombinedPDF,
-    MeasurementDetailPDF,
-)
+from gcampus.documents.document import URI_IDENTIFIER
 
-# Turn off black formatting and pylint
-# fmt: off
-# pylint: disable=line-too-long
-urlpatterns = [
-    path("documents/overview", CourseOverviewPDF.as_view(), name="documents-overview"),
-    path("documents/accesskeys_combined", AccesskeyCombinedPDF.as_view(), name = "accesskey-combined"),
-    path("documents/measurement_detail/<int:pk>", MeasurementDetailPDF.as_view(), name = "measurement-detail"),
-]
-# fmt: on
-# pylint: enable=line-too-long
+register = template.Library()
 
-app_name = GCampusPrintAppConfig.label
+
+class PrintStaticNode(StaticNode):
+    def url(self, context):
+        path = self.path.resolve(context)
+        return f"{URI_IDENTIFIER}:{self.handle_simple(path)}"
+
+
+@register.tag
+def print_static(parser, token):
+    if os.environ.get("USE_S3_STORAGE", False):
+        return do_static(parser, token)
+    else:
+        return PrintStaticNode.handle_token(parser, token)

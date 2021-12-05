@@ -17,17 +17,20 @@ from io import BytesIO
 from typing import Optional
 
 from django.http import StreamingHttpResponse, HttpRequest
+from django.shortcuts import redirect
 from django.utils.text import get_valid_filename
 from django.views.generic import TemplateView
 from django.views.generic.detail import SingleObjectMixin
 
-from gcampus.print.document import render_document, as_bytes_io
+from gcampus.core.models.util import EMPTY
+from gcampus.documents.document import render_document, as_bytes_io
 
 __all__ = [
     "DocumentResponse",
     "DocumentView",
     "FileNameMixin",
     "SingleObjectDocumentView",
+    "CachedDocumentView",
 ]
 
 
@@ -87,3 +90,30 @@ class SingleObjectDocumentView(SingleObjectMixin, DocumentView):
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
+
+
+class CachedDocumentView(SingleObjectDocumentView):
+    model_file_field: Optional[str] = None
+
+    @classmethod
+    def as_view(cls, **initkwargs):
+        if not isinstance(cls.model_file_field, str):
+            raise ValueError(
+                f"Invalid configuration of '{cls.__name__}': Expected field "
+                f"'model_file_field' to be a string but got "
+                f"'{type(cls.model_file_field)}'."
+            )
+        return super(CachedDocumentView, cls).as_view(**initkwargs)
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not hasattr(self.object, self.model_file_field):
+            raise ValueError(
+                f"Field '{self.model_file_field}' not found in model "
+                f"'{self.model.__name__}'."
+            )
+        file = getattr(self.object, self.model_file_field)
+        if file is not None and file.url not in EMPTY:
+            return redirect(file.url)
+        else:
+            context = self.get_context_data(object=self.object)

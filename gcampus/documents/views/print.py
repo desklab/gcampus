@@ -25,7 +25,7 @@ from gcampus.auth.decorators import require_course_token
 from gcampus.auth.models import CourseToken
 from gcampus.core.models import Measurement
 from gcampus.core.models.util import EMPTY
-from gcampus.print.views.generic import SingleObjectDocumentView
+from gcampus.documents.views.generic import SingleObjectDocumentView
 
 
 class CourseOverviewPDF(SingleObjectDocumentView):
@@ -51,7 +51,8 @@ class CourseOverviewPDF(SingleObjectDocumentView):
             course_name=slugify(self.object.token_name)
         )
 
-class AccesskeyCombinedPDF(SingleObjectDocumentView):
+
+class AccessKeyCombinedPDF(SingleObjectDocumentView):
     template_name = "gcampusprint/documents/access_student_combined.html"
     filename = gettext_lazy("gewaessercampus-accesskey-combined.pdf")
     context_object_name = "course_token"
@@ -65,7 +66,7 @@ class AccesskeyCombinedPDF(SingleObjectDocumentView):
 
     @method_decorator(require_course_token)
     def dispatch(self, request, *args, **kwargs):
-        return super(AccesskeyCombinedPDF, self).dispatch(request, *args, **kwargs)
+        return super(AccessKeyCombinedPDF, self).dispatch(request, *args, **kwargs)
 
     def get_filename(self):
         if self.object.token_name in EMPTY:
@@ -73,6 +74,7 @@ class AccesskeyCombinedPDF(SingleObjectDocumentView):
         return gettext_lazy("gewaessercampus-accesskey-combined-{course_name:s}.pdf").format(
             course_name=slugify(self.object.token_name)
         )
+
 
 class MeasurementDetailPDF(SingleObjectDocumentView):
     template_name = "gcampusprint/documents/measurement_detail.html"

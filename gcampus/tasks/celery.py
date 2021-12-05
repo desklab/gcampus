@@ -13,4 +13,15 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-default_app_config = "gcampus.print.apps.GCampusPrintAppConfig"
+__all__ = ["app"]
+
+import os
+
+from celery import Celery
+
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gcampus.settings.dev')
+
+app = Celery('gcampus')
+app.config_from_object('django.conf:settings', namespace='CELERY')
+app.autodiscover_tasks()

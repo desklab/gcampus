@@ -17,7 +17,8 @@ from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
 
 
-class GCampusPrintAppConfig(AppConfig):
-    name = "gcampus.print"
-    label = "gcampusprint"
-    verbose_name = _("GCampus Print")
+class GcampusTasksConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'gcampus.tasks'
+    label = "gcampustasks"
+    verbose_name = _("GCampus Tasks")
