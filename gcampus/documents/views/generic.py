@@ -38,6 +38,7 @@ __all__ = [
 ]
 
 from gcampus.documents.tasks import create_document_for_view
+from gcampus.documents.utils import mock_request
 
 
 class DocumentResponse(StreamingHttpResponse):
@@ -144,6 +145,8 @@ class DocumentView(FileNameMixin, TemplateView):
 
 
 class SingleObjectDocumentView(SingleObjectMixin, DocumentView):
+    model: Type[Model] = None
+
     def __init__(self, *args, **kwargs):
         self.object = None
         super(SingleObjectDocumentView, self).__init__(*args, **kwargs)
@@ -152,6 +155,17 @@ class SingleObjectDocumentView(SingleObjectMixin, DocumentView):
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
+
+    @classmethod
+    def mock_view(cls, instance: Optional[Model], instance_pk: Optional[int] = None):
+        if instance is None:
+            if instance_pk is None:
+                raise ValueError("One of 'instance' and 'instance_pk' has to be set")
+            instance = cls.model.objects.get(pk=instance_pk)
+        self = cls()
+        self.object = instance
+        self.request = mock_request()
+        return self
 
 
 class CachedDocumentView(SingleObjectDocumentView):
