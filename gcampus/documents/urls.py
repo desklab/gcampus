@@ -15,7 +15,7 @@
 
 from django.urls import path
 
-from gcampus.documents.apps import GCampusPrintAppConfig
+from gcampus.documents.apps import GCampusDocumentsAppConfig
 from gcampus.documents.views.print import (
     CourseOverviewPDF,
     AccessKeyCombinedPDF,
@@ -27,10 +27,10 @@ from gcampus.documents.views.print import (
 # pylint: disable=line-too-long
 urlpatterns = [
     path("documents/overview", CourseOverviewPDF.as_view(), name="documents-overview"),
-    path("documents/accesskeys_combined", AccessKeyCombinedPDF.as_view(), name ="accesskey-combined"),
-    path("documents/measurement_detail/<int:pk>", MeasurementDetailPDF.as_view(), name = "measurement-detail"),
+    path("documents/accesskeys_combined", AccessKeyCombinedPDF.as_view(), name="accesskey-combined"),
+    path("documents/measurement_detail/<int:pk>", MeasurementDetailPDF.as_view(), name="measurement-detail"),
 ]
 # fmt: on
 # pylint: enable=line-too-long
 
-app_name = GCampusPrintAppConfig.label
+app_name = GCampusDocumentsAppConfig.label

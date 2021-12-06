@@ -20,7 +20,8 @@ from django.core.files import File
 from django.db.models import Model
 from weasyprint import HTML
 
-from gcampus.documents.document import url_fetcher, as_bytes_io
+from gcampus.documents.document import as_bytes_io
+from gcampus.documents.utils import url_fetcher
 
 
 @shared_task

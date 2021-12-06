@@ -13,7 +13,11 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__all__ = ["CourseOverviewPDF"]
+__all__ = [
+    "CourseOverviewPDF",
+    "AccessKeyCombinedPDF",
+    "MeasurementDetailPDF",
+]
 
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -25,14 +29,15 @@ from gcampus.auth.decorators import require_course_token
 from gcampus.auth.models import CourseToken
 from gcampus.core.models import Measurement
 from gcampus.core.models.util import EMPTY
-from gcampus.documents.views.generic import SingleObjectDocumentView
+from gcampus.documents.views.generic import SingleObjectDocumentView, CachedDocumentView
 
 
-class CourseOverviewPDF(SingleObjectDocumentView):
-    template_name = "gcampusprint/documents/access_course.html"
+class CourseOverviewPDF(CachedDocumentView):
+    template_name = "gcampusdocuments/documents/access_course.html"
     filename = gettext_lazy("gewaessercampus-course-overview.pdf")
     context_object_name = "course_token"
     model = CourseToken
+    model_file_field = "overview_document"
 
     def get_object(self, queryset=None):
         if queryset is None:
@@ -53,7 +58,7 @@ class CourseOverviewPDF(SingleObjectDocumentView):
 
 
 class AccessKeyCombinedPDF(SingleObjectDocumentView):
-    template_name = "gcampusprint/documents/access_student_combined.html"
+    template_name = "gcampusdocuments/documents/access_student_combined.html"
     filename = gettext_lazy("gewaessercampus-accesskey-combined.pdf")
     context_object_name = "course_token"
     model = CourseToken
@@ -77,7 +82,7 @@ class AccessKeyCombinedPDF(SingleObjectDocumentView):
 
 
 class MeasurementDetailPDF(SingleObjectDocumentView):
-    template_name = "gcampusprint/documents/measurement_detail.html"
+    template_name = "gcampusdocuments/documents/measurement_detail.html"
     filename = gettext_lazy("gewaessercampus-measurement-detail.pdf")
     context_object_name = "measurement"
     model = Measurement

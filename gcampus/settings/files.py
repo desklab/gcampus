@@ -64,3 +64,5 @@ else:
     STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
     # STATIC_ROOT = os.path.join(_BASE_DIR.parent, "static")
     STATIC_URL = "/static/"
+
+    MEDIA_ROOT = "media"

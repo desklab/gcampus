@@ -17,13 +17,12 @@ from io import BytesIO
 from typing import Optional, Type
 
 from django.db.models import Model
-from django.http import StreamingHttpResponse, HttpRequest, HttpResponseRedirect
-from django.shortcuts import redirect
+from django.db.models.fields.files import FieldFile
+from django.http import StreamingHttpResponse, HttpRequest
 from django.utils.text import get_valid_filename
 from django.views.generic import TemplateView
 from django.views.generic.detail import SingleObjectMixin
 
-from gcampus.core.models.util import EMPTY
 from gcampus.documents.document import (
     render_document,
     as_bytes_io,
@@ -72,7 +71,7 @@ class DocumentResponse(StreamingHttpResponse):
         super().__init__(filelike_obj, content_type=content_type, headers=headers)
 
 
-class DocumentRedirectResponse(HttpResponseRedirect):
+class CachedDocumentResponse(StreamingHttpResponse):
     def __init__(
         self,
         request: HttpRequest,
@@ -82,16 +81,50 @@ class DocumentRedirectResponse(HttpResponseRedirect):
         model: Type[Model],
         model_file_field: str,
         context=None,
+        content_type=None,
         using=None,
+        headers=None,
         **kwargs,
     ):
-        document_template = render_document_template(
-            template, context=context, request=request, using=using
-        )
-        redirect_to = create_document_for_view(
-            document_template, filename, instance.pk, model, model_file_field
-        )
-        super().__init__(redirect_to, **kwargs)
+        if not hasattr(instance, model_file_field):
+            raise ValueError(
+                f"Field '{model_file_field}' not found in model '{model.__name__}'."
+            )
+
+        file: FieldFile = getattr(instance, model_file_field)
+        if not file:
+            # File does not exist yet. Start rendering the file
+            document_template = render_document_template(
+                template, context=context, request=request, using=using
+            )
+            create_document_for_view(
+                document_template,
+                # Use 'instance.pk' as the filename for internal
+                # reference
+                # Note that the filename for the downloaded file differs
+                # as it is set using the 'Content-Disposition' header.
+                f"{instance.pk}.pdf",
+                instance.pk,
+                model,
+                model_file_field
+            )
+            instance.refresh_from_db(fields=(model_file_field,))
+            file: FieldFile = getattr(instance, model_file_field)
+
+        # Jump to the end of the file-like object
+        file.seek(0, 2)
+        # File position corresponds to the file size
+        content_size = file.tell()
+        # Go back to the beginning
+        file.seek(0)
+
+        if headers is None:
+            headers = {}
+        if "Content-Disposition" not in headers:
+            headers["Content-Disposition"] = f"attachment; filename={filename}"
+        if "Content-Length" not in headers:
+            headers["Content-Length"] = content_size
+        super().__init__(file, content_type=content_type, headers=headers, **kwargs)
 
 
 class FileNameMixin:
@@ -123,7 +156,7 @@ class SingleObjectDocumentView(SingleObjectMixin, DocumentView):
 
 class CachedDocumentView(SingleObjectDocumentView):
     model_file_field: Optional[str] = None
-    response_class = DocumentRedirectResponse
+    response_class = CachedDocumentResponse
 
     @classmethod
     def as_view(cls, **initkwargs):
@@ -135,24 +168,12 @@ class CachedDocumentView(SingleObjectDocumentView):
             )
         return super(CachedDocumentView, cls).as_view(**initkwargs)
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if not hasattr(self.object, self.model_file_field):
-            raise ValueError(
-                f"Field '{self.model_file_field}' not found in model "
-                f"'{self.model.__name__}'."
-            )
-        file = getattr(self.object, self.model_file_field)
-        if file is not None and file.url not in EMPTY:
-            return redirect(file.url)
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
-
     def render_to_response(self, context, **response_kwargs):
+        response_kwargs.setdefault('content_type', self.content_type)
         return self.response_class(
             self.request,
             self.get_template_names(),
-            get_valid_filename(self.get_filename()),
+            str(get_valid_filename(self.get_filename())),
             self.object,
             self.model,
             self.model_file_field,

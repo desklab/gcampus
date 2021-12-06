@@ -1,9 +1,10 @@
+{% load static %}
 {% load auth_token print_static i18n %}
 <!doctype html>
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <link href="{% print_static "gcampusprint/styles/gcampus.css" %}" rel="stylesheet">
+    <link href="{% print_static "gcampusdocuments/styles/gcampus.css" %}" rel="stylesheet">
     <title>gcampus Document</title>
     <meta name="id" content="gcampus-doc-01">
     {% displaytoken_head %}
@@ -17,7 +18,7 @@
                 padding-top: 1.2cm;
             }
             @top-left {
-                background: url("{% print_static 'gcampusprint/assets/gcampus-documents-header-left.png' %}");
+                background: url("{% print_static 'gcampusdocuments/assets/gcampus-print-header-left.png' %}");
                 background-repeat: no-repeat;
                 background-position: left;
                 background-size: 100% auto;
@@ -134,7 +135,7 @@
             <div class="w-100 overflow-hidden">
                 <div class="w-abs-800 float-left">
                     <div class="qrcode float-left">
-                        <img src="{% print_static 'gcampusprint/assets/gcampus-qr-code.png' %}" alt="">                
+                        <img src="{% print_static 'gcampusdocuments/assets/gcampus-qr-code.png' %}" alt="">
                     </div>
                     <div>
                         <div class="qrcode-heading">
@@ -149,7 +150,7 @@
                 </div>
                 <div class="w-abs-800 float-right">
                     <div class="qrcode float-left">
-                        <img src="{% print_static 'gcampusprint/assets/gcampus-qr-code.png' %}" alt="">                
+                        <img src="{% print_static 'gcampusdocuments/assets/gcampus-qr-code.png' %}" alt="">
                     </div>
                     <div>
                         <div class="qrcode-heading">

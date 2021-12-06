@@ -32,7 +32,7 @@ class StaticFileStorage(S3StaticStorage):  # noqa
     default_acl = "public-read"
 
     # Disable authentication using query strings. This is done to avoid
-    # generating a custom access token for every request which would be
+    # generating a custom access token for every request, which would be
     # a waste of time.
     # Static resources should be publicly accessible.
     querystring_auth = False

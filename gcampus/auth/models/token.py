@@ -57,6 +57,11 @@ class CourseToken(DateModelMixin):
         max_length=254, blank=False, verbose_name=_("E-Mail Address")
     )
 
+    overview_document = models.FileField(
+        verbose_name=_("Overview Document"), upload_to="documents/course/overview",
+        blank=True, null=True
+    )
+
     class Meta:
         verbose_name = _("Course Token")
 
