@@ -12,12 +12,13 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 import os
 
 from django import template
 from django.templatetags.static import do_static, StaticNode
 
-from gcampus.documents.document import URI_IDENTIFIER
+from gcampus.documents.utils import URI_IDENTIFIER
 
 register = template.Library()
 
