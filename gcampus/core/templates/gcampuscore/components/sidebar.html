@@ -15,7 +15,7 @@
         {% translate "User" as user_title %}
         {% include "gcampuscore/components/sidebar_item.html" with icon="map" title=map_title view_name="gcampuscore:mapview" %}
         {% include "gcampuscore/components/sidebar_item.html" with icon="list" title=measurements_title view_name="gcampuscore:measurements" %}
-        {% include "gcampuscore/components/sidebar_item.html" with icon="bar-chart-2" title=analysis_title view_name="" %}
+        {% include "gcampuscore/components/sidebar_item.html" with icon="bar-chart-2" title=analysis_title view_name="gcampusanalysis:analysis_measure" %}
         {% if user_token_is_course_token%}
             {% include "gcampuscore/components/sidebar_item.html" with icon="user" title=user_title view_name="gcampusauth:course-overview" %}
         {% endif %}
