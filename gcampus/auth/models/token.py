@@ -19,7 +19,7 @@ from typing import Union, Optional, Tuple
 from django.conf import settings
 from django.contrib.gis.db import models
 from django.utils.crypto import get_random_string
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models import Measurement
 from gcampus.core.models.util import DateModelMixin
