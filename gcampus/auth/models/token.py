@@ -18,7 +18,7 @@ from typing import Union, Optional, Tuple, Type
 
 from django.conf import settings
 from django.contrib.gis.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
@@ -140,6 +140,28 @@ class AccessKey(DateModelMixin):
         return not self.deactivated
 
 
+@receiver(post_save, sender=AccessKey)
+@receiver(post_delete, sender=AccessKey)
+@receiver(post_delete, sender=AccessKey)
+def update_access_key_documents(
+    sender: Type[CourseToken],
+    instance: AccessKey,
+    *args,
+    **kwargs
+):
+    """Post-save and -delete signal receiver for access keys
+
+    As access keys are typically displayed in various documents of a
+    given course, a rebuild is required every time an access key changes
+    or is deleted.
+    """
+    course_token = instance.parent_token
+    render_cached_document_view.apply_async(
+        args=("gcampus.documents.views.CourseOverviewPDF",),
+        kwargs=dict(instance_pk=course_token.pk)
+    )
+
+
 @receiver(post_save, sender=CourseToken)
 def update_course(
     sender: Type[CourseToken],
@@ -152,7 +174,7 @@ def update_course(
 ):
     """Post-save signal receiver for course token
 
-    This method will update all documents that may require a rebuild
+    This function will update all documents that may require a rebuild
     when as the model has changed.
     """
     update_fields = () if not update_fields else update_fields
