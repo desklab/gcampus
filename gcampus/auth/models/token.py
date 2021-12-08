@@ -14,15 +14,18 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
-from typing import Union, Optional, Tuple
+from typing import Union, Optional, Tuple, Type
 
 from django.conf import settings
 from django.contrib.gis.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models import Measurement
 from gcampus.core.models.util import DateModelMixin
+from gcampus.documents.tasks import render_cached_document_view
 
 ALLOWED_TOKEN_CHARS = settings.ALLOWED_TOKEN_CHARS
 
@@ -135,6 +138,31 @@ class AccessKey(DateModelMixin):
         # TODO check if the token is too old or has reached its limit
         #   of creating measurements.
         return not self.deactivated
+
+
+@receiver(post_save, sender=CourseToken)
+def update_course(
+    sender: Type[CourseToken],
+    instance: CourseToken,
+    created: bool,
+    raw: bool,
+    using,
+    update_fields: Optional[Union[tuple, list]],
+    **kwargs
+):
+    """Post-save signal receiver for course token
+
+    This method will update all documents that may require a rebuild
+    when as the model has changed.
+    """
+    update_fields = () if not update_fields else update_fields
+    if "overview_document" in update_fields and not created:
+        # The overview document has been changed on purpose
+        return
+    render_cached_document_view.apply_async(
+        args=("gcampus.documents.views.CourseOverviewPDF",),
+        kwargs=dict(instance_pk=instance.pk)
+    )
 
 
 AnyToken = Union[AccessKey, CourseToken]

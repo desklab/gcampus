@@ -31,6 +31,8 @@ from pathlib import Path
 
 from gcampus.settings.util import get_env_read_file
 
+__base_dir = Path(__file__).resolve().parent.parent
+
 STATIC_LOCATION = "static"
 
 if os.environ.get("USE_S3_STORAGE", False):
@@ -65,4 +67,4 @@ else:
     # STATIC_ROOT = os.path.join(_BASE_DIR.parent, "static")
     STATIC_URL = "/static/"
 
-    MEDIA_ROOT = "media"
+    MEDIA_ROOT = str(__base_dir / "media")

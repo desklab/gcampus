@@ -10,4 +10,5 @@ djangorestframework-gis>=0.17
 overpy~=0.4
 django-filter~=2.4.0
 weasyprint==53.4
-celery==5.2.1
+celery[redis]~=5.2
+django-celery-results~=2.2

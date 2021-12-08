@@ -76,8 +76,10 @@ npm run dev
 
 ### Setup Services with `docker-compose`
 
-A `docker-compose.yml` file is provided to easily get a PostGIS instance
-up and running. As we are using GeoDjango, PostGIS is required.
+A `docker-compose.yml` file is provided to easily get a PostGIS and
+Redis instance up and running.
+As we are using GeoDjango, PostGIS is required. Redis is used for the
+Celery task queue.
 
 ```shell
 docker volume create gcampus-data
@@ -111,6 +113,17 @@ Finally, you can run the development server:
 ```shell
 python manage.py runserver
 ```
+
+### Running a Celery worker
+
+Celery is used to process tasks such as document generation. You can
+run a worker using the `celery` command:
+
+```shell
+celery --app=gcampus.tasks worker -l INFO
+```
+
+Change `-l INFO` to an appropriate log level of your liking.
 
 ### Tests
 

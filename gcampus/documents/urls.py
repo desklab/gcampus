@@ -22,6 +22,7 @@ from gcampus.documents.views.print import (
     MeasurementDetailPDF,
 )
 
+
 # Turn off black formatting and pylint
 # fmt: off
 # pylint: disable=line-too-long

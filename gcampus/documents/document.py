@@ -22,7 +22,7 @@ __all__ = [
 
 import pathlib
 from io import BytesIO
-from typing import Optional
+from typing import Optional, List
 from typing import Union
 
 from django.http import HttpRequest
@@ -33,7 +33,7 @@ from gcampus.documents.utils import mock_request, url_fetcher
 
 
 def render_document_template(
-    template: str,
+    template: Union[str, List[str]],
     context: Optional[dict] = None,
     request: Optional[HttpRequest] = None,
     using=None,
@@ -46,7 +46,7 @@ def render_document_template(
 
 
 def render_document(
-    template: str,
+    template: Union[str, List[str]],
     context: Optional[dict] = None,
     request: Optional[HttpRequest] = None,
     using=None,

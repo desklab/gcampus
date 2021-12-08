@@ -49,13 +49,14 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_gis",
     "django_filters",
+    "django_celery_results",
     # gcampus specific apps
+    "gcampus.tasks",
     "gcampus.core",
     "gcampus.auth",
     "gcampus.api",
     "gcampus.map",
     "gcampus.documents",
-    "gcampus.tasks",
     # Other django apps
     # Sometimes the order is important
     "django.forms",
@@ -207,3 +208,7 @@ ACCESS_KEY_LENGTH = 8
 COURSE_TOKEN_LENGTH = 12
 # Maximum number of tokens that one can request
 REGISTER_MAX_ACCESS_KEY_NUMBER = 30
+
+# Celery Tasks
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_BROKER_URL = "redis://localhost:6379/0"

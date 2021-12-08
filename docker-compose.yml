@@ -1,6 +1,12 @@
 version: '3.8'
 
 services:
+  redis:
+    image: redis
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - 6379:6379
   postgis:
     image: postgis/postgis:13-3.1
     restart: unless-stopped
