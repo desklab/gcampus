@@ -22,7 +22,7 @@ from gcampus import __version__
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from gcampus.settings.util import get_env_read_file
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = get_env_read_file(
@@ -106,15 +106,6 @@ FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 WSGI_APPLICATION = "gcampus.wsgi.application"
 
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Password validation
@@ -147,7 +138,7 @@ USE_TZ = True
 
 LANGUAGES = (("en", _("English")), ("de", _("German")))
 
-LOCALE_PATHS = [BASE_DIR.joinpath("locale")]
+LOCALE_PATHS = [BASE_DIR.joinpath("gcampus", "locale")]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -210,5 +201,13 @@ COURSE_TOKEN_LENGTH = 12
 REGISTER_MAX_ACCESS_KEY_NUMBER = 30
 
 # Celery Tasks
-CELERY_RESULT_BACKEND = "django-db"
-CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_CONFIG = {
+    "result_backend": "django-db",
+    "broker_url": (
+        f"redis://{get_env_read_file('GCAMPUS_REDIS_HOST', 'localhost')}:6379/0"
+    ),
+    "task_publish_retry": False,
+    "broker_transport_options": {
+        "max_retries": 1,
+    }
+}

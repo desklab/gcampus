@@ -17,9 +17,9 @@ import time
 import unittest
 
 from django.contrib.gis.geos import GEOSGeometry
-from django.test import TestCase
 from django.utils import timezone
 
+from gcampus.tasks.tests.utils import BaseMockTaskTest
 from gcampus.core.models import Measurement
 
 LOCATION_HEIDELBERG = GEOSGeometry("POINT(8.69079 49.40768)")
@@ -27,7 +27,7 @@ LOCATION_BOCKHORN = GEOSGeometry("POINT(8.073680 53.453274)")
 LOCATION_OCEAN = GEOSGeometry("POINT(-32 42)")
 
 
-class MeasurementModelTest(TestCase):
+class MeasurementModelTest(BaseMockTaskTest):
     @unittest.skip("API timeout")
     def test_location_name(self):
         measurement = Measurement(location=LOCATION_HEIDELBERG, time=timezone.now())

@@ -18,10 +18,10 @@ __all__ = ["app"]
 import os
 
 from celery import Celery
-
+from django.conf import settings
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "gcampus.settings.dev")
 
 app = Celery("gcampus")
-app.config_from_object("django.conf:settings", namespace="CELERY")
+app.config_from_object(settings.CELERY_CONFIG)
 app.autodiscover_tasks()

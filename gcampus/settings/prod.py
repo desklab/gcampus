@@ -44,4 +44,6 @@ DATABASES = {
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-CELERY_BROKER_URL = f"redis://{get_env_read_file('GCAMPUS_REDIS_HOST')}:6379/0"
+CELERY_CONFIG.update({
+    "broker_url": f"redis://{get_env_read_file('GCAMPUS_REDIS_HOST')}:6379/0"
+})
