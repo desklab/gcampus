@@ -91,11 +91,6 @@ def update_graph(parameter_type, water_name, plot_type, show_limit, slider):
         fig = px.scatter(df, x="Time", y="Values")
         if limits and show_limit:
 
-            max_time = max(df["Time"])
-            max_time = add_one_day(max_time, "%Y-%m-%d")
-
-            min_time = min(df["Time"])
-            min_time = remove_one_day(min_time, "%Y-%m-%d")
             for limit in limits:
                 fig.add_hline(y=limit.limit_value, line_color=limit.graph_color, line_dash="dash", name=limit.limit_type)
 
