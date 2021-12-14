@@ -1,0 +1,38 @@
+{% load i18n icon auth_token %}
+{% url "gcampuscore:measurement_detail" pk=measurement.pk as detail_url %}
+{% url "gcampuscore:edit_parameters" pk=measurement.pk as edit_url %}
+<a href="{{ detail_url }}" class="list-group-item list-group-item-hover">
+    <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">
+            <small class="fw-normal me-2">
+                {{ measurement }}
+            </small>
+
+        </h5>
+        {% url "gcampuscore:edit_parameters" pk=access_key.pk as activate_url %}
+        <form class="d-inline-block" method="post" action="{{ activate_url }}">
+            {% csrf_token %}
+            <input type="hidden" name="measurement" value="{{ access_key.pk }}"/>
+            <div class="dropdown">
+                <button class="btn btn-sm dropdown-toggle" type="button" id="dropdownMenuButtonEditKey" data-bs-toggle="dropdown" aria-expanded="false">
+                    {% translate "Options" %}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButtonEditKey">
+                    <li>
+                        <button type="submit" class="dropdown-item" href="#" {{ edit|yesno:",disabled" }}>
+                                {% icon "edit" class="d-inline-block align-text-top me-1" height="16" width="16" %}
+                                {% translate "Edit" %}
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+    <p class="mb-1">
+        <small class="text-muted">
+            {% blocktranslate  %}
+                Recorded {{ count }} parameters on {{ time }}.
+            {% endblocktranslate %}
+        </small>
+    </p>
+</a>
