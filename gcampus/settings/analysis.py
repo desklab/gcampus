@@ -18,4 +18,4 @@ SCATTER_PLOT = "Scatter"
 HISTOGRAM = "Histogram"
 BOXPLOT = "Boxplot"
 PLOT_TYPES = [SCATTER_PLOT, HISTOGRAM, BOXPLOT]
-LIMITS = {0: 6.7, 1: 45, 2: 70, 3: 25, 4: 55}
+

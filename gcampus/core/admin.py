@@ -22,6 +22,7 @@ from gcampus.core.models import (
     Measurement,
     ParameterType,
     Parameter,
+    Limit
 )
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 
@@ -47,6 +48,9 @@ class MeasurementAdmin(LeafletGeoAdmin):
 class ParameterTypeAdmin(admin.ModelAdmin):
     pass
 
+class LimitAdmin(admin.ModelAdmin):
+    pass
+
 
 class ParameterAdmin(admin.ModelAdmin):
     readonly_fields = ADMIN_READ_ONLY_FIELDS
@@ -58,3 +62,4 @@ class ParameterAdmin(admin.ModelAdmin):
 admin.site.register(Measurement, MeasurementAdmin)
 admin.site.register(ParameterType, ParameterTypeAdmin)
 admin.site.register(Parameter, ParameterAdmin)
+admin.site.register(Limit, LimitAdmin)

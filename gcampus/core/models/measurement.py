@@ -151,6 +151,7 @@ class Measurement(util.DateModelMixin):
         )
 
 
+
 class ParameterType(models.Model):
     class Meta:
         verbose_name = _("Parameter type")
@@ -160,12 +161,28 @@ class ParameterType(models.Model):
 
     unit = models.CharField(blank=True, max_length=10, verbose_name=_("Unit"))
 
+
+
     def __str__(self):
         if self.unit in EMPTY:
             return f"{self.name}"
         else:
             return f"{self.name} ({self.unit})"
 
+
+class Limit(models.Model):
+    class Meta:
+        verbose_name = _("Limit")
+
+    limit_type = models.CharField(max_length=20, blank=True)
+
+    limit_value = models.FloatField(blank=True)
+
+    parameter_limit = models.ForeignKey(ParameterType,
+                                  related_name="parameter_limit",
+                                  on_delete=models.PROTECT,
+                                  verbose_name=_("Parameter type"), default=True)
+    graph_color = models.CharField(max_length=20, default="red")
 
 class Parameter(util.DateModelMixin):
     class Meta:

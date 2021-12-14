@@ -20,7 +20,6 @@ from gcampus.analysis.apps import GCampusAnalysisAppConfig
 from gcampus.analysis.views import analysis, analysis_measurement
 
 # Necessary to get the plots to work
-from gcampus.analysis.dash_apps import example
 from gcampus.analysis.dash_apps import Example_Measurement
 
 
