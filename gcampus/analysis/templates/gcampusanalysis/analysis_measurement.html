@@ -1,0 +1,15 @@
+{% extends "gcampuscore/base.html" %}
+{%load plotly_dash %}
+{% block content %}
+
+<body>
+
+<style>
+            div.{% plotly_class name="ExampleMeasurement" %} card div {height:500px;}
+</style>
+<div class="{% plotly_class name="ExampleMeasurement" %} card" style="height: 90%; width: 90%">
+    {%plotly_app name="ExampleMeasurement" ratio=1 %}
+</div>
+
+</body>
+{% endblock %}

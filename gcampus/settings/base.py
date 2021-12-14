@@ -49,12 +49,14 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_gis",
     "django_filters",
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     # gcampus specific apps
     "gcampus.core",
     "gcampus.auth",
     "gcampus.api",
     "gcampus.map",
     "gcampus.print",
+    "gcampus.analysis",
     # Other django apps
     # Sometimes the order is important
     "django.forms",
@@ -195,6 +197,9 @@ MAP_SETTINGS = {
 
 # Full Text Search
 TSVECTOR_CONF = "german"
+
+# django-plotly-dash
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Session expires when Browser is closed
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
