@@ -1,0 +1,136 @@
+{% load auth_token print_static i18n l10n icon settings %}
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <link href="{% print_static "gcampusdocuments/styles/gcampus.css" %}" rel="stylesheet">
+    <title>gcampus Document</title>
+    <meta name="id" content="gcampus-doc-01">
+    {% displaytoken_head %}
+    <style>
+        @page {
+            @top-right {
+                content: "{% now "d/m/Y H:i:s" %} \A Version {{ GCAMPUS_VERSION }} \A Seite " counter(page) " von " counter(pages);
+                white-space: pre-line;
+                color: #606060;
+                font-size: 7pt;
+                padding-top: 1.2cm;
+            }
+            @top-left {
+                background: url("{% print_static 'gcampusdocuments/assets/gcampus-print-header-left.png' %}");
+                background-repeat: no-repeat;
+                background-position: left;
+                background-size: 100% auto;
+                display: block;
+                height: 1.6cm;
+                width: 13cm;
+                content: '';
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- TODO: add and use translations -->
+
+    <div class="footer-left">
+        <span class="bold">Dokument ID</span> GC-MD-ID
+    </div>
+
+    <div class="footer-right">
+        <a href="https://gewaessercampus.de" class="footer-link">www.gewaessercampus.de</a>
+    </div>
+
+    <article>
+        <div class="gcampus-print-page">
+
+            <!-- general information -->
+            <div class="w-100">
+                <div class="rotated-section-heading color-grey w-abs-250">
+                    Info
+                </div>        
+                <div class="text-justify h-abs-250 document-description">
+                    Dieses Dokument wurde automatisch erstellt und enhält 
+                    eine Zusammenfassung der Informationen der Messung 
+                    von {{ measurement.name }} 
+                    am {{measurement.time|localize }}
+                    in {{ measurement.location_name }}.
+                </div>
+            </div>    
+
+            <!-- metadata -->
+            <div class="w-100">
+                <div class="rotated-section-heading color-secondary w-abs-800">
+                    Metadaten
+                </div>        
+                <div class="container measurementinfo-container h-abs-800">
+                        <div class="w-abs-700 float-left measurementmeta-container">
+                            <h5 class="measurementmeta-heading text-muted">{% translate "Water name" %}</small>
+                                {% if object.water_name %}
+                                    <h3 class="measurementmeta-content color-secondary">{{ object.water_name }}
+                                {% else %}
+                                    <h3 class="measurementmeta-content color-grey">{% translate "N/A" context "no value provided (water name, comment, etc)" %}
+                                {% endif %}
+                            </h3>
+                            <h5 class="measurementmeta-heading text-muted">{% translate "Time" %}</small>
+                            <h3 class="measurementmeta-content color-secondary">{{ object.time|localize }}</h4>
+                            <h5 class="measurementmeta-heading text-muted">{% translate "Comment" %}</small>
+                                {% if object.comment %}
+                                    <p>{{ object.comment }}
+                                {% else %}
+                                    <p class="measurementmeta-content color-grey">{% translate "N/A" context "no value provided (water name, comment, etc)" %}
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="w-abs-800 float-left">
+                            <div class ="w-abs-800 h-abs-600">
+                                {% get_map_settings 'MAPBOX_ACCESS_TOKEN' as mapbox_access_token %}
+                                <img src="https://api.mapbox.com/styles/v1/axelschlindwein/ckq9e6o4k06fn17o70d7j7l65/static/pin-l+083973({{ measurement.location.x|unlocalize }},{{ measurement.location.y|unlocalize }})/{{ measurement.location.x|unlocalize }},{{ measurement.location.y|unlocalize }},15/800x600?access_token={{ mapbox_access_token }}" alt="Map image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+            <!-- measured values -->
+            <div class="w-100">
+                <div class="rotated-section-heading color-primary w-abs-800">
+                    Messwerte
+                </div>  
+                <div class="measurementdata-container">
+                    <div class="container">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th class="w-abs-600 color-primary" scope="col">{% translate "Data type" %}</th>
+                                <th class="w-abs-400 color-primary" scope="col">{% translate "Value" %}</th>
+                                <th class="w-abs-400 color-primary" scope="col">{% translate "Comment" %}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for parameter in object.parameters.all %}
+                                <tr>
+                                    <td>{{ parameter.parameter_type }}</td>
+                                    <td class="font-monospace">
+                                        {{ parameter.value|localize }} {{ parameter.parameter_type.unit }}
+                                    </td>
+                                    <td>
+                                        <small class="color-grey">
+                                            {% if parameter.comment %}
+                                                {{ parameter.comment }}
+                                            {% else %}
+                                                {% translate "N/A" context "no value provided (water name, comment, etc)" %}
+                                            {% endif %}
+                                        </small>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+       </div>
+
+    </article>
+</body>
+</html>

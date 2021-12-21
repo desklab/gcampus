@@ -14,17 +14,12 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from django import template
-from django.http import HttpRequest
-from django.template import Context
-from django.utils.http import urlencode
 
-from gcampus.auth.forms.token import NEXT_URL_FIELD_NAME
+from gcampus.map.settings import MAP_SETTINGS
 
 register = template.Library()
 
 
-@register.simple_tag(takes_context=True)
-def next_url(context: Context) -> str:
-    request: HttpRequest = context["request"]
-    params = {NEXT_URL_FIELD_NAME: request.path}
-    return f"?{urlencode(params)}"
+@register.simple_tag
+def get_map_settings(settings_name: str) -> str:
+    return MAP_SETTINGS[settings_name]

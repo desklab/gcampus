@@ -12,25 +12,12 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-import os
 
-from django import template
-from django.templatetags.static import do_static, StaticNode
-
-from gcampus.print.document import URI_IDENTIFIER
-
-register = template.Library()
+from django.apps import AppConfig
+from django.utils.translation import gettext_lazy as _
 
 
-class PrintStaticNode(StaticNode):
-    def url(self, context):
-        path = self.path.resolve(context)
-        return f"{URI_IDENTIFIER}:{self.handle_simple(path)}"
-
-
-@register.tag
-def print_static(parser, token):
-    if os.environ.get("USE_S3_STORAGE", False):
-        return do_static(parser, token)
-    else:
-        return PrintStaticNode.handle_token(parser, token)
+class GCampusDocumentsAppConfig(AppConfig):
+    name = "gcampus.documents"
+    label = "gcampusdocuments"
+    verbose_name = _("GCampus Documents")

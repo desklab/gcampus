@@ -35,8 +35,12 @@ from django.views.generic.edit import FormView
 
 from gcampus.auth import utils
 from gcampus.auth.exceptions import TOKEN_INVALID_ERROR
-from gcampus.auth.forms.token import AccessKeyForm, CourseTokenForm, TOKEN_FIELD_NAME, \
-    NEXT_URL_FIELD_NAME
+from gcampus.auth.forms.token import (
+    AccessKeyForm,
+    CourseTokenForm,
+    TOKEN_FIELD_NAME,
+    NEXT_URL_FIELD_NAME,
+)
 from gcampus.auth.models.token import ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE, CourseToken
 from gcampus.core.models.util import EMPTY
 from gcampus.core.views.base import TitleMixin

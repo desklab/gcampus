@@ -31,6 +31,7 @@ from pathlib import Path
 
 from gcampus.settings.util import get_env_read_file
 
+
 STATIC_LOCATION = "static"
 
 if os.environ.get("USE_S3_STORAGE", False):
@@ -60,7 +61,8 @@ else:
     # Use django's default static file storage class. See
     # https://docs.djangoproject.com/en/3.1/ref/settings/#staticfiles-storage
     # for more information.
-    _BASE_DIR = Path(__file__).resolve().parent.parent
+    _BASE_DIR = Path(__file__).resolve().parent.parent.parent
     STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
     # STATIC_ROOT = os.path.join(_BASE_DIR.parent, "static")
     STATIC_URL = "/static/"
+    MEDIA_ROOT = str(_BASE_DIR / "media")

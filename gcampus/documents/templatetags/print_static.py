@@ -13,18 +13,25 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from django import template
-from django.http import HttpRequest
-from django.template import Context
-from django.utils.http import urlencode
+import os
 
-from gcampus.auth.forms.token import NEXT_URL_FIELD_NAME
+from django import template
+from django.templatetags.static import do_static, StaticNode
+
+from gcampus.documents.utils import URI_IDENTIFIER
 
 register = template.Library()
 
 
-@register.simple_tag(takes_context=True)
-def next_url(context: Context) -> str:
-    request: HttpRequest = context["request"]
-    params = {NEXT_URL_FIELD_NAME: request.path}
-    return f"?{urlencode(params)}"
+class PrintStaticNode(StaticNode):
+    def url(self, context):
+        path = self.path.resolve(context)
+        return f"{URI_IDENTIFIER}:{self.handle_simple(path)}"
+
+
+@register.tag
+def print_static(parser, token):
+    if os.environ.get("USE_S3_STORAGE", False):
+        return do_static(parser, token)
+    else:
+        return PrintStaticNode.handle_token(parser, token)

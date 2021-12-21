@@ -12,6 +12,7 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 from abc import ABC
 from datetime import datetime
 from typing import List, Union
@@ -19,7 +20,6 @@ from typing import List, Union
 from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.forms import Field
 from django.forms.utils import ErrorList
-from django.test import TestCase
 from django.urls import reverse
 
 from gcampus.auth.exceptions import (
@@ -31,9 +31,10 @@ from gcampus.auth.forms.token import TOKEN_FIELD_NAME
 from gcampus.auth.models import CourseToken, AccessKey
 from gcampus.auth.models.token import COURSE_TOKEN_LENGTH, ACCESS_KEY_LENGTH
 from gcampus.auth.widgets import split_token_chunks
+from gcampus.tasks.tests.utils import BaseMockTaskTest
 
 
-class BaseAuthTest(TestCase, ABC):
+class BaseAuthTest(BaseMockTaskTest, ABC):
     today = datetime.today()
     form_data_stub: dict = {
         "time_0_0": today.day,
@@ -44,6 +45,7 @@ class BaseAuthTest(TestCase, ABC):
     }
 
     def setUp(self) -> None:
+        super(BaseAuthTest, self).setUp()
         self.parent_token = CourseToken(
             school_name="GCampus Test Case",
             teacher_name="GCampus Testing",

@@ -12,57 +12,31 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-# __all__ = ["render_document", "as_bytes_io", "as_file"]
 import mimetypes
 import os
-import pathlib
 import posixpath
-from io import BytesIO
 from pathlib import Path
-from typing import Optional
-from typing import Union
 
 from django.conf import settings
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.contrib.staticfiles import finders
 from django.http import HttpRequest
-from django.template.loader import render_to_string
-from weasyprint import HTML, Document
 from weasyprint.urls import URLFetchingError, default_url_fetcher
 
 STATIC_FILES_PATH = Path(__file__).resolve().parent / "static"
-URI_IDENTIFIER = "gcampusprint"
+URI_IDENTIFIER = "gcampusdocuments"
 
 
-def render_document(
-    template: str,
-    context: Optional[dict] = None,
-    request: Optional[HttpRequest] = None,
-    using=None,
-) -> Document:
-    # Add dummy request to enable context processors
-    if request is None:
-        request = HttpRequest()
-        middleware = SessionMiddleware()
-        middleware.process_request(request)
-        request.session.save()
-
-    document_str = render_to_string(
-        template, context=context, request=request, using=using
-    )
-    html = HTML(string=document_str, url_fetcher=url_fetcher)
-    return html.render()
+def _mock_get_response():
+    return "Response"
 
 
-def as_bytes_io(document: Document, **kwargs) -> BytesIO:
-    filelike_obj = BytesIO()
-    document.write_pdf(target=filelike_obj, **kwargs)
-    return filelike_obj
-
-
-def as_file(document: Document, target: Union[str, pathlib.Path]):
-    document.write_pdf(target)
+def mock_request() -> HttpRequest:
+    request = HttpRequest()
+    middleware = SessionMiddleware(_mock_get_response)
+    middleware.process_request(request)
+    request.session.save()
+    return request
 
 
 def url_fetcher(url: str, **kwargs):

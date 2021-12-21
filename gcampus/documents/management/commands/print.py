@@ -13,18 +13,22 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from django import template
-from django.http import HttpRequest
-from django.template import Context
-from django.utils.http import urlencode
+from django.core.management import BaseCommand
 
-from gcampus.auth.forms.token import NEXT_URL_FIELD_NAME
-
-register = template.Library()
+from gcampus.documents.document import render_document, as_file
 
 
-@register.simple_tag(takes_context=True)
-def next_url(context: Context) -> str:
-    request: HttpRequest = context["request"]
-    params = {NEXT_URL_FIELD_NAME: request.path}
-    return f"?{urlencode(params)}"
+class Command(BaseCommand):
+    help = "Render and save a specified document"
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "document",
+            type=str,
+            help="Document path",
+        )
+        parser.add_argument("output", type=str, help="Output file name")
+
+    def handle(self, document, output, **kwargs):
+        document = render_document(document)
+        as_file(document, output)

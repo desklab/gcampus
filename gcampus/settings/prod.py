@@ -30,6 +30,8 @@ except AttributeError:
         "The GCAMPUS_ALLOWED_HOSTS environment variable has to be specified"
     )
 
+CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in ALLOWED_HOSTS]
+
 DATABASES = {
     "default": {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
@@ -41,5 +43,30 @@ DATABASES = {
     },
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f"redis://{REDIS_HOST}:6379",
+    }
+}
+
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
+
+CELERY_CONFIG.update(
+    {"broker_url": f"redis://{get_env_read_file('GCAMPUS_REDIS_HOST')}:6379/0"}
+)
+
+# E-Mail Settings
+# See https://docs.djangoproject.com/en/4.0/topics/email/
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp-relay.gmail.com"
+EMAIL_PORT = "587"
+EMAIL_USE_TLS = True
+if get_env_read_file("GCAMPUS_EMAIL_HOST_USER", None) is not None:
+    EMAIL_HOST_USER = get_env_read_file("GCAMPUS_EMAIL_HOST_USER")
+if get_env_read_file("GCAMPUS_EMAIL_HOST_PASSWORD", None) is not None:
+    EMAIL_HOST_PASSWORD = get_env_read_file("GCAMPUS_EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = get_env_read_file(
+    "EMAIL_HOST_PASSWORD", "noreply@gewaessercampus.de"
+)

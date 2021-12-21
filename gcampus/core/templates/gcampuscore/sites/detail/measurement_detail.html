@@ -167,6 +167,12 @@
                         </p>
                     </div>
                     <div class="mt-auto">
+                        <a class="btn btn-sm btn-secondary"
+                            href="{% url "gcampusdocuments:measurement-detail" pk=measurement.pk %}"
+                            role="link">
+                            {% icon "download" class="d-inline-block align-text-top" height="16" width="16" %} &nbsp;
+                            {% translate "Export PDF" %}
+                        </a>
                         {% if measurement.token.token is not None %}
                             {% if measurement.token.token == user_token or measurement.token.parent_token.token == user_token %}
                                 <a href="{% url "gcampuscore:edit_parameters" pk=measurement.pk %}"

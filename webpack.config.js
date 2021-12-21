@@ -231,19 +231,19 @@ let gcampusauthConfig = (env, options) => {
 }
 
 
-let gcampusprintConfig = (env, options) => {
+let gcampusdocumentsConfig = (env, options) => {
     let common = commonConfig(env, options);
     return Object.assign(common, {
-        name: 'gcampusprint',
+        name: 'gcampusdocuments',
         entry: {
-            'gcampus': path.resolve(__dirname, 'gcampus', 'print', 'static_src', 'styles', 'gcampus.scss'),
+            'gcampus': path.resolve(__dirname, 'gcampus', 'documents', 'static_src', 'styles', 'gcampus.scss'),
         },
         output: {
-            path: path.resolve(__dirname, 'gcampus', 'print', 'static', 'gcampusprint'),
-            publicPath: '/static/gcampusprint',
+            path: path.resolve(__dirname, 'gcampus', 'documents', 'static', 'gcampusdocuments'),
+            publicPath: '/static/gcampusdocuments',
             filename: 'js/[name].js',
             library: {
-                name: ['gcampusprint', '[name]'],
+                name: ['gcampusdocuments', '[name]'],
                 type: 'var'
             }
         },
@@ -253,8 +253,8 @@ let gcampusprintConfig = (env, options) => {
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        from: path.resolve(__dirname, 'gcampus', 'print', 'static_src', 'assets'),
-                        to: path.resolve(__dirname, 'gcampus', 'print', 'static', 'gcampusprint', 'assets'),
+                        from: path.resolve(__dirname, 'gcampus', 'documents', 'static_src', 'assets'),
+                        to: path.resolve(__dirname, 'gcampus', 'documents', 'static', 'gcampusdocuments', 'assets'),
                     },
                 ]
             }),
@@ -268,6 +268,6 @@ module.exports = (env, options) => {
         gcampuscoreConfig(env, options),
         gcampusmapConfig(env, options),
         gcampusauthConfig(env, options),
-        gcampusprintConfig(env, options),
+        gcampusdocumentsConfig(env, options),
     ];
 };

@@ -14,15 +14,19 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
-from typing import Union, Optional, Tuple
+from typing import Union, Optional, Tuple, Type
 
 from django.conf import settings
 from django.contrib.gis.db import models
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver, Signal
+from django.utils import translation
 from django.utils.crypto import get_random_string
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models import Measurement
 from gcampus.core.models.util import DateModelMixin
+from gcampus.documents.tasks import render_cached_document_view
 
 ALLOWED_TOKEN_CHARS = settings.ALLOWED_TOKEN_CHARS
 
@@ -31,9 +35,10 @@ COURSE_TOKEN_TYPE = "course"
 
 COURSE_TOKEN_LENGTH = getattr(settings, "COURSE_TOKEN_LENGTH", 12)
 ACCESS_KEY_LENGTH = getattr(settings, "ACCESS_KEY_LENGTH", 8)
+course_updated = Signal()
 
 
-logger = logging.getLogger("gcampus.core.token")
+logger = logging.getLogger("gcampus.auth.models.token")
 
 
 class CourseToken(DateModelMixin):
@@ -55,6 +60,13 @@ class CourseToken(DateModelMixin):
 
     teacher_email = models.EmailField(
         max_length=254, blank=False, verbose_name=_("E-Mail Address")
+    )
+
+    overview_document = models.FileField(
+        verbose_name=_("Overview Document"),
+        upload_to="documents/course/overview",
+        blank=True,
+        null=True,
     )
 
     class Meta:
@@ -96,7 +108,6 @@ class AccessKey(DateModelMixin):
         blank=False,
         null=False,
         related_name="access_keys",
-
     )
 
     deactivated = models.BooleanField(default=False)
@@ -130,6 +141,60 @@ class AccessKey(DateModelMixin):
         # TODO check if the token is too old or has reached its limit
         #   of creating measurements.
         return not self.deactivated
+
+
+@receiver(post_save, sender=AccessKey)
+@receiver(post_delete, sender=AccessKey)
+def update_access_key_documents(
+    sender: Type[AccessKey], instance: AccessKey, *args, **kwargs
+):
+    """Post-save and -delete signal receiver for access keys
+
+    As access keys are typically displayed in various documents of a
+    given course, a rebuild is required every time an access key changes
+    or is deleted.
+    """
+    if kwargs.get("created", False):
+        logger.info(
+            "Access key has been created, skip updating 'CourseOverviewPDF'. The "
+            "update should be triggered by a signal."
+        )
+        return
+    course_token = instance.parent_token
+    render_cached_document_view.apply_async(
+        args=(
+            "gcampus.documents.views.CourseOverviewPDF",
+            course_token.pk,
+            translation.get_language(),
+        ),
+    )
+
+
+@receiver(post_save, sender=CourseToken)
+@receiver(course_updated)
+def update_course(
+    sender,
+    instance: CourseToken,
+    created: bool = False,
+    update_fields: Optional[Union[tuple, list]] = None,
+    **kwargs,
+):
+    """Post-save signal receiver for course token
+
+    This function will update all documents that may require a rebuild
+    when as the model has changed.
+    """
+    update_fields = () if not update_fields else update_fields
+    if "overview_document" in update_fields and not created:
+        # The overview document has been changed on purpose
+        return
+    render_cached_document_view.apply_async(
+        args=(
+            "gcampus.documents.views.CourseOverviewPDF",
+            instance.pk,
+            translation.get_language(),
+        ),
+    )
 
 
 AnyToken = Union[AccessKey, CourseToken]

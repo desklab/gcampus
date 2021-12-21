@@ -13,24 +13,6 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from django.urls import path
+__all__ = ["celery_app"]
 
-from gcampus.print.apps import GCampusPrintAppConfig
-from gcampus.print.views.print import (
-    CourseOverviewPDF,
-    AccesskeyCombinedPDF,
-)
-
-# Turn off black formatting and pylint
-# fmt: off
-# pylint: disable=line-too-long
-urlpatterns = [
-    path("documents/overview", CourseOverviewPDF.as_view(), name="documents-overview"),
-    path("documents/accesskeys_combined", 
-         AccesskeyCombinedPDF.as_view(), 
-         name = "accesskey-combined"),
-]
-# fmt: on
-# pylint: enable=line-too-long
-
-app_name = GCampusPrintAppConfig.label
+from gcampus.tasks.celery import app as celery_app

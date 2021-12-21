@@ -18,8 +18,10 @@ __all__ = [
 ]
 
 from django.contrib import messages
+from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.utils import translation
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 from django.views.generic import CreateView
@@ -27,6 +29,7 @@ from django.views.generic import CreateView
 from gcampus.auth import utils
 from gcampus.auth.forms.token import RegisterForm
 from gcampus.auth.models.token import AccessKey, COURSE_TOKEN_TYPE
+from gcampus.auth.tasks import send_registration_email
 from gcampus.core.views.base import TitleMixin
 
 
@@ -37,11 +40,17 @@ class RegisterFormView(TitleMixin, CreateView):
     success_url = reverse_lazy("gcampusauth:course-overview")
 
     def form_valid(self, form):
-        self.object = form.save()
-        number_of_tokens: int = form.cleaned_data["number_of_tokens"]
-        for i in range(number_of_tokens):
-            access_key = AccessKey.generate_access_key()
-            AccessKey(token=access_key, parent_token=self.object).save()
+        with transaction.atomic():
+            self.object = form.save()
+            number_of_tokens: int = form.cleaned_data["number_of_tokens"]
+            for i in range(number_of_tokens):
+                access_key = AccessKey.generate_access_key()
+                AccessKey(token=access_key, parent_token=self.object).save()
+
+        send_registration_email.apply_async(
+            args=(self.object.pk, translation.get_language())
+        )
+
         messages.success(
             self.request,
             _(

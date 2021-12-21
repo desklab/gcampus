@@ -19,10 +19,11 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 
 from gcampus import __version__
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from gcampus.settings.util import get_env_read_file
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = get_env_read_file(
@@ -49,13 +50,15 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_gis",
     "django_filters",
+    "django_celery_results",
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     # gcampus specific apps
+    "gcampus.tasks",
     "gcampus.core",
     "gcampus.auth",
     "gcampus.api",
     "gcampus.map",
-    "gcampus.print",
+    "gcampus.documents",
     "gcampus.analysis",
     # Other django apps
     # Sometimes the order is important
@@ -106,19 +109,10 @@ FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 WSGI_APPLICATION = "gcampus.wsgi.application"
 
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Password validation
-# https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -136,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-# https://docs.djangoproject.com/en/3.1/topics/i18n/
+# https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 LANGUAGE_CODE = "de"
 TIME_ZONE = "Europe/Berlin"
@@ -147,10 +141,10 @@ USE_TZ = True
 
 LANGUAGES = (("en", _("English")), ("de", _("German")))
 
-LOCALE_PATHS = [BASE_DIR.joinpath("locale")]
+LOCALE_PATHS = [BASE_DIR.joinpath("gcampus", "locale")]
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
+# https://docs.djangoproject.com/en/4.0/howto/static-files/
 from gcampus.settings.files import *  # noqa
 
 # Rest Framework
@@ -211,3 +205,16 @@ ACCESS_KEY_LENGTH = 8
 COURSE_TOKEN_LENGTH = 12
 # Maximum number of tokens that one can request
 REGISTER_MAX_ACCESS_KEY_NUMBER = 30
+
+# Redis settings
+REDIS_HOST = get_env_read_file("GCAMPUS_REDIS_HOST", "localhost")
+
+# Celery Tasks
+CELERY_CONFIG = {
+    "result_backend": "django-db",
+    "broker_url": (f"redis://{REDIS_HOST}:6379/0"),
+    "task_publish_retry": False,
+    "broker_transport_options": {
+        "max_retries": 1,
+    },
+}

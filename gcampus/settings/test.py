@@ -27,3 +27,5 @@ DATABASES = {
         "PORT": os.environ.get("GCAMPUS_DB_PORT", 5432),
     },
 }
+
+CELERY_CONFIG.update({"task_always_eager": True})
