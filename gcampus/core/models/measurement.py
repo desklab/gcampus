@@ -48,7 +48,7 @@ class Measurement(util.DateModelMixin):
         blank=False,
         null=True,
         default=None,
-        related_name="measurements"
+        related_name="measurements",
     )
 
     name = models.CharField(

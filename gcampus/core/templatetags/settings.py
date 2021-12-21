@@ -19,6 +19,7 @@ from gcampus.map.settings import MAP_SETTINGS
 
 register = template.Library()
 
+
 @register.simple_tag
 def get_map_settings(settings_name: str) -> str:
     return MAP_SETTINGS[settings_name]

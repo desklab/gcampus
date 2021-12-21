@@ -16,6 +16,7 @@
 from io import BytesIO
 from typing import Type
 
+from django.utils import translation
 from django.db.models import Model
 from django.db.models.fields.files import FieldFile
 from django.http import StreamingHttpResponse, HttpRequest
@@ -91,7 +92,8 @@ class CachedDocumentResponse(StreamingHttpResponse):
                 internal_filename,
                 model,
                 model_file_field,
-                instance=instance,
+                instance,
+                translation.get_language(),
             )
             instance.refresh_from_db(fields=(model_file_field,))
             file: FieldFile = getattr(instance, model_file_field)
@@ -110,4 +112,3 @@ class CachedDocumentResponse(StreamingHttpResponse):
         if "Content-Length" not in headers:
             headers["Content-Length"] = content_size
         super().__init__(file, content_type=content_type, headers=headers, **kwargs)
-

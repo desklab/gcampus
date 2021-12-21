@@ -27,9 +27,13 @@ STATIC_FILES_PATH = Path(__file__).resolve().parent / "static"
 URI_IDENTIFIER = "gcampusdocuments"
 
 
+def _mock_get_response():
+    return "Response"
+
+
 def mock_request() -> HttpRequest:
     request = HttpRequest()
-    middleware = SessionMiddleware()
+    middleware = SessionMiddleware(_mock_get_response)
     middleware.process_request(request)
     request.session.save()
     return request
@@ -38,7 +42,7 @@ def mock_request() -> HttpRequest:
 def url_fetcher(url: str, **kwargs):
     if url.startswith(f"{URI_IDENTIFIER}:"):
         # Remove the URI identifier only used to trigger the URL fetcher
-        url = url[len(URI_IDENTIFIER) + 1:]
+        url = url[len(URI_IDENTIFIER) + 1 :]
     if url.startswith(settings.STATIC_URL):
         path = url.replace(settings.STATIC_URL, "", 1)
         normalized_path = posixpath.normpath(path).lstrip("/")

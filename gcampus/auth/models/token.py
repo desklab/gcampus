@@ -19,7 +19,8 @@ from typing import Union, Optional, Tuple, Type
 from django.conf import settings
 from django.contrib.gis.db import models
 from django.db.models.signals import post_save, post_delete
-from django.dispatch import receiver
+from django.dispatch import receiver, Signal
+from django.utils import translation
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 
@@ -34,9 +35,10 @@ COURSE_TOKEN_TYPE = "course"
 
 COURSE_TOKEN_LENGTH = getattr(settings, "COURSE_TOKEN_LENGTH", 12)
 ACCESS_KEY_LENGTH = getattr(settings, "ACCESS_KEY_LENGTH", 8)
+course_updated = Signal()
 
 
-logger = logging.getLogger("gcampus.core.token")
+logger = logging.getLogger("gcampus.auth.models.token")
 
 
 class CourseToken(DateModelMixin):
@@ -61,8 +63,10 @@ class CourseToken(DateModelMixin):
     )
 
     overview_document = models.FileField(
-        verbose_name=_("Overview Document"), upload_to="documents/course/overview",
-        blank=True, null=True
+        verbose_name=_("Overview Document"),
+        upload_to="documents/course/overview",
+        blank=True,
+        null=True,
     )
 
     class Meta:
@@ -104,7 +108,6 @@ class AccessKey(DateModelMixin):
         blank=False,
         null=False,
         related_name="access_keys",
-
     )
 
     deactivated = models.BooleanField(default=False)
@@ -142,12 +145,8 @@ class AccessKey(DateModelMixin):
 
 @receiver(post_save, sender=AccessKey)
 @receiver(post_delete, sender=AccessKey)
-@receiver(post_delete, sender=AccessKey)
 def update_access_key_documents(
-    sender: Type[CourseToken],
-    instance: AccessKey,
-    *args,
-    **kwargs
+    sender: Type[AccessKey], instance: AccessKey, *args, **kwargs
 ):
     """Post-save and -delete signal receiver for access keys
 
@@ -155,22 +154,30 @@ def update_access_key_documents(
     given course, a rebuild is required every time an access key changes
     or is deleted.
     """
+    if kwargs.get("created", False):
+        logger.info(
+            "Access key has been created, skip updating 'CourseOverviewPDF'. The "
+            "update should be triggered by a signal."
+        )
+        return
     course_token = instance.parent_token
     render_cached_document_view.apply_async(
-        args=("gcampus.documents.views.CourseOverviewPDF",),
-        kwargs=dict(instance_pk=course_token.pk)
+        args=(
+            "gcampus.documents.views.CourseOverviewPDF",
+            course_token.pk,
+            translation.get_language(),
+        ),
     )
 
 
 @receiver(post_save, sender=CourseToken)
+@receiver(course_updated)
 def update_course(
-    sender: Type[CourseToken],
+    sender,
     instance: CourseToken,
-    created: bool,
-    raw: bool,
-    using,
-    update_fields: Optional[Union[tuple, list]],
-    **kwargs
+    created: bool = False,
+    update_fields: Optional[Union[tuple, list]] = None,
+    **kwargs,
 ):
     """Post-save signal receiver for course token
 
@@ -182,8 +189,11 @@ def update_course(
         # The overview document has been changed on purpose
         return
     render_cached_document_view.apply_async(
-        args=("gcampus.documents.views.CourseOverviewPDF",),
-        kwargs=dict(instance_pk=instance.pk)
+        args=(
+            "gcampus.documents.views.CourseOverviewPDF",
+            instance.pk,
+            translation.get_language(),
+        ),
     )
 
 

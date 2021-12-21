@@ -25,7 +25,9 @@ class BaseMockTaskTest(TestCase, ABC):
         # Mock the 'apply_async' function of a Celery task. All tasks
         # will be skipped.
         self.task_mock = mock.patch.object(
-            Task, 'apply_async', autospec=True,
+            Task,
+            "apply_async",
+            autospec=True,
         )
         self.task_mock.start()
         super(BaseMockTaskTest, self).setUp()
@@ -33,4 +35,3 @@ class BaseMockTaskTest(TestCase, ABC):
     def tearDown(self):
         self.task_mock.stop()
         super(BaseMockTaskTest, self).tearDown()
-

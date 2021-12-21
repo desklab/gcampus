@@ -23,6 +23,7 @@ __all__ = [
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
+from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
 from django.utils.decorators import method_decorator
@@ -34,7 +35,7 @@ from django.views.generic.edit import UpdateView
 from gcampus.auth import utils, exceptions
 from gcampus.auth.decorators import require_course_token
 from gcampus.auth.fields.token import check_form_and_request_token
-from gcampus.auth.models.token import AccessKey, CourseToken
+from gcampus.auth.models.token import AccessKey, CourseToken, course_updated
 from gcampus.auth.utils import get_token
 from gcampus.core.forms.course_overview import (
     CourseOverviewForm,
@@ -136,9 +137,11 @@ def generate_new_access_keys(request):
             )
             return redirect("gcampusauth:course-overview")
 
-        for i in range(count):
-            access_key = AccessKey.generate_access_key()
-            AccessKey(token=access_key, parent_token=course_token).save()
+        with transaction.atomic():
+            for i in range(count):
+                access_key = AccessKey.generate_access_key()
+                AccessKey(token=access_key, parent_token=course_token).save()
+        course_updated.send(sender=GenerateAccessKeysForm, instance=course_token)
 
         messages.success(
             request,

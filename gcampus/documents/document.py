@@ -64,4 +64,3 @@ def as_bytes_io(document: Document, **kwargs) -> BytesIO:
 
 def as_file(document: Document, target: Union[str, pathlib.Path]):
     document.write_pdf(target)
-

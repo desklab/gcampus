@@ -19,6 +19,7 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 
 from gcampus import __version__
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from gcampus.settings.util import get_env_read_file
 
@@ -109,7 +110,7 @@ WSGI_APPLICATION = "gcampus.wsgi.application"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Password validation
-# https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -127,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-# https://docs.djangoproject.com/en/3.1/topics/i18n/
+# https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 LANGUAGE_CODE = "de"
 TIME_ZONE = "Europe/Berlin"
@@ -141,7 +142,7 @@ LANGUAGES = (("en", _("English")), ("de", _("German")))
 LOCALE_PATHS = [BASE_DIR.joinpath("gcampus", "locale")]
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
+# https://docs.djangoproject.com/en/4.0/howto/static-files/
 from gcampus.settings.files import *  # noqa
 
 # Rest Framework
@@ -200,14 +201,15 @@ COURSE_TOKEN_LENGTH = 12
 # Maximum number of tokens that one can request
 REGISTER_MAX_ACCESS_KEY_NUMBER = 30
 
+# Redis settings
+REDIS_HOST = get_env_read_file("GCAMPUS_REDIS_HOST", "localhost")
+
 # Celery Tasks
 CELERY_CONFIG = {
     "result_backend": "django-db",
-    "broker_url": (
-        f"redis://{get_env_read_file('GCAMPUS_REDIS_HOST', 'localhost')}:6379/0"
-    ),
+    "broker_url": (f"redis://{REDIS_HOST}:6379/0"),
     "task_publish_retry": False,
     "broker_transport_options": {
         "max_retries": 1,
-    }
+    },
 }

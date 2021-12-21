@@ -12,26 +12,31 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
+import logging
 from pydoc import locate
-from typing import Type, Optional, Union
+from typing import Type, Union
 
 from celery import shared_task
 from django.core.files import File
 from django.db.models import Model
 from django.views import View
+from django.utils import translation
 from weasyprint import HTML
 
 from gcampus.documents.document import as_bytes_io, render_document_template
 from gcampus.documents.utils import url_fetcher
+from gcampus.tasks.lock import weak_lock_task
+
+logger = logging.getLogger("gcampus.documents.tasks")
 
 
 @shared_task
+@weak_lock_task
 def render_cached_document_view(
     view: Union[str, Type[View]],
-    instance: Optional[Model] = None,
-    instance_pk: Optional[int] = None,
-    force: bool = True
+    instance: Union[Model, int],
+    language: str,
+    force: bool = True,
 ):
     """Render Cached Document View
 
@@ -43,61 +48,63 @@ def render_cached_document_view(
     request.
 
     :param view: Subclass of :class:`CachedDocumentView`.
+    :param language: Language
     :param instance: Optional model instance. If no instance is
         provided, the primary key has to be passed using
         ``instance_pk``.
-    :param instance_pk: Optional primary key for the instance. Has to
-        be set if ``instance`` is not set.
+
     :param force: Force document rebuild even if document is already
         saved in the model.
     """
+    translation.activate(language)
     if isinstance(view, str):
         view = locate(view)
     if not issubclass(view, View) or not hasattr(view, "mock_view"):
         raise ValueError("Expected a view of type 'CachedDocumentView'.")
-    view_instance = view.mock_view(
-        instance=instance, instance_pk=instance_pk
-    )  # Create a fake view
-    _instance = view_instance.object
+    view_instance = view.mock_view(instance)  # Create a fake view
+    _instance: Model = view_instance.object
     if _instance is None:
         # This should never happen
         raise ValueError("Unable to find an instance")
+    _instance.refresh_from_db(fields=(view_instance.model_file_field,))
     if not force and getattr(_instance, view_instance.model_file_field):
         # The file is already cached and does not have to be rebuilt
+        logger.info("Skip file render as 'force' is set to 'False'.")
         return
     document_template = render_document_template(
         view_instance.get_template_names(),
         context=view_instance.get_context_data(),
         request=view_instance.request,
-        using=view_instance.template_engine
+        using=view_instance.template_engine,
     )
     render_document_to_model(
         document_template,
         view_instance.get_internal_filename(),
         view_instance.model,
         view_instance.model_file_field,
-        instance=_instance,
+        _instance,
+        language,
     )
 
 
 @shared_task
+@weak_lock_task
 def render_document_to_model(
     template: str,
     filename: str,
     model: Union[str, Type[Model]],
     model_file_field: str,
-    instance: Optional[Model] = None,
-    instance_pk: Optional[int] = None,
+    instance: Union[Model, int],
+    language: str,
 ):
+    translation.activate(language)
     if isinstance(model, str):
         _model = locate(model)
         if not issubclass(_model, Model):  # noqa
             raise ValueError(f"'{model}' is not a valid model")
         model: Type[Model] = _model
-    if instance is None:
-        if instance_pk is None:
-            raise ValueError("One of 'instance' and 'instance_pk' has to be set")
-        instance: Model = model.objects.get(pk=instance_pk)
+    if not isinstance(instance, Model):
+        instance: Model = model.objects.get(pk=instance)
     html = HTML(string=template, url_fetcher=url_fetcher)
     document = html.render()
     filelike_obj = as_bytes_io(document)

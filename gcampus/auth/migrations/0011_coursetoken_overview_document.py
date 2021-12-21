@@ -6,13 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gcampusauth', '0010_auto_20211126_1734'),
+        ("gcampusauth", "0010_auto_20211126_1734"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='coursetoken',
-            name='overview_document',
-            field=models.FileField(blank=True, null=True, upload_to='documents/course/overview', verbose_name='Overview Document'),
+            model_name="coursetoken",
+            name="overview_document",
+            field=models.FileField(
+                blank=True,
+                null=True,
+                upload_to="documents/course/overview",
+                verbose_name="Overview Document",
+            ),
         ),
     ]

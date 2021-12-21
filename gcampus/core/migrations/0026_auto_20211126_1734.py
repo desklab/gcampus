@@ -7,18 +7,29 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gcampusauth', '0010_auto_20211126_1734'),
-        ('gcampuscore', '0025_alter_measurement_water_name'),
+        ("gcampusauth", "0010_auto_20211126_1734"),
+        ("gcampuscore", "0025_alter_measurement_water_name"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='measurement',
-            options={'default_manager_name': 'all_objects', 'ordering': ('created_at', 'name'), 'verbose_name': 'Measurement', 'verbose_name_plural': 'Measurements'},
+            name="measurement",
+            options={
+                "default_manager_name": "all_objects",
+                "ordering": ("created_at", "name"),
+                "verbose_name": "Measurement",
+                "verbose_name_plural": "Measurements",
+            },
         ),
         migrations.AlterField(
-            model_name='measurement',
-            name='token',
-            field=models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='measurements', to='gcampusauth.accesskey'),
+            model_name="measurement",
+            name="token",
+            field=models.ForeignKey(
+                default=None,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="measurements",
+                to="gcampusauth.accesskey",
+            ),
         ),
     ]

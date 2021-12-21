@@ -13,7 +13,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import Optional, Type
+from typing import Optional, Type, Union
 
 from django.db.models import Model
 from django.utils.text import get_valid_filename
@@ -60,11 +60,9 @@ class SingleObjectDocumentView(SingleObjectMixin, DocumentView):
         return self.render_to_response(context)
 
     @classmethod
-    def mock_view(cls, instance: Optional[Model], instance_pk: Optional[int] = None):
-        if instance is None:
-            if instance_pk is None:
-                raise ValueError("One of 'instance' and 'instance_pk' has to be set")
-            instance = cls.model.objects.get(pk=instance_pk)
+    def mock_view(cls, instance: Union[Model, int]):
+        if not isinstance(instance, Model):
+            instance: Model = cls.model.objects.get(pk=instance)
         self = cls()
         self.object = instance
         self.request = mock_request()
@@ -87,7 +85,7 @@ class CachedDocumentView(SingleObjectDocumentView):
         return super(CachedDocumentView, cls).as_view(**initkwargs)
 
     def render_to_response(self, context, **response_kwargs):
-        response_kwargs.setdefault('content_type', self.content_type)
+        response_kwargs.setdefault("content_type", self.content_type)
         return self.response_class(
             self.request,
             self.get_template_names(),
