@@ -38,10 +38,11 @@ def render_document_template(
     request: Optional[HttpRequest] = None,
     using=None,
 ) -> str:
-    # Add dummy request to enable context processors
+    # Add dummy request to enable context processors.
+    # Context processors will not be run when no request is provided,
+    # even if they might not require a request.
     if request is None:
         request = mock_request()
-
     return render_to_string(template, context=context, request=request, using=using)
 
 

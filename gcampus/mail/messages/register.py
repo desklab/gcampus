@@ -12,3 +12,22 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+from django.utils.translation import gettext_lazy
+
+from gcampus.auth.models import CourseToken
+from gcampus.mail.messages import EmailTemplate
+
+
+class RegisterEmailTemplate(EmailTemplate):
+    template_path: str = "gcampusmail/register"
+    subject: str = gettext_lazy("GewässerCampus Course Registration")
+    
+    def __init__(self, course_token: CourseToken, **kwargs):
+        self.course_token = course_token
+        super(RegisterEmailTemplate, self).__init__(**kwargs)
+    
+    def get_context(self) -> dict:
+        return {
+            "course_token": self.course_token,
+        }
