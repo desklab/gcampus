@@ -263,11 +263,44 @@ let gcampusdocumentsConfig = (env, options) => {
 }
 
 
+let gcampusmailConfig = (env, options) => {
+    let common = commonConfig(env, options);
+    return Object.assign(common, {
+        name: 'gcampusmail',
+        entry: {
+            'mail': path.resolve(__dirname, 'gcampus', 'mail', 'static_src', 'styles', 'mail.scss'),
+        },
+        output: {
+            path: path.resolve(__dirname, 'gcampus', 'mail', 'static', 'gcampusmail'),
+            publicPath: '/static/gcampusmail',
+            filename: 'js/[name].js',
+            library: {
+                name: ['gcampusmail', '[name]'],
+                type: 'var'
+            }
+        },
+        plugins: [
+            ...(common.plugins || []),
+            new FixStyleOnlyEntriesPlugin(),
+            // new CopyWebpackPlugin({
+            //     patterns: [
+            //         {
+            //             from: path.resolve(__dirname, 'gcampus', 'mail', 'static_src', 'assets'),
+            //             to: path.resolve(__dirname, 'gcampus', 'mail', 'static', 'gcampusmail', 'assets'),
+            //         },
+            //     ]
+            // }),
+        ],
+    });
+}
+
+
 module.exports = (env, options) => {
     return [
         gcampuscoreConfig(env, options),
         gcampusmapConfig(env, options),
         gcampusauthConfig(env, options),
         gcampusdocumentsConfig(env, options),
+        gcampusmailConfig(env, options),
     ];
 };

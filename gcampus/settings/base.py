@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "gcampus.map",
     "gcampus.documents",
     "gcampus.analysis",
+    "gcampus.mail",
     # Other django apps
     # Sometimes the order is important
     "django.forms",
