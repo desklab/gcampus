@@ -86,6 +86,7 @@ class CachedDocumentView(SingleObjectDocumentView):
 
     def render_to_response(self, context, **response_kwargs):
         response_kwargs.setdefault("content_type", self.content_type)
+        rebuild = bool(self.request.GET.get("rebuild", False))
         return self.response_class(
             self.request,
             self.get_template_names(),
@@ -95,6 +96,7 @@ class CachedDocumentView(SingleObjectDocumentView):
             self.model_file_field,
             self.get_internal_filename(),
             context=context,
+            rebuild=rebuild,
             using=self.template_engine,
             **response_kwargs,
         )

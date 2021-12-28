@@ -73,6 +73,7 @@ class CachedDocumentResponse(StreamingHttpResponse):
         context=None,
         content_type=None,
         using=None,
+        rebuild: bool = False,
         headers=None,
         **kwargs,
     ):
@@ -82,7 +83,7 @@ class CachedDocumentResponse(StreamingHttpResponse):
             )
 
         file: FieldFile = getattr(instance, model_file_field)
-        if not file:
+        if rebuild or not file:
             # File does not exist yet. Start rendering the file
             document_template = render_document_template(
                 template, context=context, request=request, using=using

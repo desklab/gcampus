@@ -32,6 +32,13 @@ class PrintStaticNode(StaticNode):
 @register.tag
 def print_static(parser, token):
     if os.environ.get("USE_S3_STORAGE", False):
+        # When using S3 storage, the URL to the static content will
+        # start with 'http(s)' and will thereby trigger WeasyPrint's
+        # 'fetch' function, calling the custom 'url_fetcher'.
         return do_static(parser, token)
     else:
+        # When using default static file storage, the URL will just be
+        # a file path. This will not call the 'url_fetcher' function.
+        # Thus, a custom URI protocol ('URI_IDENTIFIER') is being
+        # prepended.
         return PrintStaticNode.handle_token(parser, token)
