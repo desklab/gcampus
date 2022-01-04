@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-11-26 18:52+0100\n"
-"PO-Revision-Date: 2021-11-26 18:54+0100\n"
+"PO-Revision-Date: 2022-01-04 11:32+0100\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: gcampus/auth/admin.py:35
 msgid "Deactivate selected tokens"
@@ -80,7 +80,7 @@ msgstr "Kursschlüssel"
 #: gcampus/auth/models/token.py:43
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:91
 msgid "Course Name"
-msgstr "Kurs-Name"
+msgstr "Name des Kurses"
 
 #: gcampus/auth/models/token.py:49
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:80
@@ -291,12 +291,12 @@ msgid ""
 "receive a <b>course token</b> that should be kept private. With this key you "
 "can view and edit all your student's measurements."
 msgstr ""
-"Registriere deine Klasse oder Kurs und generiere eine Liste an <b>access "
-"keys</b> für deine Schüler:innen. Diese Zugangscodes können verwendet "
-"werden, um neue Messungen auf GewässerCampus zu erstellen und diese zu "
-"bearbeiten. <br> Neben den generierten Zugangscodes wirst du außerdem einen "
-"<b>Kursschlüssel</b> erhalten. Dieser sollte privat bleiben, da du damit "
-"alle Messungen deines Kurses verwalten kannst."
+"Registriere deine Klasse oder Kurs und generiere eine Liste an "
+"<b>Zugangscodes</b> für deine Schüler:innen. Diese Zugangscodes können "
+"verwendet werden, um neue Messungen auf GewässerCampus zu erstellen und um "
+"diese zu bearbeiten. <br> Neben den generierten Zugangscodes wirst du "
+"außerdem einen <b>Kursschlüssel</b> erhalten. Dieser sollte privat bleiben, "
+"da du damit alle Messungen deines Kurses verwalten kannst."
 
 #: gcampus/auth/templates/gcampusauth/forms/register.html:35
 msgctxt "help text school name"
