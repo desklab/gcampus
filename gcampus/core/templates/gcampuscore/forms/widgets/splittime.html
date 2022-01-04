@@ -1,7 +1,7 @@
 {% load i18n %}
 <div class="d-flex flex-row align-items-center{% if class %} {{ class }}{% endif %}">
     <div class="pe-3 d-flex flex-row justify-content-end" style="min-width: 75px;">
-        <small>{% translate "Time" %}</small>
+        <small>{% translate "Time" context "split date-time widget label"%}</small>
     </div>
     <div class="pe-3 d-flex flex-row align-items-end">
         {% spaceless %}

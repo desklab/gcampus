@@ -148,7 +148,7 @@
                             </h4>
                         </div>
                         <div>
-                            <small class="text-muted">{% translate "Time" %}</small>
+                            <small class="text-muted">{% translate "Time" context "measurement time" %}</small>
                             <br>
                             <h4>{{ object.time|localize }}</h4>
                         </div>
@@ -178,7 +178,7 @@
                                 <a href="{% url "gcampuscore:edit_parameters" pk=measurement.pk %}"
                                    class="btn btn-sm btn-secondary"
                                    role="button">
-                                    {% translate "Edit Measurement" %}
+                                    {% translate "Edit" %}
                                 </a>
                             {% endif %}
                         {% endif %}
