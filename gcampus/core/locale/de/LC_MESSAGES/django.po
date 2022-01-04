@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-04 14:48+0100\n"
-"PO-Revision-Date: 2021-11-26 18:53+0100\n"
+"POT-Creation-Date: 2022-01-04 15:15+0100\n"
+"PO-Revision-Date: 2022-01-04 15:17+0100\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: gcampus/core/admin.py:38
 msgid "Hide selected items for all users"
@@ -39,13 +39,11 @@ msgstr "Messungen durchsuchen"
 
 #: gcampus/core/filters.py:95
 msgid "Filter for measurements conducted before a specified time"
-msgstr ""
-"Nach Messungen suchen die vor einem bestimmten Datum aufgenommen wurden"
+msgstr "Nach Messungen suchen die vor einem bestimmten Datum aufgenommen wurden"
 
 #: gcampus/core/filters.py:100
 msgid "Filter for measurements conducted after a specified time"
-msgstr ""
-"Nach Messungen suchen die nach einem bestimmten Datum aufgenommen wurden"
+msgstr "Nach Messungen suchen die nach einem bestimmten Datum aufgenommen wurden"
 
 #: gcampus/core/filters.py:106 gcampus/core/models/measurement.py:190
 msgid "Parameter"
@@ -91,7 +89,6 @@ msgid "Measurement"
 msgstr "Messung"
 
 #: gcampus/core/models/measurement.py:38
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:13
 msgid "Measurements"
 msgstr "Messungen"
 
@@ -200,10 +197,8 @@ msgid "Log in"
 msgstr "Anmelden"
 
 #: gcampus/core/templates/gcampuscore/components/measurement_list_item.html:15
-#, fuzzy
-#| msgid "(Optional)"
 msgid "Options"
-msgstr "(Optional)"
+msgstr "Optionen"
 
 #: gcampus/core/templates/gcampuscore/components/measurement_list_item.html:22
 msgid "Edit"
@@ -217,17 +212,36 @@ msgid ""
 "            "
 msgstr ""
 
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:12
-msgid "Map"
-msgstr "Karte"
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:13
+msgctxt "explore page title"
+msgid "Explore"
+msgstr "Erkunden"
 
 #: gcampus/core/templates/gcampuscore/components/sidebar.html:14
-msgid "Analysis"
-msgstr "Analyse"
+msgctxt "filter page title"
+msgid "All Measurements"
+msgstr "Alle Messungen"
 
 #: gcampus/core/templates/gcampuscore/components/sidebar.html:15
-msgid "User"
-msgstr "Benutzer"
+msgctxt "analysis page title"
+msgid "Analysis"
+msgstr "Auswertung"
+
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:16
+msgid "Course administration"
+msgstr "Kursverwaltung"
+
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:29
+msgid "About the project"
+msgstr "Über das Projekt"
+
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:30
+msgid "Teaching material"
+msgstr "Unterrichtsmaterialien"
+
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:31
+msgid "Report a problem"
+msgstr "Problem melden"
 
 #: gcampus/core/templates/gcampuscore/forms/components/label.html:5
 msgid "(Optional)"
@@ -479,10 +493,11 @@ msgctxt "year input short"
 msgid "YYYY"
 msgstr "JJJJ"
 
-#, fuzzy
-#~| msgid "Course Measurements"
-#~ msgid "Course Data"
-#~ msgstr "Kurs-Messungen"
+#~ msgid "Map"
+#~ msgstr "Karte"
+
+#~ msgid "User"
+#~ msgstr "Benutzer"
 
 #, fuzzy
 #~| msgid "Course Measurements"
@@ -531,9 +546,6 @@ msgstr "JJJJ"
 
 #~ msgid "Mapview"
 #~ msgstr "Kartenansicht"
-
-#~ msgid "All Measurements"
-#~ msgstr "Alle Messungen"
 
 #~ msgid "Hidden Measurement"
 #~ msgstr "Versteckte Messungen"

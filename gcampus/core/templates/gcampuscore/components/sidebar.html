@@ -1,24 +1,38 @@
 {% load icon %}
 {% load i18n %}
-<div class="sidebar collapse text-white bg-dark{% if sidebar_open %} show{% endif %}" id="sidebar">
-    <div class="navbar gcampus-navbar justify-content-start flex-nowrap">
-        <button class="btn text-white d-md-inline-block d-none" type="button" id="sidebarToggleButton" onclick="toggleSidebar()" aria-controls="sidebar">
-            {% icon "menu" class="d-inline-block" %}
-        </button>
-        <a href="/" class="btn text-white sidebar-title">GewässerCampus</a>
+<nav class="sidebar collapse text-white bg-dark{% if sidebar_open %} show{% endif %}" id="sidebar">
+    <div>
+        <div class="navbar gcampus-navbar justify-content-start flex-nowrap">
+            <button class="btn text-white d-md-inline-block d-none" type="button" id="sidebarToggleButton" onclick="toggleSidebar()" aria-controls="sidebar">
+                {% icon "menu" class="d-inline-block" %}
+            </button>
+            <a href="/" class="btn text-white sidebar-title">GewässerCampus</a>
+        </div>
+        <hr class="mt-0">
+        <ul class="nav nav-pills flex-column flex-grow-1">
+            {% translate "Explore" context "explore page title" as map_title %}
+            {% translate "All Measurements" context "filter page title" as measurements_title %}
+            {% translate "Analysis" context "analysis page title" as analysis_title %}
+            {% translate "Course administration" as course_title %}
+
+            {% include "gcampuscore/components/sidebar_item.html" with icon="map" title=map_title view_name="gcampuscore:mapview" %}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="list" title=measurements_title view_name="gcampuscore:measurements" %}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="bar-chart-2" title=analysis_title view_name="gcampusanalysis:analysis_measure" %}
+            {% if user_token_is_course_token%}
+                {% include "gcampuscore/components/sidebar_item.html" with icon="user" title=course_title view_name="gcampusauth:course-overview" %}
+            {% endif %}
+        </ul>
+        {# <hr> #}
     </div>
-    <hr class="mt-0">
-    <ul class="nav nav-pills flex-column mb-auto">
-        {% translate "Map" as map_title %}
-        {% translate "Measurements" as measurements_title %}
-        {% translate "Analysis" as analysis_title %}
-        {% translate "User" as user_title %}
-        {% include "gcampuscore/components/sidebar_item.html" with icon="map" title=map_title view_name="gcampuscore:mapview" %}
-        {% include "gcampuscore/components/sidebar_item.html" with icon="list" title=measurements_title view_name="gcampuscore:measurements" %}
-        {% include "gcampuscore/components/sidebar_item.html" with icon="bar-chart-2" title=analysis_title view_name="gcampusanalysis:analysis_measure" %}
-        {% if user_token_is_course_token%}
-            {% include "gcampuscore/components/sidebar_item.html" with icon="user" title=user_title view_name="gcampusauth:course-overview" %}
-        {% endif %}
-    </ul>
-    <hr>
-</div>
+    <div>
+        <ul class="mt-auto nav nav-pills flex-column flex-shrink-0">
+            {% translate "About the project" as about_title %}
+            {% translate "Teaching material" as teaching_material_title %}
+            {% translate "Report a problem" as report_title %}
+
+            {% include "gcampuscore/components/sidebar_item.html" with icon="external-link" class="sidebar-item-hidden" title=about_title url="https://gewaessercampus.de/" %}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="external-link" class="sidebar-item-hidden" title=teaching_material_title url="https://desk-lab.de/docs/" %}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="help-circle" title=report_title %}
+        </ul>
+    </div>
+</nav>

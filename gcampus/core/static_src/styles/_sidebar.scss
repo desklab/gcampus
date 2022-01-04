@@ -19,13 +19,14 @@ $sidebar-transition: .12s;
 
 .sidebar {
   @include media-breakpoint-up(md) {
-    display: block !important; // Overwrite collapse's display: none
+    display: flex !important; // Overwrite collapse's display: none
     position: fixed;
+    flex-direction: column;
+    justify-content: space-between;
     z-index: $zindex-offcanvas;
     top: 0;
     left: 0;
     bottom: 0;
-
 
     &.collapse {
       width: $sidebar-closed-width;
@@ -37,7 +38,7 @@ $sidebar-transition: .12s;
         margin-right: map-get($spacers, 2);
       }
 
-      .sidebar-item-title, .sidebar-title {
+      .sidebar-item-title, .sidebar-title, .sidebar-item-hidden {
         transition: opacity $sidebar-transition ease-in;
         opacity: 0;
       }
@@ -56,7 +57,7 @@ $sidebar-transition: .12s;
       &.show {
         width: $sidebar-opened-width;
 
-        .sidebar-item-title, .sidebar-title {
+        .sidebar-item-title, .sidebar-title, .sidebar-item-hidden {
           opacity: 1;
         }
 
