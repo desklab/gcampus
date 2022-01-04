@@ -33,7 +33,7 @@
     <!-- TODO: add and use translations -->
 
     <div class="footer-left">
-        <span class="bold">Dokument ID</span> GC-AS-XK342K8M <!-- TODO: use ID of document-->
+        <span class="bold">{% translate "Document ID" %}</span> GC-AS-XK342K8M <!-- TODO: use ID of document-->
     </div>
 
     <div class="footer-right">
@@ -49,19 +49,21 @@
                 <!-- general information -->
                 <div class="w-100">
                     <div class="rotated-section-heading color-grey w-abs-350">
-                        Info
+                        {% translate "Info" %}
                     </div>        
                     <div class="text-justify h-abs-350 student-document-description">
-                        Dieses Dokument wurde automatisch erstellt und 
-                        enhält einen Zugangscode und weitere Informationen 
-                        zur Nutzung der GewässerCampus Webanwendung.
+                        {% blocktrans trimmed %}
+                            This document was created automatically and contains an 
+                            access key and further information for using the 
+                            GewässerCampus web application.
+                        {% endblocktrans %}
                     </div>
                 </div>
 
                 <!-- course data and token -->
                 <div class="w-100">
                     <div class="rotated-section-heading color-secondary w-abs-800">
-                        Zugangsdaten
+                        {% translate "Access key" %}
                     </div>        
                     <div class="coursedata-container overflow-hidden h-abs-800 w-abs-1600">
 
@@ -77,24 +79,28 @@
                             </div>
                             <div>
                                 <div class="qrcode-heading">
-                                    zum Login der Webanwendung
+                                    {% translate "Login of the web application" %}
+                                    <!-- zum Login der Webanwendung -->
                                 </div>  
                                 <div class="qrcode-description text-justify">
-                                    Dieser Link führt zur Login-Seite der 
-                                    Webanwendung (www.gewaessercampus.de/login). 
-                                    Nach der Eingabe des Zugangscodes können 
-                                    Messungen erstellt oder bearbeitet werden.
+                                    {% blocktrans trimmed %}
+                                        This link leads to the login page of the 
+                                        web application (www.gewaessercampus.de/login). 
+                                        After entering the access key, 
+                                        measurements can be or edited.
+                                    {% endblocktrans %}
                                 </div>
                             </div>
                         </div>
 
                         <div class="access-description">
-                            Dieser Zugangscode wird benötigt, um neue Messungen zu 
-                            erstellen und im Anschluss auch bearbeiten zu können. 
-                            Ein Zugangscode kann ähnlich wie ein Passwort mehrfach 
-                            verwendet werden, ein Benutzername ist dabei nicht nötig.
-                            Schüler:innen, die in einer Gruppe zusammenarbeiten, 
-                            können den gleichen Zugangscode nutzen.
+                            {% blocktrans trimmed %}
+                                This access key is required to create new measurements 
+                                and to be able to edit them afterwards. 
+                                An access key can be used several times, similar to a 
+                                password, a user name is not necessary. Students working 
+                                together in a group can use the same access key.
+                            {% endblocktrans %}
                         </div> 
 
                     </div>
@@ -103,46 +109,52 @@
                 <!-- first stepts -->
                 <div class="w-100">
                     <div class="rotated-section-heading color-primary w-abs-800">
-                        erste Schritte
+                        {% translate "First steps" %}
                     </div>        
                     <div class="float-left w-abs-1500 firststeps">
                         <div class="firststeps-heading">
-                            Gewässer finden und bereits vorhandene Messwerte analysieren
+                            {% translate "Find water bodies and analyse existing measurements" %}
                         </div>
                         <div class="firststeps-content">
-                            Mit der GewässerCampus-Karte kannst du dir 
-                            Messungen von anderen Schüler:innen anschauen. 
-                            Um nach bestimmten Parametern bzw. Messungen zu suchen, 
-                            nutzt du am besten die Listenansicht aller Messungen.
+                            {% blocktrans trimmed %}
+                                With the GewässerCampus map you can view 
+                                measurements from other students. 
+                                To search for specific parameters or measurements, 
+                                it is best to use the list view of all measurements.
+                            {% endblocktrans %}
                         </div>    
                         <div class="firststeps-heading">
-                            Login für die Nutzung weiterer Funktionen
+                            {% translate "Login to use more functions" %}
                         </div>
                         <div class="firststeps-content">
-                            Um eine neue Messung erstellen zu können, 
-                            musst du mit einem Zugangscode angemeldet sein. 
-                            Deinen Zugangscode findest du weiter oben auf dieser Seite. 
-                            Zum Login kommst du über den dort abgebildeten 
-                            QR-Code oder über www.gewaessercampus.de/login.
+                            {% blocktrans trimmed %}
+                                To create a new measurement, you must be logged in with 
+                                an access key. You will find your access code at the top 
+                                of this page. You can log in via the QR code shown there 
+                                or via www.gewaessercampus.de/login.
+                            {% endblocktrans %}
                         </div>    
                         <div class="firststeps-heading">
-                            Erstellen einer neuen Messung
+                            {% translate "Create a new measurement" %}
+                            <!-- Erstellen einer neuen Messung -->
                         </div>
                         <div class="firststeps-content">
-                            Sobald du angemeldet bist, wird im Menü 
-                            rechts oben dein Courstoken angezeigt und 
-                            über den Button direkt daneben kannst 
-                            du eine neue Messung erstellen.
-                            
+                            {% blocktrans trimmed %}
+                                As soon as you are logged in, you can see your
+                                course token at the top right and you are able to 
+                                create a new measurement via the button next to it.
+                            {% endblocktrans %}                            
                         </div> 
                         <div class="firststeps-heading">
-                            Bearbeiten einer vorhandenen Messung
+                            {% translate "Edit an existing measurement" %}
                         </div>
                         <div class="firststeps-content">
-                            Um eine von dir erstellte Messung zu bearbeiten, 
-                            musst du die Detailansicht dieser Messung aufrufen. 
-                            Du kannst dazu die Übersicht deiner Messungen 
-                            oder auch die Karten- oder Listenansicht verwenden. 
+                            {% blocktrans trimmed %}
+                                To edit a measurement you have created, 
+                                you have to open the detailed view of this measurement. 
+                                You can use the overview of your measurements or the 
+                                map or the map to find your measurement.
+                            {% endblocktrans %}
                         </div>
                     </div>
                 </div>
