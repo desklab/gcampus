@@ -6,12 +6,11 @@
 {% endblock %}
 {% block main_class %}main-pt-0{% endblock %}
 {% block navbar_title %}
-    <span>{% translate "1. Information" %}</span>
-    <span class="text-muted ms-3">{% translate "2. Environment Parameters" %}</span>
+    <span>{% translate "1. Metadata" %}</span>
     {% if request.resolver_match.view_name == "gcampuscore:edit_measurement" %}
-        <a href="{% url "gcampuscore:edit_parameters" pk=object.pk %}" class="text-muted text-decoration-none ms-3">{% translate "3. Measured Parameters" %}</a>
+        <a href="{% url "gcampuscore:edit_parameters" pk=object.pk %}" class="text-muted text-decoration-none ms-3">{% translate "2. Measured values" %}</a>
     {% else %}
-        <span class="text-muted text-decoration-none ms-3">{% translate "3. Measured Parameters" %}</span>
+        <span class="text-muted text-decoration-none ms-3">{% translate "2. Measured values" %}</span>
     {% endif %}
 {% endblock %}
 {% block content %}

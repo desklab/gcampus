@@ -146,7 +146,7 @@ class ParameterForm(ModelForm):
             "comment": Textarea(
                 attrs={
                     "class": "form-control form-control-sm",
-                    "placeholder": _("Comment"),
+                    "placeholder": _("Note"),
                     "rows": 2,
                 }
             ),

@@ -64,7 +64,7 @@ class MeasurementMapView(ListView):
 
 class MeasurementCreateView(TitleMixin, CreateView):
     form_class = MeasurementForm
-    title = _("Create new Measurement")
+    title = _("Create new measurement")
     template_name = "gcampuscore/forms/measurement.html"
     next_view_name = "gcampuscore:add_parameters"
 

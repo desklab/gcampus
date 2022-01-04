@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-04 14:48+0100\n"
+"POT-Creation-Date: 2022-01-04 15:40+0100\n"
 "PO-Revision-Date: 2022-01-04 11:32+0100\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -45,7 +45,8 @@ msgstr "Du hast nicht die Berechtigung eine Messung zu erstellen"
 #: gcampus/auth/exceptions.py:24
 msgid "You are not authenticated and cannot create or edit a measurement"
 msgstr ""
-"Du hast dich nicht angemeldet und kannst keine Messung erstellen oder bearbeiten"
+"Du hast dich nicht angemeldet und kannst keine Messung erstellen oder "
+"bearbeiten"
 
 #: gcampus/auth/exceptions.py:25
 msgid "You do not have the permission to access this site"
@@ -53,7 +54,9 @@ msgstr "Du hast nicht die Berechtigung um auf diese Seite zuzugreifen"
 
 #: gcampus/auth/exceptions.py:26
 msgid "Provided course token or access key is not invalid or does not exist"
-msgstr "Der eingegebene Kursschlüssel oder Zugangscode ist ungültig oder existiert nicht"
+msgstr ""
+"Der eingegebene Kursschlüssel oder Zugangscode ist ungültig oder existiert "
+"nicht"
 
 #: gcampus/auth/exceptions.py:30
 msgid ""
@@ -68,16 +71,16 @@ msgid "This course token has been deactivated and can no longer be used."
 msgstr ""
 "Dieser Kursschlüssel wurde deaktiviert und kann nicht mehr verwendet werden."
 
-#: gcampus/auth/forms/token.py:41 gcampus/auth/models/token.py:116
+#: gcampus/auth/forms/token.py:48 gcampus/auth/models/token.py:116
 msgid "Access key"
 msgstr "Zugangscode"
 
-#: gcampus/auth/forms/token.py:60 gcampus/auth/models/token.py:73
+#: gcampus/auth/forms/token.py:63 gcampus/auth/models/token.py:73
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:65
 msgid "Course token"
 msgstr "Kursschlüssel"
 
-#: gcampus/auth/forms/token.py:82
+#: gcampus/auth/forms/token.py:81
 msgid "Number of access keys"
 msgstr "Anzahl der Zugangscodes"
 
@@ -491,7 +494,7 @@ msgstr ""
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:187
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:210
 msgid "Download PDF"
-msgstr "PDF Herunterladen"
+msgstr "PDF herunterladen"
 
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:196
 msgid "Save access keys"

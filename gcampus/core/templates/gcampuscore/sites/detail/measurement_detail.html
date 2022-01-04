@@ -156,7 +156,7 @@
                         {# Add additional div for placing #}
                     </div>
                     <div class="mb-3">
-                        <small class="text-muted">{% translate "Comment" %}</small>
+                        <small class="text-muted">{% translate "Note" %}</small>
                         <br>
                         <p>
                             {% if object.comment %}
@@ -171,7 +171,7 @@
                             href="{% url "gcampusdocuments:measurement-detail" pk=measurement.pk %}"
                             role="link">
                             {% icon "download" class="d-inline-block align-text-top" height="16" width="16" %} &nbsp;
-                            {% translate "Export PDF" %}
+                            {% translate "Download PDF" %}
                         </a>
                         {% if measurement.token.token is not None %}
                             {% if measurement.token.token == user_token or measurement.token.parent_token.token == user_token %}
@@ -184,17 +184,12 @@
                         {% endif %}
                         {% if measurement.token.token is not None %}
                             {% if measurement.token.parent_token.token == user_token %}
-                                <form class="d-inline-block" method="post" action="{% if measurement.hidden %}{% url "gcampuscore:show" %}{% else %}{% url "gcampuscore:hide" %}{% endif %}">
+                                <form class="d-inline-block" method="post" action="{% url "gcampuscore:hide" %}">
                                     {% csrf_token %}
                                     <input type="hidden" name="measurement" value="{{ measurement.pk }}"/>
                                     <button class="btn btn-sm">
-                                        {% if measurement.hidden %}
-                                            {% icon "eye" height="16px" width="16px" %}
-                                            {% translate "Make public" %}
-                                        {% else %}
-                                            {% icon "eye-off" height="16px" width="16px"%}
-                                            {% translate "Hide" %}
-                                        {% endif %}
+                                        {% icon "eye-off" height="16px" width="16px"%}
+                                        {% translate "Delete" %}
                                     </button>
                                 </form>
                             {% endif %}
@@ -215,13 +210,13 @@
     </div>
     <div class="py-4" id="measurement-body measurement-data">
         <div class="container">
-            <h3 class="mb-4 fw-light">{% translate "Data points" %}</h3>
+            <h3 class="mb-4 fw-light">{% translate "Measured values" %}</h3>
             <table class="table table-striped table-hover">
                 <thead>
                 <tr>
-                    <th scope="col">{% translate "Data type" %}</th>
+                    <th scope="col">{% translate "Parameter" %}</th>
                     <th scope="col">{% translate "Value" %}</th>
-                    <th scope="col">{% translate "Comment" %}</th>
+                    <th scope="col">{% translate "Note" %}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -241,7 +236,7 @@
                                        onclick="setCookie()"
                                        id="CommentCollapseButton{{ forloop.counter }}"
                                        aria-controls="CommentCollapse{{ forloop.counter }}">
-                                        {% translate "Expand comment" %}
+                                        {% translate "Expand note" %}
                                     </a>
                                 </div>
                                 <div class="collapse"

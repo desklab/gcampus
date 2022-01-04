@@ -43,7 +43,7 @@ class Measurement(util.DateModelMixin):
     #  This will be changed in the future after creating a new database.
     #  Otherwise the migrations would be a pain.
     token = models.ForeignKey(
-        "gcampusauth.AccessKey",
+        "gcampusauth.AccessKey",  # noqa
         on_delete=models.PROTECT,
         blank=False,
         null=True,
@@ -77,10 +77,10 @@ class Measurement(util.DateModelMixin):
     )
     time = models.DateTimeField(
         blank=False,
-        verbose_name=_("Measurement Time"),
+        verbose_name=_("Time"),
         help_text=_("Date and time of the measurement"),
     )
-    comment = models.TextField(blank=True, verbose_name=_("Comment"))
+    comment = models.TextField(blank=True, verbose_name=_("Note"))
     hidden = models.BooleanField(default=False, verbose_name=_("Hidden"))
 
     # The search vector will be overwritten and turned into a postgres
@@ -151,7 +151,6 @@ class Measurement(util.DateModelMixin):
         )
 
 
-
 class ParameterType(models.Model):
     class Meta:
         verbose_name = _("Parameter type")
@@ -160,8 +159,6 @@ class ParameterType(models.Model):
     name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
 
     unit = models.CharField(blank=True, max_length=10, verbose_name=_("Unit"))
-
-
 
     def __str__(self):
         if self.unit in EMPTY:
@@ -178,11 +175,15 @@ class Limit(models.Model):
 
     limit_value = models.FloatField(blank=True)
 
-    parameter_limit = models.ForeignKey(ParameterType,
-                                  related_name="parameter_limit",
-                                  on_delete=models.PROTECT,
-                                  verbose_name=_("Parameter type"), default=True)
+    parameter_limit = models.ForeignKey(
+        ParameterType,
+        related_name="parameter_limit",
+        on_delete=models.PROTECT,
+        default=True,
+        verbose_name=_("Parameter type"),
+    )
     graph_color = models.CharField(max_length=20, default="red")
+
 
 class Parameter(util.DateModelMixin):
     class Meta:
@@ -193,7 +194,9 @@ class Parameter(util.DateModelMixin):
     parameter_type = models.ForeignKey(
         ParameterType,
         on_delete=models.PROTECT,
-        verbose_name=_("Parameter type"),
+        # We opted to use 'Parameter' in the front-end. See issue
+        # https://github.com/desklab/gcampus/issues/46 for more.
+        verbose_name=_("Parameter"),
         related_name="parameters",
     )
     value = models.FloatField(blank=False, verbose_name=_("Value"))
@@ -203,7 +206,7 @@ class Parameter(util.DateModelMixin):
         verbose_name=_("Associated measurement"),
         related_name="parameters",
     )
-    comment = models.TextField(blank=True, verbose_name=_("Comment"))
+    comment = models.TextField(blank=True, verbose_name=_("Note"))
     hidden = models.BooleanField(default=False, verbose_name=_("Hidden"))
 
     # By default, ``objects`` should only return measurements that are
