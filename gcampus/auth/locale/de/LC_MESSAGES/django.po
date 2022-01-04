@@ -1,13 +1,23 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+#
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-04 15:40+0100\n"
+"POT-Creation-Date: 2022-01-04 17:29+0100\n"
 "PO-Revision-Date: 2022-01-04 11:32+0100\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -71,16 +81,16 @@ msgid "This course token has been deactivated and can no longer be used."
 msgstr ""
 "Dieser Kursschlüssel wurde deaktiviert und kann nicht mehr verwendet werden."
 
-#: gcampus/auth/forms/token.py:48 gcampus/auth/models/token.py:116
+#: gcampus/auth/forms/token.py:41 gcampus/auth/models/token.py:116
 msgid "Access key"
 msgstr "Zugangscode"
 
-#: gcampus/auth/forms/token.py:63 gcampus/auth/models/token.py:73
+#: gcampus/auth/forms/token.py:60 gcampus/auth/models/token.py:73
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:65
 msgid "Course token"
 msgstr "Kursschlüssel"
 
-#: gcampus/auth/forms/token.py:81
+#: gcampus/auth/forms/token.py:82
 msgid "Number of access keys"
 msgstr "Anzahl der Zugangscodes"
 

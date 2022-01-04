@@ -1,13 +1,23 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+#
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-04 14:48+0100\n"
+"POT-Creation-Date: 2022-01-04 17:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,64 +72,6 @@ msgstr "Unbenannter Teich %(id)s"
 msgid "Unnamed wetland %(id)s"
 msgstr ""
 
-#: gcampus/documents/apps.py:23
-#, fuzzy
-#| msgid "GCampus Print"
-msgid "GCampus Documents"
-msgstr "GCampus Print"
-
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:67
-msgid "Water name"
-msgstr ""
-
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:71
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:80
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:121
-msgctxt "no value provided (water name, comment, etc)"
-msgid "N/A"
-msgstr ""
-
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:74
-msgid "Time"
-msgstr ""
-
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:76
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:106
-msgid "Comment"
-msgstr ""
-
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:104
-msgid "Data type"
-msgstr ""
-
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:105
-msgid "Value"
-msgstr ""
-
-#: gcampus/documents/views/print.py:37
-msgid "gewaessercampus-course-overview.pdf"
-msgstr ""
-
-#: gcampus/documents/views/print.py:55
-msgid "gewaessercampus-overview-{course_name:s}.pdf"
-msgstr ""
-
-#: gcampus/documents/views/print.py:62
-msgid "gewaessercampus-accesskey-combined.pdf"
-msgstr ""
-
-#: gcampus/documents/views/print.py:80
-msgid "gewaessercampus-accesskey-combined-{course_name:s}.pdf"
-msgstr ""
-
-#: gcampus/documents/views/print.py:86
-msgid "gewaessercampus-measurement-detail.pdf"
-msgstr ""
-
-#: gcampus/documents/views/print.py:97
-msgid "gewaessercampus-measurement-detail-{name:s}.pdf"
-msgstr ""
-
 #: gcampus/mail/apps.py:9
 #, fuzzy
 #| msgid "GCampus API"
@@ -149,3 +101,8 @@ msgstr "Deutsch"
 #| msgid "GCampus API"
 msgid "GCampus Tasks"
 msgstr "GCampus API"
+
+#, fuzzy
+#~| msgid "GCampus Print"
+#~ msgid "GCampus Documents"
+#~ msgstr "GCampus Print"

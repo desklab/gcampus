@@ -1,12 +1,23 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+#
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-04 15:40+0100\n"
+"POT-Creation-Date: 2022-01-04 17:29+0100\n"
 "PO-Revision-Date: 2022-01-04 15:41+0100\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -39,11 +50,13 @@ msgstr "Messungen durchsuchen"
 
 #: gcampus/core/filters.py:95
 msgid "Filter for measurements conducted before a specified time"
-msgstr "Nach Messungen suchen die vor einem bestimmten Datum aufgenommen wurden"
+msgstr ""
+"Nach Messungen suchen die vor einem bestimmten Datum aufgenommen wurden"
 
 #: gcampus/core/filters.py:100
 msgid "Filter for measurements conducted after a specified time"
-msgstr "Nach Messungen suchen die nach einem bestimmten Datum aufgenommen wurden"
+msgstr ""
+"Nach Messungen suchen die nach einem bestimmten Datum aufgenommen wurden"
 
 #: gcampus/core/filters.py:106 gcampus/core/models/measurement.py:191
 #: gcampus/core/models/measurement.py:199
