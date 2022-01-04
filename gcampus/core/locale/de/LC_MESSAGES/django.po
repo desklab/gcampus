@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-04 15:40+0100\n"
-"PO-Revision-Date: 2022-01-04 15:41+0100\n"
+"POT-Creation-Date: 2022-01-04 15:57+0100\n"
+"PO-Revision-Date: 2022-01-04 15:50+0100\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -39,11 +39,13 @@ msgstr "Messungen durchsuchen"
 
 #: gcampus/core/filters.py:95
 msgid "Filter for measurements conducted before a specified time"
-msgstr "Nach Messungen suchen die vor einem bestimmten Datum aufgenommen wurden"
+msgstr ""
+"Nach Messungen suchen die vor einem bestimmten Datum aufgenommen wurden"
 
 #: gcampus/core/filters.py:100
 msgid "Filter for measurements conducted after a specified time"
-msgstr "Nach Messungen suchen die nach einem bestimmten Datum aufgenommen wurden"
+msgstr ""
+"Nach Messungen suchen die nach einem bestimmten Datum aufgenommen wurden"
 
 #: gcampus/core/filters.py:106 gcampus/core/models/measurement.py:191
 #: gcampus/core/models/measurement.py:199
@@ -128,10 +130,10 @@ msgid "OpenStreetMap ID"
 msgstr "OpenStreetMap ID"
 
 #: gcampus/core/models/measurement.py:80
-#: gcampus/core/templates/gcampuscore/forms/widgets/splittime.html:4
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:152
+msgctxt "measurement time"
 msgid "Time"
-msgstr "Zeit"
+msgstr "Messzeitpunkt"
 
 #: gcampus/core/models/measurement.py:81
 msgid "Date and time of the measurement"
@@ -204,6 +206,7 @@ msgid "Options"
 msgstr "Optionen"
 
 #: gcampus/core/templates/gcampuscore/components/measurement_list_item.html:22
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:182
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -304,6 +307,11 @@ msgstr "Aktuelles Datum einfügen"
 msgid "Today"
 msgstr "Heute"
 
+#: gcampus/core/templates/gcampuscore/forms/widgets/splittime.html:4
+msgctxt "split date-time widget label"
+msgid "Time"
+msgstr "Zeit"
+
 #: gcampus/core/templates/gcampuscore/forms/widgets/splittime.html:23
 msgid "Fill in the current time"
 msgstr "Aktuelle Uhrzeit einfügen"
@@ -326,16 +334,6 @@ msgstr ""
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:175
 msgid "Download PDF"
 msgstr "PDF herunterladen"
-
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:182
-#: gcampus/core/templates/gcampuscore/sites/list/course_measurement_list.html:25
-#: gcampus/core/templates/gcampuscore/sites/list/course_measurement_list.html:48
-#: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:26
-#: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:47
-#: gcampus/core/templates/gcampuscore/sites/list/personal_measurement_list.html:26
-#: gcampus/core/templates/gcampuscore/sites/list/personal_measurement_list.html:49
-msgid "Edit Measurement"
-msgstr "Messung bearbeiten"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:193
 msgid "Delete"
@@ -375,6 +373,15 @@ msgstr "Anzahl der Parameter"
 #: gcampus/core/templates/gcampuscore/sites/list/personal_measurement_list.html:42
 msgid "To the Measurement"
 msgstr "Zur Messung"
+
+#: gcampus/core/templates/gcampuscore/sites/list/course_measurement_list.html:25
+#: gcampus/core/templates/gcampuscore/sites/list/course_measurement_list.html:48
+#: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:26
+#: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:47
+#: gcampus/core/templates/gcampuscore/sites/list/personal_measurement_list.html:26
+#: gcampus/core/templates/gcampuscore/sites/list/personal_measurement_list.html:49
+msgid "Edit Measurement"
+msgstr "Messung bearbeiten"
 
 #: gcampus/core/templates/gcampuscore/sites/list/course_measurement_list.html:61
 #: gcampus/core/templates/gcampuscore/sites/list/hidden_course_measurement_list.html:59
@@ -478,6 +485,12 @@ msgctxt "year input short"
 msgid "YYYY"
 msgstr "JJJJ"
 
+#, fuzzy
+#~| msgid "Measurement Time"
+#~ msgctxt "Time"
+#~ msgid "measurement time"
+#~ msgstr "Messzeitpunkt"
+
 #~ msgid "Comment"
 #~ msgstr "Kommentar"
 
@@ -492,9 +505,6 @@ msgstr "JJJJ"
 
 #~ msgid "Data type"
 #~ msgstr "Parameter"
-
-#~ msgid "Measurement Time"
-#~ msgstr "Messzeitpunkt"
 
 #~ msgid "1. Information"
 #~ msgstr "1. Informationen"
