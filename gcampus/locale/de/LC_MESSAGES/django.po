@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-26 18:52+0100\n"
+"POT-Creation-Date: 2022-01-04 14:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: gcampus/analysis/apps.py:7
+#, fuzzy
+#| msgid "GCampus Print"
+msgid "GCampus Core"
+msgstr "GCampus Print"
 
 #: gcampus/api/apps.py:23
 msgid "GCampus API"
@@ -56,36 +62,90 @@ msgstr "Unbenannter Teich %(id)s"
 msgid "Unnamed wetland %(id)s"
 msgstr ""
 
+#: gcampus/documents/apps.py:23
+#, fuzzy
+#| msgid "GCampus Print"
+msgid "GCampus Documents"
+msgstr "GCampus Print"
+
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:67
+msgid "Water name"
+msgstr ""
+
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:71
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:80
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:121
+msgctxt "no value provided (water name, comment, etc)"
+msgid "N/A"
+msgstr ""
+
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:74
+msgid "Time"
+msgstr ""
+
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:76
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:106
+msgid "Comment"
+msgstr ""
+
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:104
+msgid "Data type"
+msgstr ""
+
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:105
+msgid "Value"
+msgstr ""
+
+#: gcampus/documents/views/print.py:37
+msgid "gewaessercampus-course-overview.pdf"
+msgstr ""
+
+#: gcampus/documents/views/print.py:55
+msgid "gewaessercampus-overview-{course_name:s}.pdf"
+msgstr ""
+
+#: gcampus/documents/views/print.py:62
+msgid "gewaessercampus-accesskey-combined.pdf"
+msgstr ""
+
+#: gcampus/documents/views/print.py:80
+msgid "gewaessercampus-accesskey-combined-{course_name:s}.pdf"
+msgstr ""
+
+#: gcampus/documents/views/print.py:86
+msgid "gewaessercampus-measurement-detail.pdf"
+msgstr ""
+
+#: gcampus/documents/views/print.py:97
+msgid "gewaessercampus-measurement-detail-{name:s}.pdf"
+msgstr ""
+
+#: gcampus/mail/apps.py:9
+#, fuzzy
+#| msgid "GCampus API"
+msgid "GCampus E-Mail"
+msgstr "GCampus API"
+
+#: gcampus/mail/messages/register.py:24
+msgid "GewässerCampus Course Registration"
+msgstr ""
+
 #: gcampus/map/apps.py:23
 #, fuzzy
 #| msgid "GCampus API"
 msgid "GCampus Map"
 msgstr "GCampus API"
 
-#: gcampus/print/apps.py:23
-msgid "GCampus Print"
-msgstr "GCampus Print"
-
-#: gcampus/print/views/print.py:32
-msgid "gewaessercampus-course-overview.pdf"
-msgstr ""
-
-#: gcampus/print/views/print.py:49
-msgid "gewaessercampus-overview-{course_name:s}.pdf"
-msgstr ""
-
-#: gcampus/print/views/print.py:55
-msgid "gewaessercampus-accesskey-combined.pdf"
-msgstr ""
-
-#: gcampus/print/views/print.py:72
-msgid "gewaessercampus-accesskey-combined-{course_name:s}.pdf"
-msgstr ""
-
-#: gcampus/settings/base.py:146
+#: gcampus/settings/base.py:143
 msgid "English"
 msgstr "Englisch"
 
-#: gcampus/settings/base.py:146
+#: gcampus/settings/base.py:143
 msgid "German"
 msgstr "Deutsch"
+
+#: gcampus/tasks/apps.py:24
+#, fuzzy
+#| msgid "GCampus API"
+msgid "GCampus Tasks"
+msgstr "GCampus API"

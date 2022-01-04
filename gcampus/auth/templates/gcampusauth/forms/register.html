@@ -85,14 +85,14 @@
                     <p class="mt-4 text-muted">
                         {% blocktranslate trimmed %}
                             Your Email address will only be used to send you the
-                            Course Token and the Access Keys. <br>
+                            Course token and the Access keys. <br>
                             In case we need to contact you this Email address
                             wil be used.
                         {% endblocktranslate %}
                     </p>
                 </div>
                 <div class="col-7 px-5 py-3">
-                    {% with form.number_of_tokens as field %}
+                    {% with form.number_of_access_keys as field %}
                         <div class="mb-3">
                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
                             {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
@@ -101,7 +101,7 @@
                 </div>
                 <div class="col-5 bg-light px-5 py-3">
                     <p class="mt-4 text-muted">
-                        {% blocktranslate with maximum=form.number_of_tokens.field.max_value context "help text number of tokens" trimmed %}
+                        {% blocktranslate with maximum=form.number_of_access_keys.field.max_value context "help text number of acess keys" trimmed %}
                             The number of access keys you want to generate. You
                             can create a maximum of {{ maximum }} access keys at
                             once. <br>
