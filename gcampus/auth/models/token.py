@@ -45,21 +45,21 @@ class CourseToken(DateModelMixin):
     token = models.CharField(blank=False, max_length=COURSE_TOKEN_LENGTH, unique=True)
 
     token_name = models.CharField(
-        blank=True, max_length=30, verbose_name=_("Course Name")
+        blank=True, max_length=30, verbose_name=_("Name of course")
     )
 
     deactivated = models.BooleanField(default=False)
 
     school_name = models.CharField(
-        blank=True, max_length=140, verbose_name=_("School Name")
+        blank=True, max_length=140, verbose_name=_("Name of school")
     )
 
     teacher_name = models.CharField(
-        blank=True, max_length=140, verbose_name=_("Teacher Name")
+        blank=True, max_length=140, verbose_name=_("Name of teacher")
     )
 
     teacher_email = models.EmailField(
-        max_length=254, blank=False, verbose_name=_("E-Mail Address")
+        max_length=254, blank=False, verbose_name=_("email")
     )
 
     overview_document = models.FileField(
@@ -70,7 +70,7 @@ class CourseToken(DateModelMixin):
     )
 
     class Meta:
-        verbose_name = _("Course Token")
+        verbose_name = _("Course token")
 
     @staticmethod
     def generate_course_token():
@@ -90,7 +90,7 @@ class CourseToken(DateModelMixin):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return _("Course Token %(id)s") % {"id": self.pk}
+        return _("Course token %(id)s") % {"id": self.pk}
 
     @property
     def can_create_measurement(self):
@@ -113,7 +113,7 @@ class AccessKey(DateModelMixin):
     deactivated = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = _("Access Key")
+        verbose_name = _("Access key")
         ordering = ("created_at",)
 
     @staticmethod
@@ -134,7 +134,7 @@ class AccessKey(DateModelMixin):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return _("Access Key %(id)s") % {"id": self.pk}
+        return _("Access key %(id)s") % {"id": self.pk}
 
     @property
     def can_create_measurement(self):

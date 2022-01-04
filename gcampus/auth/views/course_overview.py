@@ -49,7 +49,7 @@ TOKEN_FIELD_NAME = "gcampus_auth_token"
 class CourseOverviewFormView(TitleMixin, UpdateView):
     form_class = CourseOverviewForm
     model = CourseToken
-    title = _("Course Overview")
+    title = _("Course Administration")
     template_name = "gcampusauth/sites/course_overview.html"
 
     def __init__(self, *args, **kwargs):

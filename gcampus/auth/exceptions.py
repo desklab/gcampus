@@ -19,11 +19,11 @@ from django.core.exceptions import PermissionDenied
 from django.utils.translation import gettext_lazy as _
 
 UNAUTHENTICATED_ERROR = _("This page can only be accessed by authenticated users")
-TOKEN_EDIT_PERMISSION_ERROR = _("Token is not allowed to edit this measurement")
-TOKEN_CREATE_PERMISSION_ERROR = _("Token is not allowed to create a measurement")
-TOKEN_EMPTY_ERROR = _("No token has been provided to create or edit a measurement")
-TOKEN_PERMISSION_ERROR = _("Token has no permission to access this site")
-TOKEN_INVALID_ERROR = _("Provided token is not invalid or does not exist")
+TOKEN_EDIT_PERMISSION_ERROR = _("You are not allowed to edit this measurement")
+TOKEN_CREATE_PERMISSION_ERROR = _("You are not allowed to create a measurement")
+TOKEN_EMPTY_ERROR = _("You are not authenticated and cannot create or edit a measurement")
+TOKEN_PERMISSION_ERROR = _("You do not have the permission to access this site")
+TOKEN_INVALID_ERROR = _("Provided course token or access key is not invalid or does not exist")
 
 # Deactivation messages
 ACCESS_KEY_DEACTIVATED_ERROR = _(

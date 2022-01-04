@@ -87,7 +87,7 @@ class CourseMeasurementListView(ListView):
         token = utils.get_token(self.request)
         token_type = utils.get_token_type(self.request)
         if token_type != COURSE_TOKEN_TYPE:
-            course_token = CourseToken.objects.get(accesskey__token=token).token
+            course_token = CourseToken.objects.get(access_keys__token=token).token
         else:
             course_token = token
         self.queryset = Measurement.all_objects.filter(

@@ -38,7 +38,7 @@ NEXT_URL_FIELD_NAME = "next_url"
 class AccessKeyForm(forms.Form):
     token = SplitKeyField(
         required=True,
-        label=_("Access Key"),
+        label=_("Access key"),
         validators=[
             access_key_exists_validator,
             MaxLengthValidator(ACCESS_KEY_LENGTH),
@@ -57,7 +57,7 @@ class AccessKeyForm(forms.Form):
 class CourseTokenForm(forms.Form):
     token = SplitTokenField(
         required=True,
-        label=_("Course Token"),
+        label=_("Course token"),
         validators=[
             course_token_exists_validator,
             MaxLengthValidator(COURSE_TOKEN_LENGTH),
@@ -74,11 +74,12 @@ class CourseTokenForm(forms.Form):
 
 
 class RegisterForm(forms.ModelForm):
-    number_of_tokens = forms.IntegerField(
+    number_of_access_keys = forms.IntegerField(
         min_value=1,
         max_value=getattr(settings, "REGISTER_MAX_ACCESS_KEY_NUMBER", 30),
         required=True,
         initial=5,
+        label=_("Number of access keys"),
     )
 
     class Meta:

@@ -94,13 +94,13 @@ class LoginFormView(TitleMixin, FormView, ABC):
 
 
 class AccessKeyLoginFormView(LoginFormView):
-    title = gettext_lazy("Login as Student")
+    title = gettext_lazy("Login with access key")
     form_class = AccessKeyForm
     token_type = ACCESS_TOKEN_TYPE
 
 
 class CourseTokenLoginFormView(LoginFormView):
-    title = gettext_lazy("Login as Teacher")
+    title = gettext_lazy("Login with course token")
     form_class = CourseTokenForm
     token_type = COURSE_TOKEN_TYPE
 

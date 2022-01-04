@@ -35,15 +35,15 @@ from gcampus.core.views.base import TitleMixin
 
 class RegisterFormView(TitleMixin, CreateView):
     form_class = RegisterForm
-    title = gettext_lazy("Request Access Keys")
+    title = gettext_lazy("Register a new course")
     template_name = "gcampusauth/forms/register.html"
     success_url = reverse_lazy("gcampusauth:course-overview")
 
     def form_valid(self, form):
         with transaction.atomic():
             self.object = form.save()
-            number_of_tokens: int = form.cleaned_data["number_of_tokens"]
-            for i in range(number_of_tokens):
+            number_of_access_keys: int = form.cleaned_data["number_of_access_keys"]
+            for i in range(number_of_access_keys):
                 access_key = AccessKey.generate_access_key()
                 AccessKey(token=access_key, parent_token=self.object).save()
 

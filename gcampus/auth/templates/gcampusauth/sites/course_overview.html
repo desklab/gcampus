@@ -11,7 +11,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editModal">
-                        {% translate "Edit Course Data" %}
+                        {% translate "Edit course data" %}
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -57,12 +57,12 @@
 {% block content %}
     <div class="container-fluid" id="course-data">
         <h3 class="pb-2 border-bottom">
-            {% translate "Course Data" %}
+            {% translate "Course data" %}
         </h3>
 
         <div class="row mt-4">
             <div class="col-lg-7">
-                <h6>{% translate "Course Token" %}</h6>
+                <h6>{% translate "Course token" %}</h6>
                 <h3 class="fw-normal">
                     {% displaytoken form.instance.token hidden=True toggle=True %}
                 </h3>
@@ -114,7 +114,7 @@
         </button>
 
         <div class="mt-4">
-            <h6>{% translate "E-Mail Address" %}</h6>
+            <h6>{% translate "email" %}</h6>
             <h4 class="fw-normal">
                 {% if form.instance.teacher_email %}
                     {{ form.instance.teacher_email }}
@@ -127,7 +127,7 @@
 
     <div class="container-fluid mt-5">
         <h3 class="pb-2 border-bottom">
-            {% translate "Access Keys" %}
+            {% translate "Access keys" %}
         </h3>
 
         <div class="list-group mt-4">
@@ -138,7 +138,7 @@
     </div>
 
     <div class="container-fluid mt-4">
-        <h6>{% translate "Generate new Access Keys for this Course" %}</h6>
+        <h6>{% translate "Generate new Access keys for this course" %}</h6>
         <small class="text-sm text-muted">
             {% blocktrans trimmed %}
                 You can generate new access keys for this course without
@@ -156,7 +156,7 @@
                 </div>
                 <div class="col-auto">
                     <button type="submit" class="btn btn-secondary">
-                        {% translate "Generate Access Keys" %}
+                        {% translate "Generate access keys" %}
                     </button>
                 </div>
             </div>
@@ -170,7 +170,7 @@
         <div class="mt-4 bg-light border border-primary rounded-3 container-fluid">
             <div class="row align-items-center mt-4">
                 <div class="col-10">
-                    <h5>{% translate "Save Course Overview as PDF" %}</h5>
+                    <h5>{% translate "Save course overview" %}</h5>
                     <div class="text-sm text-muted">
                         {% blocktrans trimmed %}
                             Download a PDF with a summary of your registration
@@ -184,7 +184,7 @@
                        href="{% url "gcampusdocuments:documents-overview" %}"
                        role="link">
                         {% icon "download" class="d-inline-block align-text-top" height="16" width="16" %} &nbsp;
-                        {% translate "Download" %}
+                        {% translate "Download PDF" %}
                     </a>
                 </div>
             </div>
@@ -193,7 +193,7 @@
 
             <div class="row align-items-center">
                 <div class="col-10">
-                    <h5>{% translate "Save Access Keys with instructions as PDF" %}</h5>
+                    <h5>{% translate "Save access keys" %}</h5>
                     <div class="text-sm text-muted">
                         {% blocktrans trimmed %}
                             Download a PDF with all access keys
@@ -207,7 +207,7 @@
                        href="{% url "gcampusdocuments:accesskey-combined" %}"
                        role="link">
                         {% icon "download" class="d-inline-block align-text-top" height="16" width="16" %} &nbsp;
-                        {% translate "Download" %}
+                        {% translate "Download PDF" %}
                     </a>
                 </div>
             </div>
@@ -216,11 +216,11 @@
 
             <div class="row align-items-center">
                 <div class="col-10">
-                    <h5>{% translate "Send to my E-Mail" %}</h5>
+                    <h5>{% translate "Send to my email" %}</h5>
                     <div class="text-sm text-muted">
                         {% blocktrans trimmed with course_data_url="#course-data" %}
                             Send your course token and all access keys in a PDF
-                            via E-Mail. You can change your E-Mail address in the
+                            via email. You can change your email address in the
                             <a class="text-dark" href="{{ course_data_url }}">course data section</a>.
                         {% endblocktrans %}
                     </div>
@@ -230,7 +230,7 @@
                        href="#"
                        role="link">
                         {% icon "mail" class="d-inline-block align-text-top" height="16" width="16" %} &nbsp;
-                        {% translate "Send E-Mail" %}
+                        {% translate "Send email" %}
                     </a>
                 </div>
             </div>
