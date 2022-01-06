@@ -10,6 +10,13 @@ jobs:
       GCAMPUS_DB_PASSWORD: 'test-password'
       GCAMPUS_DB_HOST: 'localhost'
     services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
       postgis:
         image: postgis/postgis:13-3.1
         env:
@@ -44,3 +51,4 @@ jobs:
         run: python manage.py test
         env:
           DJANGO_SETTINGS_MODULE: 'gcampus.settings.test'
+          GCAMPUS_REDIS_HOST: 'redis'
