@@ -17,6 +17,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 6379:6379
       postgis:
         image: postgis/postgis:13-3.1
         env:
@@ -51,4 +53,4 @@ jobs:
         run: python manage.py test
         env:
           DJANGO_SETTINGS_MODULE: 'gcampus.settings.test'
-          GCAMPUS_REDIS_HOST: 'redis'
+          GCAMPUS_REDIS_HOST: 'localhost'
