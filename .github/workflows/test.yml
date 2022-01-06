@@ -42,7 +42,7 @@ jobs:
         run: echo $CONDA/bin >> $GITHUB_PATH
 
       - name: Install GDAL
-        run: conda install -y libgdal=3.3.1 -c conda-forge
+        run: conda install -y libgdal=3.4.1 -c conda-forge
 
       - name: Install Requirements
         run: pip install -r requirements.txt
