@@ -14,25 +14,24 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
-from pydoc import locate
 from typing import Type, Union
 
 from celery import shared_task
 from django.core.files import File
 from django.db.models import Model
-from django.views import View
 from django.utils import translation
+from django.utils.module_loading import import_string
+from django.views import View
 from weasyprint import HTML
 
 from gcampus.documents.document import as_bytes_io, render_document_template
 from gcampus.documents.utils import url_fetcher
-from gcampus.tasks.lock import weak_lock_task
+from gcampus.tasks.lock import redis_lock
 
 logger = logging.getLogger("gcampus.documents.tasks")
 
 
 @shared_task
-@weak_lock_task
 def render_cached_document_view(
     view: Union[str, Type[View]],
     instance: Union[Model, int],
@@ -59,7 +58,7 @@ def render_cached_document_view(
     """
     translation.activate(language)
     if isinstance(view, str):
-        view = locate(view)
+        view = import_string(view)
     if not issubclass(view, View) or not hasattr(view, "mock_view"):
         raise ValueError("Expected a view of type 'CachedDocumentView'.")
     view_instance = view.mock_view(instance)  # Create a fake view
@@ -67,29 +66,34 @@ def render_cached_document_view(
     if _instance is None:
         # This should never happen
         raise ValueError("Unable to find an instance")
-    _instance.refresh_from_db(fields=(view_instance.model_file_field,))
-    if not force and getattr(_instance, view_instance.model_file_field):
-        # The file is already cached and does not have to be rebuilt
-        logger.info("Skip file render as 'force' is set to 'False'.")
-        return
-    document_template = render_document_template(
-        view_instance.get_template_names(),
-        context=view_instance.get_context_data(),
-        request=view_instance.request,
-        using=view_instance.template_engine,
-    )
-    render_document_to_model(
-        document_template,
-        view_instance.get_internal_filename(),
-        view_instance.model,
-        view_instance.model_file_field,
-        _instance,
-        language,
-    )
+
+    lock_name = f"render_cached_document_view_{view.__name__}_{instance.pk}"
+    # A lock is used to prevent multiple workers from creating the same
+    # document. Not that the check for ``force`` and the existence of
+    # this document is done when the lock has been acquired.
+    with redis_lock(lock_name):
+        _instance.refresh_from_db(fields=(view_instance.model_file_field,))
+        if not force and getattr(_instance, view_instance.model_file_field):
+            # The file is already cached and does not have to be rebuilt
+            logger.info("Skip file render as 'force' is set to 'False'.")
+            return
+        document_template = render_document_template(
+            view_instance.get_template_names(),
+            context=view_instance.get_context_data(),
+            request=view_instance.request,
+            using=view_instance.template_engine,
+        )
+        render_document_to_model(
+            document_template,
+            view_instance.get_internal_filename(),
+            view_instance.model,
+            view_instance.model_file_field,
+            _instance,
+            language,
+        )
 
 
 @shared_task
-@weak_lock_task
 def render_document_to_model(
     template: str,
     filename: str,
@@ -100,7 +104,7 @@ def render_document_to_model(
 ):
     translation.activate(language)
     if isinstance(model, str):
-        _model = locate(model)
+        _model = import_string(model)
         if not issubclass(_model, Model):  # noqa
             raise ValueError(f"'{model}' is not a valid model")
         model: Type[Model] = _model

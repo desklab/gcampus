@@ -15,7 +15,6 @@
 
 from django import forms
 from django.conf import settings
-from django.forms.formsets import ManagementForm  # noqa
 
 from gcampus.auth.fields.token import (
     TokenField,

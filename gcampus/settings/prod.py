@@ -43,13 +43,6 @@ DATABASES = {
     },
 }
 
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f"redis://{REDIS_HOST}:6379",
-    }
-}
-
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 

@@ -35,6 +35,8 @@ COURSE_TOKEN_TYPE = "course"
 
 COURSE_TOKEN_LENGTH = getattr(settings, "COURSE_TOKEN_LENGTH", 12)
 ACCESS_KEY_LENGTH = getattr(settings, "ACCESS_KEY_LENGTH", 8)
+
+# Course updated signals are used to indicate changes
 course_updated = Signal()
 
 
@@ -150,9 +152,18 @@ def update_access_key_documents(
 ):
     """Post-save and -delete signal receiver for access keys
 
-    As access keys are typically displayed in various documents of a
-    given course, a rebuild is required every time an access key changes
-    or is deleted.
+    Access keys are typically displayed in various documents of a
+    given course.
+    A rebuild is required every time an access key changes or is
+    deleted. These changes may include e.g. disabling access keys or
+    changes made in the admin interface.
+
+    :param sender: The sender. This is always the type
+        :class:`AccessKey`
+    :param instance: The modified instance. Used to retrieve the
+        associated course token.
+    :param args: Additional arguments passed by the signal
+    :param kwargs: Additional keyword arguments passed by the signal
     """
     if kwargs.get("created", False):
         logger.info(

@@ -209,11 +209,19 @@ REGISTER_MAX_ACCESS_KEY_NUMBER = 30
 
 # Redis settings
 REDIS_HOST = get_env_read_file("GCAMPUS_REDIS_HOST", "localhost")
+REDIS_URL = f"redis://{REDIS_HOST}:6379"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": REDIS_URL,
+    }
+}
 
 # Celery Tasks
 CELERY_CONFIG = {
     "result_backend": "django-db",
-    "broker_url": (f"redis://{REDIS_HOST}:6379/0"),
+    "broker_url": REDIS_URL,
     "task_publish_retry": False,
     "broker_transport_options": {
         "max_retries": 1,

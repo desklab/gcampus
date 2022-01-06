@@ -13,9 +13,12 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import logging
+
 from django import forms
 from django.conf import settings
 from django.core.validators import MaxLengthValidator, MinLengthValidator
+from django.db.models.signals import post_save
 from django.forms import CharField
 from django.utils.translation import gettext_lazy as _
 
@@ -29,7 +32,11 @@ from gcampus.auth.models.token import (
     ACCESS_KEY_LENGTH,
     COURSE_TOKEN_LENGTH,
     CourseToken,
+    update_access_key_documents,
+    AccessKey,
 )
+
+logger = logging.getLogger("gcampus.auth.forms.token")
 
 TOKEN_FIELD_NAME = "token"
 NEXT_URL_FIELD_NAME = "next_url"
@@ -45,11 +52,7 @@ class AccessKeyForm(forms.Form):
             MinLengthValidator(ACCESS_KEY_LENGTH),
         ],
     )
-    next_url = CharField(
-        required=False,
-        max_length=255,
-        widget=forms.HiddenInput()
-    )
+    next_url = CharField(required=False, max_length=255, widget=forms.HiddenInput())
 
     fields = (TOKEN_FIELD_NAME, NEXT_URL_FIELD_NAME)
 
@@ -64,11 +67,7 @@ class CourseTokenForm(forms.Form):
             MinLengthValidator(COURSE_TOKEN_LENGTH),
         ],
     )
-    next_url = CharField(
-        required=False,
-        max_length=255,
-        widget=forms.HiddenInput()
-    )
+    next_url = CharField(required=False, max_length=255, widget=forms.HiddenInput())
 
     fields = (TOKEN_FIELD_NAME, NEXT_URL_FIELD_NAME)
 
@@ -90,3 +89,28 @@ class RegisterForm(forms.ModelForm):
             "teacher_email",
             "token_name",
         )
+
+    def save(self, commit=True):
+        if commit:
+            # The post-save signal for access keys is disabled to avoid
+            # creating the same document over and over.
+            # Document creation is handled by the post-save signal of
+            # course token.
+            disconnected = post_save.disconnect(
+                receiver=update_access_key_documents, sender=AccessKey
+            )
+        else:
+            disconnected = False
+            logger.warning(
+                "'commit' is set to 'False'. Make sure to handle disconnecting the "
+                "'post_save' signal for 'AccessKey'!"
+            )
+        try:
+            return super(RegisterForm, self).save(commit=commit)
+        finally:
+            # Connect the signal receiver again only if it has been
+            # disconnected.
+            if disconnected:
+                post_save.connect(
+                    receiver=update_access_key_documents, sender=AccessKey
+                )

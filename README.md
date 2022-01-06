@@ -20,14 +20,24 @@ Contributions in the form of reporting issues or submitting pull requests are we
 
 ## Development
 
-There are mainly two aspects to developing `gcampus`. There is **1)** the django python backend and **2)** static files like JavaScript or stylesheets.
+There are mainly two aspects to developing `gcampus`.
+There is 
+ 1. the **django python backend** and 
+ 2. static files like **JavaScript** or **stylesheets**. 
+
+The basic requirements for running `gcampus` are:
+
+ - [ ] PostgreSQL with PostGIS (serves as a database)
+ - [ ] Redis (used for Celery tasks)
+ - [ ] `libgdal` (required for GeoDjango)
+ - [ ] Node.js and `npm` (for static files)
 
 ### General Setup
 
 As we use the GeoDjango extension for Django, a few extra things are
 needed. Geospatial data can not be stored in any old SQLite database
 but requires e.g. PostGIS. Additionally, GDAL is required. The easiest
-and recommended solution for all this is to use `conda` for our Python
+and recommended solution for all this is to use `conda` as a Python
 environment. You can install any `conda` distribution you like, but
 [Miniconda](https://docs.conda.io/en/latest/miniconda.html) is
 recommended for a small footprint.

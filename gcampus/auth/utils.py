@@ -44,12 +44,16 @@ def is_authenticated(request: HttpRequest) -> bool:
 
 
 def set_token(request: HttpRequest, token: str, token_type: str, token_name):
-    request.session[TOKEN_STORE] = {
+    set_token_session(request.session, token, token_type, token_name)
+
+
+def set_token_session(session, token: str, token_type: str, token_name: str):
+    session[TOKEN_STORE] = {
         "token": token,
         "token_type": token_type,
         "token_name": token_name,
     }
-    request.session[AUTHENTICATION_BOOLEAN] = True
+    session[AUTHENTICATION_BOOLEAN] = True
 
 
 def logout(request: HttpRequest):

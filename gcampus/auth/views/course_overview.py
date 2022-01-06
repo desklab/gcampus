@@ -37,7 +37,7 @@ from gcampus.auth.decorators import require_course_token
 from gcampus.auth.fields.token import check_form_and_request_token
 from gcampus.auth.models.token import AccessKey, CourseToken, course_updated
 from gcampus.auth.utils import get_token
-from gcampus.core.forms.course_overview import (
+from gcampus.auth.forms.course_overview import (
     CourseOverviewForm,
     GenerateAccessKeysForm,
 )

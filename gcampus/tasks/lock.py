@@ -12,51 +12,11 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-import logging
-import typing as t
-from functools import lru_cache, wraps
-from threading import Lock as ThreadLock
 
-from django.conf import settings
-from redis.client import Redis
-from redis.exceptions import ConnectionError as RedisConnectionError
 from redis.lock import Lock as RedisLock
 
-logger = logging.getLogger("gcampus.tasks.lock")
+from gcampus.tasks.redis import get_redis_instance
 
 
-@lru_cache
-def _get_named_thread_lock(name: str) -> ThreadLock:
-    # The parameter 'name' only ensures that the LRU cache saves
-    # different locks for each name
-    return ThreadLock()
-
-
-def weak_lock(name: str, timeout: int = 120) -> t.Union[ThreadLock, RedisLock]:
-    r = Redis(host=getattr(settings, "REDIS_HOST"))
-    try:
-        r.ping()
-    except RedisConnectionError:
-        logger.warning("Fall back to thread lock")
-        return _get_named_thread_lock(name)
-    return r.lock(name, timeout=timeout)
-
-
-def weak_lock_task(name: t.Union[str, callable], timeout: int = 120):
-    if callable(name):
-        lock_name = name.__name__
-    else:
-        lock_name = name
-
-    def decorator(task):
-        @wraps(task)
-        def wrapper(*args, **kwargs):
-            with weak_lock(lock_name, timeout=timeout):
-                return task(*args, **kwargs)
-
-        return wrapper
-
-    if callable(name):
-        return decorator(name)
-    else:
-        return decorator
+def redis_lock(name: str, timeout: int = 120, **kwargs) -> RedisLock:
+    return get_redis_instance().lock(name, timeout=timeout, **kwargs)
