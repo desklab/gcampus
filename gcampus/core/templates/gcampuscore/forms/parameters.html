@@ -5,7 +5,7 @@
 {% endblock %}
 {% block body_class %}bg-light{% endblock %}
 {% block navbar_title %}
-    <a href="{% url "gcampuscore:edit_measurement" pk=object.pk %}" class="text-muted text-decoration-none">{% translate "1. Metadata" %}</a>
+    <a href="{% url "gcampuscore:edit-measurement" pk=object.pk %}" class="text-muted text-decoration-none">{% translate "1. Metadata" %}</a>
     <span class="ms-3">{% translate "2. Measured values" %}</span>
 {% endblock %}
 {% block content %}

@@ -18,18 +18,22 @@ from __future__ import annotations
 from django.core.exceptions import (
     PermissionDenied,
 )
-from django.urls import reverse
+from django.shortcuts import redirect
+from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
+from django.views.decorators.http import require_POST
 from django.views.generic import DetailView
 from django.views.generic import ListView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from gcampus.auth import utils, exceptions
 from gcampus.auth.fields.token import check_form_and_request_token
 from gcampus.auth.models.token import (
     COURSE_TOKEN_TYPE,
+    can_token_edit_measurement,
 )
+from gcampus.auth.utils import is_authenticated, get_token, get_token_type
 from gcampus.core.decorators import (
     require_permission_create_measurement,
     require_permission_edit_measurement,
@@ -45,9 +49,29 @@ from gcampus.core.views.measurement.list import (
 )
 
 
-class MeasurementDetailView(DetailView):
+class MeasurementDetailView(TitleMixin, DetailView):
     model = Measurement
+    queryset = Measurement.objects
     template_name = "gcampuscore/sites/detail/measurement_detail.html"
+
+    def get_context_data(self, **kwargs):
+        if is_authenticated(self.request) and self.object:
+            token = get_token(self.request)
+            token_type = get_token_type(self.request)
+            if can_token_edit_measurement(token, self.object, token_type=token_type):
+                # Measurement can be edited by the current user
+                # Create an empty form from the MeasurementDeleteView
+                # to display a delete button.
+                kwargs["can_edit"] = True
+                delete_form = MeasurementDeleteView.form_class()
+                kwargs["delete_form"] = delete_form
+        return super(MeasurementDetailView, self).get_context_data(**kwargs)
+
+    def get_title(self) -> str:
+        if self.object:
+            return str(self.object)
+        else:
+            raise RuntimeError("'self.object' is not set")
 
 
 class MeasurementMapView(ListView):
@@ -66,7 +90,7 @@ class MeasurementCreateView(TitleMixin, CreateView):
     form_class = MeasurementForm
     title = _("Create new measurement")
     template_name = "gcampuscore/forms/measurement.html"
-    next_view_name = "gcampuscore:add_parameters"
+    next_view_name = "gcampuscore:add-parameters"
 
     @method_decorator(require_permission_create_measurement)
     def dispatch(self, *args, **kwargs):
@@ -95,6 +119,28 @@ class MeasurementEditView(TitleMixin, UpdateView):
     @method_decorator(require_permission_edit_measurement)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+
+
+class MeasurementDeleteView(TitleMixin, DeleteView):
+    model = Measurement
+    success_url = reverse_lazy("gcampuscore:mapview")
+
+    # Only allow post requests. HTML frontend is handled by
+    # MeasurementDetailView. See MeasurementDetailView.get_context_data.
+    @method_decorator(require_POST)
+    @method_decorator(require_permission_edit_measurement)
+    def dispatch(self, request, pk: int, *args, **kwargs):
+        return super(MeasurementDeleteView, self).dispatch(request, pk, *args, **kwargs)
+
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        self.object: Measurement
+        # Instead of permanently deleting the measurement, it is instead
+        # hidden from all users. Consider this as some kind of temporary
+        # trash (i.e. marked for deletion).
+        self.object.hidden = True
+        self.object.save()
+        return redirect(success_url)
 
 
 class HiddenCourseMeasurementListView(ListView):

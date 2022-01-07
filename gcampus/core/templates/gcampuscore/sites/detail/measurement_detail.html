@@ -5,9 +5,63 @@
     {% load_mapbox_js %}
 {% endblock %}
 {% block body_class %}d-flex flex-column min-vh-100{% endblock %}
-{% block navbar_title %}
-    <span class="">{{object}}</span>
-{% endblock %}
+{% block main_class %}main-pt-0{% endblock %}
+{% block navbar_title %}<span>{{object}}</span>{% endblock %}
+{% if can_edit %}
+    {% block modals %}
+        {{ block.super }}
+        <div class="modal fade"
+             id="deleteModal"
+             tabindex="-1"
+             aria-labelledby="deleteModal"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModal">
+                            {% translate "Delete Measurement" %}
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% translate "Close" %}"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{% url "gcampuscore:delete-measurement" pk=object.pk %}">
+                            {% csrf_token %}
+                            {% blocktranslate trimmed %}
+                                Are you sure you want to delete this measurement?
+                            {% endblocktranslate %}
+                            <ul>
+                                <li>
+                                    <b>{% translate "Name" %}:</b>
+                                    {{ object.name }}
+                                </li>
+                                <li>
+                                    <b>{% translate "Time" context "measurement time" %}:</b>
+                                    {{ object.time|localize }}
+                                </li>
+                                <li>
+                                    <b>{% translate "Water name" %}:</b>
+                                    {% if object.water_name %}
+                                        {{ object.water_name }}
+                                    {% else %}
+                                        {% translate "N/A" context "no value provided (water name, comment, etc)" %}
+                                    {% endif %}
+                                </li>
+                            </ul>
+                            <div class="modal-footer">
+                                <button type="button" class="btn" data-bs-dismiss="modal">
+                                    {% translate "Close" %}
+                                </button>
+                                <button type="submit" class="btn btn-danger">
+                                    {% translate "Delete" %}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+{% endif %}
 {% block content %}
     <script>
         function loadCluster(event) {
@@ -131,10 +185,6 @@
         <div class="container py-4">
             <div class="row">
                 <div class="col-12 col-md-6 d-flex flex-column">
-                    {% comment %}<h3 class="mb-4 fw-light">{{ object }}</h3>{%  endcomment %}
-                    {% if object.hidden %}
-                        <h3 class="mb-4 text-danger"> {% translate "This measurement is hidden" %} </h3>
-                    {% endif %}
                     <div class="d-flex flex-row justify-content-between mb-3">
                         <div>
                             <small class="text-muted">{% translate "Water name" %}</small>
@@ -152,8 +202,8 @@
                             <br>
                             <h4>{{ object.time|localize }}</h4>
                         </div>
-                        <div></div>
                         {# Add additional div for placing #}
+                        <div></div>
                     </div>
                     <div class="mb-3">
                         <small class="text-muted">{% translate "Note" %}</small>
@@ -170,29 +220,18 @@
                         <a class="btn btn-sm btn-secondary"
                             href="{% url "gcampusdocuments:measurement-detail" pk=measurement.pk %}"
                             role="link">
-                            {% icon "download" class="d-inline-block align-text-top" height="16" width="16" %} &nbsp;
+                            {% icon "download" class="d-inline-block align-text-top" height="16" width="16" %}
                             {% translate "Download PDF" %}
                         </a>
-                        {% if measurement.token.token is not None %}
-                            {% if measurement.token.token == user_token or measurement.token.parent_token.token == user_token %}
-                                <a href="{% url "gcampuscore:edit_parameters" pk=measurement.pk %}"
-                                   class="btn btn-sm btn-secondary"
-                                   role="button">
-                                    {% translate "Edit" %}
-                                </a>
-                            {% endif %}
-                        {% endif %}
-                        {% if measurement.token.token is not None %}
-                            {% if measurement.token.parent_token.token == user_token %}
-                                <form class="d-inline-block" method="post" action="{% url "gcampuscore:hide" %}">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="measurement" value="{{ measurement.pk }}"/>
-                                    <button class="btn btn-sm">
-                                        {% icon "eye-off" height="16px" width="16px"%}
-                                        {% translate "Delete" %}
-                                    </button>
-                                </form>
-                            {% endif %}
+                        {% if can_edit %}
+                            <a href="{% url "gcampuscore:edit-parameters" pk=measurement.pk %}"
+                               class="btn btn-sm btn-secondary"
+                               role="button">
+                                {% translate "Edit" %}
+                            </a>
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                {% translate "Delete" %}
+                            </button>
                         {% endif %}
                     </div>
                 </div>

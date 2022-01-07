@@ -47,13 +47,13 @@ urlpatterns = [
     path("edit/<int:pk>", MeasurementEditView.as_view(), name="edit_measurement"),
     path("edit/<int:pk>/parameters/", ParameterFormSetView.as_view(), name="edit_parameters"),
     # Measurement list and details
+    path("measurement/<int:pk>/delete", MeasurementDeleteView.as_view(), name="measurement-delete"),
+    path("measurement/<int:pk>/delete", MeasurementDeleteView.as_view(), name="delete-measurement"),
+    path("measurement/<int:pk>/edit/", MeasurementEditView.as_view(), name="edit-measurement"),
     path("measurements/", MeasurementListView.as_view(), name="measurements"),
     path("measurement/<int:pk>", MeasurementDetailView.as_view(), name="measurement_detail"),
     path("personal/measurements", PersonalMeasurementListView.as_view(), name="personal_measurements"),
     path("course/measurements", CourseMeasurementListView.as_view(), name="course_measurements"),
-    path("measurement/hide", hide, name="hide"),
-    path("measurement/show", show, name="show"),
-    path("course/measurements/hidden", HiddenCourseMeasurementListView.as_view(), name="course_hidden"),
 ]
 # fmt: on
 # pylint: enable=line-too-long
