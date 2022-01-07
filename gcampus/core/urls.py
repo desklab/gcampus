@@ -16,12 +16,6 @@
 from django.urls import path
 
 from gcampus.core.apps import GCampusCoreAppConfig
-from gcampus.auth.views.course_overview import (
-    CourseOverviewFormView,
-    deactivate_access_key,
-    activate_access_key,
-    generate_new_access_keys,
-)
 from gcampus.core.views.measurement import (
     MeasurementCreateView,
     MeasurementListView,
@@ -29,29 +23,26 @@ from gcampus.core.views.measurement import (
     MeasurementMapView,
     PersonalMeasurementListView,
     CourseMeasurementListView,
-    HiddenCourseMeasurementListView,
-    MeasurementEditView,
+    MeasurementEditView, MeasurementDeleteView,
 )
-from gcampus.core.views.measurement.visibility import show, hide
 from gcampus.core.views.parameter import ParameterFormSetView
 
 # Turn off black formatting and pylint
 # fmt: off
 # pylint: disable=line-too-long
 urlpatterns = [
+    # Index
     path("", MeasurementMapView.as_view(), name="mapview"),
-    # Add measurement and parameters
-    path("add/", MeasurementCreateView.as_view(), name="add_measurement"),
-    path("add/<int:pk>/parameters/", ParameterFormSetView.as_view(), name="add_parameters"),
-    # Edit measurement and parameters
-    path("edit/<int:pk>", MeasurementEditView.as_view(), name="edit_measurement"),
-    path("edit/<int:pk>/parameters/", ParameterFormSetView.as_view(), name="edit_parameters"),
-    # Measurement list and details
-    path("measurement/<int:pk>/delete", MeasurementDeleteView.as_view(), name="measurement-delete"),
+    # Measurement
+    path("measurement/add/", MeasurementCreateView.as_view(), name="add-measurement"),
+    path("measurement/add/<int:pk>/parameters/", ParameterFormSetView.as_view(), name="add-parameters"),
+    path("measurement/<int:pk>/", MeasurementDetailView.as_view(), name="measurement-detail"),
     path("measurement/<int:pk>/delete", MeasurementDeleteView.as_view(), name="delete-measurement"),
     path("measurement/<int:pk>/edit/", MeasurementEditView.as_view(), name="edit-measurement"),
+    path("measurement/<int:pk>/edit/parameters/", ParameterFormSetView.as_view(), name="edit-parameters"),
     path("measurements/", MeasurementListView.as_view(), name="measurements"),
-    path("measurement/<int:pk>", MeasurementDetailView.as_view(), name="measurement_detail"),
+    # Deprecated:
+    # TODO @nlwach: Remove these when done
     path("personal/measurements", PersonalMeasurementListView.as_view(), name="personal_measurements"),
     path("course/measurements", CourseMeasurementListView.as_view(), name="course_measurements"),
 ]

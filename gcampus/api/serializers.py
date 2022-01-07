@@ -57,7 +57,7 @@ class MeasurementSerializer(GeoFeatureModelSerializer):
         fields = ("id", "name", "time", "comment", "parameters", "url", "title")
 
     def get_url(self, obj: Measurement) -> str:  # noqa
-        return reverse("gcampuscore:measurement_detail", kwargs=dict(pk=obj.pk))
+        return reverse("gcampuscore:measurement-detail", kwargs=dict(pk=obj.pk))
 
     def get_title(self, obj: Measurement) -> str:  # noqa
         # Returns the string representation of the measurement

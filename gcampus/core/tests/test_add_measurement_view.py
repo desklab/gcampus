@@ -59,7 +59,7 @@ class MeasurementViewTest(BaseAuthTest):
         login_response = self.login(self.tokens[0].token)
         self.assertEqual(login_response.status_code, 302)
 
-        response = self.client.post(reverse("gcampuscore:add_measurement"), form_data)
+        response = self.client.post(reverse("gcampuscore:add-measurement"), form_data)
         # 302 means the redirect was successful
         self.assertEqual(response.status_code, 302)
 
@@ -75,7 +75,7 @@ class MeasurementViewTest(BaseAuthTest):
         login_response = self.login(self.tokens[0].token)
         self.assertEqual(login_response.status_code, 302)
 
-        response = self.client.post(reverse("gcampuscore:add_measurement"), form_data)
+        response = self.client.post(reverse("gcampuscore:add-measurement"), form_data)
         errors = response.context["form"].errors
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.context["form"].is_valid())
@@ -98,7 +98,7 @@ class MeasurementViewTest(BaseAuthTest):
         login_response = self.login(self.tokens[0].token)
         self.assertEqual(login_response.status_code, 302)
 
-        response = self.client.post(reverse("gcampuscore:add_measurement"), form_data)
+        response = self.client.post(reverse("gcampuscore:add-measurement"), form_data)
         errors = response.context["form"].errors
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.context["form"].is_valid())
@@ -121,7 +121,7 @@ class MeasurementViewTest(BaseAuthTest):
         login_response = self.login(self.tokens[0].token)
         self.assertEqual(login_response.status_code, 302)
 
-        response = self.client.post(reverse("gcampuscore:add_measurement"), form_data)
+        response = self.client.post(reverse("gcampuscore:add-measurement"), form_data)
         errors = response.context["form"].errors
 
         self.assertEqual(response.status_code, 200)
@@ -143,7 +143,7 @@ class MeasurementViewTest(BaseAuthTest):
         }
         form_data.update(self.form_data_stub)
 
-        response = self.client.post(reverse("gcampuscore:add_measurement"), form_data)
+        response = self.client.post(reverse("gcampuscore:add-measurement"), form_data)
         # 403 means no permission
         self.assertEqual(response.status_code, 403)
 
@@ -158,7 +158,7 @@ class MeasurementViewTest(BaseAuthTest):
         login_response = self.login(self.tokens[0].token)
         self.assertEqual(login_response.status_code, 302)
 
-        response = self.client.post(reverse("gcampuscore:add_measurement"), form_data)
+        response = self.client.post(reverse("gcampuscore:add-measurement"), form_data)
         errors = response.context["form"].errors
 
         self.assertEqual(response.status_code, 200)

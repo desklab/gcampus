@@ -1,6 +1,6 @@
 {% load i18n icon auth_token %}
-{% url "gcampuscore:measurement_detail" pk=measurement.pk as detail_url %}
-{% url "gcampuscore:edit_parameters" pk=measurement.pk as edit_url %}
+{% url "gcampuscore:measurement-detail" pk=measurement.pk as detail_url %}
+{% url "gcampuscore:edit-parameters" pk=measurement.pk as edit_url %}
 <a href="{{ detail_url }}" class="list-group-item list-group-item-hover">
     <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">
@@ -16,7 +16,7 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButtonEditKey">
                     <li>
-                        <form action="{% url "gcampuscore:edit_parameters" pk=measurement.pk %}" method="get">
+                        <form action="{% url "gcampuscore:edit-parameters" pk=measurement.pk %}" method="get">
                             <button type="submit" class="dropdown-item" {{ edit|yesno:",disabled" }} style="pointer-events: all">
                                     {% icon "edit" class="d-inline-block align-text-top me-1" height="16" width="16" %}
                                     {% translate "Edit" %}

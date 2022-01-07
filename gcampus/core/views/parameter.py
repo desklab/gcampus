@@ -38,7 +38,7 @@ from gcampus.core.views.base import TitleMixin
 class ParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
     formset_class = ParameterFormSet
     template_name = "gcampuscore/forms/parameters.html"
-    next_view_name = "gcampuscore:measurement_detail"
+    next_view_name = "gcampuscore:measurement-detail"
 
     def get_title(self) -> str:
         return _("Edit Measurement {pk:d} - Measured Parameters").format(

@@ -37,14 +37,14 @@
                             <td>{{ measurement.time }}</td>
                             <td>{{ measurement.parameters.count }}</td>
                             <td>
-                                <a href="{% url "gcampuscore:measurement_detail" pk=measurement.pk %}"
+                                <a href="{% url "gcampuscore:measurement-detail" pk=measurement.pk %}"
                                    class="btn btn-primary btn-md" role="button">
                                     {% translate "To the Measurement" %}</a>
                             </td>
                             <td>
                                 {% if measurement.token.token is not None %}
                                    {% if measurement|can_edit:request %}
-                                        <a href="{% url "gcampuscore:edit_parameters" pk=measurement.pk %}"
+                                        <a href="{% url "gcampuscore:edit-parameters" pk=measurement.pk %}"
                                            class="btn btn-primary btn-md" role="button">
                                             {% translate "Edit Measurement" %}</a>
                                     {% else %}
