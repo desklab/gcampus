@@ -5,7 +5,7 @@ psycopg2-binary==2.8.6
 geopy==2.1.0
 django-leaflet==0.28.1
 django-feather~=0.3.0
-https://github.com/openwisp/django-rest-framework-gis/tarball/4b98823
+djangorestframework-gis~=0.18
 djangorestframework~=3.13.1
 overpy~=0.4
 django-filter~=2.4.0
