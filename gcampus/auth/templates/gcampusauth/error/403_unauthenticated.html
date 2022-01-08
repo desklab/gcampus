@@ -1,5 +1,7 @@
 {% extends "gcampuscore/base_error.html" %}
 {% load i18n next_url %}
+{# Removes the need for additional CSS that e.g. load the token font #}
+{% block extra_head %}{% endblock %}
 {% block exception_message %}
     {% url "gcampusauth:register" as register_url %}
     {% blocktranslate trimmed %}

@@ -1,14 +1,20 @@
 {% load i18n %}
-<div class="d-flex flex-row align-items-center justify-content-center">
+<div class="d-flex flex-row align-items-center justify-content-center w-100">
     {% spaceless %}
-        {% for widget in widget.subwidgets %}
-            <input type="text"
-                   class="autofocus text-center form-control form-control-lg appearance-textfield form-control-sm{% if not forloop.first %} ms-1{% endif %}{% if not forloop.last %} me-1{% endif %}"
-                   style="width: 4em;" id="{{ widget.name }}"
-                   name="{{ widget.name }}"
-                    {% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}
-                    {% include "django/forms/widgets/attrs.html" %}>
-            {% if not forloop.last %}-{% endif %}
-        {% endfor %}
+        {% with widget.subwidgets|length as total %}
+            {% for widget in widget.subwidgets %}
+                {% with forloop.counter as current %}
+                    <input type="text"
+                           class="autofocus text-center form-control form-control-lg appearance-textfield token-login-field{% if forloop.first %} token-login-field-first{% elif forloop.last %} token-login-field-last{% endif %}"
+                           id="{{ widget.name }}"
+                           name="{{ widget.name }}"
+                           placeholder="----"
+                           aria-label="{% blocktranslate trimmed %}Token part {{ current }} of {{ total }}{% endblocktranslate %}"
+                           data-autofocus-uppercase="true"
+                            {% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}
+                            {% include "django/forms/widgets/attrs.html" %}>
+                {% endwith %}
+            {% endfor %}
+        {% endwith %}
     {% endspaceless %}
 </div>

@@ -67,11 +67,9 @@ class LoginFormView(TitleMixin, FormView, ABC):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Set the current token type
-        current_token_type = utils.get_token_type(self.request)
-        if current_token_type is not None:
-            context["set_token_type"] = current_token_type
         context["token_type"] = self.token_type
+        context["is_access_key_form"] = self.token_type == ACCESS_TOKEN_TYPE
+        context["is_course_token_form"] = self.token_type == COURSE_TOKEN_TYPE
         return context
 
     def form_valid(self, form: Union[AccessKeyForm, CourseTokenForm]):

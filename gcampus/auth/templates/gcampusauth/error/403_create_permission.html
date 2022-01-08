@@ -2,19 +2,7 @@
 {% load i18n auth_token %}
 {% block exception_message %}
     {% url "gcampusauth:course-overview" as course_overview_url %}
-    {% if user_token_is_access_key %}
-        {% blocktranslate trimmed %}
-            You are currently logged in with the following access key:
-        {% endblocktranslate %}
-    {% elif user_token_is_course_token %}
-        {% blocktranslate trimmed %}
-            You are currently logged in with the following course token:
-        {% endblocktranslate %}
-    {% endif %}
-    <br>
-    <div class="my-2">
-        {% displaytoken user_token hidden=True toggle=True %}
-    </div>
+    {% include "gcampusauth/components/current_token_info.html" %}
     {% if user_token_is_access_key %}
         {# Token deactivated, expired, etc. #}
         {% blocktranslate trimmed %}
@@ -47,6 +35,8 @@
         </small>
     </div>
 {% endblock %}
-{% block extra_body %}
-    {% displaytoken_js %}
-{% endblock %}
+{% if authenticated %}
+    {% block extra_body %}
+        {% displaytoken_js %}
+    {% endblock %}
+{% endif %}

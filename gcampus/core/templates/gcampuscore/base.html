@@ -24,8 +24,8 @@
 
     {# Global stylesheets #}
     <link rel="stylesheet" type="text/css" href="{% static 'gcampuscore/styles/main.css' %}">
-    {% displaytoken_head %} {# Required for header #}
     {% block extra_head %}
+        {% displaytoken_head %} {# Required for header #}
         {# Override this in templates to add extra stylesheets #}
     {% endblock %}
 </head>

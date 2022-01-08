@@ -1,6 +1,7 @@
 {% extends "gcampuscore/base.html" %}
 {% load i18n map %}
 {% block extra_head %}
+    {{ block.super }}
     {% load_mapbox_css %}
     {% load_mapbox_js %}
 {% endblock %}

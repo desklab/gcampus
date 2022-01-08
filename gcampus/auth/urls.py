@@ -14,6 +14,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from django.urls import path
+from django.views.generic import RedirectView
 
 from gcampus.auth.apps import GCampusAuthAppConfig
 from gcampus.auth.views import (
@@ -27,14 +28,15 @@ from gcampus.auth.views import (
     generate_new_access_keys,
 )
 
+app_name = GCampusAuthAppConfig.label
+
 # Turn off black formatting and pylint
 # fmt: off
 # pylint: disable=line-too-long
-
 urlpatterns = [
     # Token
     path("register/", RegisterFormView.as_view(), name="register"),
-    path("login/", AccessKeyLoginFormView.as_view(), name="login"),
+    path("login/", RedirectView.as_view(permanent=True, pattern_name=f"{app_name}:login-access-key"), name="login"),
     path("login/accesskey/", AccessKeyLoginFormView.as_view(), name="login-access-key"),
     path("login/coursetoken/", CourseTokenLoginFormView.as_view(), name="login-course-token"),
     path('logout/', logout, name="logout"),
@@ -46,5 +48,3 @@ urlpatterns = [
 ]
 # fmt: on
 # pylint: enable=line-too-long
-
-app_name = GCampusAuthAppConfig.label

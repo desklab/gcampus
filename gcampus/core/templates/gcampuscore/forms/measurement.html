@@ -1,6 +1,7 @@
 {% extends "gcampuscore/base.html" %}
 {% load i18n static map auth_token %}
 {% block extra_head %}
+    {{ block.super }}
     {% load_mapbox_css %}
     {% load_mapbox_js %}
 {% endblock %}
