@@ -30,6 +30,7 @@ from gcampus.auth.exceptions import (
     COURSE_TOKEN_DEACTIVATED_ERROR,
     ACCESS_KEY_DEACTIVATED_ERROR,
 )
+from gcampus.auth.fields.token import HyphenatedTokenField
 from gcampus.auth.forms.token import TOKEN_FIELD_NAME, RegisterForm
 from gcampus.auth.models import CourseToken, AccessKey
 from gcampus.auth.models.token import COURSE_TOKEN_LENGTH, ACCESS_KEY_LENGTH, \
@@ -38,6 +39,21 @@ from gcampus.auth.utils import set_token_session
 from gcampus.auth.widgets import split_token_chunks
 from gcampus.documents.tasks import render_cached_document_view
 from gcampus.tasks.tests.utils import BaseMockTaskTest
+
+
+class MiscellaneousAuthTest(BaseMockTaskTest):
+    def test_hyphenation(self):
+        value = HyphenatedTokenField.hyphenate("ABCDEF", 4)
+        self.assertEqual(value, "ABCD-EF")
+        # Existing correct hyphens
+        value_2 = HyphenatedTokenField.hyphenate("ABCD-EF", 4)
+        self.assertEqual(value_2, "ABCD-EF")
+        # Value too short
+        value_3 = HyphenatedTokenField.hyphenate("ABC", 4)
+        self.assertEqual(value_3, "ABC")
+        # Only hyphens
+        value_3 = HyphenatedTokenField.hyphenate("---------", 4)
+        self.assertEqual(value_3, "")
 
 
 class BaseAuthTest(BaseMockTaskTest, ABC):

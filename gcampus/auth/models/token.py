@@ -14,6 +14,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+import re
 from typing import Union, Optional, Tuple, Type
 
 from django.conf import settings
@@ -28,13 +29,17 @@ from gcampus.core.models import Measurement
 from gcampus.core.models.util import DateModelMixin
 from gcampus.documents.tasks import render_cached_document_view
 
-ALLOWED_TOKEN_CHARS = settings.ALLOWED_TOKEN_CHARS
+ALLOWED_TOKEN_CHARS: list = settings.ALLOWED_TOKEN_CHARS
+ALLOWED_TOKEN_CHARS_RE = re.compile(
+    r"^[{chars:s}]*$".format(chars="".join(ALLOWED_TOKEN_CHARS))
+)
 
 ACCESS_TOKEN_TYPE = "access"
 COURSE_TOKEN_TYPE = "course"
 
 COURSE_TOKEN_LENGTH = getattr(settings, "COURSE_TOKEN_LENGTH", 12)
 ACCESS_KEY_LENGTH = getattr(settings, "ACCESS_KEY_LENGTH", 8)
+
 
 # Course updated signals are used to indicate changes
 course_updated = Signal()
@@ -268,3 +273,32 @@ def can_token_edit_measurement(
         measurement_token == token_instance
         or measurement_token.parent_token == token_instance
     )
+
+
+def check_token_type(token_type: str) -> None:
+    """Check token type
+
+    Raises an exception if the provided token type is invalid.
+
+    :param token_type: A string that is checked against
+        :attr:`.ACCESS_TOKEN_TYPE` and :attr:`.COURSE_TOKEN_TYPE`
+    :raises ValueError: If the provided token type is invalid
+    """
+    if token_type not in [ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE]:
+        raise ValueError(f"Invalid token type: '{token_type}'")
+
+
+def get_token_length(token_type: str):
+    """Get token length
+
+    :param token_type: Type of the token
+    :return: Length of the token
+    :rtype: int
+    :raises ValueError: If the provided token type is invalid
+    """
+    check_token_type(token_type)
+    if token_type == ACCESS_TOKEN_TYPE:
+        return ACCESS_KEY_LENGTH
+    else:
+        # Token must be a course token
+        return COURSE_TOKEN_LENGTH
