@@ -41,10 +41,6 @@ urlpatterns = [
     path("measurement/<int:pk>/edit/", MeasurementEditView.as_view(), name="edit-measurement"),
     path("measurement/<int:pk>/edit/parameters/", ParameterFormSetView.as_view(), name="edit-parameters"),
     path("measurements/", MeasurementListView.as_view(), name="measurements"),
-    # Deprecated:
-    # TODO @nlwach: Remove these when done
-    path("personal/measurements", PersonalMeasurementListView.as_view(), name="personal_measurements"),
-    path("course/measurements", CourseMeasurementListView.as_view(), name="course_measurements"),
 ]
 # fmt: on
 # pylint: enable=line-too-long
