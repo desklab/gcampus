@@ -141,23 +141,3 @@ class MeasurementDeleteView(TitleMixin, DeleteView):
         self.object.hidden = True
         self.object.save()
         return redirect(success_url)
-
-
-class HiddenCourseMeasurementListView(ListView):
-    template_name = "gcampuscore/sites/list/hidden_course_measurement_list.html"
-    model = Measurement
-    paginate_by = 10
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        # Check if a token is provided
-        token = utils.get_token(self.request)
-        if token is None:
-            raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
-        # Check if provided token is actually a course token
-        token_type = utils.get_token_type(self.request)
-        if token_type != COURSE_TOKEN_TYPE:
-            raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
-        course_measurements = Measurement.all_objects.filter(
-            token__parent_token__token=token, hidden=True
-        )
-        return super().get_context_data(object_list=course_measurements, **kwargs)
