@@ -35,7 +35,7 @@ class MeasurementListView(ListView):
     template_name = "gcampuscore/sites/list/measurement_list.html"
     model = Measurement
     context_object_name = "measurement_list"
-    paginate_by = 10
+    #paginate_by = 10
 
     def __init__(self, *args, **kwargs):
         self.filter: Optional[MeasurementFilter] = None
@@ -43,8 +43,8 @@ class MeasurementListView(ListView):
 
     def get(self, request, *args, **kwargs):
         self.filter = MeasurementFilter(
-            self.request.GET, queryset=Measurement.objects.all()
-        )
+            self.request.GET, queryset=Measurement.objects.all(),
+            request=self.request)
         return super(MeasurementListView, self).get(request, *args, **kwargs)
 
     def get_queryset(self):

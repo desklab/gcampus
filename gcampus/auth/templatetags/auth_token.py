@@ -120,6 +120,67 @@ def can_edit(measurement: Measurement, request: HttpRequest) -> bool:
     return can_token_edit_measurement(token, measurement, token_type=token_type)
 
 
+@register.filter
+def is_coursetoken(request: HttpRequest) -> bool:
+    """Is Course Authentication Filter
+
+    Django template filter used to check whether a token is a coursetoken
+
+    Usage:
+
+    .. code::
+
+        {% load auth_token %}
+        ...
+        {% if request|is_coursetoken %}
+            ...
+        {% endif %}
+
+
+    :param request: Additional parameter passed to the filter to provide
+        the current session which may contain the token of the user.
+    :returns: Boolean whether or not the current user is a coursetoken or not
+    """
+    token = get_token(request)
+    if token is None:
+        return False
+    token_type = get_token_type(request)
+    if token_type == COURSE_TOKEN_TYPE:
+        return True
+    else:
+        return False
+
+@register.filter
+def is_accesskey(request: HttpRequest) -> bool:
+    """Is Acceskey Authentication Filter
+
+    Django template filter used to check whether a token is a accesskey
+
+    Usage:
+
+    .. code::
+
+        {% load auth_token %}
+        ...
+        {% if request|is_accesskey %}
+            ...
+        {% endif %}
+
+
+    :param request: Additional parameter passed to the filter to provide
+        the current session which may contain the token of the user.
+    :returns: Boolean whether or not the current user is a accesskey or not
+    """
+    token = get_token(request)
+    if token is None:
+        return False
+    token_type = get_token_type(request)
+    if token_type == ACCESS_TOKEN_TYPE:
+        return True
+    else:
+        return False
+
+
 @register.inclusion_tag("gcampusauth/styles/token.html")
 def displaytoken_head() -> dict:
     return {}

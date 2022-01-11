@@ -17,6 +17,8 @@ from typing import Optional
 
 from django.http import HttpRequest
 
+from gcampus.auth.models.token import CourseToken
+
 TOKEN_STORE = "gcampusauth_token"
 AUTHENTICATION_BOOLEAN = "gcampusauth_authenticated"
 
@@ -36,6 +38,11 @@ def get_token_type(request: HttpRequest, default: str = None) -> Optional[str]:
 def get_token_name(request: HttpRequest, default: str = None) -> Optional[str]:
     if TOKEN_STORE in request.session:
         return request.session[TOKEN_STORE].get("token_name", default)
+    return default
+
+def get_parent_token(accesskey, default: str = None) -> Optional[str]:
+    if accesskey is not None:
+        return CourseToken.objects.get(access_keys__token=accesskey).token
     return default
 
 

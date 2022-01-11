@@ -8,7 +8,7 @@
     <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="navbarDropdownMenuLink">
         {% if user_token_is_course_token %}
             <li><a class="dropdown-item"
-                   href={% url "gcampuscore:course_measurements" %}>{% translate "Course Measurements" %}</a>
+                   href="{% url "gcampuscore:measurements" %}?my_course=on">{% translate "Course Measurements" %}</a>
             </li>
             <li>
                 <a class="dropdown-item"
@@ -16,11 +16,11 @@
             </li>
         {% else %}
             <li><a class="dropdown-item"
-                   href={% url "gcampuscore:personal_measurements" %}>{% translate "Your Measurements" %}</a>
+                   href="{% url "gcampuscore:measurements" %}?my_measurements=on">{% translate "Your Measurements" %}</a>
             </li>
             <li>
                 <a class="dropdown-item"
-                   href={% url "gcampuscore:course_measurements" %}>{% translate "Course Measurements" %}</a>
+                   href="{% url "gcampuscore:measurements" %}?my_course=on">{% translate "Course Measurements" %}</a>
             </li>
         {% endif %}
         <li><hr class="dropdown-divider"></li>

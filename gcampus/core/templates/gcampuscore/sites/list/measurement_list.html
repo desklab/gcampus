@@ -57,6 +57,24 @@
                                         {{ field }}
                                     </div>
                                 {% endwith %}
+                            {% if request|is_coursetoken or request|is_accesskey %}
+                                {% with filter.form.my_course as field %}
+                                    <div class="mb-3">
+                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                        {% include "gcampuscore/forms/components/helptext.html" %}
+                                        {{ field }}
+                                    </div>
+                                {% endwith %}
+                            {% endif %}
+                            {% if request|is_accesskey %}
+                                {% with filter.form.my_measurements as field %}
+                                    <div class="mb-3">
+                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                        {% include "gcampuscore/forms/components/helptext.html" %}
+                                        {{ field }}
+                                    </div>
+                                {% endwith %}
+                            {% endif %}
                                 {% with filter.form.location as field %}
                                     <div class="mb-3">
                                         {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
@@ -80,7 +98,7 @@
 
         <div class="list-group mt-4">
             {% for measurement in object_list %}
-                    {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement count=measurement.parameters.count time=measurement.time edit=measurement|can_edit:request %}
+                {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement count=measurement.parameters.count time=measurement.time edit=measurement|can_edit:request %}
             {% endfor %}
         </div>
     {% else %}
