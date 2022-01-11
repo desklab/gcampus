@@ -57,24 +57,24 @@
                                         {{ field }}
                                     </div>
                                 {% endwith %}
-                            {% if request|is_coursetoken or request|is_accesskey %}
-                                {% with filter.form.my_course as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {% include "gcampuscore/forms/components/helptext.html" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
-                            {% endif %}
-                            {% if request|is_accesskey %}
-                                {% with filter.form.my_measurements as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {% include "gcampuscore/forms/components/helptext.html" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
-                            {% endif %}
+                                {% if request|is_coursetoken or request|is_accesskey %}
+                                    {% with filter.form.my_course as field %}
+                                        <div class="mb-3">
+                                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                            {% include "gcampuscore/forms/components/helptext.html" %}
+                                            {{ field }}
+                                        </div>
+                                    {% endwith %}
+                                {% endif %}
+                                {% if request|is_accesskey %}
+                                    {% with filter.form.my_measurements as field %}
+                                        <div class="mb-3">
+                                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                            {% include "gcampuscore/forms/components/helptext.html" %}
+                                            {{ field }}
+                                        </div>
+                                    {% endwith %}
+                                {% endif %}
                                 {% with filter.form.location as field %}
                                     <div class="mb-3">
                                         {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
@@ -94,13 +94,27 @@
     </div>
     {% if filter.qs %}
         <div class="container-fluid mt-5">
-
-
-        <div class="list-group mt-4">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">{% translate "Water name" %}</th>
+                <th scope="col">{% translate "Location" %}</th>
+                <th scope="col">{% translate "Name" %}</th>
+                {% comment %}
+                <th scope="col">{% translate "Parameter" %}</th>
+                {% endcomment %}
+                <th scope="col">{% translate "Time" context "measurement time" %}</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
             {% for measurement in object_list %}
-                {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement count=measurement.parameters.count time=measurement.time edit=measurement|can_edit:request %}
+                <div class="list-group mt-4">
+                    {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement edit=measurement|can_edit:request today=today%}
+                </div>
             {% endfor %}
-        </div>
+            </tbody>
+        </table>
     {% else %}
         <h3 class="text-danger text-large">{% translate "No measurements with the desired attributes" %}</h3>
     {% endif %}

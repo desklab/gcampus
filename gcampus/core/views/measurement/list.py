@@ -19,6 +19,8 @@ __all__ = [
 
 from typing import Optional
 
+import datetime
+
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 
@@ -52,6 +54,7 @@ class MeasurementListView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         if "filter" not in kwargs:
             kwargs["filter"] = self.filter
+        kwargs["today"] = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
         return super(MeasurementListView, self).get_context_data(
             object_list=object_list, **kwargs
         )
