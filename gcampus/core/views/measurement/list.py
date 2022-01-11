@@ -15,8 +15,6 @@
 
 __all__ = [
     "MeasurementListView",
-    "PersonalMeasurementListView",
-    "CourseMeasurementListView",
 ]
 
 from typing import Optional

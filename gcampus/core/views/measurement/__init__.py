@@ -44,8 +44,6 @@ from gcampus.core.models import Measurement
 from gcampus.core.views.base import TitleMixin
 from gcampus.core.views.measurement.list import (
     MeasurementListView,
-    PersonalMeasurementListView,
-    CourseMeasurementListView,
 )
 
 
