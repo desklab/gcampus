@@ -19,7 +19,6 @@ from django.core.exceptions import ValidationError, BadRequest
 from django.forms import CharField, BaseForm
 from django.http import HttpRequest
 
-from gcampus.auth import utils
 from gcampus.auth.exceptions import (
     TOKEN_EMPTY_ERROR,
     TOKEN_INVALID_ERROR,
@@ -32,13 +31,17 @@ from gcampus.auth.models.token import (
     get_token_length,
     COURSE_TOKEN_LENGTH,
     ACCESS_KEY_LENGTH,
-    COURSE_TOKEN_TYPE,
-    ACCESS_TOKEN_TYPE,
     ALLOWED_TOKEN_CHARS_RE,
     ALLOWED_TOKEN_CHARS,
+    TokenType,
 )
-from gcampus.auth.widgets import HiddenTokenInput, SplitTokenWidget, SplitKeyWidget, \
-    HyphenatedTokenWidget
+from gcampus.auth.widgets import (
+    HiddenTokenInput,
+    SplitTokenWidget,
+    SplitKeyWidget,
+    HyphenatedTokenWidget,
+)
+from gcampus.auth import session
 
 HIDDEN_TOKEN_FIELD_NAME = "gcampus_auth_token"
 
@@ -155,7 +158,7 @@ class HiddenTokenField(CharField):
 class HyphenatedTokenField(CharField):
     widget = HyphenatedTokenWidget
 
-    def __init__(self, token_type: str, *, segment_length: int = 4, **kwargs):
+    def __init__(self, token_type: TokenType, *, segment_length: int = 4, **kwargs):
         """Hyphenated token field
 
         Form field used when the user has to enter a token. The token
@@ -166,24 +169,24 @@ class HyphenatedTokenField(CharField):
         :param segment_length: Number of characters per segment.
             Defaults to 4.
         """
-        if "minlength" in kwargs:
+        if "min_length" in kwargs:
             raise ValueError(
-                "'HyphenatedTokenField' does not support a custom 'minlength' argument"
+                "'HyphenatedTokenField' does not support a custom 'min_length' argument"
             )
-        if "maxlength" in kwargs:
+        if "max_length" in kwargs:
             raise ValueError(
-                "'HyphenatedTokenField' does not support a custom 'maxlength' argument"
+                "'HyphenatedTokenField' does not support a custom 'max_length' argument"
             )
         self.segment_length = segment_length
         self.length = get_token_length(token_type)
         # Setting the 'minlength' and 'maxlength' keyword arguments here
         # will add their corresponding length validators in the super
         # call
-        kwargs["minlength"] = kwargs["maxlength"] = self.length
+        kwargs["min_length"] = kwargs["max_length"] = self.length
         super(HyphenatedTokenField, self).__init__(**kwargs)
-        if token_type == COURSE_TOKEN_TYPE:
+        if token_type is TokenType.course_token:
             self.validators.append(course_token_exists_validator)
-        elif token_type == ACCESS_TOKEN_TYPE:
+        elif token_type is TokenType.access_key:
             self.validators.append(access_key_exists_validator)
 
     @property
@@ -223,7 +226,7 @@ class HyphenatedTokenField(CharField):
         # Number of allowed characters in the widget is given by the
         # number of characters expected plus the number of hyphens
         attrs["maxlength"] = attrs["minlength"] = self.length + self.segments - 1
-        attrs["pattern"] = "[-%s]{%s}" % (ALLOWED_TOKEN_CHARS, self.length)
+        attrs["pattern"] = "[-%s]{%s}" % ("".join(ALLOWED_TOKEN_CHARS), self.length)
         attrs["data-segment-length"] = self.segment_length
         return attrs
 
@@ -234,7 +237,7 @@ def check_form_and_request_token(form: BaseForm, request: HttpRequest):
             "Form does not provide a hidden token field with the "
             "name 'gcampus.auth.fields.token.HIDDEN_TOKEN_FIELD_NAME'"
         )
-    request_token = utils.get_token(request)
+    request_token = session.get_token(request)
     form_token = form.cleaned_data[HIDDEN_TOKEN_FIELD_NAME]
     if request_token != form_token:
         raise BadRequest()

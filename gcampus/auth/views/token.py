@@ -24,16 +24,16 @@ from typing import Union, Optional
 from urllib.parse import unquote
 
 from django.contrib import messages
+from django.contrib.auth import logout as django_logout, user_logged_out
 from django.core.exceptions import PermissionDenied
 from django.dispatch import receiver
 from django.http import HttpRequest
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.contrib.auth import logout as django_logout, user_logged_out
 from django.utils.translation import gettext_lazy, gettext
 from django.views.generic.edit import FormView
 
-from gcampus.auth import utils
+from gcampus.auth import session
 from gcampus.auth.exceptions import TOKEN_INVALID_ERROR
 from gcampus.auth.forms.token import (
     AccessKeyForm,
@@ -41,7 +41,10 @@ from gcampus.auth.forms.token import (
     TOKEN_FIELD_NAME,
     NEXT_URL_FIELD_NAME,
 )
-from gcampus.auth.models.token import ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE, CourseToken
+from gcampus.auth.models.token import (
+    CourseToken,
+    TokenType,
+)
 from gcampus.core.models.util import EMPTY
 from gcampus.core.views.base import TitleMixin
 
@@ -49,8 +52,8 @@ from gcampus.core.views.base import TitleMixin
 class LoginFormView(TitleMixin, FormView, ABC):
     template_name = "gcampusauth/forms/token.html"
     title = gettext_lazy("Login")
-    token_type: Optional[str] = None
     success_url = reverse_lazy("gcampuscore:mapview")
+    token_type: TokenType  # has to be set by child classes
 
     def get_initial(self):
         """Return the initial data to use for forms on this view."""
@@ -67,20 +70,22 @@ class LoginFormView(TitleMixin, FormView, ABC):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["token_type"] = self.token_type
-        context["is_access_key_form"] = self.token_type == ACCESS_TOKEN_TYPE
-        context["is_course_token_form"] = self.token_type == COURSE_TOKEN_TYPE
+        context["is_access_key_form"] = self.token_type is TokenType.access_key
+        context["is_course_token_form"] = self.token_type is TokenType.course_token
         return context
 
     def form_valid(self, form: Union[AccessKeyForm, CourseTokenForm]):
         if form.is_valid():
             token = form.cleaned_data[TOKEN_FIELD_NAME]
-            if self.token_type == COURSE_TOKEN_TYPE:
-                token_name = CourseToken.objects.get(token=token).token_name
+            course: CourseToken
+            if self.token_type is TokenType.course_token:
+                course = CourseToken.objects.get(token=token)
             else:
-                token_name = None
-            utils.logout(self.request)
-            utils.set_token(self.request, token, self.token_type, token_name)
+                # Token has to be of type 'TokenType.access_key'
+                course = CourseToken.objects.get(access_keys__token=token)
+            token_name = course.token_name
+            session.logout(self.request)
+            session.set_token(self.request, token, self.token_type, token_name)
             next_url = form.cleaned_data[NEXT_URL_FIELD_NAME]
             if next_url not in EMPTY:
                 self.success_url = unquote(form.cleaned_data[NEXT_URL_FIELD_NAME])
@@ -94,13 +99,13 @@ class LoginFormView(TitleMixin, FormView, ABC):
 class AccessKeyLoginFormView(LoginFormView):
     title = gettext_lazy("Login with access key")
     form_class = AccessKeyForm
-    token_type = ACCESS_TOKEN_TYPE
+    token_type = TokenType.access_key
 
 
 class CourseTokenLoginFormView(LoginFormView):
     title = gettext_lazy("Login with course token")
     form_class = CourseTokenForm
-    token_type = COURSE_TOKEN_TYPE
+    token_type = TokenType.course_token
 
 
 @receiver(user_logged_out)

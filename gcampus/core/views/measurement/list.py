@@ -24,9 +24,9 @@ from typing import Optional
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 
-from gcampus.auth import utils
+from gcampus.auth import session
 from gcampus.auth.decorators import require_access_key, require_any_token
-from gcampus.auth.models.token import COURSE_TOKEN_TYPE, CourseToken
+from gcampus.auth.models.token import CourseToken, TokenType
 from gcampus.core.filters import MeasurementFilter
 from gcampus.core.models import Measurement
 
@@ -69,7 +69,7 @@ class PersonalMeasurementListView(ListView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        token = utils.get_token(self.request)
+        token = session.get_token(self.request)
         self.queryset = Measurement.objects.filter(token__token=token)
         return super().get_queryset()
 
@@ -84,12 +84,12 @@ class CourseMeasurementListView(ListView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        token = utils.get_token(self.request)
-        token_type = utils.get_token_type(self.request)
-        if token_type != COURSE_TOKEN_TYPE:
-            course_token = CourseToken.objects.get(access_keys__token=token).token
+        token: str = session.get_token(self.request)
+        token_type: TokenType = session.get_token_type(self.request)
+        if token_type is not TokenType.course_token:
+            course_token: str = CourseToken.objects.get(access_keys__token=token).token
         else:
-            course_token = token
+            course_token: str = token
         self.queryset = Measurement.all_objects.filter(
             token__parent_token__token=course_token
         )

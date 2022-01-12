@@ -14,11 +14,16 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Optional
+import logging
 
 from django.http import HttpRequest
 
+from gcampus.auth.models.token import TokenType
+
 TOKEN_STORE = "gcampusauth_token"
 AUTHENTICATION_BOOLEAN = "gcampusauth_authenticated"
+
+logger = logging.getLogger("gcampus.auth.session")
 
 
 def get_token(request: HttpRequest, default: str = None) -> Optional[str]:
@@ -27,9 +32,17 @@ def get_token(request: HttpRequest, default: str = None) -> Optional[str]:
     return default
 
 
-def get_token_type(request: HttpRequest, default: str = None) -> Optional[str]:
+def get_token_type(request: HttpRequest, default: str = None) -> Optional[TokenType]:
     if TOKEN_STORE in request.session:
-        return request.session[TOKEN_STORE].get("token_type", default)
+        token_type = request.session[TOKEN_STORE].get("token_type", default)
+        try:
+            # get the token type with matching value
+            return TokenType(token_type)
+        except ValueError:
+            logger.warning(
+                f"Invalid token type: '{token_type}'. Return default value instead."
+            )
+            return default
     return default
 
 
@@ -43,14 +56,16 @@ def is_authenticated(request: HttpRequest) -> bool:
     return request.session.get(AUTHENTICATION_BOOLEAN, False)
 
 
-def set_token(request: HttpRequest, token: str, token_type: str, token_name):
+def set_token(request: HttpRequest, token: str, token_type: TokenType, token_name):
     set_token_session(request.session, token, token_type, token_name)
 
 
-def set_token_session(session, token: str, token_type: str, token_name: str):
+def set_token_session(session, token: str, token_type: TokenType, token_name: str):
     session[TOKEN_STORE] = {
         "token": token,
-        "token_type": token_type,
+        # the 'value' attribute gives a string representation of the
+        # token type
+        "token_type": token_type.value,
         "token_name": token_name,
     }
     session[AUTHENTICATION_BOOLEAN] = True

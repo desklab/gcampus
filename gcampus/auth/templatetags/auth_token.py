@@ -25,16 +25,12 @@ from django.template.base import token_kwargs
 from django.utils.html import format_html
 from django_filters.constants import EMPTY_VALUES
 
-from gcampus.auth import utils
+from gcampus.auth import session
 from gcampus.auth.exceptions import TOKEN_EMPTY_ERROR
 from gcampus.auth.models.token import (
     can_token_edit_measurement,
-    COURSE_TOKEN_LENGTH,
-    COURSE_TOKEN_TYPE,
-    ACCESS_TOKEN_TYPE,
-    ACCESS_KEY_LENGTH,
+    TokenType, get_token_type_from_token,
 )
-from gcampus.auth.utils import get_token, get_token_type
 from gcampus.core.models import Measurement
 
 register = template.Library()
@@ -49,7 +45,7 @@ class AuthTokenNode(Node):
     def render(self, context):
         if "request" not in context:
             raise ValueError("Unable to find 'request' in template context!")
-        token = utils.get_token(context.request)
+        token = session.get_token(context.request)
         if token in EMPTY_VALUES or token == "None":
             raise PermissionDenied(TOKEN_EMPTY_ERROR)
         if self.prefix_token is not None:
@@ -69,13 +65,13 @@ class AuthTokenNode(Node):
 @register.simple_tag(takes_context=True)
 def save_token(context: Context) -> str:
     request: HttpRequest = context["request"]
-    return get_token(request)
+    return session.get_token(request)
 
 
 @register.simple_tag(takes_context=True)
 def save_token_type(context: Context) -> str:
     request: HttpRequest = context["request"]
-    return get_token_type(request)
+    return session.get_token_type(request).value
 
 
 @register.tag
@@ -113,10 +109,10 @@ def can_edit(measurement: Measurement, request: HttpRequest) -> bool:
     :returns: Boolean whether or not the current user is allowed to edit
         the provided measurement.
     """
-    token = get_token(request)
+    token = session.get_token(request)
     if token is None:
         return False
-    token_type = get_token_type(request)
+    token_type: TokenType = session.get_token_type(request)
     return can_token_edit_measurement(token, measurement, token_type=token_type)
 
 
@@ -138,14 +134,7 @@ def displaytoken(
     toggle: bool = False,
 ) -> dict:
     token_length: int = len(token)
-    token_type: str
-
-    if token_length == COURSE_TOKEN_LENGTH:
-        token_type = COURSE_TOKEN_TYPE
-    elif token_length == ACCESS_KEY_LENGTH:
-        token_type = ACCESS_TOKEN_TYPE
-    else:
-        raise ValueError(f"Unknown token type ({token_length} characters)")
+    token_type: TokenType = get_token_type_from_token(token)
 
     # Generate the HTML for the token
     token_html: List[str] = [_wrap_token_character(c) for c in token]
@@ -159,7 +148,7 @@ def displaytoken(
     token_hidden_html = (
         token_hidden_html[:4] + [_html_token_separator] + token_hidden_html[4:]
     )
-    if token_type == COURSE_TOKEN_TYPE:
+    if token_type is TokenType.course_token:
         # Add second separator for the course token
         token_html = token_html[:9] + [_html_token_separator] + token_html[9:]
         token_hidden_html = (
@@ -168,7 +157,6 @@ def displaytoken(
 
     return {
         "token": token,
-        "token_type": token_type,
         "token_html": "".join(token_html),
         "token_hidden_html": "".join(token_hidden_html),
         "css_class": css_class,

@@ -13,6 +13,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import enum
 import logging
 import re
 from typing import Union, Optional, Tuple, Type
@@ -34,16 +35,22 @@ ALLOWED_TOKEN_CHARS_RE = re.compile(
     r"^[{chars:s}]*$".format(chars="".join(ALLOWED_TOKEN_CHARS))
 )
 
-ACCESS_TOKEN_TYPE = "access"
+ACCESS_KEY_TYPE = "access"
 COURSE_TOKEN_TYPE = "course"
+
+
+@enum.unique
+class TokenType(enum.Enum):
+    """Token type"""
+    access_key = ACCESS_KEY_TYPE
+    course_token = COURSE_TOKEN_TYPE
+
 
 COURSE_TOKEN_LENGTH = getattr(settings, "COURSE_TOKEN_LENGTH", 12)
 ACCESS_KEY_LENGTH = getattr(settings, "ACCESS_KEY_LENGTH", 8)
 
-
 # Course updated signals are used to indicate changes
 course_updated = Signal()
-
 
 logger = logging.getLogger("gcampus.auth.models.token")
 
@@ -216,14 +223,17 @@ def update_course(
 AnyToken = Union[AccessKey, CourseToken]
 
 
-def get_any_token_class(token, token_type: Optional[str] = None) -> Optional[AnyToken]:
-    if not token_type == COURSE_TOKEN_TYPE:
+def get_any_token_class(
+    token: str, token_type: Optional[TokenType] = None
+) -> Optional[AnyToken]:
+    # TODO use 'get_token_type_from_token' instead
+    if token_type is not TokenType.course_token:
         try:
             return AccessKey.objects.get(token=token)
         except AccessKey.DoesNotExist:
             pass
     # Try the same with a course token
-    if not token_type == ACCESS_TOKEN_TYPE:
+    if token_type is not TokenType.access_key:
         try:
             return CourseToken.objects.get(token=token)
         except CourseToken.DoesNotExist:
@@ -233,7 +243,7 @@ def get_any_token_class(token, token_type: Optional[str] = None) -> Optional[Any
 
 
 def get_token_and_create_permission(
-    token: str, token_type: Optional[str] = None
+    token: str, token_type: Optional[TokenType] = None
 ) -> Tuple[Optional[AnyToken], bool]:
     token_instance = get_any_token_class(token, token_type=token_type)
     if token_instance is None:
@@ -245,13 +255,15 @@ def get_token_and_create_permission(
         return token_instance, False
 
 
-def can_token_create_measurement(token: str, token_type: Optional[str] = None) -> bool:
+def can_token_create_measurement(
+    token: str, token_type: Optional[TokenType] = None
+) -> bool:
     _token, permission = get_token_and_create_permission(token, token_type=token_type)
     return permission
 
 
 def can_token_edit_measurement(
-    token: str, measurement: Measurement, token_type: Optional[str] = None
+    token: str, measurement: Measurement, token_type: Optional[TokenType] = None
 ) -> bool:
     token_instance = get_any_token_class(token, token_type=token_type)
     if token_instance is None:
@@ -275,30 +287,37 @@ def can_token_edit_measurement(
     )
 
 
-def check_token_type(token_type: str) -> None:
-    """Check token type
-
-    Raises an exception if the provided token type is invalid.
-
-    :param token_type: A string that is checked against
-        :attr:`.ACCESS_TOKEN_TYPE` and :attr:`.COURSE_TOKEN_TYPE`
-    :raises ValueError: If the provided token type is invalid
-    """
-    if token_type not in [ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE]:
-        raise ValueError(f"Invalid token type: '{token_type}'")
-
-
-def get_token_length(token_type: str):
+def get_token_length(token_type: TokenType):
     """Get token length
 
     :param token_type: Type of the token
-    :return: Length of the token
+    :returns: Length of the token
     :rtype: int
     :raises ValueError: If the provided token type is invalid
     """
-    check_token_type(token_type)
-    if token_type == ACCESS_TOKEN_TYPE:
+    if token_type == TokenType.access_key:
         return ACCESS_KEY_LENGTH
     else:
         # Token must be a course token
         return COURSE_TOKEN_LENGTH
+
+
+def get_token_type_from_token(token: str) -> TokenType:
+    """Token type determined from token string
+
+    Guess the token type by comparing the length of the provided string
+    with expected token length.
+
+    :param token: Token string
+    :returns: Token type of the provided string
+    :rtype: TokenType
+    :raises ValueError: Token type can not be determined (i.e. invalid
+        token length).
+    """
+    token_length: int = len(token)
+    if token_length == COURSE_TOKEN_LENGTH:
+        return TokenType.course_token
+    elif token_length == ACCESS_KEY_LENGTH:
+        return TokenType.access_key
+    else:
+        raise ValueError(f"Unknown token type ({token_length} characters)")

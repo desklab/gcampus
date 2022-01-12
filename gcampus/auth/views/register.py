@@ -26,9 +26,9 @@ from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 from django.views.generic import CreateView
 
-from gcampus.auth import utils
+from gcampus.auth import session
 from gcampus.auth.forms.token import RegisterForm
-from gcampus.auth.models.token import AccessKey, COURSE_TOKEN_TYPE
+from gcampus.auth.models.token import AccessKey, TokenType
 from gcampus.auth.tasks import send_registration_email
 from gcampus.core.views.base import TitleMixin
 
@@ -60,8 +60,10 @@ class RegisterFormView(TitleMixin, CreateView):
             ),
         )
         # Login with course token
-        utils.set_token(
-            self.request, self.object.token, COURSE_TOKEN_TYPE, self.object.token_name
+        session.set_token(
+            self.request,
+            self.object.token,
+            TokenType.course_token,
+            self.object.token_name
         )
-        # return super(FormMixin, self).form_valid(form)
         return HttpResponseRedirect(self.get_success_url())

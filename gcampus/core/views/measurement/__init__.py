@@ -27,13 +27,12 @@ from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from gcampus.auth import utils, exceptions
+from gcampus.auth import session, exceptions
 from gcampus.auth.fields.token import check_form_and_request_token
 from gcampus.auth.models.token import (
-    COURSE_TOKEN_TYPE,
-    can_token_edit_measurement,
+    can_token_edit_measurement, TokenType,
 )
-from gcampus.auth.utils import is_authenticated, get_token, get_token_type
+from gcampus.auth.session import is_authenticated, get_token, get_token_type
 from gcampus.core.decorators import (
     require_permission_create_measurement,
     require_permission_edit_measurement,
@@ -150,12 +149,12 @@ class HiddenCourseMeasurementListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         # Check if a token is provided
-        token = utils.get_token(self.request)
+        token = session.get_token(self.request)
         if token is None:
             raise PermissionDenied(exceptions.TOKEN_EMPTY_ERROR)
         # Check if provided token is actually a course token
-        token_type = utils.get_token_type(self.request)
-        if token_type != COURSE_TOKEN_TYPE:
+        token_type = session.get_token_type(self.request)
+        if token_type is not TokenType.course_token:
             raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
         course_measurements = Measurement.all_objects.filter(
             token__parent_token__token=token, hidden=True
