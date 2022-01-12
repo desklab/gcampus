@@ -36,6 +36,7 @@
                     {# Token #}
                     {% with form.token as field %}
                         <div class="mb-3">
+                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
                             {{ field }}
                             {% if field.errors %}
                                 <small class="text-danger">{{ field.errors }}</small>
@@ -64,5 +65,5 @@
     {% if authenticated %}
         {% displaytoken_js %}
     {% endif %}
-    <script type="text/javascript" src="{% static 'gcampuscore/js/autofocus.js' %}"></script>
+    {% include "gcampusauth/js/token_input.html" %}
 {% endblock %}

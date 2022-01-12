@@ -156,6 +156,7 @@ class HiddenTokenField(CharField):
 
 
 class HyphenatedTokenField(CharField):
+    PLACEHOLDER_CHAR: str = "*"
     widget = HyphenatedTokenWidget
 
     def __init__(self, token_type: TokenType, *, segment_length: int = 4, **kwargs):
@@ -177,6 +178,7 @@ class HyphenatedTokenField(CharField):
             raise ValueError(
                 "'HyphenatedTokenField' does not support a custom 'max_length' argument"
             )
+        self.token_type = token_type
         self.segment_length = segment_length
         self.length = get_token_length(token_type)
         # Setting the 'minlength' and 'maxlength' keyword arguments here
@@ -193,6 +195,10 @@ class HyphenatedTokenField(CharField):
     def segments(self) -> int:
         """Number of segments"""
         return self.length // self.segment_length
+
+    @property
+    def placeholder(self) -> str:
+        return self.hyphenate(self.PLACEHOLDER_CHAR * self.length, self.segment_length)
 
     def bound_data(self, data, initial):
         bound_data = super(HyphenatedTokenField, self).bound_data(data, initial)
@@ -226,8 +232,13 @@ class HyphenatedTokenField(CharField):
         # Number of allowed characters in the widget is given by the
         # number of characters expected plus the number of hyphens
         attrs["maxlength"] = attrs["minlength"] = self.length + self.segments - 1
-        attrs["pattern"] = "[-%s]{%s}" % ("".join(ALLOWED_TOKEN_CHARS), self.length)
+        # The pattern is not used for now. Validation is handled by
+        # the backend as browsers do not properly display error messages
+        # for invalid patterns.
+        # attrs["pattern"] = "[-%s]{%s}" % ("".join(ALLOWED_TOKEN_CHARS), self.length)
         attrs["data-segment-length"] = self.segment_length
+        attrs["data-token-type"] = self.token_type.value
+        attrs["placeholder"] = self.placeholder
         return attrs
 
 

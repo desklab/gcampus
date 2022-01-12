@@ -1,0 +1,23 @@
+<script type="text/javascript">
+    let inputElements = document.getElementsByClassName('token-field');
+    for (let i = 0; i < inputElements.length; i++) {
+        let el = inputElements[i];
+        let maxlength = el.getAttribute("maxlength");
+        let segmentLength = Number(el.getAttribute("data-segment-length"));
+        let regex = new RegExp('.{1,' + String(segmentLength) + '}', 'g');
+        el.addEventListener('input', function (event) {
+            // Upper case and remove hyphens
+            if (this.value === '')
+                return
+            let _val = this.value
+                .split('-')
+                .join('')
+                .toUpperCase()
+                .match(regex)
+                .join('-');
+            if (_val.length > maxlength)
+                _val = _val.slice(0, maxlength);
+            this.value = _val;
+        });
+    }
+</script>
