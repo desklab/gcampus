@@ -57,7 +57,7 @@
                                         {{ field }}
                                     </div>
                                 {% endwith %}
-                                {% if request|is_coursetoken or request|is_accesskey %}
+                                {% if user_token_is_access_key or user_token_is_course_token %}
                                     {% with filter.form.my_course as field %}
                                         <div class="mb-3">
                                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
@@ -66,7 +66,7 @@
                                         </div>
                                     {% endwith %}
                                 {% endif %}
-                                {% if request|is_accesskey %}
+                                {% if user_token_is_access_key %}
                                     {% with filter.form.my_measurements as field %}
                                         <div class="mb-3">
                                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
