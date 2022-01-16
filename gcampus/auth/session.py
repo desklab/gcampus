@@ -51,11 +51,6 @@ def get_token_name(request: HttpRequest, default: str = None) -> Optional[str]:
         return request.session[TOKEN_STORE].get("token_name", default)
     return default
 
-def get_parent_token(accesskey, default: str = None) -> Optional[str]:
-    if accesskey is not None:
-        return CourseToken.objects.get(access_keys__token=accesskey).token
-    return default
-
 
 def is_authenticated(request: HttpRequest) -> bool:
     return request.session.get(AUTHENTICATION_BOOLEAN, False)

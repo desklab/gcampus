@@ -13,7 +13,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 
 from django.conf import settings
 from django.contrib.gis.geos import Point
@@ -22,6 +22,7 @@ from django.contrib.postgres.search import SearchQuery
 from django.core.validators import EMPTY_VALUES
 from django.db.models import QuerySet
 from django.forms import CheckboxSelectMultiple, BooleanField
+from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 from django_filters import (
     Filter,
@@ -31,12 +32,23 @@ from django_filters import (
     ModelMultipleChoiceFilter, BooleanFilter,
 )
 
-from gcampus.auth import utils
-from gcampus.auth.models.token import COURSE_TOKEN_TYPE, ACCESS_TOKEN_TYPE
-from gcampus.auth.utils import get_parent_token
+from gcampus.auth import session
+from gcampus.auth.exceptions import UnauthenticatedError, TokenPermissionError
+from gcampus.auth.models.token import TokenType
 from gcampus.core.fields import SplitSplitDateTimeField, LocationRadiusField
 from gcampus.core.models import ParameterType
 from gcampus.core.models.util import EMPTY
+
+
+def _get_filter_request(filter_instance: Filter) -> Optional[HttpRequest]:
+    if not hasattr(filter_instance, "parent"):
+        # No parent instance found, return None instead
+        return None
+    parent_filter_set: MeasurementFilter = getattr(filter_instance, "parent")
+    if parent_filter_set is not None:
+        return parent_filter_set.request
+    else:
+        return None
 
 
 class SplitDateTimeFilter(DateTimeFilter):
@@ -48,30 +60,58 @@ class MyCourseFilter(BooleanFilter):
 
     def filter(self, qs, value):
         if value:
-            if self.parent.request is None:
+            request: HttpRequest = _get_filter_request(self)
+            if request is None:
                 return qs
+            elif not session.is_authenticated(request):
+                raise UnauthenticatedError()
             else:
-                token = utils.get_token(self.parent.request)
-                token_type = utils.get_token_type(self.parent.request)
-                if token_type == ACCESS_TOKEN_TYPE:
-                    token = get_parent_token(token)
-                qs = self.get_method(qs)(token__parent_token__token=token)
+                token = session.get_token(request)
+                token_type = session.get_token_type(request)
+                if token_type is TokenType.access_key:
+                    # This complicated query filters all measurements
+                    # 1. that belong to a token
+                    #   2. which belongs to a specific parent token
+                    #     3. that has an access key
+                    #       4. matching with the current access key.
+                    qs = self.get_method(qs)(
+                        token__parent_token__access_keys__token=token
+                    )
+                else:
+                    qs = self.get_method(qs)(token__parent_token__token=token)
         return qs
 
 
 class MyMeasurementsFilter(BooleanFilter):
+    """Filter all personal measurements
+
+    This filter only returns measurements that have been created with
+    the access key of the current user. Consequently, this filter is
+    only available to users logged in with an access key.
+    """
 
     field_class = BooleanField
 
-    def filter(self, qs, value):
+    def filter(self, qs, value: bool):
+        """Apply filter
+
+        :param qs: Current query set. Previous filters might be applied
+            already.
+        :param value: Whether to filter only personal measurements
+        :raises UnauthenticatedError: User not authenticated
+        :raises TokenPermissionError: Not an access key
+        """
         if value:
-            if self.parent.request is None:
+            request: HttpRequest = _get_filter_request(self)
+            if request is None:
                 return qs
+            elif not session.is_authenticated(request):
+                raise UnauthenticatedError()
+            elif session.get_token_type(request) is not TokenType.access_key:
+                raise TokenPermissionError()
             else:
-                token = utils.get_token(self.parent.request)
-                token_type = utils.get_token_type(self.parent.request)
-                if token_type == ACCESS_TOKEN_TYPE:
-                    qs = self.get_method(qs)(token__token=token)
+                token = session.get_token(request)
+                qs = self.get_method(qs)(token__token=token)
         return qs
 
 
@@ -118,7 +158,6 @@ class GeolocationFilter(Filter):
 
 
 class MeasurementFilter(FilterSet):
-
     name = CharFilter(
         field_name="name",
         lookup_expr="icontains",

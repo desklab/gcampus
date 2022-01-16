@@ -19,14 +19,9 @@ __all__ = [
 
 from typing import Optional
 
-import datetime
-
-from django.utils.decorators import method_decorator
+from django.utils import timezone
 from django.views.generic import ListView
 
-from gcampus.auth import session
-from gcampus.auth.decorators import require_access_key, require_any_token
-from gcampus.auth.models.token import CourseToken, TokenType
 from gcampus.core.filters import MeasurementFilter
 from gcampus.core.models import Measurement
 
@@ -35,7 +30,7 @@ class MeasurementListView(ListView):
     template_name = "gcampuscore/sites/list/measurement_list.html"
     model = Measurement
     context_object_name = "measurement_list"
-    #paginate_by = 10
+    # paginate_by = 10
 
     def __init__(self, *args, **kwargs):
         self.filter: Optional[MeasurementFilter] = None
@@ -54,7 +49,7 @@ class MeasurementListView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         if "filter" not in kwargs:
             kwargs["filter"] = self.filter
-        kwargs["today"] = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
+        kwargs["today"] = timezone.now()
         return super(MeasurementListView, self).get_context_data(
             object_list=object_list, **kwargs
         )
