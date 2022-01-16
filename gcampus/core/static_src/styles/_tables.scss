@@ -18,6 +18,12 @@
 @import "variables";
 
 th {
-  font-size: small;
-  font-weight: bold;
+  font-size: 0.85 * $font-size-sm;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  color: $gray-800;
+}
+
+tbody {
+  border-top-width: $table-border-width !important;
 }
