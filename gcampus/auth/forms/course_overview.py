@@ -17,7 +17,7 @@ from django import forms
 from django.conf import settings
 
 from gcampus.auth.fields.token import (
-    TokenField,
+    HiddenTokenField,
     course_token_exists_validator,
     HIDDEN_TOKEN_FIELD_NAME,
 )
@@ -35,7 +35,7 @@ class GenerateAccessKeysForm(forms.Form):
 
 
 class CourseOverviewForm(forms.ModelForm):
-    gcampus_auth_token = TokenField(validators=[course_token_exists_validator])
+    gcampus_auth_token = HiddenTokenField(validators=[course_token_exists_validator])
 
     class Meta:
         model = CourseToken

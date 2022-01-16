@@ -34,7 +34,7 @@ from gcampus.auth.exceptions import (
     TOKEN_CREATE_PERMISSION_ERROR,
     TOKEN_EDIT_PERMISSION_ERROR,
 )
-from gcampus.auth.fields.token import TokenField, HIDDEN_TOKEN_FIELD_NAME
+from gcampus.auth.fields.token import HiddenTokenField, HIDDEN_TOKEN_FIELD_NAME
 from gcampus.auth.models.token import (
     can_token_edit_measurement,
     get_token_and_create_permission,
@@ -45,7 +45,7 @@ from gcampus.map.widgets import GeoPointWidget
 
 
 class MeasurementForm(ModelForm):
-    gcampus_auth_token = TokenField()
+    gcampus_auth_token = HiddenTokenField()
 
     class Meta:
         model = Measurement
@@ -155,7 +155,7 @@ class ParameterForm(ModelForm):
 
 class TokenManagementForm(ManagementForm):
     def __init__(self, *args, **kwargs):
-        self.base_fields[HIDDEN_TOKEN_FIELD_NAME] = TokenField()
+        self.base_fields[HIDDEN_TOKEN_FIELD_NAME] = HiddenTokenField()
         super().__init__(*args, **kwargs)
 
     def check_permission(self, measurement: Measurement) -> bool:

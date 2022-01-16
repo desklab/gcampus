@@ -15,7 +15,7 @@
 
 from abc import ABC
 from datetime import datetime
-from typing import List, Union
+from typing import Optional
 from unittest.mock import patch
 
 from django.core.validators import MaxLengthValidator, MinLengthValidator
@@ -30,14 +30,28 @@ from gcampus.auth.exceptions import (
     COURSE_TOKEN_DEACTIVATED_ERROR,
     ACCESS_KEY_DEACTIVATED_ERROR,
 )
+from gcampus.auth.fields.token import HyphenatedTokenField
 from gcampus.auth.forms.token import TOKEN_FIELD_NAME, RegisterForm
 from gcampus.auth.models import CourseToken, AccessKey
-from gcampus.auth.models.token import COURSE_TOKEN_LENGTH, ACCESS_KEY_LENGTH, \
-    COURSE_TOKEN_TYPE
-from gcampus.auth.utils import set_token_session
-from gcampus.auth.widgets import split_token_chunks
+from gcampus.auth.models.token import COURSE_TOKEN_LENGTH, ACCESS_KEY_LENGTH, TokenType
+from gcampus.auth.session import set_token_session
 from gcampus.documents.tasks import render_cached_document_view
 from gcampus.tasks.tests.utils import BaseMockTaskTest
+
+
+class MiscellaneousAuthTest(BaseMockTaskTest):
+    def test_hyphenation(self):
+        value = HyphenatedTokenField.hyphenate("ABCDEF", 4)
+        self.assertEqual(value, "ABCD-EF")
+        # Existing correct hyphens
+        value_2 = HyphenatedTokenField.hyphenate("ABCD-EF", 4)
+        self.assertEqual(value_2, "ABCD-EF")
+        # Value too short
+        value_3 = HyphenatedTokenField.hyphenate("ABC", 4)
+        self.assertEqual(value_3, "ABC")
+        # Only hyphens
+        value_3 = HyphenatedTokenField.hyphenate("---------", 4)
+        self.assertEqual(value_3, "")
 
 
 class BaseAuthTest(BaseMockTaskTest, ABC):
@@ -84,16 +98,10 @@ class BaseTokenKeyTest(BaseAuthTest, ABC):
     def get_login_url(self) -> str:
         raise NotImplementedError()
 
-    def login(self, token: Union[str, List[str]]):
-        if isinstance(token, str):
-            token_chunks = split_token_chunks(token)
-        elif isinstance(token, list):
-            token_chunks = token
-        else:
-            raise ValueError("Expected string or list of strings")
+    def login(self, token: Optional[str]):
         login_response = self.client.post(
             reverse(self.get_login_url()),
-            {f"token_{i}": chunk for i, chunk in enumerate(token_chunks)},
+            {"token": token},
         )
         return login_response
 
@@ -116,7 +124,8 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
 
     def test_valid_extended_token(self):
         token = self.tokens[0].token
-        login_response = self.login([token[:4], token[4:] + "0"])
+        token_hyphenated = HyphenatedTokenField.hyphenate(token, 4)
+        login_response = self.login(f"{token_hyphenated}0")
         self.assertEqual(login_response.status_code, 200)
         error_message_max_len = MaxLengthValidator.message % {
             "limit_value": ACCESS_KEY_LENGTH,
@@ -127,7 +136,7 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
 
     def test_course_token(self):
         token = self.parent_token.token
-        login_response = self.login([token[:4], token[4:]])
+        login_response = self.login(HyphenatedTokenField.hyphenate(token, 4))
         self.assertEqual(login_response.status_code, 200)
         error_message_max_len = MaxLengthValidator.message % {
             "limit_value": ACCESS_KEY_LENGTH,
@@ -141,7 +150,7 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
         _token.deactivated = True
         try:
             _token.save()
-            login_response = self.login(_token.token)
+            login_response = self.login(HyphenatedTokenField.hyphenate(_token.token, 4))
             self.assertEqual(login_response.status_code, 200)
             error_dict = {TOKEN_FIELD_NAME: [ACCESS_KEY_DEACTIVATED_ERROR]}
             self.check_form_errors(login_response, error_dict)
@@ -150,7 +159,7 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
             _token.save()
 
     def test_empty_token(self):
-        login_response = self.login(["", ""])
+        login_response = self.login("-")
         self.assertEqual(login_response.status_code, 200)
         self.check_form_errors(
             login_response,
@@ -158,7 +167,7 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
         )
 
     def test_missing_token_field(self):
-        login_response = self.login([""])
+        login_response = self.login("")
         self.assertEqual(login_response.status_code, 200)
         self.check_form_errors(
             login_response,
@@ -166,7 +175,7 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
         )
 
     def test_empty_token_field(self):
-        login_response = self.login(["ABCD", ""])
+        login_response = self.login("ABCD-")
         self.assertEqual(login_response.status_code, 200)
         error_message_max_len = MinLengthValidator.message % {
             "limit_value": ACCESS_KEY_LENGTH,
@@ -185,7 +194,8 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
         self.assertEqual(login_response.status_code, 302)
 
     def test_invalid_token(self):
-        login_response = self.login("0" * COURSE_TOKEN_LENGTH)
+        zero_token: str = HyphenatedTokenField.hyphenate("0" * COURSE_TOKEN_LENGTH, 4)
+        login_response = self.login(zero_token)
         # Should return 200 but contain errors
         self.assertEqual(login_response.status_code, 200)
         self.check_form_errors(
@@ -194,7 +204,8 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
 
     def test_valid_extended_token(self):
         token = self.parent_token.token
-        login_response = self.login([token[:4], token[4:8], token[8:] + "0"])
+        token_hyphenated = HyphenatedTokenField.hyphenate(token, 4)
+        login_response = self.login(f"{token_hyphenated}-0")
         self.assertEqual(login_response.status_code, 200)
         error_message_max_len = MaxLengthValidator.message % {
             "limit_value": COURSE_TOKEN_LENGTH,
@@ -205,7 +216,7 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
 
     def test_access_key(self):
         token = self.tokens[0].token
-        login_response = self.login([token[:4], token[4:], ""])
+        login_response = self.login(HyphenatedTokenField.hyphenate(token, 4))
         self.assertEqual(login_response.status_code, 200)
         error_message_max_len = MinLengthValidator.message % {
             "limit_value": COURSE_TOKEN_LENGTH,
@@ -227,7 +238,7 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
             self.parent_token.save()
 
     def test_empty_token(self):
-        login_response = self.login(["", "", ""])
+        login_response = self.login("---")
         self.assertEqual(login_response.status_code, 200)
         self.check_form_errors(
             login_response,
@@ -235,7 +246,7 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
         )
 
     def test_missing_token_field(self):
-        login_response = self.login([""])
+        login_response = self.login("")
         self.assertEqual(login_response.status_code, 200)
         self.check_form_errors(
             login_response,
@@ -243,7 +254,7 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
         )
 
     def test_empty_token_field(self):
-        login_response = self.login(["ABCD", "", ""])
+        login_response = self.login("ABCD--")
         self.assertEqual(login_response.status_code, 200)
         error_message_max_len = MinLengthValidator.message % {
             "limit_value": COURSE_TOKEN_LENGTH,
@@ -308,7 +319,7 @@ class CourseTokenTasksTest(BaseMockTaskTest):
         course.save()
         session = self.client.session
         set_token_session(
-            session, course.token, COURSE_TOKEN_TYPE, course.token_name
+            session, course.token, TokenType.course_token, course.token_name
         )
         session.save()
         with patch.object(render_cached_document_view, "apply_async") as mock:
@@ -331,7 +342,7 @@ class CourseTokenTasksTest(BaseMockTaskTest):
         course, tokens = self.generate_course(5)
         session = self.client.session
         set_token_session(
-            session, course.token, COURSE_TOKEN_TYPE, course.token_name
+            session, course.token, TokenType.course_token, course.token_name
         )
         session.save()
         with patch.object(render_cached_document_view, "apply_async") as mock:

@@ -17,23 +17,17 @@ import logging
 
 from django import forms
 from django.conf import settings
-from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db.models.signals import post_save
 from django.forms import CharField
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.auth.fields.token import (
-    access_key_exists_validator,
-    course_token_exists_validator,
-    SplitTokenField,
-    SplitKeyField,
+    HyphenatedTokenField,
 )
 from gcampus.auth.models.token import (
-    ACCESS_KEY_LENGTH,
-    COURSE_TOKEN_LENGTH,
     CourseToken,
     update_access_key_documents,
-    AccessKey,
+    AccessKey, TokenType,
 )
 
 logger = logging.getLogger("gcampus.auth.forms.token")
@@ -43,14 +37,8 @@ NEXT_URL_FIELD_NAME = "next_url"
 
 
 class AccessKeyForm(forms.Form):
-    token = SplitKeyField(
-        required=True,
-        label=_("Access key"),
-        validators=[
-            access_key_exists_validator,
-            MaxLengthValidator(ACCESS_KEY_LENGTH),
-            MinLengthValidator(ACCESS_KEY_LENGTH),
-        ],
+    token = HyphenatedTokenField(
+        TokenType.access_key, required=True, label=_("Access key")
     )
     next_url = CharField(required=False, max_length=255, widget=forms.HiddenInput())
 
@@ -58,14 +46,8 @@ class AccessKeyForm(forms.Form):
 
 
 class CourseTokenForm(forms.Form):
-    token = SplitTokenField(
-        required=True,
-        label=_("Course token"),
-        validators=[
-            course_token_exists_validator,
-            MaxLengthValidator(COURSE_TOKEN_LENGTH),
-            MinLengthValidator(COURSE_TOKEN_LENGTH),
-        ],
+    token = HyphenatedTokenField(
+        TokenType.course_token, required=True, label=_("Course token")
     )
     next_url = CharField(required=False, max_length=255, widget=forms.HiddenInput())
 

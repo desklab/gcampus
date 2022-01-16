@@ -24,9 +24,9 @@ import datetime
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 
-from gcampus.auth import utils
+from gcampus.auth import session
 from gcampus.auth.decorators import require_access_key, require_any_token
-from gcampus.auth.models.token import COURSE_TOKEN_TYPE, CourseToken
+from gcampus.auth.models.token import CourseToken, TokenType
 from gcampus.core.filters import MeasurementFilter
 from gcampus.core.models import Measurement
 

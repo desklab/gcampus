@@ -18,7 +18,7 @@ from functools import wraps
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 
-from gcampus.auth import utils
+from gcampus.auth import session
 from gcampus.auth.exceptions import (
     TokenEditPermissionError,
     TokenCreatePermissionError,
@@ -34,13 +34,13 @@ from gcampus.core.models import Measurement
 def require_permission_create_measurement(f):
     @wraps(f)
     def wrapper(request: HttpRequest, *args, **kwargs):
-        if not utils.is_authenticated(request):
+        if not session.is_authenticated(request):
             # Handle unauthenticated users.
             # This assumes that all unauthenticated users do not have
             # the permission to create a measurement.
             raise UnauthenticatedError()
-        token = utils.get_token(request)
-        token_type = utils.get_token_type(request)
+        token = session.get_token(request)
+        token_type = session.get_token_type(request)
         if not can_token_create_measurement(token, token_type=token_type):
             raise TokenCreatePermissionError()
         return f(request, *args, **kwargs)
@@ -51,13 +51,13 @@ def require_permission_create_measurement(f):
 def require_permission_edit_measurement(f):
     @wraps(f)
     def wrapper(request: HttpRequest, pk: int, *args, **kwargs):
-        if not utils.is_authenticated(request):
+        if not session.is_authenticated(request):
             # Handle unauthenticated users.
             # This assumes that all unauthenticated users do not have
             # the permission to edit a measurement.
             raise UnauthenticatedError()
-        token = utils.get_token(request)
-        token_type = utils.get_token_type(request)
+        token = session.get_token(request)
+        token_type = session.get_token_type(request)
         measurement: Measurement = get_object_or_404(Measurement, id=pk)
         if not can_token_edit_measurement(token, measurement, token_type=token_type):
             raise TokenEditPermissionError()

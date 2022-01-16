@@ -24,7 +24,7 @@ from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy
 
-from gcampus.auth import utils
+from gcampus.auth import session
 from gcampus.auth.decorators import require_course_token
 from gcampus.auth.models import CourseToken
 from gcampus.core.models import Measurement

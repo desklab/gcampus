@@ -18,27 +18,27 @@ from typing import Union, List
 
 from django.http import HttpRequest
 
-from gcampus.auth import utils
+from gcampus.auth import session
 from gcampus.auth.exceptions import (
     UnauthenticatedError,
     TokenPermissionError,
     TokenEmptyError,
 )
-from gcampus.auth.models.token import ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE
+from gcampus.auth.models.token import TokenType
 from gcampus.core.models.util import EMPTY
 
 
-def require_token_type(token_type: Union[str, List[str]]):
+def require_token_type(token_type: Union[TokenType, List[TokenType]]):
     if isinstance(token_type, str):
         token_type = [token_type]
 
     def decorator(f):
         @wraps(f)
         def wrapper(request: HttpRequest, *args, **kwargs):
-            if not utils.is_authenticated(request):
+            if not session.is_authenticated(request):
                 raise UnauthenticatedError()
-            request_token = utils.get_token(request)
-            request_token_type = utils.get_token_type(request)
+            request_token = session.get_token(request)
+            request_token_type = session.get_token_type(request)
             if request_token in EMPTY:
                 raise TokenEmptyError()
             if request_token_type not in token_type:
@@ -50,6 +50,6 @@ def require_token_type(token_type: Union[str, List[str]]):
     return decorator
 
 
-require_access_key = require_token_type([ACCESS_TOKEN_TYPE])
-require_course_token = require_token_type([COURSE_TOKEN_TYPE])
-require_any_token = require_token_type([ACCESS_TOKEN_TYPE, COURSE_TOKEN_TYPE])
+require_access_key = require_token_type([TokenType.access_key])
+require_course_token = require_token_type([TokenType.course_token])
+require_any_token = require_token_type([TokenType.access_key, TokenType.course_token])

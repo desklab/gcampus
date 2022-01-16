@@ -52,6 +52,10 @@ def split_token_chunks(token: str, chunk_size: int = 4) -> List[Optional[str]]:
     return [token[i : i + chunk_size] for i in range(0, len(token), chunk_size)]
 
 
+class HyphenatedTokenWidget(TextInput):
+    template_name = "gcampusauth/forms/widgets/token.html"
+
+
 class SplitTokenWidget(MultiWidget):
     template_name = "gcampusauth/forms/widgets/splitlogin.html"
 

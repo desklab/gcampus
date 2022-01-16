@@ -27,13 +27,12 @@ from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from gcampus.auth import utils, exceptions
+from gcampus.auth import session, exceptions
 from gcampus.auth.fields.token import check_form_and_request_token
 from gcampus.auth.models.token import (
-    COURSE_TOKEN_TYPE,
-    can_token_edit_measurement,
+    can_token_edit_measurement, TokenType,
 )
-from gcampus.auth.utils import is_authenticated, get_token, get_token_type
+from gcampus.auth.session import is_authenticated, get_token, get_token_type
 from gcampus.core.decorators import (
     require_permission_create_measurement,
     require_permission_edit_measurement,
