@@ -1,0 +1,51 @@
+{% extends "gcampusmail/components/paragraph.html" %}
+{% load i18n auth_token %}
+{% block content %}
+    <b>{% translate "Course token" %}:</b>
+    {% displaytoken course_token.token hidden=False toggle=False %}
+    <br>
+    {% blocktranslate trimmed %}
+        With this <b>course token</b>, you can manage your
+        course and edit your student's measurements. Thus,
+        this key should be kept private.
+    {% endblocktranslate %}
+    <br>
+    <br>
+    <b>{% translate "School Name" %}:</b>
+    {% if course_token.school_name %}
+        {{ course_token.school_name }}
+    {% else %}
+        {% translate "N/A" context "no value provided (water name, comment, etc)" %}
+    {% endif %}
+    <br>
+    <b>{% translate "Course Name" %}:</b>
+    {% if course_token.token_name %}
+        {{ course_token.token_name }}
+    {% else %}
+        {% translate "N/A" context "no value provided (water name, comment, etc)" %}
+    {% endif %}
+    <br>
+    <b>{% translate "Teacher Name" %}:</b>
+    {% if course_token.teacher_name %}
+        {{ course_token.teacher_name }}
+    {% else %}
+        {% translate "N/A" context "no value provided (water name, comment, etc)" %}
+    {% endif %}
+    <br>
+    <br>
+    <b>{% translate "Access keys" %}:</b>
+    <br>
+    <ol>
+        {% for access_key in course_token.access_keys.all %}
+            <li style="margin-bottom: 8px">
+                {% displaytoken access_key.token hidden=False toggle=False %}
+            </li>
+        {% endfor %}
+    </ol>
+    {% blocktranslate trimmed %}
+        All this information can also be found on the attached PDF
+        document. This document is intended to be printed so that you
+        can fill in the names of your students to the corresponding
+        access keys.
+    {% endblocktranslate %}
+{% endblock %}

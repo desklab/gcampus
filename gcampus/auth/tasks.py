@@ -24,6 +24,7 @@ from django.utils.translation import gettext
 from gcampus.auth.models import CourseToken
 from gcampus.documents.tasks import render_cached_document_view
 from gcampus.documents.views import CourseOverviewPDF
+from gcampus.mail.messages.register import RegisterEmailTemplate
 
 
 @shared_task
@@ -46,11 +47,9 @@ def send_registration_email(instance: t.Union[CourseToken, int], language: str =
         file.open(mode="rb")
         file_content = file.read()
 
-    email = EmailMessage(
-        subject=gettext("GewässerCampus Course Registered"),
-        # TODO improve message
-        body=gettext("Success!"),
-        to=[instance.teacher_email],
-        attachments=[(filename, file_content, "application/pdf")],
+    email_template = RegisterEmailTemplate(instance)
+    message = email_template.as_message(
+        [instance.teacher_email],
+        attachments=[(filename, file_content, "application/pdf")]
     )
-    email.send()
+    message.send()

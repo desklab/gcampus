@@ -1,5 +1,25 @@
 {% extends "gcampusmail/base.html" %}
-{% load i18n %}
-{% block body %}
-
+{% load i18n auth_token %}
+{% block extra_head %}
+    {% displaytoken_head %}
+{% endblock %}
+{% block content %}
+    {% translate "Thank you for registering a course!" as header_text %}
+    {% url "gcampusauth:course-overview" as course_url %}
+    {% blocktranslate trimmed asvar content_text %}
+        The registration of your course on GewässerCampus has been
+        successful. You may now share the access keys with your
+        students and start measuring.
+        <br>
+        <b>We are excited to see your data!</b>
+        <br>
+        Here is a summary of your registered course. If any of this
+        information is incorrect or incomplete, you can always
+        update your course on
+        <a href="{{ course_url }}">GewässerCampus</a>.
+    {% endblocktranslate %}
+    {% include "gcampusmail/components/subheader.html" with title=header_text content_safe=content_text only %}
+    {% translate "Your course" as course_title %}
+    {% include "gcampusmail/components/title.html" with title=course_title only %}
+    {% include "gcampusmail/register/overview.html" with course_token=course_token %}
 {% endblock %}

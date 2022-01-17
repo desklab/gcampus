@@ -71,7 +71,11 @@ const commonConfig = (env, options) => {
                         cssFileLoader(env, options),
                         'extract-loader',
                         cssLoader(env, options),
-                        postcssLoader(env, options)
+                        ...(
+                            (options.nopostcssLoader)
+                                ? []
+                                : [postcssLoader(env, options)]
+                        )
                     ]
                 },
                 {
@@ -81,7 +85,11 @@ const commonConfig = (env, options) => {
                         cssFileLoader(env, options),
                         'extract-loader',
                         cssLoader(env, options),
-                        postcssLoader(env, options),
+                        ...(
+                            (options.nopostcssLoader)
+                                ? []
+                                : [postcssLoader(env, options)]
+                        ),
                         {loader: 'sass-loader'}
                     ]
                 },
@@ -264,6 +272,7 @@ let gcampusdocumentsConfig = (env, options) => {
 
 
 let gcampusmailConfig = (env, options) => {
+    options.nopostcssLoader = true
     let common = commonConfig(env, options);
     return Object.assign(common, {
         name: 'gcampusmail',

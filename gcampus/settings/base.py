@@ -34,6 +34,10 @@ ALLOWED_HOSTS = []
 
 # Application definition
 GCAMPUS_VERSION = __version__
+GCAMPUS_HOMEPAGE = "https://gewaessercampus.de/"
+# Primarily used for emails or PDFs
+PRIMARY_HOST = "localhost:8000"
+PREFERRED_SCHEME = "http"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -90,7 +94,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "gcampus.auth.context_processors.auth",
-                "gcampus.core.context_processors.get_version",
+                "gcampus.core.context_processors.get_gcampus_meta",
                 "gcampus.core.context_processors.sidebar",
             ],
         },

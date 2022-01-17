@@ -2,8 +2,11 @@ from django.conf import settings
 from django.http import HttpRequest
 
 
-def get_version(request: HttpRequest) -> dict:
-    return {"GCAMPUS_VERSION": settings.GCAMPUS_VERSION}
+def get_gcampus_meta(request: HttpRequest) -> dict:
+    return {
+        "GCAMPUS_VERSION": settings.GCAMPUS_VERSION,
+        "GCAMPUS_HOMEPAGE": settings.GCAMPUS_HOMEPAGE
+    }
 
 
 def sidebar(request: HttpRequest) -> dict:

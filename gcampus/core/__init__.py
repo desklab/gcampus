@@ -13,4 +13,8 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from django.conf import settings
+
 default_app_config = "gcampus.core.apps.GCampusCoreAppConfig"
+
+base_url = f"{settings.PREFERRED_SCHEME}://{settings.PRIMARY_HOST}/"

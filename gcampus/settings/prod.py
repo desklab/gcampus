@@ -29,6 +29,10 @@ except AttributeError:
     raise ValueError(
         "The GCAMPUS_ALLOWED_HOSTS environment variable has to be specified"
     )
+# Use the first host as the primary host.
+# Primarily used for emails or PDFs.
+PRIMARY_HOST = ALLOWED_HOSTS[0]
+PREFERRED_SCHEME = "https"
 
 CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in ALLOWED_HOSTS]
 

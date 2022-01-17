@@ -29,13 +29,17 @@ DATABASES = {
 }
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = ...
-# EMAIL_PORT = ...
-# EMAIL_USE_TLS = ...
-# EMAIL_USE_SSL = ...
-#
-# EMAIL_HOST_USER = ...
-# EMAIL_HOST_PASSWORD = ...
-#
-# DEFAULT_FROM_EMAIL = ...
+EMAIL_BACKEND = (
+    "django.core.mail.backends.smtp.EmailBackend"
+    if get_env_read_file("GCAMPUS_SMTP_EMAIL", False)
+    else "django.core.mail.backends.console.EmailBackend"
+)
+EMAIL_HOST = get_env_read_file("GCAMPUS_EMAIL_HOST")
+EMAIL_PORT = get_env_read_file("GCAMPUS_EMAIL_PORT")
+EMAIL_USE_TLS = get_env_read_file("GCAMPUS_EMAIL_TLS", False)
+EMAIL_USE_SSL = get_env_read_file("GCAMPUS_EMAIL_SSL", False)
+
+EMAIL_HOST_USER = get_env_read_file("GCAMPUS_EMAIL_USER", None)
+EMAIL_HOST_PASSWORD = get_env_read_file("GCAMPUS_EMAIL_PASSWORD", None)
+
+DEFAULT_FROM_EMAIL = get_env_read_file("GCAMPUS_FROM_EMAIL", None)

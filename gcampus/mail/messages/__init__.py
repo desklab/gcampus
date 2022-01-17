@@ -17,11 +17,12 @@ import typing as t
 from abc import ABC
 from os import path
 
-import css_inline
+from premailer import transform
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.http import HttpRequest
 from django.template.loader import render_to_string
 
+from gcampus.core import base_url
 from gcampus.documents.utils import mock_request
 from gcampus.mail.templatetags.mail import include_static
 
@@ -29,6 +30,7 @@ from gcampus.mail.templatetags.mail import include_static
 class EmailTemplate(ABC):
     template_path: str
     subject: str
+    preheader: str
     stylesheet: str = "gcampusmail/styles/mail.css"
 
     def __init__(self, request: t.Optional[HttpRequest] = None):
@@ -50,8 +52,14 @@ class EmailTemplate(ABC):
         # lazy functions such as 'gettext_lazy'.
         return str(self.subject)
 
-    def get_context(self) -> dict:
-        raise NotImplementedError()
+    def get_preheader(self) -> str:
+        return str(self.preheader)
+
+    def get_context(self, **kwargs) -> dict:
+        context: dict = kwargs.copy()
+        if "preheader" not in context:
+            context["preheader"] = self.get_preheader()
+        return context
 
     def get_stylesheet(self) -> str:
         return include_static(self.stylesheet)
@@ -76,15 +84,11 @@ class EmailTemplate(ABC):
             using=using
         )
         # Some email clients still do not support styles defined in the
-        # HTML '<head>' tag. Styles must be applied inline, i.e. using\
+        # HTML '<head>' tag. Styles must be applied inline, i.e. using
         # the 'style="..."' attribute of the corresponding HTML
         # elements.
-        inlined_html = css_inline.inline(
-            html,
-            remove_style_tags=True,
-            load_remote_stylesheets=False,
-            extra_css=self.get_stylesheet()
-        )
+        inlined_html = transform(html, base_url=base_url,
+                                 css_text=self.get_stylesheet())
         return text, inlined_html
 
     def as_message(

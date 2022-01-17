@@ -1,1 +1,40 @@
-{% load i18n %}
+{% load i18n %}{% translate "Thank you for registering a course!" %}
+
+{% blocktranslate trimmed %}
+    The registration of your course on GewässerCampus has been
+    successful. You may now share the access keys with your
+    students and start measuring.
+{% endblocktranslate %}
+
+{% blocktranslate trimmed %}
+    We are excited to see your data!
+{% endblocktranslate %}
+
+{% blocktranslate trimmed %}
+    Here is a summary of your registered course. If any of this
+    information is incorrect or incomplete, you can always
+    update your course on GewässerCampus.
+{% endblocktranslate %}
+
+{% translate "Course token" %}: {{ course_token.token }}
+{% blocktranslate trimmed %}
+    With this course token, you can manage your
+    course and edit your student's measurements. Thus,
+    this key should be kept private.
+{% endblocktranslate %}
+
+{% translate "School Name" %}: {% if course_token.school_name %}{{ course_token.school_name }}{% else %}{% translate "N/A" context "no value provided (water name, comment, etc)" %}{% endif %}
+{% translate "Course Name" %}: {% if course_token.token_name %}{{ course_token.token_name }}{% else %}{% translate "N/A" context "no value provided (water name, comment, etc)" %}{% endif %}
+{% translate "Teacher Name" %}: {% if course_token.teacher_name %}{{ course_token.teacher_name }}{% else %}{% translate "N/A" context "no value provided (water name, comment, etc)" %}{% endif %}
+
+{% translate "Access keys" %}:
+{% for access_key in course_token.access_keys.all %}
+    {{ forloop.counter }}. {{ access_key.token }}
+{% endfor %}
+
+{% blocktranslate trimmed %}
+    All this information can also be found on the attached PDF
+    document. This document is intended to be printed so that you
+    can fill in the names of your students to the corresponding
+    access keys.
+{% endblocktranslate %}

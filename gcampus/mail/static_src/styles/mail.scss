@@ -15,21 +15,226 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@import "node_modules/bootstrap/scss/functions";
-
 // Custom gcampus variables
 @import "../../../core/static_src/styles/variables";
 
-// Bootstrap variables
-@import "node_modules/bootstrap/scss/variables";
-@import "node_modules/bootstrap/scss/mixins";
-@import "node_modules/bootstrap/scss/utilities";
+// Custom mail variables
+@import "variables";
 
-// Layout & components
-@import "node_modules/bootstrap/scss/root";
-@import "node_modules/bootstrap/scss/reboot";
-@import "node_modules/bootstrap/scss/type";
-@import "node_modules/bootstrap/scss/images";
-@import "node_modules/bootstrap/scss/containers";
-@import "node_modules/bootstrap/scss/grid";
-@import "node_modules/bootstrap/scss/tables";
+// Bootstrap variables
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+
+/*!
+ * Styles by Slicejack:
+ * Copyright (c) 2016
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+.token-letter {
+  color: $gray-800 !important;
+}
+
+.token-separator {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  width: 0.6ch;
+  margin-left: 0.2ch;
+  margin-right: 0.2ch;
+  margin-bottom: 0.2ch;
+  vertical-align: middle;
+  border-bottom: 2px solid $gray-500 !important;
+}
+
+.displaytoken > span {
+    display: inline-block;
+    background-color: $light;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    padding: 1px 6px;
+}
+
+table {
+  font-family: $font-family-sans-serif;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  background-color: $body-bg;
+}
+
+.preheader {
+  color: transparent;
+  overflow: hidden;
+  display: none;
+  line-height: 0px;
+  height: 0;
+  opacity: 0;
+  visibility: hidden;
+  width: 0;
+  mso-hide: all;
+}
+
+.header {
+
+  td {
+    padding: 30px 0 30px 0;
+    border-bottom: solid 1px $border-color;
+
+    a {
+      font-size: 26px;
+      text-decoration: none;
+      color: #000000;
+
+      img {
+        display: inline-block;
+        vertical-align: bottom;
+        margin-right: 12px;
+      }
+    }
+  }
+}
+
+.title-block {
+  table {
+    width: 620px;
+
+    td {
+      padding: 35px 0 18px 0;
+      border-bottom: solid 1px $border-color;
+      font-size: 20px;
+    }
+  }
+}
+
+.divider {
+  padding-top: 25px;
+  width: 100%;
+
+  table {
+    border-bottom: solid 1px $border-color;
+    width: 620px;
+  }
+}
+
+.paragraph-block {
+  table {
+    width: 620px;
+
+    td {
+      padding: 25px 0 18px 0;
+      font-size: 16px;
+      line-height: 27px;
+      color: $dark;
+    }
+  }
+}
+
+.footer-content {
+  padding: 25px 30px 35px 30px;
+  text-align: center;
+  font-size: 11px;
+  color: $text-muted;
+  a {
+    color: $text-muted;
+  }
+}
+
+.inner-container {
+  width: 620px;
+}
+
+.border-top {
+  border-top: 1px solid $border-color;
+}
+
+.border-bottom {
+  border-bottom: 1px solid $border-color;
+}
+
+.hero-subheader {
+  width: 620px;
+
+  .hero-subheader__title {
+    font-size: 43px;
+    font-weight: bold;
+    padding: 80px 0 15px 0;
+  }
+
+  .hero-subheader__content {
+    font-size: 16px;
+    line-height: 27px;
+    color: $dark;
+    padding: 0 60px 90px 0;
+  }
+}
+
+.full-width-container {
+  width: 100%;
+  height: 100%;
+  // top and bottom padding
+  padding: 30px 0 30px 0;
+}
+
+@media only screen and (max-width: 700px) {
+  /* ----- Base styles ----- */
+  .full-width-container {
+    padding: 0 !important;
+  }
+
+  .container {
+    width: 100% !important;
+  }
+
+  .inner-container {
+    width: 100% !important;
+  }
+
+  /* ----- Header ----- */
+  .header td {
+    padding: 30px 15px 30px 15px !important;
+  }
+
+  /* ----- Hero subheader ----- */
+  .hero-subheader__title {
+    padding: 80px 15px 15px 15px !important;
+    font-size: 35px !important;
+  }
+
+  .hero-subheader__content {
+    padding: 0 15px 90px 15px !important;
+  }
+
+  /* ----- Title block ----- */
+  .title-block {
+    padding: 0 15px 0 15px;
+  }
+
+  /* ----- Paragraph block ----- */
+  .paragraph-block__content {
+    padding: 25px 15px 18px 15px !important;
+  }
+
+}

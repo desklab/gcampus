@@ -1,0 +1,16 @@
+<table class="container paragraph-block" border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+        <td align="center" valign="top">
+            <table class="inner-container" border="0" cellpadding="0" cellspacing="0" width="620">
+                <tr>
+                    <td class="paragraph-block__content" align="left">
+                        {% block content %}
+                            {{ content }}
+                            {{ content_safe|safe }}
+                        {% endblock %}
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

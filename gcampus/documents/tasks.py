@@ -67,7 +67,7 @@ def render_cached_document_view(
         # This should never happen
         raise ValueError("Unable to find an instance")
 
-    lock_name = f"render_cached_document_view_{view.__name__}_{instance.pk}"
+    lock_name = f"render_cached_document_view_{view.__name__}_{_instance.pk}"
     # A lock is used to prevent multiple workers from creating the same
     # document. Not that the check for ``force`` and the existence of
     # this document is done when the lock has been acquired.
