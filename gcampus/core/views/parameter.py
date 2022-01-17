@@ -81,8 +81,8 @@ class ParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
             edited.
         """
         self.instance = get_object_or_404(Measurement, id=pk)
-        token = utils.get_token(request)
-        token_type = utils.get_token_type(request)
+        token = session.get_token(request)
+        token_type = session.get_token_type(request)
         if not can_token_edit_measurement(token, self.instance, token_type=token_type):
             raise PermissionDenied(TOKEN_EDIT_PERMISSION_ERROR)
         if request.method == "POST":

@@ -58,7 +58,7 @@ class CourseOverviewFormView(TitleMixin, UpdateView):
     def get_object(self, queryset=None):
         if queryset is None:
             queryset = self.get_queryset()
-        token = utils.get_token(self.request)
+        token = session.get_token(self.request)
         return get_object_or_404(queryset, token=token)
 
     @method_decorator(require_course_token)
