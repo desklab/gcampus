@@ -1,4 +1,4 @@
-{% load auth_token print_static i18n l10n icon settings %}
+{% load auth_token print_static i18n l10n icon settings tz %}
 <!doctype html>
 <html lang="de">
 <head>
@@ -52,7 +52,7 @@
                     Dieses Dokument wurde automatisch erstellt und enhält 
                     eine Zusammenfassung der Informationen der Messung 
                     von {{ measurement.name }} 
-                    am {{ measurement.time|localize }}
+                    am {{ measurement.time|localtime|localize }}
                     in {{ measurement.location_name }}.
                 </div>
             </div>    
@@ -72,7 +72,7 @@
                                 {% endif %}
                             </h3>
                             <h5 class="measurementmeta-heading text-muted">{% translate "Time" %}</small>
-                            <h3 class="measurementmeta-content color-secondary">{{ object.time|localize }}</h4>
+                            <h3 class="measurementmeta-content color-secondary">{{ object.time|localtime|localize }}</h4>
                             <h5 class="measurementmeta-heading text-muted">{% translate "Note" %}</small>
                                 {% if object.comment %}
                                     <p>{{ object.comment }}
@@ -111,7 +111,7 @@
                                 <tr>
                                     <td>{{ parameter.parameter_type }}</td>
                                     <td class="font-monospace">
-                                        {{ parameter.value|localize }} {{ parameter.parameter_type.unit }}
+                                        {{ parameter.value|localtime|localize }} {{ parameter.parameter_type.unit }}
                                     </td>
                                     <td>
                                         <small class="color-grey">

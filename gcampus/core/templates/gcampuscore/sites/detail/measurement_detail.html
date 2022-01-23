@@ -1,5 +1,5 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n map l10n icon %}
+{% load i18n map l10n icon tz %}
 {% block extra_head %}
     {{ block.super }}
     {% load_mapbox_css %}
@@ -7,7 +7,7 @@
 {% endblock %}
 {% block body_class %}d-flex flex-column min-vh-100{% endblock %}
 {% block main_class %}main-pt-0 px-0{% endblock %}
-{% block navbar_title %}<span>{{object}}</span>{% endblock %}
+{% block navbar_title %}<span>{{ object }}</span>{% endblock %}
 {% if can_edit %}
     {% block modals %}
         {{ block.super }}
@@ -22,7 +22,8 @@
                         <h5 class="modal-title" id="deleteModal">
                             {% translate "Delete Measurement" %}
                         </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% translate "Close" %}"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="{% translate "Close" %}"></button>
                     </div>
                     <div class="modal-body">
                         <form method="POST" action="{% url "gcampuscore:delete-measurement" pk=object.pk %}">
@@ -37,7 +38,7 @@
                                 </li>
                                 <li>
                                     <b>{% translate "Time" context "measurement time" %}:</b>
-                                    {{ object.time|localize }}
+                                    {{ object.time|localtime|localtime|localize }}
                                 </li>
                                 <li>
                                     <b>{% translate "Water name" %}:</b>
@@ -202,7 +203,7 @@
                             <div>
                                 <small class="text-muted">{% translate "Time" context "measurement time" %}</small>
                                 <br>
-                                <h4>{{ object.time|localize }}</h4>
+                                <h4>{{ object.time|localtime|localtime|localize }}</h4>
                             </div>
                             {# Add additional div for placing #}
                             <div></div>
@@ -220,8 +221,8 @@
                         </div>
                         <div class="mt-auto">
                             <a class="btn btn-sm btn-secondary"
-                                href="{% url "gcampusdocuments:measurement-detail" pk=measurement.pk %}"
-                                role="link">
+                               href="{% url "gcampusdocuments:measurement-detail" pk=measurement.pk %}"
+                               role="link">
                                 {% icon "download" class="d-inline-block align-text-top" height="16" width="16" %}
                                 {% translate "Download PDF" %}
                             </a>
@@ -231,7 +232,8 @@
                                    role="button">
                                     {% translate "Edit" %}
                                 </a>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal">
                                     {% translate "Delete" %}
                                 </button>
                             {% endif %}
@@ -265,7 +267,7 @@
                         <tr>
                             <td>{{ parameter.parameter_type }}</td>
                             <td class="font-monospace">
-                                {{ parameter.value|localize }} {{ parameter.parameter_type.unit }}
+                                {{ parameter.value|localtime|localize }} {{ parameter.parameter_type.unit }}
                             </td>
                             <td>
                                 {% if parameter.comment %}

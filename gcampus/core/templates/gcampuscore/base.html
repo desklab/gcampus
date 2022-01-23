@@ -89,6 +89,9 @@
     <script type="text/javascript">
         const SIDEBAR_STATE_COOKIE_NAME = '{{ sidebar_cookie_name }}';
 
+        let timeZone = new Intl.DateTimeFormat().resolvedOptions().timeZone;
+        gcampuscore.main.setCookie('{{ TIME_ZONE_COOKIE_NAME }}', timeZone);
+
         function setSidebarCookie(state) {
             gcampuscore.main.setCookie(SIDEBAR_STATE_COOKIE_NAME, (state) ? "1" : "0", 90);
         }
