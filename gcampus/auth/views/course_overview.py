@@ -69,7 +69,7 @@ class CourseOverviewFormView(TitleMixin, UpdateView):
         check_form_and_request_token(form, self.request)
         form.save()
         # Update token name
-        utils.set_token(
+        session.set_token(
             self.request, form.instance.token, "course", form.instance.token_name
         )
         return HttpResponseRedirect(self.request.path_info)
