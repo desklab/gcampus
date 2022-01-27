@@ -52,6 +52,11 @@ class MeasurementForm(ModelForm):
         fields = ["name", "time", "location", "comment", "water_name", "osm_id"]
         field_classes = {"time": SplitSplitDateTimeField}
         widgets = {
+            # Inputs with type="datetime-local" are not well-supported
+            # to this date. If we decide to replace the
+            # SplitSplitDateTimeField later on, we can use the following
+            # widget:
+            # "time": DateTimeInput(attrs=dict(type="datetime-local")),
             "location": GeoPointWidget(),
         }
 

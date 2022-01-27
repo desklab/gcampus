@@ -32,3 +32,22 @@ $font-size-factor: math.div($font-size-lg, $font-size-base);
   }
 
 }
+
+// Fix issues with safari (see twbs/bootstrap#34760)
+.form-control {
+  &[type="datetime-local"] {
+    height: $input-height;
+
+    &.form-control-lg {
+      height: $input-height-lg;
+    }
+
+    &.form-control-sm {
+      height: $input-height-sm;
+    }
+  }
+  >* {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+}
