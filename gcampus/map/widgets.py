@@ -15,6 +15,7 @@
 import logging
 
 from django.contrib.gis.forms import BaseGeometryWidget, PointField
+from django.contrib.gis.geos import Point
 from django.utils.text import slugify
 
 logger = logging.getLogger("gcampus.map.widgets")
@@ -28,6 +29,15 @@ class GeoPointWidget(BaseGeometryWidget):
     display_raw = False
     supports_3d = False
     template_name = "gcampusmap/forms/widgets/point.html"
+
+    def serialize(self, value: Point) -> str:
+        """Serialize as GeoJSON
+
+        :param value: A value to serialize
+        :returns: String GeoJSON of the value. Empty string if value
+            is None.
+        """
+        return value.geojson if value else ""
 
     def get_context(self, name, value, attrs: dict) -> dict:
         context = super(GeoPointWidget, self).get_context(name, value, attrs)
