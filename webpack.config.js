@@ -126,7 +126,11 @@ const commonConfig = (env, options) => {
         },
         target: 'browserslist',
         plugins: [
-            new webpack.ProgressPlugin(),
+            ...(
+                (isProduction)
+                    ? []
+                    : [new webpack.ProgressPlugin()]
+            ),
             new CleanWebpackPlugin()
         ],
         watchOptions: {
