@@ -53,8 +53,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2.1.5
+      - name: Install dependencies with apt
+        run: |
+          sudo apt-get update &&
+          sudo apt-get install -y
+          --no-install-recommends --no-install-suggests
+          binutils libproj-dev gdal-bin
+          libpango-1.0-0 libpangoft2-1.0-0
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'npm'
 
       - name: Install Node.js packages
         run: npm ci --also=dev
@@ -62,16 +72,10 @@ jobs:
       - name: Build static files
         run: npm run build
 
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
+      - uses: actions/setup-python@v2
         with:
-          python-version: 3.8
-
-      - name: Add conda to system path
-        run: echo $CONDA/bin >> $GITHUB_PATH
-
-      - name: Install Python and GDAL
-        run: conda install -y libgdal=3.4.1=h7b6f8d3_2 -c conda-forge
+          python-version: '3.9'
+          cache: 'pip'
 
       - name: Install Requirements
         run: pip install -r requirements.txt
