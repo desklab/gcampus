@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-08 16:20+0100\n"
+"POT-Creation-Date: 2022-02-01 17:06+0100\n"
 "PO-Revision-Date: 2022-01-08 16:21+0100\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -63,7 +63,9 @@ msgid "You do not have the permission to access this site"
 msgstr "Du hast nicht die Berechtigung um auf diese Seite zuzugreifen"
 
 #: gcampus/auth/exceptions.py:26
-msgid "Provided course token or access key is not invalid or does not exist"
+#, fuzzy
+#| msgid "Provided course token or access key is not invalid or does not exist"
+msgid "Provided course token or access key is not valid or does not exist"
 msgstr ""
 "Der eingegebene Kursschlüssel oder Zugangscode ist ungültig oder existiert "
 "nicht"
@@ -81,57 +83,49 @@ msgid "This course token has been deactivated and can no longer be used."
 msgstr ""
 "Dieser Kursschlüssel wurde deaktiviert und kann nicht mehr verwendet werden."
 
-#: gcampus/auth/forms/token.py:48 gcampus/auth/models/token.py:118
+#: gcampus/auth/forms/token.py:41 gcampus/auth/models/token.py:130
 msgid "Access key"
 msgstr "Zugangscode"
 
-#: gcampus/auth/forms/token.py:63 gcampus/auth/models/token.py:75
+#: gcampus/auth/forms/token.py:50 gcampus/auth/models/token.py:87
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:65
 msgid "Course token"
 msgstr "Kursschlüssel"
 
-#: gcampus/auth/forms/token.py:81
+#: gcampus/auth/forms/token.py:63
 msgid "Number of access keys"
 msgstr "Anzahl der Zugangscodes"
 
-#: gcampus/auth/models/token.py:50
+#: gcampus/auth/models/token.py:62
 msgid "Name of course"
 msgstr "Name des Kurses"
 
-#: gcampus/auth/models/token.py:56
+#: gcampus/auth/models/token.py:68
 msgid "Name of school"
 msgstr "Name der Schule"
 
-#: gcampus/auth/models/token.py:60
+#: gcampus/auth/models/token.py:72
 msgid "Name of teacher"
 msgstr "Name der Lehrkraft"
 
-#: gcampus/auth/models/token.py:64
+#: gcampus/auth/models/token.py:76
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:117
 msgid "email"
 msgstr "E-Mail-Adresse"
 
-#: gcampus/auth/models/token.py:68
+#: gcampus/auth/models/token.py:80
 msgid "Overview Document"
 msgstr "Dokumente"
 
-#: gcampus/auth/models/token.py:95
+#: gcampus/auth/models/token.py:107
 #, python-format
 msgid "Course token %(id)s"
 msgstr "Kursschlüssel %(id)s"
 
-#: gcampus/auth/models/token.py:139
+#: gcampus/auth/models/token.py:151
 #, python-format
 msgid "Access key %(id)s"
 msgstr "Zugangscode %(id)s"
-
-#: gcampus/auth/tasks.py:50
-msgid "GewässerCampus Course Registered"
-msgstr "GewässerCampus Kurs Registriert"
-
-#: gcampus/auth/tasks.py:52
-msgid "Success!"
-msgstr ""
 
 #: gcampus/auth/templates/gcampusauth/components/access_key_item.html:17
 msgid "Options"
@@ -221,7 +215,7 @@ msgstr ""
 #: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:16
 #: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:21
 #: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:26
-#: gcampus/auth/views/token.py:95
+#: gcampus/auth/views/token.py:100
 msgid "Login with access key"
 msgstr "Mit Zugangscode anmelden"
 
@@ -247,13 +241,13 @@ msgstr ""
 #: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:20
 #: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:25
 #: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:30
-#: gcampus/auth/views/token.py:101
+#: gcampus/auth/views/token.py:106
 msgid "Login with course token"
 msgstr "Mit Kursschlüssel anmelden"
 
 #: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:24
 #: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:34
-#: gcampus/auth/templates/gcampusauth/forms/token.html:54
+#: gcampus/auth/templates/gcampusauth/forms/token.html:55
 msgid ""
 "If you login with a different access key or course token, you will "
 "automatically be logged out from your old key."
@@ -377,8 +371,8 @@ msgstr "Registrieren"
 
 #: gcampus/auth/templates/gcampusauth/forms/token.html:3
 #: gcampus/auth/templates/gcampusauth/forms/token.html:4
-#: gcampus/auth/templates/gcampusauth/forms/token.html:49
-#: gcampus/auth/views/token.py:51
+#: gcampus/auth/templates/gcampusauth/forms/token.html:50
+#: gcampus/auth/views/token.py:54
 msgid "Login"
 msgstr "Anmelden"
 
@@ -577,9 +571,12 @@ msgstr ""
 "Der Kurs wurde erfolgreich registriert! Diese Seite dient als Übersicht über "
 "den Kurs und den damit verbundenen Zugangscodes."
 
-#: gcampus/auth/views/token.py:108
+#: gcampus/auth/views/token.py:113
 msgid "Successfully logged out"
 msgstr "Du wurdest erfolgreich abgemeldet"
+
+#~ msgid "GewässerCampus Course Registered"
+#~ msgstr "GewässerCampus Kurs Registriert"
 
 #~ msgid "Log in with new Token"
 #~ msgstr "Mit neuem Token anmelden"

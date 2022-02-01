@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-04 17:29+0100\n"
+"POT-Creation-Date: 2022-02-01 17:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,15 +78,113 @@ msgstr "GCampus E-Mail"
 msgid "GewässerCampus Course Registration"
 msgstr ""
 
+#: gcampus/mail/messages/register.py:26
+#: gcampus/mail/templates/gcampusmail/register/text.html:3
+msgid ""
+"The registration of your course on GewässerCampus has been successful. You "
+"may now share the access keys with your students and start measuring."
+msgstr ""
+
+#: gcampus/mail/templates/gcampusmail/components/footer.html:8
+msgid ""
+"Development of the web application GewässerCampus is financially supported "
+"by the Deutsche Bundesstiftung Umwelt."
+msgstr ""
+
+#: gcampus/mail/templates/gcampusmail/register/html.html:7
+#: gcampus/mail/templates/gcampusmail/register/text.html:1
+msgid "Thank you for registering a course!"
+msgstr ""
+
+#: gcampus/mail/templates/gcampusmail/register/html.html:9
+#, python-format
+msgid ""
+"The registration of your course on GewässerCampus has been successful. You "
+"may now share the access keys with your students and start measuring. <br> "
+"<b>We are excited to see your data!</b> <br> Here is a summary of your "
+"registered course. If any of this information is incorrect or incomplete, "
+"you can always update your course on <a href=\"%(course_url)s"
+"\">GewässerCampus</a>."
+msgstr ""
+
+#: gcampus/mail/templates/gcampusmail/register/html.html:22
+msgid "Your course"
+msgstr ""
+
+#: gcampus/mail/templates/gcampusmail/register/overview.html:4
+#: gcampus/mail/templates/gcampusmail/register/text.html:19
+msgid "Course token"
+msgstr ""
+
+#: gcampus/mail/templates/gcampusmail/register/overview.html:7
+msgid ""
+"With this <b>course token</b>, you can manage your course and edit your "
+"student's measurements. Thus, this key should be kept private."
+msgstr ""
+
+#: gcampus/mail/templates/gcampusmail/register/overview.html:14
+#: gcampus/mail/templates/gcampusmail/register/text.html:26
+msgid "School Name"
+msgstr ""
+
+#: gcampus/mail/templates/gcampusmail/register/overview.html:18
+#: gcampus/mail/templates/gcampusmail/register/overview.html:25
+#: gcampus/mail/templates/gcampusmail/register/overview.html:32
+#: gcampus/mail/templates/gcampusmail/register/text.html:26
+#: gcampus/mail/templates/gcampusmail/register/text.html:27
+#: gcampus/mail/templates/gcampusmail/register/text.html:28
+msgctxt "no value provided (water name, comment, etc)"
+msgid "N/A"
+msgstr ""
+
+#: gcampus/mail/templates/gcampusmail/register/overview.html:21
+#: gcampus/mail/templates/gcampusmail/register/text.html:27
+msgid "Course Name"
+msgstr ""
+
+#: gcampus/mail/templates/gcampusmail/register/overview.html:28
+#: gcampus/mail/templates/gcampusmail/register/text.html:28
+msgid "Teacher Name"
+msgstr ""
+
+#: gcampus/mail/templates/gcampusmail/register/overview.html:36
+#: gcampus/mail/templates/gcampusmail/register/text.html:30
+msgid "Access keys"
+msgstr ""
+
+#: gcampus/mail/templates/gcampusmail/register/overview.html:45
+#: gcampus/mail/templates/gcampusmail/register/text.html:35
+msgid ""
+"All this information can also be found on the attached PDF document. This "
+"document is intended to be printed so that you can fill in the names of your "
+"students to the corresponding access keys."
+msgstr ""
+
+#: gcampus/mail/templates/gcampusmail/register/text.html:9
+msgid "We are excited to see your data!"
+msgstr ""
+
+#: gcampus/mail/templates/gcampusmail/register/text.html:13
+msgid ""
+"Here is a summary of your registered course. If any of this information is "
+"incorrect or incomplete, you can always update your course on GewässerCampus."
+msgstr ""
+
+#: gcampus/mail/templates/gcampusmail/register/text.html:20
+msgid ""
+"With this course token, you can manage your course and edit your student's "
+"measurements. Thus, this key should be kept private."
+msgstr ""
+
 #: gcampus/map/apps.py:23
 msgid "GCampus Map"
 msgstr "GCampus Karte"
 
-#: gcampus/settings/base.py:143
+#: gcampus/settings/base.py:148
 msgid "English"
 msgstr "Englisch"
 
-#: gcampus/settings/base.py:143
+#: gcampus/settings/base.py:148
 msgid "German"
 msgstr "Deutsch"
 
