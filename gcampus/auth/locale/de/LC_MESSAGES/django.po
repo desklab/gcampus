@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-01 17:06+0100\n"
+"POT-Creation-Date: 2022-02-01 17:33+0100\n"
 "PO-Revision-Date: 2022-01-08 16:21+0100\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -247,7 +247,7 @@ msgstr "Mit Kursschlüssel anmelden"
 
 #: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:24
 #: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:34
-#: gcampus/auth/templates/gcampusauth/forms/token.html:55
+#: gcampus/auth/templates/gcampusauth/forms/token.html:56
 msgid ""
 "If you login with a different access key or course token, you will "
 "automatically be logged out from your old key."

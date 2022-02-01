@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-01 17:06+0100\n"
+"POT-Creation-Date: 2022-02-01 17:33+0100\n"
 "PO-Revision-Date: 2022-01-04 15:41+0100\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -86,23 +86,23 @@ msgstr "Kurs-Messungen"
 msgid "My Measurements"
 msgstr "Meine Messungen"
 
-#: gcampus/core/forms/measurement.py:119
+#: gcampus/core/forms/measurement.py:124
 msgid "Unable to parse OpenStreetMap ID!"
 msgstr "Fehler beim lesen der OpenStreetMap ID!"
 
-#: gcampus/core/forms/measurement.py:143 gcampus/core/models/measurement.py:202
+#: gcampus/core/forms/measurement.py:148 gcampus/core/models/measurement.py:202
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:261
 msgid "Value"
 msgstr "Wert"
 
-#: gcampus/core/forms/measurement.py:149 gcampus/core/models/measurement.py:83
+#: gcampus/core/forms/measurement.py:154 gcampus/core/models/measurement.py:83
 #: gcampus/core/models/measurement.py:209
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:212
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:262
 msgid "Note"
 msgstr "Notiz"
 
-#: gcampus/core/forms/measurement.py:215
+#: gcampus/core/forms/measurement.py:220
 msgid "ManagementForm data is missing or has been tampered with"
 msgstr ""
 
@@ -391,8 +391,8 @@ msgid "All measurements"
 msgstr "Alle Messungen"
 
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:30
-msgid "Additional Filter options"
-msgstr "Weitere Filtermöglichkeiten öffnen"
+msgid "Additional Filteroptions"
+msgstr "Weitere Filtermöglichkeiten"
 
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:37
 msgid "Filter"
@@ -401,6 +401,10 @@ msgstr "Filtern"
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:82
 msgid "Search"
 msgstr "Suchen"
+
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:84
+msgid "Open Additional Filteroptions"
+msgstr "Weitere Filtermöglichkeiten öffnen"
 
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:115
 msgid "No measurements with the desired attributes"
@@ -464,6 +468,9 @@ msgstr "Jahr"
 msgctxt "year input short"
 msgid "YYYY"
 msgstr "JJJJ"
+
+#~ msgid "Additional Filter options"
+#~ msgstr "Weitere Filtermöglichkeiten"
 
 #~ msgid "Filter for measurements conducted before a specified time"
 #~ msgstr ""
