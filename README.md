@@ -22,11 +22,13 @@ Contributions in the form of reporting issues or submitting pull requests are we
 
 There are mainly two aspects to developing `gcampus`.
 There is 
+
  1. the **django python backend** and 
  2. static files like **JavaScript** or **stylesheets**. 
 
 The basic requirements for running `gcampus` are:
 
+ - [ ] Python 3.8 or newer
  - [ ] PostgreSQL with PostGIS (serves as a database)
  - [ ] Redis (used for Celery tasks)
  - [ ] `libgdal` (required for GeoDjango)
