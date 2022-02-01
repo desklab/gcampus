@@ -1,6 +1,6 @@
 {% extends "gcampuscore/base.html" %}
 {% load auth_token %}
-{% load i18n static leaflet_tags %}
+{% load i18n static leaflet_tags tz l10n menu %}
 {% block title %}
     {% translate "All measurements" %}
 {% endblock %}
@@ -13,6 +13,7 @@
     <span class="">{% translate "All measurements" %}</span>
 {% endblock %}
 {% block content %}
+
     <div class="container">
         <form method="GET">
             {% with filter.form.name as field %}
@@ -65,16 +66,25 @@
                                             {{ field }}
                                         </div>
                                     {% endwith %}
-                                {% endif %}
-                                {% if user_token_is_access_key %}
-                                    {% with filter.form.my_measurements as field %}
-                                        <div class="mb-3">
+                                </div>
+                                <div class="row">
+                                    {% with filter.form.parameter_types as field %}
+                                        <div class="col-md-4 mb-3">
                                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
                                             {% include "gcampuscore/forms/components/helptext.html" %}
                                             {{ field }}
                                         </div>
                                     {% endwith %}
-                                {% endif %}
+                                    <div class="col-md-4 mb-3">
+                                        {% if user_token_is_access_key or user_token_is_course_token %}
+                                            {% with filter.form.form as field %}
+                                                {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                                {% include "gcampuscore/forms/components/helptext.html" %}
+                                                {% include "gcampuscore/components/my_course_dropdown.html" with course_filter=filter.form.form my_filter=filter.form.my_measurements %}
+                                            {% endwith %}
+                                        {% endif %}
+                                    </div>
+                                </div>
                                 {% with filter.form.location as field %}
                                     <div class="mb-3">
                                         {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
@@ -110,7 +120,7 @@
             <tbody>
             {% for measurement in object_list %}
                 <div class="list-group mt-4">
-                    {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement edit=measurement|can_edit:request today=today%}
+                    {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement edit=measurement|can_edit:request today=today %}
                 </div>
             {% endfor %}
             </tbody>
@@ -118,7 +128,13 @@
     {% else %}
         <h3 class="text-danger text-large">{% translate "No measurements with the desired attributes" %}</h3>
     {% endif %}
+
 </div>
+
+
+
+
+
 
     <script>
         let filterButton = document.getElementById("filterCollapseButton");
@@ -144,4 +160,5 @@
         setCollapse()
     </script>
 {% endblock %}
+
 

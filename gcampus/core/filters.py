@@ -30,6 +30,8 @@ from django_filters import (
     DateTimeFilter,
     CharFilter,
     ModelMultipleChoiceFilter, BooleanFilter,
+    ModelMultipleChoiceFilter, BooleanFilter, DateRangeFilter, DateTimeFromToRangeFilter, ModelChoiceFilter,
+    DateFromToRangeFilter,
 )
 
 from gcampus.auth import session
@@ -157,6 +159,10 @@ class GeolocationFilter(Filter):
         return qs
 
 
+class DropDownSelectMultiple(CheckboxSelectMultiple):
+    template_name = "gcampuscore/components/parameter_dropdown.html"
+
+
 class MeasurementFilter(FilterSet):
     name = CharFilter(
         field_name="name",
@@ -177,7 +183,7 @@ class MeasurementFilter(FilterSet):
     parameter_types = ParameterTypeFilter(
         field_name="parameter_types",
         queryset=ParameterType.objects.all(),
-        widget=CheckboxSelectMultiple,
+        widget=DropDownSelectMultiple,
         label=_("Parameter"),
         help_text=_("Filter for measurements containing a specific data type"),
     )
