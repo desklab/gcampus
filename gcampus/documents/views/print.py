@@ -87,7 +87,6 @@ class MeasurementDetailPDF(SingleObjectDocumentView):
     context_object_name = "measurement"
     model = Measurement
 
-    @method_decorator(require_course_token)
     def dispatch(self, request, *args, **kwargs):
         return super(MeasurementDetailPDF, self).dispatch(request, *args, **kwargs)
 
