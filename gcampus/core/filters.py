@@ -175,16 +175,6 @@ class MeasurementFilter(FilterSet):
         help_text=_("Filter either by name or comment"),
         label=_("Filter measurements"),
     )
-    time_gt = SplitDateTimeFilter(
-        field_name="time",
-        lookup_expr="gt",
-        help_text=_("Filter for measurements conducted before a specified time"),
-    )
-    time_lt = SplitDateTimeFilter(
-        field_name="time",
-        lookup_expr="lt",
-        help_text=_("Filter for measurements conducted after a specified time"),
-    )
     time_range = DateRange(
         field_name="time",
         lookup_expr="range",
