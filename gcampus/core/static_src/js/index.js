@@ -18,6 +18,7 @@
 import Tooltip from 'bootstrap/js/src/tooltip';
 import Collapse from 'bootstrap/js/src/collapse';
 import Dropdown from 'bootstrap/js/src/dropdown';
+import Offcanvas from 'bootstrap/js/src/offcanvas';
 import 'bootstrap/js/src/modal';
 import Alert from 'bootstrap/js/src/alert';
 import Toast from 'bootstrap/js/src/toast';
@@ -54,4 +55,4 @@ function getCookie(name) {
     return null;
 }
 
-export {Toast, Tooltip, Collapse, Dropdown, Alert, setCookie, getCookie};
+export {Toast, Tooltip, Collapse, Dropdown, Alert, Offcanvas, setCookie, getCookie};

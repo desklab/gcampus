@@ -38,6 +38,7 @@ from gcampus.auth.exceptions import UnauthenticatedError, TokenPermissionError
 from gcampus.auth.models.token import TokenType
 from gcampus.core.fields import SplitSplitDateTimeField, LocationRadiusField
 from gcampus.core.fields.datetime import HistogramDateTimeField
+from gcampus.core.fields.personal import ToggleField
 from gcampus.core.models import ParameterType
 from gcampus.core.models.util import EMPTY
 
@@ -59,7 +60,7 @@ class SplitDateTimeFilter(DateTimeFilter):
 
 
 class MyCourseFilter(BooleanFilter):
-    field_class = BooleanField
+    field_class = ToggleField
 
     def filter(self, qs, value):
         if value:
@@ -93,7 +94,7 @@ class MyMeasurementsFilter(BooleanFilter):
     only available to users logged in with an access key.
     """
 
-    field_class = BooleanField
+    field_class = ToggleField
 
     def filter(self, qs, value: bool):
         """Apply filter
@@ -178,12 +179,12 @@ class MeasurementFilter(FilterSet):
     time_range = DateRange(
         field_name="time",
         lookup_expr="range",
-        help_text=_("Filter for measurements conducted after a specified time"),
+        help_text=_("Filter for measurements conducted in a specified time range"),
     )
     parameter_types = ParameterTypeFilter(
         field_name="parameter_types",
         queryset=ParameterType.objects.all(),
-        widget=DropDownSelectMultiple,
+        widget=CheckboxSelectMultiple,
         label=_("Parameter"),
         help_text=_("Filter for measurements containing a specific data type"),
     )

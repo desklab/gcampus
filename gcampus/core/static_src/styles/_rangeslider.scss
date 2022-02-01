@@ -1,23 +1,3 @@
-{% load i18n static leaflet_tags tz l10n menu %}
-{% with week_list_js|length as list_len %}
-    <div class="range-slider"><span>{% translate "from" %}
-    <input hidden name="{{ widget.subwidgets.0.name }}" {% if widget.subwidgets.0.value != None %}
-           value="{{ widget.subwidgets.0.value|stringformat:'s' }}"{% endif %} id="start_date" type="date"/><span
-                id="from_span"></span>	<br>{% translate "to" %}
-    <input hidden name="{{ widget.subwidgets.1.name }}" {% if widget.subwidgets.1.value != None %}
-           value="{{ widget.subwidgets.1.value|stringformat:'s' }}"{% endif %} id="end_date" type="date"/><span
-                id="to_span"></span></span>
-        <input value="0" min="0" max="{{ list_len|add:"-1" }}" step="1"
-               type="range"/>
-        <input value="{{ list_len|add:"-1" }}" min="0" max="{{ list_len|add:"-1" }}"
-               step="1" type="range"/>
-        <svg width="100%" height="24">
-
-        </svg>
-    </div>
-{% endwith %}
-
-<style>
     body {
         display: flex;
         height: 100vh;
@@ -43,7 +23,22 @@
         bottom: 0;
     }
 
+    input[type=number] {
+        border: 1px solid #ddd;
+        text-align: center;
+        font-size: 1.6em;
+        -moz-appearance: textfield;
+    }
 
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+
+    input[type=number]:invalid,
+    input[type=number]:out-of-range {
+        border: 2px solid #ff6347;
+    }
 
     input[type=range] {
         -webkit-appearance: none;
@@ -76,7 +71,6 @@
         box-shadow: none;
         border: 0;
     }
-
 
     input[type=range]::-webkit-slider-thumb {
         z-index: 2;
@@ -125,12 +119,7 @@
         color: transparent;
     }
 
-    input[type=range]::-ms-fill-lower{
-        background: #2497e3;
-        border-radius: 1px;
-        box-shadow: none;
-        border: 0;
-    }
+    input[type=range]::-ms-fill-lower,
     input[type=range]::-ms-fill-upper {
         background: #2497e3;
         border-radius: 1px;
@@ -149,9 +138,3 @@
         background: #a1d0ff;
         cursor: pointer;
     }
-
-
-</style>
-
-
-

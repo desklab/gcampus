@@ -23,62 +23,68 @@
                     {{ field }}
                 </div>
             {% endwith %}
-            <div/>
 
-            <p>
-                <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" id="filterCollapseButton"
-                   href="#filterCollapse" role="button" onclick="setCookie()"
-                   aria-expanded="false"
-                   aria-controls="filterCollapse">{% translate "Open additional filters" %}</a>
-            </p>
-            <div class="row" id="test">
-                <div class="col">
-                    <div class="collapse"
-                         id="filterCollapse">
-                        <div class="card card-body">
-                            <div class="container">
-                                <div class="row">
-                                    {% with filter.form.time_range as field %}
-                                        <div class="col-md-4 mb-3">
-                                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                            {% include "gcampuscore/forms/components/helptext.html" %}
-                                            {{ field }}
-                                        </div>
-                                    {% endwith %}
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
+                 aria-labelledby="offcanvasRightLabel">
+                <div class="offcanvas-header">
+                    <h4 id="offcanvasRightLabel">{% translate "Additional Filter options" %}</h4>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <div>
 
-
-                                    {% with filter.form.parameter_types as field %}
-                                        <div class="col-md-4 mb-3">
-                                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                            {% include "gcampuscore/forms/components/helptext.html" %}
-                                            {{ field }}
-                                        </div>
-                                    {% endwith %}
-                                    <div class="col-md-4 mb-3">
-                                        {% if user_token_is_access_key or user_token_is_course_token %}
-                                            {% with filter.form.form as field %}
-                                                {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                                {% include "gcampuscore/forms/components/helptext.html" %}
-                                                {% include "gcampuscore/components/my_course_dropdown.html" with course_filter=filter.form.form my_filter=filter.form.my_measurements %}
-                                            {% endwith %}
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                {% with filter.form.location as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {% include "gcampuscore/forms/components/helptext.html" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
+                    <button type="submit" class="btn btn btn-primary center">{% translate "Filter" %}</button>
+                        {% with filter.form.time_range as field %}
+                            <div class="mb-3">
+                                {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                {% include "gcampuscore/forms/components/helptext.html" %}
+                                {{ field }}
                             </div>
+                        {% endwith %}
+
+
+                        {% with filter.form.parameter_types as field %}
+                            <div class="mb-3">
+                                {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                {% include "gcampuscore/forms/components/helptext.html" %}
+                                {{ field }}
+                            </div>
+                        {% endwith %}
+                        <div class="mb-3">
+                            {% if user_token_is_access_key or user_token_is_course_token %}
+                                {% with filter.form.my_course as field %}
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    {{ field }}
+                                {% endwith %}
+                            {% endif %}
+                            {% if user_token_is_access_key %}
+                                {% with filter.form.my_measurements as field %}
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {% include "gcampuscore/forms/components/helptext.html" %}
+                                    {{ field }}
+                                {% endwith %}
+                            {% endif %}
                         </div>
                     </div>
+                    {% with filter.form.location as field %}
+                        <div class="mb-3">
+                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                            {% include "gcampuscore/forms/components/helptext.html" %}
+                            {{ field }}
+                        </div>
+
+                    {% endwith %}
                 </div>
+
             </div>
+            <button type="submit" class="btn btn-primary">{% translate "Search" %}</button>
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                    aria-controls="offcanvasRight">{% translate "Additional Filter options" %}
+            </button>
         </form>
 
-        <button type="submit" class="btn btn-primary">{% translate "Search" %}</button>
 
     </div>
     {% if filter.qs %}
@@ -107,11 +113,16 @@
     {% else %}
         <h3 class="text-danger text-large">{% translate "No measurements with the desired attributes" %}</h3>
     {% endif %}
+
+
+
 </div>
 
 
 
     <script>
+
+
         var week_list_js = [{{ week_list_js|join:', ' }}];
         var week_list_length = {{ week_list_js|length }} -1;
         (function () {

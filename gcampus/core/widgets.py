@@ -16,7 +16,7 @@
 import datetime
 from typing import Optional
 
-from django.forms import MultiWidget, NumberInput, DateTimeInput, Media, TextInput
+from django.forms import MultiWidget, NumberInput, DateTimeInput, Media, TextInput, RadioSelect, CheckboxInput
 from django.forms.utils import to_current_timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import pgettext
@@ -152,6 +152,11 @@ class RangeSlider(RangeWidget):
 class RangeInput(NumberInput):
     input_type = "range"
     template_name = "gcampuscore/forms/widgets/range_slider.html"
+
+class ToggleInput(CheckboxInput):
+    input_type = 'checkbox'
+    template_name = 'gcampuscore/components/toggle.html'
+    #b = 0
 
 
 class LocationRadiusWidget(MultiWidget):
