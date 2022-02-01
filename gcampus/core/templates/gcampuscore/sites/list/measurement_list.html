@@ -37,30 +37,9 @@
                          id="filterCollapse">
                         <div class="card card-body">
                             <div class="container">
-                                {% with filter.form.time_gt as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {% include "gcampuscore/forms/components/helptext.html" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
-                                {% with filter.form.time_lt as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {% include "gcampuscore/forms/components/helptext.html" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
-                                {% with filter.form.parameter_types as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {% include "gcampuscore/forms/components/helptext.html" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
-                                {% if user_token_is_access_key or user_token_is_course_token %}
-                                    {% with filter.form.my_course as field %}
-                                        <div class="mb-3">
+                                <div class="row">
+                                    {% with filter.form.time_range as field %}
+                                        <div class="col-md-4 mb-3">
                                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
                                             {% include "gcampuscore/forms/components/helptext.html" %}
                                             {{ field }}

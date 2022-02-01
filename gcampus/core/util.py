@@ -12,6 +12,10 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+import datetime
+import time
+import math
+from django.utils import timezone
 from typing import Tuple, Optional, Union
 
 from django.conf import settings
@@ -126,3 +130,27 @@ def get_geo_locator() -> Nominatim:
         user_agent=getattr(settings, "NOMINATIM_USER_AGENT", "gcampus"),
         domain=getattr(settings, "NOMINATIM_DOMAIN", "nominatim.openstreetmap.org"),
     )
+
+def get_weeks_from_today(date: datetime.datetime) -> list:
+    """Get Weeks from today
+
+    Returns a list of datetime objects that contain dates going back weekly from today to a given date
+
+    :param date: Datetime object to get the number of weeks
+    :returns: List of datetime objects one week apart
+    """
+    today = timezone.now()
+    num_weeks = math.ceil((today-date).days/7)+1
+    dates = [today - datetime.timedelta(weeks=x) for x in range(num_weeks)]
+    return list(reversed(dates))
+
+def convert_dates_to_js_milliseconds(dates: list) -> list:
+    """Get Dates for javascript
+
+    Since Javascript doesn't know python datetime objects we need to convert these into milliseconds
+
+    :param dates: List of
+    :returns: List of dates as milliseconds
+    """
+    dates_milliseconds = [int(time.mktime(date.timetuple())) * 1000 for date in dates]
+    return dates_milliseconds

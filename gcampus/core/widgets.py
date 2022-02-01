@@ -16,11 +16,16 @@
 import datetime
 from typing import Optional
 
-from django.forms import MultiWidget, NumberInput
+from django.forms import MultiWidget, NumberInput, DateTimeInput, Media, TextInput
 from django.forms.utils import to_current_timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import pgettext
+from django_filters.fields import RangeField
+from django_filters.widgets import RangeWidget
 from leaflet.forms.widgets import LeafletWidget
+
+from gcampus.core.models import Measurement
+from gcampus.core.util import get_weeks_from_today, convert_dates_to_js_milliseconds
 
 
 class SplitTimeWidget(MultiWidget):
@@ -132,6 +137,16 @@ class SplitSplitDateTimeWidget(MultiWidget):
             value = to_current_timezone(value)
             return [value.date(), value.time()]
         return [None, None]
+
+class RangeSlider(RangeWidget):
+    template_name = "gcampuscore/components/range_slider.html"
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        earliest_date: datetime = Measurement.objects.values_list("time", flat=True).earliest("time")
+        week_list = get_weeks_from_today(earliest_date)
+        context["week_list_js"] = convert_dates_to_js_milliseconds(week_list)
+        return context
 
 
 class RangeInput(NumberInput):

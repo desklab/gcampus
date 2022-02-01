@@ -29,7 +29,6 @@ from django_filters import (
     FilterSet,
     DateTimeFilter,
     CharFilter,
-    ModelMultipleChoiceFilter, BooleanFilter,
     ModelMultipleChoiceFilter, BooleanFilter, DateRangeFilter, DateTimeFromToRangeFilter, ModelChoiceFilter,
     DateFromToRangeFilter,
 )
@@ -38,6 +37,7 @@ from gcampus.auth import session
 from gcampus.auth.exceptions import UnauthenticatedError, TokenPermissionError
 from gcampus.auth.models.token import TokenType
 from gcampus.core.fields import SplitSplitDateTimeField, LocationRadiusField
+from gcampus.core.fields.datetime import HistogramDateTimeField
 from gcampus.core.models import ParameterType
 from gcampus.core.models.util import EMPTY
 
@@ -55,6 +55,7 @@ def _get_filter_request(filter_instance: Filter) -> Optional[HttpRequest]:
 
 class SplitDateTimeFilter(DateTimeFilter):
     field_class = SplitSplitDateTimeField
+
 
 
 class MyCourseFilter(BooleanFilter):
@@ -159,6 +160,10 @@ class GeolocationFilter(Filter):
         return qs
 
 
+class DateRange(DateFromToRangeFilter):
+    field_class = HistogramDateTimeField
+
+
 class DropDownSelectMultiple(CheckboxSelectMultiple):
     template_name = "gcampuscore/components/parameter_dropdown.html"
 
@@ -178,6 +183,11 @@ class MeasurementFilter(FilterSet):
     time_lt = SplitDateTimeFilter(
         field_name="time",
         lookup_expr="lt",
+        help_text=_("Filter for measurements conducted after a specified time"),
+    )
+    time_range = DateRange(
+        field_name="time",
+        lookup_expr="range",
         help_text=_("Filter for measurements conducted after a specified time"),
     )
     parameter_types = ParameterTypeFilter(
