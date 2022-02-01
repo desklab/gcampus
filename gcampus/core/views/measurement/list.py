@@ -17,6 +17,7 @@ __all__ = [
     "MeasurementListView",
 ]
 
+from datetime import datetime
 from typing import Optional
 
 from django.utils import timezone
@@ -25,11 +26,14 @@ from django.views.generic import ListView
 from gcampus.core.filters import MeasurementFilter
 from gcampus.core.models import Measurement
 
+from gcampus.core.util import get_weeks_from_today, convert_dates_to_js_milliseconds
+
 
 class MeasurementListView(ListView):
     template_name = "gcampuscore/sites/list/measurement_list.html"
     model = Measurement
     context_object_name = "measurement_list"
+
     # paginate_by = 10
 
     def __init__(self, *args, **kwargs):
@@ -50,6 +54,9 @@ class MeasurementListView(ListView):
         if "filter" not in kwargs:
             kwargs["filter"] = self.filter
         kwargs["today"] = timezone.now()
+        earliest_date: datetime = Measurement.objects.values_list("time", flat=True).earliest("time")
+        week_list = get_weeks_from_today(earliest_date)
+        kwargs["week_list_js"] = convert_dates_to_js_milliseconds(week_list)
         return super(MeasurementListView, self).get_context_data(
             object_list=object_list, **kwargs
         )

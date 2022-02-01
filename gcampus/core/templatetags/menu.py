@@ -17,6 +17,8 @@ from django import template
 from django.http import HttpRequest
 from django.template import Context
 
+import time
+
 register = template.Library()
 
 
@@ -51,3 +53,21 @@ def aria_current(context: Context, view_name: str) -> str:
         return 'aria-current="page"'
     else:
         return ""
+
+
+@register.filter
+def divide(value, arg):
+    try:
+        res = int(value) / int(arg)
+        return int(res)
+    except (ValueError, ZeroDivisionError):
+        return None
+
+
+@register.filter
+def to_js(value):
+    try:
+        js_date = int(time.mktime(value.timetuple())) * 1000
+        return js_date
+    except (ValueError, ZeroDivisionError):
+        return None

@@ -13,7 +13,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__ALL__ = ["SplitSplitDateTimeField"]
+__ALL__ = ["SplitSplitDateTimeField", "HistogramDateTimeField"]
 
 
 import datetime
@@ -21,8 +21,15 @@ import datetime
 from django.core.exceptions import ValidationError
 from django.forms import DateTimeField
 from django.forms.utils import from_current_timezone
+from django_filters.fields import DateRangeField
 
-from gcampus.core.widgets import SplitSplitDateTimeWidget
+from gcampus.core.widgets import SplitSplitDateTimeWidget, RangeSlider
+
+
+class HistogramDateTimeField(DateRangeField):
+    widget = RangeSlider
+
+
 
 
 class SplitSplitDateTimeField(DateTimeField):

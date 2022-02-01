@@ -29,13 +29,16 @@ from django_filters import (
     FilterSet,
     DateTimeFilter,
     CharFilter,
-    ModelMultipleChoiceFilter, BooleanFilter,
+    ModelMultipleChoiceFilter, BooleanFilter, DateRangeFilter, DateTimeFromToRangeFilter, ModelChoiceFilter,
+    DateFromToRangeFilter,
 )
 
 from gcampus.auth import session
 from gcampus.auth.exceptions import UnauthenticatedError, TokenPermissionError
 from gcampus.auth.models.token import TokenType
 from gcampus.core.fields import SplitSplitDateTimeField, LocationRadiusField
+from gcampus.core.fields.datetime import HistogramDateTimeField
+from gcampus.core.fields.personal import ToggleField
 from gcampus.core.models import ParameterType
 from gcampus.core.models.util import EMPTY
 
@@ -55,8 +58,9 @@ class SplitDateTimeFilter(DateTimeFilter):
     field_class = SplitSplitDateTimeField
 
 
+
 class MyCourseFilter(BooleanFilter):
-    field_class = BooleanField
+    field_class = ToggleField
 
     def filter(self, qs, value):
         if value:
@@ -90,7 +94,7 @@ class MyMeasurementsFilter(BooleanFilter):
     only available to users logged in with an access key.
     """
 
-    field_class = BooleanField
+    field_class = ToggleField
 
     def filter(self, qs, value: bool):
         """Apply filter
@@ -157,6 +161,14 @@ class GeolocationFilter(Filter):
         return qs
 
 
+class DateRange(DateFromToRangeFilter):
+    field_class = HistogramDateTimeField
+
+
+class DropDownSelectMultiple(CheckboxSelectMultiple):
+    template_name = "gcampuscore/components/parameter_dropdown.html"
+
+
 class MeasurementFilter(FilterSet):
     name = CharFilter(
         field_name="name",
@@ -164,15 +176,10 @@ class MeasurementFilter(FilterSet):
         help_text=_("Filter either by name or comment"),
         label=_("Filter measurements"),
     )
-    time_gt = SplitDateTimeFilter(
+    time_range = DateRange(
         field_name="time",
-        lookup_expr="gt",
-        help_text=_("Filter for measurements conducted before a specified time"),
-    )
-    time_lt = SplitDateTimeFilter(
-        field_name="time",
-        lookup_expr="lt",
-        help_text=_("Filter for measurements conducted after a specified time"),
+        lookup_expr="range",
+        help_text=_("Filter for measurements conducted in a specified time range"),
     )
     parameter_types = ParameterTypeFilter(
         field_name="parameter_types",
