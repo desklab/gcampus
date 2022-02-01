@@ -114,14 +114,29 @@
         <h3 class="text-danger text-large">{% translate "No measurements with the desired attributes" %}</h3>
     {% endif %}
 
-
-
 </div>
-
-
-
     <script>
+document.getElementById("{{ filter.form.my_measurements.id_for_label }}").onclick = function() {toggleMeasurement()};
+document.getElementById("{{ filter.form.my_course.id_for_label }}").onclick = function() {toggleCourse()};
 
+function toggleMeasurement() {
+    var my_measurement_toggle = document.getElementById("{{ filter.form.my_measurements.id_for_label }}");
+    var my_course_toggle = document.getElementById("{{ filter.form.my_course.id_for_label }}");
+
+    if (my_measurement_toggle.checked && my_course_toggle.checked){
+        my_course_toggle.checked = false;
+    }
+
+}
+function toggleCourse() {
+    var my_measurement_toggle = document.getElementById("{{ filter.form.my_measurements.id_for_label }}");
+    var my_course_toggle = document.getElementById("{{ filter.form.my_course.id_for_label }}");
+
+    if (my_measurement_toggle.checked && my_course_toggle.checked){
+        my_measurement_toggle.checked = false;
+    }
+
+}
 
         var week_list_js = [{{ week_list_js|join:', ' }}];
         var week_list_length = {{ week_list_js|length }} -1;
