@@ -14,7 +14,8 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
-from typing import Type, Union
+import time
+from typing import Type, Union, Tuple
 
 from celery import shared_task
 from django.core.files import File
@@ -59,13 +60,15 @@ def render_cached_document_view(
     translation.activate(language)
     if isinstance(view, str):
         view = import_string(view)
-    if not issubclass(view, View) or not hasattr(view, "mock_view"):
+    if (
+        not issubclass(view, View)
+        or not hasattr(view, "mock_view")
+        or not hasattr(view, "model")
+    ):
         raise ValueError("Expected a view of type 'CachedDocumentView'.")
-    view_instance = view.mock_view(instance)  # Create a fake view
-    _instance: Model = view_instance.object
-    if _instance is None:
-        # This should never happen
-        raise ValueError("Unable to find an instance")
+
+    model, _instance = get_instance_retry(view.model, instance)
+    view_instance = view.mock_view(_instance)  # Create a fake view
 
     lock_name = f"render_cached_document_view_{view.__name__}_{_instance.pk}"
     # A lock is used to prevent multiple workers from creating the same
@@ -103,15 +106,39 @@ def render_document_to_model(
     language: str,
 ):
     translation.activate(language)
-    if isinstance(model, str):
-        _model = import_string(model)
-        if not issubclass(_model, Model):  # noqa
-            raise ValueError(f"'{model}' is not a valid model")
-        model: Type[Model] = _model
-    if not isinstance(instance, Model):
-        instance: Model = model.objects.get(pk=instance)
+    model, instance = get_instance_retry(model, instance)
     html = HTML(string=template, url_fetcher=url_fetcher)
     document = html.render()
     filelike_obj = as_bytes_io(document)
     setattr(instance, model_file_field, File(filelike_obj, name=filename))
     instance.save(update_fields=(model_file_field,))
+
+
+def get_instance_retry(
+    model: Union[str, Type[Model]],
+    instance: Union[Model, int],
+    max_retry: int = 5,
+    retry_delay: int = 5,
+) -> Tuple[Type[Model], Model]:
+    if isinstance(model, str):
+        _model = import_string(model)
+        if not issubclass(_model, Model):  # noqa
+            raise ValueError(f"'{model}' is not a valid model")
+        model: Type[Model] = _model
+
+    if isinstance(instance, model):
+        return model, instance
+
+    counter = 0
+    while not isinstance(instance, model) and counter <= max_retry:
+        counter += 1
+        try:
+            model_instance: model = model.objects.get(pk=instance)
+            return model, model_instance
+        except model.DoesNotExist:
+            # Do not handle exception
+            time.sleep(retry_delay)
+
+    raise model.DoesNotExist(
+        f"Unable to find {model} with 'pk={instance}'"
+    )
