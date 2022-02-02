@@ -37,7 +37,7 @@ from gcampus.core.decorators import (
     require_permission_create_measurement,
     require_permission_edit_measurement,
 )
-from gcampus.core.filters import MeasurementFilter
+from gcampus.core.filters import MeasurementFilterSet
 from gcampus.core.forms.measurement import MeasurementForm
 from gcampus.core.models import Measurement
 from gcampus.core.views.base import TitleMixin
@@ -77,7 +77,7 @@ class MeasurementMapView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["filter"] = MeasurementFilter(
+        context["filter"] = MeasurementFilterSet(
             self.request.GET, queryset=self.get_queryset()
         )
         return context

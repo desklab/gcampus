@@ -138,12 +138,15 @@ class SplitSplitDateTimeWidget(MultiWidget):
             return [value.date(), value.time()]
         return [None, None]
 
-class RangeSlider(RangeWidget):
-    template_name = "gcampuscore/components/range_slider.html"
+
+class TimeRangeSlider(RangeWidget):
+    template_name = "gcampuscore/forms/widgets/time_range_slider.html"
 
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
-        earliest_date: datetime = Measurement.objects.values_list("time", flat=True).earliest("time")
+        earliest_date: datetime = (
+            Measurement.objects.values_list("time", flat=True).earliest("time")
+        )
         week_list = get_weeks_from_today(earliest_date)
         context["week_list_js"] = convert_dates_to_js_milliseconds(week_list)
         return context
@@ -153,10 +156,18 @@ class RangeInput(NumberInput):
     input_type = "range"
     template_name = "gcampuscore/forms/widgets/range_slider.html"
 
+
 class ToggleInput(CheckboxInput):
-    input_type = 'checkbox'
-    template_name = 'gcampuscore/components/toggle.html'
-    #b = 0
+    def get_context(self, name, value, attrs):
+        attrs = attrs or {}
+        klass = "form-check-input"
+        if "class" in attrs:
+            klass = f"{klass} {attrs['class']}"
+        attrs.update({
+            "class": klass,
+            "role": "switch"
+        })
+        return super(ToggleInput, self).get_context(name, value, attrs)
 
 
 class LocationRadiusWidget(MultiWidget):

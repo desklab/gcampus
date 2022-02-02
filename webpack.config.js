@@ -154,6 +154,7 @@ let gcampuscoreConfig = (env, options) => {
             leafletsearch: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'leafletsearch.js'),
             watersuggestion: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'watersuggestion.js'),
             dynamicformset: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'dynamicformset.js'),
+            filter: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'filter.js'),
         },
         output: {
             path: path.resolve(__dirname, 'gcampus', 'core', 'static', 'gcampuscore'),
@@ -242,7 +243,6 @@ let gcampusauthConfig = (env, options) => {
     });
 }
 
-
 let gcampusdocumentsConfig = (env, options) => {
     let common = commonConfig(env, options);
     return Object.assign(common, {
@@ -273,7 +273,6 @@ let gcampusdocumentsConfig = (env, options) => {
         ],
     });
 }
-
 
 let gcampusmailConfig = (env, options) => {
     options.nopostcssLoader = true

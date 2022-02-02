@@ -23,13 +23,11 @@ from django.forms import DateTimeField
 from django.forms.utils import from_current_timezone
 from django_filters.fields import DateRangeField
 
-from gcampus.core.widgets import SplitSplitDateTimeWidget, RangeSlider
+from gcampus.core.widgets import SplitSplitDateTimeWidget, TimeRangeSlider
 
 
 class HistogramDateTimeField(DateRangeField):
-    widget = RangeSlider
-
-
+    widget = TimeRangeSlider
 
 
 class SplitSplitDateTimeField(DateTimeField):

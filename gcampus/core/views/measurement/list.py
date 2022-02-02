@@ -21,27 +21,30 @@ from datetime import datetime
 from typing import Optional
 
 from django.utils import timezone
+from django.utils.translation import gettext_lazy
 from django.views.generic import ListView
 
-from gcampus.core.filters import MeasurementFilter
+
+from gcampus.core.filters import MeasurementFilterSet
 from gcampus.core.models import Measurement
-
 from gcampus.core.util import get_weeks_from_today, convert_dates_to_js_milliseconds
+from gcampus.core.views.base import TitleMixin
 
 
-class MeasurementListView(ListView):
+class MeasurementListView(TitleMixin, ListView):
     template_name = "gcampuscore/sites/list/measurement_list.html"
     model = Measurement
+    title = gettext_lazy("All measurements")
     context_object_name = "measurement_list"
 
     # paginate_by = 10
 
     def __init__(self, *args, **kwargs):
-        self.filter: Optional[MeasurementFilter] = None
+        self.filter: Optional[MeasurementFilterSet] = None
         super(MeasurementListView, self).__init__(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        self.filter = MeasurementFilter(
+        self.filter = MeasurementFilterSet(
             self.request.GET, queryset=Measurement.objects.all(),
             request=self.request)
         return super(MeasurementListView, self).get(request, *args, **kwargs)

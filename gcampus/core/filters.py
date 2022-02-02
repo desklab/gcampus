@@ -47,7 +47,7 @@ def _get_filter_request(filter_instance: Filter) -> Optional[HttpRequest]:
     if not hasattr(filter_instance, "parent"):
         # No parent instance found, return None instead
         return None
-    parent_filter_set: MeasurementFilter = getattr(filter_instance, "parent")
+    parent_filter_set: MeasurementFilterSet = getattr(filter_instance, "parent")
     if parent_filter_set is not None:
         return parent_filter_set.request
     else:
@@ -56,7 +56,6 @@ def _get_filter_request(filter_instance: Filter) -> Optional[HttpRequest]:
 
 class SplitDateTimeFilter(DateTimeFilter):
     field_class = SplitSplitDateTimeField
-
 
 
 class MyCourseFilter(BooleanFilter):
@@ -169,24 +168,24 @@ class DropDownSelectMultiple(CheckboxSelectMultiple):
     template_name = "gcampuscore/components/parameter_dropdown.html"
 
 
-class MeasurementFilter(FilterSet):
-    name = CharFilter(
-        field_name="name",
-        lookup_expr="icontains",
-        help_text=_("Filter either by name or comment"),
-        label=_("Filter measurements"),
+class MeasurementFilterSet(FilterSet):
+    name = MeasurementSearchFilter(
+        field_name="search_vector",
+        label=_("Search"),
+        help_text=_("Fulltext search for measurements."),
     )
     time_range = DateRange(
         field_name="time",
         lookup_expr="range",
-        help_text=_("Filter for measurements conducted in a specified time range"),
+        label=_("Measurement time range"),
+        help_text=_("Filter for measurements conducted in a specified time range."),
     )
     parameter_types = ParameterTypeFilter(
         field_name="parameter_types",
         queryset=ParameterType.objects.all(),
         widget=CheckboxSelectMultiple,
         label=_("Parameter"),
-        help_text=_("Filter for measurements containing a specific data type"),
+        help_text=_("Filter for measurements containing specific parameters."),
     )
     location = GeolocationFilter(
         field_name="location",
@@ -196,9 +195,11 @@ class MeasurementFilter(FilterSet):
     )
     my_course = MyCourseFilter(
         field_name="my_course",
-        label=_("My Course"),
+        label=_("Measurements by my course"),
+        help_text=_("Display only measurements that have been conducted by my course."),
     )
     my_measurements = MyMeasurementsFilter(
         field_name="my_measurements",
-        label=_("My Measurements"),
+        label=_("Measurements by me"),
+        help_text=_("Display only measurements that have been conducted by me."),
     )

@@ -134,16 +134,16 @@
         }
     </script>
 {% endblock body_js %}
-<script type="text/javascript">
-    {% if messages %}
-        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
-        var toastList = toastElList.map(function (toastEl) {
+{% if messages %}
+    <script type="text/javascript">
+        let toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        let toastList = toastElList.map(function (toastEl) {
             let toast = new gcampuscore.main.Toast(toastEl, {delay: 10000});
             toast.show();
             return toast
         });
-    {% endif %}
-</script>
+    </script>
+{% endif %}
 {% block extra_body %}
     {# Override this in templates to add extra javascript #}
 {% endblock %}

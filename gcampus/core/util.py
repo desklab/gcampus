@@ -15,8 +15,9 @@
 import datetime
 import time
 import math
+from typing import List, Tuple, Optional, Union
+
 from django.utils import timezone
-from typing import Tuple, Optional, Union
 
 from django.conf import settings
 from django.contrib.gis.geos import Point
@@ -131,26 +132,36 @@ def get_geo_locator() -> Nominatim:
         domain=getattr(settings, "NOMINATIM_DOMAIN", "nominatim.openstreetmap.org"),
     )
 
-def get_weeks_from_today(date: datetime.datetime) -> list:
+
+def get_weeks_from_today(date: datetime.datetime) -> List[datetime.datetime]:
     """Get Weeks from today
 
-    Returns a list of datetime objects that contain dates going back weekly from today to a given date
+    Returns a list of datetime objects that contain dates going back
+    weekly from today to a given date.
 
     :param date: Datetime object to get the number of weeks
     :returns: List of datetime objects one week apart
     """
     today = timezone.now()
     num_weeks = math.ceil((today-date).days/7)+1
-    dates = [today - datetime.timedelta(weeks=x) for x in range(num_weeks)]
-    return list(reversed(dates))
+    dates: List[datetime.datetime] = [
+        today - datetime.timedelta(weeks=x)
+        for x in reversed(range(num_weeks))
+    ]
+    return dates
 
-def convert_dates_to_js_milliseconds(dates: list) -> list:
+
+def convert_dates_to_js_milliseconds(dates: List[datetime.datetime]) -> List[int]:
     """Get Dates for javascript
 
-    Since Javascript doesn't know python datetime objects we need to convert these into milliseconds
+    Since Javascript doesn't know python datetime objects we need to
+    convert these into milliseconds.
 
-    :param dates: List of
+    :param dates: List of dates
     :returns: List of dates as milliseconds
     """
-    dates_milliseconds = [int(time.mktime(date.timetuple())) * 1000 for date in dates]
+    dates_milliseconds: List[int] = [
+        int(time.mktime(date.timetuple())) * 1000
+        for date in dates
+    ]
     return dates_milliseconds

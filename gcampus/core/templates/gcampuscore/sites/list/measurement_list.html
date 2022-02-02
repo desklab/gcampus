@@ -1,94 +1,44 @@
 {% extends "gcampuscore/base.html" %}
 {% load auth_token %}
 {% load i18n static leaflet_tags tz l10n menu %}
-{% block title %}
-    {% translate "All measurements" %}
-{% endblock %}
 {% block extra_head %}
     {{ block.super }}
     {% leaflet_js plugins="forms" %}
     {% leaflet_css plugins="forms" %}
 {% endblock %}
-{% block navbar_title %}
-    <span class="">{% translate "All measurements" %}</span>
-{% endblock %}
 {% block content %}
-
-    <div class="container">
+    <div class="container-fluid">
         <form method="GET">
-            {% with filter.form.name as field %}
-                <div class="mb-3">
-                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                    {% include "gcampuscore/forms/components/helptext.html" %}
-                    {{ field }}
-                </div>
-            {% endwith %}
-
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
-                 aria-labelledby="offcanvasRightLabel">
-                <div class="offcanvas-header">
-                    <h4 id="offcanvasRightLabel">{% translate "Additional Filteroptions" %}</h4>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                            aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <div>
-
-                    <button type="submit" class="btn btn btn-primary center">{% translate "Filter" %}</button>
-                        {% with filter.form.time_range as field %}
-                            <div class="mb-3">
-                                {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                {% include "gcampuscore/forms/components/helptext.html" %}
-                                {{ field }}
-                            </div>
-                        {% endwith %}
-
-
-                        {% with filter.form.parameter_types as field %}
-                            <div class="mb-3">
-                                {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                {% include "gcampuscore/forms/components/helptext.html" %}
-                                {{ field }}
-                            </div>
-                        {% endwith %}
-                        <div class="mb-3">
-                            {% if user_token_is_access_key or user_token_is_course_token %}
-                                {% with filter.form.my_course as field %}
-                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                    {% include "gcampuscore/forms/components/helptext.html" %}
-                                    {{ field }}
-                                {% endwith %}
-                            {% endif %}
-                            {% if user_token_is_access_key %}
-                                {% with filter.form.my_measurements as field %}
-                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                    {% include "gcampuscore/forms/components/helptext.html" %}
-                                    {{ field }}
-                                {% endwith %}
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% with filter.form.location as field %}
-                        <div class="mb-3">
-                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                            {% include "gcampuscore/forms/components/helptext.html" %}
-                            {{ field }}
-                        </div>
-
+            <div class="row g-3 align-items-center">
+                <div class="col">
+                    {% with filter.form.name as field %}
+                        {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
                     {% endwith %}
                 </div>
-
+                <div class="col-auto">
+                    <button class="btn btn-light position-relative"
+                            type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasFilter"
+                            aria-controls="offcanvasFilter">
+                        {% translate "Filter" %}
+                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-warning border border-light rounded-circle">
+                            <span class="visually-hidden">
+                                {% translate "Additional filters applied" %}
+                            </span>
+                        </span>
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">
+                        {% translate "Search" %}
+                    </button>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">{% translate "Search" %}</button>
-            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                    aria-controls="offcanvasRight">{% translate "Open Additional Filteroptions" %}
-            </button>
+            {% include "gcampuscore/components/filter.html" %}
         </form>
-
-
     </div>
+    <div class="container-fluid mt-2">
     {% if filter.qs %}
-        <div class="container-fluid mt-5">
         <table class="table table-hover">
             <thead>
             <tr>
@@ -111,149 +61,52 @@
             </tbody>
         </table>
     {% else %}
-        <h3 class="text-danger text-large">{% translate "No measurements with the desired attributes" %}</h3>
+        <div class="p-5 text-dark bg-light rounded">
+            <h2>
+                {% translate "No measurements found" %}
+            </h2>
+            <p>
+                {% blocktranslate trimmed %}
+                    Unfortunately, no measurements can be found.
+                    <br>
+                    Maybe your filter settings are too restrictive.
+                {% endblocktranslate %}
+            </p>
+            <a class="btn btn-outline-dark" role="button" href="{% url "gcampuscore:measurements" %}">
+                {% translate "Reset filter" %}
+            </a>
+        </div>
     {% endif %}
+    </div>
+{% endblock content %}
+{% block extra_body %}
+    <script type="text/javascript" src="{% static 'gcampuscore/js/filter.js' %}"></script>
+    <script type="text/javascript">
+        let my_measurement_toggle = document.getElementById("{{ filter.form.my_measurements.id_for_label }}");
+        let my_course_toggle = document.getElementById("{{ filter.form.my_course.id_for_label }}");
 
-</div>
-    <script>
-document.getElementById("{{ filter.form.my_measurements.id_for_label }}").onclick = function() {toggleMeasurement()};
-document.getElementById("{{ filter.form.my_course.id_for_label }}").onclick = function() {toggleCourse()};
+        my_measurement_toggle.addEventListener('click', function () {
+            toggleMeasurement();
+        });
+        my_course_toggle.addEventListener('click', function () {
+            toggleCourse();
+        });
 
-function toggleMeasurement() {
-    var my_measurement_toggle = document.getElementById("{{ filter.form.my_measurements.id_for_label }}");
-    var my_course_toggle = document.getElementById("{{ filter.form.my_course.id_for_label }}");
-
-    if (my_measurement_toggle.checked && my_course_toggle.checked){
-        my_course_toggle.checked = false;
-    }
-
-}
-function toggleCourse() {
-    var my_measurement_toggle = document.getElementById("{{ filter.form.my_measurements.id_for_label }}");
-    var my_course_toggle = document.getElementById("{{ filter.form.my_course.id_for_label }}");
-
-    if (my_measurement_toggle.checked && my_course_toggle.checked){
-        my_measurement_toggle.checked = false;
-    }
-
-}
-
-        var week_list_js = [{{ week_list_js|join:', ' }}];
-        var week_list_length = {{ week_list_js|length }} -1;
-        (function () {
-
-
-            var parent = document.querySelector(".range-slider");
-            if (!parent) return;
-
-            var
-                rangeS = parent.querySelectorAll("input[type=range]"),
-                numberS = parent.querySelectorAll("input[type=date]");
-
-            // Set start and endpoint to first and last entry of week_list_js
-            var left_slider_index = 0;
-            var right_slider_index = week_list_length;
-
-            // Check if there is already a set value in the hidden inputs
-            // This means that the filter has been used and the slider as well
-            // as the strings need to be set accordingly
-            if (numberS[0].value && numberS[1].value) {
-
-                // Get values from hidden inputs
-                var left_slider_date = Date.parse(numberS[0].value);
-                var right_slider_date = Date.parse(numberS[1].value);
-
-                // Get index of closest date in week_list_js
-                left_slider_index = closest_index(left_slider_date, week_list_js);
-                right_slider_index = closest_index(right_slider_date, week_list_js);
-
-                // Set slider values
-                rangeS[0].value = left_slider_index;
-                rangeS[1].value = right_slider_index;
-            }
-            // Turn milliseconds into dates
-            var start_date = new Date(week_list_js[left_slider_index]);
-            var end_date = new Date(week_list_js[right_slider_index]);
-
-            // Set date strings
-            document.getElementById("from_span").innerHTML = start_date.toLocaleDateString();
-            document.getElementById("to_span").innerHTML = end_date.toLocaleDateString();
-
-
-            rangeS.forEach(function (el) {
-                el.oninput = function () {
-                    var slide1 = parseFloat(rangeS[0].value),
-                        slide2 = parseFloat(rangeS[1].value);
-
-                    if (slide1 > slide2) {
-                        [slide1, slide2] = [slide2, slide1];
-
-                    }
-                    var start_date = new Date(week_list_js[slide1]);
-                    var end_date = new Date(week_list_js[slide2]);
-
-                    numberS[0].valueAsDate = start_date;
-                    numberS[1].valueAsDate = end_date;
-
-                    document.getElementById("from_span").innerHTML = start_date.toLocaleDateString();
-                    document.getElementById("to_span").innerHTML = end_date.toLocaleDateString();
-                }
-            });
-
-            numberS.forEach(function (el) {
-                el.oninput = function () {
-                    var number1 = parseFloat(numberS[0].value),
-                        number2 = parseFloat(numberS[1].value);
-
-                    if (number1 > number2) {
-                        var tmp = number1;
-                        numberS[0].value = number2;
-                        numberS[1].value = tmp;
-                    }
-
-                    rangeS[0].value = number1;
-                    rangeS[1].value = number2;
-
-                }
-            });
-
-        })();
-
-        function closest_index(num, arr) {
-            var curr = arr[0];
-            var diff = Math.abs(num - curr);
-            for (var val = 0; val < arr.length; val++) {
-                var newdiff = Math.abs(num - arr[val]);
-                if (newdiff < diff) {
-                    diff = newdiff;
-                    curr = arr[val];
-                }
-            }
-            return arr.indexOf(curr);
-        }
-
-        let filterButton = document.getElementById("filterCollapseButton");
-        let filterCollapse = document.getElementById("filterCollapse");
-
-        function setCookie() {
-            var status = filterButton.getAttribute('aria-expanded');
-            localStorage.setItem("filterButtonStatus", status);
-        }
-
-        function setCollapse() {
-            var button_value = localStorage.getItem("filterButtonStatus");
-            var bool_button_value = (button_value == 'true');
-            if (bool_button_value) {
-                filterCollapse.setAttribute("class", "collapse show");
-                filterButton.setAttribute('aria-expanded', "true");
-            } else {
-                filterCollapse.setAttribute("class", "collapse");
-                filterButton.setAttribute('aria-expanded', "false");
+        function toggleMeasurement() {
+            if (my_measurement_toggle.checked && my_course_toggle.checked) {
+                my_course_toggle.checked = false;
             }
         }
 
-        setCollapse()
+        function toggleCourse() {
+            if (my_measurement_toggle.checked && my_course_toggle.checked) {
+                my_measurement_toggle.checked = false;
+            }
+        }
+
+        let week_list_js = [{{ week_list_js|join:', ' }}];
+
+        gcampuscore['filter'].initRangeSlider(week_list_js);
     </script>
-{% endblock %}
-
+{% endblock extra_body %}
 
