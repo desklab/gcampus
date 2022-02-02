@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-01 17:33+0100\n"
+"POT-Creation-Date: 2022-02-02 10:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,9 +27,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: gcampus/analysis/apps.py:7
+#: gcampus/analysis/apps.py:7 gcampus/core/apps.py:23
 msgid "GCampus Core"
-msgstr "GCampus Core"
+msgstr "Gewässercampus"
 
 #: gcampus/api/apps.py:23
 msgid "GCampus API"
@@ -68,6 +68,1186 @@ msgstr "Unbenannter Teich %(id)s"
 #: gcampus/api/serializers.py:130
 #, python-format
 msgid "Unnamed wetland %(id)s"
+msgstr ""
+
+#: gcampus/auth/admin.py:35
+msgid "Deactivate selected tokens"
+msgstr "Ausgewählte Token sperren"
+
+#: gcampus/auth/admin.py:36
+msgid "Reactivate selected tokens"
+msgstr "Ausgewählte Token freigeben"
+
+#: gcampus/auth/apps.py:23
+msgid "GCampus Auth"
+msgstr "GCampus Auth"
+
+#: gcampus/auth/exceptions.py:21
+msgid "This page can only be accessed by authenticated users"
+msgstr "Diese Seite ist nur für angemeldete Benutzer zugänglich"
+
+#: gcampus/auth/exceptions.py:22
+msgid "You are not allowed to edit this measurement"
+msgstr "Du hast nicht die Berechtigung diese Messung zu verändern"
+
+#: gcampus/auth/exceptions.py:23
+msgid "You are not allowed to create a measurement"
+msgstr "Du hast nicht die Berechtigung eine Messung zu erstellen"
+
+#: gcampus/auth/exceptions.py:24
+msgid "You are not authenticated and cannot create or edit a measurement"
+msgstr ""
+"Du hast dich nicht angemeldet und kannst keine Messung erstellen oder "
+"bearbeiten"
+
+#: gcampus/auth/exceptions.py:25
+msgid "You do not have the permission to access this site"
+msgstr "Du hast nicht die Berechtigung um auf diese Seite zuzugreifen"
+
+#: gcampus/auth/exceptions.py:26
+#, fuzzy
+#| msgid "Provided course token or access key is not invalid or does not exist"
+msgid "Provided course token or access key is not valid or does not exist"
+msgstr ""
+"Der eingegebene Kursschlüssel oder Zugangscode ist ungültig oder existiert "
+"nicht"
+
+#: gcampus/auth/exceptions.py:30
+msgid ""
+"This access key has been deactivated and can no longer be used. Please "
+"contact the responsible teacher for more information."
+msgstr ""
+"Dieser Zugangscode wurde deaktiviert und kann nicht mehr verwendet werden. "
+"Bitte kontaktiere deine Lehrkraft für mehr Informationen."
+
+#: gcampus/auth/exceptions.py:34
+msgid "This course token has been deactivated and can no longer be used."
+msgstr ""
+"Dieser Kursschlüssel wurde deaktiviert und kann nicht mehr verwendet werden."
+
+#: gcampus/auth/forms/token.py:41 gcampus/auth/models/token.py:130
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:66
+msgid "Access key"
+msgstr "Zugangscode"
+
+#: gcampus/auth/forms/token.py:50 gcampus/auth/models/token.py:87
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:65
+#: gcampus/mail/templates/gcampusmail/register/overview.html:4
+#: gcampus/mail/templates/gcampusmail/register/text.html:19
+msgid "Course token"
+msgstr "Kursschlüssel"
+
+#: gcampus/auth/forms/token.py:63
+msgid "Number of access keys"
+msgstr "Anzahl der Zugangscodes"
+
+#: gcampus/auth/models/token.py:62
+msgid "Name of course"
+msgstr "Name des Kurses"
+
+#: gcampus/auth/models/token.py:68
+msgid "Name of school"
+msgstr "Name der Schule"
+
+#: gcampus/auth/models/token.py:72
+msgid "Name of teacher"
+msgstr "Name der Lehrkraft"
+
+#: gcampus/auth/models/token.py:76
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:117
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:77
+msgid "email"
+msgstr "E-Mail-Adresse"
+
+#: gcampus/auth/models/token.py:80
+msgid "Overview Document"
+msgstr "Dokumente"
+
+#: gcampus/auth/models/token.py:107
+#, python-format
+msgid "Course token %(id)s"
+msgstr "Kursschlüssel %(id)s"
+
+#: gcampus/auth/models/token.py:151
+#, python-format
+msgid "Access key %(id)s"
+msgstr "Zugangscode %(id)s"
+
+#: gcampus/auth/templates/gcampusauth/components/access_key_item.html:17
+msgid "Options"
+msgstr "Optionen"
+
+#: gcampus/auth/templates/gcampusauth/components/access_key_item.html:24
+msgid "Activate"
+msgstr "Aktivieren"
+
+#: gcampus/auth/templates/gcampusauth/components/access_key_item.html:27
+msgid "Deactivate"
+msgstr "Deaktivieren"
+
+#: gcampus/auth/templates/gcampusauth/components/access_key_item.html:34
+msgid "Login with this access key"
+msgstr "Mit diesem Zugangscode anmelden"
+
+#: gcampus/auth/templates/gcampusauth/components/access_key_item.html:40
+msgid "Copy access key"
+msgstr "Zugangscode kopieren"
+
+#: gcampus/auth/templates/gcampusauth/components/access_key_item.html:51
+msgid "deactivated"
+msgstr "gesperrt"
+
+#: gcampus/auth/templates/gcampusauth/components/access_key_item.html:55
+#, python-format
+msgid "%(count)s measurements so far."
+msgstr "Bisher %(count)s Messungen."
+
+#: gcampus/auth/templates/gcampusauth/components/auth_menu.html:11
+#: gcampus/auth/templates/gcampusauth/components/auth_menu.html:23
+msgid "Course Measurements"
+msgstr "Messungen des Kurses"
+
+#: gcampus/auth/templates/gcampusauth/components/auth_menu.html:15
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:16
+msgid "Course administration"
+msgstr "Kursverwaltung"
+
+#: gcampus/auth/templates/gcampusauth/components/auth_menu.html:19
+msgid "Your Measurements"
+msgstr "Deine Messungen"
+
+#: gcampus/auth/templates/gcampusauth/components/auth_menu.html:28
+msgid "Logout"
+msgstr "Abmelden"
+
+#: gcampus/auth/templates/gcampusauth/components/current_token_info.html:4
+msgid "You are currently logged in with the following access key:"
+msgstr "Du bist momentan mit folgendem Zugangscode angemeldet:"
+
+#: gcampus/auth/templates/gcampusauth/components/current_token_info.html:8
+msgid "You are currently logged in with the following course token:"
+msgstr "Du bist momentan mit folgendem Kursschlüssel angemeldet:"
+
+#: gcampus/auth/templates/gcampusauth/components/token.html:16
+msgid "Hide"
+msgstr "Verstecken"
+
+#: gcampus/auth/templates/gcampusauth/components/token.html:17
+msgid "Show"
+msgstr "Anzeigen"
+
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:8
+msgid ""
+"It seems like your access key currently does not have the permission to "
+"create a measurement. Please contact your teacher for help."
+msgstr ""
+"Scheinbar hat dein Zugangscode zurzeit nicht die Berechtigung, eine neue "
+"Messung zu erstellen. Bitte wende dich an deine Lehrkraft für mehr "
+"Informationen."
+
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:14
+#, python-format
+msgid ""
+"To create a measurement, you have to login using an access key. As a "
+"teacher, you can generate a new access key for your own measurement on the "
+"<a class=\"text-dark\" href=\"%(course_overview_url)s\">course overview</a> "
+"page."
+msgstr ""
+"Um eine neue Messung zu erstellen, musst du dich mit einem Zugangscode "
+"anmelden. Als Lehrkraft kannst du dir dazu einen neuen Zugangscode auf der "
+"<a class=\"text-dark\" href=\"%(course_overview_url)s\">Kursverwaltung</a> "
+"erstellen."
+
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:27
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:16
+#: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:21
+#: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:26
+#: gcampus/auth/views/token.py:100
+msgid "Login with access key"
+msgstr "Mit Zugangscode anmelden"
+
+#: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:31
+msgid ""
+"If you login with a different access key, you will automatically be logged "
+"out from your old key."
+msgstr ""
+"Wenn du dich mit einem anderen Zugangscode anmeldest, wirst du automatisch "
+"von deinem alten Schlüssel abgemedet."
+
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:5
+msgid ""
+"To edit a measurement, you have to login using the same access key that has "
+"been used to create the measurement. Alternatively, teachers can login with "
+"a course token to edit all measurements of their course."
+msgstr ""
+"Um eine Messung zu berarbeiten, musst du dich mit dem gleichen Zugangscode "
+"anmelden, mit dem diese Messung erstellt wurde. Alternativ können sich "
+"Lehrkräfte mit einem Kursschlüssel anmelden um alle Messungen eines Kurses "
+"zu bearbeiten."
+
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:20
+#: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:25
+#: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:30
+#: gcampus/auth/views/token.py:106
+msgid "Login with course token"
+msgstr "Mit Kursschlüssel anmelden"
+
+#: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:24
+#: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:34
+#: gcampus/auth/templates/gcampusauth/forms/token.html:56
+msgid ""
+"If you login with a different access key or course token, you will "
+"automatically be logged out from your old key."
+msgstr ""
+"Wenn du dich mit einem anderen Zugangscode oder Kursschlüssel anmeldest, "
+"wist du automatisch von deinem alten Schlüssel abgemedet."
+
+#: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:7
+#, python-format
+msgid ""
+"Some features, for example adding a new measurement, are limited to "
+"authenticated users. Please use your access key or the course token to log "
+"in. <br> If you don't have an access key, your teacher can generate one for "
+"you. As a teacher you can <a class=\"text-dark\" href=\"%(register_url)s"
+"\">register</a> a new course."
+msgstr ""
+"Einige Funktionen wie zum Beispiel das Hinzufügen von Messungen sind nur für "
+"angemeldete Nutzer zugänglich. Bitte verwende deinen Zugangscode oder einen "
+"Kursschlüssel um dich anzumelden. <br>Solltest du keinen Zugangscode haben, "
+"kannst du deine Lehrkraft darum bitten, einen neuen Zugangscode zu "
+"erstellen. Als Lehrkraft kannst du einen neuen Kurs <a class=\"text-dark\" "
+"href=\"%(register_url)s\">registrieren</a>."
+
+#: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:30
+#: gcampus/auth/views/register.py:38
+msgid "Register a new course"
+msgstr "Neuen Kurs registrieren"
+
+#: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:6
+msgid ""
+"Your access key does not have the permission to view this page. Please try "
+"again with a different access key or login as a teacher using a course "
+"token. <br> If the issue persists, ask your teacher for assistance."
+msgstr ""
+"Dein Zugangscode hat nicht die Berechtigung um auf diese Seite zuzugreifen. "
+"Bitte versuche es mit einem anderen Zugangscode erneut oder melde dich als "
+"Lehrkraft mit einem Kursschlüssel an. <br>Bitte wende dich an deine "
+"Lehrkraft falls du weiterhin Probleme mit dieser Seite hast."
+
+#: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:13
+msgid ""
+"Your course token does not have the permission to view this page. Please try "
+"again with a different course token or login as a student using an access "
+"key. <br> If you need further assistance, please contact us."
+msgstr ""
+"Dein Kursschlüssel hat nicht die Berechtigung um auf diese Seite "
+"zuzugreifen. Bitte versuche es mit einem anderen Kursschlüssel erneut oder "
+"melde dich als Schüler:in mit einem Zugangscode an. <br>Bitte kontaktiere "
+"uns falls du weiterhin Probleme mit dieser Seite hast."
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:11
+msgctxt "help text register"
+msgid ""
+"Register your class or course and generate a list of <b>access keys</b> for "
+"your students. These keys can be used to create and later edit measurements "
+"on GewässerCampus. <br> Alongside the generated access keys, you will also "
+"receive a <b>course token</b> that should be kept private. With this key you "
+"can view and edit all your student's measurements."
+msgstr ""
+"Registriere deine Klasse oder Kurs und erstelle eine Liste an "
+"<b>Zugangscodes</b> für deine Schüler:innen. Diese Zugangscodes können "
+"verwendet werden, um neue Messungen auf GewässerCampus zu erstellen und um "
+"diese zu bearbeiten. <br> Neben den generierten Zugangscodes wirst du "
+"außerdem einen <b>Kursschlüssel</b> erhalten. Dieser sollte privat bleiben, "
+"da du damit alle Messungen deines Kurses verwalten kannst."
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:35
+msgctxt "help text school name"
+msgid ""
+"The name of the school or educational institution requesting new tokens. "
+"This information will not be shared publicly but helps us to associate "
+"measurements with your school or institution."
+msgstr ""
+"Der Name der Schule oder Institution, für die die Zugangscodes generiert "
+"werden sollen. Diese Daten werden nur für eine bessere Zuordnung der "
+"Zugangscodes intern von desklab verwendet und nicht veröffentlicht."
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:53
+msgctxt "help text teacher name"
+msgid ""
+"Your name or the name of a representative. This information will also be "
+"kept private and is only used for communication."
+msgstr ""
+"Dein Name oder der Name der Person welche verantwortlich für die "
+"Registrierung ist. Dieser Name wird nicht veröffentlicht und dient lediglich "
+"für die Kommunikation zwischen der Lehrkraft und desklab."
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:70
+msgctxt "help text course key name"
+msgid ""
+"You can choose to assign a name to the course key to better differentiate "
+"the tokens from one another."
+msgstr "Vergebe einen Namen für diesen Kurs um den Überblick zu behalten."
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:86
+msgid ""
+"Your Email address will only be used to send you the Course token and the "
+"Access keys. <br> In case we need to contact you this Email address wil be "
+"used."
+msgstr ""
+"Diese E-Mail-Adresse wird nur dafür verwendet, um die Zugangscodes und den "
+"Kursschlüssel zu versenden. <br>Diese E-Mail-Adresse wird auch verwendet, "
+"falls wir dich kontaktieren müssen."
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:104
+#, python-format
+msgctxt "help text number of acess keys"
+msgid ""
+"The number of access keys you want to generate. You can create a maximum of "
+"%(maximum)s access keys at once. <br> Students may share one access key in a "
+"group so not everyone needs their own access key."
+msgstr ""
+"Die Anzahl der zu erstellenden Zugangscodes. Es können maximal %(maximum)s "
+"Zugangscodes auf einmal erzeugt werden. <br>Nicht jede:r Schüler:in benötigt "
+"einen eigenen Zugangscode, ein Zugangscode kann auch von einer Gruppe "
+"verwendet werden."
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:115
+msgid "Register"
+msgstr "Registrieren"
+
+#: gcampus/auth/templates/gcampusauth/forms/token.html:3
+#: gcampus/auth/templates/gcampusauth/forms/token.html:4
+#: gcampus/auth/templates/gcampusauth/forms/token.html:50
+#: gcampus/auth/views/token.py:54
+msgid "Login"
+msgstr "Anmelden"
+
+#: gcampus/auth/templates/gcampusauth/forms/token.html:10
+#, python-format
+msgid ""
+"Some features, for example adding a new measurement, are limited to "
+"authenticated users. Please use your access key to <a class=\"text-dark\" "
+"href=\"%(login_accesskey_url)s\"> log in as a student </a>. If you don't "
+"have an access key, your teacher can generate one for you. <br><br> As a "
+"teacher you can <a class=\"text-dark\" href=\"%(login_coursetoken_url)s\"> "
+"login with a course token </a> or <a class=\"text-dark\" href="
+"\"%(register_url)s\"> register </a> a new course."
+msgstr ""
+"Einige Funktionen wie zum Beispiel das Hinzufügen von Messungen sind nur für "
+"angemeldete Nutzer zugänglich. Bitte verwende deinen Zugangscode um dich <a "
+"class=\"text-dark\" href=\"%(login_accesskey_url)s\">als Schüler:in "
+"anzumelden</a>. Solltest du keinen Zugangscode haben, kannst du deine "
+"Lehrkraft darum bitten, einen neuen Zugangscode zu erstellen. Als Lehrkraft "
+"kannst du dich <a class=\"text-dark\" href=\"%(login_coursetoken_url)s\">mit "
+"einem Kursschlüssel anmelden</a> oder einen neuen Kurs <a class=\"text-dark"
+"\" href=\"%(register_url)s\">registrieren</a>."
+
+#: gcampus/auth/templates/gcampusauth/forms/widgets/splitlogin.html:12
+#, python-format
+msgid "Token part %(current)s of %(total)s"
+msgstr "Schlüssel Teil %(current)s von %(total)s"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:14
+msgid "Edit course data"
+msgstr "Kursdaten bearbeiten"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:45
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:26
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:54
+msgid "Close"
+msgstr "Schließen"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:48
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:50
+msgid "Save"
+msgstr "Speichern"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:60
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:65
+msgid "Course data"
+msgstr "Kursdaten"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:71
+#: gcampus/mail/templates/gcampusmail/register/overview.html:7
+msgid ""
+"With this <b>course token</b>, you can manage your course and edit your "
+"student's measurements. Thus, this key should be kept private."
+msgstr ""
+"Mit diesem <b>Kursschlüssel</b> kannst du deinen Kurs verwalten und die "
+"Messungen deiner Schüler:innen bearbeiten. Daher sollte er nicht "
+"veröffentlicht werden."
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:80
+#: gcampus/mail/templates/gcampusmail/register/overview.html:14
+#: gcampus/mail/templates/gcampusmail/register/text.html:26
+msgid "School Name"
+msgstr "Name der Schule"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:85
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:96
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:107
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:122
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:48
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:199
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:218
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:292
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:71
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:80
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:121
+#: gcampus/mail/templates/gcampusmail/register/overview.html:18
+#: gcampus/mail/templates/gcampusmail/register/overview.html:25
+#: gcampus/mail/templates/gcampusmail/register/overview.html:32
+#: gcampus/mail/templates/gcampusmail/register/text.html:26
+#: gcampus/mail/templates/gcampusmail/register/text.html:27
+#: gcampus/mail/templates/gcampusmail/register/text.html:28
+msgctxt "no value provided (water name, comment, etc)"
+msgid "N/A"
+msgstr "N/A"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:91
+#: gcampus/mail/templates/gcampusmail/register/overview.html:21
+#: gcampus/mail/templates/gcampusmail/register/text.html:27
+msgid "Course Name"
+msgstr "Name des Kurses"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:102
+#: gcampus/mail/templates/gcampusmail/register/overview.html:28
+#: gcampus/mail/templates/gcampusmail/register/text.html:28
+msgid "Teacher Name"
+msgstr "Name der Lehrkraft"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:113
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:233
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:130
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:110
+#: gcampus/mail/templates/gcampusmail/register/overview.html:36
+#: gcampus/mail/templates/gcampusmail/register/text.html:30
+msgid "Access keys"
+msgstr "Zugangscodes"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:141
+msgid "Generate new Access keys for this course"
+msgstr "Neue Zugangscodes generien"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:143
+#, python-format
+msgid ""
+"You can generate new access keys for this course without the need to "
+"register again. The number of access keys is limited to "
+"%(register_max_access_key)s per course."
+msgstr ""
+"Du kannst neue Zugangscodes erstellen ohne dafür einen neuen Kurs zu "
+"registrieren. Allerdings ist die Anzahl der Zugangscodes beschränkt auf "
+"%(register_max_access_key)s pro Kurs."
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:159
+msgid "Generate access keys"
+msgstr "Zugangscodes erstellen"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:168
+msgid "Documents"
+msgstr "Dokumente"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:173
+msgid "Save course overview"
+msgstr "Kursübersicht speichern"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:175
+msgid ""
+"Download a PDF with a summary of your registration data, your course token, "
+"and the all access keys of your course."
+msgstr ""
+"Lade eine PDF Datei mit einer Übersicht deines Kurses mit deinem "
+"Kursschlüssel und einer Liste aller Zugangscodes herunter."
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:187
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:210
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:227
+msgid "Download PDF"
+msgstr "PDF herunterladen"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:196
+msgid "Save access keys"
+msgstr "Zugangscodes speichern"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:198
+msgid ""
+"Download a PDF with all access keys (one key per page/student) of your "
+"course with instructions for your students."
+msgstr ""
+"Lade eine PDF Datei mit allen Zugangscodes (ein Zugangscode pro Seite) mit "
+"einer Anleitung für Schüler:innen."
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:219
+msgid "Send to my email"
+msgstr "An meine E-Mail-Adresse versenden"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:221
+#, python-format
+msgid ""
+"Send your course token and all access keys in a PDF via email. You can "
+"change your email address in the <a class=\"text-dark\" href="
+"\"%(course_data_url)s\">course data section</a>."
+msgstr ""
+"Sende eine Übersicht deines Kurses als PDF Datei an deine E-Mail-Adresse. Du "
+"kannst deine E-Mail-Adresse jederzeit im <a class=„text-dark“ href="
+"\"%(course_data_url)s\">Abschnitt Kursdaten</a> ändern."
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:233
+msgid "Send email"
+msgstr "E-Mail versenden"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:242
+msgid "Share a link"
+msgstr "Link teilen"
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:244
+msgid ""
+"Get a link to share the PDF with a summary of your registration data, your "
+"course token and the all access keys of your course."
+msgstr ""
+"Erhalte einen Link zum Teilen einer PDF Datei mit der Übersicht über deinen "
+"Kurs."
+
+#: gcampus/auth/templates/gcampusauth/sites/course_overview.html:256
+msgid "Create Link"
+msgstr "Link erstellen"
+
+#: gcampus/auth/views/course_overview.py:52
+msgid "Course Administration"
+msgstr "Kursverwaltung"
+
+#: gcampus/auth/views/course_overview.py:129
+#, python-brace-format
+msgid ""
+"You are only allowed to generate a total of {max_count:d} access keys. You "
+"have currently registered {current_count:d} access keys and can only "
+"generate {allowed_count:d} more."
+msgstr ""
+"Du kannst höchstens {max_count:d} Zugangscodes erstellen. Zur Zeit hast du "
+"{current_count:d} Zugangscodes erstellt und kannst daher nur {allowed_count:"
+"d} weitere Codes generiren."
+
+#: gcampus/auth/views/course_overview.py:148
+#, python-brace-format
+msgid "You successfully generated {count:d} new access keys"
+msgstr "Du hast erfolgreich {count:d} neue Zugangscodes erstellt"
+
+#: gcampus/auth/views/register.py:57
+msgid ""
+"You successfully registered a course. This page serves as an overview and "
+"allows you to view your course's access keys."
+msgstr ""
+"Der Kurs wurde erfolgreich registriert! Diese Seite dient als Übersicht über "
+"den Kurs und den damit verbundenen Zugangscodes."
+
+#: gcampus/auth/views/token.py:113
+msgid "Successfully logged out"
+msgstr "Du wurdest erfolgreich abgemeldet"
+
+#: gcampus/core/admin.py:38
+msgid "Hide selected items for all users"
+msgstr "Ausgewählte Einträge für alle Nutzer verstecken"
+
+#: gcampus/core/admin.py:39
+msgid "Show selected items for all users"
+msgstr "Ausgewählte Einträge für alle Nutzer anzeigen"
+
+#: gcampus/core/filters.py:176
+msgid "Filter either by name or comment"
+msgstr "Nach Namen oder Kommentar suchen"
+
+#: gcampus/core/filters.py:177
+msgid "Filter measurements"
+msgstr "Messungen durchsuchen"
+
+#: gcampus/core/filters.py:182
+#, fuzzy
+#| msgid "Filter for measurements conducted after a specified time"
+msgid "Filter for measurements conducted in a specified time range"
+msgstr ""
+"Nach Messungen suchen die nach einem bestimmten Datum aufgenommen wurden"
+
+#: gcampus/core/filters.py:188 gcampus/core/models/measurement.py:191
+#: gcampus/core/models/measurement.py:199
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:260
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:104
+msgid "Parameter"
+msgstr "Parameter"
+
+#: gcampus/core/filters.py:189
+msgid "Filter for measurements containing a specific data type"
+msgstr "Nach Messungen mit bestimmten Parameter suchen"
+
+#: gcampus/core/filters.py:194 gcampus/core/models/measurement.py:60
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:96
+msgid "Location"
+msgstr "Standort"
+
+#: gcampus/core/filters.py:195
+msgid "Filter by radius after selecting a location"
+msgstr "Nach Messungen in einem bestimmten Radius suchen"
+
+#: gcampus/core/filters.py:199
+#, fuzzy
+#| msgid "Course Measurements"
+msgid "My Course"
+msgstr "Kurs-Messungen"
+
+#: gcampus/core/filters.py:203
+#, fuzzy
+#| msgid "My measurements"
+msgid "My Measurements"
+msgstr "Meine Messungen"
+
+#: gcampus/core/forms/measurement.py:124
+msgid "Unable to parse OpenStreetMap ID!"
+msgstr "Fehler beim lesen der OpenStreetMap ID!"
+
+#: gcampus/core/forms/measurement.py:148 gcampus/core/models/measurement.py:202
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:261
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:105
+msgid "Value"
+msgstr "Wert"
+
+#: gcampus/core/forms/measurement.py:154 gcampus/core/models/measurement.py:83
+#: gcampus/core/models/measurement.py:209
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:212
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:262
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:76
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:106
+msgid "Note"
+msgstr "Notiz"
+
+#: gcampus/core/forms/measurement.py:220
+msgid "ManagementForm data is missing or has been tampered with"
+msgstr ""
+
+#: gcampus/core/models/measurement.py:37
+msgid "Measurement"
+msgstr "Messung"
+
+#: gcampus/core/models/measurement.py:38
+msgid "Measurements"
+msgstr "Messungen"
+
+#: gcampus/core/models/measurement.py:57 gcampus/core/models/measurement.py:159
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:36
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:97
+msgid "Name"
+msgstr "Name"
+
+#: gcampus/core/models/measurement.py:58
+msgid "Your name or team name"
+msgstr "Dein Name oder ein Team Name"
+
+#: gcampus/core/models/measurement.py:65
+msgid "Location name"
+msgstr "Standort name"
+
+#: gcampus/core/models/measurement.py:66
+msgid "An approximated location for the measurement"
+msgstr "Ein abgeschätzter Standort der Messung"
+
+#: gcampus/core/models/measurement.py:72
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:126
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:44
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:193
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:95
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:67
+msgid "Water name"
+msgstr "Gewässername"
+
+#: gcampus/core/models/measurement.py:73
+msgid "Name of the water the measurement was conducted at"
+msgstr "Name des Gewässers an dem die Messung durchgeführt wurde"
+
+#: gcampus/core/models/measurement.py:76
+msgid "OpenStreetMap ID"
+msgstr "OpenStreetMap ID"
+
+#: gcampus/core/models/measurement.py:80
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:40
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:204
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:102
+msgctxt "measurement time"
+msgid "Time"
+msgstr "Messzeitpunkt"
+
+#: gcampus/core/models/measurement.py:81
+msgid "Date and time of the measurement"
+msgstr "Datum und Uhrzeit der Messung"
+
+#: gcampus/core/models/measurement.py:84 gcampus/core/models/measurement.py:210
+msgid "Hidden"
+msgstr "Versteckt"
+
+#: gcampus/core/models/measurement.py:122
+#, python-format
+msgid "Measurement in %(location)s by %(name)s"
+msgstr "Messung in %(location)s von %(name)s"
+
+#: gcampus/core/models/measurement.py:127
+#, python-format
+msgid "Measurement by %(name)s"
+msgstr "Messung von %(name)s"
+
+#: gcampus/core/models/measurement.py:129
+#, python-format
+msgid "Measurement in %(location)s"
+msgstr "Messung in %(location)s"
+
+#: gcampus/core/models/measurement.py:133
+#, python-format
+msgid "Measurement %(id)s"
+msgstr "Messung %(id)s"
+
+#: gcampus/core/models/measurement.py:156
+#: gcampus/core/models/measurement.py:183
+msgid "Parameter type"
+msgstr "Parameter Typ"
+
+#: gcampus/core/models/measurement.py:157
+msgid "Parameter types"
+msgstr "Parameter Typen"
+
+#: gcampus/core/models/measurement.py:161
+msgid "Unit"
+msgstr "Einheit"
+
+#: gcampus/core/models/measurement.py:172
+msgid "Limit"
+msgstr ""
+
+#: gcampus/core/models/measurement.py:192
+msgid "Parameters"
+msgstr "Parameter"
+
+#: gcampus/core/models/measurement.py:206
+msgid "Associated measurement"
+msgstr "Verknüpfte Messung"
+
+#: gcampus/core/models/measurement.py:220
+#, python-format
+msgid "Parameter %(pk)s (%(name)s)"
+msgstr "Parameter %(pk)s (%(name)s)"
+
+#: gcampus/core/templates/gcampuscore/base.html:67
+msgid "New Measurement"
+msgstr "Neue Messung"
+
+#: gcampus/core/templates/gcampuscore/base.html:72
+msgid "Log in"
+msgstr "Anmelden"
+
+#: gcampus/core/templates/gcampuscore/components/my_course_dropdown.html:7
+#, fuzzy
+#| msgid "Filter measurements"
+msgid "Filter for my course or my measurements"
+msgstr "Messungen durchsuchen"
+
+#: gcampus/core/templates/gcampuscore/components/parameter_dropdown.html:6
+#, fuzzy
+#| msgid "Parameters"
+msgid "Select Parameters"
+msgstr "Parameter"
+
+#: gcampus/core/templates/gcampuscore/components/range_slider.html:3
+msgid "from"
+msgstr "von"
+
+#: gcampus/core/templates/gcampuscore/components/range_slider.html:6
+msgid "to"
+msgstr "bis"
+
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:13
+msgctxt "explore page title"
+msgid "Explore"
+msgstr "Erkunden"
+
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:14
+msgctxt "filter page title"
+msgid "All Measurements"
+msgstr "Alle Messungen"
+
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:15
+msgctxt "analysis page title"
+msgid "Analysis"
+msgstr "Auswertung"
+
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:29
+msgid "About the project"
+msgstr "Über das Projekt"
+
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:30
+msgid "Teaching material"
+msgstr "Unterrichtsmaterialien"
+
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:31
+msgid "Report a problem"
+msgstr "Problem melden"
+
+#: gcampus/core/templates/gcampuscore/forms/components/label.html:5
+msgid "(optional)"
+msgstr "(optional)"
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:10
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:8
+msgid "1. Metadata"
+msgstr "1. Metadaten"
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:12
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:14
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:9
+msgid "2. Measured values"
+msgstr "2. Messwerte"
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:116
+msgid "Save and Continue"
+msgstr "Speichern und Weiter"
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:127
+msgid "Other Water:"
+msgstr "Anderes Gewässer:"
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:128
+msgid "Loading ..."
+msgstr "Lädt ..."
+
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:4
+msgid "Add Parameters"
+msgstr "Parameter Hinzufügen"
+
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:39
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:46
+msgid "Discard"
+msgstr "Verwerfen"
+
+#: gcampus/core/templates/gcampuscore/forms/widgets/splitdate.html:3
+msgid "Date"
+msgstr "Datum"
+
+#: gcampus/core/templates/gcampuscore/forms/widgets/splitdate.html:20
+msgid "Fill in the current date"
+msgstr "Aktuelles Datum einfügen"
+
+#: gcampus/core/templates/gcampuscore/forms/widgets/splitdate.html:21
+msgid "Today"
+msgstr "Heute"
+
+#: gcampus/core/templates/gcampuscore/forms/widgets/splittime.html:4
+msgctxt "split date-time widget label"
+msgid "Time"
+msgstr "Zeit"
+
+#: gcampus/core/templates/gcampuscore/forms/widgets/splittime.html:23
+msgid "Fill in the current time"
+msgstr "Aktuelle Uhrzeit einfügen"
+
+#: gcampus/core/templates/gcampuscore/forms/widgets/splittime.html:24
+msgid "Now"
+msgstr "Jetzt"
+
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:23
+#, fuzzy
+#| msgid "New Measurement"
+msgid "Delete Measurement"
+msgstr "Neue Messung"
+
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:31
+msgid "Are you sure you want to delete this measurement?"
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:57
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:237
+msgid "Delete"
+msgstr "Löschen"
+
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:256
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:97
+msgid "Measured values"
+msgstr "Messwerte"
+
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:282
+msgid "Expand note"
+msgstr "Notiz ansehen"
+
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:5
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:13
+msgid "All measurements"
+msgstr "Alle Messungen"
+
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:30
+msgid "Additional Filteroptions"
+msgstr "Weitere Filtermöglichkeiten"
+
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:37
+msgid "Filter"
+msgstr "Filtern"
+
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:82
+msgid "Search"
+msgstr "Suchen"
+
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:84
+msgid "Open Additional Filteroptions"
+msgstr "Weitere Filtermöglichkeiten öffnen"
+
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:115
+msgid "No measurements with the desired attributes"
+msgstr "Keine Messung mit den gewünschten Attributen gefunden"
+
+#: gcampus/core/views/measurement/__init__.py:88
+msgid "Create new measurement"
+msgstr "Neue Messung erstellen"
+
+#: gcampus/core/views/measurement/__init__.py:114
+#, python-brace-format
+msgid "Edit Measurement {pk:d} - Information"
+msgstr "Messung {pk:d} bearbeiten - Information"
+
+#: gcampus/core/views/parameter.py:44
+#, python-brace-format
+msgid "Edit Measurement {pk:d} - Measured Parameters"
+msgstr "Messung {pk:d} bearbeiten - Mess-Parameter"
+
+#: gcampus/core/widgets.py:39
+msgid "Hour"
+msgstr "Stunde"
+
+#: gcampus/core/widgets.py:43
+msgctxt "hour input short"
+msgid "HH"
+msgstr ""
+
+#: gcampus/core/widgets.py:46
+msgid "Minute"
+msgstr "Minute"
+
+#: gcampus/core/widgets.py:50
+msgctxt "minute input short"
+msgid "MM"
+msgstr "MM"
+
+#: gcampus/core/widgets.py:72
+msgid "Day"
+msgstr "Tag"
+
+#: gcampus/core/widgets.py:76
+msgctxt "day input short"
+msgid "DD"
+msgstr "TT"
+
+#: gcampus/core/widgets.py:79
+msgid "Month"
+msgstr "Monat"
+
+#: gcampus/core/widgets.py:83
+msgctxt "month input short"
+msgid "MM"
+msgstr "MM"
+
+#: gcampus/core/widgets.py:87
+msgid "Year"
+msgstr "Jahr"
+
+#: gcampus/core/widgets.py:88
+msgctxt "year input short"
+msgid "YYYY"
+msgstr "JJJJ"
+
+#: gcampus/documents/apps.py:23
+msgid "GCampus Documents"
+msgstr "GCampus Dokumente"
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:37
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:36
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:36
+msgid "Document ID"
+msgstr "Dokument ID"
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:50
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:52
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:49
+msgid "Info"
+msgstr "Info"
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:53
+msgid ""
+"This document was created automatically and contains a summary of the "
+"registration, the access keys for using the GewässerCampus web application, "
+"and the course token to manage the course."
+msgstr ""
+"Dieses Dokument wurde automatisch erstellt und enhälteine Zusammenfassung "
+"der Registrierung, die Zugangscodeszur Benutzung der GewässerCampus "
+"Webanwendung sowieden Kursschlüssel zur Verwaltung des Kurses. "
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:71
+msgid "name of school"
+msgstr "Name der Schule"
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:83
+msgid "name of course"
+msgstr "Name des Kurses"
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:95
+msgid ""
+"The course token is needed to be able to manage all measurements of the of "
+"the corresponding access keys (see below). Therefore, it should not be given "
+"to the students."
+msgstr ""
+"Der Kursschlüssel wird benötigt, um alle Messungen der dazugehörigen "
+"Zugangscodes (siehe unten) verwalten zu können. Deshalb sollte er nicht an "
+"die Schüler:innen weitergegeben werden."
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:113
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:97
+msgid ""
+"This access key is required to create new measurements and to be able to "
+"edit them afterwards. An access key can be used several times, similar to a "
+"password, a user name is not necessary. Students working together in a group "
+"can use the same access key."
+msgstr ""
+"Dieser Zugangscode wird benötigt, um neue Messungen zu erstellen und im "
+"Anschluss auch bearbeiten zu können. Ein Zugangscode kann ähnlich wie ein "
+"Passwort mehrfach verwendet werden, ein Benutzername ist dabei nicht nötig. "
+"Schüler:innen, die in einer Gruppe zusammenarbeiten, können den gleichen "
+"Zugangscode nutzen."
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:148
+msgid "Open digital copy"
+msgstr "digital Kopie öffnen"
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:151
+msgid ""
+"This link leads to the digital file of this document. The file stored there "
+"can then be downloaded, sent or even printed out again."
+msgstr ""
+"Dieser Link führt zu der digitalen Datei dieses Dokuments. Die dort "
+"hinterlegte Datei kann dann heruntergeladen, verschickt oder auch neu "
+"ausgedruckt werden."
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:165
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:82
+msgid "Login of the web application"
+msgstr "Login der Webanwendung"
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:168
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:86
+msgid ""
+"This link leads to the login page of the web application (www."
+"gewaessercampus.de/login). After entering the access key, measurements can "
+"be or edited."
+msgstr ""
+"Dieser Link führt zur Login-Seite der Webanwendung (www.gewaessercampus.de/"
+"login).Nach der Eingabe des Zugangscodes können Messungen erstellt oder "
+"bearbeitet werden."
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:55
+msgid ""
+"This document was created automatically and contains an access key and "
+"further information for using the GewässerCampus web application."
+msgstr ""
+"Dieses Dokument wurde automatisch erstellt und enhält einen Zugangscode und "
+"weitere Informationen zur Nutzung der GewässerCampus Webanwendung."
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:112
+msgid "First steps"
+msgstr "Erste Schritte"
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:116
+msgid "Find water bodies and analyse existing measurements"
+msgstr "Gewässer finden und bereits vorhandene Messwerte analysieren"
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:119
+msgid ""
+"With the GewässerCampus map you can view measurements from other students. "
+"To search for specific parameters or measurements, it is best to use the "
+"list view of all measurements."
+msgstr ""
+"Mit der GewässerCampus-Karte kannst du dir Messungen von anderen Schüler:"
+"innen anschauen. Um nach bestimmten Parametern bzw. Messungen zu suchen, "
+"nutzt du am besten die Listenansicht aller Messungen."
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:127
+msgid "Login to use more functions"
+msgstr "Login für die Nutzung weiterer Funktionen"
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:130
+msgid ""
+"To create a new measurement, you must be logged in with an access key. You "
+"will find your access code at the top of this page. You can log in via the "
+"QR code shown there or via www.gewaessercampus.de/login."
+msgstr ""
+"Um eine neue Messung erstellen zu können, musst du mit einem Zugangscode "
+"angemeldet sein. Deinen Zugangscode findest du weiter oben auf dieser Seite. "
+"Zum Login kommst du über den dort abgebildeten QR-Code oder über www."
+"gewaessercampus.de/login."
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:138
+msgid "Create a new measurement"
+msgstr "Neue Messung erstellen"
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:142
+msgid ""
+"As soon as you are logged in, you can see your course token at the top right "
+"and you are able to create a new measurement via the button next to it."
+msgstr ""
+"Sobald du angemeldet bist, wird im Menü rechts oben dein Kursschlüssel "
+"angezeigt und über den Button direkt daneben kannst du eine neue Messung "
+"erstellen."
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:149
+msgid "Edit an existing measurement"
+msgstr "Bearbeiten einer vorhandenen Messung"
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:152
+msgid ""
+"To edit a measurement you have created, you have to open the detailed view "
+"of this measurement. You can use the overview of your measurements or the "
+"map or the map to find your measurement."
+msgstr ""
+"Um eine von dir erstellte Messung zu bearbeiten, musst du die Detailansicht "
+"dieser Messung aufrufen. Du kannst dazu die Übersicht deiner Messungen oder "
+"auch die Karten- oder Listenansicht verwenden."
+
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:63
+msgid "Metadata"
+msgstr "Metadaten"
+
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:74
+msgid "Time"
+msgstr "Zeitpunkt"
+
+#: gcampus/documents/views/print.py:37
+msgid "gewaessercampus-course-overview.pdf"
+msgstr ""
+
+#: gcampus/documents/views/print.py:55
+msgid "gewaessercampus-overview-{course_name:s}.pdf"
+msgstr ""
+
+#: gcampus/documents/views/print.py:62
+msgid "gewaessercampus-accesskey-combined.pdf"
+msgstr ""
+
+#: gcampus/documents/views/print.py:80
+msgid "gewaessercampus-accesskey-combined-{course_name:s}.pdf"
+msgstr ""
+
+#: gcampus/documents/views/print.py:86
+msgid "gewaessercampus-measurement-detail.pdf"
+msgstr ""
+
+#: gcampus/documents/views/print.py:96
+msgid "gewaessercampus-measurement-detail-{name:s}.pdf"
 msgstr ""
 
 #: gcampus/mail/apps.py:9
@@ -109,48 +1289,7 @@ msgstr ""
 
 #: gcampus/mail/templates/gcampusmail/register/html.html:22
 msgid "Your course"
-msgstr ""
-
-#: gcampus/mail/templates/gcampusmail/register/overview.html:4
-#: gcampus/mail/templates/gcampusmail/register/text.html:19
-msgid "Course token"
-msgstr ""
-
-#: gcampus/mail/templates/gcampusmail/register/overview.html:7
-msgid ""
-"With this <b>course token</b>, you can manage your course and edit your "
-"student's measurements. Thus, this key should be kept private."
-msgstr ""
-
-#: gcampus/mail/templates/gcampusmail/register/overview.html:14
-#: gcampus/mail/templates/gcampusmail/register/text.html:26
-msgid "School Name"
-msgstr ""
-
-#: gcampus/mail/templates/gcampusmail/register/overview.html:18
-#: gcampus/mail/templates/gcampusmail/register/overview.html:25
-#: gcampus/mail/templates/gcampusmail/register/overview.html:32
-#: gcampus/mail/templates/gcampusmail/register/text.html:26
-#: gcampus/mail/templates/gcampusmail/register/text.html:27
-#: gcampus/mail/templates/gcampusmail/register/text.html:28
-msgctxt "no value provided (water name, comment, etc)"
-msgid "N/A"
-msgstr ""
-
-#: gcampus/mail/templates/gcampusmail/register/overview.html:21
-#: gcampus/mail/templates/gcampusmail/register/text.html:27
-msgid "Course Name"
-msgstr ""
-
-#: gcampus/mail/templates/gcampusmail/register/overview.html:28
-#: gcampus/mail/templates/gcampusmail/register/text.html:28
-msgid "Teacher Name"
-msgstr ""
-
-#: gcampus/mail/templates/gcampusmail/register/overview.html:36
-#: gcampus/mail/templates/gcampusmail/register/text.html:30
-msgid "Access keys"
-msgstr ""
+msgstr "Dein Kurs"
 
 #: gcampus/mail/templates/gcampusmail/register/overview.html:45
 #: gcampus/mail/templates/gcampusmail/register/text.html:35
@@ -191,3 +1330,165 @@ msgstr "Deutsch"
 #: gcampus/tasks/apps.py:24
 msgid "GCampus Tasks"
 msgstr "GCampus Aufgaben"
+
+#~ msgid "GewässerCampus Course Registered"
+#~ msgstr "GewässerCampus Kurs Registriert"
+
+#~ msgid "Log in with new Token"
+#~ msgstr "Mit neuem Token anmelden"
+
+#~ msgid "Course Overview"
+#~ msgstr "Kursverwaltung"
+
+#~ msgid "E-Mail Address"
+#~ msgstr "E-Mail-Adresse"
+
+#~ msgid "Register new Course"
+#~ msgstr "Neuen Kurs registrieren"
+
+#~ msgid "Login as Student"
+#~ msgstr "Als Schüler:in Anmelden"
+
+#~ msgid "Login as Teacher"
+#~ msgstr "Als Lehrkraft Anmelden"
+
+#~ msgid "Copy key to clipboard"
+#~ msgstr "Zugangscode kopieren"
+
+#, fuzzy
+#~| msgid "Save Access Keys with instructions as PDF"
+#~ msgid "Save Access keys with instructions as PDF"
+#~ msgstr "Zugangscodes speichern"
+
+#~ msgid "Course Token"
+#~ msgstr "Kursschlüssel"
+
+#~ msgid "Access Keys"
+#~ msgstr "Zugangscodes"
+
+#~ msgid "Additional Filter options"
+#~ msgstr "Weitere Filtermöglichkeiten"
+
+#~ msgid "Filter for measurements conducted before a specified time"
+#~ msgstr ""
+#~ "Nach Messungen suchen die vor einem bestimmten Datum aufgenommen wurden"
+
+#~ msgid "Number of Datapoints"
+#~ msgstr "Anzahl der Parameter"
+
+#~ msgid "To the Measurement"
+#~ msgstr "Zur Messung"
+
+#~ msgid "Edit Measurement"
+#~ msgstr "Messung bearbeiten"
+
+#~ msgid "Your course hasn't created any measurements yet"
+#~ msgstr "Dein Kurs hat noch keine Messungen registriert"
+
+#~ msgid "Hidden measurements of my course"
+#~ msgstr "Versteckte Messungen des Kurses"
+
+#~ msgid "Show Measurement"
+#~ msgstr "Messung Anzeigen"
+
+#~ msgid "You haven't created any measurements yet"
+#~ msgstr "Du hast noch keine Messungen registriert"
+
+#~ msgid "This measurement is hidden"
+#~ msgstr "Diese Messungen ist versteckt"
+
+#~ msgid "You successfully hid the measurement \"{measurement}\"."
+#~ msgstr "Du hast die Messung „{measurement}“ ausgeblendet."
+
+#~ msgid "You successfully made the measurement \"{measurement}\" public."
+#~ msgstr "Du hast die Messung „{measurement}“ veröffentlicht."
+
+#, fuzzy
+#~| msgid "Measurement Time"
+#~ msgctxt "Time"
+#~ msgid "measurement time"
+#~ msgstr "Messzeitpunkt"
+
+#~ msgid "Comment"
+#~ msgstr "Kommentar"
+
+#~ msgid "Make public"
+#~ msgstr "Veröffentlichen"
+
+#~ msgid "Data points"
+#~ msgstr "Messwerte"
+
+#~ msgid "Data type"
+#~ msgstr "Parameter"
+
+#~ msgid "1. Information"
+#~ msgstr "1. Informationen"
+
+#~ msgid "2. Environment Parameters"
+#~ msgstr "2. Umwelt-Parameter"
+
+#~ msgid "Map"
+#~ msgstr "Karte"
+
+#~ msgid "User"
+#~ msgstr "Benutzer"
+
+#~ msgid "The Accesskey is probably already deactivated"
+#~ msgstr "Die Messung ist wahrscheinlich schon versteckt."
+
+#~ msgid "Create New Measurement"
+#~ msgstr "Neue Messung Erstellen"
+
+#~ msgid "Successful Login"
+#~ msgstr "Erfolgreich angemeldet"
+
+#~ msgid "Mapview"
+#~ msgstr "Kartenansicht"
+
+#~ msgid "Hidden Measurement"
+#~ msgstr "Versteckte Messungen"
+
+#~ msgid "Measurement by"
+#~ msgstr "Messung von"
+
+#, fuzzy
+#~| msgid "Measurement by"
+#~ msgid "Make Measurement public"
+#~ msgstr "Messung von"
+
+#, fuzzy
+#~| msgid "Measurement Time"
+#~ msgid "All Measurements of the Course"
+#~ msgstr "Messzeitpunkt"
+
+#~ msgid "The measurement is probably already hidden"
+#~ msgstr "Die Messung ist wahrscheinlich schon versteckt."
+
+#~ msgid "Data Type"
+#~ msgstr "Parameter"
+
+#~ msgid "Data point"
+#~ msgstr "Messwert"
+
+#~ msgid "Data point %(pk)s"
+#~ msgstr "Messwert %(pk)s"
+
+#~ msgid "Add Data Points"
+#~ msgstr "Parameter Hinzufügen"
+
+#~ msgid "Authenticate"
+#~ msgstr "Authentifizieren"
+
+#, fuzzy
+#~| msgid "Measurement by"
+#~ msgid "Measurememnt by "
+#~ msgstr "Messung von"
+
+#~ msgid "The measurement was conducted on %(date)s at %(time)s"
+#~ msgstr "Die Messung wurde am %(date)s um %(time)s durchgeführt"
+
+#~ msgid "All measurements displayed on a map"
+#~ msgstr "Alle Messungen auf der Karte"
+
+#~ msgid "You don't have any conducted measurements"
+#~ msgstr "Du hast noch keine Messungen registriert"
