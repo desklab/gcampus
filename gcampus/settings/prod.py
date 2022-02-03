@@ -15,6 +15,10 @@
 
 from gcampus.settings.base import *  # noqa
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+
 DEBUG = False
 
 # This has been done in base already, however now no default value is
@@ -67,3 +71,14 @@ if get_env_read_file("GCAMPUS_EMAIL_HOST_PASSWORD", None) is not None:
 DEFAULT_FROM_EMAIL = get_env_read_file(
     "EMAIL_HOST_PASSWORD", "noreply@gewaessercampus.de"
 )
+
+
+# Sentry integration
+if get_env_read_file("GCAMPUS_SENTRY_DSN", None) is not None:
+    SENTRY_DSN = get_env_read_file("GCAMPUS_SENTRY_DSN")
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=1.0,  # capture 100% of transactions
+        release=GCAMPUS_VERSION,
+    )
