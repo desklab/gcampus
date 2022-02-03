@@ -85,13 +85,6 @@
         let my_measurement_toggle = document.getElementById("{{ filter.form.my_measurements.id_for_label }}");
         let my_course_toggle = document.getElementById("{{ filter.form.my_course.id_for_label }}");
 
-        my_measurement_toggle.addEventListener('click', function () {
-            toggleMeasurement();
-        });
-        my_course_toggle.addEventListener('click', function () {
-            toggleCourse();
-        });
-
         function toggleMeasurement() {
             if (my_measurement_toggle.checked && my_course_toggle.checked) {
                 my_course_toggle.checked = false;
@@ -102,6 +95,17 @@
             if (my_measurement_toggle.checked && my_course_toggle.checked) {
                 my_measurement_toggle.checked = false;
             }
+        }
+
+        if (my_measurement_toggle !== null) {
+            my_measurement_toggle.addEventListener('click', function () {
+                toggleMeasurement();
+            });
+        }
+        if (my_course_toggle !== null) {
+            my_course_toggle.addEventListener('click', function () {
+                toggleCourse();
+            });
         }
 
         let week_list_js = [{{ week_list_js|join:', ' }}];
