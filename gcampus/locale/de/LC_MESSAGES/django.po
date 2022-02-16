@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-02 15:45+0100\n"
-"PO-Revision-Date: 2022-02-16 16:04+0000\n"
-"Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
+"PO-Revision-Date: 2022-02-16 17:09+0000\n"
+"Last-Translator: Axel Schlindwein <a.schlindwein@desk-lab.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/gcampus/web/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -1252,7 +1252,7 @@ msgstr ""
 
 #: gcampus/documents/views/print.py:86
 msgid "gewaessercampus-measurement-detail.pdf"
-msgstr ""
+msgstr "gewaessercampus-messung.pdf"
 
 #: gcampus/documents/views/print.py:96
 msgid "gewaessercampus-measurement-detail-{name:s}.pdf"
