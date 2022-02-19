@@ -21,7 +21,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const autoprefixer = require('autoprefixer');
-const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
+const RemoveEmptyScriptsPlugin = require("webpack-remove-empty-scripts");
 
 
 const postcssLoader = (env, options) => {
@@ -261,7 +261,7 @@ let gcampusdocumentsConfig = (env, options) => {
         },
         plugins: [
             ...(common.plugins || []),
-            new FixStyleOnlyEntriesPlugin(),
+            new RemoveEmptyScriptsPlugin(),
             new CopyWebpackPlugin({
                 patterns: [
                     {
@@ -293,7 +293,7 @@ let gcampusmailConfig = (env, options) => {
         },
         plugins: [
             ...(common.plugins || []),
-            new FixStyleOnlyEntriesPlugin(),
+            new RemoveEmptyScriptsPlugin(),
             // new CopyWebpackPlugin({
             //     patterns: [
             //         {

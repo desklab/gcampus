@@ -36,7 +36,7 @@
         "terser-webpack-plugin": "^5.2.0",
         "webpack": "^5.51.1",
         "webpack-cli": "^4.8.0",
-        "webpack-fix-style-only-entries": "^0.6.1"
+        "webpack-remove-empty-scripts": "^0.7.3"
       }
     },
     "node_modules/@ampproject/remapping": {
@@ -2158,6 +2158,19 @@
       },
       "engines": {
         "node": ">=4"
+      }
+    },
+    "node_modules/ansis": {
+      "version": "1.3.4",
+      "resolved": "https://registry.npmjs.org/ansis/-/ansis-1.3.4.tgz",
+      "integrity": "sha512-BDXljGSG4gZXmWK64bQzXkI509i5fe8aAa9+eL29e3swaWUqxvxk/XlONjw9AUrNCpQWNdy++0GX7HAhWeR9BQ==",
+      "dev": true,
+      "engines": {
+        "node": ">=12.13"
+      },
+      "funding": {
+        "type": "patreon",
+        "url": "https://patreon.com/biodiscus"
       }
     },
     "node_modules/anymatch": {
@@ -6185,12 +6198,6 @@
         "node": ">= 10"
       }
     },
-    "node_modules/webpack-fix-style-only-entries": {
-      "version": "0.6.1",
-      "resolved": "https://registry.npmjs.org/webpack-fix-style-only-entries/-/webpack-fix-style-only-entries-0.6.1.tgz",
-      "integrity": "sha512-wyIhoxS3DD3Fr9JA8hQPA+ZmaWnqPxx12Nv166wcsI/0fbReqyEtiIk2llOFYIg57WVS3XX5cZJxw2ji70R0sA==",
-      "dev": true
-    },
     "node_modules/webpack-merge": {
       "version": "5.8.0",
       "resolved": "https://registry.npmjs.org/webpack-merge/-/webpack-merge-5.8.0.tgz",
@@ -6202,6 +6209,25 @@
       },
       "engines": {
         "node": ">=10.0.0"
+      }
+    },
+    "node_modules/webpack-remove-empty-scripts": {
+      "version": "0.7.3",
+      "resolved": "https://registry.npmjs.org/webpack-remove-empty-scripts/-/webpack-remove-empty-scripts-0.7.3.tgz",
+      "integrity": "sha512-yipqb25A0qtH7X9vKt6yihwyYkTtSlRiDdBb2QsyrkqGM3hpfAcfOO1lYDef9HQUNm3s8ojmorbNg32XXX6FYg==",
+      "dev": true,
+      "dependencies": {
+        "ansis": "^1.3.4"
+      },
+      "engines": {
+        "node": ">=12.14"
+      },
+      "funding": {
+        "type": "patreon",
+        "url": "https://patreon.com/biodiscus"
+      },
+      "peerDependencies": {
+        "webpack": ">=5.32.0"
       }
     },
     "node_modules/webpack-sources": {
@@ -7830,6 +7856,12 @@
       "requires": {
         "color-convert": "^1.9.0"
       }
+    },
+    "ansis": {
+      "version": "1.3.4",
+      "resolved": "https://registry.npmjs.org/ansis/-/ansis-1.3.4.tgz",
+      "integrity": "sha512-BDXljGSG4gZXmWK64bQzXkI509i5fe8aAa9+eL29e3swaWUqxvxk/XlONjw9AUrNCpQWNdy++0GX7HAhWeR9BQ==",
+      "dev": true
     },
     "anymatch": {
       "version": "3.1.2",
@@ -10940,12 +10972,6 @@
         }
       }
     },
-    "webpack-fix-style-only-entries": {
-      "version": "0.6.1",
-      "resolved": "https://registry.npmjs.org/webpack-fix-style-only-entries/-/webpack-fix-style-only-entries-0.6.1.tgz",
-      "integrity": "sha512-wyIhoxS3DD3Fr9JA8hQPA+ZmaWnqPxx12Nv166wcsI/0fbReqyEtiIk2llOFYIg57WVS3XX5cZJxw2ji70R0sA==",
-      "dev": true
-    },
     "webpack-merge": {
       "version": "5.8.0",
       "resolved": "https://registry.npmjs.org/webpack-merge/-/webpack-merge-5.8.0.tgz",
@@ -10954,6 +10980,15 @@
       "requires": {
         "clone-deep": "^4.0.1",
         "wildcard": "^2.0.0"
+      }
+    },
+    "webpack-remove-empty-scripts": {
+      "version": "0.7.3",
+      "resolved": "https://registry.npmjs.org/webpack-remove-empty-scripts/-/webpack-remove-empty-scripts-0.7.3.tgz",
+      "integrity": "sha512-yipqb25A0qtH7X9vKt6yihwyYkTtSlRiDdBb2QsyrkqGM3hpfAcfOO1lYDef9HQUNm3s8ojmorbNg32XXX6FYg==",
+      "dev": true,
+      "requires": {
+        "ansis": "^1.3.4"
       }
     },
     "webpack-sources": {
