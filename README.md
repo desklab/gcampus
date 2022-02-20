@@ -3,8 +3,10 @@
 <br>
 <br>
 
-[![Translation](https://hosted.weblate.org/widgets/gcampus/-/web/svg-badge.svg)](https://hosted.weblate.org/engage/gcampus/)
+[![Test](https://github.com/desklab/gcampus/actions/workflows/test.yml/badge.svg)](https://github.com/desklab/gcampus/actions/workflows/test.yml)
 [![Documentation Status](https://readthedocs.org/projects/gcampus/badge/?version=latest)](https://gcampus.readthedocs.io/en/latest/?badge=latest)
+[![Translation](https://hosted.weblate.org/widgets/gcampus/-/web/svg-badge.svg)](https://hosted.weblate.org/engage/gcampus/)
+[![Build and Deploy](https://github.com/desklab/gcampus/actions/workflows/release.yml/badge.svg)](https://dev.gewaessercampus.de/)
 
 **GewässerCampus** (`gcampus`) is part of an educational project on
 Limnology aiming to provide students the possibility to analyse, publish
