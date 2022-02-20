@@ -1,0 +1,12 @@
+name: gcampus
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip=22
+  - libgdal=3.4
+  - glib=2.70
+  - pango=1.50
+  - pip:
+      - '-r requirements.txt'
