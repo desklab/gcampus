@@ -7,10 +7,15 @@
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <div>
-            <button type="submit" class="btn btn-primary mb-2">
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-2 position-relative">
                 {% translate "Apply filter" %}
             </button>
+        <a  class="btn btn-warning mb-2 position-relative" href="{% url "gcampuscore:measurements" %}">
+                {% translate "Remove all filters" %}
+            </a>
+        </div>
+    <div>
             {% with filter.form.time_range as field %}
                 <div class="mb-3">
                     {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
