@@ -298,7 +298,7 @@ class CourseTokenTasksTest(BaseMockTaskTest):
                 args=(
                     "gcampus.documents.views.CourseOverviewPDF",
                     instance.pk,
-                    translation.get_language()
+                    translation.get_language(),
                 )
             )
 
@@ -309,7 +309,7 @@ class CourseTokenTasksTest(BaseMockTaskTest):
                 args=(
                     "gcampus.documents.views.CourseOverviewPDF",
                     course.pk,
-                    translation.get_language()
+                    translation.get_language(),
                 )
             )
 
@@ -324,8 +324,7 @@ class CourseTokenTasksTest(BaseMockTaskTest):
         session.save()
         with patch.object(render_cached_document_view, "apply_async") as mock:
             self.client.post(
-                reverse("gcampusauth:generate-new-access-keys"),
-                data={"count": _count}
+                reverse("gcampusauth:generate-new-access-keys"), data={"count": _count}
             )
             self.assertEqual(
                 AccessKey.objects.filter(parent_token=course).count(), _count
@@ -334,7 +333,7 @@ class CourseTokenTasksTest(BaseMockTaskTest):
                 args=(
                     "gcampus.documents.views.CourseOverviewPDF",
                     course.pk,
-                    translation.get_language()
+                    translation.get_language(),
                 )
             )
 
@@ -346,15 +345,13 @@ class CourseTokenTasksTest(BaseMockTaskTest):
         )
         session.save()
         with patch.object(render_cached_document_view, "apply_async") as mock:
-            self.client.post(
-                reverse("gcampusauth:deactivate", args=(tokens[0].pk,))
-            )
+            self.client.post(reverse("gcampusauth:deactivate", args=(tokens[0].pk,)))
             tokens[0].refresh_from_db()
             self.assertTrue(tokens[0].deactivated)
             mock.assert_called_once_with(
                 args=(
                     "gcampus.documents.views.CourseOverviewPDF",
                     course.pk,
-                    translation.get_language()
+                    translation.get_language(),
                 )
             )

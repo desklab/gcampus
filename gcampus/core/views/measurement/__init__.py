@@ -30,7 +30,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from gcampus.auth import session, exceptions
 from gcampus.auth.fields.token import check_form_and_request_token
 from gcampus.auth.models.token import (
-    can_token_edit_measurement, TokenType,
+    can_token_edit_measurement,
+    TokenType,
 )
 from gcampus.auth.session import is_authenticated, get_token, get_token_type
 from gcampus.core.decorators import (

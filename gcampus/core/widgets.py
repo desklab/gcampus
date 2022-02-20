@@ -16,7 +16,15 @@
 import datetime
 from typing import Optional
 
-from django.forms import MultiWidget, NumberInput, DateTimeInput, Media, TextInput, RadioSelect, CheckboxInput
+from django.forms import (
+    MultiWidget,
+    NumberInput,
+    DateTimeInput,
+    Media,
+    TextInput,
+    RadioSelect,
+    CheckboxInput,
+)
 from django.forms.utils import to_current_timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import pgettext
@@ -145,9 +153,9 @@ class TimeRangeSlider(RangeWidget):
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
         try:
-            earliest_date: datetime = (
-                Measurement.objects.values_list("time", flat=True).earliest("time")
-            )
+            earliest_date: datetime = Measurement.objects.values_list(
+                "time", flat=True
+            ).earliest("time")
             week_list = get_weeks_from_today(earliest_date)
         except Measurement.DoesNotExist:
             # Create an empty list instead
@@ -167,10 +175,7 @@ class ToggleInput(CheckboxInput):
         klass = "form-check-input"
         if "class" in attrs:
             klass = f"{klass} {attrs['class']}"
-        attrs.update({
-            "class": klass,
-            "role": "switch"
-        })
+        attrs.update({"class": klass, "role": "switch"})
         return super(ToggleInput, self).get_context(name, value, attrs)
 
 

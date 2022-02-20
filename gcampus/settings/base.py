@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     "rest_framework_gis",
     "django_filters",
     "django_celery_results",
-    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    "django_plotly_dash.apps.DjangoPlotlyDashConfig",
     # gcampus specific apps
     "gcampus.tasks",
     "gcampus.core",
@@ -199,7 +199,7 @@ MAP_SETTINGS = {
 TSVECTOR_CONF = "german"
 
 # django-plotly-dash
-X_FRAME_OPTIONS = 'SAMEORIGIN'
+X_FRAME_OPTIONS = "SAMEORIGIN"
 
 # Session expires when Browser is closed
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

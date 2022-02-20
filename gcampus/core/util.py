@@ -143,10 +143,9 @@ def get_weeks_from_today(date: datetime.datetime) -> List[datetime.datetime]:
     :returns: List of datetime objects one week apart
     """
     today = timezone.now()
-    num_weeks = math.ceil((today-date).days/7)+1
+    num_weeks = math.ceil((today - date).days / 7) + 1
     dates: List[datetime.datetime] = [
-        today - datetime.timedelta(weeks=x)
-        for x in reversed(range(num_weeks))
+        today - datetime.timedelta(weeks=x) for x in reversed(range(num_weeks))
     ]
     return dates
 
@@ -161,10 +160,10 @@ def convert_dates_to_js_milliseconds(dates: List[datetime.datetime]) -> List[int
     :returns: List of dates as milliseconds
     """
     dates_milliseconds: List[int] = [
-        int(time.mktime(date.timetuple())) * 1000
-        for date in dates
+        int(time.mktime(date.timetuple())) * 1000 for date in dates
     ]
     return dates_milliseconds
+
 
 def get_all_filters(old_filters: Set[str], new_filters: List[str]) -> List[str]:
     """Get Number of Filters

@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gcampuscore', '0028_auto_20211214_1302'),
+        ("gcampuscore", "0028_auto_20211214_1302"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='limit',
-            name='graph_color',
-            field=models.CharField(default='red', max_length=20),
+            model_name="limit",
+            name="graph_color",
+            field=models.CharField(default="red", max_length=20),
         ),
     ]

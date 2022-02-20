@@ -50,6 +50,6 @@ def send_registration_email(instance: t.Union[CourseToken, int], language: str =
     email_template = RegisterEmailTemplate(instance)
     message = email_template.as_message(
         [instance.teacher_email],
-        attachments=[(filename, file_content, "application/pdf")]
+        attachments=[(filename, file_content, "application/pdf")],
     )
     message.send()

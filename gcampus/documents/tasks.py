@@ -139,6 +139,4 @@ def get_instance_retry(
             # Do not handle exception
             time.sleep(retry_delay)
 
-    raise model.DoesNotExist(
-        f"Unable to find {model} with 'pk={instance}'"
-    )
+    raise model.DoesNotExist(f"Unable to find {model} with 'pk={instance}'")

@@ -7,28 +7,35 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gcampuscore', '0029_limit_graph_color'),
+        ("gcampuscore", "0029_limit_graph_color"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='measurement',
-            name='comment',
-            field=models.TextField(blank=True, verbose_name='Note'),
+            model_name="measurement",
+            name="comment",
+            field=models.TextField(blank=True, verbose_name="Note"),
         ),
         migrations.AlterField(
-            model_name='measurement',
-            name='time',
-            field=models.DateTimeField(help_text='Date and time of the measurement', verbose_name='Time'),
+            model_name="measurement",
+            name="time",
+            field=models.DateTimeField(
+                help_text="Date and time of the measurement", verbose_name="Time"
+            ),
         ),
         migrations.AlterField(
-            model_name='parameter',
-            name='comment',
-            field=models.TextField(blank=True, verbose_name='Note'),
+            model_name="parameter",
+            name="comment",
+            field=models.TextField(blank=True, verbose_name="Note"),
         ),
         migrations.AlterField(
-            model_name='parameter',
-            name='parameter_type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='parameters', to='gcampuscore.parametertype', verbose_name='Parameter'),
+            model_name="parameter",
+            name="parameter_type",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="parameters",
+                to="gcampuscore.parametertype",
+                verbose_name="Parameter",
+            ),
         ),
     ]

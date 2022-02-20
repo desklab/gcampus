@@ -64,6 +64,6 @@ class RegisterFormView(TitleMixin, CreateView):
             self.request,
             self.object.token,
             TokenType.course_token,
-            self.object.token_name
+            self.object.token_name,
         )
         return HttpResponseRedirect(self.get_success_url())

@@ -27,7 +27,8 @@ from gcampus.auth.fields.token import (
 from gcampus.auth.models.token import (
     CourseToken,
     update_access_key_documents,
-    AccessKey, TokenType,
+    AccessKey,
+    TokenType,
 )
 
 logger = logging.getLogger("gcampus.auth.forms.token")

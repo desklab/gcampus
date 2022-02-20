@@ -72,31 +72,21 @@ class EmailTemplate(ABC):
         """
         context = self.get_context()
         html = render_to_string(
-            self.get_html_template(),
-            context=context,
-            request=self.request,
-            using=using
+            self.get_html_template(), context=context, request=self.request, using=using
         )
         text = render_to_string(
-            self.get_text_template(),
-            context=context,
-            request=self.request,
-            using=using
+            self.get_text_template(), context=context, request=self.request, using=using
         )
         # Some email clients still do not support styles defined in the
         # HTML '<head>' tag. Styles must be applied inline, i.e. using
         # the 'style="..."' attribute of the corresponding HTML
         # elements.
-        inlined_html = transform(html, base_url=get_base_url(),
-                                 css_text=self.get_stylesheet())
+        inlined_html = transform(
+            html, base_url=get_base_url(), css_text=self.get_stylesheet()
+        )
         return text, inlined_html
 
-    def as_message(
-        self,
-        to: t.List[str],
-        using=None,
-        **email_kwargs
-    ) -> EmailMessage:
+    def as_message(self, to: t.List[str], using=None, **email_kwargs) -> EmailMessage:
         """Return Email Template as Email Message
 
         Returns a :class:`django.core.mail.EmailMessage` with both a

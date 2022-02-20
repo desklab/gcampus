@@ -212,7 +212,7 @@ class HyphenatedTokenField(CharField):
         # Make sure no hyphens are currently present
         value = value.replace("-", "")
         for i in range(0, len(value), segment_length):
-            segments.append(value[i:i+segment_length])
+            segments.append(value[i : i + segment_length])
         return "-".join(segments)
 
     def to_python(self, value):

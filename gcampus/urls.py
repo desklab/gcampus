@@ -36,7 +36,7 @@ urlpatterns = [
     path("", include("gcampus.core.urls")),
     path("", include("gcampus.auth.urls")),
     path("", include("gcampus.documents.urls")),
-    path('plots/', include('django_plotly_dash.urls')),
+    path("plots/", include("django_plotly_dash.urls")),
     path("", include("gcampus.analysis.urls")),
     path("api/v1/", include("gcampus.api.urls", namespace="v1")),
     path("admin/", admin.site.urls),

@@ -9,7 +9,9 @@ class TimezoneMiddleware:
         self.get_response = get_response
 
     def __call__(self, request: HttpRequest):
-        tzname = request.COOKIES.get(getattr(settings, "TIME_ZONE_COOKIE_NAME"), getattr(settings, "TIME_ZONE"))
+        tzname = request.COOKIES.get(
+            getattr(settings, "TIME_ZONE_COOKIE_NAME"), getattr(settings, "TIME_ZONE")
+        )
         if tzname:
             timezone.activate(tzname)
         else:

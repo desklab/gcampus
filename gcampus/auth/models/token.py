@@ -42,6 +42,7 @@ COURSE_TOKEN_TYPE = "course"
 @enum.unique
 class TokenType(enum.Enum):
     """Token type"""
+
     access_key = ACCESS_KEY_TYPE
     course_token = COURSE_TOKEN_TYPE
 

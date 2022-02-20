@@ -18,12 +18,7 @@ from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 from leaflet.admin import LeafletGeoAdmin
 
-from gcampus.core.models import (
-    Measurement,
-    ParameterType,
-    Parameter,
-    Limit
-)
+from gcampus.core.models import Measurement, ParameterType, Parameter, Limit
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 
 
@@ -47,6 +42,7 @@ class MeasurementAdmin(LeafletGeoAdmin):
 
 class ParameterTypeAdmin(admin.ModelAdmin):
     pass
+
 
 class LimitAdmin(admin.ModelAdmin):
     pass

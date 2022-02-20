@@ -27,7 +27,11 @@ from django.views.generic import ListView
 
 from gcampus.core.filters import MeasurementFilterSet
 from gcampus.core.models import Measurement
-from gcampus.core.util import get_weeks_from_today, convert_dates_to_js_milliseconds, get_all_filters
+from gcampus.core.util import (
+    get_weeks_from_today,
+    convert_dates_to_js_milliseconds,
+    get_all_filters,
+)
 from gcampus.core.views.base import TitleMixin
 
 
@@ -45,8 +49,8 @@ class MeasurementListView(TitleMixin, ListView):
 
     def get(self, request, *args, **kwargs):
         self.filter = MeasurementFilterSet(
-            self.request.GET, queryset=Measurement.objects.all(),
-            request=self.request)
+            self.request.GET, queryset=Measurement.objects.all(), request=self.request
+        )
         return super(MeasurementListView, self).get(request, *args, **kwargs)
 
     def get_queryset(self):

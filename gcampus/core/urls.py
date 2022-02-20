@@ -21,7 +21,8 @@ from gcampus.core.views.measurement import (
     MeasurementListView,
     MeasurementDetailView,
     MeasurementMapView,
-    MeasurementEditView, MeasurementDeleteView,
+    MeasurementEditView,
+    MeasurementDeleteView,
 )
 from gcampus.core.views.parameter import ParameterFormSetView
 

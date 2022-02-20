@@ -2,10 +2,10 @@ import pandas as pd
 import datetime
 
 
-
 from gcampus.core.models import Parameter, Measurement
 
 from django.contrib.gis.geos import Point
+
 
 def remove_one_day(date: str, date_format: str):
 
@@ -24,10 +24,15 @@ def add_one_day(date: str, date_format: str):
 
 def database_query_for_plot(water_name, parameter_type, time, course=None):
     if course:
-        query = Parameter.objects.filter(parameter_type=parameter_type, measurement__water_name=water_name,
-                                         measurement__token__parent_token=course.token)
+        query = Parameter.objects.filter(
+            parameter_type=parameter_type,
+            measurement__water_name=water_name,
+            measurement__token__parent_token=course.token,
+        )
     else:
-        query = Parameter.objects.filter(parameter_type=parameter_type, measurement__water_name=water_name)
+        query = Parameter.objects.filter(
+            parameter_type=parameter_type, measurement__water_name=water_name
+        )
     # TODO Dirty, fix
     parameter_measured_list = []
     for item in query:
@@ -36,6 +41,3 @@ def database_query_for_plot(water_name, parameter_type, time, course=None):
 
     values = [item.value for item in query]
     return parameter_measured_list, values
-
-
-

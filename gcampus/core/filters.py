@@ -29,7 +29,11 @@ from django_filters import (
     FilterSet,
     DateTimeFilter,
     CharFilter,
-    ModelMultipleChoiceFilter, BooleanFilter, DateRangeFilter, DateTimeFromToRangeFilter, ModelChoiceFilter,
+    ModelMultipleChoiceFilter,
+    BooleanFilter,
+    DateRangeFilter,
+    DateTimeFromToRangeFilter,
+    ModelChoiceFilter,
     DateFromToRangeFilter,
 )
 
@@ -162,7 +166,6 @@ class GeolocationFilter(Filter):
 
 class DateRange(DateFromToRangeFilter):
     field_class = HistogramDateTimeField
-
 
 
 class MeasurementFilterSet(FilterSet):

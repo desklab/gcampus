@@ -7,24 +7,37 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gcampuscore', '0026_auto_20211126_1734'),
+        ("gcampuscore", "0026_auto_20211126_1734"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Limit',
+            name="Limit",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('limit_type', models.CharField(blank=True, max_length=20)),
-                ('limit_value', models.FloatField(blank=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("limit_type", models.CharField(blank=True, max_length=20)),
+                ("limit_value", models.FloatField(blank=True)),
             ],
             options={
-                'verbose_name': 'Limit',
+                "verbose_name": "Limit",
             },
         ),
         migrations.AddField(
-            model_name='parametertype',
-            name='limit',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='limit', to='gcampuscore.limit'),
+            model_name="parametertype",
+            name="limit",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="limit",
+                to="gcampuscore.limit",
+            ),
         ),
     ]

@@ -29,7 +29,8 @@ from gcampus.auth import session
 from gcampus.auth.exceptions import TOKEN_EMPTY_ERROR
 from gcampus.auth.models.token import (
     can_token_edit_measurement,
-    TokenType, get_token_type_from_token,
+    TokenType,
+    get_token_type_from_token,
 )
 from gcampus.core.models import Measurement
 
