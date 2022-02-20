@@ -20,6 +20,7 @@
         <input class="form-range" value="0" min="0" max="{{ list_len|add:"-1" }}" step="1" type="range"/>
         <input class="form-range" value="{{ list_len|add:"-1" }}" min="0" max="{{ list_len|add:"-1" }}" step="1" type="range"/>
     </div>
+    <script type="text/javascript">let week_list_js = [{{ week_list_js|join:', ' }}];</script>
 {% endwith %}
 
 
