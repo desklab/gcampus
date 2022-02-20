@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-20 23:47+0100\n"
-"PO-Revision-Date: 2022-02-16 17:09+0000\n"
-"Last-Translator: Axel Schlindwein <a.schlindwein@desk-lab.de>\n"
+"PO-Revision-Date: 2022-02-20 23:01+0000\n"
+"Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/gcampus/web/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -594,8 +594,8 @@ msgid ""
 "\"%(course_data_url)s\">course data section</a>."
 msgstr ""
 "Sende eine Übersicht deines Kurses als PDF Datei an deine E-Mail-Adresse. Du "
-"kannst deine E-Mail-Adresse jederzeit im <a class=„text-dark“ href="
-"\"%(course_data_url)s\">Abschnitt Kursdaten</a> ändern."
+"kannst deine E-Mail-Adresse jederzeit im <a class=\"text-dark\" href=\""
+"%(course_data_url)s\">Abschnitt Kursdaten</a> ändern."
 
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:233
 msgid "Send email"
@@ -696,10 +696,8 @@ msgid "Filter by radius after selecting a location"
 msgstr "Nach Messungen in einem bestimmten Radius suchen"
 
 #: gcampus/core/filters.py:195
-#, fuzzy
-#| msgid "Measurements by my course"
 msgid "Measurements by your course"
-msgstr "Messungen meines Kurses"
+msgstr "Messungen deines Kurses"
 
 #: gcampus/core/filters.py:196
 msgid "Display only measurements that have been conducted by my course."
