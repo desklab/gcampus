@@ -15,7 +15,7 @@
 import datetime
 import time
 import math
-from typing import List, Tuple, Optional, Union
+from typing import List, Tuple, Optional, Union, Set
 
 from django.utils import timezone
 
@@ -165,3 +165,24 @@ def convert_dates_to_js_milliseconds(dates: List[datetime.datetime]) -> List[int
         for date in dates
     ]
     return dates_milliseconds
+
+def get_all_filters(old_filters: Set[str], new_filters: List[str]) -> List[str]:
+    """Get Number of Filters
+
+    This function takes a list of old filters and a list of new filters and returns a list of the
+    all applied filters.
+
+    :param old_filters: List of old applied filters
+    :param new_filters: List of new applied filters
+    :returns: List of new applied filters
+    """
+    all_filters = set(old_filters)
+    for filter_item in new_filters:
+        all_filters.add(filter_item)
+    # For some reason every time the filter button is pressed the location filter is set. Since the location filter
+    # needs some further improvement I'll fix it like this
+    # TODO fix location filter and remove this
+    if "location" in all_filters:
+        all_filters.remove("location")
+
+    return list(all_filters)

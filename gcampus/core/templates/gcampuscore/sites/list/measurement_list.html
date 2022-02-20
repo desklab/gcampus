@@ -21,12 +21,16 @@
                             data-bs-target="#offcanvasFilter"
                             aria-controls="offcanvasFilter">
                         {% translate "Filter" %}
-                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-warning border border-light rounded-circle">
+                        {% if applied_filters|length > 0 %}
+                            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-warning border border-light rounded-pill">
+                            {{ applied_filters|length }}
                             <span class="visually-hidden">
                                 {% translate "Additional filters applied" %}
                             </span>
-                        </span>
+                            </span>
+                        {% endif %}
                     </button>
+
                 </div>
                 <div class="col-auto">
                     <button type="submit" class="btn btn-primary">
@@ -38,45 +42,45 @@
         </form>
     </div>
     <div class="container-fluid mt-2">
-    {% if filter.qs %}
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th scope="col">{% translate "Water name" %}</th>
-                <th scope="col">{% translate "Location" %}</th>
-                <th scope="col">{% translate "Name" %}</th>
-                {% comment %}
+        {% if filter.qs %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">{% translate "Water name" %}</th>
+                    <th scope="col">{% translate "Location" %}</th>
+                    <th scope="col">{% translate "Name" %}</th>
+                    {% comment %}
                 <th scope="col">{% translate "Parameter" %}</th>
                 {% endcomment %}
-                <th scope="col">{% translate "Time" context "measurement time" %}</th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for measurement in object_list %}
-                <div class="list-group mt-4">
-                    {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement edit=measurement|can_edit:request today=today %}
-                </div>
-            {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <div class="p-5 text-dark bg-light rounded">
-            <h2>
-                {% translate "No measurements found" %}
-            </h2>
-            <p>
-                {% blocktranslate trimmed %}
-                    Unfortunately, no measurements can be found.
-                    <br>
-                    Maybe your filter settings are too restrictive.
-                {% endblocktranslate %}
-            </p>
-            <a class="btn btn-outline-dark" role="button" href="{% url "gcampuscore:measurements" %}">
-                {% translate "Reset filter" %}
-            </a>
-        </div>
-    {% endif %}
+                    <th scope="col">{% translate "Time" context "measurement time" %}</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for measurement in object_list %}
+                    <div class="list-group mt-4">
+                        {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement edit=measurement|can_edit:request today=today %}
+                    </div>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="p-5 text-dark bg-light rounded">
+                <h2>
+                    {% translate "No measurements found" %}
+                </h2>
+                <p>
+                    {% blocktranslate trimmed %}
+                        Unfortunately, no measurements can be found.
+                        <br>
+                        Maybe your filter settings are too restrictive.
+                    {% endblocktranslate %}
+                </p>
+                <a class="btn btn-outline-dark" role="button" href="{% url "gcampuscore:measurements" %}">
+                    {% translate "Reset filter" %}
+                </a>
+            </div>
+        {% endif %}
     </div>
 {% endblock content %}
 {% block extra_body %}

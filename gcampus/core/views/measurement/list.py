@@ -27,7 +27,7 @@ from django.views.generic import ListView
 
 from gcampus.core.filters import MeasurementFilterSet
 from gcampus.core.models import Measurement
-from gcampus.core.util import get_weeks_from_today, convert_dates_to_js_milliseconds
+from gcampus.core.util import get_weeks_from_today, convert_dates_to_js_milliseconds, get_all_filters
 from gcampus.core.views.base import TitleMixin
 
 
@@ -57,6 +57,13 @@ class MeasurementListView(TitleMixin, ListView):
         if "filter" not in kwargs:
             kwargs["filter"] = self.filter
         kwargs["today"] = timezone.now()
+        if "num_filters" not in kwargs:
+            kwargs["applied_filters"] = []
+        old_filters = kwargs["applied_filters"]
+        additional_filters = self.filter.form.changed_data
+        all_filters = get_all_filters(old_filters, additional_filters)
+        kwargs["applied_filters"] = all_filters
+
         earliest_date: datetime = Measurement.objects.values_list("time", flat=True).earliest("time")
         week_list = get_weeks_from_today(earliest_date)
         kwargs["week_list_js"] = convert_dates_to_js_milliseconds(week_list)
