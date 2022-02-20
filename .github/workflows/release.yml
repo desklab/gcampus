@@ -45,8 +45,8 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      outputs:
-        docker-tags: ${{ steps.meta.outputs.tags }}
+    outputs:
+      docker-tags: ${{ steps.meta.outputs.tags }}
 
   deploy:
     runs-on: ubuntu-latest
