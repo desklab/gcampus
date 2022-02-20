@@ -1,9 +1,9 @@
 name: Build and Deploy
 
 on:
-  release:
-    # The tag will be available at ${{ env.GITHUB_REF }}
-    types: [published]
+  push:
+    tags:
+      - "*"
 
 jobs:
   build:
@@ -34,9 +34,8 @@ jobs:
           # on the release type.
           tags: |
             type=pep440,pattern={{version}}
-            type=raw,value=dev,enable=${{ github.event.release.prerelease }}
           flavor: |
-            latest=${{ !github.event.release.prerelease }}
+            latest=auto
 
       - name: Build and push
         uses: docker/build-push-action@v2
@@ -45,6 +44,41 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+    outputs:
+      docker-tags: ${{ steps.meta.outputs.tags }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup SSH keys
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.SSH_PRIVATE_DEPLOY_KEY }}"
+
+      - name: Deploy to production
+        if: contains(needs.build.outputs.docker-tags, 'ghcr.io/${{ github.repository }}:latest')
+        env:
+          DOCKER_HOST: ${{ secrets.DEPLOY_DOCKER_HOST }}
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: 'echo "Unable to deploy: ${{ needs.build.outputs.docker-tags[0] }}"'
+
+      - name: Deploy to staging environmnet
+        env:
+          DOCKER_HOST: ${{ secrets.DEPLOY_DOCKER_HOST }}
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: 'docker service update gcampus_gcampus_dev --with-registry-auth --image="${{ needs.build.outputs.docker-tags[0] }}"'
 
   static:
     runs-on: ubuntu-latest
