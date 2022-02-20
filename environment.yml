@@ -9,4 +9,4 @@ dependencies:
   - glib=2.70
   - pango=1.50
   - pip:
-      - '-r requirements.txt'
+      - '-r requirements-dev.txt'
