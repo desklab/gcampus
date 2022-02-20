@@ -63,10 +63,6 @@ class MeasurementListView(TitleMixin, ListView):
         additional_filters = self.filter.form.changed_data
         all_filters = get_all_filters(old_filters, additional_filters)
         kwargs["applied_filters"] = all_filters
-
-        earliest_date: datetime = Measurement.objects.values_list("time", flat=True).earliest("time")
-        week_list = get_weeks_from_today(earliest_date)
-        kwargs["week_list_js"] = convert_dates_to_js_milliseconds(week_list)
         return super(MeasurementListView, self).get_context_data(
             object_list=object_list, **kwargs
         )
