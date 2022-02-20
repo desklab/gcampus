@@ -46,7 +46,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
     outputs:
-      docker-tags: ${{ steps.meta.outputs.tags }}
+      tags: ${{ steps.meta.outputs.tags }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -70,17 +70,17 @@ jobs:
           echo "${{ secrets.DEPLOY_HOST_KEY }}" >> ~/.ssh/known_hosts
 
       - name: Deploy to production
-        if: contains(needs.build.outputs.docker-tags, 'ghcr.io/${{ github.repository }}:latest')
+        if: contains(needs.build.outputs.tags, 'ghcr.io/${{ github.repository }}:latest')
         env:
           DOCKER_HOST: 'ssh://${{ secrets.DEPLOY_DOCKER_USER }}@${{ secrets.DEPLOY_DOCKER_HOST }}'
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: 'echo "Unable to deploy: ${{ needs.build.outputs.docker-tags[0] }}"'
+        run: 'echo "Unable to deploy: ${{ needs.build.outputs.tags }}"'
 
       - name: Deploy to staging environmnet
         env:
-          DOCKER_HOST: ${{ secrets.DEPLOY_DOCKER_HOST }}
+          DOCKER_HOST: 'ssh://${{ secrets.DEPLOY_DOCKER_USER }}@${{ secrets.DEPLOY_DOCKER_HOST }}'
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: 'docker service update gcampus_gcampus_dev --with-registry-auth --image="${{ needs.build.outputs.docker-tags[0] }}"'
+        run: 'docker service update gcampus_gcampus_dev --with-registry-auth --image="${{ needs.build.outputs.tags[0] }}"'
 
   static:
     runs-on: ubuntu-latest
