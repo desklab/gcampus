@@ -164,9 +164,6 @@ class DateRange(DateFromToRangeFilter):
     field_class = HistogramDateTimeField
 
 
-class DropDownSelectMultiple(CheckboxSelectMultiple):
-    template_name = "gcampuscore/components/parameter_dropdown.html"
-
 
 class MeasurementFilterSet(FilterSet):
     name = MeasurementSearchFilter(
