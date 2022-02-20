@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-20 23:47+0100\n"
-"PO-Revision-Date: 2022-02-16 17:09+0000\n"
-"Last-Translator: Axel Schlindwein <a.schlindwein@desk-lab.de>\n"
+"PO-Revision-Date: 2022-02-20 22:55+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/gcampus/web/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -440,8 +440,8 @@ msgstr ""
 "anzumelden</a>. Solltest du keinen Zugangscode haben, kannst du deine "
 "Lehrkraft darum bitten, einen neuen Zugangscode zu erstellen. Als Lehrkraft "
 "kannst du dich <a class=\"text-dark\" href=\"%(login_coursetoken_url)s\">mit "
-"einem Kursschlüssel anmelden</a> oder einen neuen Kurs <a class=\"text-dark"
-"\" href=\"%(register_url)s\">registrieren</a>."
+"einem Kursschlüssel anmelden</a> oder einen neuen Kurs <a class=\"text-dark\""
+" href=\"%(register_url)s\">registrieren</a>."
 
 #: gcampus/auth/templates/gcampusauth/forms/widgets/splitlogin.html:12
 #, python-format
@@ -629,8 +629,8 @@ msgid ""
 "generate {allowed_count:d} more."
 msgstr ""
 "Du kannst höchstens {max_count:d} Zugangscodes erstellen. Zur Zeit hast du "
-"{current_count:d} Zugangscodes erstellt und kannst daher nur {allowed_count:"
-"d} weitere Codes generiren."
+"{current_count:d} Zugangscodes erstellt und kannst daher nur "
+"{allowed_count:d} weitere Codes generiren."
 
 #: gcampus/auth/views/course_overview.py:148
 #, python-brace-format
@@ -672,8 +672,7 @@ msgstr "Messzeitraum"
 
 #: gcampus/core/filters.py:178
 msgid "Filter for measurements conducted in a specified time range."
-msgstr ""
-"Nach Messungen suchen die in einem bestimmten Zeitraum gemessen wurden."
+msgstr "Nach Messungen suchen die in einem bestimmten Zeitraum gemessen wurden."
 
 #: gcampus/core/filters.py:184 gcampus/core/models/measurement.py:191
 #: gcampus/core/models/measurement.py:199
@@ -1298,8 +1297,8 @@ msgstr ""
 "kannst nun die Zugangscodes an Schüler:innen verteilen und mit dem Messen "
 "loslegen. <br> <b>Wir warten gespannt auf eure Messwerte!</b> <br> Hier "
 "findest du eine Übersicht über deinen Kurs. Sollte etwas nicht stimmen, "
-"kannst du jederzeit deinen Kurs auf <a href=\"%(course_url)s"
-"\">GewässerCampus</a> bearbeiten."
+"kannst du jederzeit deinen Kurs auf <a href=\"%(course_url)s\""
+">GewässerCampus</a> bearbeiten."
 
 #: gcampus/mail/templates/gcampusmail/register/html.html:22
 msgid "Your course"
