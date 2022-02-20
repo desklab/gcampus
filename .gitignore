@@ -26,4 +26,4 @@ static/
 /media
 
 # Generated documentation
-/docs/build
+/docs/_build
