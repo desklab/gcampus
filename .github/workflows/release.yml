@@ -66,6 +66,7 @@ jobs:
         run: |
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add - <<< "${{ secrets.SSH_PRIVATE_DEPLOY_KEY }}"
+          mkdir -p ~/.ssh
           echo "${{ secrets.DEPLOY_HOST_KEY }}" >> ~/.ssh/known_hosts
 
       - name: Deploy to production
