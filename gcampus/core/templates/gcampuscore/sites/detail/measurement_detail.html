@@ -267,7 +267,7 @@
                         <tr>
                             <td>{{ parameter.parameter_type }}</td>
                             <td class="font-monospace">
-                                {{ parameter.value|localtime|localize }} {{ parameter.parameter_type.unit }}
+                                {{ parameter.value }} {{ parameter.parameter_type.unit }}
                             </td>
                             <td>
                                 {% if parameter.comment %}
