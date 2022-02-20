@@ -66,11 +66,12 @@ jobs:
         run: |
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add - <<< "${{ secrets.SSH_PRIVATE_DEPLOY_KEY }}"
+          echo "${{ secrets.DEPLOY_HOST_KEY }}" >> ~/.ssh/known_hosts
 
       - name: Deploy to production
         if: contains(needs.build.outputs.docker-tags, 'ghcr.io/${{ github.repository }}:latest')
         env:
-          DOCKER_HOST: ${{ secrets.DEPLOY_DOCKER_HOST }}
+          DOCKER_HOST: 'ssh://${{ secrets.DEPLOY_DOCKER_USER }}@${{ secrets.DEPLOY_DOCKER_HOST }}'
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: 'echo "Unable to deploy: ${{ needs.build.outputs.docker-tags[0] }}"'
 
