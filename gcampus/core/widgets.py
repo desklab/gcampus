@@ -144,10 +144,14 @@ class TimeRangeSlider(RangeWidget):
 
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
-        earliest_date: datetime = (
-            Measurement.objects.values_list("time", flat=True).earliest("time")
-        )
-        week_list = get_weeks_from_today(earliest_date)
+        try:
+            earliest_date: datetime = (
+                Measurement.objects.values_list("time", flat=True).earliest("time")
+            )
+            week_list = get_weeks_from_today(earliest_date)
+        except Measurement.DoesNotExist:
+            # Create an empty list instead
+            week_list = []
         context["week_list_js"] = convert_dates_to_js_milliseconds(week_list)
         return context
 
