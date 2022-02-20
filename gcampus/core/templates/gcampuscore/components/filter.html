@@ -7,12 +7,12 @@
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary mb-2 position-relative">
+        <div class="col-auto mb-2">
+            <button type="submit" class="btn btn-primary position-relative">
                 {% translate "Apply filter" %}
             </button>
-        <a  class="btn btn-warning mb-2 position-relative" href="{% url "gcampuscore:measurements" %}">
-                {% translate "Remove all filters" %}
+            <a class="btn btn-outline-dark position-relative" role="button" href="{% url "gcampuscore:measurements" %}">
+                {% translate "Reset filter" %}
             </a>
         </div>
     <div>

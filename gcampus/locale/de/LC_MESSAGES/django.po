@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-20 23:19+0100\n"
+"POT-Creation-Date: 2022-02-20 23:47+0100\n"
 "PO-Revision-Date: 2022-02-16 17:09+0000\n"
 "Last-Translator: Axel Schlindwein <a.schlindwein@desk-lab.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/gcampus/web/de/>\n"
@@ -858,9 +858,8 @@ msgid "Apply filter"
 msgstr "Filter anwenden"
 
 #: gcampus/core/templates/gcampuscore/components/filter.html:15
-#, fuzzy
-#| msgid "Reset filter"
-msgid "Remove all filters"
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:81
+msgid "Reset filter"
 msgstr "Filter zurücksetzen"
 
 #: gcampus/core/templates/gcampuscore/components/sidebar.html:13
@@ -1003,10 +1002,6 @@ msgid ""
 msgstr ""
 "Leider konnten keine Messungen gefunden werden. <br> Vielleicht sind deine "
 "Filter-Einstellungen zu restriktiv."
-
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:81
-msgid "Reset filter"
-msgstr "Filter zurücksetzen"
 
 #: gcampus/core/views/measurement/__init__.py:88
 msgid "Create new measurement"
@@ -1356,6 +1351,11 @@ msgstr "Deutsch"
 #: gcampus/tasks/apps.py:24
 msgid "GCampus Tasks"
 msgstr "GCampus Aufgaben"
+
+#, fuzzy
+#~| msgid "Reset filter"
+#~ msgid "Remove all filters"
+#~ msgstr "Filter zurücksetzen"
 
 #~ msgid "Measurements by me"
 #~ msgstr "Meine Messungen"
