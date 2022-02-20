@@ -192,11 +192,11 @@ class MeasurementFilterSet(FilterSet):
     )
     my_course = MyCourseFilter(
         field_name="my_course",
-        label=_("Measurements by my course"),
+        label=_("Measurements by your course"),
         help_text=_("Display only measurements that have been conducted by my course."),
     )
     my_measurements = MyMeasurementsFilter(
         field_name="my_measurements",
-        label=_("Measurements by me"),
+        label=_("Your Measurements"),
         help_text=_("Display only measurements that have been conducted by me."),
     )
