@@ -1,0 +1,7 @@
+# Reference
+
+```{toctree}
+:hidden:
+
+core
+```

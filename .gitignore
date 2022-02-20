@@ -24,3 +24,6 @@ static/
 # Generated PDF files
 /*.pdf
 /media
+
+# Generated documentation
+/docs/build

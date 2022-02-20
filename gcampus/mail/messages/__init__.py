@@ -22,7 +22,7 @@ from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.http import HttpRequest
 from django.template.loader import render_to_string
 
-from gcampus.core import base_url
+from gcampus.core import get_base_url
 from gcampus.documents.utils import mock_request
 from gcampus.mail.templatetags.mail import include_static
 
@@ -87,7 +87,7 @@ class EmailTemplate(ABC):
         # HTML '<head>' tag. Styles must be applied inline, i.e. using
         # the 'style="..."' attribute of the corresponding HTML
         # elements.
-        inlined_html = transform(html, base_url=base_url,
+        inlined_html = transform(html, base_url=get_base_url(),
                                  css_text=self.get_stylesheet())
         return text, inlined_html
 

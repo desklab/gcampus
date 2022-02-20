@@ -17,4 +17,6 @@ from django.conf import settings
 
 default_app_config = "gcampus.core.apps.GCampusCoreAppConfig"
 
-base_url = f"{settings.PREFERRED_SCHEME}://{settings.PRIMARY_HOST}/"
+
+def get_base_url() -> str:
+    return f"{settings.PREFERRED_SCHEME}://{settings.PRIMARY_HOST}/"
