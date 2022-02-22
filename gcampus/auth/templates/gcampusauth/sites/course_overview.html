@@ -19,6 +19,13 @@
                     <form method="POST">
                         {% csrf_token %}
                         {% auth_token %}
+                        {% with field=form.school_name %}
+                            <div class="mb-3">
+                                {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                {% include "gcampuscore/forms/components/helptext.html" %}
+                                {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                            </div>
+                        {% endwith %}
                         {% with field=form.token_name %}
                             <div class="mb-3">
                                 {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
@@ -26,7 +33,7 @@
                                 {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
                             </div>
                         {% endwith %}
-                        {% with field=form.school_name %}
+                        {% with field=form.teacher_name %}
                             <div class="mb-3">
                                 {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
                                 {% include "gcampuscore/forms/components/helptext.html" %}
