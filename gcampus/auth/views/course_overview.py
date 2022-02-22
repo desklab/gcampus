@@ -35,7 +35,7 @@ from django.views.generic.edit import UpdateView
 from gcampus.auth import session, exceptions
 from gcampus.auth.decorators import require_course_token
 from gcampus.auth.fields.token import check_form_and_request_token
-from gcampus.auth.models.token import AccessKey, CourseToken, course_updated
+from gcampus.auth.models.token import TokenType, AccessKey, CourseToken, course_updated
 from gcampus.auth.session import get_token
 from gcampus.auth.forms.course_overview import (
     CourseOverviewForm,
@@ -70,7 +70,7 @@ class CourseOverviewFormView(TitleMixin, UpdateView):
         form.save()
         # Update token name
         session.set_token(
-            self.request, form.instance.token, "course", form.instance.token_name
+            self.request, form.instance.token, TokenType.course_token, form.instance.token_name
         )
         return HttpResponseRedirect(self.request.path_info)
 
