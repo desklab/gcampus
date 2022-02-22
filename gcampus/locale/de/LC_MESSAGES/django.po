@@ -1106,7 +1106,7 @@ msgstr "Stunde"
 #: gcampus/core/widgets.py:43
 msgctxt "hour input short"
 msgid "HH"
-msgstr "SS"
+msgstr "HH"
 
 #: gcampus/core/widgets.py:54 gcampus/core/widgets.py:46
 msgid "Minute"
