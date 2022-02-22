@@ -802,6 +802,7 @@ msgstr "Name"
 #: gcampus/core/models/measurement.py:58
 msgid "Your forename or team name. This will be publicly visible."
 msgstr ""
+"Dein Vorname oder ein Team Name. Diese Information ist öffentlich sichtbar."
 
 #: gcampus/core/models/measurement.py:65
 msgid "Location name"
@@ -844,7 +845,7 @@ msgstr "Datum und Uhrzeit der Messung"
 
 #: gcampus/core/models/measurement.py:86
 msgid "Note on your measurement. This will be publicly visible."
-msgstr ""
+msgstr "Notiz zu deiner Messung. Diese Information ist öffentlich sichtbar."
 
 #: gcampus/core/models/measurement.py:88 gcampus/core/models/measurement.py:214
 #: gcampus/core/models/measurement.py:84 gcampus/core/models/measurement.py:210
