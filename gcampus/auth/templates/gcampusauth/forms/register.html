@@ -110,6 +110,23 @@
                         {% endblocktranslate %}
                     </p>
                 </div>
+                <div class="col-7 px-5 py-3">
+                    <div class="mb-3">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="" id="TermsCheckbox" required>
+                          <label class="form-check-label" for="TermsCheckbox">
+                              {% blocktranslate context "register form accept terms" trimmed %}
+                                  I do accept the <a href="#">terms and conditions</a> as well as the
+                                  <a href="#">privacy policy</a> for using this web application.
+                              {% endblocktranslate %}
+                          </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5 bg-light px-5 py-3">
+                    <p class="mt-4 text-muted">
+                    </p>
+                </div>
                 <div class="col-7 px-5 pb-5">
                     <button class="btn btn-primary btn-lg" type="submit">
                         {% translate "Register" %}

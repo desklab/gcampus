@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-22 11:23+0100\n"
+"POT-Creation-Date: 2022-02-22 14:17+0100\n"
 "PO-Revision-Date: 2022-02-20 23:01+0000\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/gcampus/web/de/>\n"
@@ -412,7 +412,14 @@ msgstr ""
 "einen eigenen Zugangscode, ein Zugangscode kann auch von einer Gruppe "
 "verwendet werden."
 
-#: gcampus/auth/templates/gcampusauth/forms/register.html:115
+#: gcampus/auth/templates/gcampusauth/forms/register.html:118
+msgctxt "register form accept terms"
+msgid ""
+"I do accept the <a href=\"#\">terms and conditions</a> as well as the <a "
+"href=\"#\">privacy policy</a> for using this web application."
+msgstr ""
+
+#: gcampus/auth/templates/gcampusauth/forms/register.html:132
 msgid "Register"
 msgstr "Registrieren"
 
