@@ -55,7 +55,7 @@ class Measurement(util.DateModelMixin):
         blank=True,
         max_length=280,
         verbose_name=_("Name"),
-        help_text=_("Your name or team name"),
+        help_text=_("Your forename or team name. This will be publicly visible."),
     )
     location = models.PointField(blank=False, verbose_name=_("Location"))
     location_name = models.CharField(
@@ -80,7 +80,11 @@ class Measurement(util.DateModelMixin):
         verbose_name=pgettext_lazy("measurement time", "Time"),
         help_text=_("Date and time of the measurement"),
     )
-    comment = models.TextField(blank=True, verbose_name=_("Note"))
+    comment = models.TextField(
+        blank=True,
+        verbose_name=_("Note"),
+        help_text=_("Note on your measurement. This will be publicly visible."),
+    )
     hidden = models.BooleanField(default=False, verbose_name=_("Hidden"))
 
     # The search vector will be overwritten and turned into a postgres
