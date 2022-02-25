@@ -54,7 +54,7 @@ class MeasurementSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = Measurement
         geo_field = "location"
-        fields = ("id", "name", "time", "comment", "parameters", "url", "title")
+        fields = ("id", "name", "time", "comment", "parameters", "url", "title", "water_name")
 
     def get_url(self, obj: Measurement) -> str:  # noqa
         return reverse("gcampuscore:measurement-detail", kwargs=dict(pk=obj.pk))

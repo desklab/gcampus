@@ -109,10 +109,68 @@
                 while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                 }
-                let measurementName = String(e.features[0].properties.title);
+                let measurementName = String(e.features[0].properties.name);
+                let measurementWaterName = String(e.features[0].properties.water_name);
                 let measurementURL = String(e.features[0].properties.url);
-                let html = "<a href=" + measurementURL + ">" + measurementName + "</a>";
-                new mapboxgl.Popup().setLngLat(coordinates).setHTML(html).addTo(map);
+
+                {% comment %}
+                fetch('/api/v1'+ measurementURL).then(response =>{
+                    return response.json();
+                }).then(data =>{
+                    console.log(data);
+                })
+                {% endcomment %}
+
+                let timeOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                let measurementTime = new Date(e.features[0].properties.time);
+                let measurementParameterCount = String(JSON.parse(e.features[0].properties.parameters).length);
+
+                let html = "<a class='text-bold text-dark text-decoration-none' href=" + measurementURL + ">" +
+                                "<div class='px-2 container'>" +
+                                    "<div class='row'>" +
+                                        "<div class='col-2'>" +
+                                            "<svg width='64px' height='64px' viewBox='0 0 64 64' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='d-inline-block align-text-top'>" +
+                                                "<g transform='matrix(1.21219,0,0,1.36684,-5.14037,-7.26154)'>" +
+                                                    "<ellipse cx='24.04' cy='22.871' rx='16.499' ry='14.632' style='fill:rgb(2,0,28);'/>" +
+                                                "</g>" +
+                                                "<g transform='matrix(0.743132,0,0,1.06447,3.2839,-5.31585)'>" +
+                                                    "<path d='M10.261,24C10.261,24 14.975,20.425 17.911,20.425C20.847,20.425 24.941,24 27.877,24C30.813,24 34.648,20.425 37.583,20.425C40.519,20.425 45.492,24 45.492,24' style='fill:none;stroke:white;stroke-width:2.04px;'/>" +
+                                                "</g>" +
+                                                "<g transform='matrix(0.743132,0,0,1.06447,3.2839,0.359753)'>" +
+                                                    "<path d='M10.261,24C10.261,24 14.975,20.425 17.911,20.425C20.847,20.425 24.941,24 27.877,24C30.813,24 34.648,20.425 37.583,20.425C40.519,20.425 45.492,24 45.492,24' style='fill:none;stroke:white;stroke-width:2.04px;'/>" +
+                                                "</g>" +
+                                                "<g transform='matrix(0.743132,0,0,1.06447,3.2839,6.02653)'>" +
+                                                    "<path d='M10.261,24C10.261,24 14.975,20.425 17.911,20.425C20.847,20.425 24.941,24 27.877,24C30.813,24 34.648,20.425 37.583,20.425C40.519,20.425 45.492,24 45.492,24' style='fill:none;stroke:white;stroke-width:2.04px;'/>" +
+                                                "</g>" +
+                                            "</svg>" +
+                                        "</div>" +
+                                        "<div class='col-8 pt-2 ms-4'>" +
+                                            "<span class='fs-6 text-bolder'>" +
+                                                measurementWaterName +
+                                            "</span>" +
+                                            "<br>" +
+                                            "<span class='badge bg-light text-dark'>" +
+                                                measurementParameterCount + " Parameter" +
+                                            "</span>" +
+                                        "</div>" +
+                                    "</div>" +
+                                    "<hr class='py-0 mt-0 mb-2'>" +
+                                    "<div class='text-secondary'>" +
+                                        "<div class=''>" +
+                                            "<svg width='16' height='16' viewBox='0 0 32 32' stroke='currentColor' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round' class='css-i6dzq1'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>" +
+                                            "<span class='ms-1'>" + measurementName + "</span>" +
+                                        "</div>" +
+                                        "<div class=''>" +
+                                            "<svg width='16' height='16' viewBox='0 0 32 32' stroke='currentColor' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round' class='css-i6dzq1'><rect x='3' y='4' width='18' height='18' rx='2' ry='2'></rect><line x1='16' y1='2' x2='16' y2='6'></line><line x1='8' y1='2' x2='8' y2='6'></line><line x1='3' y1='10' x2='21' y2='10'></line></svg>" +
+                                            "<span class='ms-1'>" + measurementTime.toLocaleDateString('de-DE', timeOptions) + "</span>" +
+                                        "</div>" +
+                                    "</div>" +
+                                "</div>" +
+                            "</a>";
+                
+                new mapboxgl.Popup({focusAfterOpen: false}).setLngLat(coordinates).setHTML(html).addTo(map);
+                let sel = document.getSelection();
+                sel.removeAllRanges();
             });
 
             map.on('mouseenter', 'clusters', function () {
