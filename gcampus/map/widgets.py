@@ -14,8 +14,9 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import logging
 
+from django.contrib.gis import gdal
 from django.contrib.gis.forms import BaseGeometryWidget, PointField
-from django.contrib.gis.geos import Point
+from django.contrib.gis.geos import Point, GEOSGeometry, GEOSException
 from django.utils.text import slugify
 
 logger = logging.getLogger("gcampus.map.widgets")
@@ -38,6 +39,18 @@ class GeoPointWidget(BaseGeometryWidget):
             is None.
         """
         return value.geojson if value else ""
+
+    def deserialize(self, value):
+        try:
+            # We already know that value is supposed to be a GeoJSON
+            # string. Using this we can skip many regex checks in the
+
+            ogr = gdal.OGRGeometry.from_json(value)
+            g = ogr._geos_ptr()  # noqa
+            return GEOSGeometry(g, srid=ogr.srid)
+        except (GEOSException, ValueError, TypeError) as err:
+            logger.error("Error creating geometry from value '%s' (%s)", value, err)
+        return None
 
     def get_context(self, name, value, attrs: dict) -> dict:
         context = super(GeoPointWidget, self).get_context(name, value, attrs)
