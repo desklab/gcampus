@@ -105,11 +105,15 @@ class MeasurementCreateView(TitleMixin, CreateView):
 class MeasurementEditView(TitleMixin, UpdateView):
     model = Measurement
     form_class = MeasurementForm
-    template_name = "gcampuscore/forms/measurement.html"
+    template_name = MeasurementCreateView.template_name
+    next_view_name = MeasurementCreateView.next_view_name
 
     def form_valid(self, form: MeasurementForm):
         check_form_and_request_token(form, self.request)
         return super(MeasurementEditView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse(self.next_view_name, kwargs={"pk": self.object.id})
 
     def get_title(self) -> str:
         return _("Edit Measurement {pk:d} - Information").format(pk=self.object.pk)
