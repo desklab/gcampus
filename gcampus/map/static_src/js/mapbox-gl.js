@@ -61,8 +61,6 @@ class MapboxGLPointWidget {
         }
         this._value = val;
         let lngLat = this.getLngLat();
-        console.log(val);
-        console.log(lngLat);
         if (lngLat !== null) {
             if (this._marker.getLngLat() !== lngLat) {
                 // Only update the coordinates if they differ. Important
@@ -94,10 +92,20 @@ class MapboxGLPointWidget {
     }
 
     getLngLat() {
-        return this.value.coordinates;
+        let coordinates = this.value.coordinates;
+        if (coordinates === null || coordinates.hasOwnProperty('lng'))
+            return coordinates;
+        return {
+            lng: coordinates[0],
+            lat: coordinates[1]
+        }
     }
 
     setLngLat(lngLat) {
+        if (lngLat !== null && lngLat.hasOwnProperty('lng')) {
+            // lngLat is not an array but an object
+            lngLat = [lngLat.lng, lngLat.lat];
+        }
         this.value = {
             type: this.TYPE,
             coordinates: lngLat
