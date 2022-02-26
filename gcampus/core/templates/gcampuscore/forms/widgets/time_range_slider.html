@@ -1,26 +1,67 @@
 {% load i18n static leaflet_tags tz l10n menu %}
 {% with week_list_js|length as list_len %}
+    <ul class="chart">
+        {% for week in measurements_per_week %}
+            <li>
+                <span style="height:{{ week }}%"></span>
+            </li>
+        {% endfor %}
+
+    </ul>
     <div class="range-slider">
         <span>
-            {% translate "from" %}
+
             <input hidden
                    name="{{ widget.subwidgets.0.name }}"
                    {% if widget.subwidgets.0.value != None %}value="{{ widget.subwidgets.0.value|stringformat:'s' }}"{% endif %}
                    id="start_date" type="date"/>
-            <span id="from_span"></span>
-            <br>
-            {% translate "to" %}
+
+
+
             <input hidden
                    name="{{ widget.subwidgets.1.name }}"
-                   {% if widget.subwidgets.1.value != None %} value="{{ widget.subwidgets.1.value|stringformat:'s' }}"{% endif %}
+                    {% if widget.subwidgets.1.value != None %}
+                   value="{{ widget.subwidgets.1.value|stringformat:'s' }}"{% endif %}
                    id="end_date"
                    type="date"/>
-            <span id="to_span"></span>
+
         </span>
+        <span style="float:right;" id="to_span"></span>
         <input class="form-range" value="0" min="0" max="{{ list_len|add:"-1" }}" step="1" type="range"/>
-        <input class="form-range" value="{{ list_len|add:"-1" }}" min="0" max="{{ list_len|add:"-1" }}" step="1" type="range"/>
+        <input class="form-range" value="{{ list_len|add:"-1" }}" min="0" max="{{ list_len|add:"-1" }}" step="1"
+               type="range"/>
+        <span style="float:left;" id="from_span"></span>
     </div>
     <script type="text/javascript">let week_list_js = [{{ week_list_js|join:', ' }}];</script>
+    <style>
+
+        .chart {
+            display: table;
+            table-layout: fixed;
+            width: 85%;
+            padding: 0;
+            height: 100px;
+            margin: 0 auto;
+            background-image: linear-gradient(to top, rgba(0, 0, 0, 0.1) 2%, rgba(0, 0, 0, 0) 2%);
+            background-size: 100% 50px;
+            background-position: left top;
+        }
+
+        .chart li {
+            position: relative;
+            display: table-cell;
+            vertical-align: bottom;
+            height: 100px;
+
+        }
+
+        .chart span {
+            margin: 0 .05em;
+            display: block;
+            background: rgba(209, 236, 250, 0.75);
+        }
+
+    </style>
 {% endwith %}
 
 

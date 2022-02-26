@@ -28,8 +28,6 @@ from django.views.generic import ListView
 from gcampus.core.filters import MeasurementFilterSet
 from gcampus.core.models import Measurement
 from gcampus.core.util import (
-    get_weeks_from_today,
-    convert_dates_to_js_milliseconds,
     get_all_filters,
 )
 from gcampus.core.views.base import TitleMixin
