@@ -1,0 +1,22 @@
+.popover {
+  max-width: 460px !important;
+  -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  z-index: 1200 !important;
+}
+
+.menu-popover:hover {
+  background-color: #e1e1e1 !important;
+}
+
+.overlay {
+    background: #e9e9e9;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.5;
+    z-index: 1100;
+}

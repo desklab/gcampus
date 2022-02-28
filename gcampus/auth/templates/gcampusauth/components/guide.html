@@ -1,0 +1,94 @@
+{% load i18n %}
+<template id="guide01">
+    <div class="container guide-popover">
+        <div class="row">
+            <div class="col-9">
+                <h5>
+                    {% translate "Login status" %}
+                </h5>
+            </div>
+            <div class="col-1 offset-1">
+                <button type="button" class="btn-close ms-4" onclick="endGuide()" aria-label="Close"></button>
+            </div>
+        </div>
+
+        <div class="row mb-3 mt-2">
+            <div class="col">
+                Hilfe Text zum Login Button oder dem angezeigten Token. Eventuell auch mit mehreren Zeilen, um die Größe des Elements zu testen. Reicht der Platz?
+            </div>
+        </div>
+        <div class="row justify-content-end mt-1">
+            <div class="col-auto ms-auto">
+                <a class="btn btn-secondary btn-sm" target="_blank" href="https://gewaessercampus.de/faq">
+                    {% translate "More information" %}
+                </a>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-primary btn-sm" onclick="continueWithGuide02();">
+                    {% translate "Continue" %}
+                </button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="guide02">
+    <div class="container guide-popover">
+        <div class="row">
+            <div class="col-9">
+                <h5>
+                    {% translate "Edit your course data" %}
+                </h5>
+            </div>
+            <div class="col-1 offset-1">
+                <button type="button" class="btn-close ms-4" onclick="endGuide()" aria-label="Close"></button>
+            </div>
+        </div>
+
+        <div class="row mb-3 mt-2">
+            <div class="col">
+                Hilfe Text zum Login Button oder dem angezeigten Token. Eventuell auch mit mehreren Zeilen, um die Größe des Elements zu testen. Reicht der Platz?
+            </div>
+        </div>
+        <div class="row justify-content-end mt-1">
+            <div class="col-auto ms-auto">
+                <a target="_blank" class="btn btn-secondary btn-sm" href="https://gewaessercampus.de/faq">
+                    {% translate "More information" %}
+                </a>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-primary btn-sm" onclick="continueWithGuide03();">
+                    {% translate "Continue" %}
+                </button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="guide03">
+    <div class="container guide-popover">
+        <div class="row">
+            <div class="col-9">
+                <h5>
+                    {% translate "Add more accesskeys" %}
+                </h5>
+            </div>
+            <div class="col-1 offset-1">
+                <button type="button" class="btn-close ms-4" onclick="endGuide()" aria-label="Close"></button>
+            </div>
+        </div>
+
+        <div class="row mb-3 mt-2">
+            <div class="col">
+                Hilfe Text zum Login Button oder dem angezeigten Token. Eventuell auch mit mehreren Zeilen, um die Größe des Elements zu testen. Reicht der Platz?
+            </div>
+        </div>
+        <div class="row justify-content-end mt-1">
+            <div class="col-auto ms-auto">
+                <button type="button" class="btn btn-primary btn-sm" onclick="endGuide();">
+                    {% translate "Close" %}
+                </button>
+            </div>
+        </div>
+    </div>
+</template>

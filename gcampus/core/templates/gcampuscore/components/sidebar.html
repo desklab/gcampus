@@ -26,13 +26,21 @@
     </div>
     <div>
         <ul class="mt-auto nav nav-pills flex-column flex-shrink-0">
-            {% translate "About the project" as about_title %}
-            {% translate "Teaching material" as teaching_material_title %}
-            {% translate "Report a problem" as report_title %}
-
-            {% include "gcampuscore/components/sidebar_item.html" with icon="external-link" class="sidebar-item-hidden" title=about_title url="https://gewaessercampus.de/" %}
-            {% include "gcampuscore/components/sidebar_item.html" with icon="external-link" class="sidebar-item-hidden" title=teaching_material_title url="https://desk-lab.de/docs/" %}
-            {% include "gcampuscore/components/sidebar_item.html" with icon="help-circle" title=report_title %}
+            {% translate "Show help" as help_title %}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="help-circle" title=help_title onclick="startGuide();"%}
+        </ul>
+        <hr class="my-0">
+        <ul class="mt-auto nav nav-pills flex-column flex-shrink-0 mb-2">
+            <li class="align-baseline nav-item{% if class %} {{ class }}{% endif %}">
+                <a href="https://github.com/desklab/gcampus/releases/tag/{{ GCAMPUS_VERSION }}" target="_blank" class="my-1 nav-link">
+                    <span class="text-secondary sidebar-item-icon pt-2">
+                        {% icon "github" width="16px" height="16px" class="d-inline-block" %}
+                    </span>
+                    <span class="text-secondary badge bg-secondary text-dark sidebar-title" style="font-size: 9pt;">
+                        {{ GCAMPUS_VERSION }}
+                    </span>
+                </a>
+            </li>
         </ul>
     </div>
 </nav>

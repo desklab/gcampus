@@ -22,8 +22,7 @@ import 'bootstrap/js/src/modal';
 import Alert from 'bootstrap/js/src/alert';
 import Toast from 'bootstrap/js/src/toast';
 import 'bootstrap/js/src/util';
-
-
+import Popover from 'bootstrap/js/src/popover';
 import '../styles/main.scss';
 
 
@@ -54,4 +53,5 @@ function getCookie(name) {
     return null;
 }
 
-export {Toast, Tooltip, Collapse, Dropdown, Alert, setCookie, getCookie};
+export {Toast, Tooltip, Collapse, Dropdown, Alert, Popover, setCookie, getCookie};
+export * from '@popperjs/core/dist/umd/popper';

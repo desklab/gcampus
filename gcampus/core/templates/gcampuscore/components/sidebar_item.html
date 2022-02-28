@@ -1,8 +1,8 @@
 {% load menu icon %}
 <li class="nav-item{% if class %} {{ class }}{% endif %}">
-    <a href="{% if view_name %}{% url view_name %}{% else %}{{ url }}{% endif %}" class="my-1 nav-link {% active_link view_name yesno="active,text-white" %}" {% aria_current view_name %}>
+    <a {% if onclick %}onclick="{{ onclick }}" href="#"{% else %}href="{% if view_name %}{% url view_name %}{% else %}{{ url }}{% endif %}"{% endif %} class="my-1 nav-link {% active_link view_name yesno="active,text-white" %}" {% aria_current view_name %}>
         {% if icon %}
-            <span class="sidebar-item-icon">
+            <span {% if id %} id="{{ id }}" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right"{% endif %} class="sidebar-item-icon">
                 {% icon icon width="16px" height="16px" class="d-inline-block align-text-top" %}
             </span>
         {% endif %}

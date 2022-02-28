@@ -1,5 +1,5 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n auth_token icon %}
+{% load i18n auth_token icon static %}
 {% block modals %}
     {{ block.super }}
     <div class="modal fade"
@@ -62,6 +62,7 @@
     </div>
 {% endblock %}
 {% block content %}
+
     <div class="container-fluid" id="course-data">
         <h3 class="pb-2 border-bottom">
             {% translate "Course data" %}
@@ -116,7 +117,7 @@
             </h4>
         </div>
 
-        <button type="button" class="btn btn-secondary mt-4 float-end" data-bs-toggle="modal" data-bs-target="#editModal">
+        <button type="button" id="guide02anchor" class="btn btn-secondary mt-4 float-end" data-bs-toggle="modal" data-bs-target="#editModal">
             {% translate "Edit" %}
         </button>
 
@@ -162,7 +163,7 @@
                     {% endwith %}
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-secondary">
+                    <button type="submit" class="btn btn-secondary" id="guide03anchor">
                         {% translate "Generate access keys" %}
                     </button>
                 </div>
@@ -268,6 +269,48 @@
         </div>
     </div>
 
+    {% include "gcampusauth/components/guide.html" %}
+
+    <script type="text/javascript" src="{% static 'gcampuscore/js/main.js' %}"></script>
+    <script>
+        var guide01options = {content: document.getElementById("guide01").innerHTML,
+            customClass: 'guide-popover', trigger: "manual", html: true, sanitize: false}
+        var guide01anchor = document.getElementById('guide01anchor')
+        var guide01= new gcampuscore["main"].Popover(guide01anchor, guide01options)
+
+        var guide02options = {content: document.getElementById("guide02").innerHTML,
+            customClass: 'guide-popover', trigger: "manual", html: true, sanitize: false}
+        var guide02anchor = document.getElementById('guide02anchor')
+        var guide02 = new gcampuscore["main"].Popover(guide02anchor, guide02options)
+
+        var guide03options = {content: document.getElementById("guide03").innerHTML,
+            customClass: 'guide-popover', trigger: "manual", html: true, sanitize: false}
+        var guide03anchor = document.getElementById('guide03anchor')
+        var guide03 = new gcampuscore["main"].Popover(guide03anchor, guide03options)
+
+        function startGuide(){
+            document.getElementById("guideOverlay").style.display = "block";
+            guide01.show();
+        }
+
+        function continueWithGuide02() {
+            guide01.hide();
+            guide02.show();
+        }
+
+        function continueWithGuide03() {
+            guide02.hide();
+            guide03.show();
+        }
+
+        function endGuide() {
+            guide01.hide();
+            guide02.hide();
+            guide03.hide();
+            document.getElementById("guideOverlay").style.display = "none";
+        }
+
+    </script>
 
     {% displaytoken_js %}
 {% endblock %}
