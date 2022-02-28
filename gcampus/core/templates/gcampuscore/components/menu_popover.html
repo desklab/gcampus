@@ -1,0 +1,44 @@
+{% load icon %}
+{% load i18n %}
+<template id="menu-popover">
+    <div class='p-0 m-0'>
+        <div>
+            <button onclick='closeMenuPopover();' type='button' class='btn-close btn btn-xs float-end mt-0 me-0 ms-4 mb-2 px-0'></button>
+        </div>
+        <div class='container' style="width: 90%;">
+            <a href='https://www.gewaessercampus.de' target="_blank" class='row menu-popover my-3 bg-light rounded-3 text-reset text-decoration-none'>
+                <div class='col-2 py-3'>
+                    {% icon "home" class="d-inline-block" height="48" width="48" %}
+                </div>
+                <div class='col-10 py-2'>
+                    <strong>{% translate "Project" %}</strong><br>
+                    <small class='text-secondary'>
+                        {% translate "More informationen on the project and the team behind GewässerCampus" %}
+                    </small>
+                </div>
+            </a>
+            <a href='https://www.gewaessercampus.de' target="_blank" class='row menu-popover my-3 bg-light rounded-3 text-reset text-decoration-none'>
+                <div class='col-2 py-3'>
+                    {% icon "file-text" class="d-inline-block" height="48" width="48" %}
+                </div>
+                <div class='col-10 py-2'>
+                    <strong> {% translate "Educational documents"%}</strong><br>
+                    <small class='text-secondary'>
+                        {% translate "Documents for teachers and students to analyse water at school" %}
+                    </small>
+                </div>
+            </a>
+            <a href='https://www.gewaessercampus.de' target="_blank" class='row menu-popover mt-3 mb-4 bg-light rounded-3 text-reset text-decoration-none'>
+                <div class='col-2 py-3'>
+                    {% icon "settings" class="d-inline-block" height="48" width="48" %}
+                </div>
+                <div class='col-10 py-2'>
+                    <strong>{% translate "Documentation" %}</strong><br>
+                    <small class='text-secondary'>
+                        {% translate "Technical documentation with detailled information for developers" %}
+                    </small>
+                </div>
+            </a>
+        </div>
+    </div>
+</template>

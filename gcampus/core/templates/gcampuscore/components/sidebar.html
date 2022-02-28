@@ -1,5 +1,4 @@
-{% load icon %}
-{% load i18n %}
+{% load icon  i18n static%}
 <nav class="sidebar collapse text-white bg-dark{% if sidebar_open %} show{% endif %}" id="sidebar">
     <div>
         <div class="navbar gcampus-navbar justify-content-start flex-nowrap">
@@ -14,6 +13,7 @@
             {% translate "All Measurements" context "filter page title" as measurements_title %}
             {% translate "Analysis" context "analysis page title" as analysis_title %}
             {% translate "Course administration" as course_title %}
+            {% translate "More information" as info_title %}
 
             {% include "gcampuscore/components/sidebar_item.html" with icon="map" title=map_title view_name="gcampuscore:mapview" %}
             {% include "gcampuscore/components/sidebar_item.html" with icon="list" title=measurements_title view_name="gcampuscore:measurements" %}
@@ -21,6 +21,7 @@
             {% if user_token_is_course_token%}
                 {% include "gcampuscore/components/sidebar_item.html" with icon="user" title=course_title view_name="gcampusauth:course-overview" %}
             {% endif %}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="external-link" title=info_title onclick="showMenuPopover();" id="externalinfo" %}
         </ul>
         {# <hr> #}
     </div>
@@ -44,3 +45,5 @@
         </ul>
     </div>
 </nav>
+
+{% include "gcampuscore/components/menu_popover.html" %}

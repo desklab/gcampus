@@ -30,7 +30,7 @@
     {% endblock %}
 </head>
 
-<body class="{% block body_class %}{% endblock %}">
+<body id="body" class="{% block body_class %}{% endblock %}">
 {% if messages %}
     <div role="alert" aria-live="assertive" aria-atomic="true" class="messages-toast-frame">
         <div class="toast-container p-3">
@@ -119,12 +119,36 @@
             sidebarControl.setAttribute("aria-expanded", false);
         }
 
+        var info = document.getElementById('externalinfo')
+
+        var options = {
+            content: document.getElementById("menu-popover").innerHTML,
+            trigger: "manual", html: true, sanitize: false,
+            offset: [0, 35], placement: "right"
+        }
+
+        var ExternalInfo = new gcampuscore["main"].Popover(info, options)
+
+        function showMenuPopover() {
+            ExternalInfo.show();
+        }
+
+        function closeMenuPopover() {
+            ExternalInfo.hide();
+        }
+
         sidebarElement.addEventListener('hide.bs.collapse', function() {
+            ExternalInfo._config.offset = [0,35];
+            ExternalInfo.update();
             setSidebarCookie(false);
         });
+
         sidebarElement.addEventListener('show.bs.collapse', function() {
+            ExternalInfo._config.offset = [0,235];
+            ExternalInfo.update();
             setSidebarCookie(true);
         });
+
         const mainContent = document.querySelector('main');
         if (mainContent !== undefined) {
             mainContent.addEventListener('transitionend', function() {
