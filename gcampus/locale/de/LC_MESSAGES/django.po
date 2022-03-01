@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-01 12:24+0100\n"
-"PO-Revision-Date: 2022-03-01 11:27+0000\n"
+"PO-Revision-Date: 2022-03-01 15:29+0000\n"
 "Last-Translator: Axel Schlindwein <a.schlindwein@desk-lab.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/gcampus/web/de/>\n"
 "Language: de\n"
@@ -1495,10 +1495,8 @@ msgid ""
 msgstr ""
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:52
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "This document has been created automatically and contains a summary of the "
 "measurement from %(name } on {{ time)s in %(location)s."
 msgstr ""
-"Dieses Dokument wurde automatisch erstellt und enhält einen Zugangscode und "
-"weitere Informationen zur Nutzung der GewässerCampus Webanwendung."
