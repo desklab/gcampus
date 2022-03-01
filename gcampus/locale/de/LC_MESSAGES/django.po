@@ -425,6 +425,8 @@ msgid ""
 "I do accept the <a href=\"#\">terms and conditions</a> as well as the <a "
 "href=\"#\">privacy policy</a> for using this web application."
 msgstr ""
+"Ich akzeptiere die <a href=\"#\">Nutzungsbedingungen</a> und die <a href=\"#"
+"\">Datenschutzerklärung</a> zur Nutzung dieser Webanwendung."
 
 #: gcampus/auth/templates/gcampusauth/forms/register.html:132
 #: gcampus/auth/templates/gcampusauth/forms/register.html:115
@@ -1152,19 +1154,19 @@ msgstr "GCampus Dokumente"
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:13
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:13
 msgid "version"
-msgstr ""
+msgstr "Version"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:14
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:13
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:13
 msgid "page"
-msgstr ""
+msgstr "Seite"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:14
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:13
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:13
 msgid "of"
-msgstr ""
+msgstr "von"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:36
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:36
