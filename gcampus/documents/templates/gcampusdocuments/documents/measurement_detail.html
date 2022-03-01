@@ -51,7 +51,7 @@
                     {% with time=measurement.time|localtime|localize name=measurement.name location=measurement.location_name %}
                         {%  blocktranslate trimmed %}
                             This document has been created automatically and contains a summary of the measurement
-                            from {{ name } on {{ time }} in {{ location }}.
+                            from {{ name }} on {{ time }} in {{ location }}.
                         {% endblocktranslate %}
                     {% endwith %}
                 </div>
