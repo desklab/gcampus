@@ -18,15 +18,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-01 12:24+0100\n"
-"PO-Revision-Date: 2022-02-20 23:01+0000\n"
-"Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
+"PO-Revision-Date: 2022-03-01 11:27+0000\n"
+"Last-Translator: Axel Schlindwein <a.schlindwein@desk-lab.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/gcampus/web/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.11-dev\n"
+"X-Generator: Weblate 4.11.1-dev\n"
 
 #: gcampus/analysis/apps.py:8 gcampus/core/apps.py:23
 #: gcampus/analysis/apps.py:7
@@ -1060,9 +1060,10 @@ msgid "Additional filters applied"
 msgstr "Weitere Filter werden angewendet"
 
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:49
-#, fuzzy, python-format
+#, python-format
 msgid "Found %(count)s measurements matching your search criteria."
-msgstr "Bisher %(count)s Messungen."
+msgstr ""
+"Es wurden %(count)s Messungen gefunden, die zu den Suchkriterien passen."
 
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:83
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:71
@@ -1333,13 +1334,13 @@ msgstr ""
 "auch die Karten- oder Listenansicht verwenden."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:52
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "This document has been created automatically and contains a summary of the "
 "measurement from %(name)s on %(time)s in %(location)s."
 msgstr ""
-"Dieses Dokument wurde automatisch erstellt und enhält einen Zugangscode und "
-"weitere Informationen zur Nutzung der GewässerCampus Webanwendung."
+"Dieses Dokument wurde automatisch erstellt und enthält eine Zusammenfassung "
+"der Messung von %(name)s am %(time)s in %(location)s."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:63
 msgid "Metadata"
