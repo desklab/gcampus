@@ -28,7 +28,7 @@ from django.views.generic import ListView
 from gcampus.core.filters import MeasurementFilterSet
 from gcampus.core.models import Measurement
 from gcampus.core.util import (
-    get_all_filters,
+    get_all_filters, get_filter_status,
 )
 from gcampus.core.views.base import TitleMixin
 
@@ -59,6 +59,11 @@ class MeasurementListView(TitleMixin, ListView):
         if "filter" not in kwargs:
             kwargs["filter"] = self.filter
         kwargs["today"] = timezone.now()
+        if "filter_status" not in kwargs:
+            kwargs["filter_status"] = False
+        additional_filters = self.filter.form.changed_data
+        new_filter_status = get_filter_status(additional_filters)
+        kwargs["filter_status"] = new_filter_status
         kwargs["count"] = self.queryset.count()
         return super(MeasurementListView, self).get_context_data(
             object_list=object_list, **kwargs

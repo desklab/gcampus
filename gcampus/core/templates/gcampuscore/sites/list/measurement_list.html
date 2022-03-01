@@ -21,7 +21,7 @@
                             data-bs-target="#offcanvasFilter"
                             aria-controls="offcanvasFilter">
                         {% translate "Filter" %}
-                        {% if applied_filters|length > 0 %}
+                        {% if filter_status %}
                             <span class="position-absolute top-0 start-100 translate-middle p-1 bg-warning border border-light rounded-pill">
                             <span class="visually-hidden">
                                 {% translate "Additional filters applied" %}

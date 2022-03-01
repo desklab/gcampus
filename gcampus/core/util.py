@@ -28,6 +28,7 @@ from geopy.exc import GeocoderServiceError
 from geopy.geocoders import Nominatim
 
 from gcampus.core.apps import GCampusCoreAppConfig
+from gcampus.core.models.util import EMPTY
 
 """Address Options
 
@@ -207,3 +208,18 @@ def get_all_filters(old_filters: Set[str], new_filters: List[str]) -> List[str]:
         all_filters.remove("location")
 
     return list(all_filters)
+
+def get_filter_status(new_filters: List[str]) -> bool:
+    """Get Filter Status
+
+    This function takes a list of new filters and returns a bool corresponding
+    to the status of the filter
+
+    :param new_filters: List of new applied filters
+    :returns: Bool if filter is set
+    """
+    if "name" in new_filters:
+        new_filters.remove("name")
+    if new_filters in EMPTY:
+        return False
+    return True
