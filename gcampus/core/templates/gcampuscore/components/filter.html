@@ -15,7 +15,7 @@
                 {% translate "Reset filter" %}
             </a>
         </div>
-    <div>
+        <div>
             {% with filter.form.time_range as field %}
                 <div class="mb-3">
                     {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
@@ -53,14 +53,5 @@
                 {% endif %}
             </div>
         </div>
-        {% with filter.form.location as field %}
-            <div class="mb-3">
-                {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                {% include "gcampuscore/forms/components/helptext.html" %}
-                {{ field }}
-            </div>
-
-        {% endwith %}
     </div>
-
 </div>
