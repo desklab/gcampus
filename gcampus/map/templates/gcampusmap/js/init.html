@@ -21,11 +21,25 @@
     let mapboxgl = gcampusmap['mapbox-gl'].mapboxgl;
 
     mapboxgl.accessToken = '{{ mapbox_access_token }}'
+
+    var urlString = window.location.href;
+
+    if(urlString.includes('?')) {
+        let paramString = urlString.split('?')[1];
+        let queryString = new URLSearchParams(paramString);
+        const params = Object.fromEntries(queryString.entries());
+        var mapcenter = [params['LAT'], params['LONG']];
+        var mapzoom = params['ZOOM']
+    } else {
+        var mapcenter = [{{ center_lng|unlocalize }}, {{ center_lat|unlocalize }}];
+        var mapzoom = {{ zoom }}
+    }
+
     const map = new mapboxgl.Map({
         container: '{{ container }}',
         style: '{{ mapbox_style }}',
-        center: [{{ center_lng|unlocalize }}, {{ center_lat|unlocalize }}],
-        zoom: {{ zoom }},
+        center: mapcenter,
+        zoom: mapzoom,
         logoPosition: 'bottom-left'
     });
     let nav = new mapboxgl.NavigationControl();

@@ -1,4 +1,4 @@
-{% load i18n icon l10n auth_token tz %}
+{% load i18n icon l10n auth_token tz map %}
 {% url "gcampuscore:measurement-detail" pk=measurement.pk as detail_url %}
 {% url "gcampuscore:edit-measurement" pk=measurement.pk as edit_url %}
 <tr class="cursor-pointer" onclick="window.location='{{ detail_url }}';">
@@ -15,6 +15,12 @@
     </a></td>
     <td class="align-middle">
         <a onclick='stopPropagation();'  class="btn btn-sm text-dark"
-                href={{ edit_url }} {{ edit|yesno:",disabled" }}>{% icon "edit" class="d-inline-block align-text-top me-1" height="16" width="16" %}</a>
+                href={{ edit_url }} {{ edit|yesno:",disabled" }}>
+            {% icon "edit" class="d-inline-block align-text-top me-1" height="16" width="16" %}
+        </a>
+        <a onclick='stopPropagation();'  class="btn btn-sm text-dark"
+           href="{% url "gcampuscore:mapview" %}{% map_options_url lat=measurement.location.x|unlocalize long=measurement.location.y|unlocalize zoom=14 %}">
+            {% icon "map" class="d-inline-block align-text-top me-1" height="16" width="16" %}
+        </a>
     </td>
 </tr>

@@ -14,6 +14,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from django import template
+from django.utils.http import urlencode
 
 from gcampus.map.settings import MAP_SETTINGS
 
@@ -51,3 +52,9 @@ def load_mapbox_js():
 @register.inclusion_tag("gcampusmap/loadcss.html")
 def load_mapbox_css():
     return {}
+
+
+@register.simple_tag()
+def map_options_url(lat, long, zoom) -> str:
+    params = {"LAT": lat, "LONG": long, "ZOOM": zoom}
+    return f"?{urlencode(params)}"
