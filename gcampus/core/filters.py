@@ -187,12 +187,12 @@ class MeasurementFilterSet(FilterSet):
         label=_("Parameter"),
         help_text=_("Filter for measurements containing specific parameters."),
     )
-    location = GeolocationFilter(
-        field_name="location",
-        lookup_expr="distance_lte",
-        label=_("Location"),
-        help_text=_("Filter by radius after selecting a location"),
-    )
+    #location = GeolocationFilter(
+    #    field_name="location",
+    #    lookup_expr="distance_lte",
+    #    label=_("Location"),
+    #    help_text=_("Filter by radius after selecting a location"),
+    #)
     my_course = MyCourseFilter(
         field_name="my_course",
         label=_("Measurements by your course"),
