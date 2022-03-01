@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-22 14:17+0100\n"
+"POT-Creation-Date: 2022-03-01 12:07+0100\n"
 "PO-Revision-Date: 2022-02-20 23:01+0000\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/gcampus/web/de/>\n"
@@ -154,7 +154,7 @@ msgstr "Name der Lehrkraft"
 
 #: gcampus/auth/models/token.py:77
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:124
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:77
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:76
 msgid "email"
 msgstr "E-Mail-Adresse"
 
@@ -471,7 +471,7 @@ msgid "Save"
 msgstr "Speichern"
 
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:67
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:65
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:64
 msgid "Course data"
 msgstr "Kursdaten"
 
@@ -530,7 +530,7 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:137
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:110
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:109
 #: gcampus/mail/templates/gcampusmail/register/overview.html:36
 #: gcampus/mail/templates/gcampusmail/register/text.html:30
 msgid "Access keys"
@@ -694,7 +694,7 @@ msgid "Filter for measurements containing specific parameters."
 msgstr "Nach Messungen mit bestimmten Parameter filtern."
 
 #: gcampus/core/filters.py:193 gcampus/core/models/measurement.py:60
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:50
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:62
 msgid "Location"
 msgstr "Standort"
 
@@ -747,7 +747,7 @@ msgstr "Messungen"
 
 #: gcampus/core/models/measurement.py:57 gcampus/core/models/measurement.py:163
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:36
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:51
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:63
 msgid "Name"
 msgstr "Name"
 
@@ -767,7 +767,7 @@ msgstr "Ein abgeschätzter Standort der Messung"
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:126
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:44
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:193
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:49
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:61
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:67
 msgid "Water name"
 msgstr "Gewässername"
@@ -783,7 +783,7 @@ msgstr "OpenStreetMap ID"
 #: gcampus/core/models/measurement.py:80
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:40
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:204
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:56
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:68
 msgctxt "measurement time"
 msgid "Time"
 msgstr "Messzeitpunkt"
@@ -867,7 +867,7 @@ msgid "Apply filter"
 msgstr "Filter anwenden"
 
 #: gcampus/core/templates/gcampuscore/components/filter.html:15
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:81
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:93
 msgid "Reset filter"
 msgstr "Filter zurücksetzen"
 
@@ -962,14 +962,6 @@ msgstr "Aktuelle Uhrzeit einfügen"
 msgid "Now"
 msgstr "Jetzt"
 
-#: gcampus/core/templates/gcampuscore/forms/widgets/time_range_slider.html:5
-msgid "from"
-msgstr "von"
-
-#: gcampus/core/templates/gcampuscore/forms/widgets/time_range_slider.html:12
-msgid "to"
-msgstr "bis"
-
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:23
 msgid "Delete Measurement"
 msgstr "Messung löschen"
@@ -1000,11 +992,20 @@ msgstr "Filter"
 msgid "Additional filters applied"
 msgstr "Weitere Filter werden angewendet"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:71
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:49
+#, python-format
+msgid ""
+"\n"
+"                        Found %(count)s measurements matching your search "
+"criteria.\n"
+"                    "
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:83
 msgid "No measurements found"
 msgstr "Keine Messungen gefunden"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:74
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:86
 msgid ""
 "Unfortunately, no measurements can be found. <br> Maybe your filter settings "
 "are too restrictive."
@@ -1016,12 +1017,12 @@ msgstr ""
 msgid "Create new measurement"
 msgstr "Neue Messung erstellen"
 
-#: gcampus/core/views/measurement/__init__.py:115
+#: gcampus/core/views/measurement/__init__.py:119
 #, python-brace-format
 msgid "Edit Measurement {pk:d} - Information"
 msgstr "Messung {pk:d} bearbeiten - Information"
 
-#: gcampus/core/views/measurement/list.py:41
+#: gcampus/core/views/measurement/list.py:39
 msgid "All measurements"
 msgstr "Alle Messungen"
 
@@ -1079,19 +1080,37 @@ msgstr "JJJJ"
 msgid "GCampus Documents"
 msgstr "GCampus Dokumente"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:37
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:14
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:13
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:13
+msgid "version"
+msgstr ""
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:14
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:13
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:13
+msgid "page"
+msgstr ""
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:14
+#: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:13
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:13
+msgid "of"
+msgstr ""
+
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:36
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:36
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:36
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:35
 msgid "Document ID"
 msgstr "Dokument ID"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:50
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:49
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:52
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:49
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:48
 msgid "Info"
 msgstr "Info"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:53
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:52
 msgid ""
 "This document was created automatically and contains a summary of the "
 "registration, the access keys for using the GewässerCampus web application, "
@@ -1101,15 +1120,15 @@ msgstr ""
 "der Registrierung, die Zugangscodes zur Benutzung der GewässerCampus "
 "Webanwendung sowie den Kursschlüssel zur Verwaltung des Kurses."
 
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:71
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:70
 msgid "name of school"
 msgstr "Name der Schule"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:83
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:82
 msgid "name of course"
 msgstr "Name des Kurses"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:95
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:94
 msgid ""
 "The course token is needed to be able to manage all measurements of the of "
 "the corresponding access keys (see below). Therefore, it should not be given "
@@ -1119,7 +1138,7 @@ msgstr ""
 "Zugangscodes (siehe unten) verwalten zu können. Deshalb sollte er nicht an "
 "die Schüler:innen weitergegeben werden."
 
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:113
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:112
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:97
 msgid ""
 "This access key is required to create new measurements and to be able to "
@@ -1133,11 +1152,11 @@ msgstr ""
 "Schüler:innen, die in einer Gruppe zusammenarbeiten, können den gleichen "
 "Zugangscode nutzen."
 
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:148
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:147
 msgid "Open digital copy"
 msgstr "Digital Kopie öffnen"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:151
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:150
 msgid ""
 "This link leads to the digital file of this document. The file stored there "
 "can then be downloaded, sent or even printed out again."
@@ -1146,12 +1165,12 @@ msgstr ""
 "hinterlegte Datei kann dann heruntergeladen, verschickt oder auch neu "
 "ausgedruckt werden."
 
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:165
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:164
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:82
 msgid "Login of the web application"
 msgstr "Login der Webanwendung"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:168
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:167
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:86
 msgid ""
 "This link leads to the login page of the web application (www."
@@ -1229,6 +1248,18 @@ msgstr ""
 "Um eine von dir erstellte Messung zu bearbeiten, musst du die Detailansicht "
 "dieser Messung aufrufen. Du kannst dazu die Übersicht deiner Messungen oder "
 "auch die Karten- oder Listenansicht verwenden."
+
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:52
+#, fuzzy, python-format
+#| msgid ""
+#| "This document was created automatically and contains an access key and "
+#| "further information for using the GewässerCampus web application."
+msgid ""
+"This document has been created automatically and contains a summary of the "
+"measurement from %(name } on {{ time)s in %(location)s."
+msgstr ""
+"Dieses Dokument wurde automatisch erstellt und enhält einen Zugangscode und "
+"weitere Informationen zur Nutzung der GewässerCampus Webanwendung."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:63
 msgid "Metadata"
@@ -1360,6 +1391,12 @@ msgstr "Deutsch"
 #: gcampus/tasks/apps.py:24
 msgid "GCampus Tasks"
 msgstr "GCampus Aufgaben"
+
+#~ msgid "from"
+#~ msgstr "von"
+
+#~ msgid "to"
+#~ msgstr "bis"
 
 #~ msgid "Your name or team name"
 #~ msgstr "Dein Name oder ein Team Name"

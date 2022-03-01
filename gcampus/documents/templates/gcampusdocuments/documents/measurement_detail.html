@@ -10,14 +10,14 @@
     <style>
         @page {
             @top-right {
-                content: "{% now "d/m/Y H:i:s" %} \A Version {{ GCAMPUS_VERSION }} \A Seite " counter(page) " von " counter(pages);
+                content: "{% now "d/m/Y H:i:s" %} \A {% translate "version" %} {{ GCAMPUS_VERSION }} \A {% translate "page" %} " counter(page) " {% translate "of" %} " counter(pages);
                 white-space: pre-line;
                 color: #606060;
                 font-size: 7pt;
                 padding-top: 1.2cm;
             }
             @top-left {
-                background: url("{% print_static 'gcampusdocuments/assets/gcampus-print-header-left.png' %}");
+                background: url("{% print_static 'gcampusdocuments/assets/gcampus-print-header-left.png' %}"); {# TODO: localize text in logo #}
                 background-repeat: no-repeat;
                 background-position: left;
                 background-size: 100% auto;
@@ -30,7 +30,6 @@
     </style>
 </head>
 <body>
-    <!-- TODO: add and use translations -->
 
     <div class="footer-left">
         <span class="bold">{% translate "Document ID" %}</span> GC-MD-ID
@@ -49,11 +48,12 @@
                     {% translate "Info" %}
                 </div>        
                 <div class="text-justify h-abs-250 document-description">
-                    Dieses Dokument wurde automatisch erstellt und enhält 
-                    eine Zusammenfassung der Informationen der Messung 
-                    von {{ measurement.name }} 
-                    am {{ measurement.time|localtime|localize }}
-                    in {{ measurement.location_name }}.
+                    {% with time=measurement.time|localtime|localize name=measurement.name location=measurement.location_name %}
+                        {%  blocktranslate trimmed %}
+                            This document has been created automatically and contains a summary of the measurement
+                            from {{ name } on {{ time }} in {{ location }}.
+                        {% endblocktranslate %}
+                    {% endwith %}
                 </div>
             </div>    
 
