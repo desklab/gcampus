@@ -5,7 +5,6 @@
 
 [![Test](https://github.com/desklab/gcampus/actions/workflows/test.yml/badge.svg)](https://github.com/desklab/gcampus/actions/workflows/test.yml)
 [![Documentation Status](https://readthedocs.org/projects/gcampus/badge/?version=latest)](https://gcampus.readthedocs.io/en/latest/?badge=latest)
-[![Translation](https://hosted.weblate.org/widgets/gcampus/-/web/svg-badge.svg)](https://hosted.weblate.org/engage/gcampus/)
 [![Build and Deploy](https://github.com/desklab/gcampus/actions/workflows/release.yml/badge.svg)](https://dev.gewaessercampus.de/)
 
 **GewässerCampus** (`gcampus`) is part of an educational project on
@@ -24,8 +23,8 @@ See [gewaessercampus.de](https://gewaessercampus.de) for more information.
 
 This repository (`desklab/gcampus`) contains the source code running behind the
 *GewässerCampus* web-application.
-The [landingpage](https://gewaessercampus.de) is developed in
-[`desklab/gcampus-landingpage`](https://github.com/desklab/gcampus-landingpage).
+The [website](https://gewaessercampus.de) is developed in
+[`desklab/gcampus-website`](https://github.com/desklab/gcampus-website).
 
 
 ## Contribution
