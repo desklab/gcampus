@@ -39,12 +39,9 @@ class Measurement(util.DateModelMixin):
         indexes = (GinIndex(fields=("search_vector",)),)
         ordering = ("created_at", "name")
 
-    # TODO: for now the token can be null and is by default null.
-    #  This will be changed in the future after creating a new database.
-    #  Otherwise the migrations would be a pain.
     token = models.ForeignKey(
         "gcampusauth.AccessKey",  # noqa
-        on_delete=models.PROTECT,
+        on_delete=models.SET_NULL,
         blank=False,
         null=True,
         default=None,
