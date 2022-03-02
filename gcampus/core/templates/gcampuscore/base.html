@@ -104,9 +104,29 @@
             return new gcampuscore.main.Tooltip(tooltipTriggerEl);
         });
 
+        var info = document.getElementById('externalinfo')
+
+        var optionsCollapsed = {
+            content: document.getElementById("menu-popover").innerHTML,
+            trigger: "manual", html: true, sanitize: false,
+            offset: [0, 35], placement: "right"
+        }
+
+        var optionsExpanded = {
+            content: document.getElementById("menu-popover").innerHTML,
+            trigger: "manual", html: true, sanitize: false,
+            offset: [0, 225], placement: "right"
+        }
+
+        var ExternalInfoCollapsed = new gcampuscore["main"].Popover(info, optionsCollapsed)
+        var ExternalInfoExpanded = new gcampuscore["main"].Popover(info, optionsExpanded)
+
         const sidebarElement = document.getElementById('sidebar');
         const sidebarControl = document.querySelector('[aria-controls="sidebar"]');
+
         function toggleSidebar() {
+            ExternalInfoCollapsed.hide();
+            ExternalInfoExpanded.hide();
             let open = sidebarElement.classList.toggle('show');
             setSidebarCookie(open);
             sidebarControl.setAttribute("aria-expanded", open);
@@ -119,33 +139,24 @@
             sidebarControl.setAttribute("aria-expanded", false);
         }
 
-        var info = document.getElementById('externalinfo')
-
-        var options = {
-            content: document.getElementById("menu-popover").innerHTML,
-            trigger: "manual", html: true, sanitize: false,
-            offset: [0, 35], placement: "right"
-        }
-
-        var ExternalInfo = new gcampuscore["main"].Popover(info, options)
-
         function showMenuPopover() {
-            ExternalInfo.show();
+            if (gcampuscore.main.getCookie(SIDEBAR_STATE_COOKIE_NAME)==1) {
+                ExternalInfoExpanded.show();
+            } else {
+                ExternalInfoCollapsed.show();
+            }
         }
 
         function closeMenuPopover() {
-            ExternalInfo.hide();
+            ExternalInfoCollapsed.hide();
+            ExternalInfoExpanded.hide();
         }
 
         sidebarElement.addEventListener('hide.bs.collapse', function() {
-            ExternalInfo._config.offset = [0,35];
-            ExternalInfo.update();
             setSidebarCookie(false);
         });
 
         sidebarElement.addEventListener('show.bs.collapse', function() {
-            ExternalInfo._config.offset = [0,235];
-            ExternalInfo.update();
             setSidebarCookie(true);
         });
 
