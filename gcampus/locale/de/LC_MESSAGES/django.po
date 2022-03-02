@@ -20,13 +20,13 @@ msgstr ""
 "POT-Creation-Date: 2022-03-01 12:24+0100\n"
 "PO-Revision-Date: 2022-02-20 23:01+0000\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
-"Language-Team: German <https://hosted.weblate.org/projects/gcampus/web/de/>\n"
+"Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.11-dev\n"
+"X-Generator: \n"
 
 #: gcampus/analysis/apps.py:8 gcampus/core/apps.py:23
 msgid "GCampus Core"
@@ -368,7 +368,7 @@ msgid ""
 "This information will not be shared publicly but helps us to associate "
 "measurements with your school or institution."
 msgstr ""
-"Der Name der Schule oder Institution, für die die Zugangscodes generiert "
+"Der Name der Schule oder Institution, für die neue Zugangscodes generiert "
 "werden sollen. Diese Daten werden nur für eine bessere Zuordnung der "
 "Zugangscodes intern von desklab verwendet und nicht veröffentlicht."
 
@@ -754,6 +754,7 @@ msgstr "Name"
 #: gcampus/core/models/measurement.py:58
 msgid "Your forename or team name. This will be publicly visible."
 msgstr ""
+"Dein Vorname oder ein Team Name. Diese Information ist öffentlich sichtbar."
 
 #: gcampus/core/models/measurement.py:65
 msgid "Location name"
@@ -794,7 +795,7 @@ msgstr "Datum und Uhrzeit der Messung"
 
 #: gcampus/core/models/measurement.py:86
 msgid "Note on your measurement. This will be publicly visible."
-msgstr ""
+msgstr "Notiz zu deiner Messung. Diese Information ist öffentlich sichtbar."
 
 #: gcampus/core/models/measurement.py:88 gcampus/core/models/measurement.py:214
 msgid "Hidden"
@@ -993,10 +994,10 @@ msgid "Additional filters applied"
 msgstr "Weitere Filter werden angewendet"
 
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:49
-#, fuzzy, python-format
-#| msgid "%(count)s measurements so far."
+#, python-format
 msgid "Found %(count)s measurements matching your search criteria."
-msgstr "Bisher %(count)s Messungen."
+msgstr ""
+"Es wurden %(count)s Messungen gefunden, die zu den Suchkriterien passen."
 
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:83
 msgid "No measurements found"
@@ -1081,19 +1082,19 @@ msgstr "GCampus Dokumente"
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:13
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:13
 msgid "version"
-msgstr ""
+msgstr "Version"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:14
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:13
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:13
 msgid "page"
-msgstr ""
+msgstr "Seite"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:14
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:13
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:13
 msgid "of"
-msgstr ""
+msgstr "von"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:36
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:36
@@ -1247,16 +1248,13 @@ msgstr ""
 "auch die Karten- oder Listenansicht verwenden."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:52
-#, fuzzy, python-format
-#| msgid ""
-#| "This document was created automatically and contains an access key and "
-#| "further information for using the GewässerCampus web application."
+#, python-format
 msgid ""
 "This document has been created automatically and contains a summary of the "
 "measurement from %(name)s on %(time)s in %(location)s."
 msgstr ""
-"Dieses Dokument wurde automatisch erstellt und enhält einen Zugangscode und "
-"weitere Informationen zur Nutzung der GewässerCampus Webanwendung."
+"Dieses Dokument wurde automatisch erstellt und enthält eine Zusammenfassung "
+"der Messung von %(name)s am %(time)s in %(location)s."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:63
 msgid "Metadata"
@@ -1268,19 +1266,19 @@ msgstr "Zeitpunkt"
 
 #: gcampus/documents/views/print.py:37
 msgid "gewaessercampus-course-overview.pdf"
-msgstr ""
+msgstr "gewaessercampus-kurs-uebersicht.pdf"
 
 #: gcampus/documents/views/print.py:55
 msgid "gewaessercampus-overview-{course_name:s}.pdf"
-msgstr ""
+msgstr "gewaessercampus-uebersicht-{course_name:s}.pdf"
 
 #: gcampus/documents/views/print.py:62
 msgid "gewaessercampus-accesskey-combined.pdf"
-msgstr ""
+msgstr "gewaessercampus-zugangscodes.pdf"
 
 #: gcampus/documents/views/print.py:80
 msgid "gewaessercampus-accesskey-combined-{course_name:s}.pdf"
-msgstr ""
+msgstr "gewaessercampus-zugangscodes-{course_name:s}.pdf"
 
 #: gcampus/documents/views/print.py:86
 msgid "gewaessercampus-measurement-detail.pdf"
@@ -1288,7 +1286,7 @@ msgstr "gewaessercampus-messung.pdf"
 
 #: gcampus/documents/views/print.py:96
 msgid "gewaessercampus-measurement-detail-{name:s}.pdf"
-msgstr ""
+msgstr "gewaessercampus-messung-{name:s}.pdf"
 
 #: gcampus/mail/apps.py:9
 msgid "GCampus E-Mail"
@@ -1388,12 +1386,3 @@ msgstr "Deutsch"
 #: gcampus/tasks/apps.py:24
 msgid "GCampus Tasks"
 msgstr "GCampus Aufgaben"
-
-#~ msgid "from"
-#~ msgstr "von"
-
-#~ msgid "to"
-#~ msgstr "bis"
-
-#~ msgid "Your name or team name"
-#~ msgstr "Dein Name oder ein Team Name"
