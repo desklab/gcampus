@@ -25,7 +25,7 @@ from django.contrib.gis.measure import Distance
 from gcampus.api.views.functions import get_bbox_coordinates
 
 
-@dataclass(kw_only=False, match_args=True)
+@dataclass
 class GeoLookupValue:
     center: Point
     size: Union[Number, Distance]
