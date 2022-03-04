@@ -25,19 +25,19 @@ from gcampus.api.serializers import (
 from gcampus.core.models import Measurement, ParameterType, Parameter
 
 
-class MeasurementAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    queryset = Measurement.objects.order_by("time").all()
+class MeasurementAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Measurement.objects.order_by("time")
     serializer_class = MeasurementSerializer
     pagination_class = GeoJsonPagination
 
 
-class ParameterTypeAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    queryset = ParameterType.objects.order_by("name").all()
+class ParameterTypeAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ParameterType.objects.order_by("name")
     serializer_class = ParameterTypeSerializer
     pagination_class = PageNumberPagination
 
 
-class ParameterAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    queryset = Parameter.objects.order_by("measurement__time").all()
+class ParameterAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Parameter.objects.order_by("measurement__time")
     serializer_class = ParameterSerializer
     pagination_class = PageNumberPagination
