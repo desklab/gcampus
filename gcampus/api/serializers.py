@@ -28,7 +28,7 @@ from rest_framework_gis.serializers import (
     GeoFeatureModelListSerializer,
 )
 
-from gcampus.core.models import Measurement, Parameter, ParameterType
+from gcampus.core.models import Measurement, Parameter, ParameterType, Water
 
 
 class ParameterTypeSerializer(serializers.ModelSerializer):
@@ -62,6 +62,26 @@ class MeasurementSerializer(GeoFeatureModelSerializer):
     def get_title(self, obj: Measurement) -> str:  # noqa
         # Returns the string representation of the measurement
         return str(obj)
+
+
+class MeasurementListSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = Measurement
+        geo_field = "location"
+        fields = ("id", "location")
+
+
+class WaterSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = Water
+        geo_field = "geometry"
+        fields = ("name", "geometry", "osm_id")
+
+
+class WaterListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Water
+        fields = ("name", "osm_id")
 
 
 class OverpassElementSerializer(serializers.Serializer):

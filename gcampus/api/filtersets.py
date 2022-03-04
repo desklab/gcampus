@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
+#  Copyright (C) 2022 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -13,10 +13,12 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from gcampus.api.views.functions import GeoLookupViewSet
-from gcampus.api.views.models import (
-    MeasurementAPIViewSet,
-    ParameterTypeAPIViewSet,
-    ParameterAPIViewSet,
-)
-from gcampus.api.views.water import WaterLookupAPIViewSet, WaterAPIViewSet
+__all__ = ["WaterLookupFilterSet"]
+
+from django_filters.rest_framework import FilterSet
+
+from gcampus.api.filters import GeoLookupFilter
+
+
+class WaterLookupFilterSet(FilterSet):
+    geo = GeoLookupFilter(field_name="geometry", required=True)

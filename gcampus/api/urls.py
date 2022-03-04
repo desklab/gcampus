@@ -21,13 +21,17 @@ from gcampus.api.views import (
     ParameterTypeAPIViewSet,
     ParameterAPIViewSet,
     GeoLookupViewSet,
+    WaterAPIViewSet,
+    WaterLookupAPIViewSet,
 )
 
 router_v1 = routers.DefaultRouter()
 router_v1.register(r"measurements", MeasurementAPIViewSet)
 router_v1.register(r"datatypes", ParameterTypeAPIViewSet)
 router_v1.register(r"datapoints", ParameterAPIViewSet)
+router_v1.register(r"waters", WaterAPIViewSet)
 router_v1.register(r"geolookup", GeoLookupViewSet, basename="geolookup")
+router_v1.register(r"waterlookup", WaterLookupAPIViewSet, basename="waterlookup")
 
 urlpatterns = [path("", include(router_v1.urls))]
 
