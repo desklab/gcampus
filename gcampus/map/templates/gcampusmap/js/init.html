@@ -1,78 +1,29 @@
+{% comment %}
+Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+{% endcomment %}
 {% load l10n %}
 <script type="text/javascript">
-    /*
-     * Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
-     *
-     * This program is free software: you can redistribute it and/or modify
-     * it under the terms of the GNU Affero General Public License as published by
-     * the Free Software Foundation, either version 3 of the License, or
-     * (at your option) any later version.
-     *
-     * This program is distributed in the hope that it will be useful,
-     * but WITHOUT ANY WARRANTY; without even the implied warranty of
-     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     * GNU Affero General Public License for more details.
-     *
-     * You should have received a copy of the GNU Affero General Public License
-     * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-     */
-    'use strict';
-
-    let mapboxgl = gcampusmap['mapbox-gl'].mapboxgl;
-
-    mapboxgl.accessToken = '{{ mapbox_access_token }}'
-
-    var urlString = window.location.href;
-
-    if(urlString.includes('?')) {
-        let paramString = urlString.split('?')[1];
-        let queryString = new URLSearchParams(paramString);
-        const params = Object.fromEntries(queryString.entries());
-        var mapcenter = [params['LAT'], params['LONG']];
-        var mapzoom = params['ZOOM']
-    } else {
-        var mapcenter = [{{ center_lng|unlocalize }}, {{ center_lat|unlocalize }}];
-        var mapzoom = {{ zoom }}
-    }
-
-    const map = new mapboxgl.Map({
-        container: '{{ container }}',
-        style: '{{ mapbox_style }}',
-        center: mapcenter,
-        zoom: mapzoom,
-        logoPosition: 'bottom-left'
-    });
-    let nav = new mapboxgl.NavigationControl();
-    map.addControl(nav, 'top-left');
-    {% if has_search %}
-    map.addControl(
-        new gcampusmap['mapbox-gl'].MapboxGeocoder({
-            accessToken: mapboxgl.accessToken,
-            mapboxgl: mapboxgl,
-            marker: false,
-        }),
-        'top-right'
+    gcampusmap['mapbox-gl'].initMap(
+        '{{ mapbox_access_token }}',
+        '{{ name }}',
+        '{{ container }}',
+        '{{ mapbox_style }}',
+        [{{ center_lng|unlocalize }}, {{ center_lat|unlocalize }}],
+        {{ zoom }},
+        {{ has_zoom|yesno:"true,false" }},
+        {{ onload|default_if_none:"null" }},
     );
-    {% endif %}
-
-    {% if onload %}
-        map.on('load', {{ onload }});
-    {% endif %}
-    map.on('load', function (e) {
-        // The target of the event will be set by dispatch event and can
-        // thus not be used.
-        // Instead, the 'detail' attribute will be used to hold the map.
-        let event = new CustomEvent('map:load', {
-            detail: {
-                map: e.target
-            }
-        });
-        // Here, the target will be set to 'window'
-        window.dispatchEvent(event);
-    });
-
-    if (window._maps === undefined) {
-        window._maps = {};
-    }
-    window._maps['{{ name }}'] = map;
 </script>

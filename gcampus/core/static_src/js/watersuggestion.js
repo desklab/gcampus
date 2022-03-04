@@ -333,7 +333,7 @@ class WaterList extends Component {
         // suggested to the user. It automatically updates once the
         // source data is changed. There is thus no need to access this
         // layer later on.
-        map.addLayer({
+        this.map.addLayer({
             'id': this._layerID,
             'type': 'line',
             'source': this._sourceID,
@@ -345,7 +345,7 @@ class WaterList extends Component {
         });
         // Add highlight layer. This will automatically update once the
         // highlighted data source is set.
-        map.addLayer({
+        this.map.addLayer({
             'id': this._layerIDHighlight,
             'type': 'line',
             'source': this._sourceIDHighlight,
