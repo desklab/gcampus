@@ -41,7 +41,7 @@ const EMPTY_GEO_JSON: Object = {
  * @param lng {number|string} - Longitude
  */
 function fetchWaterSuggestion(lat, lng) {
-    let url = '/api/v1/geolookup/';
+    let url = '/api/v1/waterlookup/';
     // Parse string inputs for rounding later
     if (typeof lat !== 'number')
         lat = Number.parseFloat(lat);
@@ -50,11 +50,11 @@ function fetchWaterSuggestion(lat, lng) {
     // Round the location to 3 digits. This should be precise enough
     // A large bounding box is used.
     // This improves cache performance
-    let location = `${lat.toFixed(3)},${lng.toFixed(3)}`;
+    let location = `POINT (${lng.toFixed(3)} ${lat.toFixed(3)})`;
     let bboxSize = '800';  // 800 meter square bounding box
     let params = {
-        coords: location,
-        size: bboxSize
+        geo_center: location,
+        geo_size: bboxSize
     };
     let searchParams = new URLSearchParams(params).toString();
     return fetch(`${url}?${searchParams}`)
