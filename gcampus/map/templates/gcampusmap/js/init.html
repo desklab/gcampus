@@ -44,6 +44,16 @@
     });
     let nav = new mapboxgl.NavigationControl();
     map.addControl(nav, 'top-left');
+    {% if has_search %}
+    map.addControl(
+        new gcampusmap['mapbox-gl'].MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            mapboxgl: mapboxgl,
+            marker: false,
+        }),
+        'top-right'
+    );
+    {% endif %}
 
     {% if onload %}
         map.on('load', {{ onload }});

@@ -16,7 +16,9 @@
  */
 
 import mapboxgl from 'mapbox-gl'; // noqa
-import 'mapbox-gl/dist/mapbox-gl.css';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+
+import '../styles/map.scss';
 
 class MapboxGLPointWidget {
     TYPE: String = 'Point';
@@ -118,4 +120,4 @@ class MapboxGLPointWidget {
 
 }
 
-export {mapboxgl, MapboxGLPointWidget};
+export {mapboxgl, MapboxGLPointWidget, MapboxGeocoder};
