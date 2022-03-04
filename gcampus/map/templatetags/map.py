@@ -70,6 +70,6 @@ def load_mapbox_css():
 
 
 @register.simple_tag()
-def map_options_url(lat, long, zoom) -> str:
-    params = {"LAT": lat, "LONG": long, "ZOOM": zoom}
+def map_options_url(lng, lat, zoom) -> str:
+    params = {"lng": lng, "lat": lat, "zoom": zoom}
     return f"?{urlencode(params)}"
