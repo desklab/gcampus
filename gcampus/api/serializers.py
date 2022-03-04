@@ -75,13 +75,13 @@ class WaterSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = Water
         geo_field = "geometry"
-        fields = ("name", "geometry", "osm_id")
+        fields = ("name", "geometry", "osm_id", "id")
 
 
 class WaterListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Water
-        fields = ("name", "osm_id")
+        fields = ("name", "osm_id", "id")
 
 
 class OverpassElementSerializer(serializers.Serializer):
