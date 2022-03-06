@@ -13,7 +13,7 @@
                                 class="text-decoration-none text-dark" href={{ detail_url }}>
         {{ measurement.time|timesince:today }}
     </a></td>
-    <td class="align-middle">
+    <td class="align-middle text-nowrap" style="width: 1px">
         <a onclick='stopPropagation();'  class="btn btn-sm text-dark"
                 href={{ edit_url }} {{ edit|yesno:",disabled" }}>
             {% icon "edit" class="d-inline-block align-text-top me-1" height="16" width="16" %}
