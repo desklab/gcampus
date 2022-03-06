@@ -23,8 +23,7 @@ from django.contrib.gis.geos import Point, Polygon
 from django.contrib.gis.measure import Distance
 
 
-
-@dataclass
+@dataclass(frozen=True, eq=True)
 class GeoLookupValue:
     center: Point
     size: Union[Number, Distance]
