@@ -143,7 +143,7 @@ function initMap(
     map.addControl(nav, 'top-left');
     if (hasSearch) {
         map.addControl(
-            MapboxGeocoder({
+            new MapboxGeocoder({
                 accessToken: accessToken,
                 marker: false,
             }),

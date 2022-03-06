@@ -23,7 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
         '{{ mapbox_style }}',
         [{{ center_lng|unlocalize }}, {{ center_lat|unlocalize }}],
         {{ zoom }},
-        {{ has_zoom|yesno:"true,false" }},
+        {{ has_search|yesno:"true,false" }},
         {{ onload|default_if_none:"null" }},
     );
 </script>
