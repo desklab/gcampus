@@ -16,6 +16,7 @@
 from django.urls import path, include
 from rest_framework import routers
 
+from gcampus.api.apps import GCampusAPIAppConfig
 from gcampus.api.views import (
     MeasurementAPIViewSet,
     ParameterTypeAPIViewSet,
@@ -35,4 +36,4 @@ router_v1.register(r"waterlookup", WaterLookupAPIViewSet, basename="waterlookup"
 
 urlpatterns = [path("", include(router_v1.urls))]
 
-app_name = "gcampusapi"
+app_name = GCampusAPIAppConfig.label

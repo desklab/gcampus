@@ -15,10 +15,17 @@
 
 __all__ = ["WaterLookupAPIViewSet", "WaterAPIViewSet"]
 
+from django.conf import settings
+from django.db.models import QuerySet
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
+from rest_framework.filters import BaseFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from rest_framework_gis.pagination import GeoJsonPagination
 
+from gcampus.api.apps import GCampusAPIAppConfig
 from gcampus.api.filtersets import WaterLookupFilterSet
 from gcampus.api.serializers import WaterSerializer, WaterListSerializer
 from gcampus.api.views.mixins import MethodSerializerMixin
@@ -35,6 +42,12 @@ class WaterLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     pagination_class = _LimitedGeoJsonPagination
     filterset_class = WaterLookupFilterSet
 
+    @method_decorator(cache_page(
+        getattr(settings, "OVERPASS_CACHE", 60 * 60 * 24 * 2),
+        cache=f"{GCampusAPIAppConfig.label}:waterlookup"
+    ))
+    def list(self, request, *args, **kwargs):
+        return super(WaterLookupAPIViewSet, self).list(request, *args, **kwargs)
 
 class WaterAPIViewSet(MethodSerializerMixin, viewsets.ReadOnlyModelViewSet):
     queryset = Water.objects.order_by("name")
