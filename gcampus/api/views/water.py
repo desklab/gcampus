@@ -41,3 +41,12 @@ class WaterAPIViewSet(MethodSerializerMixin, viewsets.ReadOnlyModelViewSet):
     serializer_class = WaterSerializer
     serializer_class_list = WaterListSerializer
     pagination_class = PageNumberPagination
+
+    def get_queryset(self):
+        qs: QuerySet = super(WaterAPIViewSet, self).get_queryset()
+        if self.action == "list":
+            # Do not load the geometry field for lists. Note that the
+            # serializer for lists does not include the geometry field
+            # for better performance.
+            qs.defer(("geometry",))
+        return qs
