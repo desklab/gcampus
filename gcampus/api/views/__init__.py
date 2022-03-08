@@ -19,4 +19,8 @@ from gcampus.api.views.models import (
     ParameterTypeAPIViewSet,
     ParameterAPIViewSet,
 )
-from gcampus.api.views.water import WaterLookupAPIViewSet, WaterAPIViewSet
+from gcampus.api.views.water import (
+    WaterLookupAPIViewSet,
+    OverpassLookupAPIViewSet,
+    WaterAPIViewSet,
+)

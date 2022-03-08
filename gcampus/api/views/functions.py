@@ -118,4 +118,3 @@ class GeoLookupViewSet(viewsets.ViewSet):
         out geom;
         """
         return query
-
