@@ -19,13 +19,16 @@ __all__ = [
     "WaterAPIViewSet",
 ]
 
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Dict
 
+import overpy
 from django.conf import settings
+from django.contrib.gis.geos import LineString, GeometryCollection
+from django.db import transaction
 from django.db.models import QuerySet
 from django.utils.decorators import method_decorator
+from django.utils.translation import gettext_lazy
 from django.views.decorators.cache import cache_page
-from django_filters import utils
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 from rest_framework.pagination import PageNumberPagination
@@ -51,7 +54,6 @@ class WaterLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
 
 class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     # Only return the OSM IDs
-    queryset = Water.objects.order_by("name").only("osm_id")
     queryset = Water.objects.only("osm_id")
     pagination_class = None
     filterset_class = WaterLookupFilterSet
@@ -284,5 +286,5 @@ class WaterAPIViewSet(MethodSerializerMixin, viewsets.ReadOnlyModelViewSet):
             # Do not load the geometry field for lists. Note that the
             # serializer for lists does not include the geometry field
             # for better performance.
-            qs.defer(("geometry",))
+            qs.defer("geometry")
         return qs
