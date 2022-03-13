@@ -52,8 +52,29 @@ class WaterLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
 class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     # Only return the OSM IDs
     queryset = Water.objects.order_by("name").only("osm_id")
+    queryset = Water.objects.only("osm_id")
     pagination_class = None
     filterset_class = WaterLookupFilterSet
+    default_water_name: str = gettext_lazy("Unnamed water")
+    unnamed_waters: Dict[str, str] = {
+        "wetland": gettext_lazy("Unnamed wetland"),
+        "coastline": gettext_lazy("Unnamed coastline"),
+        "bay": gettext_lazy("Unnamed bay"),
+        "river": gettext_lazy("Unnamed river"),
+        "stream": gettext_lazy("Unnamed stream"),
+        "tidal_channel": gettext_lazy("Unnamed tidal channel"),
+        "canal": gettext_lazy("Unnamed canal"),
+        "drain": gettext_lazy("Unnamed drain"),
+        "ditch": gettext_lazy("Unnamed ditch"),
+        "lagoon": gettext_lazy("Unnamed lagoon"),
+        "oxbow": gettext_lazy("Unnamed oxbow"),
+        "lake": gettext_lazy("Unnamed lake"),
+        "basin": gettext_lazy("Unnamed basin"),
+        "harbour": gettext_lazy("Unnamed harbour"),
+        "pond": gettext_lazy("Unnamed pond"),
+        "reservoir": gettext_lazy("Unnamed reservoir"),
+        "wastewater": gettext_lazy("Unnamed wastewater"),
+    }
 
     def list(self, request: Request, **kwargs):
         queryset: QuerySet = self.filter_queryset(self.get_queryset())
@@ -70,6 +91,34 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         if not filterset.is_valid():
             raise utils.translate_validation(filterset.errors)
         return filterset.form.cleaned_data.get("geo")
+
+
+    @classmethod
+    def get_tagged_water_name(cls, element: overpy.Element) -> str:
+        """Retrieve human-readable name for an :class:`overpy.Element`
+        instance.
+
+        :param element: A relation, way or node instance.
+        :type element: overpy.Element
+        :returns: The name of the water.
+        :rtype: str
+        """
+        # Use german name first
+        name: str = element.tags.get("name:de")
+        if name is None:
+            # Fall back to default international name
+            name = element.tags.get("name", None)
+        if name is None:
+            # Fall back to unnamed water based on its type
+            water_type: str = element.tags.get("water", None)
+            if water_type is None:
+                # `water` tag not present, use `waterway` tag
+                water_type = element.tags.get("waterway")
+            if water_type is None:
+                # No `water*` tag present, use `natural` tag
+                water_type = element.tags.get("natural")
+            name = cls.unnamed_waters.get(water_type, cls.default_water_name)
+        return name
 
     @staticmethod
     def get_overpass_query(bbox: Tuple[float, float, float, float]) -> str:
