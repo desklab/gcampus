@@ -97,6 +97,9 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         overpass_query: str = self.get_overpass_query(
             geo_lookup_value.get_bbox_coordinates()
         )
+        # Query the Overpass API
+        result: overpy.Result = self.client.query(overpass_query)
+        waters: List[Water]
 
     def _get_geo_lookup_value(self, request) -> Optional[GeoLookupValue]:
         """Returns an instance of
@@ -123,6 +126,66 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
             raise RuntimeError("Filter set is invalid.")
         return filterset.form.cleaned_data.get("geo")
 
+    @property
+    def client(self) -> overpy.Overpass:
+        """Returns the Overpass API client.
+
+        :returns: Overpy instance, optionally with a custom server. The
+            server can be set using the ``OVERPASS_SERVER`` setting.
+        :rtype: overpy.Overpass
+        """
+        if hasattr(self, "_client"):
+            return getattr(self, "_client")
+        client = overpy.Overpass(url=getattr(settings, "OVERPASS_SERVER", None))
+        setattr(self, "_client", client)
+        return client
+
+    @classmethod
+    def _get_waters(
+        cls,
+        result: overpy.Result,
+        osm_ids: List[int],
+        *,
+        commit: bool = True
+    ) -> List[Water]:
+        """Create waters for Overpass API result.
+
+        :param result: Overpy query result.
+        :type result: overpy.Result
+        :param osm_ids: OSM IDs that should be ignored.
+        :type osm_ids: list[int]
+        :param commit: Whether to save the waters in the database.
+        :type commit: bool
+        :returns: List of all waters created
+        """
+        imported_ids: List[int] = osm_ids.copy()
+        with transaction.atomic():
+            for relation in result.get_relations():
+                if relation.id in imported_ids:
+                    # Do not import relation
+                    continue
+                name: str = cls.get_tagged_water_name(relation)
+                osm_id: int = relation.id
+                ways: List[LineString] = [
+                    LineString([(geom.lon, geom.lat) for geom in member.geometry])
+                    for member in relation.members
+                    if isinstance(member, overpy.RelationWay)
+                ]
+                geometry = GeometryCollection(ways)
+                water = Water(osm_id=osm_id, name=name, geometry=geometry)
+                if commit:
+                    water.save()
+                imported_ids.append(osm_id)
+                yield water
+            for way in result.get_ways():
+                if way.id in imported_ids:
+                    # Do not import way
+                    continue
+                name: str = cls.get_tagged_water_name(way)
+                osm_id: int = way.id
+                geometry = GeometryCollection([
+                    LineString([(geom.lon, geom.lat) for geom in way.geometry])
+                ])
 
     @classmethod
     def get_tagged_water_name(cls, element: overpy.Element) -> str:
