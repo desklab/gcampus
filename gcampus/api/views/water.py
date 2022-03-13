@@ -77,19 +77,50 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     }
 
     def list(self, request: Request, **kwargs):
+        """List all missing waters retrieved from the Overpass
+        (OpenStreetMaps) API.
+
+        :param request: Current request, provided automatically.
+        :returns: Serialized GeoJSON representation of all missing
+            waters in the bounding box provided as URL parameters.
+        """
         queryset: QuerySet = self.filter_queryset(self.get_queryset())
-        osm_ids: List[int] = [water.osm_id for water in queryset.all()]
+        # Get a list of all OSM IDs that are already present in the
+        # database. This will be used later to filter the Overpass
+        # results.
+        osm_ids: List[int] = list(queryset.values_list("osm_id", flat=True))
+        # Construct a filter set and retrieve the GeoLookupValue
+        # object from the current request.
         geo_lookup_value: GeoLookupValue = self._get_geo_lookup_value(request)
-        query: str = self.get_overpass_query(geo_lookup_value.get_bbox_coordinates())
-        # TODO perform overpass query,
-        #   create new db entries and return them
+        # Construct the Overpass query using the GeoLookupValue
+        # bounding box.
+        overpass_query: str = self.get_overpass_query(
+            geo_lookup_value.get_bbox_coordinates()
+        )
 
     def _get_geo_lookup_value(self, request) -> Optional[GeoLookupValue]:
+        """Returns an instance of
+        :class:`gcampus.api.utils.GeoLookupValue` for the current
+        request.
+
+        The method hijacks the filter backend's ``get_filterset``
+        method to parse the request data.
+
+        :returns: Instance of :class:`gcampus.api.utils.GeoLookupValue`.
+        :rtype: gcampus.api.utils.GeoLookupValue
+        :raises RuntimeError: If the filter set is invalid.
+        """
+        # Hijack the `DjangoFilterBackend.get_filterset` method to
+        # retrieve an initialized instance of the relevant filter set.
         filterset: WaterLookupFilterSet = DjangoFilterBackend().get_filterset(
             request, self.get_queryset(), self
         )
         if not filterset.is_valid():
-            raise utils.translate_validation(filterset.errors)
+            # This code should never be reached. As the filter set is
+            # already used in `self.filter_queryset` to retrieve the
+            # database OSM IDs in `self.list`, code like this should
+            # already have cause an exception.
+            raise RuntimeError("Filter set is invalid.")
         return filterset.form.cleaned_data.get("geo")
 
 
@@ -122,6 +153,13 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
 
     @staticmethod
     def get_overpass_query(bbox: Tuple[float, float, float, float]) -> str:
+        """Construct an Overpass query using its query language.
+
+        :param bbox: Tuple of coordinates used for bounding box corners.
+        :type bbox: tuple[float, float, float, float]
+        :returns: String query for Overpass.
+        :rtype: str
+        """
         bbox_str: str = ",".join(f"{f:.4f}" for f in bbox)
         return f"""
         [bbox:{bbox_str}]
