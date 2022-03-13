@@ -30,7 +30,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from gcampus.api.serializers import GeoLookupSerializer
-from gcampus.api.utils import get_bbox_coordinates
+
 
 
 class GeoLookupViewSet(viewsets.ViewSet):
