@@ -209,7 +209,9 @@ def query(
         endpoint = getattr(
             settings, "OVERPASS_SERVER", "https://overpass-api.de/api/interpreter"
         )
-    response: requests.Response = requests.post(endpoint, data=overpass_query)
+    response: requests.Response = requests.post(
+        endpoint, data=overpass_query.encode("utf-8")
+    )
     if response.ok:
         return _parse(response, **parse_kwargs)
     else:
