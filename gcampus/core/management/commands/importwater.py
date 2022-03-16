@@ -12,16 +12,16 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from typing import Tuple
+from typing import List
 
-import overpy
 from django.conf import settings
 from django.contrib.gis.geos import GeometryCollection, LineString
 from django.db import transaction
 from django_rich.management import RichCommand
 from rich.progress import track
 
-from gcampus.api.serializers import OverpassElementSerializer
+from gcampus.api import overpass
+from gcampus.api.overpass import Element, Relation
 from gcampus.core.models.water import Water
 
 
@@ -44,53 +44,35 @@ class Command(RichCommand):
         else:
             self.import_rivers(area)
 
-    @staticmethod
-    def _get_client() -> overpy.Overpass:
-        return overpy.Overpass(url=getattr(settings, "OVERPASS_SERVER", None))
-
     def import_rivers(self, area_name: str, length: int = 100000):
-        api = self._get_client()
-        query = f"""
-            area[name="{area_name:s}"]->.a;
-            rel[waterway](area.a)(if: length() > {length:d})->.rriver;
-            way(r.rriver)->.wriver;
-            node(w.wriver)->.nriver;
-            .rriver out geom;
-        """
+        query = (
+            f'[out:json];area[name="{area_name!s}"]->.area;'
+            f'rel(area.area)["waterway"](if: length() > {length:d});out geom;'
+        )
         with self.console.status("Querying Overpass API..."):
-            result = api.query(query)
-        relation: overpy.Relation
-        self.console.print(f"Found {len(result.get_relations()):d} rivers")
-        import_counter = 0
+            result: List[Element] = overpass.query(query)
+        self.console.print(f"Found {len(result):d} rivers")
         with transaction.atomic():
-            # Atomic transactions ensure that all commits
-            for relation in track(
-                result.get_relations(), description="Importing...", console=self.console
-            ):
-                # Get german name or fall back to international name
-                name: str = relation.tags.get(
-                    "name:de", relation.tags.get("name", None)
-                )
-                osm_id: int = relation.id
-                ways = [
-                    LineString([(geom.lon, geom.lat) for geom in member.geometry])
-                    for member in relation.members
-                    if isinstance(member, overpy.RelationWay)
-                ]
-                if name is None or osm_id is None or len(ways) == 0:
-                    self.console.print("Unable to process river, continuing...")
-                    continue
-                geometry = GeometryCollection(ways)
-                try:
-                    water = Water.objects.get(osm_id=osm_id)
+            # Atomic transactions ensure that all commits happen at the
+            # same time.
+            iterator = track(result, description="Importing...", console=self.console)
+            for relation in iterator:
+                if not isinstance(relation, Relation):
                     self.console.print(
-                        f"River '{name:s}' (OSM ID {osm_id:d}) rivers already exists. "
-                        "Updating..."
+                        f"Skip element with id {relation.osm_id}. "
+                        f"Expected type 'Relation' but got {type(relation)}"
                     )
+                try:
+                    water = Water.objects.get(osm_id=relation.osm_id)
+                    self.console.print(
+                        f"River '{water.display_name!s}' (OSM ID {water.osm_id:d}) "
+                        "already exists. Updating..."
+                    )
+                    water.name = relation.get_name()
+                    water.geometry = relation.geometry
+                    water.tags = relation.tags
+                    water.osm_element_type = relation.get_element_type()
                 except Water.DoesNotExist:
-                    water = Water(osm_id=osm_id)
-                water.geometry = geometry
-                water.name = name
-                import_counter += 1
+                    water = relation.to_water()
                 water.save()
-        self.console.print(f"Imported {import_counter:d} rivers")
+        self.console.print(f"Done!")

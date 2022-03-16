@@ -69,15 +69,18 @@ class Element(abc.ABC):
     def get_element_type(self) -> OSMElementType:
         raise NotImplementedError()
 
-    def to_water(self) -> Water:
+    def get_name(self) -> str:
         # Use german name by default
         name: str = self.tags.get("name:de", "")
         if name == "":
             # Fall back to international name
             name = self.tags.get("name", "")
+        return name
+
+    def to_water(self) -> Water:
         return Water(
-            osm_id=self.osm_id, tags=self.tags, geometry=self.geometry, name=name,
-            osm_element_type=self.get_element_type()
+            osm_id=self.osm_id, tags=self.tags, geometry=self.geometry,
+            name=self.get_name(), osm_element_type=self.get_element_type()
         )
 
 
