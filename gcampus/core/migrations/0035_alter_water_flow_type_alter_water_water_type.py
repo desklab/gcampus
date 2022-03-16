@@ -6,18 +6,54 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gcampuscore', '0034_alter_water_geometry'),
+        ("gcampuscore", "0034_alter_water_geometry"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='water',
-            name='flow_type',
-            field=models.CharField(blank=True, choices=[(None, 'unknown'), ('standing', 'standing water'), ('running', 'running water')], max_length=16, null=True, verbose_name='Flow type'),
+            model_name="water",
+            name="flow_type",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    (None, "unknown"),
+                    ("standing", "standing water"),
+                    ("running", "running water"),
+                ],
+                max_length=16,
+                null=True,
+                verbose_name="Flow type",
+            ),
         ),
         migrations.AlterField(
-            model_name='water',
-            name='water_type',
-            field=models.CharField(blank=True, choices=[(None, 'unknown'), ('wetland', 'wetland'), ('coastline', 'coastline'), ('bay', 'bay'), ('river', 'river'), ('stream', 'stream'), ('tidal_channel', 'tidal channel'), ('canal', 'canal'), ('drain', 'drain'), ('ditch', 'ditch'), ('lagoon', 'lagoon'), ('oxbow', 'oxbow'), ('lake', 'lake'), ('basin', 'basin'), ('harbour', 'harbour'), ('pond', 'pond'), ('reservoir', 'reservoir'), ('wastewater', 'wastewater'), ('spring', 'spring')], max_length=16, null=True, verbose_name='Water type'),
+            model_name="water",
+            name="water_type",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    (None, "unknown"),
+                    ("wetland", "wetland"),
+                    ("coastline", "coastline"),
+                    ("bay", "bay"),
+                    ("river", "river"),
+                    ("stream", "stream"),
+                    ("tidal_channel", "tidal channel"),
+                    ("canal", "canal"),
+                    ("drain", "drain"),
+                    ("ditch", "ditch"),
+                    ("lagoon", "lagoon"),
+                    ("oxbow", "oxbow"),
+                    ("lake", "lake"),
+                    ("basin", "basin"),
+                    ("harbour", "harbour"),
+                    ("pond", "pond"),
+                    ("reservoir", "reservoir"),
+                    ("wastewater", "wastewater"),
+                    ("spring", "spring"),
+                ],
+                max_length=16,
+                null=True,
+                verbose_name="Water type",
+            ),
         ),
     ]

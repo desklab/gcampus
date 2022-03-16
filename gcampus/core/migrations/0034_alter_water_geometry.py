@@ -7,13 +7,15 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gcampuscore', '0033_alter_water_options_water_flow_type_and_more'),
+        ("gcampuscore", "0033_alter_water_options_water_flow_type_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='water',
-            name='geometry',
-            field=django.contrib.gis.db.models.fields.GeometryField(srid=4326, verbose_name='Geometry'),
+            model_name="water",
+            name="geometry",
+            field=django.contrib.gis.db.models.fields.GeometryField(
+                srid=4326, verbose_name="Geometry"
+            ),
         ),
     ]
