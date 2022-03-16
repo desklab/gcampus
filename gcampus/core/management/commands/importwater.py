@@ -22,7 +22,7 @@ from django_rich.management import RichCommand
 from rich.progress import track
 
 from gcampus.api.serializers import OverpassElementSerializer
-from gcampus.core.models.geo import Water
+from gcampus.core.models.water import Water
 
 
 class Command(RichCommand):

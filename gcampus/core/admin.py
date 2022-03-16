@@ -15,6 +15,8 @@
 
 from django.contrib.gis import admin
 from django.db.models import QuerySet
+from django.utils.html import format_html_join, escape, format_html
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from leaflet.admin import LeafletGeoAdmin
 
@@ -41,7 +43,23 @@ class MeasurementAdmin(LeafletGeoAdmin):
 
 
 class WaterAdmin(LeafletGeoAdmin):
-    pass
+    list_display = (
+        "display_name", "osm_id", "flow_type", "water_type", "updated_at"
+    )
+    readonly_fields = ADMIN_READ_ONLY_FIELDS + ("osm_url",)
+
+    @admin.display(description=_('OpenStreetMaps URL'))
+    def osm_url(self, instance: Water):
+        if not instance.osm_id:
+            return format_html(
+                "<span class='errors'>{error_message}</span>",
+                error_message=_("No OpenStreetMaps ID provided!")
+            )
+        url: str = escape(
+            "https://www.openstreetmap.org/"
+            f"{instance.osm_element_type}/{instance.osm_id}"
+        )
+        return format_html('<a href="{url}">{url}</a>', url=url)
 
 
 class ParameterTypeAdmin(admin.ModelAdmin):

@@ -17,8 +17,7 @@ __all__ = ["GeoLookupWidget"]
 
 from typing import Optional
 
-from django.contrib.gis.forms import BaseGeometryWidget, PointField
-from django.contrib.gis.geos import Point
+from django.contrib.gis.forms import BaseGeometryWidget
 from django.forms import NumberInput
 from django_filters.widgets import SuffixedMultiWidget
 

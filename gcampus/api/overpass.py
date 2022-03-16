@@ -31,6 +31,7 @@ __all__ = [
 ]
 __author__ = "Jonas Drotleff <j.drotleff@desk-lab.de>"
 
+import abc
 from dataclasses import dataclass
 from typing import Optional, List, Tuple
 
@@ -47,9 +48,12 @@ from django.contrib.gis.geos import (
     MultiLineString,
 )
 
+from gcampus.core.models import Water
+from gcampus.core.models.water import OSMElementType
+
 
 @dataclass
-class Element:
+class Element(abc.ABC):
     """Elements are the basic building blocks of an overpass response.
     An element can be either a node, a way (collection of nodes) or a
     relation (collection of ways and nodes).
@@ -62,20 +66,37 @@ class Element:
     tags: dict
     geometry: Optional[GEOSGeometry] = None
 
+    def get_element_type(self) -> OSMElementType:
+        raise NotImplementedError()
+
+    def to_water(self) -> Water:
+        # Use german name by default
+        name: str = self.tags.get("name:de", "")
+        if name == "":
+            # Fall back to international name
+            name = self.tags.get("name", "")
+        return Water(
+            osm_id=self.osm_id, tags=self.tags, geometry=self.geometry, name=name,
+            osm_element_type=self.get_element_type()
+        )
+
 
 @dataclass
 class Node(Element):
-    pass
+    def get_element_type(self) -> OSMElementType:
+        return OSMElementType.NODE
 
 
 @dataclass
 class Way(Element):
-    pass
+    def get_element_type(self) -> OSMElementType:
+        return OSMElementType.WAY
 
 
 @dataclass
 class Relation(Element):
-    pass
+    def get_element_type(self) -> OSMElementType:
+        return OSMElementType.RELATION
 
 
 def _object_hook(obj: dict):
@@ -189,7 +210,7 @@ def query(
     if response.ok:
         return _parse(response, **parse_kwargs)
     else:
-        raise OverpassAPIError()
+        raise OverpassAPIError(response.text)
 
 
 class OverpassAPIError(Exception):

@@ -19,22 +19,19 @@ __all__ = [
     "WaterAPIViewSet",
 ]
 
-from typing import List, Optional, Tuple, Dict
+from typing import List, Optional, Tuple
 
-import overpy
-from django.conf import settings
-from django.contrib.gis.geos import LineString, GeometryCollection
 from django.db import transaction
 from django.db.models import QuerySet
-from django.utils.decorators import method_decorator
-from django.utils.translation import gettext_lazy
-from django.views.decorators.cache import cache_page
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
+from rest_framework.response import Response
 
+from gcampus.api import overpass
 from gcampus.api.filtersets import WaterLookupFilterSet
+from gcampus.api.overpass import Element
 from gcampus.api.serializers import WaterSerializer, WaterListSerializer
 from gcampus.api.utils import GeoLookupValue
 from gcampus.api.views.mixins import MethodSerializerMixin
@@ -47,36 +44,17 @@ class WaterLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     pagination_class = None
     filterset_class = WaterLookupFilterSet
 
-    @method_decorator(cache_page(getattr(settings, "OVERPASS_CACHE", 60 * 60 * 24 * 2)))
     def list(self, request, *args, **kwargs):
+        print(request.method)
         return super(WaterLookupAPIViewSet, self).list(request, *args, **kwargs)
 
 
 class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     # Only return the OSM IDs
     queryset = Water.objects.only("osm_id")
+    serializer_class = WaterSerializer
     pagination_class = None
     filterset_class = WaterLookupFilterSet
-    default_water_name: str = gettext_lazy("Unnamed water")
-    unnamed_waters: Dict[str, str] = {
-        "wetland": gettext_lazy("Unnamed wetland"),
-        "coastline": gettext_lazy("Unnamed coastline"),
-        "bay": gettext_lazy("Unnamed bay"),
-        "river": gettext_lazy("Unnamed river"),
-        "stream": gettext_lazy("Unnamed stream"),
-        "tidal_channel": gettext_lazy("Unnamed tidal channel"),
-        "canal": gettext_lazy("Unnamed canal"),
-        "drain": gettext_lazy("Unnamed drain"),
-        "ditch": gettext_lazy("Unnamed ditch"),
-        "lagoon": gettext_lazy("Unnamed lagoon"),
-        "oxbow": gettext_lazy("Unnamed oxbow"),
-        "lake": gettext_lazy("Unnamed lake"),
-        "basin": gettext_lazy("Unnamed basin"),
-        "harbour": gettext_lazy("Unnamed harbour"),
-        "pond": gettext_lazy("Unnamed pond"),
-        "reservoir": gettext_lazy("Unnamed reservoir"),
-        "wastewater": gettext_lazy("Unnamed wastewater"),
-    }
 
     def list(self, request: Request, **kwargs):
         """List all missing waters retrieved from the Overpass
@@ -100,8 +78,18 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
             geo_lookup_value.get_bbox_coordinates()
         )
         # Query the Overpass API
-        result: overpy.Result = self.client.query(overpass_query)
-        waters: List[Water]
+        result: List[Element] = overpass.query(overpass_query)
+        waters: List[Water] = []
+        with transaction.atomic():
+            for element in result:
+                if element.osm_id in osm_ids:
+                    # Skip existing waters
+                    continue
+                water: Water = element.to_water()
+                water.save()
+                waters.append(water)
+        serializer = self.get_serializer(waters, many=True)
+        return Response(serializer.data)
 
     def _get_geo_lookup_value(self, request) -> Optional[GeoLookupValue]:
         """Returns an instance of
@@ -128,94 +116,6 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
             raise RuntimeError("Filter set is invalid.")
         return filterset.form.cleaned_data.get("geo")
 
-    @property
-    def client(self) -> overpy.Overpass:
-        """Returns the Overpass API client.
-
-        :returns: Overpy instance, optionally with a custom server. The
-            server can be set using the ``OVERPASS_SERVER`` setting.
-        :rtype: overpy.Overpass
-        """
-        if hasattr(self, "_client"):
-            return getattr(self, "_client")
-        client = overpy.Overpass(url=getattr(settings, "OVERPASS_SERVER", None))
-        setattr(self, "_client", client)
-        return client
-
-    @classmethod
-    def _get_waters(
-        cls,
-        result: overpy.Result,
-        osm_ids: List[int],
-        *,
-        commit: bool = True
-    ) -> List[Water]:
-        """Create waters for Overpass API result.
-
-        :param result: Overpy query result.
-        :type result: overpy.Result
-        :param osm_ids: OSM IDs that should be ignored.
-        :type osm_ids: list[int]
-        :param commit: Whether to save the waters in the database.
-        :type commit: bool
-        :returns: List of all waters created
-        """
-        imported_ids: List[int] = osm_ids.copy()
-        with transaction.atomic():
-            for relation in result.get_relations():
-                if relation.id in imported_ids:
-                    # Do not import relation
-                    continue
-                name: str = cls.get_tagged_water_name(relation)
-                osm_id: int = relation.id
-                ways: List[LineString] = [
-                    LineString([(geom.lon, geom.lat) for geom in member.geometry])
-                    for member in relation.members
-                    if isinstance(member, overpy.RelationWay)
-                ]
-                geometry = GeometryCollection(ways)
-                water = Water(osm_id=osm_id, name=name, geometry=geometry)
-                if commit:
-                    water.save()
-                imported_ids.append(osm_id)
-                yield water
-            for way in result.get_ways():
-                if way.id in imported_ids:
-                    # Do not import way
-                    continue
-                name: str = cls.get_tagged_water_name(way)
-                osm_id: int = way.id
-                geometry = GeometryCollection([
-                    LineString([(geom.lon, geom.lat) for geom in way.geometry])
-                ])
-
-    @classmethod
-    def get_tagged_water_name(cls, element: overpy.Element) -> str:
-        """Retrieve human-readable name for an :class:`overpy.Element`
-        instance.
-
-        :param element: A relation, way or node instance.
-        :type element: overpy.Element
-        :returns: The name of the water.
-        :rtype: str
-        """
-        # Use german name first
-        name: str = element.tags.get("name:de")
-        if name is None:
-            # Fall back to default international name
-            name = element.tags.get("name", None)
-        if name is None:
-            # Fall back to unnamed water based on its type
-            water_type: str = element.tags.get("water", None)
-            if water_type is None:
-                # `water` tag not present, use `waterway` tag
-                water_type = element.tags.get("waterway")
-            if water_type is None:
-                # No `water*` tag present, use `natural` tag
-                water_type = element.tags.get("natural")
-            name = cls.unnamed_waters.get(water_type, cls.default_water_name)
-        return name
-
     @staticmethod
     def get_overpass_query(bbox: Tuple[float, float, float, float]) -> str:
         """Construct an Overpass query using its query language.
@@ -225,9 +125,10 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         :returns: String query for Overpass.
         :rtype: str
         """
-        bbox_str: str = ",".join(f"{f:.4f}" for f in bbox)
+        a_lng, a_lat, b_lng, b_lat = bbox
+        bbox_str: str = ",".join(f"{f:.5f}" for f in [a_lat, a_lng, b_lat, b_lng])
         return f"""
-        [bbox:{bbox_str}]
+        [bbox:{bbox_str}][out:json];
         (
           way["natural"="water"]
             ["water"!="river"]
@@ -262,11 +163,15 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
           relation["waterway"="drain"];
           relation["waterway"="ditch"];
         )->.rels;
-        node(w.ways);
-        way(r.rels)->.wrels;
-        node(w.wrels);
+        relation(bw.ways:"main_stream","outer","inner")->.relofways;
+        way(r.relofways)->.waysinrels;
         (
           .ways;
+          -
+          .waysinrels;
+        )->.filteredways;
+        (
+          .filteredways;
           .rels;
           node["natural"="spring"];
         );
