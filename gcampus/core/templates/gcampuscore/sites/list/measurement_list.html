@@ -1,5 +1,5 @@
 {% extends "gcampuscore/base.html" %}
-{% load auth_token %}
+{% load auth_token params %}
 {% load i18n static leaflet_tags tz l10n menu icon %}
 {% block extra_head %}
     {{ block.super }}
@@ -35,6 +35,11 @@
                     <button type="submit" class="btn btn-primary">
                         {% translate "Search" %}
                     </button>
+                </div>
+            <div class="col-auto">
+                    <a href="{% url "gcampusdocuments:csv" %}{% request_params %}" class="btn btn-outline-success">
+                        {% translate "Download CSV" %}
+                    </a>
                 </div>
             </div>
             {% include "gcampuscore/components/filter.html" %}
