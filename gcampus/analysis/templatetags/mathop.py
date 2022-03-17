@@ -19,9 +19,9 @@ import numpy as np
 register = template.Library()
 
 @register.filter()
-def arctan(sec, cosec):
+def arctan(opp, adj):
     try:
-        res = np.degrees(np.arctan(cosec/sec))
+        res = np.degrees(np.arctan(opp/adj))
         return int(res)
     except ValueError:
         return None
