@@ -1,0 +1,35 @@
+{% load i18n icon l10n mathop %}
+<script>
+    function Convert_{{ parameter.pk }}() {
+        var od_input = parseFloat(document.getElementById("od_input_{{ parameter.pk }}").value);
+        var concentration = document.getElementById("concentration_{{ parameter.pk }}");
+        if (od_input >= 0 && od_input <= 2) {
+            var calibration_fit = parseFloat(("{{ parameter.calibration_slope }}").replace(",", "."));
+            var calibration_offset = parseFloat(("{{ parameter.calibration_offset }}").replace(",", "."));
+            var concentration_value = (od_input * calibration_fit + calibration_offset).toFixed(2);
+            concentration.value = String(concentration_value);
+            var datapoint = document.getElementById("datapoint_{{ parameter.name }}")
+            datapoint.style.bottom = String((concentration_value-.11)*5)+"em";
+            datapoint.style.left = String((od_input-.1)*5)+"em";
+            datapoint.hidden = false;
+            console.log(datapoint);
+
+        }
+    }
+</script>
+
+<div>
+    <div>
+        <label for="od_input_{{ parameter.pk }}">{% translate "Optical density" %}</label>
+        <input type="number" min="0" max="2" step=".1" id="od_input_{{ parameter.pk }}" class="form-control"
+               placeholder="{% translate "Enter optical density" %}">
+    </div>
+    <div>
+        <label for="concentration_{{ parameter.pk }}">{% translate "Concentration" %}</label>
+        <input type="number" class="form-control" id="concentration_{{ parameter.pk }}"
+               placeholder="{% translate "Concentration" %}"
+               readonly>
+    </div>
+    <button type="submit" class="btn btn-primary"
+            onclick="Convert_{{ parameter.pk }}();">{% translate "Convert" %}</button>
+</div>
