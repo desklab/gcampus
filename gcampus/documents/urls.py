@@ -16,6 +16,7 @@
 from django.urls import path
 
 from gcampus.documents.apps import GCampusDocumentsAppConfig
+from gcampus.documents.views.generate_csv import filter_csv_download
 from gcampus.documents.views.print import (
     CourseOverviewPDF,
     AccessKeyCombinedPDF,
@@ -30,6 +31,7 @@ urlpatterns = [
     path("documents/overview", CourseOverviewPDF.as_view(), name="documents-overview"),
     path("documents/accesskeys_combined", AccessKeyCombinedPDF.as_view(), name="accesskey-combined"),
     path("documents/measurement_detail/<int:pk>", MeasurementDetailPDF.as_view(), name="measurement-detail"),
+    path("documents/measurements", filter_csv_download, name="csv"),
 ]
 # fmt: on
 # pylint: enable=line-too-long
