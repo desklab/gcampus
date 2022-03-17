@@ -164,6 +164,10 @@ class ParameterType(models.Model):
 
     unit = models.CharField(blank=True, max_length=10, verbose_name=_("Unit"))
 
+    calibration_slope = models.FloatField(blank=True, default=1, verbose_name=_("Slope"))
+
+    calibration_offset = models.FloatField(blank=True, default=0, verbose_name=_("Offset"))
+
     def __str__(self):
         if self.unit in EMPTY:
             return f"{self.name}"
