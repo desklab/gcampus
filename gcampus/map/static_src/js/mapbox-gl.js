@@ -28,7 +28,7 @@ class MapboxGLPointWidget {
     _input;
     _value;  // GeoJSON object that will be stringified later
 
-    constructor(map: Map, input: HTMLElement) {
+    constructor(map, input) {
         this._map = map;
         this._marker = new Marker({draggable: true});
         this._markerAdded = false;
