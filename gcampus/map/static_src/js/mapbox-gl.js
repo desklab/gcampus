@@ -15,18 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {Map, NavigationControl, Marker} from 'mapbox-gl'; // noqa
+import {Map, Marker, NavigationControl} from 'mapbox-gl'; // noqa
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
 import '../styles/map.scss';
 
 class MapboxGLPointWidget {
-    TYPE: String = 'Point';
-    _map: Map;
-    _marker: Marker;
-    _markerAdded: Boolean;
-    _input: HTMLElement;
-    _value: Object;  // GeoJSON object that will be stringified later
+    TYPE = 'Point';
+    _map;
+    _marker;
+    _markerAdded;
+    _input;
+    _value;  // GeoJSON object that will be stringified later
 
     constructor(map: Map, input: HTMLElement) {
         this._map = map;

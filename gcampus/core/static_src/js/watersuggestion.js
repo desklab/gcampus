@@ -15,17 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-//import mapboxgl from 'mapbox-gl'; // noqa
-import {Component, render} from 'preact';
+import {Component, render, VNode} from 'preact';
 import {html} from 'htm/preact';
 
 
-const DEFAULT_COLOR: String = '#33658A';
-const HIGHLIGHT_COLOR: String = '#F6AE2D';
-const VAR_LOCATION_PLACEHOLDER: String = window._varLocationPlaceholder;
-const VAR_LOCATION_TITLE: String = window._varLocationTitle;
-const LOADING_TEXT: String = window._loadingText;
-const EMPTY_GEO_JSON: Object = {
+const DEFAULT_COLOR = '#33658A';
+const HIGHLIGHT_COLOR = '#F6AE2D';
+const VAR_LOCATION_PLACEHOLDER = window._varLocationPlaceholder;
+const VAR_LOCATION_TITLE = window._varLocationTitle;
+const LOADING_TEXT = window._loadingText;
+const EMPTY_GEO_JSON = {
     'type': 'FeatureCollection',
     'features': []  // Empty data for now
 };
@@ -141,13 +140,13 @@ class VariableWaterItem extends Component {
 
 
 class WaterList extends Component {
-    state: Object;
+    state;
     map;
-    _layerID: String = 'waterLayer';
-    _sourceID: String = 'waterList';
-    _sourceIDHighlight: String = 'waterItemHighlighted';
-    _layerIDHighlight: String = 'waterLayerHighlighted';
-    _requestTimeout: ?Number = null;
+    _layerID = 'waterLayer';
+    _sourceID = 'waterList';
+    _sourceIDHighlight = 'waterItemHighlighted';
+    _layerIDHighlight = 'waterLayerHighlighted';
+    _requestTimeout = null;
 
     constructor() {
         super();
@@ -233,7 +232,7 @@ class WaterList extends Component {
      * @returns {Object} GeoJSON of the requested feature
      * @throws Error
      */
-    getGeoJSONFeature(featureID: Number|String) {
+    getGeoJSONFeature(featureID) {
         featureID = this.validFeatureID(featureID);
         let feature = this.state.features.filter(f => f.id === featureID);
         if (feature.length === 0) {
@@ -456,4 +455,3 @@ render(
         <${WaterList}/>`,
     document.getElementById('watersuggestion')
 );
-

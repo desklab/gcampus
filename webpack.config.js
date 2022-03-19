@@ -93,15 +93,15 @@ const commonConfig = (env, options) => {
                         {loader: 'sass-loader'}
                     ]
                 },
-                {
-                    test: /\.js$/,
-                    loader: 'babel-loader',
-                    exclude: /node_modules/,
-                    options: {
-                        presets: ['@babel/preset-flow'],
-                        // outputPath: 'js'
-                    }
-                },
+                // {
+                //     test: /\.js$/,
+                //     // loader: 'babel-loader',
+                //     exclude: /node_modules/,
+                //     options: {
+                //         presets: ['@babel/preset-flow'],
+                //         // outputPath: 'js'
+                //     }
+                // },
                 {
                     test: /\.(png|jpg|gif|svg)$/,
                     loader: 'file-loader',
