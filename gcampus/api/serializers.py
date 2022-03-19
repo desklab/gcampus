@@ -63,14 +63,45 @@ class MeasurementListSerializer(GeoFeatureModelSerializer):
 
 
 class WaterSerializer(GeoFeatureModelSerializer):
+    """Water GeoJSON serializer
+
+    Serializer for the :class:`gcampus.core.models.Water` model. The
+    output is valid GeoJSON.
+    """
     class Meta:
         model = Water
         geo_field = "geometry"
-        fields = ("name", "geometry", "osm_id", "id")
+        fields = (
+            "name",
+            "display_name",
+            "geometry",
+            "osm_id",
+            "id",
+            "tags",
+            "flow_type",
+            "water_type",
+        )
+
+    display_name = serializers.CharField(read_only=True)
 
 
 class WaterListSerializer(serializers.ModelSerializer):
+    """Water list serializer
+
+    As some rivers are rather large, querying and serializing their
+    geometries is costly. For a simple list, only the important fields
+    are returned (no GeoJSON).
+    """
     class Meta:
         model = Water
-        fields = ("name", "osm_id", "id")
+        fields = (
+            "display_name",
+            "name",
+            "osm_id",
+            "id",
+            "flow_type",
+            "water_type",
+        )
+
+    display_name = serializers.CharField(read_only=True)
 
