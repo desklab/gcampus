@@ -1,10 +1,8 @@
 {% extends "gcampuscore/base.html" %}
 {% load auth_token %}
-{% load i18n static leaflet_tags tz l10n menu icon %}
+{% load i18n static tz l10n menu icon %}
 {% block extra_head %}
     {{ block.super }}
-    {% leaflet_js plugins="forms" %}
-    {% leaflet_css plugins="forms" %}
 {% endblock %}
 {% block content %}
     <div class="container-fluid">

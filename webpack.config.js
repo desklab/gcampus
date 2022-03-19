@@ -151,7 +151,6 @@ let gcampuscoreConfig = (env, options) => {
         entry: {
             main: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'index.js'),
             autofocus: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'autofocus.js'),
-            leafletsearch: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'leafletsearch.js'),
             watersuggestion: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'watersuggestion.js'),
             dynamicformset: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'dynamicformset.js'),
             filter: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'filter.js'),
