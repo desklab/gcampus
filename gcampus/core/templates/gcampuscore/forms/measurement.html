@@ -74,16 +74,15 @@
                     {% with field=form.location map_height=400 %}
                         <div class="mb-3">
                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                            <div class="rounded-2">
-                                {{ field }}
-                                <div id="watersuggestion"></div>
-                            </div>
+                            <style>.mapboxgl-canvas{border-radius: .5rem;}</style>
+                            {{ field }}
                             {% if field.errors %}
                                 <small class="text-danger">{{ field.errors }}</small>
                             {% endif %}
                             {% if form.water_name.errors %}
                                 <small class="text-danger">{{ form.water_name.errors }}</small>
                             {% endif %}
+                            <div class="mt-2" id="watersuggestion"></div>
                         </div>
                     {% endwith %}
                 </div>

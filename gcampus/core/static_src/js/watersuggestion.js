@@ -19,7 +19,7 @@ import {Component, render, VNode} from 'preact';
 import {html} from 'htm/preact';
 
 
-const DEFAULT_COLOR = '#33658A';
+const DEFAULT_COLOR = '#0d6efd';
 const HIGHLIGHT_COLOR = '#F6AE2D';
 const VAR_LOCATION_PLACEHOLDER = window._varLocationPlaceholder;
 const VAR_LOCATION_TITLE = window._varLocationTitle;
@@ -31,33 +31,71 @@ const EMPTY_GEO_JSON = {
 
 
 /**
- * Fetch Water Suggestion
+ * Construct water lookup query
  *
- * This method sends a request to the gcampus API to find nearby points
- * of interest with the tag "natural=water".
+ * This method prepares a request to the gcampus API using either the
+ * database or OpenStreetMaps as a source.
  *
- * @param lat {number|string} - Latitude
+ * @param source {string} - Can be either 'osm' or 'db'
  * @param lng {number|string} - Longitude
+ * @param lat {number|string} - Latitude
+ * @returns {string} - URL for the query
  */
-function fetchWaterSuggestion(lat, lng) {
-    let url = '/api/v1/waterlookup/';
+function getLookupQuery(source, lng, lat) {
+    let url;
+    if (source === 'osm') {
+        url = '/api/v1/overpasslookup/';
+    } else if (source === 'db') {
+        url = '/api/v1/waterlookup';
+    } else {
+        throw Error(`Unknown source '${source}'. Can be either 'osm' or 'db'.`);
+    }
     // Parse string inputs for rounding later
     if (typeof lat !== 'number')
         lat = Number.parseFloat(lat);
     if (typeof lng !== 'number')
         lng = Number.parseFloat(lng);
-    // Round the location to 3 digits. This should be precise enough
-    // A large bounding box is used.
-    // This improves cache performance
-    let location = `POINT (${lng.toFixed(3)} ${lat.toFixed(3)})`;
+    // Round the location to 3 digits. This should be precise enough.
+    let location = `POINT (${lng.toFixed(5)} ${lat.toFixed(5)})`;
     let bboxSize = '800';  // 800 meter square bounding box
     let params = {
         geo_center: location,
         geo_size: bboxSize
     };
     let searchParams = new URLSearchParams(params).toString();
-    return fetch(`${url}?${searchParams}`)
-        .then(response => response.json())
+    return [url, searchParams].join('?')
+}
+
+
+/**
+ * Fetch Water Lookup (database)
+ *
+ * This method sends a request to the gcampus API to find nearby points
+ * of interest with the tag "natural=water".
+ *
+ * @param lng {number|string} - Longitude
+ * @param lat {number|string} - Latitude
+ * @returns {Promise} - Fetch promise
+ */
+function fetchWaterLookup(lng,lat) {
+    let lookupQuery = getLookupQuery('db', lng, lat)
+    return fetch(lookupQuery).then(response => response.json())
+}
+
+
+/**
+ * Fetch Overpass Lookup (OpenStreetMaps)
+ *
+ * This method sends a request to the gcampus API to find nearby points
+ * of interest with the tag "natural=water".
+ *
+ * @param lng {number|string} - Longitude
+ * @param lat {number|string} - Latitude
+ * @returns {Promise} - Fetch promise
+ */
+function fetchOverpassLookup(lng,lat) {
+    let lookupQuery = getLookupQuery('osm', lng, lat)
+    return fetch(lookupQuery).then(response => response.json())
 }
 
 
@@ -72,70 +110,23 @@ function fetchWaterSuggestion(lat, lng) {
  */
 function ListItem(props) {
     let {feature, highlight, resetHighlight} = props;
-    let name = feature.properties.name;
+    let {display_name, flow_type} = feature.properties;
     let id = feature.id;
     return html`
-        <label class="list-group-item list-group-item-action" for="water${id}"
+        <input class="form-check-input me-2"
+               id="water${id}"
+               type="radio"
+               name="water_id"
+               data-feature-id="${id}"
+               value="${id}"/>
+        <label class="list-group-item list-group-item-hover list-group-item-water"
+               for="water${id}"
                onMouseOver=${highlight} onMouseLeave=${resetHighlight}>
-            <input class="form-check-input me-2" id="water${id}"
-                   type="radio" name="water_name"
-                   data-feature-id="${id}"
-                   value="${name} gcampus_osm_id:${id}"/>
-            ${name}
+            <b>${display_name}</b>
+            <small class="d-block text-muted">
+                ${flow_type.charAt(0).toUpperCase() + flow_type.slice(1)}
+            </small>
         </label>`;
-}
-
-
-class VariableWaterItem extends Component {
-    constructor() {
-        super();
-        this.state = {name: ''};
-    }
-
-    setName(name) {
-        this.setState({name: name});
-    }
-
-    setChecked(checked) {
-        let el = document.getElementById('varWater');
-        el.checked = checked;
-        el.dispatchEvent(new Event("change"));
-    }
-
-    createNameChangeListener() {
-        return (e) => {
-            this.setChecked(true);
-            let new_name = e.target.value;
-            if (this.state.name !== new_name)
-                this.setName(new_name);
-        };
-    }
-
-    createClickListener() {
-        return () => {
-            this.setChecked(true);
-        }
-    }
-
-    render(props, state, context) {
-        let {name} = state;
-        return html`
-            <div class="list-group-item list-group-item-action"
-                 onclick=${this.createClickListener()}>
-                <input class="form-check-input me-2" id="varWater"
-                       type="radio" name="water_name"
-                       style="vertical-align: text-bottom"
-                       value="${name}"
-                       aria-label="${VAR_LOCATION_TITLE}" />
-                ${VAR_LOCATION_TITLE}
-                <input type="text"
-                       id="inputLocationName"
-                       class="form-control form-control-sm w-auto d-inline ms-2"
-                       placeholder="${VAR_LOCATION_PLACEHOLDER}"
-                       aria-label="${VAR_LOCATION_PLACEHOLDER}"
-                       onInput=${this.createNameChangeListener()} />
-            </div>`;
-    }
 }
 
 
@@ -152,6 +143,7 @@ class WaterList extends Component {
         super();
         this.state = {features: [], loading: false};
         this.currentPermanentHighlight = null;
+        this.currentHighlight = null;
         window.addEventListener('map:load', this.mapLoad.bind(this));
     }
 
@@ -159,7 +151,7 @@ class WaterList extends Component {
         this.setLoading(false);
         features = features || [];
         features = features.filter(
-            f => f.properties.hasOwnProperty('name') && f.properties.name
+            f => f.properties.hasOwnProperty('display_name') && f.properties.name
         );
         this.map.getSource(this._sourceID).setData({
             'type': 'FeatureCollection',
@@ -254,6 +246,8 @@ class WaterList extends Component {
      * @param featureID {number|string}: Feature ID
      */
     highlightFeature(featureID) {
+        featureID = this.validFeatureID(featureID);
+        this.currentHighlight = featureID;
         this.map.getSource(this._sourceIDHighlight).setData(
             this.getGeoJSONFeature(featureID)
         );
@@ -266,6 +260,8 @@ class WaterList extends Component {
      */
     resetHighlight() {
         // Set source data for the highlight layer to be empty
+        if (this.currentHighlight === this.currentPermanentHighlight)
+            return
         this.map.getSource(this._sourceIDHighlight).setData(EMPTY_GEO_JSON);
         if (this.currentPermanentHighlight !== null) {
             this.highlightFeature(this.currentPermanentHighlight);
@@ -298,7 +294,7 @@ class WaterList extends Component {
         // through to the server.
         this._requestTimeout = setTimeout(() => {
             this._requestTimeout = null;
-            fetchWaterSuggestion(lat, lng)
+            fetchWaterLookup(lng, lat)
                 .then(data => this.setFeatures(data.features))
                 .catch(this.onError.bind(this));
         }, 300);
@@ -339,8 +335,18 @@ class WaterList extends Component {
             'layout': {},
             'paint': {
                 'line-color': DEFAULT_COLOR,
-                'line-width': 3
+                'line-width': 8
             }
+        });
+        this.map.addLayer({
+            'id': 'points',
+            'type': 'circle',
+            'source': this._sourceID,
+            'paint': {
+                'circle-radius': 6,
+                'circle-color': '#B42222'
+            },
+            'filter': ['==', '$type', 'Point']
         });
         // Add highlight layer. This will automatically update once the
         // highlighted data source is set.
@@ -350,8 +356,10 @@ class WaterList extends Component {
             'source': this._sourceIDHighlight,
             'layout': {},
             'paint': {
-                'line-color': HIGHLIGHT_COLOR,
-                'line-width': 4
+                'line-color': DEFAULT_COLOR,
+                'line-width': 12,
+                // 'line-cap': 'round',
+                // 'line-join': 'round',
             }
         });
         this.map.on('edit', this.mapUpdate.bind(this));
@@ -382,14 +390,11 @@ class WaterList extends Component {
      * buttons.
      */
     setupWaterList() {
-        if (document.querySelector('input[name="water_name"]')) {
-            document.querySelectorAll('input[name="water_name"]').forEach(el => {
-                let featureID = null;
-                if (el.id !== 'varWater') {
-                    featureID = this.validFeatureID(
-                        el.getAttribute("data-feature-id")
-                    );
-                }
+        if (document.querySelector('input[name="water_id"]')) {
+            document.querySelectorAll('input[name="water_id"]').forEach(el => {
+                let featureID = this.validFeatureID(
+                    el.getAttribute("data-feature-id")
+                );
                 if (featureID === this.currentPermanentHighlight) {
                     el.checked = true;
                 }
@@ -426,7 +431,7 @@ class WaterList extends Component {
         let content = '';
         if (loading) {
             content = html`
-                <div class="list-group-item">
+                <div class="list-group-item list-group-item-water">
                     <div class="spinner-border spinner-border-sm" role="status">
                     </div>
                     <span class="ms-2">${LOADING_TEXT}</span>
@@ -441,10 +446,9 @@ class WaterList extends Component {
             );
         }
         return html`
-            <div class="list-group bg-white"
+            <div class="list-group list-group-water"
                 style="border-top-left-radius: 0; border-top-right-radius: 0;">
                 ${content}
-                <${VariableWaterItem} />
             </div>`;
     }
 }
