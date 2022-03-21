@@ -45,7 +45,6 @@ class WaterLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     filterset_class = WaterLookupFilterSet
 
     def list(self, request, *args, **kwargs):
-        print(request.method)
         return super(WaterLookupAPIViewSet, self).list(request, *args, **kwargs)
 
 
