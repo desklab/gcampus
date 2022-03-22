@@ -57,7 +57,7 @@ Chart.register(
 );
 
 
-function createChart(name, el, slope, offset, title) {
+function createChart(name, el, slope, offset, title, x_label, y_label) {
     let x_data = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
     let y_data = []
     for (let i = 0; i < x_data.length; i++) {
@@ -82,12 +82,20 @@ function createChart(name, el, slope, offset, title) {
                 y: {
                     max: max_y,
                     min: 0,
-                    ticks: {}
+                    ticks: {},
+                    title: {
+                        display: true,
+                        text: y_label
+                    }
                 },
                 x: {
                     max: x_data.length + 2,
                     min: 0,
-                    ticks: {}
+                    ticks: {},
+                    title: {
+                        display: true,
+                        text: x_label
+                    }
                 }
             },
             elements: {

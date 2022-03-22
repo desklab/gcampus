@@ -32,7 +32,11 @@
             var chart_{{ parameter.pk }} = (function () {
                 let chart_element_{{ parameter.pk }} = document.getElementById("myChart_{{ parameter.name }}");
                 let chart_title = "{% translate "Calibration fit for" %} " + "{{ parameter.name }}"
-                return gcampusanalysis.calibration.createChart("{{ parameter.name }}", chart_element_{{ parameter.pk }}, {{ parameter.calibration_slope|unlocalize }}, {{ parameter.calibration_offset|unlocalize }}, chart_title);
+                let x_label = "{% translate "Optical density" %}"
+                let y_label = "{{ parameter.name }}  " +  "{{ parameter.unit }}";
+                console.log("{{ parameter.name }}");
+                console.log(y_label);
+                return gcampusanalysis.calibration.createChart("{{ parameter.name }}", chart_element_{{ parameter.pk }}, {{ parameter.calibration_slope|unlocalize }}, {{ parameter.calibration_offset|unlocalize }}, chart_title, x_label, y_label);
             })();
 
             function Convert_{{ parameter.pk }}(e, chart) {
