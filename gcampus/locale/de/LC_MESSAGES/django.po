@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-01 12:24+0100\n"
+"POT-Creation-Date: 2022-03-22 15:09+0100\n"
 "PO-Revision-Date: 2022-02-20 23:01+0000\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -31,6 +31,33 @@ msgstr ""
 #: gcampus/analysis/apps.py:8 gcampus/core/apps.py:23
 msgid "GCampus Core"
 msgstr "Gewässercampus"
+
+#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:7
+#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:35
+msgid "Optical density"
+msgstr "Optische Dichte"
+
+#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:10
+msgid "Enter optical density"
+msgstr "Optische Dichte eingeben"
+
+#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:13
+#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:16
+#| msgid "Location"
+msgid "Concentration"
+msgstr "Konzentration"
+
+#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:19
+msgid "Convert"
+msgstr "Umrechnen"
+
+#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:34
+msgid "Calibration fit for"
+msgstr "Kalibrationsfit für"
+
+#: gcampus/analysis/views.py:15
+msgid "Optical Density Converter"
+msgstr "Umrechner für Optische Dichte"
 
 #: gcampus/api/apps.py:23
 msgid "GCampus API"
@@ -498,7 +525,7 @@ msgstr "Name der Schule"
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:48
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:199
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:218
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:292
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:298
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:71
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:80
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:121
@@ -525,7 +552,7 @@ msgid "Teacher Name"
 msgstr "Name der Lehrkraft"
 
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:120
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:233
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:239
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -573,7 +600,7 @@ msgstr ""
 
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:194
 #: gcampus/auth/templates/gcampusauth/sites/course_overview.html:217
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:227
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:233
 msgid "Download PDF"
 msgstr "PDF herunterladen"
 
@@ -665,7 +692,7 @@ msgid "Show selected items for all users"
 msgstr "Ausgewählte Einträge für alle Nutzer anzeigen"
 
 #: gcampus/core/filters.py:174
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:37
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:36
 msgid "Search"
 msgstr "Suchen"
 
@@ -682,9 +709,9 @@ msgid "Filter for measurements conducted in a specified time range."
 msgstr ""
 "Nach Messungen suchen die in einem bestimmten Zeitraum gemessen wurden."
 
-#: gcampus/core/filters.py:187 gcampus/core/models/measurement.py:195
-#: gcampus/core/models/measurement.py:203
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:260
+#: gcampus/core/filters.py:187 gcampus/core/models/measurement.py:199
+#: gcampus/core/models/measurement.py:207
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:266
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:104
 msgid "Parameter"
 msgstr "Parameter"
@@ -692,15 +719,6 @@ msgstr "Parameter"
 #: gcampus/core/filters.py:188
 msgid "Filter for measurements containing specific parameters."
 msgstr "Nach Messungen mit bestimmten Parameter filtern."
-
-#: gcampus/core/filters.py:193 gcampus/core/models/measurement.py:60
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:62
-msgid "Location"
-msgstr "Standort"
-
-#: gcampus/core/filters.py:194
-msgid "Filter by radius after selecting a location"
-msgstr "Nach Messungen in einem bestimmten Radius suchen"
 
 #: gcampus/core/filters.py:198
 msgid "Measurements by your course"
@@ -718,16 +736,16 @@ msgstr "Nur Messungen anzeigen, die von mir durchgeführt wurden."
 msgid "Unable to parse OpenStreetMap ID!"
 msgstr "Fehler beim lesen der OpenStreetMap ID!"
 
-#: gcampus/core/forms/measurement.py:148 gcampus/core/models/measurement.py:206
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:261
+#: gcampus/core/forms/measurement.py:148 gcampus/core/models/measurement.py:210
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:267
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:105
 msgid "Value"
 msgstr "Wert"
 
 #: gcampus/core/forms/measurement.py:154 gcampus/core/models/measurement.py:85
-#: gcampus/core/models/measurement.py:213
+#: gcampus/core/models/measurement.py:217
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:212
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:262
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:268
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:76
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:106
 msgid "Note"
@@ -747,7 +765,9 @@ msgstr "Messungen"
 
 #: gcampus/core/models/measurement.py:57 gcampus/core/models/measurement.py:163
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:36
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:63
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:67
+#: gcampus/documents/views/generate_csv.py:13
+#: gcampus/documents/views/generate_csv.py:48
 msgid "Name"
 msgstr "Name"
 
@@ -756,9 +776,16 @@ msgid "Your forename or team name. This will be publicly visible."
 msgstr ""
 "Dein Vorname oder ein Team Name. Diese Information ist öffentlich sichtbar."
 
+#: gcampus/core/models/measurement.py:60
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:66
+#| msgid "Location name"
+msgid "Location"
+msgstr "Standort"
+
 #: gcampus/core/models/measurement.py:65
+#| msgid "Location name"
 msgid "Location name"
-msgstr "Standort name"
+msgstr "Standortname"
 
 #: gcampus/core/models/measurement.py:66
 msgid "An approximated location for the measurement"
@@ -768,7 +795,7 @@ msgstr "Ein abgeschätzter Standort der Messung"
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:126
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:44
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:193
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:61
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:65
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:67
 msgid "Water name"
 msgstr "Gewässername"
@@ -784,7 +811,7 @@ msgstr "OpenStreetMap ID"
 #: gcampus/core/models/measurement.py:80
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:40
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:204
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:68
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:72
 msgctxt "measurement time"
 msgid "Time"
 msgstr "Messzeitpunkt"
@@ -797,7 +824,7 @@ msgstr "Datum und Uhrzeit der Messung"
 msgid "Note on your measurement. This will be publicly visible."
 msgstr "Notiz zu deiner Messung. Diese Information ist öffentlich sichtbar."
 
-#: gcampus/core/models/measurement.py:88 gcampus/core/models/measurement.py:214
+#: gcampus/core/models/measurement.py:88 gcampus/core/models/measurement.py:218
 msgid "Hidden"
 msgstr "Versteckt"
 
@@ -822,7 +849,7 @@ msgid "Measurement %(id)s"
 msgstr "Messung %(id)s"
 
 #: gcampus/core/models/measurement.py:160
-#: gcampus/core/models/measurement.py:187
+#: gcampus/core/models/measurement.py:191
 msgid "Parameter type"
 msgstr "Parameter Typ"
 
@@ -834,19 +861,27 @@ msgstr "Parameter Typen"
 msgid "Unit"
 msgstr "Einheit"
 
-#: gcampus/core/models/measurement.py:176
+#: gcampus/core/models/measurement.py:167
+msgid "Slope"
+msgstr "Steigung"
+
+#: gcampus/core/models/measurement.py:169
+msgid "Offset"
+msgstr "Y-Achsenabschnitt"
+
+#: gcampus/core/models/measurement.py:180
 msgid "Limit"
 msgstr "Grenzwert"
 
-#: gcampus/core/models/measurement.py:196
+#: gcampus/core/models/measurement.py:200
 msgid "Parameters"
 msgstr "Parameter"
 
-#: gcampus/core/models/measurement.py:210
+#: gcampus/core/models/measurement.py:214
 msgid "Associated measurement"
 msgstr "Verknüpfte Messung"
 
-#: gcampus/core/models/measurement.py:224
+#: gcampus/core/models/measurement.py:228
 #, python-format
 msgid "Parameter %(pk)s (%(name)s)"
 msgstr "Parameter %(pk)s (%(name)s)"
@@ -868,7 +903,7 @@ msgid "Apply filter"
 msgstr "Filter anwenden"
 
 #: gcampus/core/templates/gcampuscore/components/filter.html:15
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:93
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:97
 msgid "Reset filter"
 msgstr "Filter zurücksetzen"
 
@@ -972,16 +1007,20 @@ msgid "Are you sure you want to delete this measurement?"
 msgstr "Bist du dir sicher, dass du diese Messung löschen willst?"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:57
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:237
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:243
 msgid "Delete"
 msgstr "Löschen"
 
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:256
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:227
+msgid "Explore environment"
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:262
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:97
 msgid "Measured values"
 msgstr "Messwerte"
 
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:282
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:288
 msgid "Expand note"
 msgstr "Notiz ansehen"
 
@@ -989,21 +1028,27 @@ msgstr "Notiz ansehen"
 msgid "Filter"
 msgstr "Filter"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:28
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:27
 msgid "Additional filters applied"
 msgstr "Weitere Filter werden angewendet"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:49
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:41
+#, fuzzy
+#| msgid "Download PDF"
+msgid "Download CSV"
+msgstr "PDF herunterladen"
+
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:53
 #, python-format
 msgid "Found %(count)s measurements matching your search criteria."
 msgstr ""
 "Es wurden %(count)s Messungen gefunden, die zu den Suchkriterien passen."
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:83
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:87
 msgid "No measurements found"
 msgstr "Keine Messungen gefunden"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:86
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:90
 msgid ""
 "Unfortunately, no measurements can be found. <br> Maybe your filter settings "
 "are too restrictive."
@@ -1261,8 +1306,35 @@ msgid "Metadata"
 msgstr "Metadaten"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:74
+#: gcampus/documents/views/generate_csv.py:13
+#: gcampus/documents/views/generate_csv.py:51
 msgid "Time"
 msgstr "Zeitpunkt"
+
+#: gcampus/documents/views/generate_csv.py:13
+#: gcampus/documents/views/generate_csv.py:47
+msgid "ID"
+msgstr "ID"
+
+#: gcampus/documents/views/generate_csv.py:13
+#: gcampus/documents/views/generate_csv.py:49
+#, fuzzy
+#| msgid "Location name"
+msgid "Location Name"
+msgstr "Standort name"
+
+#: gcampus/documents/views/generate_csv.py:13
+#: gcampus/documents/views/generate_csv.py:50
+#, fuzzy
+#| msgid "Water name"
+msgid "Water Name"
+msgstr "Gewässername"
+
+#: gcampus/documents/views/generate_csv.py:80
+#, fuzzy
+#| msgid "gewaessercampus-measurement-detail.pdf"
+msgid "gcampus_measurements.csv"
+msgstr "gewaessercampus-messung.pdf"
 
 #: gcampus/documents/views/print.py:37
 msgid "gewaessercampus-course-overview.pdf"
@@ -1386,3 +1458,6 @@ msgstr "Deutsch"
 #: gcampus/tasks/apps.py:24
 msgid "GCampus Tasks"
 msgstr "GCampus Aufgaben"
+
+#~ msgid "Filter by radius after selecting a location"
+#~ msgstr "Nach Messungen in einem bestimmten Radius suchen"
