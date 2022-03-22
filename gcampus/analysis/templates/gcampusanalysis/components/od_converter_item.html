@@ -1,35 +1,54 @@
 {% load i18n icon l10n mathop %}
-<script>
-    function Convert_{{ parameter.pk }}() {
-        var od_input = parseFloat(document.getElementById("od_input_{{ parameter.pk }}").value);
-        var concentration = document.getElementById("concentration_{{ parameter.pk }}");
-        if (od_input >= 0 && od_input <= 2) {
-            var calibration_fit = parseFloat(("{{ parameter.calibration_slope }}").replace(",", "."));
-            var calibration_offset = parseFloat(("{{ parameter.calibration_offset }}").replace(",", "."));
-            var concentration_value = (od_input * calibration_fit + calibration_offset).toFixed(2);
-            concentration.value = String(concentration_value);
-            var datapoint = document.getElementById("datapoint_{{ parameter.name }}")
-            datapoint.style.bottom = String((concentration_value-.11)*5)+"em";
-            datapoint.style.left = String((od_input-.1)*5)+"em";
-            datapoint.hidden = false;
-            console.log(datapoint);
+<div class="col-7 px-5 py-3">
+    <div class="mb-3">
+        <form onsubmit="Convert_{{ parameter.pk }}(event, chart_{{ parameter.pk }})">
+            <div>
+                <div class="mb-3">
+                    <label for="od_input_{{ parameter.pk }}">{% translate "Optical density" %}</label>
+                    <input name="od" type="number" min="0" max="2" step=".1" id="od_input_{{ parameter.pk }}"
+                           class="form-control"
+                           placeholder="{% translate "Enter optical density" %}">
+                </div>
+                <div class="mb-3">
+                    <label for="concentration_{{ parameter.pk }}">{% translate "Concentration" %}</label>
+                    <input name="cocentration" type="number" style="appearance: none" class="form-control"
+                           id="concentration_{{ parameter.pk }}"
+                           placeholder="{% translate "Concentration" %}"
+                           readonly>
+                </div>
+                <button type="submit" class="btn btn-primary">{% translate "Convert" %}</button>
+            </div>
+        </form>
 
-        }
-    }
-</script>
+    </div>
+</div>
+<div class="col-5 bg-light px-5 py-3">
+    <p class="mt-4 text-muted">
+        <canvas id="myChart_{{ parameter.name }}" width="400" height="400"></canvas>
+        <script>
+            var chart_{{ parameter.pk }} = (function () {
+                let chart_element_{{ parameter.pk }} = document.getElementById("myChart_{{ parameter.name }}");
+                let chart_title = "{% translate "Calibration fit for" %} " + "{{ parameter.name }}"
+                return gcampusanalysis.calibration.createChart("{{ parameter.name }}", chart_element_{{ parameter.pk }}, {{ parameter.calibration_slope|unlocalize }}, {{ parameter.calibration_offset|unlocalize }}, chart_title);
+            })();
 
-<div>
-    <div>
-        <label for="od_input_{{ parameter.pk }}">{% translate "Optical density" %}</label>
-        <input type="number" min="0" max="2" step=".1" id="od_input_{{ parameter.pk }}" class="form-control"
-               placeholder="{% translate "Enter optical density" %}">
-    </div>
-    <div>
-        <label for="concentration_{{ parameter.pk }}">{% translate "Concentration" %}</label>
-        <input type="number" class="form-control" id="concentration_{{ parameter.pk }}"
-               placeholder="{% translate "Concentration" %}"
-               readonly>
-    </div>
-    <button type="submit" class="btn btn-primary"
-            onclick="Convert_{{ parameter.pk }}();">{% translate "Convert" %}</button>
+            function Convert_{{ parameter.pk }}(e, chart) {
+                e.preventDefault();
+                if (!e.target.checkValidity()) {
+                    if (e.target.reportValidity) {
+                        e.target.reportValidity();
+                    }
+                } else {
+                    let data = new FormData(e.target);
+                    let od = parseFloat(data.get("od"));
+                    let concentration = e.target.elements.namedItem("cocentration");
+                    const calibration_fit = parseFloat(("{{ parameter.calibration_slope }}").replace(",", "."));
+                    const calibration_offset = parseFloat(("{{ parameter.calibration_offset }}").replace(",", "."));
+                    let concentration_value = (od * calibration_fit + calibration_offset).toFixed(2);
+                    concentration.value = String(concentration_value);
+                    gcampusanalysis.calibration.updateAnnotation(od, concentration_value, chart)
+                }
+            }
+        </script>
+    </p>
 </div>

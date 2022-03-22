@@ -306,6 +306,38 @@ let gcampusmailConfig = (env, options) => {
     });
 }
 
+let gcampusanalysisConfig = (env, options) => {
+    let common = commonConfig(env, options);
+    return Object.assign(common, {
+        name: 'gcampusanalysis',
+        entry: {
+            calibration: path.resolve(__dirname, 'gcampus', 'analysis', 'static_src', 'js', 'calibration.js'),
+        },
+        output: {
+            path: path.resolve(__dirname, 'gcampus', 'analysis', 'static', 'gcampusanalysis'),
+            publicPath: '/static/gcampusanalysis',
+            filename: 'js/[name].js',
+            library: {
+                name: ['gcampusanalysis', '[name]'],
+                type: 'var'
+            }
+        },
+        // Enable lines below if assets are needed
+        //plugins: [
+        //    ...(common.plugins || []),
+            // new CopyWebpackPlugin({
+            //     patterns: [
+            //         {
+            //             from: path.resolve(__dirname, 'gcampus', 'analysis', 'static_src', 'assets'),
+            //             to: path.resolve(__dirname, 'gcampus', 'analysis', 'static', 'gcampusanalysis', 'assets'),
+            //         },
+            //     ]
+            // })
+       // ],
+    });
+}
+
+
 
 module.exports = (env, options) => {
     return [
@@ -314,5 +346,6 @@ module.exports = (env, options) => {
         gcampusauthConfig(env, options),
         gcampusdocumentsConfig(env, options),
         gcampusmailConfig(env, options),
+        gcampusanalysisConfig(env, options),
     ];
 };
