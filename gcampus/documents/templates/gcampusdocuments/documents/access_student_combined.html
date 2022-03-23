@@ -33,11 +33,26 @@
     <!-- TODO: add and use translations -->
 
     <div class="footer-left">
-        <span class="bold">{% translate "Document ID" %}</span> GC-AS-XK342K8M <!-- TODO: use ID of document-->
+        <span class="bold">{% translate "Document ID" %}</span>: GC-ADMIN-AK
     </div>
 
     <div class="footer-right">
         <a href="https://gewaessercampus.de" class="footer-link">www.gewaessercampus.de</a>
+    </div>
+
+    <div class="footer-center container">
+        <div class="w-88 float-left">
+            {% blocktrans trimmed %}
+                The project <span class="color-secondary">Gewässer</span><span class="color-primary">Campus</span>
+                is carried out by <i>gemeinnützige desklab&nbsp;UG (haftungsbeschränkt)</i> in cooperation with
+                <i>AG&nbsp;Bioverfahrenstechnik der TU&nbsp;Kaiserslautern</i> and financially supported by the
+                <i>Deutsche Bundesstiftung Umwelt</i>. More educational material and information on this project
+                is available at www.gewaessercampus.de.
+            {% endblocktrans %}
+        </div>
+        <div class="footer-qrcode float-right">
+            <img src="{% print_static 'gcampusdocuments/assets/gcampus-qr-code.png' %}" alt="">
+        </div>
     </div>
 
     {% for token in course_token.access_keys.all %}

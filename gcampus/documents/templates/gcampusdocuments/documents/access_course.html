@@ -33,11 +33,26 @@
 <body>
 
     <div class="footer-left">
-        <span class="bold">{% translate "Document ID" %}</span> GC-AC-{{ course_token.token }}
+        <span class="bold">{% translate "Document ID" %}</span>: GC-ADMIN-CO
     </div>
 
     <div class="footer-right">
         <a href="https://gewaessercampus.de" class="footer-link">www.gewaessercampus.de</a>
+    </div>
+
+    <div class="footer-center container">
+        <div class="w-88 float-left">
+            {% blocktrans trimmed %}
+                The project <span class="color-secondary">Gewässer</span><span class="color-primary">Campus</span>
+                is carried out by <i>gemeinnützige desklab&nbsp;UG (haftungsbeschränkt)</i> in cooperation with
+                <i>AG&nbsp;Bioverfahrenstechnik der TU&nbsp;Kaiserslautern</i> and financially supported by the
+                <i>Deutsche Bundesstiftung Umwelt</i>. More educational material and information on this project
+                is available at www.gewaessercampus.de.
+            {% endblocktrans %}
+        </div>
+        <div class="footer-qrcode float-right">
+            <img src="{% print_static 'gcampusdocuments/assets/gcampus-qr-code.png' %}" alt="">
+        </div>
     </div>
 
     <article>
@@ -133,45 +148,6 @@
                         </div>
                     {% endif %}
                     {% endfor %}
-                </div>
-            </div>
-
-            <!-- qrcodes with links and information -->
-            <div class="w-100 overflow-hidden">
-                <div class="w-abs-800 float-left">
-                    <div class="qrcode float-left">
-                        <img src="{% print_static 'gcampusdocuments/assets/gcampus-qr-code.png' %}" alt="">
-                    </div>
-                    <div>
-                        <div class="qrcode-heading">
-                            {% translate "Open digital copy" %}
-                        </div>  
-                        <div class="qrcode-description text-justify">
-                            {% blocktrans trimmed %}
-                                This link leads to the digital file of this document. 
-                                The file stored there can then be downloaded, 
-                                sent or even printed out again.
-                            {% endblocktrans %}
-                        </div>
-                    </div>
-                </div>
-                <div class="w-abs-800 float-right">
-                    <div class="qrcode float-left">
-                        <img src="{% print_static 'gcampusdocuments/assets/gcampus-qr-code.png' %}" alt="">
-                    </div>
-                    <div>
-                        <div class="qrcode-heading">
-                            {% translate "Login of the web application" %}
-                        </div>  
-                        <div class="qrcode-description text-justify">
-                            {% blocktrans trimmed %}
-                                This link leads to the login page of the 
-                                web application (www.gewaessercampus.de/login). 
-                                After entering the access key, 
-                                measurements can be or edited.
-                            {% endblocktrans %}
-                        </div>
-                    </div>
                 </div>
             </div>
 

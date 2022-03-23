@@ -27,7 +27,7 @@ head, head > title, head > meta {
 
 .footer-left {
     position: fixed;
-    bottom: 0cm;
+    bottom: 1.7cm;
     left: 0cm;
     margin-bottom: -0.6cm;
     width: 8cm;
@@ -38,11 +38,23 @@ head, head > title, head > meta {
 
 .footer-right {
     position: fixed;
-    bottom: 0cm;
+    bottom: 1.7cm;
     right: 0cm;
     margin-bottom: -0.6cm;
     width: 6cm;
     font-size: 9pt;
     color: $grey-500;
     text-align: right;
+}
+
+.footer-center {
+    position: fixed;
+    border-top: $grey-500 1px solid;
+    padding-top: .2cm;
+    bottom: .75cm;
+    left: 0cm;
+    width: 17cm;
+    font-size: 7.5pt;
+    color: $grey-500;
+    text-align: justify;
 }
