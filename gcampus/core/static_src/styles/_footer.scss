@@ -1,0 +1,22 @@
+.footer {
+  width: 100% !important;
+  border-top: 1px solid $secondary;
+  font-size: 8pt;
+  position: fixed;
+  bottom: 0;
+  background-color: white;
+  height: 50px;
+}
+
+.footer-link {
+  text-decoration: none !important;
+  color: $secondary;
+}
+
+.footer-link:hover {
+  color: black;
+}
+
+.min-vh-100-wo-footer {
+  min-height: calc(100vh - 50px) !important;
+}
