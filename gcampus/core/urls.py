@@ -26,6 +26,15 @@ from gcampus.core.views.measurement import (
 )
 from gcampus.core.views.parameter import ParameterFormSetView
 
+
+# uncomment to test 404 and 500 pages locally
+#from django.views.defaults import page_not_found, server_error
+#def custom_page_not_found(request):
+#    return page_not_found(request, None)
+#
+#def custom_server_error(request):
+#    return server_error(request)
+
 # Turn off black formatting and pylint
 # fmt: off
 # pylint: disable=line-too-long
@@ -40,6 +49,8 @@ urlpatterns = [
     path("measurement/<int:pk>/edit/", MeasurementEditView.as_view(), name="edit-measurement"),
     path("measurement/<int:pk>/edit/parameters/", ParameterFormSetView.as_view(), name="edit-parameters"),
     path("measurements/", MeasurementListView.as_view(), name="measurements"),
+#    path("404/", custom_page_not_found), # uncomment to test 404 page locally
+#    path("500/", custom_server_error), # uncomment to test 500 page locally
 ]
 # fmt: on
 # pylint: enable=line-too-long

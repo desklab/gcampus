@@ -1,7 +1,7 @@
 {% extends "gcampuscore/base.html" %}
 {% load static i18n %}
 {% block title %}
-    {% translate "Page not found" %} - GewässerCampus
+    {% translate "Server Error" %} - GewässerCampus
 {% endblock %}
 {% block body %}
     <nav class="navbar navbar-expand navbar-light bg-white fixed-top">
@@ -16,12 +16,11 @@
         <div class="row align-items-center g-lg-5 py-5 min-vh-100">
             <div class="col-lg-7 text-center text-lg-start">
                 <h2 class="display-3 fw-bold lh-1 mb-3">
-                    {% translate "Page not found (404)" %}
+                    {% translate "Server Error (500)" %}
                 </h2>
                 <div class="col-lg-10 fs-4">
                     {% blocktranslate trimmed %}
-                        The requested page could not be found.
-                        Please check the url you entered and try again or use the buttons to go back to the website.
+                        The server encountered an error. We have been noticed automatically and will fix it as soon as possible.
                     {% endblocktranslate %}
                 </div>
             </div>
