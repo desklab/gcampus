@@ -15,19 +15,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {Component, render, VNode} from 'preact';
-import {html} from 'htm/preact';
-
-
-const DEFAULT_COLOR = '#0d6efd';
-const HIGHLIGHT_COLOR = '#F6AE2D';
-const VAR_LOCATION_PLACEHOLDER = window._varLocationPlaceholder;
-const VAR_LOCATION_TITLE = window._varLocationTitle;
-const LOADING_TEXT = window._loadingText;
+const DEFAULT_COLOR = '#052c65';
+const HIGHLIGHT_COLOR = '#0d6efd';
+const waterSuggestionTemplate = (
+    document.getElementById("waterSuggestionTemplate").text
+);
+const parentElement = document.getElementById('waterSuggestions');
+const loadingElement = document.getElementById('waterLoading');
+const osmElement = document.getElementById('waterOsm');
+const customWaterElement = document.getElementById('waterCustom');
 const EMPTY_GEO_JSON = {
     'type': 'FeatureCollection',
     'features': []  // Empty data for now
 };
+
+
+class UnknownSourceError extends Error {
+    constructor(message) {
+        super(message);
+        this.message = (
+            "Unknown source '" + message + "'. Can be either 'osm' or 'db'."
+        );
+        this.name = "UnknownSourceError";
+    }
+}
 
 
 /**
@@ -48,7 +59,7 @@ function getLookupQuery(source, lng, lat) {
     } else if (source === 'db') {
         url = '/api/v1/waterlookup';
     } else {
-        throw Error(`Unknown source '${source}'. Can be either 'osm' or 'db'.`);
+        throw UnknownSourceError(String(source));
     }
     // Parse string inputs for rounding later
     if (typeof lat !== 'number')
@@ -77,7 +88,7 @@ function getLookupQuery(source, lng, lat) {
  * @param lat {number|string} - Latitude
  * @returns {Promise} - Fetch promise
  */
-function fetchWaterLookup(lng,lat) {
+function fetchWaterLookup(lng, lat) {
     let lookupQuery = getLookupQuery('db', lng, lat)
     return fetch(lookupQuery).then(response => response.json())
 }
@@ -93,7 +104,7 @@ function fetchWaterLookup(lng,lat) {
  * @param lat {number|string} - Latitude
  * @returns {Promise} - Fetch promise
  */
-function fetchOverpassLookup(lng,lat) {
+function fetchOverpassLookup(lng, lat) {
     let lookupQuery = getLookupQuery('osm', lng, lat)
     return fetch(lookupQuery).then(response => response.json())
 }
@@ -105,135 +116,144 @@ function fetchOverpassLookup(lng,lat) {
  * Returns an element used to display a list of water suggestions inside
  * the ``WaterList`` class.
  *
- * @param props
- * @returns {VNode}
+ * @param feature
+ * @returns {NodeList}
  */
-function ListItem(props) {
-    let {feature, highlight, resetHighlight} = props;
-    let {display_name, flow_type} = feature.properties;
+function ListItem(feature) {
+    let {display_name, display_flow_type, flow_type} = feature.properties;
     let id = feature.id;
-    return html`
-        <input class="form-check-input me-2"
-               id="water${id}"
-               type="radio"
-               name="water_id"
-               data-feature-id="${id}"
-               value="${id}"/>
-        <label class="list-group-item list-group-item-hover list-group-item-water"
-               for="water${id}"
-               onMouseOver=${highlight} onMouseLeave=${resetHighlight}>
-            <b>${display_name}</b>
-            <small class="d-block text-muted">
-                ${flow_type.charAt(0).toUpperCase() + flow_type.slice(1)}
-            </small>
-        </label>`;
+    let inputId = 'waterSuggestion' + String(id);
+    let item = document.createElement('div');
+    item.innerHTML = waterSuggestionTemplate;
+    let input = item.querySelector('input');
+    let label = item.querySelector('label');
+    let nameElement = item.querySelector('label > b');
+    let descriptionElement = item.querySelector('label > small');
+    input.setAttribute('id', inputId);
+    input.setAttribute('data-feature-id', id);
+    label.setAttribute('for', inputId);
+    label.setAttribute('data-feature-id', id);
+    nameElement.innerText = display_name;
+    descriptionElement.innerText = (
+        display_flow_type.charAt(0).toUpperCase() + display_flow_type.slice(1)
+    );
+    if (flow_type === 'standing' || flow_type === 'running') {
+        let icon = document.createElement('i');
+        icon.classList.add('water-icon');
+        icon.classList.add('me-1');
+        icon.classList.add(flow_type);
+        descriptionElement.insertAdjacentElement('afterbegin', icon);
+    }
+    return item.childNodes;
 }
 
 
-class WaterList extends Component {
+/**
+ * Water List Item
+ *
+ * Returns an element used to display a list of water suggestions inside
+ * the ``WaterList`` class.
+ *
+ * @returns {NodeList}
+ */
+function LoadingElement() {
+    let item = document.createElement('div');
+    item.innerHTML = loadingTemplate;
+    return item.childNodes;
+}
+
+
+/**
+ * Append nodes to HTMLElement
+ *
+ * Append nodes (NodeList) in-place.
+ *
+ * @param parent {HTMLElement} - Parent element
+ * @param children {NodeList} - List of nodes
+ */
+function insertNodes(parent, children) {
+    let pos = parent.firstChild;
+    while (children.length > 0) {
+        parent.insertBefore(children[0], pos);
+    }
+}
+
+
+class WaterList {
     state;
     map;
+    currentPermanentHighlight;
+    currentHighlight;
     _layerID = 'waterLayer';
+    _layerIDPoint = 'waterLayerPoint';
     _sourceID = 'waterList';
-    _sourceIDHighlight = 'waterItemHighlighted';
-    _layerIDHighlight = 'waterLayerHighlighted';
     _requestTimeout = null;
+    lat = null;
+    lng = null;
 
     constructor() {
-        super();
-        this.state = {features: [], loading: false};
+        this.state = {
+            features: [],
+            hasDatabase: false,
+            hasOsm: false,
+            loading: false,
+            error: false
+        };
         this.currentPermanentHighlight = null;
         this.currentHighlight = null;
         window.addEventListener('map:load', this.mapLoad.bind(this));
+        osmElement.addEventListener('click', this.osmUpdate.bind(this));
     }
 
-    setFeatures(features) {
-        this.setLoading(false);
-        features = features || [];
-        features = features.filter(
-            f => f.properties.hasOwnProperty('display_name') && f.properties.name
-        );
+    setState(state) {
+        let keys = Object.keys(this.state);
+        for (let i = 0; i < keys.length; i++) {
+            let key = keys[i]
+            if (state.hasOwnProperty(key))
+                this.state[key] = state[key];
+        }
+        this.render();
+    }
+
+    setFeatures(features, source) {
+        if (source === 'osm') {
+            features = this.state.features.concat(features || []);
+        } else if (source === 'db') {
+            features = features || [];
+        } else {
+            throw UnknownSourceError(String(source));
+        }
+
+        // Add all features to the layer
         this.map.getSource(this._sourceID).setData({
             'type': 'FeatureCollection',
             'features': features
         });
+        this.map.removeFeatureState({source: this._sourceID});
+
         if (this.currentPermanentHighlight !== null) {
-            console.log(features);
-            console.log(this.currentPermanentHighlight);
-            let highlightedFeature = features.filter(
-                f => this.validFeatureID(f.id) === this.validFeatureID(this.currentPermanentHighlight)
-            );
-            console.log(highlightedFeature);
-            if (highlightedFeature.length === 0) {
-                // The last selected water could not be found in the new
-                // suggestion.
-                // Thus, the selection is reset.
-                console.log("reset");
+            let hlFeature = features.filter(
+                (f) => f.id === this.currentPermanentHighlight
+            )
+            if (hlFeature.length !== 1) {
                 this.currentPermanentHighlight = null;
-                this.resetHighlight();
             }
         }
-        this.setState({features: features});
-    }
+        this.highlightFeature(this.currentPermanentHighlight);
 
-    /**
-     * Set Loading
-     *
-     * Set the loading state. Setting this to true will trigger display
-     * the loading indicator.
-     * @param loading
-     */
-    setLoading(loading) {
-        this.setState({loading: loading});
-    }
-
-    /**
-     * Valid Feature ID
-     *
-     * Returns a valid feature ID (i.e. an integer instead of a string)
-     * and throws an exception if an invalid string or other type has
-     * been provided.
-     * This is needed because the feature layers use integer IDs whereas
-     * the value of HTMLElements are strings.
-     *
-     * @param featureID {number|string}: Feature ID
-     * @returns {number}
-     */
-    validFeatureID(featureID) {
-        if (typeof featureID !== 'number') {
-            try {
-                return Number.parseInt(featureID);
-            } catch {
-                throw Error(`Unable to parse feature ID '${featureID}'. Expected an integer!`);
-            }
+        if (source === 'osm') {
+            this.setState({
+                loading: false,
+                features: features,
+                hasOsm: true,
+            });
+        } else {
+            this.setState({
+                loading: false,
+                features: features,
+                hasDatabase: true
+            });
         }
-        return featureID;
-    }
-
-    /**
-     * Get GeoJSON Feature
-     *
-     * Return the GeoJSON feature where the ID matches the passed
-     * feature ID. Note that this will only return features that are
-     * in the current state. Features that have been in the state
-     * previously will not be returned.
-     *
-     * If a feature can not be found, an exception is thrown.
-     *
-     * @param featureID {Number|String}: Feature ID
-     * @returns {Object} GeoJSON of the requested feature
-     * @throws Error
-     */
-    getGeoJSONFeature(featureID) {
-        featureID = this.validFeatureID(featureID);
-        let feature = this.state.features.filter(f => f.id === featureID);
-        if (feature.length === 0) {
-            throw Error(`Unable to find feature with ID ${featureID}!`);
-        }
-        if (feature.length > 1) {
-            throw Error(`Found more than one feature with ID ${featureID}!`);
-        }
-        return feature[0];
     }
 
     /**
@@ -243,29 +263,35 @@ class WaterList extends Component {
      * color of the layer to visually distinguish one layer from the
      * others.
      *
-     * @param featureID {number|string}: Feature ID
+     * @param featureId {number}: Feature ID
      */
-    highlightFeature(featureID) {
-        featureID = this.validFeatureID(featureID);
-        this.currentHighlight = featureID;
-        this.map.getSource(this._sourceIDHighlight).setData(
-            this.getGeoJSONFeature(featureID)
-        );
+    highlightFeature(featureId) {
+        if (this.currentHighlight === featureId) {
+            return;
+        }
+        this.map.removeFeatureState({
+            source: this._sourceID,
+            id: this.currentHighlight
+        });
+        this.currentHighlight = featureId;
+        if (this.currentHighlight === null) {
+            return;
+        }
+        this.map.setFeatureState({
+            source: this._sourceID,
+            id: this.currentHighlight
+        }, {
+            highlight: true
+        })
     }
 
-    /**
-     * Reset Highlight
-     *
-     * Resets the highlighting
-     */
-    resetHighlight() {
-        // Set source data for the highlight layer to be empty
-        if (this.currentHighlight === this.currentPermanentHighlight)
-            return
-        this.map.getSource(this._sourceIDHighlight).setData(EMPTY_GEO_JSON);
-        if (this.currentPermanentHighlight !== null) {
-            this.highlightFeature(this.currentPermanentHighlight);
-        }
+    highlightPermanent(featureId) {
+        this.currentPermanentHighlight = featureId;
+        this.highlightFeature(this.currentPermanentHighlight);
+    }
+
+    clearLayers() {
+        this.map.getSource(this._sourceID).setData(EMPTY_GEO_JSON);
     }
 
     /**
@@ -280,7 +306,18 @@ class WaterList extends Component {
     mapUpdate(e) {
         let pointWidget = e.detail.widget;
         let {lng, lat} = pointWidget.getLngLat();
-        this.setLoading(true)
+        this.lat = lat;
+        this.lng = lng;
+
+        this.setState({
+            loading: true,
+            hasDatabase: false,
+            hasOsm: false,
+            features: [],
+        });
+        this.clearLayers();
+        this.currentHighlight = null;
+
         if (this._requestTimeout !== null) {
             // Stop the last timeout and thereby abort the request
             clearTimeout(this._requestTimeout);
@@ -295,13 +332,28 @@ class WaterList extends Component {
         this._requestTimeout = setTimeout(() => {
             this._requestTimeout = null;
             fetchWaterLookup(lng, lat)
-                .then(data => this.setFeatures(data.features))
+                .then(data => this.setFeatures(data.features, 'db'))
                 .catch(this.onError.bind(this));
         }, 300);
     }
 
+    osmUpdate() {
+        if (this.lat === null || this.lng === null) {
+            return;
+        }
+        this.setState({
+            loading: true
+        })
+        fetchOverpassLookup(this.lng, this.lat)
+            .then(data => this.setFeatures(data.features, 'osm'))
+            .catch(this.onError.bind(this));
+    }
+
     onError(err) {
-        this.setLoading(false);
+        this.setState({
+            loading: false,
+            error: true,
+        });
         console.error(err);
     }
 
@@ -320,10 +372,6 @@ class WaterList extends Component {
             'type': 'geojson',
             'data': EMPTY_GEO_JSON,
         });
-        this.map.addSource(this._sourceIDHighlight, {
-            'type': 'geojson',
-            'data': EMPTY_GEO_JSON,
-        });
         // Add the default water layer. This layer will show all waters
         // suggested to the user. It automatically updates once the
         // source data is changed. There is thus no need to access this
@@ -334,34 +382,50 @@ class WaterList extends Component {
             'source': this._sourceID,
             'layout': {},
             'paint': {
-                'line-color': DEFAULT_COLOR,
-                'line-width': 8
-            }
+                'line-color': [
+                    'case',
+                    ['boolean', ['feature-state', 'highlight'], false],
+                    HIGHLIGHT_COLOR,
+                    DEFAULT_COLOR,
+                ],
+                'line-width': [
+                    'case',
+                    ['boolean', ['feature-state', 'highlight'], false],
+                    5,
+                    4,
+                ]
+            },
+            'filter': ['!=', '$type', 'Point']
         });
         this.map.addLayer({
-            'id': 'points',
+            'id': this._layerIDPoint,
             'type': 'circle',
             'source': this._sourceID,
             'paint': {
-                'circle-radius': 6,
-                'circle-color': '#B42222'
+                'circle-color': [
+                    'case',
+                    ['boolean', ['feature-state', 'highlight'], false],
+                    HIGHLIGHT_COLOR,
+                    DEFAULT_COLOR,
+                ],
+                'circle-radius': [
+                    'case',
+                    ['boolean', ['feature-state', 'highlight'], false],
+                    10,
+                    8,
+                ],
+                'circle-stroke-width': [
+                    'case',
+                    ['boolean', ['feature-state', 'highlight'], false],
+                    3,
+                    2,
+                ],
+                'circle-stroke-color': '#ffffff'
             },
             'filter': ['==', '$type', 'Point']
         });
         // Add highlight layer. This will automatically update once the
         // highlighted data source is set.
-        this.map.addLayer({
-            'id': this._layerIDHighlight,
-            'type': 'line',
-            'source': this._sourceIDHighlight,
-            'layout': {},
-            'paint': {
-                'line-color': DEFAULT_COLOR,
-                'line-width': 12,
-                // 'line-cap': 'round',
-                // 'line-join': 'round',
-            }
-        });
         this.map.on('edit', this.mapUpdate.bind(this));
     }
 
@@ -381,81 +445,55 @@ class WaterList extends Component {
         };
     }
 
-    /**
-     * Register Change Listener of Radio Buttons
-     *
-     * Iterates over all radio buttons and adds an event listener to
-     * each. This will check if the radio button has been selected and
-     * permanently highlights the features associated with those radio
-     * buttons.
-     */
-    setupWaterList() {
-        if (document.querySelector('input[name="water_id"]')) {
-            document.querySelectorAll('input[name="water_id"]').forEach(el => {
-                let featureID = this.validFeatureID(
-                    el.getAttribute("data-feature-id")
-                );
-                if (featureID === this.currentPermanentHighlight) {
-                    el.checked = true;
-                }
-                el.addEventListener('change', (e) => {
-                    if (e.target.checked) {
-                        // The element has actually been checked.
-                        // All other elements will be ignored.
-
-                        // If the current element is the variable water
-                        // name item, then the variable below will be
-                        // set to 'null'. Otherwise, it will have the
-                        // correct ID.
-                        this.currentPermanentHighlight = featureID;
-                        // Reset highlight will remove all highlighting
-                        // and highlight only the current selection
-                        // given it is not null.
-                        this.resetHighlight();
-                    }
-                });
-            });
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        this.setupWaterList();
-    }
-
-    componentDidMount() {
-        this.setupWaterList();
-    }
-
-    render(props, state, context) {
-        let {features, loading} = state;
-        let content = '';
-        if (loading) {
-            content = html`
-                <div class="list-group-item list-group-item-water">
-                    <div class="spinner-border spinner-border-sm" role="status">
-                    </div>
-                    <span class="ms-2">${LOADING_TEXT}</span>
-                </div>`
-        } else {
-            content = features.map(feature => html`
-                <${ListItem}
-                    feature=${feature}
-                    highlight=${this.createMouseOverListener(feature)}
-                    resetHighlight=${this.resetHighlight.bind(this)}
-                />`
+    render() {
+        let {features, loading, hasDatabase, hasOsm} = this.state;
+        parentElement.querySelectorAll('input,label').forEach(
+            (el) => parentElement.removeChild(el)
+        );
+        for (let i = 0; i < features.length; i++) {
+            let feature = features[i];
+            insertNodes(parentElement, ListItem(feature));
+            let input = parentElement.querySelector(
+                'input[data-feature-id="' + String(feature.id) + '"]'
             );
+            let label = parentElement.querySelector(
+                'label[data-feature-id="' + String(feature.id) + '"]'
+            );
+            input.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.highlightPermanent(feature.id);
+                }
+            });
+            label.addEventListener('mouseenter', (e) => {
+                this.highlightFeature(feature.id);
+            });
+            label.addEventListener('mouseleave', (e) => {
+                this.highlightFeature(this.currentPermanentHighlight);
+            });
+            if (this.currentPermanentHighlight === feature.id) {
+                input.checked = true;
+            }
         }
-        return html`
-            <div class="list-group list-group-water"
-                style="border-top-left-radius: 0; border-top-right-radius: 0;">
-                ${content}
-            </div>`;
+        if (loading) {
+            loadingElement.classList.remove('d-none');
+            osmElement.classList.add('d-none');
+            customWaterElement.classList.add('d-none');
+        } else {
+            loadingElement.classList.add('d-none');
+            if (hasDatabase) {
+                if (hasOsm) {
+                    osmElement.classList.add('d-none');
+                    customWaterElement.classList.remove('d-none');
+                } else {
+                    osmElement.classList.remove('d-none');
+                    customWaterElement.classList.add('d-none');
+                }
+            } else {
+                osmElement.classList.add('d-none');
+                customWaterElement.classList.add('d-none');
+            }
+        }
     }
 }
 
-
-render(
-    html`
-        <${WaterList}/>`,
-    document.getElementById('watersuggestion')
-);
+new WaterList()

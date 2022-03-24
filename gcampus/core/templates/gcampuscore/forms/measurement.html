@@ -82,7 +82,36 @@
                             {% if form.water_name.errors %}
                                 <small class="text-danger">{{ form.water_name.errors }}</small>
                             {% endif %}
-                            <div class="mt-2" id="watersuggestion"></div>
+                            <div class="list-group list-group-water mt-2" id="waterSuggestions">
+                                <div class="list-group-item list-group-item-water d-none"
+                                     id="waterLoading">
+                                    <div class="spinner-border spinner-border-sm" role="status"></div>
+                                    <span class="ms-2">
+                                        {% translate "Loading ..." %}
+                                    </span>
+                                </div>
+                                <div class="list-group-item list-group-item-hover list-group-item-water cursor-pointer text-center d-none"
+                                     id="waterOsm">
+                                    <div class="shadow-box"></div>
+                                    <div class="shadow-box shadow-box-2"></div>
+                                    {% translate "Water not found?" %}
+                                    <br>
+                                    <small>
+                                        {% translate "Search for more waters on OpenStreetMaps" %}
+                                    </small>
+                                </div>
+                                <div class="list-group-item list-group-item-hover list-group-item-water cursor-pointer d-flex flex-row align-items-center gap-3 d-none"
+                                     id="waterCustom">
+                                    <h4>{% include "gcampuscore/icons/plus-circle.html" %}</h4>
+                                    <div>
+                                        {% translate "Water still not found?" %}
+                                        <br>
+                                        <small>
+                                            {% translate "Click to add a new water to the database" %}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     {% endwith %}
                 </div>
@@ -121,10 +150,8 @@
     </div>
 {% endblock %}
 {% block extra_body %}
-    <script type="text/javascript">
-        window._varLocationPlaceholder = "{% translate "Water name" %}";
-        window._varLocationTitle = "{% translate "Other Water:" %}";
-        window._loadingText = "{% translate "Loading ..." %}";
+    <script type="text/html" id="waterSuggestionTemplate">
+        {% include "gcampuscore/components/water_suggestion.html" %}
     </script>
     <script type="text/javascript" src="{% static 'gcampuscore/js/watersuggestion.js' %}"></script>
     <script type="text/javascript" src="{% static 'gcampuscore/js/autofocus.js' %}"></script>
