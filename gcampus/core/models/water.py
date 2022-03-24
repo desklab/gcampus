@@ -145,7 +145,7 @@ class Water(DateModelMixin):
         verbose_name=gettext_lazy("Tags")
     )
     osm_id = models.BigIntegerField(
-        null=True, verbose_name=gettext_lazy("OpenStreetMap ID")
+        unique=True, null=True, verbose_name=gettext_lazy("OpenStreetMap ID")
     )
     osm_element_type = models.CharField(
         choices=OSMElementType.choices, null=False, blank=False, max_length=16,
