@@ -88,8 +88,8 @@ class MapboxGLPointWidget {
         this._map.fire('edit', {detail: {widget: this}});
     }
 
-    _onMarkerDragged() {
-        this.setLngLat(e.lngLat);
+    _onMarkerDragged(e) {
+        this.setLngLat(e.target.getLngLat());
         this._map.fire('edit', {detail: {widget: this}});
     }
 
@@ -100,7 +100,7 @@ class MapboxGLPointWidget {
         return {
             lng: coordinates[0],
             lat: coordinates[1]
-        }
+        };
     }
 
     setLngLat(lngLat) {
@@ -111,7 +111,7 @@ class MapboxGLPointWidget {
         this.value = {
             type: this.TYPE,
             coordinates: lngLat
-        }
+        };
     }
 
     getMap() {
