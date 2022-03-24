@@ -134,7 +134,7 @@ const commonConfig = (env, options) => {
             new CleanWebpackPlugin()
         ],
         watchOptions: {
-            ignored: ['**/*.py', '**/node_modules'],
+            ignored: ['**/*.py', '/node_modules/'],
         },
         performance: {
             hints: 'warning'
@@ -232,10 +232,10 @@ let gcampusauthConfig = (env, options) => {
                         from: path.resolve(__dirname, 'gcampus', 'auth', 'static_src', 'fonts'),
                         to: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth', 'fonts'),
                     },
-                    {
-                        from: path.resolve(__dirname, 'gcampus', 'auth', 'static_src', 'assets'),
-                        to: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth', 'assets'),
-                    },
+                    // {
+                    //     from: path.resolve(__dirname, 'gcampus', 'auth', 'static_src', 'assets'),
+                    //     to: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth', 'assets'),
+                    // },
                 ]
             })
         ],
