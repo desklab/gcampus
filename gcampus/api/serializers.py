@@ -72,19 +72,21 @@ class WaterSerializer(GeoFeatureModelSerializer):
         model = Water
         geo_field = "geometry"
         fields = (
+            "id",
             "name",
             "display_name",
             "geometry",
             "osm_id",
-            "id",
             "tags",
             "flow_type",
+            "display_flow_type",
             "water_type",
+            "display_water_type",
         )
 
     display_name = serializers.CharField(read_only=True)
-    flow_type = serializers.CharField(source='get_flow_type_display')
-    water_type = serializers.CharField(source='get_water_type_display')
+    display_flow_type = serializers.CharField(source='get_flow_type_display')
+    display_water_type = serializers.CharField(source='get_water_type_display')
 
 
 class WaterListSerializer(serializers.ModelSerializer):
@@ -97,13 +99,16 @@ class WaterListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Water
         fields = (
-            "display_name",
-            "name",
-            "osm_id",
             "id",
+            "name",
+            "display_name",
+            "osm_id",
             "flow_type",
+            "display_flow_type",
             "water_type",
+            "display_water_type",
         )
 
     display_name = serializers.CharField(read_only=True)
-
+    display_flow_type = serializers.CharField(source='get_flow_type_display')
+    display_water_type = serializers.CharField(source='get_water_type_display')
