@@ -161,7 +161,7 @@ class ParameterType(models.Model):
         verbose_name_plural = _("Parameter types")
 
     name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
-
+    short_name = models.CharField(blank=True, max_length=10, verbose_name=_("Short name"))
     unit = models.CharField(blank=True, max_length=10, verbose_name=_("Unit"))
 
     def __str__(self):
