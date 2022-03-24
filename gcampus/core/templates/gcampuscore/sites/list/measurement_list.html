@@ -36,24 +36,25 @@
                         {% translate "Search" %}
                     </button>
                 </div>
-            <div class="col-auto">
-                    <a href="{% url "gcampusdocuments:csv" %}{% request_params %}" class="btn btn-outline-success">
-                        {% translate "Download CSV" %}
-                    </a>
-                </div>
-            </div>
             {% include "gcampuscore/components/filter.html" %}
         </form>
     </div>
     {% if filter.qs %}
-        <div class="container-fluid mt-4">
-            <div class="bg-light border rounded-3 p-3">
-                {% icon "info" height="28" width="28" %}
-                <span class="text-dark ms-2">
+        <div class="container-fluid mt-4 px-2 mx-0">
+            <div class="bg-light rounded-3 p-3 row">
+                <div class="col-auto d-flex align-items-center text-dark">
                     {% blocktranslate trimmed %}
                         Found {{ count }} measurements matching your search criteria.
                     {% endblocktranslate %}
-                </span>
+                </div>
+                <div class="col-auto ms-auto px-0">
+                    <a href="{% url "gcampusdocuments:csv" %}{% request_params %}" class="btn btn-sm btn-secondary me-2">
+                        {% translate "Download data" %}
+                    </a>
+                    <a href="{% url "gcampusdocuments:measurement-list" %}{% request_params %}" class="btn btn-sm btn-secondary">
+                        {% translate "Print summary" %}
+                    </a>
+                </div>
             </div>
         </div>
     {% endif %}

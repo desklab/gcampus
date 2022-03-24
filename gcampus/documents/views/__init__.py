@@ -17,10 +17,12 @@ __all__ = [
     "CourseOverviewPDF",
     "AccessKeyCombinedPDF",
     "MeasurementDetailPDF",
+    "MeasurementListPDF",
 ]
 
 from gcampus.documents.views.print import (
     CourseOverviewPDF,
     AccessKeyCombinedPDF,
     MeasurementDetailPDF,
+    MeasurementListPDF
 )

@@ -21,6 +21,7 @@ from gcampus.documents.views.print import (
     CourseOverviewPDF,
     AccessKeyCombinedPDF,
     MeasurementDetailPDF,
+    MeasurementListPDF,
 )
 
 
@@ -31,6 +32,7 @@ urlpatterns = [
     path("documents/overview", CourseOverviewPDF.as_view(), name="documents-overview"),
     path("documents/accesskeys_combined", AccessKeyCombinedPDF.as_view(), name="accesskey-combined"),
     path("documents/measurement_detail/<int:pk>", MeasurementDetailPDF.as_view(), name="measurement-detail"),
+    path("documents/measurement_list", MeasurementListPDF.as_view(), name="measurement-list"),
     path("documents/measurements", filter_csv_download, name="csv"),
 ]
 # fmt: on
