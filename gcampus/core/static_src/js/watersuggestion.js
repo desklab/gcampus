@@ -18,7 +18,7 @@
 const DEFAULT_COLOR = '#052c65';
 const HIGHLIGHT_COLOR = '#0d6efd';
 const waterSuggestionTemplate = (
-    document.getElementById("waterSuggestionTemplate").text
+    document.getElementById('waterSuggestionTemplate').text
 );
 const parentElement = document.getElementById('waterSuggestions');
 const loadingElement = document.getElementById('waterLoading');
@@ -34,9 +34,9 @@ class UnknownSourceError extends Error {
     constructor(message) {
         super(message);
         this.message = (
-            "Unknown source '" + message + "'. Can be either 'osm' or 'db'."
+            'Unknown source \'' + message + '\'. Can be either \'osm\' or \'db\'.'
         );
-        this.name = "UnknownSourceError";
+        this.name = 'UnknownSourceError';
     }
 }
 
@@ -74,7 +74,7 @@ function getLookupQuery(source, lng, lat) {
         geo_size: bboxSize
     };
     let searchParams = new URLSearchParams(params).toString();
-    return [url, searchParams].join('?')
+    return [url, searchParams].join('?');
 }
 
 
@@ -89,8 +89,8 @@ function getLookupQuery(source, lng, lat) {
  * @returns {Promise} - Fetch promise
  */
 function fetchWaterLookup(lng, lat) {
-    let lookupQuery = getLookupQuery('db', lng, lat)
-    return fetch(lookupQuery).then(response => response.json())
+    let lookupQuery = getLookupQuery('db', lng, lat);
+    return fetch(lookupQuery).then(response => response.json());
 }
 
 
@@ -105,8 +105,8 @@ function fetchWaterLookup(lng, lat) {
  * @returns {Promise} - Fetch promise
  */
 function fetchOverpassLookup(lng, lat) {
-    let lookupQuery = getLookupQuery('osm', lng, lat)
-    return fetch(lookupQuery).then(response => response.json())
+    let lookupQuery = getLookupQuery('osm', lng, lat);
+    return fetch(lookupQuery).then(response => response.json());
 }
 
 
@@ -144,21 +144,6 @@ function ListItem(feature) {
         icon.classList.add(flow_type);
         descriptionElement.insertAdjacentElement('afterbegin', icon);
     }
-    return item.childNodes;
-}
-
-
-/**
- * Water List Item
- *
- * Returns an element used to display a list of water suggestions inside
- * the ``WaterList`` class.
- *
- * @returns {NodeList}
- */
-function LoadingElement() {
-    let item = document.createElement('div');
-    item.innerHTML = loadingTemplate;
     return item.childNodes;
 }
 
@@ -208,8 +193,8 @@ class WaterList {
     setState(state) {
         let keys = Object.keys(this.state);
         for (let i = 0; i < keys.length; i++) {
-            let key = keys[i]
-            if (state.hasOwnProperty(key))
+            let key = keys[i];
+            if (Object.prototype.hasOwnProperty.call(state, key))
                 this.state[key] = state[key];
         }
         this.render();
@@ -234,7 +219,7 @@ class WaterList {
         if (this.currentPermanentHighlight !== null) {
             let hlFeature = features.filter(
                 (f) => f.id === this.currentPermanentHighlight
-            )
+            );
             if (hlFeature.length !== 1) {
                 this.currentPermanentHighlight = null;
             }
@@ -282,7 +267,7 @@ class WaterList {
             id: this.currentHighlight
         }, {
             highlight: true
-        })
+        });
     }
 
     highlightPermanent(featureId) {
@@ -343,7 +328,7 @@ class WaterList {
         }
         this.setState({
             loading: true
-        })
+        });
         fetchOverpassLookup(this.lng, this.lat)
             .then(data => this.setFeatures(data.features, 'osm'))
             .catch(this.onError.bind(this));
@@ -429,22 +414,6 @@ class WaterList {
         this.map.on('edit', this.mapUpdate.bind(this));
     }
 
-    /**
-     * Create mouseover Listener
-     *
-     * Returns a callable function that is used for registering event
-     * listeners in the ``render`` method.
-     *
-     * @param feature {Object}: Feature object. Only the id attribute
-     *      will be used.
-     * @returns {(function(Event): void)}
-     */
-    createMouseOverListener(feature) {
-        return (e) => {
-            this.highlightFeature.bind(this)(feature.id);
-        };
-    }
-
     render() {
         let {features, loading, hasDatabase, hasOsm} = this.state;
         parentElement.querySelectorAll('input,label').forEach(
@@ -464,10 +433,10 @@ class WaterList {
                     this.highlightPermanent(feature.id);
                 }
             });
-            label.addEventListener('mouseenter', (e) => {
+            label.addEventListener('mouseenter', () => {
                 this.highlightFeature(feature.id);
             });
-            label.addEventListener('mouseleave', (e) => {
+            label.addEventListener('mouseleave', () => {
                 this.highlightFeature(this.currentPermanentHighlight);
             });
             if (this.currentPermanentHighlight === feature.id) {
@@ -496,4 +465,4 @@ class WaterList {
     }
 }
 
-new WaterList()
+new WaterList();

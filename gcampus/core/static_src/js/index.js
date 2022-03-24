@@ -33,22 +33,22 @@ function setCookie(name, value, days) {
         expirationDate.getTime()
         + (days * 24 * 60 * 60 * 1000)
     );
-    let expires = "expires=" + expirationDate.toUTCString();
-    document.cookie = name + "=" + value + ";" + expires + ";samesite=lax;path=/";
+    let expires = 'expires=' + expirationDate.toUTCString();
+    document.cookie = name + '=' + value + ';' + expires + ';samesite=lax;path=/';
 }
 
 function getCookie(name) {
-    let cookies = document.cookie.split(";");
+    let cookies = document.cookie.split(';');
     if (cookies === undefined || cookies.length === 0)
         return null;
     for (let i = 0; i < cookies.length; i++) {
         let cookie = cookies[i];
-        if (cookie.startsWith(" ")) {
+        if (cookie.startsWith(' ')) {
             // Remove space at the beginning
             cookie.substring(1);
         }
         if (cookie.startsWith(name)) {
-            return cookie.split("=")[1];
+            return cookie.split('=')[1];
         }
     }
     return null;
