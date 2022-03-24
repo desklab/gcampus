@@ -31,10 +31,7 @@ from gcampus.auth.models import CourseToken
 from gcampus.core.models import Measurement
 from gcampus.core.models.util import EMPTY
 from gcampus.core.filters import MeasurementFilterSet
-from gcampus.documents.views.generic import SingleObjectDocumentView, ListDocumentView, CachedDocumentView, DocumentView
-from bokeh.plotting import figure
-from bokeh.embed import components
-from bokeh.io import export_svg
+from gcampus.documents.views.generic import SingleObjectDocumentView, ListDocumentView, CachedDocumentView
 
 
 class CourseOverviewPDF(CachedDocumentView):
