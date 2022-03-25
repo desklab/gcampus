@@ -60,27 +60,11 @@
     {% endif %}
     <div class="container-fluid my-4 px-0">
         {% if filter.qs %}
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">{% translate "Water name" %}</th>
-                    <th scope="col">{% translate "Location" %}</th>
-                    <th scope="col">{% translate "Name" %}</th>
-                    {% comment %}
-                <th scope="col">{% translate "Parameter" %}</th>
-                {% endcomment %}
-                    <th scope="col">{% translate "Time" context "measurement time" %}</th>
-                    <th scope="col" class="text-nowrap"></th>
-                </tr>
-                </thead>
-                <tbody>
+            <div class="list-group">
                 {% for measurement in object_list %}
-                    <div class="list-group mt-4">
-                        {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement edit=measurement|can_edit:request today=today %}
-                    </div>
+                    {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement edit=measurement|can_edit:request today=today %}
                 {% endfor %}
-                </tbody>
-            </table>
+            </div>
         {% else %}
             <div class="mt-4 p-5 text-dark bg-light rounded">
                 <h2>
