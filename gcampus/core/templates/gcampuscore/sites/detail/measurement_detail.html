@@ -220,7 +220,7 @@
                             </p>
                         </div>
                         <div class="mt-auto">
-                            <a class="btn btn-sm btn-primary"
+                            <a class="btn btn-sm btn-secondary"
                                href="{% url "gcampuscore:mapview" %}{% map_options_url lat=measurement.location.x|unlocalize long=measurement.location.y|unlocalize zoom=14 %}"
                                role="link">
                                 {% translate "Explore environment" %}
@@ -236,7 +236,7 @@
                                    role="button">
                                     {% translate "Edit" %}
                                 </a>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#deleteModal">
                                     {% translate "Delete" %}
                                 </button>
