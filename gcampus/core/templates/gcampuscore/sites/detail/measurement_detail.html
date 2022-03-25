@@ -1,5 +1,5 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n map l10n icon tz %}
+{% load i18n map l10n tz %}
 {% block extra_head %}
     {{ block.super }}
     {% load_mapbox_css %}
@@ -223,13 +223,11 @@
                             <a class="btn btn-sm btn-primary"
                                href="{% url "gcampuscore:mapview" %}{% map_options_url lat=measurement.location.x|unlocalize long=measurement.location.y|unlocalize zoom=14 %}"
                                role="link">
-                                {% icon "map" class="d-inline-block align-text-top" height="16" width="16" %}
                                 {% translate "Explore environment" %}
                             </a>
                             <a class="btn btn-sm btn-secondary"
                                href="{% url "gcampusdocuments:measurement-detail" pk=measurement.pk %}"
                                role="link">
-                                {% icon "download" class="d-inline-block align-text-top" height="16" width="16" %}
                                 {% translate "Download PDF" %}
                             </a>
                             {% if can_edit %}

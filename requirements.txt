@@ -4,7 +4,6 @@ boto3==1.17.20
 psycopg2-binary~=2.8.6
 geopy==2.1.0
 django-leaflet==0.28.1
-django-feather~=0.3.0
 djangorestframework-gis~=0.18
 djangorestframework~=3.13.1
 overpy~=0.4

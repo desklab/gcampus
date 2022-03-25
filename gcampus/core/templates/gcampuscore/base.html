@@ -65,7 +65,7 @@
                         </div>
                         <ul class="nav navbar-nav text-nowrap flex-nowrap">
                             {% translate "New Measurement" as new_title %}
-                            {% include "gcampuscore/components/nav_item.html" with title=new_title icon="plus" view_name="gcampuscore:add-measurement" %}
+                            {% include "gcampuscore/components/nav_item.html" with title=new_title icon="gcampuscore/icons/plus-lg.html" view_name="gcampuscore:add-measurement" %}
                             {% if authenticated %}
                                 {% include "gcampusauth/components/auth_menu.html" %}
                             {% else %}

@@ -1,4 +1,4 @@
-{% load i18n icon auth_token %}
+{% load i18n auth_token %}
 <div class="list-group-item list-group-item-hover">
     <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">
@@ -20,24 +20,24 @@
                     <li>
                         <button type="submit" class="dropdown-item text-success text-{{ access_key.deactivated|yesno:"success,danger" }}" href="#">
                             {% if access_key.deactivated %}
-                                {% icon "unlock" class="d-inline-block align-text-top me-1" height="16" width="16" %}
-                                {% translate "Activate" %}
+                                {% include "gcampuscore/icons/lock.html" %}
+                                <span class="align-middle ms-2">{% translate "Activate" %}</span>
                             {% else %}
-                                {% icon "lock" class="d-inline-block align-text-top me-1" height="16" width="16" %}
-                                {% translate "Deactivate" %}
+                                {% include "gcampuscore/icons/unlock.html" %}
+                                <span class="align-middle ms-2">{% translate "Deactivate" %}</span>
                             {% endif %}
                         </button>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="{% url "gcampusauth:logout" %}">
-                            {% icon "external-link" class="d-inline-block align-text-top me-1" height="16" width="16" %}
-                            {% translate "Login with this access key" %}
+                        <a class="dropdown-item " href="{% url "gcampusauth:logout" %}">
+                            {% include "gcampuscore/icons/box-arrow-up-right.html" %}
+                            <span class="align-middle ms-2 ">{% translate "Login with this access key" %}</span>
                         </a>
                     </li> <!-- TODO: login with key-->
                     <li>
                         <a class="dropdown-item" href="#">
-                            {% icon "copy" class="d-inline-block align-text-top me-1" height="16" width="16" %}
-                            {% translate "Copy access key" %}
+                            {% include "gcampuscore/icons/clipboard.html" %}
+                            <span class="align-middle ms-2">{% translate "Copy access key" %}</span>
                         </a>
                     </li>
                 </ul>
@@ -47,8 +47,8 @@
     <p class="mb-1">
         {% if access_key.deactivated %}
             <span class="badge bg-warning text-dark me-2">
-                {% icon "alert-circle" class="d-inline-block align-text-top" height="16" width="16" %}
-                {% translate "deactivated" %}
+                {% include "gcampuscore/icons/exclamation-circle.html" %}
+                <span class="align-middle ms-1">{% translate "deactivated" %}</span>
             </span>
         {% endif %}
         <small class="text-muted">
