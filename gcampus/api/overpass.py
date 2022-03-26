@@ -48,10 +48,6 @@ from django.contrib.gis.geos import (
     MultiLineString,
 )
 
-from gcampus.core.models import Water
-from gcampus.core.models.water import OSMElementType
-
-
 @dataclass
 class Element(abc.ABC):
     """Elements are the basic building blocks of an overpass response.
@@ -66,7 +62,7 @@ class Element(abc.ABC):
     tags: dict
     geometry: Optional[GEOSGeometry] = None
 
-    def get_element_type(self) -> OSMElementType:
+    def get_element_type(self) -> str:
         raise NotImplementedError()
 
     def get_name(self) -> str:
@@ -77,29 +73,23 @@ class Element(abc.ABC):
             name = self.tags.get("name", "")
         return name
 
-    def to_water(self) -> Water:
-        return Water(
-            osm_id=self.osm_id, tags=self.tags, geometry=self.geometry,
-            name=self.get_name(), osm_element_type=self.get_element_type()
-        )
-
 
 @dataclass
 class Node(Element):
-    def get_element_type(self) -> OSMElementType:
-        return OSMElementType.NODE
+    def get_element_type(self) -> str:
+        return "node"
 
 
 @dataclass
 class Way(Element):
-    def get_element_type(self) -> OSMElementType:
-        return OSMElementType.WAY
+    def get_element_type(self) -> str:
+        return "way"
 
 
 @dataclass
 class Relation(Element):
-    def get_element_type(self) -> OSMElementType:
-        return OSMElementType.RELATION
+    def get_element_type(self) -> str:
+        return "relation"
 
 
 def _object_hook(obj: dict):

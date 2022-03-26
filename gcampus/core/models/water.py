@@ -22,19 +22,26 @@ __all__ = [
     "OSMElementType",
 ]
 
+import logging
 from typing import Optional, List
 
 from django.contrib.gis.db.models import GeometryField
 from django.db import models
 from django.utils.translation import gettext_lazy, pgettext_lazy
 
+from gcampus.api import overpass
+from gcampus.api.overpass import Element
 from gcampus.core.models.util import EMPTY, DateModelMixin
+
+
+logger = logging.getLogger("gcampus.core.models.water")
 
 
 class OSMElementType(models.TextChoices):
     NODE = "node", pgettext_lazy("osm node", "node")
     WAY = "way", pgettext_lazy("osm way", "way")
     RELATION = "relation", pgettext_lazy("osm relation", "relation")
+    __empty__ = gettext_lazy("unknown")
 
 
 class WaterType(models.TextChoices):
@@ -148,7 +155,7 @@ class Water(DateModelMixin):
         unique=True, null=True, verbose_name=gettext_lazy("OpenStreetMap ID")
     )
     osm_element_type = models.CharField(
-        choices=OSMElementType.choices, null=False, blank=False, max_length=16,
+        choices=OSMElementType.choices, null=True, blank=True, max_length=16,
     )
     flow_type = models.CharField(
         choices=FlowType.choices, null=True, blank=True, max_length=16,
@@ -215,3 +222,37 @@ class Water(DateModelMixin):
 
     def __repr__(self):
         return f"Water(pk={self.pk}, osm_id={self.osm_id})"
+
+    @classmethod
+    def from_element(cls, element: Element):
+        return cls(
+            osm_id=element.osm_id, tags=element.tags, geometry=element.geometry,
+            name=element.get_name(), osm_element_type=element.get_element_type()
+        )
+
+    def update_from_element(self, element: Element):
+        self.osm_id = element.osm_id
+        self.tags = element.tags
+        self.geometry = element.geometry
+        self.name = element.get_name()
+        self.osm_element_type = element.get_element_type()
+
+    def update_from_osm(self):
+        query = self._get_overpass_query()
+        if query is None:
+            return
+        elements: List[Element] = overpass.query(query)
+        if len(elements) == 0:
+            logger.warning(
+                f"No element with id '{self.osm_id}' found on OpenStreetMaps. "
+                "Maybe it has been deleted."
+            )
+        elif len(elements) > 1:
+            logger.error(f"Multiple elements ({len(elements)}) returned by Overpass!")
+        self.update_from_element(elements[0])
+
+    def _get_overpass_query(self) -> Optional[str]:
+        if self.osm_id is None or self.osm_element_type in EMPTY:
+            return None
+        element_type: OSMElementType = OSMElementType(self.osm_element_type)
+        return f"[out:json];{element_type.value!s}(id:{self.osm_id:d});out geom;"

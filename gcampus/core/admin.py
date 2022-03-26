@@ -12,14 +12,17 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from typing import List, Generator
 
 from django.contrib.gis import admin
+from django.db import transaction
 from django.db.models import QuerySet
 from django.utils.html import format_html_join, escape, format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from leaflet.admin import LeafletGeoAdmin
 
+from gcampus.admin.options import LinkedInlineMixin
 from gcampus.core.models import Measurement, ParameterType, Parameter, Limit, Water
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 
@@ -28,24 +31,45 @@ def hide(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):  # noqa
     queryset.update(hidden=True)
 
 
+def osm_update(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):  # noqa
+    water: Water
+    with transaction.atomic():
+        for water in queryset:
+            water.update_from_osm()
+            water.save()
+
+
 def show(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):  # noqa
     queryset.update(hidden=False)
 
 
 hide.short_description = _("Hide selected items for all users")
 show.short_description = _("Show selected items for all users")
+osm_update.short_description = _("Update from OpenStreetMaps")
+
+
+class MeasurementInline(LinkedInlineMixin, admin.TabularInline):
+    model = Measurement
+    fields = ("name", "water") + LinkedInlineMixin.readonly_fields
+    extra = 0
+
+
+class ParameterInline(LinkedInlineMixin, admin.TabularInline):
+    model = Parameter
+    extra = 0
 
 
 class MeasurementAdmin(LeafletGeoAdmin):
     list_filter = ("hidden",)
+    inlines = [ParameterInline]
     readonly_fields = ADMIN_READ_ONLY_FIELDS + ("location_name",)
     actions = [hide, show]
 
 
 class WaterAdmin(LeafletGeoAdmin):
-    list_display = (
-        "display_name", "osm_id", "flow_type", "water_type", "updated_at"
-    )
+    list_display = ("display_name", "osm_id", "flow_type", "water_type", "updated_at")
+    inlines = [MeasurementInline]
+    actions = (osm_update,)
     readonly_fields = ADMIN_READ_ONLY_FIELDS + ("osm_url",)
 
     @admin.display(description=_('OpenStreetMaps URL'))
@@ -63,7 +87,7 @@ class WaterAdmin(LeafletGeoAdmin):
 
 
 class ParameterTypeAdmin(admin.ModelAdmin):
-    pass
+    inlines = [ParameterInline]
 
 
 class LimitAdmin(admin.ModelAdmin):

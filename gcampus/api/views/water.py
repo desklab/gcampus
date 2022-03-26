@@ -84,7 +84,7 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
                 if element.osm_id in osm_ids:
                     # Skip existing waters
                     continue
-                water: Water = element.to_water()
+                water: Water = Water.from_element(element)
                 water.save()
                 waters.append(water)
         serializer = self.get_serializer(waters, many=True)
