@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {Map, Marker, NavigationControl} from 'mapbox-gl'; // noqa
+import {Map, Marker, NavigationControl} from '!mapbox-gl'; // noqa
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
 import '../styles/map.scss';
@@ -169,7 +169,7 @@ function initMap(
         window._maps = {};
     }
     window._maps[name] = map;
-    return map
+    return map;
 }
 
 function getMapCenterZoom(center, zoom) {

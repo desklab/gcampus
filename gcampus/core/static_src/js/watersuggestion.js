@@ -131,6 +131,7 @@ function ListItem(feature) {
     let descriptionElement = item.querySelector('label > small');
     input.setAttribute('id', inputId);
     input.setAttribute('data-feature-id', id);
+    input.setAttribute('value', id);
     label.setAttribute('for', inputId);
     label.setAttribute('data-feature-id', id);
     nameElement.innerText = display_name;
