@@ -40,7 +40,7 @@ PRIMARY_HOST = "localhost:8000"
 PREFERRED_SCHEME = "http"
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    "gcampus.admin.apps.GCampusAdminAppConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
