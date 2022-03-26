@@ -37,15 +37,16 @@ Chart.register(
 );
 
 
-function createChart(name, el, slope, offset, title, x_label, y_label) {
-    let x_data = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
-    let y_data = []
-    for (let i = 0; i < x_data.length; i++) {
-        let val = x_data[i] * slope + offset;
-        y_data.push(val);
-
+function createChart(name, el, formula, title, x_label, y_label) {
+    let x_data = []
+    let y_data = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5]
+    for (let i = 0; i < y_data.length; i++) {
+        let od = y_data[i];
+        let x = eval(formula).toFixed(2);
+        x_data.push(x);
     }
-    const max_y = y_data.slice(-1)[0] + 5
+    const max_y = 1.6;
+    const max_x = x_data.max;
     return new Chart(el.getContext("2d"), {
         type: 'line',
         data: {
@@ -69,7 +70,7 @@ function createChart(name, el, slope, offset, title, x_label, y_label) {
                     }
                 },
                 x: {
-                    max: x_data.length + 2,
+                    max: max_x,
                     min: 0,
                     ticks: {},
                     title: {
@@ -112,9 +113,11 @@ function createChart(name, el, slope, offset, title, x_label, y_label) {
 
 
 function updateAnnotation(x, y, chart) {
-    // Times 4 since the chart.js x values do not correspond to the xdata but
-    // rather to the number of of the datapoint e.g. 0,25 = 1, 0,5 = 2, ...
-    chart.options.plugins.annotation.annotations.point1.xValue = x * 4;
+    // Needs calculation since the chart.js x values do not correspond to
+    // the xdata but has to be scaled relative to the axis labels
+    let len = chart.data.labels.length -1
+    let x_max = parseFloat(chart.data.labels[len])
+    chart.options.plugins.annotation.annotations.point1.xValue = len*x/x_max;
     chart.options.plugins.annotation.annotations.point1.yValue = y;
     chart.options.plugins.annotation.annotations.point1.display = true;
     chart.update();

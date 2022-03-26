@@ -9,3 +9,9 @@ input[type="number"].appearance-textfield {
 .cursor-pointer{
   cursor: pointer;
 }
+.no-spinners::-webkit-inner-spin-button{
+  -webkit-appearance: none !important;
+}
+.no-spinners[type=number] {
+  -moz-appearance: textfield;
+}

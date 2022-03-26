@@ -3,38 +3,52 @@
     <div class="mb-3">
         <form onsubmit="Convert_{{ parameter.pk }}(event, chart_{{ parameter.pk }})">
             <div>
-                <div class="mb-3">
-                    <label for="od_input_{{ parameter.pk }}">{% translate "Optical density" %}</label>
+                <label for="od_input_{{ parameter.pk }}">{% translate "Optical density" %}</label>
+                <div class="input-group mb-3">
                     <input name="od" type="number" min="0" max="2" step=".01" id="od_input_{{ parameter.pk }}"
                            class="form-control"
-                           placeholder="{% translate "Enter optical density" %}">
+                           placeholder="{% translate "Optical density" %}">
+                    <button type="submit" class="btn btn-primary">
+                        {% translate "Convert" %}
+                    </button>
                 </div>
-                <div class="mb-3">
-                    <label for="concentration_{{ parameter.pk }}">{% translate "Concentration" %}</label>
-                    <input name="cocentration" type="number" style="appearance: none" class="form-control"
+                <label for="concentration_{{ parameter.pk }}">{{ parameter.name }} {% if parameter.unit != "" %}[{{ parameter.unit }}]{% endif %}</label>
+                <div class="input-group mb-5">
+                    <input name="concentration" type="number" style="appearance: none" class="form-control no-spinners"
                            id="concentration_{{ parameter.pk }}"
-                           placeholder="{% translate "Concentration" %}"
+                           placeholder="{% translate "Value" %}"
                            readonly>
+                    <button class="btn btn-secondary" type="button" onclick="CopyValueToClipboard('{{ parameter.pk }}')">
+                        {% translate "Copy" %}
+                    </button>
                 </div>
-                <button type="submit" class="btn btn-primary">{% translate "Convert" %}</button>
+                <div class="text-secondary mt-4">
+                    {% blocktranslate trimmed with url="https://desk-lab.de/docs/gcampus-calibration" %}
+                        This tool helps you to convert the optical density you measured with the photometer into
+                        the value of the specific parameter. It uses a standard calibration which has been prepared
+                        by the GewässerCampus team. You can find more information on how to create and
+                        use a calibration <a href={{ url }} class="text-reset">here</a>.
+                    {% endblocktranslate %}
+                </div>
             </div>
         </form>
-        <p class="mt-3">
-            Here is space for some explanation...
-        </p>
-
     </div>
 </div>
-<div class="col-5 bg-light px-5 py-3">
-    <p class="mt-4 text-muted">
+<div class="col-5 bg-light py-2 px-5">
+    <p class="text-muted">
         <canvas id="myChart_{{ parameter.name }}" width="400" height="400"></canvas>
         <script>
             var chart_{{ parameter.pk }} = (function () {
                 let chart_element_{{ parameter.pk }} = document.getElementById("myChart_{{ parameter.name }}");
-                let chart_title = "{% translate "Calibration fit for" %} " + "{{ parameter.name }}"
-                let x_label = "{% translate "Optical density" %}"
-                let y_label = "{{ parameter.name }}  " +  "{{ parameter.unit }}";
-                return gcampusanalysis.calibration.createChart("{{ parameter.name }}", chart_element_{{ parameter.pk }}, {{ parameter.calibration_slope|unlocalize }}, {{ parameter.calibration_offset|unlocalize }}, chart_title, x_label, y_label);
+                let chart_title = "{% translate "Calibration fit for" %} " + "{{ parameter.name }}";
+                let x_label = '';
+                if ('{{ parameter.unit }}' != '') {
+                    x_label = "{{ parameter.name }} " +  "[{{ parameter.unit }}]";
+                } else {
+                    x_label = "{{ parameter.name }}"
+                }
+                let y_label = "{% translate "Optical density" %}";
+                return gcampusanalysis.calibration.createChart("{{ parameter.name }}", chart_element_{{ parameter.pk }}, "{{ parameter.calibration_formula }}", chart_title, x_label, y_label);
             })();
 
             function Convert_{{ parameter.pk }}(e, chart) {
@@ -46,13 +60,16 @@
                 } else {
                     let data = new FormData(e.target);
                     let od = parseFloat(data.get("od"));
-                    let concentration = e.target.elements.namedItem("cocentration");
-                    const calibration_fit = parseFloat(("{{ parameter.calibration_slope }}").replace(",", "."));
-                    const calibration_offset = parseFloat(("{{ parameter.calibration_offset }}").replace(",", "."));
-                    let concentration_value = (od * calibration_fit + calibration_offset).toFixed(2);
+                    let concentration = e.target.elements.namedItem("concentration");
+                    let concentration_value = eval('{{ parameter.calibration_formula }}').toFixed(2);  // formula example: '123*od'
                     concentration.value = String(concentration_value);
-                    gcampusanalysis.calibration.updateAnnotation(od, concentration_value, chart)
+                    gcampusanalysis.calibration.updateAnnotation(concentration_value, od, chart)
                 }
+            }
+
+            function CopyValueToClipboard(pk) {
+                let concentration = document.getElementById("concentration_"+pk).value;
+                navigator.clipboard.writeText(concentration);
             }
         </script>
     </p>

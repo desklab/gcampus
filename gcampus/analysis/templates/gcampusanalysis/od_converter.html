@@ -8,11 +8,10 @@
 {% block content %}
     <div class="container-fluid px-0">
         <div class="row">
-
             {% for parameter in object_list %}
                 <div class="col-7 px-5">
-                    <p class="mt-3">
-                        <h3>{{ parameter }}</h3>
+                    <p class="mt-5">
+                        <h3>{{ parameter.name }}</h3>
                     </p>
                 </div>
                 <div class="col-5 bg-light"></div>
