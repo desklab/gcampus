@@ -62,15 +62,12 @@ class Measurement(util.DateModelMixin):
         verbose_name=_("Location name"),
         help_text=_("An approximated location for the measurement"),
     )
-    water_name = models.CharField(
+    water = models.ForeignKey(
+        "Water",
+        on_delete=models.PROTECT,
         blank=False,
-        null=True,
-        max_length=280,
-        verbose_name=_("Water name"),
-        help_text=_("Name of the water the measurement was conducted at"),
-    )
-    osm_id = models.BigIntegerField(
-        default=None, blank=True, null=True, verbose_name=_("OpenStreetMap ID")
+        null=False,
+        related_name="measurements",
     )
     time = models.DateTimeField(
         blank=False,
