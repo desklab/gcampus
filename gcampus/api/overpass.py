@@ -133,9 +133,11 @@ def _object_hook(obj: dict):
             return obj
         # List of inner rings (e.g. for a lake this would be an island)
         inner: List[LinearRing] = []
+        unclosed_inner: List[LineString] = []
         # List of outer rings (e.g. for a lake this would be the
         # shoreline)
         outer: List[LinearRing] = []
+        unclosed_outer: List[LineString] = []
         # Everything else. For rivers and streams this is typically
         # a list of line strings representing the waterway.
         other: List[LineString] = []
@@ -146,17 +148,35 @@ def _object_hook(obj: dict):
             line_string: List[Tuple[float, float]] = [
                 (geom["lon"], geom["lat"]) for geom in member["geometry"]
             ]
+            geos_line_string = LineString(line_string)
             role = member.get("role")
             if role == "inner":
-                inner.append(LinearRing(line_string))
+                if geos_line_string.closed:
+                    inner.append(LinearRing(line_string))
+                else:
+                    unclosed_outer.append(geos_line_string)
             elif role == "outer":
-                outer.append(LinearRing(line_string))
+                if geos_line_string.closed:
+                    outer.append(LinearRing(line_string))
+                else:
+                    unclosed_outer.append(geos_line_string)
             else:
-                other.append(LineString(line_string))
+                other.append(geos_line_string)
+
+        unclosed_outer, _outer = merge_unclosed_lines(unclosed_outer)
+        unclosed_inner, _inner = merge_unclosed_lines(unclosed_inner)
+        outer += _outer
+        inner += _inner
+        other += unclosed_outer
+        other += unclosed_inner
+
         if len(outer) > 0:
             # Construct polygons for each outer ring and subtract all
             # inner rings. Merge all polygons into a multi polygon
-            polygons = MultiPolygon([Polygon(o, inner) for o in outer])
+            if len(outer) == 1:
+                polygons = Polygon(outer[0], inner)
+            else:
+                polygons = MultiPolygon([Polygon(o, inner) for o in outer])
             if len(other) > 0:
                 # Add other geometries and create a geometry collection
                 geometry = GeometryCollection([MultiLineString(other), polygons])
@@ -171,6 +191,49 @@ def _object_hook(obj: dict):
             # instead.
             return obj
         return Relation(osm_id, tags, geometry)
+
+
+def merge_unclosed_lines(
+    unclosed_lines: List[LineString]
+) -> Tuple[List[LineString], List[LinearRing]]:
+    _union = union(unclosed_lines)
+    if _union is None:
+        return [], []
+    elif isinstance(_union, (LineString, MultiLineString)):
+        _union = _union.merged
+    else:
+        raise TypeError(f"Unhandled type '{type(_union)}' for line union.")
+
+    if isinstance(_union, LineString):
+        if _union.closed:
+            return [], [ring_from_string(_union)]
+        else:
+            return [_union], []
+    elif isinstance(_union, MultiLineString):
+        rings: List[LinearRing] = []
+        lines: List[LineString] = []
+        line: LineString
+        for line in _union:
+            if line.closed:
+                rings.append(ring_from_string(line))
+            else:
+                lines.append(line)
+        return lines, rings
+
+
+def ring_from_string(line_string: LineString) -> LinearRing:
+    if not line_string.closed:
+        raise ValueError("LineString is not closed!")
+    return LinearRing(line_string.tuple)
+
+
+def union(geometries: List[GEOSGeometry]) -> Optional[GEOSGeometry]:
+    if len(geometries) < 1:
+        return None
+    _geos_union = geometries[0]
+    for geometry in geometries[1:]:
+        _geos_union = _geos_union.union(geometry)
+    return _geos_union
 
 
 def _parse(response: requests.Response, **kwargs) -> List[Element]:
