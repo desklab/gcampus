@@ -41,6 +41,8 @@
   "dependencies": {
     "@popperjs/core": "^2.9.3",
     "bootstrap": "^5.1.0",
+    "chart.js": "^3.7.1",
+    "chartjs-plugin-annotation": "^1.4.0",
     "htm": "^3.1.0",
     "leaflet": "^1.7.1",
     "leaflet-geosearch": "^3.5.0",

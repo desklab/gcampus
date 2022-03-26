@@ -13,25 +13,19 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from django.urls import path, include
+from django import template
+import numpy as np
 
-from gcampus.analysis.apps import GCampusAnalysisAppConfig
+register = template.Library()
 
-from gcampus.analysis.views import analysis, analysis_measurement, ODConverterView
+@register.filter()
+def arctan(opp, adj):
+    try:
+        res = np.degrees(np.arctan(opp/adj))
+        return int(res)
+    except ValueError:
+        return None
 
-# Necessary to get the plots to work
-from gcampus.analysis.dash_apps import Example_Measurement
-
-
-# Turn off black formatting and pylint
-# fmt: off
-# pylint: disable=line-too-long
-urlpatterns = [
-    path("analysis/example/plotly", analysis, name="analysis"),
-    path("analysis/parameters", analysis_measurement, name="analysis_measure"),
-    path("analysis/convert", ODConverterView.as_view(), name="od_converter"),
-]
-# fmt: on
-# pylint: enable=line-too-long
-
-app_name = GCampusAnalysisAppConfig.label
+@register.filter()
+def multiply(a, b):
+    return str(float(a*b))

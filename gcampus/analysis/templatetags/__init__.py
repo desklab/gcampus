@@ -12,26 +12,3 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-from django.urls import path, include
-
-from gcampus.analysis.apps import GCampusAnalysisAppConfig
-
-from gcampus.analysis.views import analysis, analysis_measurement, ODConverterView
-
-# Necessary to get the plots to work
-from gcampus.analysis.dash_apps import Example_Measurement
-
-
-# Turn off black formatting and pylint
-# fmt: off
-# pylint: disable=line-too-long
-urlpatterns = [
-    path("analysis/example/plotly", analysis, name="analysis"),
-    path("analysis/parameters", analysis_measurement, name="analysis_measure"),
-    path("analysis/convert", ODConverterView.as_view(), name="od_converter"),
-]
-# fmt: on
-# pylint: enable=line-too-long
-
-app_name = GCampusAnalysisAppConfig.label

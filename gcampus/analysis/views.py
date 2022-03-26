@@ -1,9 +1,20 @@
 from datetime import date
 
+
 import pandas as pd
 from django.shortcuts import render
+from django.views.generic import ListView
+from django.utils.translation import gettext_lazy as _
+
 from gcampus.analysis.dash_apps.Example_Measurement import create_graph, app
 from gcampus.core.models import ParameterType, Measurement
+from gcampus.core.views.base import TitleMixin
+
+
+class ODConverterView(TitleMixin, ListView):
+    title = _("Optical Density Converter")
+    template_name = "gcampusanalysis/od_converter.html"
+    model = ParameterType
 
 
 def analysis(requests):

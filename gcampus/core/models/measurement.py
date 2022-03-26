@@ -164,6 +164,8 @@ class ParameterType(models.Model):
     short_name = models.CharField(blank=True, max_length=10, verbose_name=_("Short name"))
     unit = models.CharField(blank=True, max_length=10, verbose_name=_("Unit"))
 
+    calibration_formula = models.CharField(blank=True, max_length=100, verbose_name=_("Formula"))
+
     def __str__(self):
         if self.unit in EMPTY:
             return f"{self.name}"
