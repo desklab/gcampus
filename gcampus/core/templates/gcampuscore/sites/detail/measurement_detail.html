@@ -70,12 +70,8 @@
             let map = event.target;
             var lng = {{ measurement.location.x|unlocalize }};
             var lat = {{ measurement.location.y|unlocalize }};
-            let html = "<span class='badge pill-rounded'>.</span>"
             const el = document.createElement('span');
             el.className = 'marker';
-            el.style.backgroundColor = `#e7b300`;
-            el.style.width = `22px`;
-            el.style.height = `22px`;
             const marker = new gcampusmap['mapbox-gl'].mapboxgl.Marker(el)
                 .setLngLat([lng, lat])
                 .addTo(map);
