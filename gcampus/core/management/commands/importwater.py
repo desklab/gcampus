@@ -68,11 +68,8 @@ class Command(RichCommand):
                         f"River '{water.display_name!s}' (OSM ID {water.osm_id:d}) "
                         "already exists. Updating..."
                     )
-                    water.name = relation.get_name()
-                    water.geometry = relation.geometry
-                    water.tags = relation.tags
-                    water.osm_element_type = relation.get_element_type()
+                    water.update_from_element(relation)
                 except Water.DoesNotExist:
-                    water = relation.to_water()
+                    water = Water.from_element(relation)
                 water.save()
         self.console.print(f"Done!")
