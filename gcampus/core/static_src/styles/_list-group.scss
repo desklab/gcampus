@@ -33,7 +33,7 @@
   gap: map-get($spacers, 2);
   border: none;
 
-  input {
+  input.list-group-item-water-input {
     position: absolute;
     clip: rect(0,0,0,0);
     pointer-events: none;
@@ -74,4 +74,16 @@
       border: $list-group-border-width solid transparentize($list-group-border-color, 0.04);
     }
   }
+}
+
+.list-group-item-overlay {
+  cursor: pointer;
+  pointer-events: all;
+  position: absolute;
+  border-radius: .5rem !important;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: transparentize($white, 0.2);
 }

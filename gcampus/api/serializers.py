@@ -85,8 +85,8 @@ class WaterSerializer(GeoFeatureModelSerializer):
         )
 
     display_name = serializers.CharField(read_only=True)
-    display_flow_type = serializers.CharField(source='get_flow_type_display')
-    display_water_type = serializers.CharField(source='get_water_type_display')
+    display_flow_type = serializers.CharField(source='get_flow_type_display', read_only=True)
+    display_water_type = serializers.CharField(source='get_water_type_display', read_only=True)
 
 
 class WaterListSerializer(serializers.ModelSerializer):
@@ -110,5 +110,5 @@ class WaterListSerializer(serializers.ModelSerializer):
         )
 
     display_name = serializers.CharField(read_only=True)
-    display_flow_type = serializers.CharField(source='get_flow_type_display')
-    display_water_type = serializers.CharField(source='get_water_type_display')
+    display_flow_type = serializers.CharField(source='get_flow_type_display', read_only=True)
+    display_water_type = serializers.CharField(source='get_water_type_display', read_only=True)

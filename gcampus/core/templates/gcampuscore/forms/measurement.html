@@ -16,7 +16,7 @@
 {% endblock %}
 {% block content %}
     <div class="container-fluid px-0">
-        <form method="POST" class="{% if form.errors %}has-validation{% endif %}">
+        <form method="POST" id="measurementForm" class="{% if form.errors %}has-validation{% endif %}">
             {% csrf_token %}
             {% auth_token %}
             <div class="row">
@@ -100,17 +100,7 @@
                                         {% translate "Search for more waters on OpenStreetMaps" %}
                                     </small>
                                 </div>
-                                <div class="list-group-item list-group-item-hover list-group-item-water cursor-pointer d-flex flex-row align-items-center gap-3 d-none"
-                                     id="waterCustom">
-                                    <h4>{% include "gcampuscore/icons/plus-circle.html" %}</h4>
-                                    <div>
-                                        {% translate "Water still not found?" %}
-                                        <br>
-                                        <small>
-                                            {% translate "Click to add a new water to the database" %}
-                                        </small>
-                                    </div>
-                                </div>
+                                {% include "gcampuscore/components/water_custom.html" with form=water_form only %}
                             </div>
                         </div>
                     {% endwith %}
@@ -147,6 +137,7 @@
                 <div class="col-5 bg-light px-5 py-3"></div>
             </div>
         </form>
+    <form action="{% url "gcampusapi:water-list" %}" method="post" id="customWaterForm"></form>
     </div>
 {% endblock %}
 {% block extra_body %}

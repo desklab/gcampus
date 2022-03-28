@@ -24,10 +24,11 @@ from typing import List, Optional, Tuple
 from django.db import transaction
 from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 
 from gcampus.api import overpass
 from gcampus.api.filtersets import WaterLookupFilterSet
@@ -178,7 +179,7 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         """
 
 
-class WaterAPIViewSet(MethodSerializerMixin, viewsets.ReadOnlyModelViewSet):
+class WaterAPIViewSet(MethodSerializerMixin, viewsets.ModelViewSet):
     queryset = Water.objects.order_by("name")
     serializer_class = WaterSerializer
     serializer_class_list = WaterListSerializer
@@ -192,3 +193,9 @@ class WaterAPIViewSet(MethodSerializerMixin, viewsets.ReadOnlyModelViewSet):
             # for better performance.
             qs.defer("geometry")
         return qs
+
+    def destroy(self, request, *args, **kwargs):
+        """Disallow destroy action by returning
+        :meth:`.http_method_not_allowed`.
+        """
+        return self.http_method_not_allowed(request, *args, **kwargs)

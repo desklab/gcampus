@@ -21,8 +21,6 @@ from django.forms import (
     ModelForm,
     inlineformset_factory,
     BaseInlineFormSet,
-    IntegerField,
-    CharField,
     formsets,
 )
 from django.forms.formsets import ManagementForm  # noqa

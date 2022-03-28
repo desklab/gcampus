@@ -24,6 +24,8 @@ const parentElement = document.getElementById('waterSuggestions');
 const loadingElement = document.getElementById('waterLoading');
 const osmElement = document.getElementById('waterOsm');
 const customWaterElement = document.getElementById('waterCustom');
+const customWaterInput = document.getElementById('customWaterInput');
+const measurementForm = document.getElementById('measurementForm');
 const EMPTY_GEO_JSON = {
     'type': 'FeatureCollection',
     'features': []  // Empty data for now
@@ -34,7 +36,8 @@ class UnknownSourceError extends Error {
     constructor(message) {
         super(message);
         this.message = (
-            'Unknown source \'' + message + '\'. Can be either \'osm\' or \'db\'.'
+            'Unknown source \'' + message +
+            '\'. Can be either \'osm\', \'db\' or \'other\'.'
         );
         this.name = 'UnknownSourceError';
     }
@@ -59,7 +62,7 @@ function getLookupQuery(source, lng, lat) {
     } else if (source === 'db') {
         url = '/api/v1/waterlookup';
     } else {
-        throw UnknownSourceError(String(source));
+        throw new UnknownSourceError(String(source));
     }
     // Parse string inputs for rounding later
     if (typeof lat !== 'number')
@@ -182,13 +185,23 @@ class WaterList {
             features: [],
             hasDatabase: false,
             hasOsm: false,
+            hasCustom: false,
             loading: false,
-            error: false
+            error: false,
         };
         this.currentPermanentHighlight = null;
         this.currentHighlight = null;
         window.addEventListener('map:load', this.mapLoad.bind(this));
         osmElement.addEventListener('click', this.osmUpdate.bind(this));
+        let customWaterOverlay = (
+            customWaterElement.querySelector('.list-group-item-overlay')
+        );
+        customWaterOverlay.addEventListener('click', (e) => {
+            customWaterOverlay.classList.add('d-none');
+        });
+        document.getElementById('customWaterForm').addEventListener(
+            'submit', this.saveCustomWater.bind(this)
+        );
     }
 
     setState(state) {
@@ -204,10 +217,12 @@ class WaterList {
     setFeatures(features, source) {
         if (source === 'osm') {
             features = this.state.features.concat(features || []);
+        } else if (source === 'custom') {
+            features = this.state.features.concat([features]);
         } else if (source === 'db') {
             features = features || [];
         } else {
-            throw UnknownSourceError(String(source));
+            throw new UnknownSourceError(String(source));
         }
 
         // Add all features to the layer
@@ -217,12 +232,16 @@ class WaterList {
         });
         this.map.removeFeatureState({source: this._sourceID});
 
-        if (this.currentPermanentHighlight !== null) {
-            let hlFeature = features.filter(
-                (f) => f.id === this.currentPermanentHighlight
-            );
-            if (hlFeature.length !== 1) {
-                this.currentPermanentHighlight = null;
+        if (source === 'custom') {
+            this.currentPermanentHighlight = features.id;
+        } else {
+            if (this.currentPermanentHighlight !== null) {
+                let hlFeature = features.filter(
+                    (f) => f.id === this.currentPermanentHighlight
+                );
+                if (hlFeature.length !== 1) {
+                    this.currentPermanentHighlight = null;
+                }
             }
         }
         this.highlightFeature(this.currentPermanentHighlight);
@@ -233,6 +252,14 @@ class WaterList {
                 features: features,
                 hasOsm: true,
             });
+        } else if (source === 'custom') {
+            this.setState({
+                loading: false,
+                features: features,
+                hasDatabase: true,
+                hasOsm: true,
+                hasCustom: true
+            })
         } else {
             this.setState({
                 loading: false,
@@ -335,6 +362,39 @@ class WaterList {
             .catch(this.onError.bind(this));
     }
 
+    saveCustomWater(e) {
+        e.preventDefault();
+        let form = e.target;
+        if (!form.checkValidity()) {
+            if (form.reportValidity) {
+                form.reportValidity();
+            }
+        }
+        let formData = new FormData(form);
+        let measurementFormData = new FormData(measurementForm);
+        let csrf = String(measurementFormData.get('csrfmiddlewaretoken'));
+        this.setState({loading: true});
+        fetch(form.action, {
+            // .method does not allow patch. We use .getAttribute instead.
+            method: form.getAttribute('method'),
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrf
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify({
+                name: formData.get('name'),
+                geometry: measurementFormData.get('location'),
+                flow_type: formData.get('flow_type'),
+                water_type: formData.get('water_type'),
+            })
+        }).then(response => response.json())
+            .then(water => this.setFeatures(water, 'custom'))
+            .catch(this.onError.bind(this));
+    }
+
     onError(err) {
         this.setState({
             loading: false,
@@ -416,8 +476,10 @@ class WaterList {
     }
 
     render() {
-        let {features, loading, hasDatabase, hasOsm} = this.state;
-        parentElement.querySelectorAll('input,label').forEach(
+        let {features, loading, hasDatabase, hasOsm, hasCustom} = this.state;
+        parentElement.querySelectorAll(
+            'input.list-group-item-input,label.list-group-item-water'
+        ).forEach(
             (el) => parentElement.removeChild(el)
         );
         for (let i = 0; i < features.length; i++) {
@@ -453,7 +515,11 @@ class WaterList {
             if (hasDatabase) {
                 if (hasOsm) {
                     osmElement.classList.add('d-none');
-                    customWaterElement.classList.remove('d-none');
+                    if (hasCustom) {
+                        customWaterElement.classList.add('d-none');
+                    } else {
+                        customWaterElement.classList.remove('d-none');
+                    }
                 } else {
                     osmElement.classList.remove('d-none');
                     customWaterElement.classList.add('d-none');
