@@ -91,18 +91,30 @@ class WaterType(models.TextChoices):
 
 
 _RUNNING_WATER_TYPES: List[WaterType] = [
-    WaterType.RIVER, WaterType.STREAM, WaterType.TIDAL_CHANNEL, WaterType.CANAL,
-    WaterType.DRAIN, WaterType.DITCH,
+    WaterType.RIVER,
+    WaterType.STREAM,
+    WaterType.TIDAL_CHANNEL,
+    WaterType.CANAL,
+    WaterType.DRAIN,
+    WaterType.DITCH,
 ]
 
 _STANDING_WATER_TYPES: List[WaterType] = [
-    WaterType.WETLAND, WaterType.LAKE, WaterType.BASIN, WaterType.POND,
-    WaterType.RESERVOIR, WaterType.LAGOON
+    WaterType.WETLAND,
+    WaterType.LAKE,
+    WaterType.BASIN,
+    WaterType.POND,
+    WaterType.RESERVOIR,
+    WaterType.LAGOON,
 ]
 
 _UNDECIDED_WATER_TYPES: List[WaterType] = [
-    WaterType.COASTLINE, WaterType.BAY, WaterType.OXBOW, WaterType.HARBOUR,
-    WaterType.WASTEWATER, WaterType.SPRING
+    WaterType.COASTLINE,
+    WaterType.BAY,
+    WaterType.OXBOW,
+    WaterType.HARBOUR,
+    WaterType.WASTEWATER,
+    WaterType.SPRING,
 ]
 
 
@@ -143,27 +155,32 @@ class Water(DateModelMixin):
         verbose_name_plural = gettext_lazy("Waters")
         ordering = ("name", "osm_id")
 
-    geometry = GeometryField(
-        blank=False,
-        verbose_name=gettext_lazy("Geometry")
-    )
+    geometry = GeometryField(blank=False, verbose_name=gettext_lazy("Geometry"))
     tags = models.JSONField(
-        default=dict, blank=True, null=False,
-        verbose_name=gettext_lazy("Tags")
+        default=dict, blank=True, null=False, verbose_name=gettext_lazy("Tags")
     )
     osm_id = models.BigIntegerField(
         unique=True, null=True, verbose_name=gettext_lazy("OpenStreetMap ID")
     )
     osm_element_type = models.CharField(
-        choices=OSMElementType.choices, null=True, blank=True, max_length=16,
+        choices=OSMElementType.choices,
+        null=True,
+        blank=True,
+        max_length=16,
     )
     flow_type = models.CharField(
-        choices=FlowType.choices, null=True, blank=True, max_length=16,
-        verbose_name=gettext_lazy("Flow type")
+        choices=FlowType.choices,
+        null=True,
+        blank=True,
+        max_length=16,
+        verbose_name=gettext_lazy("Flow type"),
     )
     water_type = models.CharField(
-        choices=WaterType.choices, null=True, blank=True, max_length=16,
-        verbose_name=gettext_lazy("Water type")
+        choices=WaterType.choices,
+        null=True,
+        blank=True,
+        max_length=16,
+        verbose_name=gettext_lazy("Water type"),
     )
     name = models.CharField(null=False, default="", blank=True, max_length=200)
 
@@ -226,8 +243,11 @@ class Water(DateModelMixin):
     @classmethod
     def from_element(cls, element: Element):
         return cls(
-            osm_id=element.osm_id, tags=element.tags, geometry=element.geometry,
-            name=element.get_name(), osm_element_type=element.get_element_type()
+            osm_id=element.osm_id,
+            tags=element.tags,
+            geometry=element.geometry,
+            name=element.get_name(),
+            osm_element_type=element.get_element_type(),
         )
 
     def update_from_element(self, element: Element):

@@ -68,6 +68,7 @@ class WaterSerializer(GeoFeatureModelSerializer):
     Serializer for the :class:`gcampus.core.models.Water` model. The
     output is valid GeoJSON.
     """
+
     class Meta:
         model = Water
         geo_field = "geometry"
@@ -85,8 +86,12 @@ class WaterSerializer(GeoFeatureModelSerializer):
         )
 
     display_name = serializers.CharField(read_only=True)
-    display_flow_type = serializers.CharField(source='get_flow_type_display', read_only=True)
-    display_water_type = serializers.CharField(source='get_water_type_display', read_only=True)
+    display_flow_type = serializers.CharField(
+        source="get_flow_type_display", read_only=True
+    )
+    display_water_type = serializers.CharField(
+        source="get_water_type_display", read_only=True
+    )
 
 
 class WaterListSerializer(serializers.ModelSerializer):
@@ -96,6 +101,7 @@ class WaterListSerializer(serializers.ModelSerializer):
     geometries is costly. For a simple list, only the important fields
     are returned (no GeoJSON).
     """
+
     class Meta:
         model = Water
         fields = (
@@ -110,5 +116,9 @@ class WaterListSerializer(serializers.ModelSerializer):
         )
 
     display_name = serializers.CharField(read_only=True)
-    display_flow_type = serializers.CharField(source='get_flow_type_display', read_only=True)
-    display_water_type = serializers.CharField(source='get_water_type_display', read_only=True)
+    display_flow_type = serializers.CharField(
+        source="get_flow_type_display", read_only=True
+    )
+    display_water_type = serializers.CharField(
+        source="get_water_type_display", read_only=True
+    )

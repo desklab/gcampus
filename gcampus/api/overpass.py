@@ -48,6 +48,7 @@ from django.contrib.gis.geos import (
     MultiLineString,
 )
 
+
 @dataclass
 class Element(abc.ABC):
     """Elements are the basic building blocks of an overpass response.
@@ -184,7 +185,7 @@ def _object_hook(obj: dict):
 
 
 def merge_unclosed_lines(
-    unclosed_lines: List[LineString]
+    unclosed_lines: List[LineString],
 ) -> Tuple[List[LineString], List[LinearRing]]:
     _union = union(unclosed_lines)
     if _union is None:
