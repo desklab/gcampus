@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {Map, Marker, NavigationControl} from '!mapbox-gl'; // noqa
+import mapboxgl from '!mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
 import '../styles/map.scss';
@@ -30,7 +30,7 @@ class MapboxGLPointWidget {
 
     constructor(map, input) {
         this._map = map;
-        this._marker = new Marker({draggable: true});
+        this._marker = new mapboxgl.Marker({draggable: true});
         this._markerAdded = false;
         this._input = input;
 
@@ -131,7 +131,7 @@ function initMap(
     onload,
 ) {
     let {center, zoom} = getMapCenterZoom(defaultCenter, defaultZoom);
-    let map = new Map({
+    let map = new mapboxgl.Map({
         accessToken: accessToken,
         container: container,
         style: style,
@@ -139,7 +139,7 @@ function initMap(
         zoom: zoom,
         logoPosition: 'bottom-left'
     });
-    let nav = new NavigationControl();
+    let nav = new mapboxgl.NavigationControl();
     map.addControl(nav, 'top-left');
     if (hasSearch) {
         map.addControl(
@@ -187,4 +187,4 @@ function getMapCenterZoom(center, zoom) {
 }
 
 
-export {initMap, MapboxGLPointWidget};
+export {initMap, MapboxGLPointWidget, mapboxgl};
