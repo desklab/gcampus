@@ -188,9 +188,9 @@ class Water(DateModelMixin):
         """
         if self.name:
             return self.name
-        water_type_str: Optional[str] = self.water_type
-        if water_type_str is None:
+        if self.water_type is None in EMPTY or self.water_type not in WaterType:
             return gettext_lazy("Unnamed water")
+        water_type_str: str = WaterType(self.water_type).label
         return self._default_water_name.format(water_type=water_type_str)
 
     @staticmethod

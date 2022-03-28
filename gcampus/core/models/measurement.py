@@ -92,6 +92,10 @@ class Measurement(util.DateModelMixin):
     objects = HiddenManager()
     all_objects = models.Manager()
 
+    @property
+    def water_name(self):
+        return self.water.display_name
+
     def is_location_changed(self, update_fields=None):
         if update_fields is not None and "location" in update_fields:
             # The ``update_fields`` parameter explicitly states that the
