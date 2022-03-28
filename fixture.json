@@ -21,23 +21,24 @@
     "model": "gcampusauth.coursetoken",
     "pk": 1,
     "fields": {
-      "created_at": "2021-06-14T13:00:06.970Z",
-      "updated_at": "2021-06-14T13:00:06.970Z",
-      "token": "JCLD3SFHC2JD",
+      "created_at": "2022-03-26T11:06:11.661Z",
+      "updated_at": "2022-03-26T11:07:29.412Z",
+      "token": "ABCD12345678",
+      "token_name": "Biologie 9b",
       "deactivated": false,
-      "school_name": "",
-      "token_name": "",
-      "teacher_name": "GCampus Admin",
-      "teacher_email": "no-reply@desk-lab.de"
+      "school_name": "Beispiel-Schule",
+      "teacher_name": "Beispiel Name",
+      "teacher_email": "j.drotleff@desk-lab.de",
+      "overview_document": ""
     }
   },
   {
     "model": "gcampusauth.accesskey",
     "pk": 1,
     "fields": {
-      "created_at": "2021-06-14T13:00:06.975Z",
-      "updated_at": "2021-06-14T13:00:06.975Z",
-      "token": "EKF42W4S",
+      "created_at": "2022-03-26T11:06:11.871Z",
+      "updated_at": "2022-03-26T11:07:57.816Z",
+      "token": "ABCD1234",
       "parent_token": 1,
       "deactivated": false
     }
@@ -46,9 +47,9 @@
     "model": "gcampusauth.accesskey",
     "pk": 2,
     "fields": {
-      "created_at": "2021-06-14T13:00:06.979Z",
-      "updated_at": "2021-06-14T13:00:06.979Z",
-      "token": "ETD3MJD8",
+      "created_at": "2022-03-26T11:06:11.873Z",
+      "updated_at": "2022-03-26T11:06:11.873Z",
+      "token": "Z41KCQ4S",
       "parent_token": 1,
       "deactivated": false
     }
@@ -57,9 +58,31 @@
     "model": "gcampusauth.accesskey",
     "pk": 3,
     "fields": {
-      "created_at": "2021-06-14T13:00:06.983Z",
-      "updated_at": "2021-06-14T13:00:06.983Z",
-      "token": "K99FKJYL",
+      "created_at": "2022-03-26T11:06:11.875Z",
+      "updated_at": "2022-03-26T11:06:11.875Z",
+      "token": "DYEL5CKW",
+      "parent_token": 1,
+      "deactivated": false
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 4,
+    "fields": {
+      "created_at": "2022-03-26T11:06:11.876Z",
+      "updated_at": "2022-03-26T11:06:11.876Z",
+      "token": "T62RR8T8",
+      "parent_token": 1,
+      "deactivated": false
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 5,
+    "fields": {
+      "created_at": "2022-03-26T11:06:11.877Z",
+      "updated_at": "2022-03-26T11:06:11.877Z",
+      "token": "WJR5YMDX",
       "parent_token": 1,
       "deactivated": false
     }
@@ -73,10 +96,11 @@
       "name": "Caro und Isabel",
       "location": "SRID=4326;POINT (7.740276 49.468166)",
       "location_name": "Kaiserslautern",
-      "water_name":"Lauter",
-      "token_id": 1,
+      "water": 4,
+      "token": 1,
       "time": "2021-04-20T09:25:00Z",
-      "comment": ""
+      "comment": "",
+      "hidden": false
     }
   },
   {
@@ -88,10 +112,11 @@
       "name": "Theresa, Felix",
       "location": "SRID=4326;POINT (8.671056 49.417329)",
       "location_name": "Heidelberg",
-      "water_name": "Physiker Teich",
-      "token_id": 1,
+      "water": 5,
+      "token": 1,
       "time": "2021-04-15T07:50:00Z",
-      "comment": ""
+      "comment": "",
+      "hidden": false
     }
   },
   {
@@ -103,165 +128,167 @@
       "name": "Yasar, Erik",
       "location": "SRID=4326;POINT (8.680916 49.411518)",
       "location_name": "Heidelberg",
-      "water_name": "Neckar",
-      "token_id": 1,
+      "water": 1,
+      "token": 1,
       "time": "2021-04-06T05:14:00Z",
-      "comment": ""
+      "comment": "",
+      "hidden": false
     }
   },
   {
-    "model": "gcampuscore.measurement",
-    "pk": 4,
-    "fields": {
-      "created_at": "2021-04-20T13:11:13.076Z",
-      "updated_at": "2021-04-20T13:11:13.076Z",
-      "name": "Jes und Abiya",
-      "location": "SRID=4326;POINT (8.399906 48.999268)",
-      "location_name": "Karlsruhe",
-      "water_name":"Stadtgartensee",
-      "token_id": 1,
-      "time": "2021-04-15T11:34:00Z",
-      "comment": ""
-    }
-  },
-  {
-    "model": "gcampuscore.parametertype",
+    "model": "gcampuscore.water",
     "pk": 1,
     "fields": {
-      "name": "pH-Wert",
-      "unit": ""
+      "created_at": "2022-03-26T11:09:05.839Z",
+      "updated_at": "2022-03-26T18:38:07.081Z",
+      "geometry": "SRID=4326;POINT (8.682718 49.41142)",
+      "tags": {
+        "name": "Neckar",
+        "type": "waterway",
+        "name:de": "Neckar",
+        "name:en": "Neckar",
+        "name:fr": "Neckar",
+        "name:la": "Nicrum",
+        "name:pfl": "Negga",
+        "ref:fgkz": "238",
+        "waterway": "river",
+        "wikidata": "Q1673",
+        "wikipedia": "de:Neckar",
+        "alt_name:la": "Nicer",
+        "destination": "Rhein",
+        "alt_name:pfl": "Negger"
+      },
+      "osm_id": 123881,
+      "osm_element_type": "relation",
+      "flow_type": "running",
+      "water_type": "river",
+      "name": "Neckar"
     }
   },
   {
-    "model": "gcampuscore.parametertype",
+    "model": "gcampuscore.water",
     "pk": 2,
     "fields": {
-      "name": "Nitratgehalt",
-      "unit": "mg/l"
+      "created_at": "2022-03-26T11:09:37.842Z",
+      "updated_at": "2022-03-26T18:38:29.065Z",
+      "geometry": "SRID=4326;POINT (7.932386 48.696003)",
+      "tags": {
+        "name": "Rhein",
+        "note": "Don't map tributaries! If you need them, get them by looking at the data (connected waterways). see here http://www.h-renrew.de/h/osm/osmchecks/07_watershed/index.html",
+        "type": "waterway",
+        "name:am": "ራይን ወንዝ",
+        "name:ar": "نهر الراين",
+        "name:bn": "রাইন নদী",
+        "name:cs": "Rýn",
+        "name:de": "Rhein",
+        "name:el": "Ρήνος",
+        "name:en": "Rhine",
+        "name:es": "Rin",
+        "name:fr": "Rhin",
+        "name:hi": "रैन्",
+        "name:hy": "Հռենոս",
+        "name:it": "Reno",
+        "name:kn": "ರೈನ್",
+        "name:ku": "Reyn",
+        "name:la": "Rhenus",
+        "name:lb": "Rhäin",
+        "name:li": "Rien",
+        "name:lt": "Reinas",
+        "name:nl": "Rijn",
+        "name:pl": "Ren",
+        "name:pt": "Reno",
+        "name:rm": "Rein",
+        "name:ro": "Rin",
+        "name:ru": "Рейн",
+        "name:sk": "Rýn",
+        "name:tr": "Nehri",
+        "name:uk": "Рейн",
+        "name:wa": "Rén",
+        "name:zh": "莱茵河",
+        "distance": "1233",
+        "name:pfl": "Rhoi",
+        "name:vls": "Reyn",
+        "name:xmf": "რაინი",
+        "ref:fgkz": "2",
+        "waterway": "river",
+        "wikidata": "Q584",
+        "ref:gwlnr": "CH0000010000",
+        "wikipedia": "de:Rhein",
+        "ref:sandre": "A---0000",
+        "destination": "North Sea",
+        "order:classic": "1",
+        "short_name:ar": "راين",
+        "TMC:cid_58:tabcd_1:Class": "Area",
+        "TMC:cid_58:tabcd_1:LCLversion": "9.00",
+        "TMC:cid_58:tabcd_1:LocationCode": "6041"
+      },
+      "osm_id": 123924,
+      "osm_element_type": "relation",
+      "flow_type": "running",
+      "water_type": "river",
+      "name": "Rhein"
     }
   },
   {
-    "model": "gcampuscore.parametertype",
+    "model": "gcampuscore.water",
     "pk": 3,
     "fields": {
-      "name": "Sauerstoffgehalt",
-      "unit": "mg/l"
+      "created_at": "2022-03-26T11:10:38.995Z",
+      "updated_at": "2022-03-26T18:37:40.615Z",
+      "geometry": "SRID=4326;POINT (7.741027 49.464735)",
+      "tags": {
+        "name": "Lauter",
+        "type": "waterway",
+        "alt_name": "Waldlauter",
+        "ref:fgkz": "25466",
+        "waterway": "river",
+        "wikidata": "Q454342",
+        "wikipedia": "de:Lauter (Glan)",
+        "destination": "Glan"
+      },
+      "osm_id": 10724489,
+      "osm_element_type": "relation",
+      "flow_type": "running",
+      "water_type": "river",
+      "name": "Lauter"
     }
   },
   {
-    "model": "gcampuscore.parametertype",
+    "model": "gcampuscore.water",
     "pk": 4,
     "fields": {
-      "name": "Sauerstoffsättigung",
-      "unit": "%"
+      "created_at": "2022-03-26T11:11:13.847Z",
+      "updated_at": "2022-03-26T18:38:46.350Z",
+      "geometry": "SRID=4326;POINT (7.720256 49.446812)",
+      "tags": {
+        "name": "Vogelwoog",
+        "natural": "water",
+        "wikidata": "Q2530182"
+      },
+      "osm_id": 24329755,
+      "osm_element_type": "way",
+      "flow_type": null,
+      "water_type": null,
+      "name": "Vogelwoog"
     }
   },
   {
-    "model": "gcampuscore.parameter",
-    "pk": 1,
-    "fields": {
-      "created_at": "2021-04-20T13:11:31.591Z",
-      "updated_at": "2021-04-20T13:11:31.591Z",
-      "parameter_type": 1,
-      "value": 5.0,
-      "measurement": 1,
-      "comment": ""
-    }
-  },
-  {
-    "model": "gcampuscore.parameter",
-    "pk": 2,
-    "fields": {
-      "created_at": "2021-04-20T13:11:53.167Z",
-      "updated_at": "2021-04-20T13:11:53.167Z",
-      "parameter_type": 1,
-      "value": 5.7,
-      "measurement": 2,
-      "comment": ""
-    }
-  },
-  {
-    "model": "gcampuscore.parameter",
-    "pk": 3,
-    "fields": {
-      "created_at": "2021-04-20T13:12:07.823Z",
-      "updated_at": "2021-04-20T13:12:07.823Z",
-      "parameter_type": 4,
-      "value": 84.0,
-      "measurement": 3,
-      "comment": ""
-    }
-  },
-  {
-    "model": "gcampuscore.parameter",
-    "pk": 4,
-    "fields": {
-      "created_at": "2021-04-20T13:12:18.411Z",
-      "updated_at": "2021-04-20T13:12:18.412Z",
-      "parameter_type": 1,
-      "value": 6.0,
-      "measurement": 3,
-      "comment": ""
-    }
-  },
-  {
-    "model": "gcampuscore.parameter",
+    "model": "gcampuscore.water",
     "pk": 5,
     "fields": {
-      "created_at": "2021-04-20T13:12:29.063Z",
-      "updated_at": "2021-04-20T13:12:29.063Z",
-      "parameter_type": 4,
-      "value": 77.0,
-      "measurement": 2,
-      "comment": ""
-    }
-  },
-  {
-    "model": "gcampuscore.parameter",
-    "pk": 6,
-    "fields": {
-      "created_at": "2021-04-20T13:12:49.832Z",
-      "updated_at": "2021-04-20T13:12:49.832Z",
-      "parameter_type": 3,
-      "value": 2.5,
-      "measurement": 1,
-      "comment": ""
-    }
-  },
-  {
-    "model": "gcampuscore.parameter",
-    "pk": 7,
-    "fields": {
-      "created_at": "2021-04-20T13:13:02.383Z",
-      "updated_at": "2021-04-20T13:14:11.607Z",
-      "parameter_type": 4,
-      "value": 42.0,
-      "measurement": 4,
-      "comment": ""
-    }
-  },
-  {
-    "model": "gcampuscore.parameter",
-    "pk": 8,
-    "fields": {
-      "created_at": "2021-04-20T13:13:13.165Z",
-      "updated_at": "2021-04-20T13:13:13.165Z",
-      "parameter_type": 4,
-      "value": 52.0,
-      "measurement": 1,
-      "comment": ""
-    }
-  },
-  {
-    "model": "gcampuscore.parameter",
-    "pk": 9,
-    "fields": {
-      "created_at": "2021-04-20T13:14:21.295Z",
-      "updated_at": "2021-04-20T13:14:21.295Z",
-      "parameter_type": 1,
-      "value": 6.8,
-      "measurement": 4,
-      "comment": ""
+      "created_at": "2022-03-26T12:45:29.449Z",
+      "updated_at": "2022-03-26T18:38:16.256Z",
+      "geometry": "SRID=4326;POINT (8.670927 49.417409)",
+      "tags": {
+        "name": "Physik-Teich",
+        "water": "pond",
+        "natural": "water"
+      },
+      "osm_id": 25961914,
+      "osm_element_type": "way",
+      "flow_type": "standing",
+      "water_type": "pond",
+      "name": "Physik-Teich"
     }
   }
 ]
