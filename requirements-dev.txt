@@ -6,3 +6,4 @@ coverage
 sphinx~=4.4.0
 myst-parser~=0.17.0
 furo~=2022.2
+pre-commit
