@@ -14,9 +14,11 @@
             {% translate "All Measurements" context "filter page title" as measurements_title %}
             {% translate "Analysis" context "analysis page title" as analysis_title %}
             {% translate "Course administration" as course_title %}
+            {% translate "Calibration" as converter_title %}
 
             {% include "gcampuscore/components/sidebar_item.html" with icon="map" title=map_title view_name="gcampuscore:mapview" %}
             {% include "gcampuscore/components/sidebar_item.html" with icon="list" title=measurements_title view_name="gcampuscore:measurements" %}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="tool" title=converter_title view_name="gcampusanalysis:od_converter" %}
 {#            {% include "gcampuscore/components/sidebar_item.html" with icon="bar-chart-2" title=analysis_title view_name="gcampusanalysis:analysis_measure" %}#}
             {% if user_token_is_course_token%}
                 {% include "gcampuscore/components/sidebar_item.html" with icon="user" title=course_title view_name="gcampusauth:course-overview" %}
