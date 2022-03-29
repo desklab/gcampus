@@ -180,10 +180,18 @@ class MeasurementListPDF(ListDocumentView):
         if context_object_name is not None:
             context[context_object_name] = queryset
         kwargs["measurement_count"] = queryset.count()
-        kwargs["water_count"] = queryset.order_by().distinct("osm_id").count()
-        kwargs["accesskey_count"] = queryset.order_by().distinct("token").count()
-        kwargs["time_first"] = queryset.order_by("time")[0].time
-        kwargs["time_last"] = queryset.order_by("time")[queryset.count() - 1].time
+        kwargs["water_count"] = (
+            queryset.only("water").order_by().distinct("water").count()
+        )
+        kwargs["accesskey_count"] = (
+            queryset.only("token").order_by().distinct("token").count()
+        )
+        kwargs["time_first"] = (
+            queryset.only("time").values_list("time", flat=True).earliest("time")
+        )
+        kwargs["time_last"] = (
+            queryset.only("time").values_list("time", flat=True).latest("time")
+        )
         bbox = self.bounding_box()
         kwargs["bbox_long_min"] = bbox[0]
         kwargs["bbox_long_max"] = bbox[1]
