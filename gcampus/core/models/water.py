@@ -23,7 +23,7 @@ __all__ = [
 ]
 
 import logging
-from typing import Optional, List
+from typing import Optional, List, Union
 
 from django.contrib.gis.db.models import GeometryField
 from django.db import models
@@ -202,12 +202,30 @@ class Water(DateModelMixin):
         :returns: The name of the water.
         :rtype: str
         """
-        if self.name:
-            return self.name
-        if self.water_type is None in EMPTY or self.water_type not in WaterType:
+        return self.get_water_name(self.name, self.water_type)
+
+    @classmethod
+    def get_water_name(
+        cls, name: Optional[str], water_type: Union[None, str, WaterType]
+    ) -> str:
+        """Retrieve human-readable name. Defaults to :param:`name` if
+        set. The method is a class method as it may be used for database
+        queries where the :class:`.Water` object is not instantiated,
+        e.g. for value lists.
+
+        :param name: Optional name.
+        :param water_type: Optional water type (string or
+            :class:`.WaterType`).
+
+        :returns: The name of the water.
+        :rtype: str
+        """
+        if name:
+            return name
+        if not water_type or water_type not in WaterType:
             return gettext_lazy("Unnamed water")
-        water_type_str: str = WaterType(self.water_type).label
-        return self._default_water_name.format(water_type=water_type_str)
+        water_type_str: str = WaterType(water_type).label
+        return cls._default_water_name.format(water_type=water_type_str)
 
     @staticmethod
     def guess_water_type(tags: dict) -> Optional[WaterType]:
