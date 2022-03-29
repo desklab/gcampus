@@ -1,136 +1,415 @@
 [
   {
-    "model": "auth.user",
+    "model": "gcampuscore.measurement",
     "pk": 1,
     "fields": {
-      "password": "pbkdf2_sha256$216000$0MbSqfoSvBIS$oAg61M1goUj1lPg+vDRuY1b0stbGpGhen5iF7gEPVbg=",
-      "last_login": "2021-04-20T12:46:29.020Z",
-      "is_superuser": true,
-      "username": "admin",
-      "first_name": "",
-      "last_name": "",
-      "email": "",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2021-04-20T12:46:09.283Z",
-      "groups": [],
-      "user_permissions": []
+      "created_at": "2022-03-29T11:16:23.072Z",
+      "updated_at": "2022-03-29T11:16:23.072Z",
+      "token": 1,
+      "name": "Axel",
+      "location": "SRID=4326;POINT (8.448988473414317 49.32438585102591)",
+      "location_name": "Rheinland-Pfalz",
+      "water": 1,
+      "time": "2022-02-10T12:16:00Z",
+      "comment": "",
+      "hidden": false,
+      "search_vector": "'axel':1A 'pfalz':4A 'rheinland':3A 'rheinland-pfalz':2A"
     }
   },
   {
-    "model": "gcampusauth.coursetoken",
-    "pk": 1,
-    "fields": {
-      "created_at": "2022-03-26T11:06:11.661Z",
-      "updated_at": "2022-03-26T11:07:29.412Z",
-      "token": "ABCD12345678",
-      "token_name": "Biologie 9b",
-      "deactivated": false,
-      "school_name": "Beispiel-Schule",
-      "teacher_name": "Beispiel Name",
-      "teacher_email": "j.drotleff@desk-lab.de",
-      "overview_document": ""
-    }
-  },
-  {
-    "model": "gcampusauth.accesskey",
-    "pk": 1,
-    "fields": {
-      "created_at": "2022-03-26T11:06:11.871Z",
-      "updated_at": "2022-03-26T11:07:57.816Z",
-      "token": "ABCD1234",
-      "parent_token": 1,
-      "deactivated": false
-    }
-  },
-  {
-    "model": "gcampusauth.accesskey",
+    "model": "gcampuscore.measurement",
     "pk": 2,
     "fields": {
-      "created_at": "2022-03-26T11:06:11.873Z",
-      "updated_at": "2022-03-26T11:06:11.873Z",
-      "token": "Z41KCQ4S",
-      "parent_token": 1,
-      "deactivated": false
+      "created_at": "2022-03-29T11:18:08.628Z",
+      "updated_at": "2022-03-29T11:18:08.628Z",
+      "token": 1,
+      "name": "Axel",
+      "location": "SRID=4326;POINT (8.458709040193298 49.46518564879173)",
+      "location_name": "Ludwigshafen am Rhein",
+      "water": 1,
+      "time": "2022-02-05T10:37:00Z",
+      "comment": "",
+      "hidden": false,
+      "search_vector": "'axel':1A 'ludwigshaf':2A 'rhein':4A"
     }
   },
   {
-    "model": "gcampusauth.accesskey",
+    "model": "gcampuscore.measurement",
     "pk": 3,
     "fields": {
-      "created_at": "2022-03-26T11:06:11.875Z",
-      "updated_at": "2022-03-26T11:06:11.875Z",
-      "token": "DYEL5CKW",
-      "parent_token": 1,
-      "deactivated": false
+      "created_at": "2022-03-29T11:19:42.805Z",
+      "updated_at": "2022-03-29T11:19:42.805Z",
+      "token": 2,
+      "name": "Jonas",
+      "location": "SRID=4326;POINT (8.685431533505863 49.41046989385299)",
+      "location_name": "Heidelberg",
+      "water": 2,
+      "time": "2022-03-26T08:19:00Z",
+      "comment": "",
+      "hidden": false,
+      "search_vector": "'heidelberg':2A 'jonas':1A"
     }
   },
   {
-    "model": "gcampusauth.accesskey",
+    "model": "gcampuscore.measurement",
     "pk": 4,
     "fields": {
-      "created_at": "2022-03-26T11:06:11.876Z",
-      "updated_at": "2022-03-26T11:06:11.876Z",
-      "token": "T62RR8T8",
-      "parent_token": 1,
-      "deactivated": false
+      "created_at": "2022-03-29T11:22:55.533Z",
+      "updated_at": "2022-03-29T11:22:55.533Z",
+      "token": 3,
+      "name": "JuFo Team",
+      "location": "SRID=4326;POINT (7.693394927200671 49.39588461518815)",
+      "location_name": "Kaiserslautern",
+      "water": 3,
+      "time": "2021-10-29T11:10:00Z",
+      "comment": "",
+      "hidden": false,
+      "search_vector": "'jufo':1A 'kaiserslaut':3A 'team':2A"
     }
   },
   {
-    "model": "gcampusauth.accesskey",
+    "model": "gcampuscore.measurement",
     "pk": 5,
     "fields": {
-      "created_at": "2022-03-26T11:06:11.877Z",
-      "updated_at": "2022-03-26T11:06:11.877Z",
-      "token": "WJR5YMDX",
-      "parent_token": 1,
-      "deactivated": false
-    }
-  },
-  {
-    "model": "gcampuscore.measurement",
-    "pk": 1,
-    "fields": {
-      "created_at": "2021-04-20T13:04:30.586Z",
-      "updated_at": "2021-04-20T13:04:30.586Z",
-      "name": "Caro und Isabel",
-      "location": "SRID=4326;POINT (7.740276 49.468166)",
+      "created_at": "2022-03-29T11:24:13.230Z",
+      "updated_at": "2022-03-29T11:24:13.230Z",
+      "token": 3,
+      "name": "JuFo Team",
+      "location": "SRID=4326;POINT (7.740610988516295 49.465445875238174)",
       "location_name": "Kaiserslautern",
       "water": 4,
-      "token": 1,
-      "time": "2021-04-20T09:25:00Z",
+      "time": "2021-10-29T14:24:00Z",
       "comment": "",
-      "hidden": false
+      "hidden": false,
+      "search_vector": "'jufo':1A 'kaiserslaut':3A 'team':2A"
     }
   },
   {
     "model": "gcampuscore.measurement",
+    "pk": 6,
+    "fields": {
+      "created_at": "2022-03-29T11:25:14.697Z",
+      "updated_at": "2022-03-29T11:32:05.638Z",
+      "token": 3,
+      "name": "JuFo-Team",
+      "location": "SRID=4326;POINT (7.692295890247749 49.39586112368406)",
+      "location_name": "Queidersbach",
+      "water": 3,
+      "time": "2021-07-10T11:25:00Z",
+      "comment": "",
+      "hidden": true,
+      "search_vector": "'jufo':2A 'jufo-team':1A 'queidersbach':4A 'team':3A"
+    }
+  },
+  {
+    "model": "gcampuscore.measurement",
+    "pk": 7,
+    "fields": {
+      "created_at": "2022-03-29T11:27:31.653Z",
+      "updated_at": "2022-03-29T11:28:12.000Z",
+      "token": 3,
+      "name": "JuFo Team",
+      "location": "SRID=4326;POINT (7.74104703324133 49.465178571834)",
+      "location_name": "Kaiserslautern",
+      "water": 4,
+      "time": "2021-07-11T16:20:00Z",
+      "comment": "",
+      "hidden": false,
+      "search_vector": "'jufo':1A 'kaiserslaut':3A 'team':2A"
+    }
+  },
+  {
+    "model": "gcampuscore.measurement",
+    "pk": 8,
+    "fields": {
+      "created_at": "2022-03-29T11:29:58.102Z",
+      "updated_at": "2022-03-29T11:30:48.425Z",
+      "token": 4,
+      "name": "Testnutzer",
+      "location": "SRID=4326;POINT (8.525494372525458 49.07099232991581)",
+      "location_name": "Weingarten",
+      "water": 6,
+      "time": "2021-09-14T12:45:00Z",
+      "comment": "",
+      "hidden": false,
+      "search_vector": "'testnutz':1A 'weingart':2A"
+    }
+  },
+  {
+    "model": "gcampuscore.measurement",
+    "pk": 9,
+    "fields": {
+      "created_at": "2022-03-29T11:36:48.014Z",
+      "updated_at": "2022-03-29T11:36:48.014Z",
+      "token": 11,
+      "name": "Axel",
+      "location": "SRID=4326;POINT (9.168616879263311 49.230354219513686)",
+      "location_name": "Wimpfen am Berg",
+      "water": 2,
+      "time": "2022-01-19T12:36:00Z",
+      "comment": "",
+      "hidden": false,
+      "search_vector": "'axel':1A 'berg':4A 'wimpf':2A"
+    }
+  },
+  {
+    "model": "gcampuscore.measurement",
+    "pk": 10,
+    "fields": {
+      "created_at": "2022-03-29T11:38:53.742Z",
+      "updated_at": "2022-03-29T11:39:18.709Z",
+      "token": 13,
+      "name": "Noah",
+      "location": "SRID=4326;POINT (8.470137129484982 49.18052411851977)",
+      "location_name": "Verwaltungsverband Philippsburg",
+      "water": 7,
+      "time": "2021-01-12T17:38:00Z",
+      "comment": "",
+      "hidden": false,
+      "search_vector": "'noah':1A 'philippsburg':3A 'verwaltungsverband':2A"
+    }
+  },
+  {
+    "model": "gcampuscore.parametertype",
+    "pk": 1,
+    "fields": {
+      "name": "pH - Wert",
+      "short_name": "pH",
+      "unit": "",
+      "calibration_formula": "(2*od)+6"
+    }
+  },
+  {
+    "model": "gcampuscore.parametertype",
     "pk": 2,
     "fields": {
-      "created_at": "2021-04-20T13:05:30.914Z",
-      "updated_at": "2021-04-20T13:05:30.914Z",
-      "name": "Theresa, Felix",
-      "location": "SRID=4326;POINT (8.671056 49.417329)",
-      "location_name": "Heidelberg",
-      "water": 5,
-      "token": 1,
-      "time": "2021-04-15T07:50:00Z",
+      "name": "Nitrat",
+      "short_name": "Ni",
+      "unit": "mg/L",
+      "calibration_formula": "28*od"
+    }
+  },
+  {
+    "model": "gcampuscore.parametertype",
+    "pk": 3,
+    "fields": {
+      "name": "Sulfat",
+      "short_name": "Su",
+      "unit": "mg/L",
+      "calibration_formula": "120*od"
+    }
+  },
+  {
+    "model": "gcampuscore.limit",
+    "pk": 1,
+    "fields": {
+      "limit_type": "gut",
+      "limit_value": 80.0,
+      "parameter_limit": 2,
+      "graph_color": "yellow"
+    }
+  },
+  {
+    "model": "gcampuscore.limit",
+    "pk": 2,
+    "fields": {
+      "limit_type": "sehr gut",
+      "limit_value": 40.0,
+      "parameter_limit": 2,
+      "graph_color": "green"
+    }
+  },
+  {
+    "model": "gcampuscore.parameter",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-03-29T11:16:44.705Z",
+      "updated_at": "2022-03-29T11:16:44.705Z",
+      "parameter_type": 2,
+      "value": 40.0,
+      "measurement": 1,
       "comment": "",
       "hidden": false
     }
   },
   {
-    "model": "gcampuscore.measurement",
+    "model": "gcampuscore.parameter",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-03-29T11:16:44.728Z",
+      "updated_at": "2022-03-29T11:16:44.728Z",
+      "parameter_type": 3,
+      "value": 8.4,
+      "measurement": 1,
+      "comment": "",
+      "hidden": false
+    }
+  },
+  {
+    "model": "gcampuscore.parameter",
     "pk": 3,
     "fields": {
-      "created_at": "2021-04-20T13:09:07.928Z",
-      "updated_at": "2021-04-20T13:09:07.928Z",
-      "name": "Yasar, Erik",
-      "location": "SRID=4326;POINT (8.680916 49.411518)",
-      "location_name": "Heidelberg",
-      "water": 1,
-      "token": 1,
-      "time": "2021-04-06T05:14:00Z",
+      "created_at": "2022-03-29T11:18:35.411Z",
+      "updated_at": "2022-03-29T11:18:35.411Z",
+      "parameter_type": 2,
+      "value": 35.2,
+      "measurement": 2,
+      "comment": "",
+      "hidden": false
+    }
+  },
+  {
+    "model": "gcampuscore.parameter",
+    "pk": 4,
+    "fields": {
+      "created_at": "2022-03-29T11:20:13.322Z",
+      "updated_at": "2022-03-29T11:20:13.322Z",
+      "parameter_type": 1,
+      "value": 7.3,
+      "measurement": 3,
+      "comment": "",
+      "hidden": false
+    }
+  },
+  {
+    "model": "gcampuscore.parameter",
+    "pk": 5,
+    "fields": {
+      "created_at": "2022-03-29T11:20:13.343Z",
+      "updated_at": "2022-03-29T11:20:13.343Z",
+      "parameter_type": 2,
+      "value": 120.5,
+      "measurement": 3,
+      "comment": "",
+      "hidden": false
+    }
+  },
+  {
+    "model": "gcampuscore.parameter",
+    "pk": 6,
+    "fields": {
+      "created_at": "2022-03-29T11:20:13.346Z",
+      "updated_at": "2022-03-29T11:20:13.346Z",
+      "parameter_type": 3,
+      "value": 70.0,
+      "measurement": 3,
+      "comment": "",
+      "hidden": false
+    }
+  },
+  {
+    "model": "gcampuscore.parameter",
+    "pk": 7,
+    "fields": {
+      "created_at": "2022-03-29T11:23:12.027Z",
+      "updated_at": "2022-03-29T11:23:12.027Z",
+      "parameter_type": 2,
+      "value": 139.5,
+      "measurement": 4,
+      "comment": "",
+      "hidden": false
+    }
+  },
+  {
+    "model": "gcampuscore.parameter",
+    "pk": 8,
+    "fields": {
+      "created_at": "2022-03-29T11:24:20.818Z",
+      "updated_at": "2022-03-29T11:24:20.818Z",
+      "parameter_type": 2,
+      "value": 45.8,
+      "measurement": 5,
+      "comment": "",
+      "hidden": false
+    }
+  },
+  {
+    "model": "gcampuscore.parameter",
+    "pk": 9,
+    "fields": {
+      "created_at": "2022-03-29T11:25:27.223Z",
+      "updated_at": "2022-03-29T11:25:27.223Z",
+      "parameter_type": 2,
+      "value": 220.0,
+      "measurement": 6,
+      "comment": "",
+      "hidden": false
+    }
+  },
+  {
+    "model": "gcampuscore.parameter",
+    "pk": 10,
+    "fields": {
+      "created_at": "2022-03-29T11:27:42.451Z",
+      "updated_at": "2022-03-29T11:27:42.451Z",
+      "parameter_type": 2,
+      "value": 61.0,
+      "measurement": 7,
+      "comment": "",
+      "hidden": false
+    }
+  },
+  {
+    "model": "gcampuscore.parameter",
+    "pk": 11,
+    "fields": {
+      "created_at": "2022-03-29T11:30:16.032Z",
+      "updated_at": "2022-03-29T11:30:16.032Z",
+      "parameter_type": 3,
+      "value": 123.0,
+      "measurement": 8,
+      "comment": "",
+      "hidden": false
+    }
+  },
+  {
+    "model": "gcampuscore.parameter",
+    "pk": 12,
+    "fields": {
+      "created_at": "2022-03-29T11:30:16.055Z",
+      "updated_at": "2022-03-29T11:30:16.055Z",
+      "parameter_type": 1,
+      "value": 7.4,
+      "measurement": 8,
+      "comment": "",
+      "hidden": false
+    }
+  },
+  {
+    "model": "gcampuscore.parameter",
+    "pk": 13,
+    "fields": {
+      "created_at": "2022-03-29T11:37:14.327Z",
+      "updated_at": "2022-03-29T11:37:14.327Z",
+      "parameter_type": 2,
+      "value": 84.2,
+      "measurement": 9,
+      "comment": "",
+      "hidden": false
+    }
+  },
+  {
+    "model": "gcampuscore.parameter",
+    "pk": 14,
+    "fields": {
+      "created_at": "2022-03-29T11:37:14.349Z",
+      "updated_at": "2022-03-29T11:37:14.349Z",
+      "parameter_type": 3,
+      "value": 28.5,
+      "measurement": 9,
+      "comment": "",
+      "hidden": false
+    }
+  },
+  {
+    "model": "gcampuscore.parameter",
+    "pk": 15,
+    "fields": {
+      "created_at": "2022-03-29T11:39:01.396Z",
+      "updated_at": "2022-03-29T11:39:01.396Z",
+      "parameter_type": 1,
+      "value": 6.8,
+      "measurement": 10,
       "comment": "",
       "hidden": false
     }
@@ -139,39 +418,9 @@
     "model": "gcampuscore.water",
     "pk": 1,
     "fields": {
-      "created_at": "2022-03-26T11:09:05.839Z",
-      "updated_at": "2022-03-26T18:38:07.081Z",
-      "geometry": "SRID=4326;POINT (8.682718 49.41142)",
-      "tags": {
-        "name": "Neckar",
-        "type": "waterway",
-        "name:de": "Neckar",
-        "name:en": "Neckar",
-        "name:fr": "Neckar",
-        "name:la": "Nicrum",
-        "name:pfl": "Negga",
-        "ref:fgkz": "238",
-        "waterway": "river",
-        "wikidata": "Q1673",
-        "wikipedia": "de:Neckar",
-        "alt_name:la": "Nicer",
-        "destination": "Rhein",
-        "alt_name:pfl": "Negger"
-      },
-      "osm_id": 123881,
-      "osm_element_type": "relation",
-      "flow_type": "running",
-      "water_type": "river",
-      "name": "Neckar"
-    }
-  },
-  {
-    "model": "gcampuscore.water",
-    "pk": 2,
-    "fields": {
-      "created_at": "2022-03-26T11:09:37.842Z",
-      "updated_at": "2022-03-26T18:38:29.065Z",
-      "geometry": "SRID=4326;POINT (7.932386 48.696003)",
+      "created_at": "2022-03-29T11:15:47.885Z",
+      "updated_at": "2022-03-29T11:44:17.742Z",
+      "geometry": "SRID=4326;POINT (0 0)",
       "tags": {
         "name": "Rhein",
         "note": "Don't map tributaries! If you need them, get them by looking at the data (connected waterways). see here http://www.h-renrew.de/h/osm/osmchecks/07_watershed/index.html",
@@ -231,11 +480,83 @@
   },
   {
     "model": "gcampuscore.water",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-03-29T11:19:38.313Z",
+      "updated_at": "2022-03-29T11:44:30.508Z",
+      "geometry": "SRID=4326;POINT (0 0)",
+      "tags": {
+        "name": "Neckar",
+        "type": "waterway",
+        "name:de": "Neckar",
+        "name:en": "Neckar",
+        "name:fr": "Neckar",
+        "name:la": "Nicrum",
+        "name:pfl": "Negga",
+        "ref:fgkz": "238",
+        "waterway": "river",
+        "wikidata": "Q1673",
+        "wikipedia": "de:Neckar",
+        "alt_name:la": "Nicer",
+        "destination": "Rhein",
+        "alt_name:pfl": "Negger"
+      },
+      "osm_id": 123881,
+      "osm_element_type": "relation",
+      "flow_type": "running",
+      "water_type": "river",
+      "name": "Neckar"
+    }
+  },
+  {
+    "model": "gcampuscore.water",
     "pk": 3,
     "fields": {
-      "created_at": "2022-03-26T11:10:38.995Z",
-      "updated_at": "2022-03-26T18:37:40.615Z",
-      "geometry": "SRID=4326;POINT (7.741027 49.464735)",
+      "created_at": "2022-03-29T11:22:42.265Z",
+      "updated_at": "2022-03-29T11:44:48.930Z",
+      "geometry": "SRID=4326;POINT (0 0)",
+      "tags": {
+        "name": "Gelterswoog",
+        "tidal": "yes",
+        "water": "lake",
+        "natural": "water",
+        "wikidata": "Q1499837",
+        "wikipedia": "de:Gelterswoog"
+      },
+      "osm_id": 23486255,
+      "osm_element_type": "way",
+      "flow_type": "standing",
+      "water_type": "lake",
+      "name": "Gelterswoog"
+    }
+  },
+  {
+    "model": "gcampuscore.water",
+    "pk": 4,
+    "fields": {
+      "created_at": "2022-03-29T11:23:44.595Z",
+      "updated_at": "2022-03-29T11:45:26.888Z",
+      "geometry": "SRID=4326;POINT (0 0)",
+      "tags": {
+        "type": "multipolygon",
+        "water": "pond",
+        "natural": "water",
+        "description": "Klärteich"
+      },
+      "osm_id": 10685708,
+      "osm_element_type": "relation",
+      "flow_type": "standing",
+      "water_type": "pond",
+      "name": ""
+    }
+  },
+  {
+    "model": "gcampuscore.water",
+    "pk": 5,
+    "fields": {
+      "created_at": "2022-03-29T11:23:44.598Z",
+      "updated_at": "2022-03-29T11:44:40.117Z",
+      "geometry": "SRID=4326;POINT (0 0)",
       "tags": {
         "name": "Lauter",
         "type": "waterway",
@@ -255,40 +576,255 @@
   },
   {
     "model": "gcampuscore.water",
-    "pk": 4,
+    "pk": 6,
     "fields": {
-      "created_at": "2022-03-26T11:11:13.847Z",
-      "updated_at": "2022-03-26T18:38:46.350Z",
-      "geometry": "SRID=4326;POINT (7.720256 49.446812)",
+      "created_at": "2022-03-29T11:29:34.688Z",
+      "updated_at": "2022-03-29T11:44:57.705Z",
+      "geometry": "SRID=4326;POINT (0 0)",
       "tags": {
-        "name": "Vogelwoog",
-        "natural": "water",
-        "wikidata": "Q2530182"
+        "name": "Baggersee Weingarten",
+        "type": "multipolygon",
+        "water": "lake",
+        "natural": "water"
       },
-      "osm_id": 24329755,
-      "osm_element_type": "way",
-      "flow_type": null,
-      "water_type": null,
-      "name": "Vogelwoog"
+      "osm_id": 5738649,
+      "osm_element_type": "relation",
+      "flow_type": "standing",
+      "water_type": "lake",
+      "name": "Baggersee Weingarten"
     }
   },
   {
     "model": "gcampuscore.water",
-    "pk": 5,
+    "pk": 7,
     "fields": {
-      "created_at": "2022-03-26T12:45:29.449Z",
-      "updated_at": "2022-03-26T18:38:16.256Z",
-      "geometry": "SRID=4326;POINT (8.670927 49.417409)",
+      "created_at": "2022-03-29T11:38:41.135Z",
+      "updated_at": "2022-03-29T11:45:16.430Z",
+      "geometry": "SRID=4326;POINT (0 0)",
       "tags": {
-        "name": "Physik-Teich",
-        "water": "pond",
+        "name": "Alter Pfandersee",
+        "type": "multipolygon",
+        "water": "lake",
         "natural": "water"
       },
-      "osm_id": 25961914,
-      "osm_element_type": "way",
+      "osm_id": 11801420,
+      "osm_element_type": "relation",
       "flow_type": "standing",
-      "water_type": "pond",
-      "name": "Physik-Teich"
+      "water_type": "lake",
+      "name": "Alter Pfandersee"
+    }
+  },
+  {
+    "model": "gcampusauth.coursetoken",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-03-29T11:11:33.877Z",
+      "updated_at": "2022-03-29T11:12:00.612Z",
+      "token": "3GGABC5DN1E9",
+      "token_name": "Fortbildung 2022",
+      "deactivated": false,
+      "school_name": "desklab",
+      "teacher_name": "Axel Schlindwein",
+      "teacher_email": "a.schlindwein@desk-lab.de",
+      "overview_document": ""
+    }
+  },
+  {
+    "model": "gcampusauth.coursetoken",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-03-29T11:35:42.757Z",
+      "updated_at": "2022-03-29T11:35:42.757Z",
+      "token": "HZ7X7M29AC1R",
+      "token_name": "Testteam",
+      "deactivated": false,
+      "school_name": "desklab",
+      "teacher_name": "Axel",
+      "teacher_email": "a.schlindwein@desk-lab.de",
+      "overview_document": ""
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-03-29T11:11:33.940Z",
+      "updated_at": "2022-03-29T11:11:33.940Z",
+      "token": "T715N8W3",
+      "parent_token": 1,
+      "deactivated": false
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-03-29T11:11:33.944Z",
+      "updated_at": "2022-03-29T11:11:33.944Z",
+      "token": "TZR924CJ",
+      "parent_token": 1,
+      "deactivated": false
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 3,
+    "fields": {
+      "created_at": "2022-03-29T11:11:33.948Z",
+      "updated_at": "2022-03-29T11:11:33.948Z",
+      "token": "P13SA8M7",
+      "parent_token": 1,
+      "deactivated": false
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 4,
+    "fields": {
+      "created_at": "2022-03-29T11:11:33.951Z",
+      "updated_at": "2022-03-29T11:11:33.951Z",
+      "token": "98K74STJ",
+      "parent_token": 1,
+      "deactivated": false
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 5,
+    "fields": {
+      "created_at": "2022-03-29T11:11:33.954Z",
+      "updated_at": "2022-03-29T11:31:31.445Z",
+      "token": "3161C6MP",
+      "parent_token": 1,
+      "deactivated": true
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 6,
+    "fields": {
+      "created_at": "2022-03-29T11:11:33.957Z",
+      "updated_at": "2022-03-29T11:31:45.876Z",
+      "token": "NLQQ9JFP",
+      "parent_token": 1,
+      "deactivated": true
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 7,
+    "fields": {
+      "created_at": "2022-03-29T11:11:33.959Z",
+      "updated_at": "2022-03-29T11:11:33.959Z",
+      "token": "CWRNS7E2",
+      "parent_token": 1,
+      "deactivated": false
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 8,
+    "fields": {
+      "created_at": "2022-03-29T11:11:33.962Z",
+      "updated_at": "2022-03-29T11:11:33.962Z",
+      "token": "EEFRKFNX",
+      "parent_token": 1,
+      "deactivated": false
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 9,
+    "fields": {
+      "created_at": "2022-03-29T11:11:33.965Z",
+      "updated_at": "2022-03-29T11:11:33.965Z",
+      "token": "AFPKXLWF",
+      "parent_token": 1,
+      "deactivated": false
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 10,
+    "fields": {
+      "created_at": "2022-03-29T11:11:33.967Z",
+      "updated_at": "2022-03-29T11:11:33.967Z",
+      "token": "DT8CCMBH",
+      "parent_token": 1,
+      "deactivated": false
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 11,
+    "fields": {
+      "created_at": "2022-03-29T11:35:42.778Z",
+      "updated_at": "2022-03-29T11:35:42.778Z",
+      "token": "8ZZRC9ZZ",
+      "parent_token": 2,
+      "deactivated": false
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 12,
+    "fields": {
+      "created_at": "2022-03-29T11:35:42.783Z",
+      "updated_at": "2022-03-29T11:35:42.783Z",
+      "token": "BQP76SZR",
+      "parent_token": 2,
+      "deactivated": false
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 13,
+    "fields": {
+      "created_at": "2022-03-29T11:35:42.787Z",
+      "updated_at": "2022-03-29T11:35:42.787Z",
+      "token": "WQSYHXAS",
+      "parent_token": 2,
+      "deactivated": false
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 14,
+    "fields": {
+      "created_at": "2022-03-29T11:35:42.792Z",
+      "updated_at": "2022-03-29T11:35:42.792Z",
+      "token": "NJBW3D2D",
+      "parent_token": 2,
+      "deactivated": false
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 15,
+    "fields": {
+      "created_at": "2022-03-29T11:35:42.795Z",
+      "updated_at": "2022-03-29T11:35:42.795Z",
+      "token": "H89WRKDH",
+      "parent_token": 2,
+      "deactivated": false
+    }
+  },
+  {
+    "model": "gcampusauth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$320000$SWDka2JMGxoQxkum4OdvDN$8YJJVVzQCE2c+wPu+Nejdnfkbb5gwq3ugH7CPDLR+Jo=",
+      "last_login": "2022-03-29T11:40:04.553Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "a.schlindwein@desk-lab.de",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2022-03-29T11:10:14.219Z",
+      "groups": [],
+      "user_permissions": []
     }
   }
 ]
