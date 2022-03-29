@@ -14,12 +14,12 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from django import template
-
-from gcampus.map.settings import MAP_SETTINGS
+from django.conf import settings
 
 register = template.Library()
 
 
 @register.simple_tag
 def get_map_settings(settings_name: str) -> str:
-    return MAP_SETTINGS[settings_name]
+    map_settings = getattr(settings, "MAP_SETTINGS", {})
+    return map_settings[settings_name]

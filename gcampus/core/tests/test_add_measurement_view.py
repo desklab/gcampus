@@ -23,10 +23,13 @@ from gcampus.auth.exceptions import (
     TOKEN_INVALID_ERROR,
 )
 from gcampus.auth.fields.token import HIDDEN_TOKEN_FIELD_NAME
-from gcampus.auth.tests.test_token_auth import BaseAuthTest
+from gcampus.core.tests.mixins import WaterTestMixin, FormTestMixin, TokenTestMixin
+from gcampus.tasks.tests.utils import BaseMockTaskTest
 
 
-class MeasurementViewTest(BaseAuthTest):
+class MeasurementViewTest(
+    TokenTestMixin, WaterTestMixin, FormTestMixin, BaseMockTaskTest
+):
     today = datetime.today()
     form_data_stub: dict = {
         "time_0_0": today.day,
@@ -49,7 +52,7 @@ class MeasurementViewTest(BaseAuthTest):
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
             HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
-            "water_name": "Foo Bar gcampus_osm_id:42",
+            "water": self.water.pk,
         }
 
         form_data.update(self.form_data_stub)
@@ -67,7 +70,7 @@ class MeasurementViewTest(BaseAuthTest):
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
             HIDDEN_TOKEN_FIELD_NAME: "00000000",
-            "water_name": "Foo Bar gcampus_osm_id:42",
+            "water": self.water.pk,
         }
         form_data.update(self.form_data_stub)
         login_response = self.login(self.tokens[0].token)
@@ -90,7 +93,7 @@ class MeasurementViewTest(BaseAuthTest):
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
             HIDDEN_TOKEN_FIELD_NAME: self.parent_token,
-            "water_name": "Foo Bar gcampus_osm_id:42",
+            "water": self.water.pk,
         }
         form_data.update(self.form_data_stub)
         login_response = self.login(self.tokens[0].token)
@@ -113,7 +116,7 @@ class MeasurementViewTest(BaseAuthTest):
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
             HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token + "0",
-            "water_name": "Foo Bar gcampus_osm_id:42",
+            "water": self.water.pk,
         }
         form_data.update(self.form_data_stub)
         login_response = self.login(self.tokens[0].token)
@@ -137,7 +140,7 @@ class MeasurementViewTest(BaseAuthTest):
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
             HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
-            "water_name": "Foo Bar gcampus_osm_id:42",
+            "water": self.water.pk,
         }
         form_data.update(self.form_data_stub)
 
@@ -150,7 +153,7 @@ class MeasurementViewTest(BaseAuthTest):
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            "water_name": "Foo Bar gcampus_osm_id:42",
+            "water": self.water.pk,
         }
         form_data.update(self.form_data_stub)
         login_response = self.login(self.tokens[0].token)

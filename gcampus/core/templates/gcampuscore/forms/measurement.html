@@ -16,7 +16,7 @@
 {% endblock %}
 {% block content %}
     <div class="container-fluid px-0">
-        <form method="POST" class="{% if form.errors %}has-validation{% endif %}">
+        <form method="POST" id="measurementForm" class="{% if form.errors %}has-validation{% endif %}">
             {% csrf_token %}
             {% auth_token %}
             <div class="row">
@@ -74,16 +74,34 @@
                     {% with field=form.location map_height=400 %}
                         <div class="mb-3">
                             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                            <div class="rounded-2">
-                                {{ field }}
-                                <div id="watersuggestion"></div>
-                            </div>
+                            <style>.mapboxgl-canvas{border-radius: .5rem;}</style>
+                            {{ field }}
                             {% if field.errors %}
                                 <small class="text-danger">{{ field.errors }}</small>
                             {% endif %}
-                            {% if form.water_name.errors %}
-                                <small class="text-danger">{{ form.water_name.errors }}</small>
+                            {% if form.water.errors %}
+                                <small class="text-danger">{{ form.water.errors }}</small>
                             {% endif %}
+                            <div class="list-group list-group-water mt-2" id="waterSuggestions">
+                                <div class="list-group-item list-group-item-water d-none"
+                                     id="waterLoading">
+                                    <div class="spinner-border spinner-border-sm" role="status"></div>
+                                    <span class="ms-2">
+                                        {% translate "Loading ..." %}
+                                    </span>
+                                </div>
+                                <div class="list-group-item list-group-item-hover list-group-item-water cursor-pointer text-center d-none"
+                                     id="waterOsm">
+                                    <div class="shadow-box"></div>
+                                    <div class="shadow-box shadow-box-2"></div>
+                                    {% translate "Water not found?" %}
+                                    <br>
+                                    <small>
+                                        {% translate "Search for more waters on OpenStreetMaps" %}
+                                    </small>
+                                </div>
+                                {% include "gcampuscore/components/water_custom.html" with form=water_form only %}
+                            </div>
                         </div>
                     {% endwith %}
                 </div>
@@ -119,13 +137,12 @@
                 <div class="col-5 bg-light px-5 py-3"></div>
             </div>
         </form>
+    <form action="{% url "gcampusapi:water-list" %}" method="post" id="customWaterForm"></form>
     </div>
 {% endblock %}
 {% block extra_body %}
-    <script type="text/javascript">
-        window._varLocationPlaceholder = "{% translate "Water name" %}";
-        window._varLocationTitle = "{% translate "Other Water:" %}";
-        window._loadingText = "{% translate "Loading ..." %}";
+    <script type="text/html" id="waterSuggestionTemplate">
+        {% include "gcampuscore/components/water_suggestion.html" %}
     </script>
     <script type="text/javascript" src="{% static 'gcampuscore/js/watersuggestion.js' %}"></script>
     <script type="text/javascript" src="{% static 'gcampuscore/js/autofocus.js' %}"></script>

@@ -1,0 +1,43 @@
+{% load i18n %}
+<input class="form-check-input me-2 list-group-item-water-input"
+       id="customWaterInput"
+       type="radio"
+       name="water"/>
+<div class="list-group-item list-group-item-water d-none"
+     id="waterCustom">
+
+    {% with form.name as field %}
+        <div class="mb-3">
+            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+            {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data small=True %}
+        </div>
+    {% endwith %}
+    {% with form.geometry as field %}
+        {{ field }}
+    {% endwith %}
+    {% with form.flow_type as field %}
+        <div class="mb-3">
+            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+            {{ field }}
+        </div>
+    {% endwith %}
+    {% with form.water_type as field %}
+        <div class="mb-3">
+            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+            {{ field }}
+        </div>
+    {% endwith %}
+    <button class="btn btn-sm btn-primary" type="submit" form="customWaterForm">
+        {% translate "Save" %}
+    </button>
+    <div class="list-group-item-overlay text-center d-flex flex-column justify-content-center">
+        <h4>{% include "gcampuscore/icons/plus-circle.html" %}</h4>
+        <div>
+            {% translate "Water still not found?" %}
+            <br>
+            <small>
+                {% translate "Click to add a new water to the database" %}
+            </small>
+        </div>
+    </div>
+</div>

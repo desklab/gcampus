@@ -93,15 +93,15 @@ const commonConfig = (env, options) => {
                         {loader: 'sass-loader'}
                     ]
                 },
-                {
-                    test: /\.js$/,
-                    loader: 'babel-loader',
-                    exclude: /node_modules/,
-                    options: {
-                        presets: ['@babel/preset-flow'],
-                        // outputPath: 'js'
-                    }
-                },
+                // {
+                //     test: /\.js$/,
+                //     // loader: 'babel-loader',
+                //     exclude: /node_modules/,
+                //     options: {
+                //         presets: ['@babel/preset-flow'],
+                //         // outputPath: 'js'
+                //     }
+                // },
                 {
                     test: /\.(png|jpg|gif|svg)$/,
                     loader: 'file-loader',
@@ -134,7 +134,7 @@ const commonConfig = (env, options) => {
             new CleanWebpackPlugin()
         ],
         watchOptions: {
-            ignored: ['**/*.py', '**/node_modules'],
+            ignored: ['**/*.py', '/node_modules/'],
         },
         performance: {
             hints: 'warning'
@@ -151,7 +151,6 @@ let gcampuscoreConfig = (env, options) => {
         entry: {
             main: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'index.js'),
             autofocus: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'autofocus.js'),
-            leafletsearch: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'leafletsearch.js'),
             watersuggestion: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'watersuggestion.js'),
             dynamicformset: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'dynamicformset.js'),
             filter: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'filter.js'),
@@ -233,10 +232,10 @@ let gcampusauthConfig = (env, options) => {
                         from: path.resolve(__dirname, 'gcampus', 'auth', 'static_src', 'fonts'),
                         to: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth', 'fonts'),
                     },
-                    {
-                        from: path.resolve(__dirname, 'gcampus', 'auth', 'static_src', 'assets'),
-                        to: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth', 'assets'),
-                    },
+                    // {
+                    //     from: path.resolve(__dirname, 'gcampus', 'auth', 'static_src', 'assets'),
+                    //     to: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth', 'assets'),
+                    // },
                 ]
             })
         ],

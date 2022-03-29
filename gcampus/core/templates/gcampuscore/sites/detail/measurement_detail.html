@@ -221,7 +221,7 @@
                         </div>
                         <div class="mt-auto">
                             <a class="btn btn-sm btn-primary"
-                               href="{% url "gcampuscore:mapview" %}{% map_options_url lat=measurement.location.x|unlocalize long=measurement.location.y|unlocalize zoom=14 %}"
+                               href="{% url "gcampuscore:mapview" %}{% map_options_url lng=measurement.location.x|unlocalize lat=measurement.location.y|unlocalize zoom=14 %}"
                                role="link">
                                 {% icon "map" class="d-inline-block align-text-top" height="16" width="16" %}
                                 {% translate "Explore environment" %}

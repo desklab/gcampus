@@ -19,7 +19,7 @@
             {% icon "edit" class="d-inline-block align-text-top me-1" height="16" width="16" %}
         </a>
         <a onclick='stopPropagation();'  class="btn btn-sm text-dark"
-           href="{% url "gcampuscore:mapview" %}{% map_options_url lat=measurement.location.x|unlocalize long=measurement.location.y|unlocalize zoom=14 %}">
+           href="{% url "gcampuscore:mapview" %}{% map_options_url lng=measurement.location.x|unlocalize lat=measurement.location.y|unlocalize zoom=14 %}">
             {% icon "map" class="d-inline-block align-text-top me-1" height="16" width="16" %}
         </a>
     </td>

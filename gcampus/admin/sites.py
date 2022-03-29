@@ -1,4 +1,4 @@
-#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
+#  Copyright (C) 2022 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -13,12 +13,10 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__ALL__ = ["MAP_SETTINGS"]
+from django.contrib import admin
+from django.utils.translation import gettext_lazy
 
-from django.conf import settings
 
-MAP_SETTINGS = dict()
-
-PROJECT_SETTINGS = getattr(settings, "MAP_SETTINGS", {})
-
-MAP_SETTINGS.update(PROJECT_SETTINGS)
+class GCampusAdmin(admin.AdminSite):
+    site_header = gettext_lazy("GewässerCampus administration")
+    site_title = gettext_lazy("GewässerCampus site admin")

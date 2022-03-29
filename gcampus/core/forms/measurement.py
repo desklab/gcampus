@@ -21,8 +21,6 @@ from django.forms import (
     ModelForm,
     inlineformset_factory,
     BaseInlineFormSet,
-    IntegerField,
-    CharField,
     formsets,
 )
 from django.forms.formsets import ManagementForm  # noqa
@@ -49,7 +47,7 @@ class MeasurementForm(ModelForm):
 
     class Meta:
         model = Measurement
-        fields = ["name", "time", "location", "comment", "water_name", "osm_id"]
+        fields = ("name", "time", "location", "comment", "water")
         field_classes = {"time": SplitSplitDateTimeField}
         widgets = {
             # Inputs with type="datetime-local" are not well-supported
@@ -102,27 +100,6 @@ class MeasurementForm(ModelForm):
                     token_error = ValidationError(TOKEN_EDIT_PERMISSION_ERROR)
             if token_error is not None:
                 self.add_error(HIDDEN_TOKEN_FIELD_NAME, token_error)
-
-        if "water_name" not in self.errors:
-            water_name = self.cleaned_data["water_name"]
-            if "gcampus_osm_id" in water_name:
-                # The water_name includes a OpenStreetMap ID and will
-                # thus be parsed to save this ID in a separate column.
-                osm_id_field: IntegerField = self.fields["osm_id"]
-                water_name_field: CharField = self.fields["water_name"]
-                try:
-                    name, osm_id = water_name.split(" gcampus_osm_id:")
-                    # Make sure the fields are cleaned because the field may
-                    # contain malicious user input. A gcampus_osm_id can be
-                    # passed by any used when using the variable water name
-                    # field.
-                    name = water_name_field.clean(name)
-                    osm_id = osm_id_field.clean(osm_id)
-                    self.cleaned_data["water_name"] = name
-                    self.cleaned_data["osm_id"] = osm_id
-                except (ValueError, OverflowError, TypeError, ValidationError):
-                    error = ValidationError(_("Unable to parse OpenStreetMap ID!"))
-                    self.add_error("water_name", error)
 
 
 class ParameterForm(ModelForm):

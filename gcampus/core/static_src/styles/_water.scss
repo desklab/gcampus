@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
+/*!
+ * Copyright (C) 2022 desklab gUG (haftungsbeschränkt)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -15,19 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch';
-import 'leaflet-geosearch/assets/css/leaflet.css';
+.water-icon {
+  display: inline-block;
+  width: .7rem;
+  height: .7rem;
+  border-radius: 50%;
 
-const search = new GeoSearchControl({
-    style: 'bar',
-    showMarker: false,
-    showPopup: false,
-    autoCompleteDelay: 400,  // Default is 250
-    maxSuggestions: 5,
-    provider: new OpenStreetMapProvider(),
-});
+  &.standing {
+    background-color: $standing-water;
+    border: $border-width solid darken($standing-water, 5);
+  }
 
-window.addEventListener('map:init', function (e) {
-    let target_map = e.detail.map;
-    target_map.addControl(search);
-});
+  &.running {
+    background-color: $running-water;
+    border: $border-width solid darken($running-water, 5);
+  }
+}
+

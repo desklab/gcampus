@@ -16,11 +16,12 @@
 import time
 import unittest
 
-from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.gis.geos import GEOSGeometry, Point
 from django.utils import timezone
 
+from gcampus.core.models.water import WaterType
 from gcampus.tasks.tests.utils import BaseMockTaskTest
-from gcampus.core.models import Measurement
+from gcampus.core.models import Measurement, Water
 
 LOCATION_HEIDELBERG = GEOSGeometry("POINT(8.69079 49.40768)")
 LOCATION_BOCKHORN = GEOSGeometry("POINT(8.073680 53.453274)")
@@ -28,9 +29,20 @@ LOCATION_OCEAN = GEOSGeometry("POINT(-32 42)")
 
 
 class MeasurementModelTest(BaseMockTaskTest):
+    def setUp(self):
+        super(MeasurementModelTest, self).setUp()
+        self.water = Water(
+            name="The Great Test River",
+            geometry=Point(8.684231, 49.411955),
+            water_type=WaterType.RIVER,
+        )
+        self.water.save()
+
     @unittest.skip("API timeout")
     def test_location_name(self):
-        measurement = Measurement(location=LOCATION_HEIDELBERG, time=timezone.now())
+        measurement = Measurement(
+            location=LOCATION_HEIDELBERG, time=timezone.now(), water=self.water
+        )
         time.sleep(1.5)  # Sleep because geocoding is rate-limited
         measurement.save()
         self.assertEqual(measurement.location_name, "Heidelberg")
@@ -46,14 +58,18 @@ class MeasurementModelTest(BaseMockTaskTest):
         self.assertIs(measurement.location_name, None)
 
     def test_location_changed(self):
-        measurement = Measurement(location=LOCATION_HEIDELBERG, time=timezone.now())
+        measurement = Measurement(
+            location=LOCATION_HEIDELBERG, time=timezone.now(), water=self.water
+        )
         time.sleep(1.5)  # Sleep because geocoding is rate-limited
         measurement.save()
         measurement.location = LOCATION_OCEAN
         self.assertTrue(measurement.is_location_changed())
 
     def test_hidden_measurement(self):
-        measurement = Measurement(location=LOCATION_HEIDELBERG, time=timezone.now())
+        measurement = Measurement(
+            location=LOCATION_HEIDELBERG, time=timezone.now(), water=self.water
+        )
         time.sleep(1.5)  # Sleep because geocoding is rate-limited
         measurement.hidden = True
         measurement.save()

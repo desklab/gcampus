@@ -13,9 +13,13 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from gcampus.api.views.functions import GeoLookupViewSet
 from gcampus.api.views.models import (
     MeasurementAPIViewSet,
     ParameterTypeAPIViewSet,
     ParameterAPIViewSet,
+)
+from gcampus.api.views.water import (
+    WaterLookupAPIViewSet,
+    OverpassLookupAPIViewSet,
+    WaterAPIViewSet,
 )

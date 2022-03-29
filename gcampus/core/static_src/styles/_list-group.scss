@@ -17,15 +17,73 @@
 
 .list-group-item-hover {
   width: 100%; // For `<button>`s (anchors become 100% by default though)
-  color: $list-group-action-color;
   text-align: inherit; // For `<button>`s (anchors inherit)
 
   // Hover state
   &:hover,
   &:focus {
-    z-index: 1; // Place hover/focus items above their siblings for proper border styling
-    color: $list-group-action-hover-color;
+    // z-index: 1; // Place hover/focus items above their siblings for proper border styling
     text-decoration: none;
     background-color: $list-group-hover-bg;
   }
+}
+
+.list-group-water {
+  display: grid;
+  gap: map-get($spacers, 2);
+  border: none;
+
+  input.list-group-item-water-input {
+    position: absolute;
+    clip: rect(0,0,0,0);
+    pointer-events: none;
+  }
+
+  input:checked + .list-group-item-water {
+    $_border-width-padding: 2 * $border-width;
+    $_padding: map-get($spacers, 3);
+    border-color: $primary;
+    border-width: 3 * $border-width !important;
+    padding: calc(#{$_padding} - #{$_border-width-padding}) !important;
+  }
+}
+
+.list-group-item-water {
+  transition-property: border-color, border-width, padding;
+  transition-duration: .25s;
+  transition-timing-function: ease;
+  padding: map-get($spacers, 3) !important;
+  border-radius: .5rem !important;
+  border-width: $border-width !important;
+
+  .shadow-box {
+    z-index: -100;
+    position: absolute;
+    left: .3rem;
+    right: .3rem;
+    top: .4rem;
+    height: 100%;
+    background-color: $white;
+    border: $list-group-border-width solid transparentize($list-group-border-color, 0.02);
+    border-radius: .5rem !important;
+    &.shadow-box-2 {
+      z-index: -200;
+      top: .75rem;
+      right: .65rem;
+      left: .65rem;
+      border: $list-group-border-width solid transparentize($list-group-border-color, 0.04);
+    }
+  }
+}
+
+.list-group-item-overlay {
+  cursor: pointer;
+  pointer-events: all;
+  position: absolute;
+  border-radius: .5rem !important;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: transparentize($white, 0.2);
 }

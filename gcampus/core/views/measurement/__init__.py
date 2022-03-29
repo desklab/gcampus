@@ -40,6 +40,7 @@ from gcampus.core.decorators import (
 )
 from gcampus.core.filters import MeasurementFilterSet
 from gcampus.core.forms.measurement import MeasurementForm
+from gcampus.core.forms.water import WaterForm
 from gcampus.core.models import Measurement
 from gcampus.core.views.base import TitleMixin
 from gcampus.core.views.measurement.list import (
@@ -97,6 +98,11 @@ class MeasurementCreateView(TitleMixin, CreateView):
     def form_valid(self, form: MeasurementForm):
         check_form_and_request_token(form, self.request)
         return super(MeasurementCreateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        if "water_form" not in kwargs:
+            kwargs["water_form"] = WaterForm()
+        return super(MeasurementCreateView, self).get_context_data(**kwargs)
 
     def get_success_url(self):
         return reverse(self.next_view_name, kwargs={"pk": self.object.id})

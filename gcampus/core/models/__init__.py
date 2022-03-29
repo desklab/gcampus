@@ -14,3 +14,4 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from gcampus.core.models.measurement import Measurement, ParameterType, Parameter, Limit
+from gcampus.core.models.water import Water
