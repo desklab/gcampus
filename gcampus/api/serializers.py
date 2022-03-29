@@ -15,9 +15,7 @@
 
 from django.urls import reverse
 from rest_framework import serializers
-from rest_framework_gis.serializers import (
-    GeoFeatureModelSerializer,
-)
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
 from gcampus.core.models import Measurement, Parameter, ParameterType, Water
 

@@ -26,13 +26,12 @@ from gcampus.core.views.measurement import (
 )
 from gcampus.core.views.parameter import ParameterFormSetView
 
-
 # uncomment to test 404 and 500 pages locally
-#from django.views.defaults import page_not_found, server_error
-#def custom_page_not_found(request):
+# from django.views.defaults import page_not_found, server_error
+# def custom_page_not_found(request):
 #    return page_not_found(request, None)
 #
-#def custom_server_error(request):
+# def custom_server_error(request):
 #    return server_error(request)
 
 # Turn off black formatting and pylint

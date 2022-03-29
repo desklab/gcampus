@@ -16,7 +16,6 @@
 from django.contrib import admin
 from django.urls import path, include
 
-
 urlpatterns = [
     path("", include("gcampus.core.urls")),
     path("", include("gcampus.auth.urls")),

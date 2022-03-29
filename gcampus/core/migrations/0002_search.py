@@ -2,7 +2,6 @@
 from django.conf import settings
 from django.db import migrations
 
-
 TSVECTOR_CONF = getattr(settings, "TSVECTOR_CONF", "german")
 
 

@@ -22,7 +22,7 @@ from django.utils.translation import gettext_lazy
 class LinkedInlineMixin:
     readonly_fields = ("admin_link",)
 
-    @admin.display(description=gettext_lazy('Admin link'))
+    @admin.display(description=gettext_lazy("Admin link"))
     def admin_link(self, instance):
         info = self.model._meta.app_label, self.model._meta.model_name
         url = reverse("admin:%s_%s_change" % info, kwargs=dict(object_id=instance.pk))

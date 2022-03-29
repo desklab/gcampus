@@ -19,7 +19,8 @@ from django.contrib.gis.db import models
 from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField
 from django.core.exceptions import ObjectDoesNotExist
-from django.utils.translation import gettext_lazy as _, pgettext_lazy
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy
 
 from gcampus.core.models import util
 from gcampus.core.models.util import EMPTY
@@ -159,10 +160,14 @@ class ParameterType(models.Model):
         verbose_name_plural = _("Parameter types")
 
     name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
-    short_name = models.CharField(blank=True, max_length=10, verbose_name=_("Short name"))
+    short_name = models.CharField(
+        blank=True, max_length=10, verbose_name=_("Short name")
+    )
     unit = models.CharField(blank=True, max_length=10, verbose_name=_("Unit"))
 
-    calibration_formula = models.CharField(blank=True, max_length=100, verbose_name=_("Formula"))
+    calibration_formula = models.CharField(
+        blank=True, max_length=100, verbose_name=_("Formula")
+    )
 
     def __str__(self):
         if self.unit in EMPTY:

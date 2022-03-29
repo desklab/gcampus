@@ -21,9 +21,7 @@ from gcampus.auth.fields.token import (
     course_token_exists_validator,
     HIDDEN_TOKEN_FIELD_NAME,
 )
-from gcampus.auth.models.token import (
-    CourseToken,
-)
+from gcampus.auth.models.token import CourseToken
 
 
 class GenerateAccessKeysForm(forms.Form):

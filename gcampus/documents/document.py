@@ -22,8 +22,7 @@ __all__ = [
 
 import pathlib
 from io import BytesIO
-from typing import Optional, List
-from typing import Union
+from typing import Optional, List, Union
 
 from django.http import HttpRequest
 from django.template.loader import render_to_string

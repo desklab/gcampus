@@ -31,7 +31,6 @@ from pathlib import Path
 
 from gcampus.settings.util import get_env_read_file
 
-
 STATIC_LOCATION = "static"
 
 if os.environ.get("USE_S3_STORAGE", False):

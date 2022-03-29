@@ -17,12 +17,7 @@ from typing import Type, Optional
 
 from django.core.exceptions import ValidationError
 from django.core.validators import EMPTY_VALUES
-from django.forms import (
-    ModelForm,
-    inlineformset_factory,
-    BaseInlineFormSet,
-    formsets,
-)
+from django.forms import ModelForm, inlineformset_factory, BaseInlineFormSet, formsets
 from django.forms.formsets import ManagementForm  # noqa
 from django.forms.widgets import Select, Textarea, HiddenInput, NumberInput
 from django.utils.functional import cached_property

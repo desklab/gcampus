@@ -33,7 +33,6 @@ from gcampus.api import overpass
 from gcampus.api.overpass import Element
 from gcampus.core.models.util import EMPTY, DateModelMixin
 
-
 logger = logging.getLogger("gcampus.core.models.water")
 
 

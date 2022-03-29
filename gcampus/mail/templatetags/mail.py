@@ -19,7 +19,6 @@ from os import path
 from django import template
 from django.contrib.staticfiles import finders
 
-
 register = template.Library()
 
 

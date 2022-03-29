@@ -18,7 +18,6 @@ from django import template
 from django.conf import settings
 from django.utils.http import urlencode
 
-
 register = template.Library()
 
 
@@ -32,7 +31,7 @@ def map(
     has_search: bool = True,
     mapbox_access_token: Optional[str] = None,
     onload: str = "",
-    **kwargs
+    **kwargs,
 ):
     map_settings = getattr(settings, "MAP_SETTINGS")
     if center is None:

@@ -72,12 +72,12 @@ class WaterAdmin(LeafletGeoAdmin):
     actions = (osm_update,)
     readonly_fields = ADMIN_READ_ONLY_FIELDS + ("osm_url",)
 
-    @admin.display(description=_('OpenStreetMaps URL'))
+    @admin.display(description=_("OpenStreetMaps URL"))
     def osm_url(self, instance: Water):
         if not instance.osm_id:
             return format_html(
                 "<span class='errors'>{error_message}</span>",
-                error_message=_("No OpenStreetMaps ID provided!")
+                error_message=_("No OpenStreetMaps ID provided!"),
             )
         url: str = escape(
             "https://www.openstreetmap.org/"

@@ -18,14 +18,11 @@ from django.contrib.gis import admin
 from django.db.models import QuerySet
 from django.urls import reverse
 from django.utils.html import format_html
-from django.utils.translation import gettext_lazy as _, gettext_lazy
+from django.utils.translation import gettext_lazy
+from django.utils.translation import gettext_lazy as _
 
 from gcampus.admin.options import LinkedInlineMixin
-from gcampus.auth.models import (
-    AccessKey,
-    CourseToken,
-    User,
-)
+from gcampus.auth.models import AccessKey, CourseToken, User
 from gcampus.core.admin import MeasurementInline
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 

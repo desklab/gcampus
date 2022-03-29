@@ -1,6 +1,5 @@
 from django.http import HttpRequest
 from django.utils import timezone
-
 from django.conf import settings
 
 

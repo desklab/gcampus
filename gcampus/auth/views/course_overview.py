@@ -70,7 +70,10 @@ class CourseOverviewFormView(TitleMixin, UpdateView):
         form.save()
         # Update token name
         session.set_token(
-            self.request, form.instance.token, TokenType.course_token, form.instance.token_name
+            self.request,
+            form.instance.token,
+            TokenType.course_token,
+            form.instance.token_name,
         )
         return HttpResponseRedirect(self.request.path_info)
 

@@ -15,24 +15,18 @@
 
 from __future__ import annotations
 
-from django.core.exceptions import (
-    PermissionDenied,
-)
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
-from django.views.generic import DetailView
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from gcampus.auth import session, exceptions
 from gcampus.auth.fields.token import check_form_and_request_token
-from gcampus.auth.models.token import (
-    can_token_edit_measurement,
-    TokenType,
-)
+from gcampus.auth.models.token import can_token_edit_measurement, TokenType
 from gcampus.auth.session import is_authenticated, get_token, get_token_type
 from gcampus.core.decorators import (
     require_permission_create_measurement,
@@ -43,9 +37,7 @@ from gcampus.core.forms.measurement import MeasurementForm
 from gcampus.core.forms.water import WaterForm
 from gcampus.core.models import Measurement
 from gcampus.core.views.base import TitleMixin
-from gcampus.core.views.measurement.list import (
-    MeasurementListView,
-)
+from gcampus.core.views.measurement.list import MeasurementListView
 
 
 class MeasurementDetailView(TitleMixin, DetailView):
