@@ -24,5 +24,5 @@ register = template.Library()
 @register.simple_tag(takes_context=True)
 def request_params(context: Context) -> str:
     request: HttpRequest = context["request"]
-    query_string = request.META.get('QUERY_STRING', '')
-    return ('?' + iri_to_uri(query_string)) if query_string else ''
+    query_string = request.META.get("QUERY_STRING", "")
+    return ("?" + iri_to_uri(query_string)) if query_string else ""

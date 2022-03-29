@@ -31,7 +31,11 @@ from gcampus.auth.models import CourseToken
 from gcampus.core.models import Measurement
 from gcampus.core.models.util import EMPTY
 from gcampus.core.filters import MeasurementFilterSet
-from gcampus.documents.views.generic import SingleObjectDocumentView, ListDocumentView, CachedDocumentView
+from gcampus.documents.views.generic import (
+    SingleObjectDocumentView,
+    ListDocumentView,
+    CachedDocumentView,
+)
 
 
 class CourseOverviewPDF(CachedDocumentView):
@@ -107,11 +111,19 @@ class MeasurementListPDF(ListDocumentView):
     model = Measurement
 
     def bounding_box(self):
-        #TODO: dirty proof of concept, fix
-        long_max = self.object_list.order_by("time").values_list("location")[0][0].coords[0]
-        long_min = self.object_list.order_by("time").values_list("location")[0][0].coords[0]
-        lat_max = self.object_list.order_by("time").values_list("location")[0][0].coords[1]
-        lat_min = self.object_list.order_by("time").values_list("location")[0][0].coords[1]
+        # TODO: dirty proof of concept, fix
+        long_max = (
+            self.object_list.order_by("time").values_list("location")[0][0].coords[0]
+        )
+        long_min = (
+            self.object_list.order_by("time").values_list("location")[0][0].coords[0]
+        )
+        lat_max = (
+            self.object_list.order_by("time").values_list("location")[0][0].coords[1]
+        )
+        lat_min = (
+            self.object_list.order_by("time").values_list("location")[0][0].coords[1]
+        )
         for measurement in self.object_list.order_by("time"):
             coords = measurement.location.coords
             if coords[0] > long_max:
@@ -127,13 +139,21 @@ class MeasurementListPDF(ListDocumentView):
     def map_overlay(self):
         marker_list = ""
         for measurement in self.object_list:
-            marker_list += "pin-l+083973(" + str(measurement.location.coords[0]) + "," + str(measurement.location.coords[1]) + "),"
+            marker_list += (
+                "pin-l+083973("
+                + str(measurement.location.coords[0])
+                + ","
+                + str(measurement.location.coords[1])
+                + "),"
+            )
         marker_list = marker_list[:-1]
         return marker_list
 
     def get_queryset(self):
         queryset = super(MeasurementListPDF, self).get_queryset()
-        filterset = MeasurementFilterSet(self.request.GET, queryset = queryset, request = self.request)
+        filterset = MeasurementFilterSet(
+            self.request.GET, queryset=queryset, request=self.request
+        )
         return filterset.qs
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -141,27 +161,37 @@ class MeasurementListPDF(ListDocumentView):
         page_size = self.get_paginate_by(queryset)
         context_object_name = self.get_context_object_name(queryset)
         if page_size:
-            paginator, page, queryset, is_paginated = self.paginate_queryset(queryset, page_size)
+            paginator, page, queryset, is_paginated = self.paginate_queryset(
+                queryset, page_size
+            )
             context = {
-                'paginator': paginator,
-                'page_obj': page,
-                'is_paginated': is_paginated,
-                'object_list': queryset
+                "paginator": paginator,
+                "page_obj": page,
+                "is_paginated": is_paginated,
+                "object_list": queryset,
             }
         else:
             context = {
-                'paginator': None,
-                'page_obj': None,
-                'is_paginated': False,
-                'object_list': queryset
+                "paginator": None,
+                "page_obj": None,
+                "is_paginated": False,
+                "object_list": queryset,
             }
         if context_object_name is not None:
             context[context_object_name] = queryset
         kwargs["measurement_count"] = queryset.count()
-        kwargs["water_count"] = queryset.order_by().distinct("osm_id").count()
-        kwargs["accesskey_count"] = queryset.order_by().distinct("token").count()
-        kwargs["time_first"] = queryset.order_by("time")[0].time
-        kwargs["time_last"] = queryset.order_by("time")[queryset.count()-1].time
+        kwargs["water_count"] = (
+            queryset.only("water").order_by().distinct("water").count()
+        )
+        kwargs["accesskey_count"] = (
+            queryset.only("token").order_by().distinct("token").count()
+        )
+        kwargs["time_first"] = (
+            queryset.only("time").values_list("time", flat=True).earliest("time")
+        )
+        kwargs["time_last"] = (
+            queryset.only("time").values_list("time", flat=True).latest("time")
+        )
         bbox = self.bounding_box()
         kwargs["bbox_long_min"] = bbox[0]
         kwargs["bbox_long_max"] = bbox[1]

@@ -19,7 +19,8 @@ from django.contrib.gis.db import models
 from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField
 from django.core.exceptions import ObjectDoesNotExist
-from django.utils.translation import gettext_lazy as _, pgettext, pgettext_lazy
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy
 
 from gcampus.core.models import util
 from gcampus.core.models.util import EMPTY
@@ -39,12 +40,9 @@ class Measurement(util.DateModelMixin):
         indexes = (GinIndex(fields=("search_vector",)),)
         ordering = ("created_at", "name")
 
-    # TODO: for now the token can be null and is by default null.
-    #  This will be changed in the future after creating a new database.
-    #  Otherwise the migrations would be a pain.
     token = models.ForeignKey(
         "gcampusauth.AccessKey",  # noqa
-        on_delete=models.PROTECT,
+        on_delete=models.SET_NULL,
         blank=False,
         null=True,
         default=None,
@@ -65,15 +63,12 @@ class Measurement(util.DateModelMixin):
         verbose_name=_("Location name"),
         help_text=_("An approximated location for the measurement"),
     )
-    water_name = models.CharField(
+    water = models.ForeignKey(
+        "Water",
+        on_delete=models.PROTECT,
         blank=False,
-        null=True,
-        max_length=280,
-        verbose_name=_("Water name"),
-        help_text=_("Name of the water the measurement was conducted at"),
-    )
-    osm_id = models.BigIntegerField(
-        default=None, blank=True, null=True, verbose_name=_("OpenStreetMap ID")
+        null=False,
+        related_name="measurements",
     )
     time = models.DateTimeField(
         blank=False,
@@ -97,6 +92,10 @@ class Measurement(util.DateModelMixin):
     # the ``all_objects`` manager.
     objects = HiddenManager()
     all_objects = models.Manager()
+
+    @property
+    def water_name(self):
+        return self.water.display_name
 
     def is_location_changed(self, update_fields=None):
         if update_fields is not None and "location" in update_fields:
@@ -161,8 +160,14 @@ class ParameterType(models.Model):
         verbose_name_plural = _("Parameter types")
 
     name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
-    short_name = models.CharField(blank=True, max_length=10, verbose_name=_("Short name"))
+    short_name = models.CharField(
+        blank=True, max_length=10, verbose_name=_("Short name")
+    )
     unit = models.CharField(blank=True, max_length=10, verbose_name=_("Unit"))
+
+    calibration_formula = models.CharField(
+        blank=True, max_length=100, verbose_name=_("Formula")
+    )
 
     def __str__(self):
         if self.unit in EMPTY:

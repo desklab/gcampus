@@ -93,15 +93,15 @@ const commonConfig = (env, options) => {
                         {loader: 'sass-loader'}
                     ]
                 },
-                {
-                    test: /\.js$/,
-                    loader: 'babel-loader',
-                    exclude: /node_modules/,
-                    options: {
-                        presets: ['@babel/preset-flow'],
-                        // outputPath: 'js'
-                    }
-                },
+                // {
+                //     test: /\.js$/,
+                //     // loader: 'babel-loader',
+                //     exclude: /node_modules/,
+                //     options: {
+                //         presets: ['@babel/preset-flow'],
+                //         // outputPath: 'js'
+                //     }
+                // },
                 {
                     test: /\.(png|jpg|gif|svg)$/,
                     loader: 'file-loader',
@@ -134,7 +134,7 @@ const commonConfig = (env, options) => {
             new CleanWebpackPlugin()
         ],
         watchOptions: {
-            ignored: ['**/*.py', '**/node_modules'],
+            ignored: ['**/*.py', '/node_modules/'],
         },
         performance: {
             hints: 'warning'
@@ -151,7 +151,6 @@ let gcampuscoreConfig = (env, options) => {
         entry: {
             main: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'index.js'),
             autofocus: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'autofocus.js'),
-            leafletsearch: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'leafletsearch.js'),
             watersuggestion: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'watersuggestion.js'),
             dynamicformset: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'dynamicformset.js'),
             filter: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'js', 'filter.js'),
@@ -233,10 +232,10 @@ let gcampusauthConfig = (env, options) => {
                         from: path.resolve(__dirname, 'gcampus', 'auth', 'static_src', 'fonts'),
                         to: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth', 'fonts'),
                     },
-                    {
-                        from: path.resolve(__dirname, 'gcampus', 'auth', 'static_src', 'assets'),
-                        to: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth', 'assets'),
-                    },
+                    // {
+                    //     from: path.resolve(__dirname, 'gcampus', 'auth', 'static_src', 'assets'),
+                    //     to: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth', 'assets'),
+                    // },
                 ]
             })
         ],
@@ -306,6 +305,38 @@ let gcampusmailConfig = (env, options) => {
     });
 }
 
+let gcampusanalysisConfig = (env, options) => {
+    let common = commonConfig(env, options);
+    return Object.assign(common, {
+        name: 'gcampusanalysis',
+        entry: {
+            calibration: path.resolve(__dirname, 'gcampus', 'analysis', 'static_src', 'js', 'calibration.js'),
+        },
+        output: {
+            path: path.resolve(__dirname, 'gcampus', 'analysis', 'static', 'gcampusanalysis'),
+            publicPath: '/static/gcampusanalysis',
+            filename: 'js/[name].js',
+            library: {
+                name: ['gcampusanalysis', '[name]'],
+                type: 'var'
+            }
+        },
+        // Enable lines below if assets are needed
+        //plugins: [
+        //    ...(common.plugins || []),
+            // new CopyWebpackPlugin({
+            //     patterns: [
+            //         {
+            //             from: path.resolve(__dirname, 'gcampus', 'analysis', 'static_src', 'assets'),
+            //             to: path.resolve(__dirname, 'gcampus', 'analysis', 'static', 'gcampusanalysis', 'assets'),
+            //         },
+            //     ]
+            // })
+       // ],
+    });
+}
+
+
 
 module.exports = (env, options) => {
     return [
@@ -314,5 +345,6 @@ module.exports = (env, options) => {
         gcampusauthConfig(env, options),
         gcampusdocumentsConfig(env, options),
         gcampusmailConfig(env, options),
+        gcampusanalysisConfig(env, options),
     ];
 };

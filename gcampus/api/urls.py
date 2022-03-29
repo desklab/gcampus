@@ -16,19 +16,24 @@
 from django.urls import path, include
 from rest_framework import routers
 
+from gcampus.api.apps import GCampusAPIAppConfig
 from gcampus.api.views import (
     MeasurementAPIViewSet,
     ParameterTypeAPIViewSet,
     ParameterAPIViewSet,
-    GeoLookupViewSet,
+    WaterAPIViewSet,
+    WaterLookupAPIViewSet,
+    OverpassLookupAPIViewSet,
 )
 
 router_v1 = routers.DefaultRouter()
 router_v1.register(r"measurements", MeasurementAPIViewSet)
 router_v1.register(r"datatypes", ParameterTypeAPIViewSet)
 router_v1.register(r"datapoints", ParameterAPIViewSet)
-router_v1.register(r"geolookup", GeoLookupViewSet, basename="geolookup")
+router_v1.register(r"waters", WaterAPIViewSet)
+router_v1.register(r"waterlookup", WaterLookupAPIViewSet, basename="waterlookup")
+router_v1.register(r"overpasslookup", OverpassLookupAPIViewSet, basename="waterlookup")
 
 urlpatterns = [path("", include(router_v1.urls))]
 
-app_name = "gcampusapi"
+app_name = GCampusAPIAppConfig.label

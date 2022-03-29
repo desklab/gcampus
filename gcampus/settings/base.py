@@ -40,7 +40,7 @@ PRIMARY_HOST = "localhost:8000"
 PREFERRED_SCHEME = "http"
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    "gcampus.admin.apps.GCampusAdminAppConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     "rest_framework_gis",
     "django_filters",
     "django_celery_results",
-    "django_plotly_dash.apps.DjangoPlotlyDashConfig",
     # gcampus specific apps
     "gcampus.tasks",
     "gcampus.core",
@@ -119,6 +118,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
+AUTH_USER_MODEL = "gcampusauth.User"
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -160,6 +160,7 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
     ],
     "PAGE_SIZE": 100,
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
 
 # Geo Settings
@@ -171,27 +172,16 @@ GEOLOCKUP_CACHE_TIMEOUT = 60 * 60 * 24 * 100  # 100 days
 OVERPASS_SERVER = "https://overpass.kumi.systems/api/interpreter"
 OVERPASS_CACHE = 60 * 60 * 24 * 2
 
+MAP_SETTINGS = {
+    "CENTER": (8.4430, 49.4922),
+    "ZOOM": 8,
+    "STYLE": "mapbox://styles/axelschlindwein/ckq9e6o4k06fn17o70d7j7l65?optimize=true",
+    "MAPBOX_ACCESS_TOKEN": get_env_read_file("MAPBOX_ACCESS_TOKEN"),
+}
 LEAFLET_CONFIG = {
     "DEFAULT_CENTER": (49.4922, 8.4430),
     "DEFAULT_ZOOM": 8,
     "RESET_VIEW": False,  # Disable reset button on map
-    "PLUGINS": {
-        "leafletsearch": {  # Add leaflet search control
-            "css": ["gcampuscore/styles/leaflet.css"],
-            "js": "gcampuscore/js/leafletsearch.js",
-            "auto-include": True,
-        },
-        "watersuggestion": {  # Suggest nearby natural=water
-            "js": "gcampuscore/js/watersuggestion.js",
-            "auto-include": False,
-        },
-    },
-}
-MAP_SETTINGS = {
-    "CENTER": (8.4430, 49.4922),
-    "ZOOM": 8,
-    "STYLE": "mapbox://styles/axelschlindwein/ckq9e6o4k06fn17o70d7j7l65",
-    "MAPBOX_ACCESS_TOKEN": get_env_read_file("MAPBOX_ACCESS_TOKEN"),
 }
 
 # Full Text Search

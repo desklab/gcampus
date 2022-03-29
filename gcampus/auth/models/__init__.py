@@ -14,3 +14,4 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from gcampus.auth.models.token import AccessKey, CourseToken
+from gcampus.auth.models.user import User

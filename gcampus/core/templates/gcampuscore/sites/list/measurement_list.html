@@ -7,6 +7,43 @@
     {% leaflet_css plugins="forms" %}
 {% endblock %}
 {% block content %}
+
+    <div class="modal fade" id="downloadModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{% translate "Download measurement data" %}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            {% with "https://openstreetmap.org/copyright" as osm_url %}
+            {% with "https://www.mapbox.com" as mapbox_url %}
+            {% with "https://gewaessercampus.de/license" as license_url %}
+            {% blocktranslate trimmed %}
+                GewässerCampus includes maps and information on water bodies and their names from
+                <a class="text-reset" href="{{ mapbox_url }}">Mapbox</a>
+                and
+                <a class="text-reset" href="{{ osm_url }}">OpenStreetMap</a>
+                as well as measurement data of GewässerCampus contributors.
+                Make sure you respect the licenses of these datasets. More details are provided
+                <a class="text-reset" href="{{ license_url }}">here</a>.
+            {% endblocktranslate %}
+            {% endwith %}
+            {% endwith %}
+            {% endwith %}
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  {% translate "Close" %}
+              </button>
+              <a href="{% url "gcampusdocuments:measurement-list-csv" %}{% request_params %}" class="btn btn-secondary">
+                {% translate "Download data" %}
+              </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="container-fluid">
         <form method="GET">
             <div class="row g-3 align-items-center">
@@ -48,10 +85,10 @@
                     {% endblocktranslate %}
                 </div>
                 <div class="col-auto ms-auto px-0">
-                    <a href="{% url "gcampusdocuments:csv" %}{% request_params %}" class="btn btn-sm btn-secondary me-2">
-                        {% translate "Download data" %}
-                    </a>
-                    <a href="{% url "gcampusdocuments:measurement-list" %}{% request_params %}" class="btn btn-sm btn-secondary">
+                    <button type="button" class="btn btn-sm btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#downloadModal">
+                      Download data
+                    </button>
+                    <a href="{% url "gcampusdocuments:measurement-list-pdf" %}{% request_params %}" class="btn btn-sm btn-secondary">
                         {% translate "Print summary" %}
                     </a>
                 </div>

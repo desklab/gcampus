@@ -13,31 +13,38 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from rest_framework import generics, viewsets
+from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
-from rest_framework_gis.pagination import GeoJsonPagination
 
 from gcampus.api.serializers import (
     MeasurementSerializer,
     ParameterTypeSerializer,
     ParameterSerializer,
+    MeasurementListSerializer,
 )
+from gcampus.api.views.mixins import MethodSerializerMixin
 from gcampus.core.models import Measurement, ParameterType, Parameter
 
 
-class MeasurementAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    queryset = Measurement.objects.order_by("time").all()
+class MeasurementAPIViewSet(MethodSerializerMixin, viewsets.ReadOnlyModelViewSet):
+    queryset = Measurement.objects.order_by("time")
     serializer_class = MeasurementSerializer
-    pagination_class = GeoJsonPagination
+
+    # Use a minimal serializer for lists. This serializer only includes
+    # the bare minimum used for displaying the measurements on a map.
+    serializer_class_list = MeasurementListSerializer
+    # Pagination is disabled such that the api works better with
+    # the map view
+    pagination_class = None
 
 
-class ParameterTypeAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    queryset = ParameterType.objects.order_by("name").all()
+class ParameterTypeAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ParameterType.objects.order_by("name")
     serializer_class = ParameterTypeSerializer
     pagination_class = PageNumberPagination
 
 
-class ParameterAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    queryset = Parameter.objects.order_by("measurement__time").all()
+class ParameterAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Parameter.objects.order_by("measurement__time")
     serializer_class = ParameterSerializer
     pagination_class = PageNumberPagination

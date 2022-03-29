@@ -15,50 +15,100 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-//import mapboxgl from 'mapbox-gl'; // noqa
-import {Component, render} from 'preact';
-import {html} from 'htm/preact';
-
-
-const DEFAULT_COLOR: String = '#33658A';
-const HIGHLIGHT_COLOR: String = '#F6AE2D';
-const VAR_LOCATION_PLACEHOLDER: String = window._varLocationPlaceholder;
-const VAR_LOCATION_TITLE: String = window._varLocationTitle;
-const LOADING_TEXT: String = window._loadingText;
-const EMPTY_GEO_JSON: Object = {
+const DEFAULT_COLOR = '#052c65';
+const HIGHLIGHT_COLOR = '#0d6efd';
+const waterSuggestionTemplate = (
+    document.getElementById('waterSuggestionTemplate').text
+);
+const parentElement = document.getElementById('waterSuggestions');
+const loadingElement = document.getElementById('waterLoading');
+const osmElement = document.getElementById('waterOsm');
+const customWaterElement = document.getElementById('waterCustom');
+const measurementForm = document.getElementById('measurementForm');
+const EMPTY_GEO_JSON = {
     'type': 'FeatureCollection',
     'features': []  // Empty data for now
 };
 
 
+class UnknownSourceError extends Error {
+    constructor(message) {
+        super(message);
+        this.message = (
+            'Unknown source \'' + message +
+            '\'. Can be either \'osm\', \'db\' or \'other\'.'
+        );
+        this.name = 'UnknownSourceError';
+    }
+}
+
+
 /**
- * Fetch Water Suggestion
+ * Construct water lookup query
  *
- * This method sends a request to the gcampus API to find nearby points
- * of interest with the tag "natural=water".
+ * This method prepares a request to the gcampus API using either the
+ * database or OpenStreetMaps as a source.
  *
- * @param lat {number|string} - Latitude
+ * @param source {string} - Can be either 'osm' or 'db'
  * @param lng {number|string} - Longitude
+ * @param lat {number|string} - Latitude
+ * @returns {string} - URL for the query
  */
-function fetchWaterSuggestion(lat, lng) {
-    let url = '/api/v1/geolookup/';
+function getLookupQuery(source, lng, lat) {
+    let url;
+    if (source === 'osm') {
+        url = '/api/v1/overpasslookup/';
+    } else if (source === 'db') {
+        url = '/api/v1/waterlookup';
+    } else {
+        throw new UnknownSourceError(String(source));
+    }
     // Parse string inputs for rounding later
     if (typeof lat !== 'number')
         lat = Number.parseFloat(lat);
     if (typeof lng !== 'number')
         lng = Number.parseFloat(lng);
-    // Round the location to 3 digits. This should be precise enough
-    // A large bounding box is used.
-    // This improves cache performance
-    let location = `${lat.toFixed(3)},${lng.toFixed(3)}`;
+    // Round the location to 3 digits. This should be precise enough.
+    let location = `POINT (${lng.toFixed(5)} ${lat.toFixed(5)})`;
     let bboxSize = '800';  // 800 meter square bounding box
     let params = {
-        coords: location,
-        size: bboxSize
+        geo_center: location,
+        geo_size: bboxSize
     };
     let searchParams = new URLSearchParams(params).toString();
-    return fetch(`${url}?${searchParams}`)
-        .then(response => response.json())
+    return [url, searchParams].join('?');
+}
+
+
+/**
+ * Fetch Water Lookup (database)
+ *
+ * This method sends a request to the gcampus API to find nearby points
+ * of interest with the tag "natural=water".
+ *
+ * @param lng {number|string} - Longitude
+ * @param lat {number|string} - Latitude
+ * @returns {Promise} - Fetch promise
+ */
+function fetchWaterLookup(lng, lat) {
+    let lookupQuery = getLookupQuery('db', lng, lat);
+    return fetch(lookupQuery).then(response => response.json());
+}
+
+
+/**
+ * Fetch Overpass Lookup (OpenStreetMaps)
+ *
+ * This method sends a request to the gcampus API to find nearby points
+ * of interest with the tag "natural=water".
+ *
+ * @param lng {number|string} - Longitude
+ * @param lat {number|string} - Latitude
+ * @returns {Promise} - Fetch promise
+ */
+function fetchOverpassLookup(lng, lat) {
+    let lookupQuery = getLookupQuery('osm', lng, lat);
+    return fetch(lookupQuery).then(response => response.json());
 }
 
 
@@ -68,181 +118,154 @@ function fetchWaterSuggestion(lat, lng) {
  * Returns an element used to display a list of water suggestions inside
  * the ``WaterList`` class.
  *
- * @param props
- * @returns {VNode}
+ * @param feature
+ * @returns {NodeList}
  */
-function ListItem(props) {
-    let {feature, highlight, resetHighlight} = props;
-    let name = feature.properties.name;
+function ListItem(feature) {
+    let {display_name, display_flow_type, flow_type} = feature.properties;
     let id = feature.id;
-    return html`
-        <label class="list-group-item list-group-item-action" for="water${id}"
-               onMouseOver=${highlight} onMouseLeave=${resetHighlight}>
-            <input class="form-check-input me-2" id="water${id}"
-                   type="radio" name="water_name"
-                   data-feature-id="${id}"
-                   value="${name} gcampus_osm_id:${id}"/>
-            ${name}
-        </label>`;
+    let inputId = 'waterSuggestion' + String(id);
+    let item = document.createElement('div');
+    item.innerHTML = waterSuggestionTemplate;
+    let input = item.querySelector('input');
+    let label = item.querySelector('label');
+    let nameElement = item.querySelector('label > b');
+    let descriptionElement = item.querySelector('label > small');
+    input.setAttribute('id', inputId);
+    input.setAttribute('data-feature-id', id);
+    input.setAttribute('value', id);
+    label.setAttribute('for', inputId);
+    label.setAttribute('data-feature-id', id);
+    nameElement.innerText = display_name;
+    descriptionElement.innerText = (
+        display_flow_type.charAt(0).toUpperCase() + display_flow_type.slice(1)
+    );
+    if (flow_type === 'standing' || flow_type === 'running') {
+        let icon = document.createElement('i');
+        icon.classList.add('water-icon');
+        icon.classList.add('me-1');
+        icon.classList.add(flow_type);
+        descriptionElement.insertAdjacentElement('afterbegin', icon);
+    }
+    return item.childNodes;
 }
 
 
-class VariableWaterItem extends Component {
-    constructor() {
-        super();
-        this.state = {name: ''};
-    }
-
-    setName(name) {
-        this.setState({name: name});
-    }
-
-    setChecked(checked) {
-        let el = document.getElementById('varWater');
-        el.checked = checked;
-        el.dispatchEvent(new Event("change"));
-    }
-
-    createNameChangeListener() {
-        return (e) => {
-            this.setChecked(true);
-            let new_name = e.target.value;
-            if (this.state.name !== new_name)
-                this.setName(new_name);
-        };
-    }
-
-    createClickListener() {
-        return () => {
-            this.setChecked(true);
-        }
-    }
-
-    render(props, state, context) {
-        let {name} = state;
-        return html`
-            <div class="list-group-item list-group-item-action"
-                 onclick=${this.createClickListener()}>
-                <input class="form-check-input me-2" id="varWater"
-                       type="radio" name="water_name"
-                       style="vertical-align: text-bottom"
-                       value="${name}"
-                       aria-label="${VAR_LOCATION_TITLE}" />
-                ${VAR_LOCATION_TITLE}
-                <input type="text"
-                       id="inputLocationName"
-                       class="form-control form-control-sm w-auto d-inline ms-2"
-                       placeholder="${VAR_LOCATION_PLACEHOLDER}"
-                       aria-label="${VAR_LOCATION_PLACEHOLDER}"
-                       onInput=${this.createNameChangeListener()} />
-            </div>`;
+/**
+ * Append nodes to HTMLElement
+ *
+ * Append nodes (NodeList) in-place.
+ *
+ * @param parent {HTMLElement} - Parent element
+ * @param children {NodeList} - List of nodes
+ */
+function insertNodes(parent, children) {
+    let pos = parent.firstChild;
+    while (children.length > 0) {
+        parent.insertBefore(children[0], pos);
     }
 }
 
 
-class WaterList extends Component {
-    state: Object;
+class WaterList {
+    state;
     map;
-    _layerID: String = 'waterLayer';
-    _sourceID: String = 'waterList';
-    _sourceIDHighlight: String = 'waterItemHighlighted';
-    _layerIDHighlight: String = 'waterLayerHighlighted';
-    _requestTimeout: ?Number = null;
+    currentPermanentHighlight;
+    currentHighlight;
+    _layerID = 'waterLayer';
+    _layerIDPoint = 'waterLayerPoint';
+    _sourceID = 'waterList';
+    _requestTimeout = null;
+    lat = null;
+    lng = null;
 
     constructor() {
-        super();
-        this.state = {features: [], loading: false};
+        this.state = {
+            features: [],
+            hasDatabase: false,
+            hasOsm: false,
+            hasCustom: false,
+            loading: false,
+            error: false,
+        };
         this.currentPermanentHighlight = null;
+        this.currentHighlight = null;
         window.addEventListener('map:load', this.mapLoad.bind(this));
+        osmElement.addEventListener('click', this.osmUpdate.bind(this));
+        let customWaterOverlay = (
+            customWaterElement.querySelector('.list-group-item-overlay')
+        );
+        customWaterOverlay.addEventListener('click', () => {
+            customWaterOverlay.classList.add('d-none');
+        });
+        document.getElementById('customWaterForm').addEventListener(
+            'submit', this.saveCustomWater.bind(this)
+        );
     }
 
-    setFeatures(features) {
-        this.setLoading(false);
-        features = features || [];
-        features = features.filter(
-            f => f.properties.hasOwnProperty('name') && f.properties.name
-        );
+    setState(state) {
+        let keys = Object.keys(this.state);
+        for (let i = 0; i < keys.length; i++) {
+            let key = keys[i];
+            if (Object.prototype.hasOwnProperty.call(state, key))
+                this.state[key] = state[key];
+        }
+        this.render();
+    }
+
+    setFeatures(features, source) {
+        if (source === 'osm') {
+            features = this.state.features.concat(features || []);
+        } else if (source === 'custom') {
+            features = this.state.features.concat([features]);
+        } else if (source === 'db') {
+            features = features || [];
+        } else {
+            throw new UnknownSourceError(String(source));
+        }
+
+        // Add all features to the layer
         this.map.getSource(this._sourceID).setData({
             'type': 'FeatureCollection',
             'features': features
         });
-        if (this.currentPermanentHighlight !== null) {
-            console.log(features);
-            console.log(this.currentPermanentHighlight);
-            let highlightedFeature = features.filter(
-                f => this.validFeatureID(f.id) === this.validFeatureID(this.currentPermanentHighlight)
-            );
-            console.log(highlightedFeature);
-            if (highlightedFeature.length === 0) {
-                // The last selected water could not be found in the new
-                // suggestion.
-                // Thus, the selection is reset.
-                console.log("reset");
-                this.currentPermanentHighlight = null;
-                this.resetHighlight();
+        this.map.removeFeatureState({source: this._sourceID});
+
+        if (source === 'custom') {
+            this.currentPermanentHighlight = features.id;
+        } else {
+            if (this.currentPermanentHighlight !== null) {
+                let hlFeature = features.filter(
+                    (f) => f.id === this.currentPermanentHighlight
+                );
+                if (hlFeature.length !== 1) {
+                    this.currentPermanentHighlight = null;
+                }
             }
         }
-        this.setState({features: features});
-    }
+        this.highlightFeature(this.currentPermanentHighlight);
 
-    /**
-     * Set Loading
-     *
-     * Set the loading state. Setting this to true will trigger display
-     * the loading indicator.
-     * @param loading
-     */
-    setLoading(loading) {
-        this.setState({loading: loading});
-    }
-
-    /**
-     * Valid Feature ID
-     *
-     * Returns a valid feature ID (i.e. an integer instead of a string)
-     * and throws an exception if an invalid string or other type has
-     * been provided.
-     * This is needed because the feature layers use integer IDs whereas
-     * the value of HTMLElements are strings.
-     *
-     * @param featureID {number|string}: Feature ID
-     * @returns {number}
-     */
-    validFeatureID(featureID) {
-        if (typeof featureID !== 'number') {
-            try {
-                return Number.parseInt(featureID);
-            } catch {
-                throw Error(`Unable to parse feature ID '${featureID}'. Expected an integer!`);
-            }
+        if (source === 'osm') {
+            this.setState({
+                loading: false,
+                features: features,
+                hasOsm: true,
+            });
+        } else if (source === 'custom') {
+            this.setState({
+                loading: false,
+                features: features,
+                hasDatabase: true,
+                hasOsm: true,
+                hasCustom: true
+            });
+        } else {
+            this.setState({
+                loading: false,
+                features: features,
+                hasDatabase: true
+            });
         }
-        return featureID;
-    }
-
-    /**
-     * Get GeoJSON Feature
-     *
-     * Return the GeoJSON feature where the ID matches the passed
-     * feature ID. Note that this will only return features that are
-     * in the current state. Features that have been in the state
-     * previously will not be returned.
-     *
-     * If a feature can not be found, an exception is thrown.
-     *
-     * @param featureID {Number|String}: Feature ID
-     * @returns {Object} GeoJSON of the requested feature
-     * @throws Error
-     */
-    getGeoJSONFeature(featureID: Number|String) {
-        featureID = this.validFeatureID(featureID);
-        let feature = this.state.features.filter(f => f.id === featureID);
-        if (feature.length === 0) {
-            throw Error(`Unable to find feature with ID ${featureID}!`);
-        }
-        if (feature.length > 1) {
-            throw Error(`Found more than one feature with ID ${featureID}!`);
-        }
-        return feature[0];
     }
 
     /**
@@ -252,25 +275,35 @@ class WaterList extends Component {
      * color of the layer to visually distinguish one layer from the
      * others.
      *
-     * @param featureID {number|string}: Feature ID
+     * @param featureId {number}: Feature ID
      */
-    highlightFeature(featureID) {
-        this.map.getSource(this._sourceIDHighlight).setData(
-            this.getGeoJSONFeature(featureID)
-        );
+    highlightFeature(featureId) {
+        if (this.currentHighlight === featureId) {
+            return;
+        }
+        this.map.removeFeatureState({
+            source: this._sourceID,
+            id: this.currentHighlight
+        });
+        this.currentHighlight = featureId;
+        if (this.currentHighlight === null) {
+            return;
+        }
+        this.map.setFeatureState({
+            source: this._sourceID,
+            id: this.currentHighlight
+        }, {
+            highlight: true
+        });
     }
 
-    /**
-     * Reset Highlight
-     *
-     * Resets the highlighting
-     */
-    resetHighlight() {
-        // Set source data for the highlight layer to be empty
-        this.map.getSource(this._sourceIDHighlight).setData(EMPTY_GEO_JSON);
-        if (this.currentPermanentHighlight !== null) {
-            this.highlightFeature(this.currentPermanentHighlight);
-        }
+    highlightPermanent(featureId) {
+        this.currentPermanentHighlight = featureId;
+        this.highlightFeature(this.currentPermanentHighlight);
+    }
+
+    clearLayers() {
+        this.map.getSource(this._sourceID).setData(EMPTY_GEO_JSON);
     }
 
     /**
@@ -285,7 +318,18 @@ class WaterList extends Component {
     mapUpdate(e) {
         let pointWidget = e.detail.widget;
         let {lng, lat} = pointWidget.getLngLat();
-        this.setLoading(true)
+        this.lat = lat;
+        this.lng = lng;
+
+        this.setState({
+            loading: true,
+            hasDatabase: false,
+            hasOsm: false,
+            features: [],
+        });
+        this.clearLayers();
+        this.currentHighlight = null;
+
         if (this._requestTimeout !== null) {
             // Stop the last timeout and thereby abort the request
             clearTimeout(this._requestTimeout);
@@ -299,14 +343,63 @@ class WaterList extends Component {
         // through to the server.
         this._requestTimeout = setTimeout(() => {
             this._requestTimeout = null;
-            fetchWaterSuggestion(lat, lng)
-                .then(data => this.setFeatures(data.features))
+            fetchWaterLookup(lng, lat)
+                .then(data => this.setFeatures(data.features, 'db'))
                 .catch(this.onError.bind(this));
         }, 300);
     }
 
+    osmUpdate() {
+        if (this.lat === null || this.lng === null) {
+            return;
+        }
+        this.setState({
+            loading: true
+        });
+        fetchOverpassLookup(this.lng, this.lat)
+            .then(data => this.setFeatures(data.features, 'osm'))
+            .catch(this.onError.bind(this));
+    }
+
+    saveCustomWater(e) {
+        e.preventDefault();
+        let form = e.target;
+        if (!form.checkValidity()) {
+            if (form.reportValidity) {
+                form.reportValidity();
+            }
+        }
+        let formData = new FormData(form);
+        let measurementFormData = new FormData(measurementForm);
+        let csrf = String(measurementFormData.get('csrfmiddlewaretoken'));
+        this.setState({loading: true});
+        fetch(form.action, {
+            // '.method' does not allow the method PATCH.
+            // We use '.getAttribute' instead.
+            method: form.getAttribute('method'),
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrf
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify({
+                name: formData.get('name'),
+                geometry: measurementFormData.get('location'),
+                flow_type: formData.get('flow_type'),
+                water_type: formData.get('water_type'),
+            })
+        }).then(response => response.json())
+            .then(water => this.setFeatures(water, 'custom'))
+            .catch(this.onError.bind(this));
+    }
+
     onError(err) {
-        this.setLoading(false);
+        this.setState({
+            loading: false,
+            error: true,
+        });
         console.error(err);
     }
 
@@ -325,135 +418,118 @@ class WaterList extends Component {
             'type': 'geojson',
             'data': EMPTY_GEO_JSON,
         });
-        this.map.addSource(this._sourceIDHighlight, {
-            'type': 'geojson',
-            'data': EMPTY_GEO_JSON,
-        });
         // Add the default water layer. This layer will show all waters
         // suggested to the user. It automatically updates once the
         // source data is changed. There is thus no need to access this
         // layer later on.
-        map.addLayer({
+        this.map.addLayer({
             'id': this._layerID,
             'type': 'line',
             'source': this._sourceID,
             'layout': {},
             'paint': {
-                'line-color': DEFAULT_COLOR,
-                'line-width': 3
-            }
+                'line-color': [
+                    'case',
+                    ['boolean', ['feature-state', 'highlight'], false],
+                    HIGHLIGHT_COLOR,
+                    DEFAULT_COLOR,
+                ],
+                'line-width': [
+                    'case',
+                    ['boolean', ['feature-state', 'highlight'], false],
+                    5,
+                    4,
+                ]
+            },
+            'filter': ['!=', '$type', 'Point']
+        });
+        this.map.addLayer({
+            'id': this._layerIDPoint,
+            'type': 'circle',
+            'source': this._sourceID,
+            'paint': {
+                'circle-color': [
+                    'case',
+                    ['boolean', ['feature-state', 'highlight'], false],
+                    HIGHLIGHT_COLOR,
+                    DEFAULT_COLOR,
+                ],
+                'circle-radius': [
+                    'case',
+                    ['boolean', ['feature-state', 'highlight'], false],
+                    10,
+                    8,
+                ],
+                'circle-stroke-width': [
+                    'case',
+                    ['boolean', ['feature-state', 'highlight'], false],
+                    3,
+                    2,
+                ],
+                'circle-stroke-color': '#ffffff'
+            },
+            'filter': ['==', '$type', 'Point']
         });
         // Add highlight layer. This will automatically update once the
         // highlighted data source is set.
-        map.addLayer({
-            'id': this._layerIDHighlight,
-            'type': 'line',
-            'source': this._sourceIDHighlight,
-            'layout': {},
-            'paint': {
-                'line-color': HIGHLIGHT_COLOR,
-                'line-width': 4
-            }
-        });
         this.map.on('edit', this.mapUpdate.bind(this));
     }
 
-    /**
-     * Create mouseover Listener
-     *
-     * Returns a callable function that is used for registering event
-     * listeners in the ``render`` method.
-     *
-     * @param feature {Object}: Feature object. Only the id attribute
-     *      will be used.
-     * @returns {(function(Event): void)}
-     */
-    createMouseOverListener(feature) {
-        return (e) => {
-            this.highlightFeature.bind(this)(feature.id);
-        };
-    }
-
-    /**
-     * Register Change Listener of Radio Buttons
-     *
-     * Iterates over all radio buttons and adds an event listener to
-     * each. This will check if the radio button has been selected and
-     * permanently highlights the features associated with those radio
-     * buttons.
-     */
-    setupWaterList() {
-        if (document.querySelector('input[name="water_name"]')) {
-            document.querySelectorAll('input[name="water_name"]').forEach(el => {
-                let featureID = null;
-                if (el.id !== 'varWater') {
-                    featureID = this.validFeatureID(
-                        el.getAttribute("data-feature-id")
-                    );
-                }
-                if (featureID === this.currentPermanentHighlight) {
-                    el.checked = true;
-                }
-                el.addEventListener('change', (e) => {
-                    if (e.target.checked) {
-                        // The element has actually been checked.
-                        // All other elements will be ignored.
-
-                        // If the current element is the variable water
-                        // name item, then the variable below will be
-                        // set to 'null'. Otherwise, it will have the
-                        // correct ID.
-                        this.currentPermanentHighlight = featureID;
-                        // Reset highlight will remove all highlighting
-                        // and highlight only the current selection
-                        // given it is not null.
-                        this.resetHighlight();
-                    }
-                });
-            });
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        this.setupWaterList();
-    }
-
-    componentDidMount() {
-        this.setupWaterList();
-    }
-
-    render(props, state, context) {
-        let {features, loading} = state;
-        let content = '';
-        if (loading) {
-            content = html`
-                <div class="list-group-item">
-                    <div class="spinner-border spinner-border-sm" role="status">
-                    </div>
-                    <span class="ms-2">${LOADING_TEXT}</span>
-                </div>`
-        } else {
-            content = features.map(feature => html`
-                <${ListItem}
-                    feature=${feature}
-                    highlight=${this.createMouseOverListener(feature)}
-                    resetHighlight=${this.resetHighlight.bind(this)}
-                />`
+    render() {
+        let {features, loading, hasDatabase, hasOsm, hasCustom} = this.state;
+        parentElement.querySelectorAll(
+            'input.list-group-item-input,label.list-group-item-water'
+        ).forEach(
+            (el) => parentElement.removeChild(el)
+        );
+        for (let i = 0; i < features.length; i++) {
+            let feature = features[i];
+            insertNodes(parentElement, ListItem(feature));
+            let input = parentElement.querySelector(
+                'input[data-feature-id="' + String(feature.id) + '"]'
             );
+            let label = parentElement.querySelector(
+                'label[data-feature-id="' + String(feature.id) + '"]'
+            );
+            input.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.highlightPermanent(feature.id);
+                }
+            });
+            label.addEventListener('mouseenter', () => {
+                this.highlightFeature(feature.id);
+            });
+            label.addEventListener('mouseleave', () => {
+                this.highlightFeature(this.currentPermanentHighlight);
+            });
+            if (this.currentPermanentHighlight === feature.id) {
+                input.checked = true;
+            }
         }
-        return html`
-            <div class="list-group bg-white"
-                style="border-top-left-radius: 0; border-top-right-radius: 0;">
-                ${content}
-                <${VariableWaterItem} />
-            </div>`;
+        if (loading) {
+            loadingElement.classList.remove('d-none');
+            osmElement.classList.add('d-none');
+            customWaterElement.classList.add('d-none');
+        } else {
+            loadingElement.classList.add('d-none');
+            if (hasDatabase) {
+                if (hasOsm) {
+                    osmElement.classList.add('d-none');
+                    if (hasCustom) {
+                        customWaterElement.classList.add('d-none');
+                    } else {
+                        customWaterElement.classList.remove('d-none');
+                    }
+                } else {
+                    osmElement.classList.remove('d-none');
+                    customWaterElement.classList.add('d-none');
+                }
+            } else {
+                osmElement.classList.add('d-none');
+                customWaterElement.classList.add('d-none');
+            }
+        }
     }
 }
 
-
-render(
-    html`
-        <${WaterList}/>`,
-    document.getElementById('watersuggestion')
-);
-
+new WaterList();

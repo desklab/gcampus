@@ -12,14 +12,14 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 import datetime
 import time
 import math
-import numpy as np
 from typing import List, Tuple, Optional, Union, Set
 
+import numpy as np
 from django.utils import timezone
-
 from django.conf import settings
 from django.contrib.gis.geos import Point
 from django.core.cache import cache
@@ -151,25 +151,32 @@ def get_weeks_from_today(date: datetime.datetime) -> List[datetime.datetime]:
     ]
     return dates
 
-def get_measurements_per_week(week_list: List[datetime.datetime], measurement_list: List[datetime.datetime]) -> List[int]:
+
+def get_measurements_per_week(
+    week_list: List[datetime.datetime], measurement_list: List[datetime.datetime]
+) -> List[int]:
     """Get Measurements per weeks
 
-    Returns a list of percentages (ints) representing how many measurements were conducted in this week
+    Returns a list of percentages (ints) representing how many
+    measurements were conducted in this week.
 
     :param week_list: List of weeks to create numbers of measurements in
     :param measurement_list: List of measurements
-    :returns: List of percentages representing how many measurements were conducted in this week
+    :returns: List of percentages representing how many measurements
+        were conducted in this week
     """
-    if measurement_list == []:
+    if not measurement_list:
         return []
-    measurements_per_week = [0]*(len(week_list)-1)
+    measurements_per_week = [0] * (len(week_list) - 1)
 
     for measurement_date in measurement_list:
-        for week_index in range(len(week_list)-1):
-            if week_list[week_index] <= measurement_date <= week_list[week_index+1]:
-                    measurements_per_week[week_index] += 1
-                    break
-    measurements_per_week = np.array(measurements_per_week)/max(measurements_per_week)*100
+        for week_index in range(len(week_list) - 1):
+            if week_list[week_index] <= measurement_date <= week_list[week_index + 1]:
+                measurements_per_week[week_index] += 1
+                break
+    measurements_per_week = (
+        np.array(measurements_per_week) / np.max(measurements_per_week) * 100
+    )
     return [int(measurement_val) for measurement_val in measurements_per_week]
 
 
@@ -201,13 +208,15 @@ def get_all_filters(old_filters: Set[str], new_filters: List[str]) -> List[str]:
     all_filters = set(old_filters)
     for filter_item in new_filters:
         all_filters.add(filter_item)
-    # For some reason every time the filter button is pressed the location filter is set. Since the location filter
+    # For some reason every time the filter button is pressed the
+    # location filter is set. Since the location filter
     # needs some further improvement I'll fix it like this
     # TODO fix location filter and remove this
     if "location" in all_filters:
         all_filters.remove("location")
 
     return list(all_filters)
+
 
 def get_filter_status(new_filters: List[str]) -> bool:
     """Get Filter Status

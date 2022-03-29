@@ -13,12 +13,12 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import Optional
 import logging
+from typing import Optional
 
 from django.http import HttpRequest
 
-from gcampus.auth.models.token import TokenType, CourseToken
+from gcampus.auth.models.token import TokenType
 
 TOKEN_STORE = "gcampusauth_token"
 AUTHENTICATION_BOOLEAN = "gcampusauth_authenticated"

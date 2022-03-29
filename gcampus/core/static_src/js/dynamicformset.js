@@ -143,7 +143,7 @@ class DynamicFormset {
         }
         // Find newly created element and immanently trigger collapse
         let newElement = this.getByID('FORM', formNumber);
-        let collapse = new Collapse(newElement, {trigger: true});
+        new Collapse(newElement, {trigger: true});
         // Add button event listener
         this.registerDeleteButton(formNumber);
         this.totalFormCount++;

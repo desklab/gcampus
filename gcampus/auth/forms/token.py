@@ -21,9 +21,7 @@ from django.db.models.signals import post_save
 from django.forms import CharField
 from django.utils.translation import gettext_lazy as _
 
-from gcampus.auth.fields.token import (
-    HyphenatedTokenField,
-)
+from gcampus.auth.fields.token import HyphenatedTokenField
 from gcampus.auth.models.token import (
     CourseToken,
     update_access_key_documents,

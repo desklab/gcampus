@@ -24,5 +24,5 @@ from gcampus.documents.views.print import (
     CourseOverviewPDF,
     AccessKeyCombinedPDF,
     MeasurementDetailPDF,
-    MeasurementListPDF
+    MeasurementListPDF,
 )

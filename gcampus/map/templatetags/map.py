@@ -12,34 +12,48 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from typing import Tuple, Optional
 
 from django import template
+from django.conf import settings
 from django.utils.http import urlencode
-
-from gcampus.map.settings import MAP_SETTINGS
 
 register = template.Library()
 
 
 @register.inclusion_tag("gcampusmap/map.html")
-def map(**kwargs):
-    map_name = kwargs.pop("name", "map")
-    map_container = kwargs.pop("container", "map")
-    center_lng, center_lat = kwargs.pop("center", MAP_SETTINGS["CENTER"])
-    style = kwargs.pop("style", MAP_SETTINGS["STYLE"])
-    zoom = kwargs.pop("zoom", MAP_SETTINGS["ZOOM"])
-    mapbox_access_token = MAP_SETTINGS["MAPBOX_ACCESS_TOKEN"]
+def map(  # noqa
+    name: str = "map",
+    container: str = "map",
+    center: Optional[Tuple[float, float]] = None,
+    style: Optional[str] = None,
+    zoom: Optional[float] = None,
+    has_search: bool = True,
+    mapbox_access_token: Optional[str] = None,
+    onload: str = "",
+    **kwargs,
+):
+    map_settings = getattr(settings, "MAP_SETTINGS")
+    if center is None:
+        center = map_settings["CENTER"]
+    center_lng, center_lat = center
+    if style is None:
+        style = map_settings["STYLE"]
+    if zoom is None:
+        zoom = map_settings["ZOOM"]
+    if mapbox_access_token is None:
+        mapbox_access_token = map_settings["MAPBOX_ACCESS_TOKEN"]
     klass = kwargs.pop("class", "")
-    onload = kwargs.pop("onload", "")
     return {
-        "name": map_name,
-        "container": map_container,
+        "name": name,
+        "container": container,
         "mapbox_access_token": mapbox_access_token,
         "mapbox_style": style,
         "zoom": zoom,
         "center_lng": center_lng,
         "center_lat": center_lat,
         "class": klass,
+        "has_search": has_search,
         "onload": onload,
     }
 
@@ -55,6 +69,6 @@ def load_mapbox_css():
 
 
 @register.simple_tag()
-def map_options_url(lat, long, zoom) -> str:
-    params = {"LAT": lat, "LONG": long, "ZOOM": zoom}
+def map_options_url(lng, lat, zoom) -> str:
+    params = {"lng": lng, "lat": lat, "zoom": zoom}
     return f"?{urlencode(params)}"

@@ -13,14 +13,14 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from django.contrib.auth.admin import UserAdmin
 from django.contrib.gis import admin
 from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from gcampus.auth.models import (
-    AccessKey,
-    CourseToken,
-)
+from gcampus.admin.options import LinkedInlineMixin
+from gcampus.auth.models import AccessKey, CourseToken, User
+from gcampus.core.admin import MeasurementInline
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 
 
@@ -36,17 +36,25 @@ deactivate_token.short_description = _("Deactivate selected tokens")
 reactivate_token.short_description = _("Reactivate selected tokens")
 
 
+class AccessKeyInline(LinkedInlineMixin, admin.TabularInline):
+    model = AccessKey
+    extra = 0
+
+
 class AccessKeyAdmin(admin.ModelAdmin):
     list_filter = ("deactivated",)
+    inlines = [MeasurementInline]
     readonly_fields = ADMIN_READ_ONLY_FIELDS
     actions = [deactivate_token, reactivate_token]
 
 
 class CourseTokenAdmin(admin.ModelAdmin):
     list_filter = ("deactivated",)
+    inlines = [AccessKeyInline]
     readonly_fields = ADMIN_READ_ONLY_FIELDS
     actions = [deactivate_token, reactivate_token]
 
 
 admin.site.register(AccessKey, AccessKeyAdmin)
 admin.site.register(CourseToken, CourseTokenAdmin)
+admin.site.register(User, UserAdmin)

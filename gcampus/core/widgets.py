@@ -16,24 +16,19 @@
 import datetime
 from typing import Optional
 
-from django.forms import (
-    MultiWidget,
-    NumberInput,
-    DateTimeInput,
-    Media,
-    TextInput,
-    RadioSelect,
-    CheckboxInput,
-)
+from django.forms import MultiWidget, NumberInput, CheckboxInput
 from django.forms.utils import to_current_timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import pgettext
-from django_filters.fields import RangeField
 from django_filters.widgets import RangeWidget
 from leaflet.forms.widgets import LeafletWidget
 
 from gcampus.core.models import Measurement
-from gcampus.core.util import get_weeks_from_today, convert_dates_to_js_milliseconds, get_measurements_per_week
+from gcampus.core.util import (
+    get_weeks_from_today,
+    convert_dates_to_js_milliseconds,
+    get_measurements_per_week,
+)
 
 
 class SplitTimeWidget(MultiWidget):
@@ -158,9 +153,7 @@ class TimeRangeSlider(RangeWidget):
             ).earliest("time")
             week_list = get_weeks_from_today(earliest_date)
 
-            all_dates = list(Measurement.objects.values_list(
-                "time", flat=True
-            ).all())
+            all_dates = list(Measurement.objects.values_list("time", flat=True).all())
 
             measurements_per_week = get_measurements_per_week(week_list, all_dates)
         except Measurement.DoesNotExist:

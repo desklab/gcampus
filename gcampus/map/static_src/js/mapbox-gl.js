@@ -15,18 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import mapboxgl from 'mapbox-gl'; // noqa
-import 'mapbox-gl/dist/mapbox-gl.css';
+import mapboxgl from '!mapbox-gl';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+
+import '../styles/map.scss';
 
 class MapboxGLPointWidget {
-    TYPE: String = 'Point';
-    _map: mapboxgl.Map;
-    _marker: mapboxgl.Marker;
-    _markerAdded: Boolean;
-    _input: HTMLElement;
-    _value: Object;  // GeoJSON object that will be stringified later
+    TYPE = 'Point';
+    _map;
+    _marker;
+    _markerAdded;
+    _input;
+    _value;  // GeoJSON object that will be stringified later
 
-    constructor(map: mapboxgl.Map, input: HTMLElement) {
+    constructor(map, input) {
         this._map = map;
         this._marker = new mapboxgl.Marker({draggable: true});
         this._markerAdded = false;
@@ -86,8 +88,8 @@ class MapboxGLPointWidget {
         this._map.fire('edit', {detail: {widget: this}});
     }
 
-    _onMarkerDragged() {
-        this.setLngLat(e.lngLat);
+    _onMarkerDragged(e) {
+        this.setLngLat(e.target.getLngLat());
         this._map.fire('edit', {detail: {widget: this}});
     }
 
@@ -98,7 +100,7 @@ class MapboxGLPointWidget {
         return {
             lng: coordinates[0],
             lat: coordinates[1]
-        }
+        };
     }
 
     setLngLat(lngLat) {
@@ -109,7 +111,7 @@ class MapboxGLPointWidget {
         this.value = {
             type: this.TYPE,
             coordinates: lngLat
-        }
+        };
     }
 
     getMap() {
@@ -118,4 +120,71 @@ class MapboxGLPointWidget {
 
 }
 
-export {mapboxgl, MapboxGLPointWidget};
+function initMap(
+    accessToken,
+    name,
+    container,
+    style,
+    defaultCenter,
+    defaultZoom,
+    hasSearch,
+    onload,
+) {
+    let {center, zoom} = getMapCenterZoom(defaultCenter, defaultZoom);
+    let map = new mapboxgl.Map({
+        accessToken: accessToken,
+        container: container,
+        style: style,
+        center: center,
+        zoom: zoom,
+        logoPosition: 'bottom-left'
+    });
+    let nav = new mapboxgl.NavigationControl();
+    map.addControl(nav, 'top-left');
+    if (hasSearch) {
+        map.addControl(
+            new MapboxGeocoder({
+                accessToken: accessToken,
+                marker: false,
+            }),
+            'top-right'
+        );
+    }
+    if (onload !== null) {
+        map.on('load', onload);
+    }
+    map.on('load', function (e) {
+        // The target of the event will be set by dispatch event and can
+        // thus not be used.
+        // Instead, the 'detail' attribute will be used to hold the map.
+        let event = new CustomEvent('map:load', {
+            detail: {
+                map: e.target
+            }
+        });
+        // Here, the target will be set to 'window'
+        window.dispatchEvent(event);
+    });
+    if (window._maps === undefined) {
+        window._maps = {};
+    }
+    window._maps[name] = map;
+    return map;
+}
+
+function getMapCenterZoom(center, zoom) {
+    let urlString = window.location.href;
+    if (urlString.includes('?')) {
+        let paramString = urlString.split('?')[1];
+        let queryString = new URLSearchParams(paramString);
+        let params = Object.fromEntries(queryString.entries());
+        if (params.hasOwnProperty('lng') && params.hasOwnProperty('lat'))
+            center = [params['lng'], params['lat']];
+        if (params.hasOwnProperty('zoom'))
+            zoom = params['zoom'];
+    }
+    return {center: center, zoom: zoom};
+}
+
+
+export {initMap, MapboxGLPointWidget, mapboxgl};

@@ -21,7 +21,7 @@ from django.contrib.gis.measure import Distance
 from django.contrib.postgres.search import SearchQuery
 from django.core.validators import EMPTY_VALUES
 from django.db.models import QuerySet
-from django.forms import CheckboxSelectMultiple, BooleanField
+from django.forms import CheckboxSelectMultiple
 from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 from django_filters import (
@@ -31,9 +31,6 @@ from django_filters import (
     CharFilter,
     ModelMultipleChoiceFilter,
     BooleanFilter,
-    DateRangeFilter,
-    DateTimeFromToRangeFilter,
-    ModelChoiceFilter,
     DateFromToRangeFilter,
 )
 
@@ -123,7 +120,7 @@ class MyMeasurementsFilter(BooleanFilter):
 
 
 class ParameterTypeFilter(ModelMultipleChoiceFilter):
-    def filter(self, qs, value: List[int]):
+    def filter(self, qs, value: List[ParameterType]):
         parameter_type_ids = [parameter_type.id for parameter_type in value]
         if parameter_type_ids in EMPTY or None in parameter_type_ids:
             return qs
@@ -187,12 +184,12 @@ class MeasurementFilterSet(FilterSet):
         label=_("Parameter"),
         help_text=_("Filter for measurements containing specific parameters."),
     )
-    #location = GeolocationFilter(
+    # location = GeolocationFilter(
     #    field_name="location",
     #    lookup_expr="distance_lte",
     #    label=_("Location"),
     #    help_text=_("Filter by radius after selecting a location"),
-    #)
+    # )
     my_course = MyCourseFilter(
         field_name="my_course",
         label=_("Measurements by your course"),

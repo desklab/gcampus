@@ -19,6 +19,7 @@ from django.core.exceptions import ValidationError, BadRequest
 from django.forms import CharField, BaseForm
 from django.http import HttpRequest
 
+from gcampus.auth import session
 from gcampus.auth.exceptions import (
     TOKEN_EMPTY_ERROR,
     TOKEN_INVALID_ERROR,
@@ -32,7 +33,6 @@ from gcampus.auth.models.token import (
     COURSE_TOKEN_LENGTH,
     ACCESS_KEY_LENGTH,
     ALLOWED_TOKEN_CHARS_RE,
-    ALLOWED_TOKEN_CHARS,
     TokenType,
 )
 from gcampus.auth.widgets import (
@@ -41,7 +41,6 @@ from gcampus.auth.widgets import (
     SplitKeyWidget,
     HyphenatedTokenWidget,
 )
-from gcampus.auth import session
 
 HIDDEN_TOKEN_FIELD_NAME = "gcampus_auth_token"
 

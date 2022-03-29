@@ -28,7 +28,7 @@ from django.views.generic import CreateView
 
 from gcampus.auth import session
 from gcampus.auth.forms.token import RegisterForm
-from gcampus.auth.models.token import AccessKey, TokenType
+from gcampus.auth.models.token import AccessKey, TokenType, CourseToken
 from gcampus.auth.tasks import send_registration_email
 from gcampus.core.views.base import TitleMixin
 
@@ -38,6 +38,7 @@ class RegisterFormView(TitleMixin, CreateView):
     title = gettext_lazy("Register a new course")
     template_name = "gcampusauth/forms/register.html"
     success_url = reverse_lazy("gcampusauth:course-overview")
+    object: CourseToken
 
     def form_valid(self, form):
         with transaction.atomic():

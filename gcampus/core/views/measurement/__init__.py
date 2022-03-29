@@ -15,24 +15,16 @@
 
 from __future__ import annotations
 
-from django.core.exceptions import (
-    PermissionDenied,
-)
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
-from django.views.generic import DetailView
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from gcampus.auth import session, exceptions
 from gcampus.auth.fields.token import check_form_and_request_token
-from gcampus.auth.models.token import (
-    can_token_edit_measurement,
-    TokenType,
-)
+from gcampus.auth.models.token import can_token_edit_measurement
 from gcampus.auth.session import is_authenticated, get_token, get_token_type
 from gcampus.core.decorators import (
     require_permission_create_measurement,
@@ -40,11 +32,10 @@ from gcampus.core.decorators import (
 )
 from gcampus.core.filters import MeasurementFilterSet
 from gcampus.core.forms.measurement import MeasurementForm
+from gcampus.core.forms.water import WaterForm
 from gcampus.core.models import Measurement
 from gcampus.core.views.base import TitleMixin
-from gcampus.core.views.measurement.list import (
-    MeasurementListView,
-)
+from gcampus.core.views.measurement.list import MeasurementListView
 
 
 class MeasurementDetailView(TitleMixin, DetailView):
@@ -97,6 +88,11 @@ class MeasurementCreateView(TitleMixin, CreateView):
     def form_valid(self, form: MeasurementForm):
         check_form_and_request_token(form, self.request)
         return super(MeasurementCreateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        if "water_form" not in kwargs:
+            kwargs["water_form"] = WaterForm()
+        return super(MeasurementCreateView, self).get_context_data(**kwargs)
 
     def get_success_url(self):
         return reverse(self.next_view_name, kwargs={"pk": self.object.id})

@@ -24,7 +24,8 @@ from typing import Union, Optional
 from urllib.parse import unquote
 
 from django.contrib import messages
-from django.contrib.auth import logout as django_logout, user_logged_out
+from django.contrib.auth import logout as django_logout
+from django.contrib.auth import user_logged_out
 from django.core.exceptions import PermissionDenied
 from django.dispatch import receiver
 from django.http import HttpRequest
@@ -41,10 +42,7 @@ from gcampus.auth.forms.token import (
     TOKEN_FIELD_NAME,
     NEXT_URL_FIELD_NAME,
 )
-from gcampus.auth.models.token import (
-    CourseToken,
-    TokenType,
-)
+from gcampus.auth.models.token import CourseToken, TokenType
 from gcampus.core.models.util import EMPTY
 from gcampus.core.views.base import TitleMixin
 
@@ -109,7 +107,7 @@ class CourseTokenLoginFormView(LoginFormView):
 
 
 @receiver(user_logged_out)
-def logout_signal(sender, *, request: Optional[HttpRequest] = None, **kwargs):
+def logout_signal(sender, *, request: Optional[HttpRequest] = None, **kwargs):  # noqa
     messages.success(request, gettext("Successfully logged out"))
 
 

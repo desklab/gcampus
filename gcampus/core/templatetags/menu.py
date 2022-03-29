@@ -13,11 +13,11 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import time
+
 from django import template
 from django.http import HttpRequest
 from django.template import Context
-
-import time
 
 register = template.Library()
 

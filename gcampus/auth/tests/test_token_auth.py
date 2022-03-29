@@ -14,14 +14,12 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from abc import ABC
-from datetime import datetime
 from typing import Optional
 from unittest.mock import patch
 
 from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import transaction
 from django.forms import Field
-from django.forms.utils import ErrorList
 from django.urls import reverse
 from django.utils import translation
 
@@ -35,6 +33,7 @@ from gcampus.auth.forms.token import TOKEN_FIELD_NAME, RegisterForm
 from gcampus.auth.models import CourseToken, AccessKey
 from gcampus.auth.models.token import COURSE_TOKEN_LENGTH, ACCESS_KEY_LENGTH, TokenType
 from gcampus.auth.session import set_token_session
+from gcampus.core.tests.mixins import FormTestMixin, TokenTestMixin
 from gcampus.documents.tasks import render_cached_document_view
 from gcampus.tasks.tests.utils import BaseMockTaskTest
 
@@ -54,47 +53,7 @@ class MiscellaneousAuthTest(BaseMockTaskTest):
         self.assertEqual(value_3, "")
 
 
-class BaseAuthTest(BaseMockTaskTest, ABC):
-    today = datetime.today()
-    form_data_stub: dict = {
-        "time_0_0": today.day,
-        "time_0_1": today.month,
-        "time_0_2": today.year,
-        "time_1_0": today.hour,
-        "time_1_1": today.minute,
-    }
-
-    def setUp(self) -> None:
-        super(BaseAuthTest, self).setUp()
-        self.parent_token = CourseToken(
-            school_name="GCampus Test Case",
-            teacher_name="GCampus Testing",
-            teacher_email="testcase@gewaessercampus.de",
-        )
-        self.parent_token.save()
-        self.tokens = []
-        for i in range(5):
-            _token = AccessKey(parent_token=self.parent_token)
-            _token.save()
-            self.tokens.append(_token)
-
-    def check_form_errors(self, response, expected_errors: dict):
-        form_valid: bool = response.context["form"].is_valid()
-        if not expected_errors:
-            # No errors expected
-            self.assertTrue(form_valid)
-        else:
-            self.assertFalse(form_valid)
-            errors = response.context["form"].errors
-            for key, expected_error_list in expected_errors.items():
-                self.assertIn(key, errors)
-                received_errors: ErrorList = errors[key]
-                self.assertEqual(len(expected_error_list), len(received_errors))
-                for expected_error in expected_error_list:
-                    self.assertIn(expected_error, received_errors)
-
-
-class BaseTokenKeyTest(BaseAuthTest, ABC):
+class BaseTokenKeyTest(TokenTestMixin, FormTestMixin, BaseMockTaskTest, ABC):
     def get_login_url(self) -> str:
         raise NotImplementedError()
 

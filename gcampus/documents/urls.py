@@ -16,7 +16,7 @@
 from django.urls import path
 
 from gcampus.documents.apps import GCampusDocumentsAppConfig
-from gcampus.documents.views.generate_csv import filter_csv_download
+from gcampus.documents.views.csv import CSVListView
 from gcampus.documents.views.print import (
     CourseOverviewPDF,
     AccessKeyCombinedPDF,
@@ -24,18 +24,26 @@ from gcampus.documents.views.print import (
     MeasurementListPDF,
 )
 
-
-# Turn off black formatting and pylint
-# fmt: off
-# pylint: disable=line-too-long
 urlpatterns = [
-    path("documents/overview", CourseOverviewPDF.as_view(), name="documents-overview"),
-    path("documents/accesskeys_combined", AccessKeyCombinedPDF.as_view(), name="accesskey-combined"),
-    path("documents/measurement_detail/<int:pk>", MeasurementDetailPDF.as_view(), name="measurement-detail"),
-    path("documents/measurement_list", MeasurementListPDF.as_view(), name="measurement-list"),
-    path("documents/measurements", filter_csv_download, name="csv"),
+    path("documents/course", CourseOverviewPDF.as_view(), name="course"),
+    path(
+        "documents/accesskeys",
+        AccessKeyCombinedPDF.as_view(),
+        name="accesskeys",
+    ),
+    path(
+        "documents/measurement/<int:pk>",
+        MeasurementDetailPDF.as_view(),
+        name="measurement-detail",
+    ),
+    path(
+        "documents/measurements/pdf",
+        MeasurementListPDF.as_view(),
+        name="measurement-list-pdf",
+    ),
+    path(
+        "documents/measurements/csv", CSVListView.as_view(), name="measurement-list-csv"
+    ),
 ]
-# fmt: on
-# pylint: enable=line-too-long
 
 app_name = GCampusDocumentsAppConfig.label

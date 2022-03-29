@@ -24,12 +24,12 @@ autofocusFields.forEach((element, i) => {
             let inputCounter = i;
             let addedLength = 0;
             while (inputCounter < autofocusFields.length && addedLength <= val.length) {
-                let currentField = autofocusFields[inputCounter]
+                let currentField = autofocusFields[inputCounter];
                 let maxLength = currentField.maxLength;
                 let value = String(val).slice(
                     addedLength, addedLength + maxLength
                 );
-                if (currentField.getAttribute("data-autofocus-uppercase") === "true") {
+                if (currentField.getAttribute('data-autofocus-uppercase') === 'true') {
                     currentField.value = value.toUpperCase();
                 } else {
                     currentField.value = value;
@@ -37,7 +37,7 @@ autofocusFields.forEach((element, i) => {
                 addedLength += maxLength;
                 inputCounter++;
             }
-        } else if (element.getAttribute("data-autofocus-uppercase") === "true") {
+        } else if (element.getAttribute('data-autofocus-uppercase') === 'true') {
             element.value = element.value.toUpperCase();
         }
         if (element.value.length >= element.maxLength && (i + 1) < autofocusCount)

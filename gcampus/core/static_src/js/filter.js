@@ -2,11 +2,11 @@ import Offcanvas from 'bootstrap/js/src/offcanvas';
 
 
 function initRangeSlider(week_list_js) {
-    let parent = document.querySelector(".range-slider");
+    let parent = document.querySelector('.range-slider');
     if (!parent) return;
 
-    let rangeS = parent.querySelectorAll("input[type=range]");
-    let numberS = parent.querySelectorAll("input[type=date]");
+    let rangeS = parent.querySelectorAll('input[type=range]');
+    let numberS = parent.querySelectorAll('input[type=date]');
 
     // Set start and endpoint to first and last entry of week_list_js
     let left_slider_index = 0;
@@ -34,8 +34,8 @@ function initRangeSlider(week_list_js) {
     let end_date = new Date(week_list_js[right_slider_index]);
 
     // Set date strings
-    document.getElementById("from_span").innerHTML = start_date.toLocaleDateString();
-    document.getElementById("to_span").innerHTML = end_date.toLocaleDateString();
+    document.getElementById('from_span').innerHTML = start_date.toLocaleDateString();
+    document.getElementById('to_span').innerHTML = end_date.toLocaleDateString();
 
 
     rangeS.forEach(function (el) {
@@ -53,9 +53,9 @@ function initRangeSlider(week_list_js) {
             numberS[0].valueAsDate = start_date;
             numberS[1].valueAsDate = end_date;
 
-            document.getElementById("from_span").innerHTML = start_date.toLocaleDateString();
-            document.getElementById("to_span").innerHTML = end_date.toLocaleDateString();
-        }
+            document.getElementById('from_span').innerHTML = start_date.toLocaleDateString();
+            document.getElementById('to_span').innerHTML = end_date.toLocaleDateString();
+        };
     });
 
     numberS.forEach(function (el) {
@@ -72,7 +72,7 @@ function initRangeSlider(week_list_js) {
             rangeS[0].value = number1;
             rangeS[1].value = number2;
 
-        }
+        };
     });
 }
 

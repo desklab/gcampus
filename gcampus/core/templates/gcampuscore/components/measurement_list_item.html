@@ -10,7 +10,7 @@
         <span class="ms-1 align-middle">{{ measurement.water_name }}</span>
 
         <a class="ms-4 text-reset text-decoration-none hover-dark"
-           href="{% url "gcampuscore:mapview" %}{% map_options_url lat=measurement.location.x|unlocalize long=measurement.location.y|unlocalize zoom=14 %}">
+           href="{% url "gcampuscore:mapview" %}{% map_options_url lat=measurement.location.y|unlocalize lng=measurement.location.x|unlocalize zoom=14 %}">
             <span>{% include "gcampuscore/icons/geo.html" %}</span>
             <span class="ms-1 align-middle">{{ measurement.location_name }}</span>
         </a>
