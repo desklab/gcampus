@@ -13,6 +13,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from django.contrib.auth.admin import UserAdmin
 from django.contrib.gis import admin
 from django.db.models import QuerySet
 from django.urls import reverse
@@ -23,6 +24,7 @@ from gcampus.admin.options import LinkedInlineMixin
 from gcampus.auth.models import (
     AccessKey,
     CourseToken,
+    User,
 )
 from gcampus.core.admin import MeasurementInline
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
@@ -61,3 +63,4 @@ class CourseTokenAdmin(admin.ModelAdmin):
 
 admin.site.register(AccessKey, AccessKeyAdmin)
 admin.site.register(CourseToken, CourseTokenAdmin)
+admin.site.register(User, UserAdmin)
