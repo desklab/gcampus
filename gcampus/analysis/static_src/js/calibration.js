@@ -38,22 +38,22 @@ Chart.register(
 
 
 function createChart(name, el, formula, title, x_label, y_label) {
-    let x_data = []
-    let y_data = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5]
+    let x_data = [];
+    let y_data = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5];
     for (let i = 0; i < y_data.length; i++) {
-        let od = y_data[i];
+        let od = y_data[i];  // noqa: od is used in eval.
         let x = eval(formula).toFixed(2);
         x_data.push(x);
     }
     const max_y = 1.6;
     const max_x = x_data.max;
-    return new Chart(el.getContext("2d"), {
+    return new Chart(el.getContext('2d'), {
         type: 'line',
         data: {
             labels: x_data,
             datasets: [{
                 data: y_data,
-                borderColor: "#3e95cd",
+                borderColor: '#3e95cd',
                 fill: false
             },
             ]
@@ -113,10 +113,10 @@ function createChart(name, el, formula, title, x_label, y_label) {
 
 
 function updateAnnotation(x, y, chart) {
-    // Needs calculation since the chart.js x values do not correspond to
-    // the xdata but has to be scaled relative to the axis labels
-    let len = chart.data.labels.length -1
-    let x_max = parseFloat(chart.data.labels[len])
+    // Needs calculation since the chart.js x values do not correspond
+    // to the xdata but has to be scaled relative to the axis labels
+    let len = chart.data.labels.length -1;
+    let x_max = parseFloat(chart.data.labels[len]);
     chart.options.plugins.annotation.annotations.point1.xValue = len*x/x_max;
     chart.options.plugins.annotation.annotations.point1.yValue = y;
     chart.options.plugins.annotation.annotations.point1.display = true;

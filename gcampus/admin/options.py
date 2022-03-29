@@ -14,16 +14,18 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from django.contrib import admin
+from django.db.models.base import ModelBase
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy
 
 
 class LinkedInlineMixin:
+    model: ModelBase
     readonly_fields = ("admin_link",)
 
     @admin.display(description=gettext_lazy("Admin link"))
     def admin_link(self, instance):
-        info = self.model._meta.app_label, self.model._meta.model_name
+        info = self.model._meta.app_label, self.model._meta.model_name  # noqa
         url = reverse("admin:%s_%s_change" % info, kwargs=dict(object_id=instance.pk))
         return format_html('<a href="{url}">{title!s}</a>', url=url, title=instance)

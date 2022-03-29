@@ -23,7 +23,7 @@ __all__ = [
 
 from typing import Optional, Type, Union
 
-from django.db.models import Model
+from django.db.models import Model, QuerySet
 from django.http import Http404
 from django.utils.text import get_valid_filename
 from django.utils.translation import gettext
@@ -75,6 +75,7 @@ class SingleObjectDocumentView(SingleObjectMixin, DocumentView):
 
 class ListDocumentView(MultipleObjectMixin, DocumentView):
     model: Type[Model] = None
+    object_list: QuerySet
 
     def get(self, request, *args, **kwargs):
         self.object_list = self.get_queryset()

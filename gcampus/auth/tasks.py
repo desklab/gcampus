@@ -16,10 +16,8 @@
 import typing as t
 
 from celery import shared_task
-from django.core.mail import EmailMessage
 from django.db.models.fields.files import FieldFile
 from django.utils import translation
-from django.utils.translation import gettext
 
 from gcampus.auth.models import CourseToken
 from gcampus.documents.tasks import render_cached_document_view

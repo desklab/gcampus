@@ -12,13 +12,11 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from typing import List, Generator
 
 from django.contrib.gis import admin
 from django.db import transaction
 from django.db.models import QuerySet
-from django.utils.html import format_html_join, escape, format_html
-from django.utils.safestring import mark_safe
+from django.utils.html import escape, format_html
 from django.utils.translation import gettext_lazy as _
 from leaflet.admin import LeafletGeoAdmin
 

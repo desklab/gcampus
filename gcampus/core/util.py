@@ -157,11 +157,13 @@ def get_measurements_per_week(
 ) -> List[int]:
     """Get Measurements per weeks
 
-    Returns a list of percentages (ints) representing how many measurements were conducted in this week
+    Returns a list of percentages (ints) representing how many
+    measurements were conducted in this week.
 
     :param week_list: List of weeks to create numbers of measurements in
     :param measurement_list: List of measurements
-    :returns: List of percentages representing how many measurements were conducted in this week
+    :returns: List of percentages representing how many measurements
+        were conducted in this week
     """
     if not measurement_list:
         return []
@@ -206,7 +208,8 @@ def get_all_filters(old_filters: Set[str], new_filters: List[str]) -> List[str]:
     all_filters = set(old_filters)
     for filter_item in new_filters:
         all_filters.add(filter_item)
-    # For some reason every time the filter button is pressed the location filter is set. Since the location filter
+    # For some reason every time the filter button is pressed the
+    # location filter is set. Since the location filter
     # needs some further improvement I'll fix it like this
     # TODO fix location filter and remove this
     if "location" in all_filters:

@@ -14,15 +14,12 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from abc import ABC
-from datetime import datetime
 from typing import Optional
 from unittest.mock import patch
 
-from django.contrib.gis.geos import Point
 from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import transaction
 from django.forms import Field
-from django.forms.utils import ErrorList
 from django.urls import reverse
 from django.utils import translation
 
@@ -36,8 +33,6 @@ from gcampus.auth.forms.token import TOKEN_FIELD_NAME, RegisterForm
 from gcampus.auth.models import CourseToken, AccessKey
 from gcampus.auth.models.token import COURSE_TOKEN_LENGTH, ACCESS_KEY_LENGTH, TokenType
 from gcampus.auth.session import set_token_session
-from gcampus.core.models import Water
-from gcampus.core.models.water import WaterType
 from gcampus.core.tests.mixins import FormTestMixin, TokenTestMixin
 from gcampus.documents.tasks import render_cached_document_view
 from gcampus.tasks.tests.utils import BaseMockTaskTest

@@ -44,10 +44,6 @@ class GeoLookupValue:
         point has no specified coordinate system (i.e. srid == None), an
         srid of 4326 (EPSG:4326 WGS 84) is assumed as a sensible default.
 
-        :param center: The center point
-        :param size: The square edge size. If size is a number (e.g. ``int``
-            or ``float``), the unit will be meters. The parameter can also
-            be of type Distance to easily convert between different units.
         :return: Tuple of two points describing the square bounding box
         :rtype: Tuple[Point, Point]
         """

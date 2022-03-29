@@ -107,7 +107,7 @@ class CourseTokenLoginFormView(LoginFormView):
 
 
 @receiver(user_logged_out)
-def logout_signal(sender, *, request: Optional[HttpRequest] = None, **kwargs):
+def logout_signal(sender, *, request: Optional[HttpRequest] = None, **kwargs):  # noqa
     messages.success(request, gettext("Successfully logged out"))
 
 

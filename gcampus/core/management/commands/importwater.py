@@ -14,8 +14,6 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from typing import List
 
-from django.conf import settings
-from django.contrib.gis.geos import GeometryCollection, LineString
 from django.db import transaction
 from django_rich.management import RichCommand
 from rich.progress import track

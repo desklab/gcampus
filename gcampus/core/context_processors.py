@@ -2,7 +2,7 @@ from django.conf import settings
 from django.http import HttpRequest
 
 
-def get_gcampus_meta(request: HttpRequest) -> dict:
+def get_gcampus_meta(request: HttpRequest) -> dict:  # noqa
     return {
         "GCAMPUS_VERSION": settings.GCAMPUS_VERSION,
         "GCAMPUS_HOMEPAGE": settings.GCAMPUS_HOMEPAGE,

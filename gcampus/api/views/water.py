@@ -24,11 +24,10 @@ from typing import List, Optional, Tuple
 from django.db import transaction
 from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, generics, mixins
+from rest_framework import viewsets, generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.viewsets import GenericViewSet
 
 from gcampus.api import overpass
 from gcampus.api.filtersets import WaterLookupFilterSet

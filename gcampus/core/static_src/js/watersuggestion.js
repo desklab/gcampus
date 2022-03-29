@@ -24,7 +24,6 @@ const parentElement = document.getElementById('waterSuggestions');
 const loadingElement = document.getElementById('waterLoading');
 const osmElement = document.getElementById('waterOsm');
 const customWaterElement = document.getElementById('waterCustom');
-const customWaterInput = document.getElementById('customWaterInput');
 const measurementForm = document.getElementById('measurementForm');
 const EMPTY_GEO_JSON = {
     'type': 'FeatureCollection',
@@ -196,7 +195,7 @@ class WaterList {
         let customWaterOverlay = (
             customWaterElement.querySelector('.list-group-item-overlay')
         );
-        customWaterOverlay.addEventListener('click', (e) => {
+        customWaterOverlay.addEventListener('click', () => {
             customWaterOverlay.classList.add('d-none');
         });
         document.getElementById('customWaterForm').addEventListener(
@@ -259,7 +258,7 @@ class WaterList {
                 hasDatabase: true,
                 hasOsm: true,
                 hasCustom: true
-            })
+            });
         } else {
             this.setState({
                 loading: false,
@@ -375,7 +374,8 @@ class WaterList {
         let csrf = String(measurementFormData.get('csrfmiddlewaretoken'));
         this.setState({loading: true});
         fetch(form.action, {
-            // .method does not allow patch. We use .getAttribute instead.
+            // '.method' does not allow the method PATCH.
+            // We use '.getAttribute' instead.
             method: form.getAttribute('method'),
             mode: 'cors',
             headers: {

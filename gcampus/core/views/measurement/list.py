@@ -17,7 +17,6 @@ __all__ = [
     "MeasurementListView",
 ]
 
-from datetime import datetime
 from typing import Optional
 
 from django.utils import timezone
@@ -26,7 +25,7 @@ from django.views.generic import ListView
 
 from gcampus.core.filters import MeasurementFilterSet
 from gcampus.core.models import Measurement
-from gcampus.core.util import get_all_filters, get_filter_status
+from gcampus.core.util import get_filter_status
 from gcampus.core.views.base import TitleMixin
 
 

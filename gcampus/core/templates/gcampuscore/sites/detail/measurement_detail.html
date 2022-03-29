@@ -68,8 +68,8 @@
     <script>
         function loadCluster(event) {
             let map = event.target;
-            var lng = {{ measurement.location.x|unlocalize }};
-            var lat = {{ measurement.location.y|unlocalize }};
+            let lng = {{ measurement.location.x|unlocalize }};
+            let lat = {{ measurement.location.y|unlocalize }};
             const marker = new gcampusmap['mapbox-gl'].mapboxgl.Marker()
                 .setLngLat([lng, lat])
                 .addTo(map);
@@ -139,10 +139,10 @@
 
             // inspect a cluster on click
             map.on('click', 'clusters', function (e) {
-                var features = map.queryRenderedFeatures(e.point, {
+                let features = map.queryRenderedFeatures(e.point, {
                     layers: ['clusters']
                 });
-                var clusterId = features[0].properties.cluster_id;
+                let clusterId = features[0].properties.cluster_id;
                 map.getSource('measurements').getClusterExpansionZoom(
                     clusterId,
                     function (err, zoom) {
@@ -161,7 +161,7 @@
             // the location of the feature, with
             // description HTML from its properties.
             map.on('click', 'unclustered-point', function (e) {
-                var coordinates = e.features[0].geometry.coordinates.slice();
+                let coordinates = e.features[0].geometry.coordinates.slice();
                 // Ensure that if the map is zoomed out such that
                 // multiple copies of the feature are visible, the
                 // popup appears over the copy being pointed to.

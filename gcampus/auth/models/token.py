@@ -32,7 +32,7 @@ from gcampus.documents.tasks import render_cached_document_view
 
 ALLOWED_TOKEN_CHARS: list = settings.ALLOWED_TOKEN_CHARS
 ALLOWED_TOKEN_CHARS_RE = re.compile(
-    r"^[{chars:s}]*$".format(chars="".join(ALLOWED_TOKEN_CHARS))
+    r"^[{chars!s}]*$".format(chars="".join(ALLOWED_TOKEN_CHARS))
 )
 
 ACCESS_KEY_TYPE = "access"
@@ -161,7 +161,7 @@ class AccessKey(DateModelMixin):
 @receiver(post_save, sender=AccessKey)
 @receiver(post_delete, sender=AccessKey)
 def update_access_key_documents(
-    sender: Type[AccessKey], instance: AccessKey, *args, **kwargs
+    sender: Type[AccessKey], instance: AccessKey, *args, **kwargs  # noqa
 ):
     """Post-save and -delete signal receiver for access keys
 
@@ -197,11 +197,11 @@ def update_access_key_documents(
 @receiver(post_save, sender=CourseToken)
 @receiver(course_updated)
 def update_course(
-    sender,
+    sender,  # noqa
     instance: CourseToken,
     created: bool = False,
     update_fields: Optional[Union[tuple, list]] = None,
-    **kwargs,
+    **kwargs,  # noqa
 ):
     """Post-save signal receiver for course token
 

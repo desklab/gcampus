@@ -12,6 +12,7 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from typing import List
 
 from django.contrib.gis.geos import Point
 from django.db import transaction
@@ -41,6 +42,8 @@ class FormTestMixin:
 
 class TokenTestMixin:
     ACCESS_KEY_COUNT: int = 5
+    parent_token: CourseToken
+    tokens: List[AccessKey]
 
     def setUp(self) -> None:
         super().setUp()
@@ -59,6 +62,8 @@ class TokenTestMixin:
 
 
 class WaterTestMixin:
+    water: Water
+
     def setUp(self):
         super().setUp()
         self.water = Water(

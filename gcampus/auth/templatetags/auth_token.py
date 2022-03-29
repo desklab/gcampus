@@ -18,7 +18,7 @@ from typing import Optional, List
 from django import template
 from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest
-from django.template import Context, Node
+from django.template import Context, Node  # noqa
 from django.template.base import FilterExpression, token_kwargs
 from django.utils.html import format_html
 from django_filters.constants import EMPTY_VALUES

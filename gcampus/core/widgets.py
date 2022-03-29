@@ -16,19 +16,10 @@
 import datetime
 from typing import Optional
 
-from django.forms import (
-    MultiWidget,
-    NumberInput,
-    DateTimeInput,
-    Media,
-    TextInput,
-    RadioSelect,
-    CheckboxInput,
-)
+from django.forms import MultiWidget, NumberInput, CheckboxInput
 from django.forms.utils import to_current_timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import pgettext
-from django_filters.fields import RangeField
 from django_filters.widgets import RangeWidget
 from leaflet.forms.widgets import LeafletWidget
 

@@ -38,11 +38,11 @@
     <p class="text-muted">
         <canvas id="myChart_{{ parameter.name }}" width="400" height="400"></canvas>
         <script>
-            var chart_{{ parameter.pk }} = (function () {
+            let chart_{{ parameter.pk }} = (function () {
                 let chart_element_{{ parameter.pk }} = document.getElementById("myChart_{{ parameter.name }}");
                 let chart_title = "{% translate "Calibration fit for" %} " + "{{ parameter.name }}";
-                let x_label = '';
-                if ('{{ parameter.unit }}' != '') {
+                let x_label;
+                if ('{{ parameter.unit }}' !== '') {
                     x_label = "{{ parameter.name }} " +  "[{{ parameter.unit }}]";
                 } else {
                     x_label = "{{ parameter.name }}"

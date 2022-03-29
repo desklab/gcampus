@@ -9,7 +9,7 @@ from gcampus.core.models.measurement import Measurement, ParameterType
 
 
 def get_headers():
-    Initial_header = [
+    initial_header = [
         _("ID"),
         _("Name"),
         _("Location Name"),
@@ -20,8 +20,8 @@ def get_headers():
         ParameterType.objects.values_list("name", "pk").order_by("pk").all()
     )
     for parameter in all_parameters:
-        Initial_header.append(parameter[0])
-    return Initial_header
+        initial_header.append(parameter[0])
+    return initial_header
 
 
 def stream(rows, writer, buffer_):

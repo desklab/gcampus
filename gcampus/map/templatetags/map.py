@@ -22,7 +22,7 @@ register = template.Library()
 
 
 @register.inclusion_tag("gcampusmap/map.html")
-def map(
+def map(  # noqa
     name: str = "map",
     container: str = "map",
     center: Optional[Tuple[float, float]] = None,

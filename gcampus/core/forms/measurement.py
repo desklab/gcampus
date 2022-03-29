@@ -170,8 +170,8 @@ class DynamicInlineFormset(BaseInlineFormSet):
                 initial={
                     formsets.TOTAL_FORM_COUNT: self.total_form_count(),
                     formsets.INITIAL_FORM_COUNT: self.initial_form_count(),
-                    formsets.MIN_NUM_FORM_COUNT: self.min_num,
-                    formsets.MAX_NUM_FORM_COUNT: self.max_num,
+                    formsets.MIN_NUM_FORM_COUNT: getattr(self, "min_num", 0),
+                    formsets.MAX_NUM_FORM_COUNT: getattr(self, "max_num", 0),
                 },
             )
         return form
