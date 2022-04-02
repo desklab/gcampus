@@ -3,165 +3,24 @@
 {% block extra_head %}
     {{ block.super }}
     {% load_mapbox_css %}
-    {% load_mapbox_js %}
 {% endblock %}
 {% block main_class %}min-vh-100-wo-footer px-0 main-pt-0{% endblock %}
 {% block navbar_title %}
     <span class="">GewässerCampus</span>
 {% endblock %}
 {% block content %}
+    {% map onload="loadCluster" class="h-100 w-100" %}
+{% endblock %}
+{% block extra_body %}
+    <script type="text/html" id="measurementPopupTemplate">
+        {% include "gcampuscore/components/map_popup.html" %}
+    </script>
     <script>
         function loadCluster(event) {
-            let map = event.target;
-
-            map.addSource('measurements', {
-                type: 'geojson',
-                data: '/api/v1/measurements/',
-                cluster: true,
-                clusterMaxZoom: 14, // Max zoom to cluster points on
-                clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
-            });
-            map.addLayer({
-                id: 'clusters',
-                type: 'circle',
-                source: 'measurements',
-                filter: ['has', 'point_count'],
-                paint: {
-                    // Use step expressions (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-step)
-                    // with three steps to implement three types of circles:
-                    //   * Blue, 20px circles when point count is less than 100
-                    //   * Yellow, 30px circles when point count is between 100 and 750
-                    //   * Pink, 40px circles when point count is greater than or equal to 750
-                    'circle-color': [
-                        'step',
-                        ['get', 'point_count'],
-                        '#51bbd6',
-                        100,
-                        '#f1f075',
-                        750,
-                        '#f28cb1'
-                    ],
-                    'circle-radius': [
-                        'step',
-                        ['get', 'point_count'],
-                        20,
-                        100,
-                        30,
-                        750,
-                        40
-                    ]
-                }
-            });
-
-            map.addLayer({
-                id: 'cluster-count',
-                type: 'symbol',
-                source: 'measurements',
-                filter: ['has', 'point_count'],
-                layout: {
-                    'text-field': '{point_count_abbreviated}',
-                    'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-                    'text-size': 12
-                }
-            });
-
-            map.addLayer({
-                id: 'unclustered-point',
-                type: 'circle',
-                source: 'measurements',
-                filter: ['!', ['has', 'point_count']],
-                paint: {
-                    'circle-color': '#11b4da',
-                    'circle-radius': 8,
-                    'circle-stroke-width': 3,
-                    'circle-stroke-color': '#fff'
-                }
-            });
-
-            // inspect a cluster on click
-            map.on('click', 'clusters', function (e) {
-                let features = map.queryRenderedFeatures(e.point, {
-                    layers: ['clusters']
-                });
-                let clusterId = features[0].properties.cluster_id;
-                map.getSource('measurements').getClusterExpansionZoom(
-                    clusterId,
-                    function (err, zoom) {
-                        if (err) return;
-
-                        map.easeTo({
-                            center: features[0].geometry.coordinates,
-                            zoom: zoom
-                        });
-                    }
-                );
-            });
-
-            // When a click event occurs on a feature in
-            // the unclustered-point layer, open a popup at
-            // the location of the feature, with
-            // description HTML from its properties.
-            map.on('click', 'unclustered-point', function (e) {
-                let coordinates = e.features[0].geometry.coordinates.slice();
-                // Ensure that if the map is zoomed out such that
-                // multiple copies of the feature are visible, the
-                // popup appears over the copy being pointed to.
-                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-                }
-                let measurementName = String(e.features[0].properties.name);
-                let measurementWaterName = String(e.features[0].properties.water_name);
-                let measurementURL = String(e.features[0].properties.url);
-
-                {% comment %}
-                fetch('/api/v1'+ measurementURL).then(response =>{
-                    return response.json();
-                }).then(data =>{
-                    console.log(data);
-                })
-                {% endcomment %}
-
-                let timeOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                let measurementTime = new Date(e.features[0].properties.time);
-                let measurementParameterCount = String(JSON.parse(e.features[0].properties.parameters).length);
-
-                let html = "<a class='text-bold text-dark text-decoration-none' href=" + measurementURL + ">" +
-                                "<div class='px-2 container'>" +
-                                    "<div class='pt-2'>" +
-                                        "<span class='fs-6 text-bolder'>" +
-                                            measurementWaterName +
-                                        "</span>" +
-                                        "<br>" +
-                                        "<span class='badge bg-light text-dark'>" +
-                                            measurementParameterCount + " Parameter" +
-                                        "</span>" +
-                                    "</div>" +
-                                    "<hr class='py-0 my-2'>" +
-                                    "<div class='text-secondary'>" +
-                                        "<div class=''>" +
-                                            "<svg width='1em' height='1em' fill='currentColor' class='bi bi-people' viewBox='0 0 16 16'><path d='M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z'/></svg>" +
-                                            "<span class='ms-2 align-middle'>" + measurementName + "</span>" +
-                                        "</div>" +
-                                        "<div class=''>" +
-                                            "<svg width='1em' height='1em' fill='currentColor' class='bi bi-calendar4-event' viewBox='0 0 16 16'><path d='M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z'/><path d='M11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z'/></svg>"+
-                                            "<span class='ms-2 align-middle'>" + measurementTime.toLocaleDateString('de-DE', timeOptions) + "</span>" +
-                                        "</div>" +
-                                    "</div>" +
-                                "</div>" +
-                            "</a>";
-                
-                new mapboxgl.Popup({focusAfterOpen: false}).setLngLat(coordinates).setHTML(html).addTo(map);
-                let sel = document.getSelection();
-                sel.removeAllRanges();
-            });
-
-            map.on('mouseenter', 'clusters', function () {
-                map.getCanvas().style.cursor = 'pointer';
-            });
-            map.on('mouseleave', 'clusters', function () {
-                map.getCanvas().style.cursor = '';
-            });
+            gcampusmap['mapbox-gl'].setupCluster(
+                '{% url "gcampusapi:measurement-list" %}', event.target
+            );
         }
     </script>
-    {% map onload="loadCluster" class="h-100 w-100" %}
+    {% load_mapbox_js %}
 {% endblock %}

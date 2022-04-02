@@ -20,6 +20,8 @@
   width: .7rem;
   height: .7rem;
   border-radius: 50%;
+  background-color: $unknown-water;
+  border: $border-width solid darken($unknown-water, 5);
 
   &.standing {
     background-color: $standing-water;
@@ -32,3 +34,8 @@
   }
 }
 
+:root {
+  --gcampus-standing-water: #{$standing-water};
+  --gcampus-running-water: #{$running-water};
+  --gcampus-unknown-water: #{$unknown-water};
+}
