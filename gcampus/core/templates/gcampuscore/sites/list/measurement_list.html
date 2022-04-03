@@ -97,7 +97,7 @@
     {% endif %}
     <div class="container-fluid my-4 px-0">
         {% if filter.qs %}
-            <div class="list-group">
+            <div class="list-group list-group-spaced">
                 {% for measurement in object_list %}
                     {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement edit=measurement|can_edit:request today=today %}
                 {% endfor %}

@@ -82,15 +82,15 @@
                             {% if form.water.errors %}
                                 <small class="text-danger">{{ form.water.errors }}</small>
                             {% endif %}
-                            <div class="list-group list-group-water mt-2" id="waterSuggestions">
-                                <div class="list-group-item list-group-item-water d-none"
+                            <div class="list-group list-group-spaced mt-2" id="waterSuggestions">
+                                <div class="list-group-item list-group-item-spaced d-none"
                                      id="waterLoading">
                                     <div class="spinner-border spinner-border-sm" role="status"></div>
                                     <span class="ms-2">
                                         {% translate "Loading ..." %}
                                     </span>
                                 </div>
-                                <div class="list-group-item list-group-item-hover list-group-item-water cursor-pointer text-center d-none"
+                                <div class="list-group-item list-group-item-hover list-group-item-spaced cursor-pointer text-center d-none"
                                      id="waterOsm">
                                     <div class="shadow-box"></div>
                                     <div class="shadow-box shadow-box-2"></div>

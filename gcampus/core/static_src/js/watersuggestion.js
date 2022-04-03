@@ -478,7 +478,7 @@ class WaterList {
     render() {
         let {features, loading, hasDatabase, hasOsm, hasCustom} = this.state;
         parentElement.querySelectorAll(
-            'input.list-group-item-input,label.list-group-item-water'
+            'input.list-group-item-input,label.list-group-item-spaced'
         ).forEach(
             (el) => parentElement.removeChild(el)
         );

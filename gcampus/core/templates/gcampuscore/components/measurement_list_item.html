@@ -1,9 +1,9 @@
 {% load i18n l10n auth_token tz map %}
 {% url "gcampuscore:measurement-detail" pk=measurement.pk as detail_url %}
 {% url "gcampuscore:edit-measurement" pk=measurement.pk as edit_url %}
-<div class="list-group-item list-group-item-hover cursor-pointer border rounded-3 p-3 mt-3" onclick="window.location='{{ detail_url }}';">
     <h5 class="">
         {% translate "Measurement" %} #{{ measurement.pk|stringformat:"05d" }}
+<div class="list-group-item list-group-item-spaced">
     </h5>
     <small class="text-secondary">
         <span class="align-baseline badge rounded-pill bg-primary p-1"><span class="visually-hidden">.</span></span>
