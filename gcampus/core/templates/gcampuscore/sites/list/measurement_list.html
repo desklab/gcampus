@@ -6,47 +6,47 @@
     {% leaflet_js plugins="forms" %}
     {% leaflet_css plugins="forms" %}
 {% endblock %}
-{% block content %}
-
+{% block modals %}
     <div class="modal fade" id="downloadModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{% translate "Download measurement data" %}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            {% with "https://openstreetmap.org/copyright" as osm_url %}
-            {% with "https://www.mapbox.com" as mapbox_url %}
-            {% with "https://gewaessercampus.de/license" as license_url %}
-            {% blocktranslate trimmed %}
-                GewässerCampus includes maps and information on water bodies and their names from
-                <a class="text-reset" href="{{ mapbox_url }}">Mapbox</a>
-                and
-                <a class="text-reset" href="{{ osm_url }}">OpenStreetMap</a>
-                as well as measurement data of GewässerCampus contributors.
-                Make sure you respect the licenses of these datasets. More details are provided
-                <a class="text-reset" href="{{ license_url }}">here</a>.
-            {% endblocktranslate %}
-            {% endwith %}
-            {% endwith %}
-            {% endwith %}
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                  {% translate "Close" %}
-              </button>
-              <a href="{% url "gcampusdocuments:measurement-list-csv" %}{% request_params %}" class="btn btn-secondary">
-                {% translate "Download data" %}
-              </a>
-          </div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% translate "Download measurement data" %}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% with "https://openstreetmap.org/copyright" as osm_url %}
+                        {% with "https://www.mapbox.com" as mapbox_url %}
+                            {% with "https://gewaessercampus.de/license" as license_url %}
+                                {% blocktranslate trimmed %}
+                                    GewässerCampus includes maps and information on water bodies and their names from
+                                    <a class="text-reset" href="{{ mapbox_url }}">Mapbox</a>
+                                    and
+                                    <a class="text-reset" href="{{ osm_url }}">OpenStreetMap</a>
+                                    as well as measurement data of GewässerCampus contributors.
+                                    Make sure you respect the licenses of these datasets. More details are provided
+                                    <a class="text-reset" href="{{ license_url }}">here</a>.
+                                {% endblocktranslate %}
+                            {% endwith %}
+                        {% endwith %}
+                    {% endwith %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        {% translate "Close" %}
+                    </button>
+                    <a href="{% url "gcampusdocuments:measurement-list-csv" %}{% request_params %}" class="btn btn-secondary">
+                        {% translate "Download data" %}
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-
+{% endblock %}
+{% block content %}
     <div class="container-fluid">
         <form method="GET">
-            <div class="row g-3 align-items-center">
+            <div class="row align-items-center">
                 <div class="col">
                     {% with filter.form.name as field %}
                         {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
@@ -73,29 +73,28 @@
                         {% translate "Search" %}
                     </button>
                 </div>
+            </div>
             {% include "gcampuscore/components/filter.html" %}
         </form>
-    </div>
-    {% if filter.qs %}
-        <div class="container-fluid mt-4 px-2 mx-0">
-            <div class="bg-light rounded-3 p-3 row">
-                <div class="col-auto d-flex align-items-center text-dark">
-                    {% blocktranslate trimmed %}
-                        Found {{ count }} measurements matching your search criteria.
-                    {% endblocktranslate %}
-                </div>
-                <div class="col-auto ms-auto px-0">
-                    <button type="button" class="btn btn-sm btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#downloadModal">
-                      Download data
-                    </button>
-                    <a href="{% url "gcampusdocuments:measurement-list-pdf" %}{% request_params %}" class="btn btn-sm btn-secondary">
-                        {% translate "Print summary" %}
-                    </a>
+        {% if filter.qs %}
+            <div class="bg-light rounded-3 p-3 mt-3">
+                <div class="row">
+                    <div class="col-auto d-flex align-items-center text-dark">
+                        {% blocktranslate trimmed %}
+                            Found {{ count }} measurements matching your search criteria.
+                        {% endblocktranslate %}
+                    </div>
+                    <div class="col-auto ms-auto px-0">
+                        <button type="button" class="btn btn-sm btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#downloadModal">
+                            {% translate "Download data" %}
+                        </button>
+                        <a href="{% url "gcampusdocuments:measurement-list-pdf" %}{% request_params %}" class="btn btn-sm btn-secondary">
+                            {% translate "Print summary" %}
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endif %}
-    <div class="container-fluid my-4 px-0">
+        {% endif %}
         {% if filter.qs %}
             <div class="list-group list-group-spaced">
                 {% for measurement in object_list %}

@@ -1,13 +1,17 @@
 {% load i18n l10n auth_token tz map %}
 {% url "gcampuscore:measurement-detail" pk=measurement.pk as detail_url %}
 {% url "gcampuscore:edit-measurement" pk=measurement.pk as edit_url %}
-    <h5 class="">
-        {% translate "Measurement" %} #{{ measurement.pk|stringformat:"05d" }}
 <div class="list-group-item list-group-item-spaced">
+    <h5>
+        <a href="{{ detail_url }}" class="text-dark hover-dark">
+            {% translate "Measurement" %} #{{ measurement.pk|stringformat:"05d" }}
+        </a>
     </h5>
     <small class="text-secondary">
-        <span class="align-baseline badge rounded-pill bg-primary p-1"><span class="visually-hidden">.</span></span>
-        <span class="ms-1 align-middle">{{ measurement.water_name }}</span>
+        <span class="align-middle">
+            <i class="me-1 cursor-help water-icon {{ measurement.water.flow_type }}" data-bs-toggle="tooltip" title="{{ measurement.water.get_flow_type_display|capfirst }}"></i>
+            {{ measurement.water_name }}
+        </span>
 
         <a class="ms-4 text-reset text-decoration-none hover-dark"
            href="{% url "gcampuscore:mapview" %}{% map_options_url lat=measurement.location.y|unlocalize lng=measurement.location.x|unlocalize zoom=14 %}">
@@ -23,7 +27,7 @@
         <span data-bs-toggle="tooltip" data-bs-placement="top"
             title="{{ measurement.time|timesince:today }}">
             <span class="ms-4">{% include "gcampuscore/icons/calendar4-event.html" %}</span>
-            <span class="ms-1 align-middle ">{{ measurement.time|localtime|localtime|localize }}</span>
+            <span class="ms-1 align-middle ">{{ measurement.time|localtime|localize }}</span>
         </span>
     </small>
 </div>

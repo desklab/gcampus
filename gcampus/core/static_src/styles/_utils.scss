@@ -9,6 +9,10 @@ input[type="number"].appearance-textfield {
 .cursor-pointer{
   cursor: pointer;
 }
+.cursor-help {
+  cursor: help;
+}
+
 .no-spinners::-webkit-inner-spin-button{
   -webkit-appearance: none !important;
 }
