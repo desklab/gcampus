@@ -32,6 +32,7 @@ from gcampus.core.models.measurement import Measurement, ParameterType
 
 class CSVListView(MultipleObjectMixin, View):
     model = Measurement
+    queryset = Measurement.objects.all()
     ordering: Tuple[str, ...] = ("pk",)
     parameter_types: Tuple[str, ...]
     values: QuerySet
@@ -101,7 +102,7 @@ class CSVListView(MultipleObjectMixin, View):
 
     def get_queryset(self):
         filter_set = MeasurementFilterSet(
-            self.request.GET, queryset=self.model.objects.all(), request=self.request
+            self.request.GET, queryset=self.queryset, request=self.request
         )
         queryset: QuerySet = filter_set.qs.values(
             "pk",

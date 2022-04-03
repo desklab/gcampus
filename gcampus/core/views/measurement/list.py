@@ -32,22 +32,20 @@ from gcampus.core.views.base import TitleMixin
 class MeasurementListView(TitleMixin, ListView):
     template_name = "gcampuscore/sites/list/measurement_list.html"
     model = Measurement
+    queryset = Measurement.objects.select_related("water").all()
     title = gettext_lazy("All measurements")
     context_object_name = "measurement_list"
-
+    filter: MeasurementFilterSet
     # paginate_by = 10
 
-    def __init__(self, *args, **kwargs):
-        self.filter: Optional[MeasurementFilterSet] = None
-        super(MeasurementListView, self).__init__(*args, **kwargs)
-
     def get(self, request, *args, **kwargs):
-        self.filter = MeasurementFilterSet(
-            self.request.GET, queryset=Measurement.objects.all(), request=self.request
-        )
         return super(MeasurementListView, self).get(request, *args, **kwargs)
 
     def get_queryset(self):
+        if not hasattr(self, "filter"):
+            self.filter = MeasurementFilterSet(
+                self.request.GET, queryset=self.queryset, request=self.request
+            )
         self.queryset = self.filter.qs
         return super(MeasurementListView, self).get_queryset()
 
