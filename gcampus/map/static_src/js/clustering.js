@@ -29,7 +29,10 @@ function createMeasurementPopup(coords, map, data, template) {
     // let parameterCount = parameters.length;
     let waterName = water.display_name;
     let flowType = water.flow_type;
-    let flowTypeDisplay = water.display_flow_type;
+    let flowTypeDisplay = (
+        water.display_flow_type.charAt(0).toUpperCase()
+        + water.display_flow_type.slice(1)
+    );
     item.querySelector('a').setAttribute('href', url);
     getContentElement(item, 'waterName').innerText = waterName;
     getContentElement(item, 'flowType').innerText = flowTypeDisplay;
