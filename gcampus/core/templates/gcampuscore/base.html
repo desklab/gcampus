@@ -59,9 +59,9 @@
                             <button class="btn d-block d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-expanded="{{ sidebar_open|yesno:"true,false" }}" aria-controls="sidebar">
                                 Menu
                             </button>
-                            <span class="navbar-brand">
+                            <div class="navbar-brand">
                             {% block navbar_title %}{% firstof page_title "No Page Title Provided" %}{% endblock %}
-                        </span>
+                            </div>
                         </div>
                         <ul class="nav navbar-nav text-nowrap flex-nowrap">
                             {% translate "New Measurement" as new_title %}
@@ -79,7 +79,7 @@
                 {% block content %}
                 {% endblock %}
             </main>
-        {% include "gcampuscore/components/footer.html" %}
+            {% include "gcampuscore/components/footer.html" %}
         </div>
     </div>
 {% endblock body %}
