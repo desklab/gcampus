@@ -6,7 +6,25 @@
 {% endblock %}
 {% block main_class %}min-vh-100 main-pb-0 px-0 main-pt-0{% endblock %}
 {% block navbar_title %}
-    <span class="">GewässerCampus</span>
+    <div class="d-flex flex-row align-items-center">
+        {{ block.super }}
+        <div class="ms-4 d-flex flex-column">
+            <span class="fs-6">
+                <i class="water-icon standing"></i>
+                <small class="text-dark">
+                    {% translate "standing water" as standing_water %}
+                    {{ standing_water|capfirst }}
+                </small>
+            </span>
+            <span class="fs-6">
+                <i class="water-icon running"></i>
+                <small class="text-dark">
+                    {% translate "running water" as running_water %}
+                    {{ running_water|capfirst }}
+                </small>
+            </span>
+        </div>
+    </div>
 {% endblock %}
 {% block content %}
     {% map onload="loadCluster" class="h-100 w-100" %}
