@@ -34,18 +34,16 @@
                         <div class="list-group-item text-center">
                             <button type="button" id="id_{{ formset.prefix }}-ADD"
                                     class="btn btn-primary btn-sm w-50">
-                                {% icon "plus" height="16" width="16" style="vertical-align: text-bottom" %}
+                                {% include "gcampuscore/icons/plus-lg.html" %}
                                 {% translate "Add" %}
                             </button>
                         </div>
                     </ol>
                     <div class="mt-3 w-100 align-items-end d-flex">
                         <a href="." class="ms-auto btn btn-secondary btn-block">
-                            {% icon "x" height="16" width="16" style="vertical-align: text-bottom" %}
                             {% translate "Discard" %}
                         </a>
                         <button type="submit" class="ms-2 btn btn-primary btn-block">
-                            {% icon "check" height="16" width="16" style="vertical-align: text-bottom" %}
                             {% translate "Save" %}
                         </button>
                     </div>

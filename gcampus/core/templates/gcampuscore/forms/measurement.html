@@ -3,7 +3,6 @@
 {% block extra_head %}
     {{ block.super }}
     {% load_mapbox_css %}
-    {% load_mapbox_js %}
 {% endblock %}
 {% block main_class %}main-pb-0 main-pt-0{% endblock %}
 {% block navbar_title %}
@@ -141,6 +140,7 @@
     </div>
 {% endblock %}
 {% block extra_body %}
+    {% load_mapbox_js %}
     <script type="text/html" id="waterSuggestionTemplate">
         {% include "gcampuscore/components/water_suggestion.html" %}
     </script>
