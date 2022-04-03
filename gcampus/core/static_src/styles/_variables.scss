@@ -12,8 +12,8 @@ $gray-900: #1f2021;
 $black: #000000;
 
 // $primary: #679436;
-$running-water: $blue;
-$standing-water: $blue-800;
+$running-water: #0d6efd;
+$standing-water: shade-color($running-water, 60%);
 $unknown-water: #6D9DC5;
 
 $border-color: $gray-200;
