@@ -5,7 +5,7 @@
     {% load_mapbox_css %}
     {% load_mapbox_js %}
 {% endblock %}
-{% block main_class %}main-pt-0{% endblock %}
+{% block main_class %}main-pb-0 main-pt-0{% endblock %}
 {% block navbar_title %}
     <span>{% translate "1. Metadata" %}</span>
     {% if request.resolver_match.view_name == "gcampuscore:edit-measurement" %}
