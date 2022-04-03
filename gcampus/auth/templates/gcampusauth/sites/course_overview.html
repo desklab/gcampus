@@ -1,5 +1,5 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n auth_token icon %}
+{% load i18n auth_token %}
 {% block modals %}
     {{ block.super }}
     <div class="modal fade"
@@ -171,79 +171,63 @@
     </div>
 
     <div class="container-fluid my-5 pb-5">
-        <h3 class="pb-2 border-bottom">
+        <h3 class="pb-2">
             {% translate "Documents" %}
         </h3>
-        <div class="mt-4 bg-light border border-primary rounded-3 container-fluid">
-            <div class="row align-items-center mt-4">
-                <div class="col-10">
-                    <h5>{% translate "Save course overview" %}</h5>
-                    <div class="text-sm text-muted">
-                        {% blocktrans trimmed %}
-                            Download a PDF with a summary of your registration
-                            data, your course token, and the all access keys
-                            of your course.
-                        {% endblocktrans %}
+        <div class="container-fluid px-2">
+
+            <a href="{% url "gcampusdocuments:course" %}" role="link" class="text-reset text-decoration-none">
+                <div class="align-items-center my-4 row border rounded-3 p-3">
+                    <div class="rounded-3 text-secondary fs-1 text-center p-2 col-1">
+                        {% include "gcampuscore/icons/cloud-download.html" %}
+                    </div>
+                    <div class="col">
+                        <h5 class="mb-0">{% translate "Save course overview" %}</h5>
+                        <small class="text-secondary">
+                            {% blocktrans trimmed %}
+                                Download a PDF with a summary of your registration
+                                data, your course token, and the all access keys
+                                of your course.
+                            {% endblocktrans %}
+                        </small>
                     </div>
                 </div>
-                <div class="col-2">
-                    <a class="btn me-2 float-end"
-                       href="{% url "gcampusdocuments:course" %}"
-                       role="link">
-                        {% icon "download" class="d-inline-block align-text-top" height="16" width="16" %} &nbsp;
-                        {% translate "Download PDF" %}
-                    </a>
-                </div>
-            </div>
+            </a>
 
-            <hr class="my-4">
-
-            <div class="row align-items-center">
-                <div class="col-10">
-                    <h5>{% translate "Save access keys" %}</h5>
-                    <div class="text-sm text-muted">
-                        {% blocktrans trimmed %}
-                            Download a PDF with all access keys
-                            (one key per page/student)
-                            of your course with instructions for your students.
-                        {% endblocktrans %}
+            <a href="{% url "gcampusdocuments:accesskeys" %}" role="link" class="text-reset text-decoration-none">
+                <div class="align-items-center my-4 row border rounded-3 p-3">
+                    <div class="rounded-3 text-secondary fs-1 text-center p-2 col-1">
+                        {% include "gcampuscore/icons/cloud-download.html" %}
+                    </div>
+                    <div class="col">
+                        <h5 class="mb-0">{% translate "Save access keys for students" %}</h5>
+                        <small class="text-secondary">
+                            {% blocktrans trimmed %}
+                                Download a PDF with all access keys
+                                (one key per page/student)
+                                of your course with instructions for your students.
+                            {% endblocktrans %}
+                        </small>
                     </div>
                 </div>
-                <div class="col-2">
-                    <a class="btn me-2 float-end"
-                       href="{% url "gcampusdocuments:accesskeys" %}"
-                       role="link">
-                        {% icon "download" class="d-inline-block align-text-top" height="16" width="16" %} &nbsp;
-                        {% translate "Download PDF" %}
-                    </a>
-                </div>
-            </div>
+            </a>
 
-            <hr class="my-4">
-
-            <div class="row align-items-center mb-4">
-                <div class="col-10">
-                    <h5>{% translate "Send to my email" %}</h5>
-                    <div class="text-sm text-muted">
-                        {% blocktrans trimmed with course_data_url="#course-data" %}
-                            Send your course token and all access keys in a PDF
-                            via email. You can change your email address in the
-                            <a class="text-dark" href="{{ course_data_url }}">course data section</a>.
-                        {% endblocktrans %}
+            <a href="" role="link" class="disabled text-reset text-decoration-none">
+                <div class="align-items-center my-4 row border rounded-3 p-3">
+                    <div class="rounded-3 text-secondary fs-1 text-center p-2 col-1">
+                        {% include "gcampuscore/icons/envelope.html" %}
+                    </div>
+                    <div class="col">
+                        <h5 class="mb-0">{% translate "Send to my email" %}</h5>
+                        <small class="text-secondary">
+                            {% blocktrans trimmed %}
+                                Send your course token and all access keys in a PDF via email.
+                                You can change your email address in the course data section.
+                            {% endblocktrans %}
+                        </small>
                     </div>
                 </div>
-                <div class="col-2">
-                    <a class="btn me-2 float-end"
-                       href="#"
-                        {% comment  %}
-                            TODO: create document and send via mail
-                        {% endcomment %}
-                       role="link">
-                        {% icon "mail" class="d-inline-block align-text-top" height="16" width="16" %} &nbsp;
-                        {% translate "Send email" %}
-                    </a>
-                </div>
-            </div>
+            </a>
 
         </div>
     </div>

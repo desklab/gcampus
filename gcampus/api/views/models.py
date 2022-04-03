@@ -27,7 +27,7 @@ from gcampus.core.models import Measurement, ParameterType, Parameter
 
 
 class MeasurementAPIViewSet(MethodSerializerMixin, viewsets.ReadOnlyModelViewSet):
-    queryset = Measurement.objects.order_by("time")
+    queryset = Measurement.objects.order_by("time").select_related("water")
     serializer_class = MeasurementSerializer
 
     # Use a minimal serializer for lists. This serializer only includes
@@ -45,6 +45,6 @@ class ParameterTypeAPIViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ParameterAPIViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Parameter.objects.order_by("measurement__time")
+    queryset = Parameter.objects.order_by("updated_at").select_related("parameter_type")
     serializer_class = ParameterSerializer
     pagination_class = PageNumberPagination

@@ -1,15 +1,28 @@
-{% load i18n icon auth_token %}
-<div class="list-group-item list-group-item-hover">
-    <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">
-            <small class="text-muted fw-normal me-2">
-                {{ counter }}
-            </small>
+{% load i18n auth_token %}
+<div class="list-group-item list-group-item-hover border mt-2 rounded-3 p-2 ">
+    <div class="d-flex w-100">
+        <small class="text-secondary ms-1 my-auto">
+            {% if access_key.deactivated %}
+                <span class="ms-2 me-3 align-baseline badge rounded-pill bg-warning p-1"><span class="visually-hidden">.</span></span>
+            {% else %}
+                <span class="ms-2 me-3 align-baseline badge rounded-pill bg-success p-1"><span class="visually-hidden">.</span></span>
+            {% endif %}
+        </small>
+        <h3 class="my-auto">
             {% displaytoken access_key.token hidden=False %}
-        </h5>
+        </h3>
+
+    <small class="text-secondary ms-1 my-auto">
+        <span class="ms-3 align-middle ">
+            {% blocktranslate trimmed with count=access_key.measurements.count %}
+                {{ count }} measurements so far.
+            {% endblocktranslate %}
+        </span>
+    </small>
+
         {% url "gcampusauth:activate" pk=access_key.pk as activate_url %}
         {% url "gcampusauth:deactivate" pk=access_key.pk as deactivate_url %}
-        <form class="d-inline-block" method="post" action="{% if access_key.deactivated %}{{ activate_url }}{% else %}{{ deactivate_url }}{% endif %}">
+        <form class="d-inline-block ms-auto my-auto" method="post" action="{% if access_key.deactivated %}{{ activate_url }}{% else %}{{ deactivate_url }}{% endif %}">
             {% csrf_token %}
             <input type="hidden" name="measurement" value="{{ access_key.pk }}"/>
             <div class="dropdown">
@@ -20,41 +33,28 @@
                     <li>
                         <button type="submit" class="dropdown-item text-success text-{{ access_key.deactivated|yesno:"success,danger" }}" href="#">
                             {% if access_key.deactivated %}
-                                {% icon "unlock" class="d-inline-block align-text-top me-1" height="16" width="16" %}
-                                {% translate "Activate" %}
+                                {% include "gcampuscore/icons/lock.html" %}
+                                <span class="align-middle ms-2">{% translate "Activate" %}</span>
                             {% else %}
-                                {% icon "lock" class="d-inline-block align-text-top me-1" height="16" width="16" %}
-                                {% translate "Deactivate" %}
+                                {% include "gcampuscore/icons/unlock.html" %}
+                                <span class="align-middle ms-2">{% translate "Deactivate" %}</span>
                             {% endif %}
                         </button>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="{% url "gcampusauth:logout" %}">
-                            {% icon "external-link" class="d-inline-block align-text-top me-1" height="16" width="16" %}
-                            {% translate "Login with this access key" %}
+                        <a class="dropdown-item " href="{% url "gcampusauth:logout" %}">
+                            {% include "gcampuscore/icons/box-arrow-up-right.html" %}
+                            <span class="align-middle ms-2 ">{% translate "Login with this access key" %}</span>
                         </a>
                     </li> <!-- TODO: login with key-->
                     <li>
                         <a class="dropdown-item" href="#">
-                            {% icon "copy" class="d-inline-block align-text-top me-1" height="16" width="16" %}
-                            {% translate "Copy access key" %}
+                            {% include "gcampuscore/icons/clipboard.html" %}
+                            <span class="align-middle ms-2">{% translate "Copy access key" %}</span>
                         </a>
                     </li>
                 </ul>
             </div>
         </form>
     </div>
-    <p class="mb-1">
-        {% if access_key.deactivated %}
-            <span class="badge bg-warning text-dark me-2">
-                {% icon "alert-circle" class="d-inline-block align-text-top" height="16" width="16" %}
-                {% translate "deactivated" %}
-            </span>
-        {% endif %}
-        <small class="text-muted">
-            {% blocktranslate trimmed with count=access_key.measurements.count %}
-                {{ count }} measurements so far.
-            {% endblocktranslate %}
-        </small>
-    </p>
 </div>

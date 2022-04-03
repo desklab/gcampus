@@ -15,3 +15,6 @@ input[type="number"].appearance-textfield {
 .no-spinners[type=number] {
   -moz-appearance: textfield;
 }
+.hover-dark:hover {
+  color: black !important;
+}

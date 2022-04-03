@@ -16,14 +16,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 {% endcomment %}
 {% load l10n %}
 <script type="text/javascript">
-    gcampusmap['mapbox-gl'].initMap(
-        '{{ mapbox_access_token }}',
-        '{{ name }}',
-        '{{ container }}',
-        '{{ mapbox_style }}',
-        [{{ center_lng|unlocalize }}, {{ center_lat|unlocalize }}],
-        {{ zoom }},
-        {{ has_search|yesno:"true,false" }},
-        {{ onload|default_if_none:"null" }},
-    );
+    (function () {
+        document.addEventListener('DOMContentLoaded', function () {
+            gcampusmap['mapbox-gl'].initMap(
+                '{{ mapbox_access_token }}',
+                '{{ name }}',
+                '{{ container }}',
+                '{{ mapbox_style }}',
+                [{{ center_lng|unlocalize }}, {{ center_lat|unlocalize }}],
+                {{ zoom }},
+                {{ has_search|yesno:"true,false" }},
+                {{ onload|default_if_none:"null" }},
+            );
+        })
+    })();
 </script>

@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     # External apps
     "leaflet",
-    "django_feather",
     "rest_framework",
     "rest_framework_gis",
     "django_filters",

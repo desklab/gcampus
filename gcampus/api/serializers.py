@@ -35,15 +35,50 @@ class ParameterSerializer(serializers.ModelSerializer):
         fields = ("id", "value", "measurement", "parameter_type")
 
 
+class SimplifiedWaterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Water
+        geo_field = "geometry"
+        fields = (
+            "id",
+            "display_name",
+            "osm_id",
+            "flow_type",
+            "display_flow_type",
+            "water_type",
+            "display_water_type",
+        )
+
+    display_name = serializers.CharField(read_only=True)
+    display_flow_type = serializers.CharField(
+        source="get_flow_type_display", read_only=True
+    )
+    display_water_type = serializers.CharField(
+        source="get_water_type_display", read_only=True
+    )
+
+
 class MeasurementSerializer(GeoFeatureModelSerializer):
-    parameters = ParameterSerializer(many=True, read_only=True)
+    parameters = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Parameter.objects.all()
+    )
+    water = SimplifiedWaterSerializer()
     url = serializers.SerializerMethodField(read_only=True)
     title = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Measurement
         geo_field = "location"
-        fields = ("id", "name", "time", "comment", "parameters", "url", "title")
+        fields = (
+            "id",
+            "name",
+            "title",
+            "time",
+            "comment",
+            "parameters",
+            "url",
+            "water",
+        )
 
     def get_url(self, obj: Measurement) -> str:  # noqa
         return reverse("gcampuscore:measurement-detail", kwargs=dict(pk=obj.pk))
@@ -57,7 +92,9 @@ class MeasurementListSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = Measurement
         geo_field = "location"
-        fields = ("id", "location")
+        fields = ("id", "location", "water_flow_type")
+
+    water_flow_type = serializers.CharField(read_only=True, source="water.flow_type")
 
 
 class WaterSerializer(GeoFeatureModelSerializer):
@@ -81,8 +118,12 @@ class WaterSerializer(GeoFeatureModelSerializer):
             "display_flow_type",
             "water_type",
             "display_water_type",
+            "measurements",
         )
 
+    measurements = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Measurement.objects.all()
+    )
     display_name = serializers.CharField(read_only=True)
     display_flow_type = serializers.CharField(
         source="get_flow_type_display", read_only=True

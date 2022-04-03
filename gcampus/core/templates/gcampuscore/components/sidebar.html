@@ -1,12 +1,13 @@
-{% load icon %}
 {% load i18n %}
 <nav class="sidebar collapse text-white bg-dark{% if sidebar_open %} show{% endif %}" id="sidebar">
     <div>
         <div class="navbar gcampus-navbar justify-content-start flex-nowrap">
-            <button class="btn text-white d-md-inline-block d-none" type="button" id="sidebarToggleButton" onclick="toggleSidebar()" aria-controls="sidebar">
-                {% icon "menu" class="d-inline-block" %}
+            <button class="btn text-white d-md-inline-block d-none pt-0 " type="button" id="sidebarToggleButton" onclick="toggleSidebar()" aria-controls="sidebar">
+                <span class="fs-4">{% include "gcampuscore/icons/list.html" %}</span>
             </button>
-            <a href="/" class="btn text-white sidebar-title">GewässerCampus</a>
+            <a href="/" class="fs-5 btn text-white fw-bold sidebar-title p-0">
+                <span class="text-primary">Gewässer</span><span>Campus</span>
+            </a>
         </div>
         <hr class="mt-0">
         <ul class="nav nav-pills flex-column flex-grow-1">
@@ -16,12 +17,12 @@
             {% translate "Course administration" as course_title %}
             {% translate "Calibration" as converter_title %}
 
-            {% include "gcampuscore/components/sidebar_item.html" with icon="map" title=map_title view_name="gcampuscore:mapview" %}
-            {% include "gcampuscore/components/sidebar_item.html" with icon="list" title=measurements_title view_name="gcampuscore:measurements" %}
-            {% include "gcampuscore/components/sidebar_item.html" with icon="tool" title=converter_title view_name="gcampusanalysis:od_converter" %}
-{#            {% include "gcampuscore/components/sidebar_item.html" with icon="bar-chart-2" title=analysis_title view_name="gcampusanalysis:analysis_measure" %}#}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/map.html" title=map_title view_name="gcampuscore:mapview" %}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/list-ul.html" title=measurements_title view_name="gcampuscore:measurements" %}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/calculator.html" title=converter_title view_name="gcampusanalysis:od_converter" %}
+{#            {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/bar-chart.html" title=analysis_title view_name="gcampusanalysis:analysis_measure" %}#}
             {% if user_token_is_course_token%}
-                {% include "gcampuscore/components/sidebar_item.html" with icon="user" title=course_title view_name="gcampusauth:course-overview" %}
+                {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/people.html" title=course_title view_name="gcampusauth:course-overview" %}
             {% endif %}
         </ul>
         {# <hr> #}
@@ -32,9 +33,9 @@
             {% translate "Teaching material" as teaching_material_title %}
             {% translate "Report a problem" as report_title %}
 
-            {% include "gcampuscore/components/sidebar_item.html" with icon="external-link" class="sidebar-item-hidden" title=about_title url="https://gewaessercampus.de/" %}
-            {% include "gcampuscore/components/sidebar_item.html" with icon="external-link" class="sidebar-item-hidden" title=teaching_material_title url="https://desk-lab.de/docs/" %}
-            {% include "gcampuscore/components/sidebar_item.html" with icon="help-circle" title=report_title %}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/box-arrow-up-right.html" class="sidebar-item-hidden" title=about_title url="https://gewaessercampus.de/" %}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/box-arrow-up-right.html" class="sidebar-item-hidden" title=teaching_material_title url="https://desk-lab.de/docs/" %}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/question-circle.html" title=report_title %}
         </ul>
     </div>
 </nav>

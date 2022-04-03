@@ -1,6 +1,6 @@
 {% extends "gcampuscore/base.html" %}
 {% load auth_token params %}
-{% load i18n static leaflet_tags tz l10n menu icon %}
+{% load i18n static leaflet_tags tz l10n menu %}
 {% block extra_head %}
     {{ block.super }}
     {% leaflet_js plugins="forms" %}
@@ -53,7 +53,7 @@
                     {% endwith %}
                 </div>
                 <div class="col-auto">
-                    <button class="btn btn-light position-relative"
+                    <button class="btn btn-secondary position-relative"
                             type="button" data-bs-toggle="offcanvas"
                             data-bs-target="#offcanvasFilter"
                             aria-controls="offcanvasFilter">
@@ -69,7 +69,7 @@
 
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-secondary">
                         {% translate "Search" %}
                     </button>
                 </div>
@@ -97,27 +97,11 @@
     {% endif %}
     <div class="container-fluid my-4 px-0">
         {% if filter.qs %}
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">{% translate "Water name" %}</th>
-                    <th scope="col">{% translate "Location" %}</th>
-                    <th scope="col">{% translate "Name" %}</th>
-                    {% comment %}
-                <th scope="col">{% translate "Parameter" %}</th>
-                {% endcomment %}
-                    <th scope="col">{% translate "Time" context "measurement time" %}</th>
-                    <th scope="col" class="text-nowrap"></th>
-                </tr>
-                </thead>
-                <tbody>
+            <div class="list-group">
                 {% for measurement in object_list %}
-                    <div class="list-group mt-4">
-                        {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement edit=measurement|can_edit:request today=today %}
-                    </div>
+                    {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement edit=measurement|can_edit:request today=today %}
                 {% endfor %}
-                </tbody>
-            </table>
+            </div>
         {% else %}
             <div class="mt-4 p-5 text-dark bg-light rounded">
                 <h2>

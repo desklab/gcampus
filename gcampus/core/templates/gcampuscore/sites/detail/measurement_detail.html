@@ -1,5 +1,5 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n map l10n icon tz %}
+{% load i18n map l10n tz %}
 {% block extra_head %}
     {{ block.super }}
     {% load_mapbox_css %}
@@ -65,124 +65,6 @@
     {% endblock %}
 {% endif %}
 {% block content %}
-    <script>
-        function loadCluster(event) {
-            let map = event.target;
-            let lng = {{ measurement.location.x|unlocalize }};
-            let lat = {{ measurement.location.y|unlocalize }};
-            const marker = new gcampusmap['mapbox-gl'].mapboxgl.Marker()
-                .setLngLat([lng, lat])
-                .addTo(map);
-            map.addSource('measurements', {
-                type: 'geojson',
-                data: '/api/v1/measurements/',
-                cluster: true,
-                clusterMaxZoom: 14, // Max zoom to cluster points on
-                clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
-            });
-            map.addLayer({
-                id: 'clusters',
-                type: 'circle',
-                source: 'measurements',
-                filter: ['has', 'point_count'],
-                paint: {
-                    // Use step expressions (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-step)
-                    // with three steps to implement three types of circles:
-                    //   * Blue, 20px circles when point count is less than 100
-                    //   * Yellow, 30px circles when point count is between 100 and 750
-                    //   * Pink, 40px circles when point count is greater than or equal to 750
-                    'circle-color': [
-                        'step',
-                        ['get', 'point_count'],
-                        '#51bbd6',
-                        100,
-                        '#f1f075',
-                        750,
-                        '#f28cb1'
-                    ],
-                    'circle-radius': [
-                        'step',
-                        ['get', 'point_count'],
-                        20,
-                        100,
-                        30,
-                        750,
-                        40
-                    ]
-                }
-            });
-
-            map.addLayer({
-                id: 'cluster-count',
-                type: 'symbol',
-                source: 'measurements',
-                filter: ['has', 'point_count'],
-                layout: {
-                    'text-field': '{point_count_abbreviated}',
-                    'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-                    'text-size': 12
-                }
-            });
-
-            map.addLayer({
-                id: 'unclustered-point',
-                type: 'circle',
-                source: 'measurements',
-                filter: ['!', ['has', 'point_count']],
-                paint: {
-                    'circle-color': '#11b4da',
-                    'circle-radius': 8,
-                    'circle-stroke-width': 3,
-                    'circle-stroke-color': '#fff'
-                }
-            });
-
-            // inspect a cluster on click
-            map.on('click', 'clusters', function (e) {
-                let features = map.queryRenderedFeatures(e.point, {
-                    layers: ['clusters']
-                });
-                let clusterId = features[0].properties.cluster_id;
-                map.getSource('measurements').getClusterExpansionZoom(
-                    clusterId,
-                    function (err, zoom) {
-                        if (err) return;
-
-                        map.easeTo({
-                            center: features[0].geometry.coordinates,
-                            zoom: zoom
-                        });
-                    }
-                );
-            });
-
-            // When a click event occurs on a feature in
-            // the unclustered-point layer, open a popup at
-            // the location of the feature, with
-            // description HTML from its properties.
-            map.on('click', 'unclustered-point', function (e) {
-                let coordinates = e.features[0].geometry.coordinates.slice();
-                // Ensure that if the map is zoomed out such that
-                // multiple copies of the feature are visible, the
-                // popup appears over the copy being pointed to.
-                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-                }
-                let measurementName = String(e.features[0].properties.title);
-                let measurementURL = String(e.features[0].properties.url);
-                let html = "<a href=" + measurementURL + ">" + measurementName + "</a>";
-                new mapboxgl.Popup().setLngLat(coordinates).setHTML(html).addTo(map);
-            });
-
-            map.on('mouseenter', 'clusters', function () {
-                map.getCanvas().style.cursor = 'pointer';
-            });
-            map.on('mouseleave', 'clusters', function () {
-                map.getCanvas().style.cursor = '';
-            });
-
-        }
-    </script>
     <div class="container-fluid px-0">
         <div class="bg-light" id="measurement-head">
             <div class="container py-4">
@@ -220,16 +102,14 @@
                             </p>
                         </div>
                         <div class="mt-auto">
-                            <a class="btn btn-sm btn-primary"
+                            <a class="btn btn-sm btn-secondary"
                                href="{% url "gcampuscore:mapview" %}{% map_options_url lng=measurement.location.x|unlocalize lat=measurement.location.y|unlocalize zoom=14 %}"
                                role="link">
-                                {% icon "map" class="d-inline-block align-text-top" height="16" width="16" %}
                                 {% translate "Explore environment" %}
                             </a>
                             <a class="btn btn-sm btn-secondary"
                                href="{% url "gcampusdocuments:measurement-detail" pk=measurement.pk %}"
                                role="link">
-                                {% icon "download" class="d-inline-block align-text-top" height="16" width="16" %}
                                 {% translate "Download PDF" %}
                             </a>
                             {% if can_edit %}
@@ -238,7 +118,7 @@
                                    role="button">
                                     {% translate "Edit" %}
                                 </a>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#deleteModal">
                                     {% translate "Delete" %}
                                 </button>
@@ -306,9 +186,24 @@
         </div>
     </div>
 {% endblock %}
-
-
-
-
-
-
+{% block extra_body %}
+    <script type="text/html" id="measurementPopupTemplate">
+        {% include "gcampuscore/components/map_popup.html" %}
+    </script>
+    <script>
+        function loadCluster(event) {
+            let map = event.target;
+            let lng = {{ measurement.location.x|unlocalize }};
+            let lat = {{ measurement.location.y|unlocalize }};
+            const el = document.createElement('span');
+            el.className = 'marker';
+            const marker = new gcampusmap['mapbox-gl'].mapboxgl.Marker(el)
+                .setLngLat([lng, lat])
+                .addTo(map);
+            gcampusmap['mapbox-gl'].setupCluster(
+                '{% url "gcampusapi:measurement-list" %}', map
+            );
+        }
+    </script>
+    {% load_mapbox_js %}
+{% endblock %}
