@@ -95,6 +95,7 @@ class CSVListView(MultipleObjectMixin, View):
             if parameter_value != "":
                 parameter_name = measurement["parameters__parameter_type__name"]
                 current[parameter_name] = parameter_value
+        yield current
 
     def get_headers(self) -> Tuple[str, ...]:
         headers = ("id", "name", "location_name", "water_name", "time")

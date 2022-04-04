@@ -58,7 +58,7 @@ class MeasurementListView(TitleMixin, ListView):
         additional_filters = self.filter.form.changed_data
         new_filter_status = get_filter_status(additional_filters)
         kwargs["filter_status"] = new_filter_status
-        kwargs["count"] = self.queryset.count()
+        kwargs["count"] = self.get_queryset().count()
         return super(MeasurementListView, self).get_context_data(
             object_list=object_list, **kwargs
         )
