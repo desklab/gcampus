@@ -13,5 +13,6 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from gcampus.auth.models.token import AccessKey, CourseToken
+from gcampus.auth.models.token import BaseToken, AccessKey, CourseToken
+from gcampus.auth.models.course import Course
 from gcampus.auth.models.user import User
