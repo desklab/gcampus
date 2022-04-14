@@ -14,11 +14,14 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+from datetime import datetime
 from typing import Optional
 
+from django.contrib.sessions.exceptions import SuspiciousSession
 from django.http import HttpRequest
 
-from gcampus.auth.models.token import TokenType
+from gcampus.auth.models.token import TokenType, BaseToken, AccessKey, CourseToken
+from gcampus.auth.signals import token_user_logged_in
 
 TOKEN_STORE = "gcampusauth_token"
 AUTHENTICATION_BOOLEAN = "gcampusauth_authenticated"
@@ -26,15 +29,25 @@ AUTHENTICATION_BOOLEAN = "gcampusauth_authenticated"
 logger = logging.getLogger("gcampus.auth.session")
 
 
-def get_token(request: HttpRequest, default: str = None) -> Optional[str]:
+def _get_token_pk(request: HttpRequest, default: str = None):
     if TOKEN_STORE in request.session:
-        return request.session[TOKEN_STORE].get("token", default)
+        return request.session[TOKEN_STORE].get("token_pk", default)
     return default
+
+
+def get_token(request: HttpRequest, default: str = None) -> Optional[str]:
+    token_instance: BaseToken = request.token
+    if not token_instance:
+        return default
+    else:
+        return token_instance.token
 
 
 def get_token_type(request: HttpRequest, default: str = None) -> Optional[TokenType]:
     if TOKEN_STORE in request.session:
-        token_type = request.session[TOKEN_STORE].get("token_type", default)
+        token_type = request.session[TOKEN_STORE].get("token_type", None)
+        if token_type is None:
+            return default
         try:
             # get the token type with matching value
             return TokenType(token_type)
@@ -47,30 +60,77 @@ def get_token_type(request: HttpRequest, default: str = None) -> Optional[TokenT
 
 
 def get_token_name(request: HttpRequest, default: str = None) -> Optional[str]:
-    if TOKEN_STORE in request.session:
-        return request.session[TOKEN_STORE].get("token_name", default)
-    return default
+    token_instance: BaseToken = request.token
+    if not token_instance:
+        return default
+    else:
+        return token_instance.course.name
 
 
 def is_authenticated(request: HttpRequest) -> bool:
     return request.session.get(AUTHENTICATION_BOOLEAN, False)
 
 
-def set_token(request: HttpRequest, token: str, token_type: TokenType, token_name):
-    set_token_session(request.session, token, token_type, token_name)
+def set_token(request: HttpRequest, token: BaseToken, token_type: TokenType):
+    logout(request)
+    _set_token_session(request.session, token, token_type)
+    token_user_logged_in.send(sender=token, instance=token, request=request)
 
 
-def set_token_session(session, token: str, token_type: TokenType, token_name: str):
+def _set_token_session(session, token: BaseToken, token_type: TokenType):
     session[TOKEN_STORE] = {
-        "token": token,
+        "token_pk": token.pk,
         # the 'value' attribute gives a string representation of the
         # token type
         "token_type": token_type.value,
-        "token_name": token_name,
     }
     session[AUTHENTICATION_BOOLEAN] = True
 
 
+def get_token_instance(request: HttpRequest) -> BaseToken:
+    """
+
+    :raises ValueError: If no token user is authenticated.
+    :raises SuspiciousSession: Authenticated but session is invalid.
+    """
+    if not is_authenticated(request):
+        raise ValueError("Token user not authenticated.")
+    token_pk: Optional[str] = _get_token_pk(request, default=None)
+    if token_pk is None:
+        logout(request)  # clean session
+        raise SuspiciousSession(
+            "Invalid session: Token user is authenticated but no token is set."
+        )
+    token_type = get_token_type(request, default=None)
+    if token_type not in TokenType:
+        logout(request)  # clean session
+        raise SuspiciousSession(
+            "Invalid session: Token user is authenticated but token type is invalid."
+        )
+    instance: BaseToken
+    if token_type is TokenType.access_key:
+        try:
+            instance = AccessKey.objects.select_related("course").get(pk=token_pk)
+        except AccessKey.DoesNotExist:
+            logout(request)
+            raise SuspiciousSession(
+                f"It seems like the access key with 'pk={token_pk}' has been deleted."
+            )
+    elif token_type is TokenType.course_token:
+        try:
+            instance = CourseToken.objects.select_related("course").get(pk=token_pk)
+        except CourseToken.DoesNotExist:
+            logout(request)
+            raise SuspiciousSession(
+                f"It seems like the course token with 'pk={token_pk}' has been deleted."
+            )
+    else:
+        # There is no other token type.
+        raise NotImplementedError()
+    return instance
+
+
 def logout(request: HttpRequest):
+    request._cached_token = None
     request.session[TOKEN_STORE] = {}
     request.session[AUTHENTICATION_BOOLEAN] = False

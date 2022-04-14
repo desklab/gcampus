@@ -37,6 +37,7 @@ def mock_request() -> HttpRequest:
     middleware = SessionMiddleware(_mock_get_response)
     middleware.process_request(request)
     request.session.save()
+    request.token = None
     return request
 
 
