@@ -12,7 +12,7 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 
@@ -24,5 +24,8 @@ urlpatterns = [
     path("api/v1/", include("gcampus.api.urls", namespace="v1")),
     path("admin/", admin.site.urls),
 ]
+
+if settings.DEBUG:
+    urlpatterns.append(path("__debug__/", include("debug_toolbar.urls"))),
 
 handler403 = "gcampus.auth.views.permission_denied_error_handler"
