@@ -19,6 +19,7 @@ from django.conf import settings
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
 from django.contrib.postgres.search import SearchQuery
+from django.contrib.sessions.exceptions import SuspiciousSession
 from django.core.validators import EMPTY_VALUES
 from django.db.models import QuerySet
 from django.forms import CheckboxSelectMultiple
@@ -36,11 +37,11 @@ from django_filters import (
 
 from gcampus.auth import session
 from gcampus.auth.exceptions import UnauthenticatedError, TokenPermissionError
-from gcampus.auth.models.token import TokenType
+from gcampus.auth.models.token import TokenType, AccessKey, BaseToken
 from gcampus.core.fields import SplitSplitDateTimeField, LocationRadiusField
 from gcampus.core.fields.datetime import HistogramDateTimeField
 from gcampus.core.fields.personal import ToggleField
-from gcampus.core.models import ParameterType
+from gcampus.core.models import ParameterType, Measurement
 from gcampus.core.models.util import EMPTY
 
 
@@ -70,19 +71,10 @@ class MyCourseFilter(BooleanFilter):
             elif not session.is_authenticated(request):
                 raise UnauthenticatedError()
             else:
-                token = session.get_token(request)
-                token_type = session.get_token_type(request)
-                if token_type is TokenType.access_key:
-                    # This complicated query filters all measurements
-                    # 1. that belong to a token
-                    #   2. which belongs to a specific parent token
-                    #     3. that has an access key
-                    #       4. matching with the current access key.
-                    qs = self.get_method(qs)(
-                        token__parent_token__access_keys__token=token
-                    )
-                else:
-                    qs = self.get_method(qs)(token__parent_token__token=token)
+                token: BaseToken = request.token
+                if not token:
+                    raise SuspiciousSession()
+                qs = self.get_method(qs)(token__course_id=token.course_id)
         return qs
 
 
@@ -114,8 +106,10 @@ class MyMeasurementsFilter(BooleanFilter):
             elif session.get_token_type(request) is not TokenType.access_key:
                 raise TokenPermissionError()
             else:
-                token = session.get_token(request)
-                qs = self.get_method(qs)(token__token=token)
+                token: AccessKey = request.token
+                if not isinstance(token, AccessKey):
+                    raise RuntimeError()
+                qs = self.get_method(qs)(token=token)
         return qs
 
 

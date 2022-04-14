@@ -13,6 +13,8 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import os
+import datetime
 from pathlib import Path
 
 from django.contrib import messages
@@ -38,6 +40,28 @@ GCAMPUS_HOMEPAGE = "https://gewaessercampus.de/"
 # Primarily used for emails or PDFs
 PRIMARY_HOST = "localhost:8000"
 PREFERRED_SCHEME = "http"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "propagate": True,
+        },
+        "gcampus": {
+            "handlers": ["console"],
+            "level": os.getenv("GCAMPUS_LOG_LEVEL", "DEBUG"),
+            "propagate": True,
+        },
+    },
+}
 
 INSTALLED_APPS = [
     "gcampus.admin.apps.GCampusAdminAppConfig",

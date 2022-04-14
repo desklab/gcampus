@@ -18,7 +18,7 @@ from django.contrib.gis.geos import Point
 from django.db import transaction
 from django.forms.utils import ErrorList
 
-from gcampus.auth.models import CourseToken, AccessKey
+from gcampus.auth.models import CourseToken, AccessKey, Course
 from gcampus.core.models import Water
 from gcampus.core.models.water import WaterType
 
@@ -42,16 +42,18 @@ class FormTestMixin:
 
 class TokenTestMixin:
     ACCESS_KEY_COUNT: int = 5
+    course: Course
     parent_token: CourseToken
     tokens: List[AccessKey]
 
     def setUp(self) -> None:
         super().setUp()
-        self.parent_token = CourseToken(
+        self.course = Course(
             school_name="GCampus Test Case",
             teacher_name="GCampus Testing",
             teacher_email="testcase@gewaessercampus.de",
         )
+        self.parent_token = CourseToken(course=self.course)
         self.tokens = []
         with transaction.atomic():
             self.parent_token.save()
