@@ -119,6 +119,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
+EMAIL_CONFIRMATION_TIMEOUT = datetime.timedelta(days=2)
 AUTH_USER_MODEL = "gcampusauth.User"
 AUTH_PASSWORD_VALIDATORS = [
     {

@@ -29,10 +29,11 @@ from gcampus.auth.exceptions import (
     ACCESS_KEY_DEACTIVATED_ERROR,
 )
 from gcampus.auth.fields.token import HyphenatedTokenField
-from gcampus.auth.forms.token import TOKEN_FIELD_NAME, RegisterForm
+from gcampus.auth.forms.token import TOKEN_FIELD_NAME
+from gcampus.auth.forms import RegisterForm
 from gcampus.auth.models import CourseToken, AccessKey
 from gcampus.auth.models.token import COURSE_TOKEN_LENGTH, ACCESS_KEY_LENGTH, TokenType
-from gcampus.auth.session import set_token_session
+from gcampus.auth.session import _set_token_session
 from gcampus.core.tests.mixins import FormTestMixin, TokenTestMixin
 from gcampus.documents.tasks import render_cached_document_view
 from gcampus.tasks.tests.utils import BaseMockTaskTest
@@ -277,7 +278,7 @@ class CourseTokenTasksTest(BaseMockTaskTest):
         course = CourseToken(**self.DEFAULT_COURSE_DATA)
         course.save()
         session = self.client.session
-        set_token_session(
+        _set_token_session(
             session, course.token, TokenType.course_token, course.token_name
         )
         session.save()
@@ -299,7 +300,7 @@ class CourseTokenTasksTest(BaseMockTaskTest):
     def test_disable_access_key_form(self):
         course, tokens = self.generate_course(5)
         session = self.client.session
-        set_token_session(
+        _set_token_session(
             session, course.token, TokenType.course_token, course.token_name
         )
         session.save()

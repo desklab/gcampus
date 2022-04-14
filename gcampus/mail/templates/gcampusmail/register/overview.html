@@ -1,8 +1,9 @@
 {% extends "gcampusmail/components/paragraph.html" %}
 {% load i18n auth_token %}
 {% block content %}
+    {% translate "N/A" context "no value provided (water name, comment, etc)" as not_any %}
     <b>{% translate "Course token" %}:</b>
-    {% displaytoken course_token.token hidden=False toggle=False %}
+    {% displaytoken course.course_token.token hidden=False toggle=False %}
     <br>
     {% blocktranslate trimmed %}
         With this <b>course token</b>, you can manage your
@@ -12,31 +13,19 @@
     <br>
     <br>
     <b>{% translate "School Name" %}:</b>
-    {% if course_token.school_name %}
-        {{ course_token.school_name }}
-    {% else %}
-        {% translate "N/A" context "no value provided (water name, comment, etc)" %}
-    {% endif %}
+    {% firstof course.school_name not_any %}
     <br>
     <b>{% translate "Course Name" %}:</b>
-    {% if course_token.token_name %}
-        {{ course_token.token_name }}
-    {% else %}
-        {% translate "N/A" context "no value provided (water name, comment, etc)" %}
-    {% endif %}
+    {% firstof course.name not_any %}
     <br>
     <b>{% translate "Teacher Name" %}:</b>
-    {% if course_token.teacher_name %}
-        {{ course_token.teacher_name }}
-    {% else %}
-        {% translate "N/A" context "no value provided (water name, comment, etc)" %}
-    {% endif %}
+    {% firstof course.teacher_name not_any %}
     <br>
     <br>
     <b>{% translate "Access keys" %}:</b>
     <br>
     <ol>
-        {% for access_key in course_token.access_keys.all %}
+        {% for access_key in course.access_keys.all %}
             <li style="margin-bottom: 8px">
                 {% displaytoken access_key.token hidden=False toggle=False %}
             </li>

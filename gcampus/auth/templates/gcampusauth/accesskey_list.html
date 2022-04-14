@@ -1,0 +1,105 @@
+{% extends "gcampuscore/base.html" %}
+{% load l10n %}
+{% load tz %}
+{% load i18n menu auth_token %}
+{% block navbar_title %}{% endblock %}
+{% block navbar_other %}
+    <ul class="nav navbar-nav me-auto">
+        {% trans "Course data" as course_data_title %}
+        {% include "gcampuscore/components/nav_item.html" with title=course_data_title view_name="gcampusauth:course-update" %}
+        {% trans "Access keys" as access_keys_title %}
+        {% include "gcampuscore/components/nav_item.html" with title=access_keys_title view_name="gcampusauth:course-access-keys" %}
+    </ul>
+{% endblock %}
+{% block main_class %}bg-light min-vh-100{% endblock %}
+{% block content %}
+    <div class="container">
+        <h3 class="py-4">{% trans "Generate new access keys" %}</h3>
+        <small class="text-sm text-muted">
+            {% blocktrans trimmed %}
+                You can generate new access keys for this course without
+                the need to register again. The number of access keys is
+                limited to {{ register_max_access_key }} per course.
+            {% endblocktrans %}
+        </small>
+        <form method="post" class="row g-3 has-validation mt-2">
+            {% csrf_token %}
+            <div class="col-auto">
+                {% with form.count as field %}
+                    <div class="mb-3">
+                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                        {% include "gcampuscore/forms/components/helptext.html" %}
+                        {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                        {% if field.errors %}
+                            <small class="text-danger">{{ field.errors }}</small>
+                        {% endif %}
+                    </div>
+                {% endwith %}
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">
+                    {% trans "Generate" %}
+                </button>
+            </div>
+        </form>
+        <h3 class="mt-5 py-4">{% trans "Access keys" %}</h3>
+        <div class="list-group list-group-spaced">
+            {% for access_key in object_list %}
+                <li class="list-group-item list-group-item-spaced">
+                    <h4>{% displaytoken access_key.token hidden=True toggle=True %}</h4>
+                    <small class="text-secondary">
+                        {% with measurement_count=access_key.measurements.count %}
+                            {% if measurement_count > 0 %}
+                                <a class="text-reset text-decoration-none hover-dark dropdown-toggle"
+                                   href="#" id="measurementsDropdown{{ access_key.pk }}"
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    <span>{% include "gcampuscore/icons/geo.html" %}</span>
+                                    {% blocktrans trimmed count count=measurement_count %}
+                                        {{ count }} measurement
+                                    {% plural %}
+                                        {{ count }} measurements
+                                    {% endblocktrans %}
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="measurementsDropdown{{ access_key.pk }}">
+                                    {% for measurement in access_key.measurements.all %}
+                                        <li>
+                                            <a class="dropdown-item" href="{% url "gcampuscore:measurement-detail" pk=measurement.pk %}">
+                                                {{ measurement }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <span>
+                                    <span>{% include "gcampuscore/icons/geo.html" %}</span>
+                                    {% blocktrans trimmed count count=measurement_count %}
+                                        {{ count }} measurement
+                                        {% plural %}
+                                        {{ count }} measurements
+                                    {% endblocktrans %}
+                                </span>
+                            {% endif %}
+                        {% endwith %}
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" {% if access_key.last_login %}title="{{ access_key.last_login|timesince:today }}"{% endif %}>
+                            <span class="ms-4">{% include "gcampuscore/icons/calendar4-event.html" %}</span>
+                            <span class="ms-1 align-middle ">
+                                {% translate "Last login:" %}
+                                {% if access_key.last_login %}
+                                    {{ access_key.last_login|localtime|localize }}
+                                {% else %}
+                                    {% translate "never" %}
+                                {% endif %}
+                            </span>
+                        </span>
+                    </small>
+                </li>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+{% block body_js %}
+    {{ block.super }}
+    {% displaytoken_js %}
+{% endblock %}

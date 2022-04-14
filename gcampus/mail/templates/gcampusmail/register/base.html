@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
     {% translate "Thank you for registering a course!" as header_text %}
-    {% url "gcampusauth:course-overview" as course_url %}
+    {% url "gcampusauth:course-update" as course_url %}
     {% blocktranslate trimmed asvar content_text %}
         The registration of your course on GewässerCampus has been
         successful. You may now share the access keys with your
@@ -21,5 +21,5 @@
     {% include "gcampusmail/components/subheader.html" with title=header_text content_safe=content_text only %}
     {% translate "Your course" as course_title %}
     {% include "gcampusmail/components/title.html" with title=course_title only %}
-    {% include "gcampusmail/register/overview.html" with course_token=course_token %}
+    {% include "gcampusmail/register/overview.html" with course=course %}
 {% endblock %}

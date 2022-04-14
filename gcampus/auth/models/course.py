@@ -13,6 +13,8 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+__all__ = ["Course", "default_token_generator", "EmailConfirmationTokenGenerator"]
+
 from datetime import datetime, timedelta
 
 from django.conf import settings
@@ -58,3 +60,79 @@ class Course(DateModelMixin):
         null=True,
     )
 
+
+class EmailConfirmationTokenGenerator:
+    """Based on Django's password reset token generator
+    (:class:`django.contrib.auth.tokens.PasswordResetTokenGenerator`).
+    """
+
+    key_salt = "gcampus.auth.models.course.EmailConfirmationTokenGenerator"
+    algorithm = None
+    _secret = None
+
+    def __init__(self):
+        self.algorithm = self.algorithm or "sha256"
+
+    def _get_secret(self):
+        return self._secret or settings.SECRET_KEY
+
+    def _set_secret(self, secret):
+        self._secret = secret
+
+    secret = property(_get_secret, _set_secret)
+
+    def make_token(self, course: Course):
+        return self._make_token_with_timestamp(course, self._num_seconds(self._now()))
+
+    def check_token(self, course, token):
+        if not (course and token):
+            return False
+        # Parse the token
+        try:
+            ts_b36, _ = token.split("-")
+        except ValueError:
+            return False
+
+        try:
+            ts = base36_to_int(ts_b36)
+        except ValueError:
+            return False
+
+        # Check that the timestamp/uid has not been tampered with
+        generated_token = self._make_token_with_timestamp(course, ts)
+        if not constant_time_compare(generated_token, token):
+            return False
+
+        # Check the timestamp is within limit.
+        token_age = timedelta(seconds=(self._num_seconds(self._now()) - ts))
+        if token_age > settings.EMAIL_CONFIRMATION_TIMEOUT:
+            return False
+
+        return True
+
+    def _make_token_with_timestamp(self, course: Course, timestamp):
+        # timestamp is number of seconds since 2001-1-1. Converted to base 36,
+        # this gives us a 6 digit string until about 2069.
+        ts_b36 = int_to_base36(timestamp)
+        hash_string = salted_hmac(
+            self.key_salt,
+            self._make_hash_value(course, timestamp),
+            secret=self.secret,
+            algorithm=self.algorithm,
+        ).hexdigest()[
+            ::2
+        ]  # Limit to shorten the URL.
+        return "%s-%s" % (ts_b36, hash_string)
+
+    def _make_hash_value(self, course: Course, timestamp):
+        return f"{course.pk}{course.teacher_email}{course.new_email}{timestamp}"
+
+    def _num_seconds(self, dt):
+        return int((dt - datetime(2001, 1, 1)).total_seconds())
+
+    def _now(self):
+        # Used for mocking in tests
+        return datetime.now()
+
+
+default_token_generator = EmailConfirmationTokenGenerator()

@@ -18,53 +18,39 @@ __all__ = [
 ]
 
 from django.contrib import messages
-from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.utils import translation
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 from django.views.generic import CreateView
 
-from gcampus.auth import session
-from gcampus.auth.forms.token import RegisterForm
-from gcampus.auth.models.token import AccessKey, TokenType, CourseToken
-from gcampus.auth.tasks import send_registration_email
+from gcampus.auth.forms import RegisterForm
+from gcampus.auth.models import Course
 from gcampus.core.views.base import TitleMixin
 
 
 class RegisterFormView(TitleMixin, CreateView):
     form_class = RegisterForm
+    model = Course
+    template_name_suffix = "_create_form"
     title = gettext_lazy("Register a new course")
-    template_name = "gcampusauth/forms/register.html"
-    success_url = reverse_lazy("gcampusauth:course-overview")
-    object: CourseToken
+    success_url = reverse_lazy("gcampuscore:mapview")
+    object: Course
 
     def form_valid(self, form):
-        with transaction.atomic():
-            self.object = form.save()
-            number_of_access_keys: int = form.cleaned_data["number_of_access_keys"]
-            for i in range(number_of_access_keys):
-                access_key = AccessKey.generate_access_key()
-                AccessKey(token=access_key, parent_token=self.object).save()
-
-        send_registration_email.apply_async(
-            args=(self.object.pk, translation.get_language())
-        )
-
+        super(RegisterFormView, self).form_valid(form)
         messages.success(
             self.request,
             _(
                 "You successfully registered a course. "
-                "This page serves as an overview and allows you to view your "
-                "course's access keys."
+                "An activation link has been sent to your email address."
             ),
         )
-        # Login with course token
-        session.set_token(
-            self.request,
-            self.object.token,
-            TokenType.course_token,
-            self.object.token_name,
-        )
+        # In older versions of this function, the user has been logged
+        # in automatically. This has been changed to the following:
+        #  - Tokens of a new course can not sign in as they are marked
+        #    'not active' as long as their email is not verified.
+        #  - Once an email has been verified, the user is automatically
+        #    logged in with the course token associated with that
+        #    course.
         return HttpResponseRedirect(self.get_success_url())

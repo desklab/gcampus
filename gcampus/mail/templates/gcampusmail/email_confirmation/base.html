@@ -1,0 +1,17 @@
+{% extends "gcampusmail/base.html" %}
+{% load i18n auth_token %}
+{% block content %}
+    {% translate "Please confirm your email address" as header_text %}
+    {% blocktranslate trimmed reset_url=url asvar content_text %}
+        Click the link below to confirm your email address:
+
+        <a href="{{ reset_url }}">reset_url</a>
+
+        This link will be valid for two days.
+
+        If you got this email by accident and did not sign up on GewässerCampus,
+        you can safely ignore this message and delete it. Feel free to contact
+        us if you have any issues.
+    {% endblocktranslate %}
+    {% include "gcampusmail/components/subheader.html" with title=header_text content_safe=content_text only %}
+{% endblock %}

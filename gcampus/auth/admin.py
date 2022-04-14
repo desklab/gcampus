@@ -19,7 +19,7 @@ from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.admin.options import LinkedInlineMixin
-from gcampus.auth.models import AccessKey, CourseToken, User
+from gcampus.auth.models import AccessKey, CourseToken, User, Course
 from gcampus.core.admin import MeasurementInline
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 
@@ -38,11 +38,29 @@ reactivate_token.short_description = _("Reactivate selected tokens")
 
 class AccessKeyInline(LinkedInlineMixin, admin.TabularInline):
     model = AccessKey
+    fields = ("token", "deactivated") + LinkedInlineMixin.readonly_fields
     extra = 0
+
+
+class CourseTokenInline(LinkedInlineMixin, admin.TabularInline):
+    model = CourseToken
+    fields = ("token", "deactivated") + LinkedInlineMixin.readonly_fields
+    extra = 0
+
+
+class CourseInline(LinkedInlineMixin, admin.TabularInline):
+    model = Course
+    extra = 0
+
+
+class CourseAdmin(admin.ModelAdmin):
+    inlines = [CourseTokenInline, AccessKeyInline]
+    readonly_fields = ADMIN_READ_ONLY_FIELDS
 
 
 class AccessKeyAdmin(admin.ModelAdmin):
     list_filter = ("deactivated",)
+    filter_horizontal = ("permissions",)
     inlines = [MeasurementInline]
     readonly_fields = ADMIN_READ_ONLY_FIELDS
     actions = [deactivate_token, reactivate_token]
@@ -50,11 +68,12 @@ class AccessKeyAdmin(admin.ModelAdmin):
 
 class CourseTokenAdmin(admin.ModelAdmin):
     list_filter = ("deactivated",)
-    inlines = [AccessKeyInline]
+    filter_horizontal = ("permissions",)
     readonly_fields = ADMIN_READ_ONLY_FIELDS
     actions = [deactivate_token, reactivate_token]
 
 
+admin.site.register(Course, CourseAdmin)
 admin.site.register(AccessKey, AccessKeyAdmin)
 admin.site.register(CourseToken, CourseTokenAdmin)
 admin.site.register(User, UserAdmin)

@@ -238,6 +238,7 @@ class HyphenatedTokenField(CharField):
         attrs["data-segment-length"] = self.segment_length
         attrs["data-token-type"] = self.token_type.value
         attrs["placeholder"] = self.placeholder
+        attrs["autocomplete"] = "current-password"
         return attrs
 
 

@@ -16,73 +16,14 @@ import string
 from typing import Optional, List
 
 from django import template
-from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest
 from django.template import Context, Node  # noqa
-from django.template.base import FilterExpression, token_kwargs
-from django.utils.html import format_html
-from django_filters.constants import EMPTY_VALUES
 
-from gcampus.auth import session
-from gcampus.auth.exceptions import TOKEN_EMPTY_ERROR
-from gcampus.auth.models.token import (
-    can_token_edit_measurement,
-    TokenType,
-    get_token_type_from_token,
-)
+from gcampus.auth.models.token import TokenType, get_token_type_from_token, BaseToken
 from gcampus.core.models import Measurement
 
 register = template.Library()
 _html_token_separator = '<span class="token-separator"></span>'
-
-
-class AuthTokenNode(Node):
-    def __init__(self, prefix: Optional[FilterExpression] = None):
-        self.prefix_token = prefix
-        super(AuthTokenNode, self).__init__()
-
-    def render(self, context):
-        if "request" not in context:
-            raise ValueError("Unable to find 'request' in template context!")
-        token = session.get_token(context.request)
-        if token in EMPTY_VALUES or token == "None":
-            raise PermissionDenied(TOKEN_EMPTY_ERROR)
-        if self.prefix_token is not None:
-            prefix = f"{self.prefix_token.resolve(context)}-"
-        else:
-            prefix = ""
-        if token:
-            return format_html(
-                '<input type="hidden" name="{}gcampus_auth_token" value="{}">',
-                prefix,
-                token,
-            )
-        else:
-            return ""
-
-
-@register.simple_tag(takes_context=True)
-def save_token(context: Context) -> str:
-    request: HttpRequest = context["request"]
-    return session.get_token(request)
-
-
-@register.simple_tag(takes_context=True)
-def save_token_type(context: Context) -> str:
-    request: HttpRequest = context["request"]
-    return session.get_token_type(request).value
-
-
-@register.tag
-def auth_token(parser, token):  # noqa
-    tokens = token.split_contents()
-    if len(tokens) == 2:
-        kwargs = token_kwargs(tokens[1:], parser)
-        return AuthTokenNode(**kwargs)
-    elif len(tokens) == 1:
-        return AuthTokenNode()
-    else:
-        raise ValueError("'auth_token' takes only one keyword argument 'prefix'")
 
 
 @register.filter
@@ -105,14 +46,13 @@ def can_edit(measurement: Measurement, request: HttpRequest) -> bool:
     :param measurement: The measurement used to check the permission.
     :param request: Additional parameter passed to the filter to provide
         the current session which may contain the token of the user.
-    :returns: Boolean whether or not the current user is allowed to edit
+    :returns: Boolean whether the current token user is allowed to edit
         the provided measurement.
     """
-    token = session.get_token(request)
-    if token is None:
+    if request.token is None:
         return False
-    token_type: TokenType = session.get_token_type(request)
-    return can_token_edit_measurement(token, measurement, token_type=token_type)
+    token: BaseToken = request.token
+    return token.has_perm("gcampuscore.change_measurement", obj=measurement)
 
 
 @register.inclusion_tag("gcampusauth/styles/token.html")

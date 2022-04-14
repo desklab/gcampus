@@ -42,13 +42,13 @@ from gcampus.auth.forms.token import (
     TOKEN_FIELD_NAME,
     NEXT_URL_FIELD_NAME,
 )
-from gcampus.auth.models.token import CourseToken, TokenType
+from gcampus.auth.models.token import CourseToken, TokenType, AccessKey
 from gcampus.core.models.util import EMPTY
 from gcampus.core.views.base import TitleMixin
 
 
 class LoginFormView(TitleMixin, FormView, ABC):
-    template_name = "gcampusauth/forms/token.html"
+    template_name = "gcampusauth/login_form.html"
     title = gettext_lazy("Login")
     success_url = reverse_lazy("gcampuscore:mapview")
     token_type: TokenType  # has to be set by child classes
@@ -72,26 +72,44 @@ class LoginFormView(TitleMixin, FormView, ABC):
         context["is_course_token_form"] = self.token_type is TokenType.course_token
         return context
 
+    def _do_login(self, form: Union[AccessKeyForm, CourseTokenForm]):
+        """Login logic for access keys or course tokens.
+
+        The validation for the existence and validity of the provided
+        access key or course token is handled by the
+        :class:`gcampus.auth.fields.token.HyphenatedTokenField`
+        validator.
+
+        :param form: Access key or course token form.
+        """
+        token = form.cleaned_data[TOKEN_FIELD_NAME]
+        if self.token_type is TokenType.course_token:
+            token_instance: CourseToken = CourseToken.objects.get(token=token)
+        elif self.token_type is TokenType.access_key:
+            token_instance: AccessKey = AccessKey.objects.get(token=token)
+        else:
+            raise RuntimeError()
+
+        session.logout(self.request)
+        session.set_token(self.request, token_instance, self.token_type)
+
     def form_valid(self, form: Union[AccessKeyForm, CourseTokenForm]):
         if form.is_valid():
-            token = form.cleaned_data[TOKEN_FIELD_NAME]
-            course: CourseToken
-            if self.token_type is TokenType.course_token:
-                course = CourseToken.objects.get(token=token)
-            else:
-                # Token has to be of type 'TokenType.access_key'
-                course = CourseToken.objects.get(access_keys__token=token)
-            token_name = course.token_name
-            session.logout(self.request)
-            session.set_token(self.request, token, self.token_type, token_name)
+            self._do_login(form)
+            # Check whether an url is provided to which the user should
+            # be redirected next. By altering the ``success_url``, the
+            # call to ``super`` will automatically redirect to the
+            # correct url.
             next_url = form.cleaned_data[NEXT_URL_FIELD_NAME]
             if next_url not in EMPTY:
-                self.success_url = unquote(form.cleaned_data[NEXT_URL_FIELD_NAME])
+                self.success_url = unquote(next_url)
             return super(LoginFormView, self).form_valid(form)
-        raise PermissionDenied(TOKEN_INVALID_ERROR)
+        else:
+            raise PermissionDenied(TOKEN_INVALID_ERROR)
 
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form), status=200)
+    # TODO remove if not needed
+    # def form_invalid(self, form):
+    #     return self.render_to_response(self.get_context_data(form=form), status=200)
 
 
 class AccessKeyLoginFormView(LoginFormView):
@@ -115,4 +133,5 @@ def logout(request: HttpRequest):
     # Use default django logout
     # This method will flush the current session
     django_logout(request)
+    session.logout(request)
     return redirect("gcampuscore:mapview")

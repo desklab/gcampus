@@ -13,24 +13,37 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+__all__ = ["send_registration_email", "send_email_confirmation_email"]
+
 import typing as t
 
 from celery import shared_task
+from django.conf import settings
 from django.db.models.fields.files import FieldFile
 from django.utils import translation
 
-from gcampus.auth.models import CourseToken
+from gcampus.auth.models import Course
 from gcampus.documents.tasks import render_cached_document_view
 from gcampus.documents.views import CourseOverviewPDF
+from gcampus.mail.messages.email_confirmation import ConfirmationEmailTemplate
 from gcampus.mail.messages.register import RegisterEmailTemplate
 
 
 @shared_task
-def send_registration_email(instance: t.Union[CourseToken, int], language: str = "de"):
+def send_registration_email(
+    instance: t.Union[Course, int], language: t.Optional[str] = None
+):
+    if language is None:
+        language = settings.LANGUAGE_CODE
     translation.activate(language)
-    if not isinstance(instance, CourseToken):
-        instance: CourseToken = CourseToken.objects.get(pk=instance)
-    # Make sure the document is created
+
+    # Retrieve the instance if a primary key is passed
+    if not isinstance(instance, Course):
+        instance: Course = Course.objects.get(pk=instance)
+
+    # Make sure the document is created. Note that ``force`` is set to
+    # ``False``, indicating that the document will not be regenerated
+    # if it already exists.
     render_cached_document_view(CourseOverviewPDF, instance, language, force=False)
 
     instance.refresh_from_db(fields=("overview_document",))
@@ -50,4 +63,22 @@ def send_registration_email(instance: t.Union[CourseToken, int], language: str =
         [instance.teacher_email],
         attachments=[(filename, file_content, "application/pdf")],
     )
+    message.send()
+
+
+@shared_task
+def send_email_confirmation_email(
+    email: str, url: str, language: t.Optional[str] = None
+):
+    """
+
+    :param email:
+    :param url:
+    :param language:
+    """
+    if language is None:
+        language = settings.LANGUAGE_CODE
+    translation.activate(language)
+    email_template = ConfirmationEmailTemplate(url)
+    message = email_template.as_message([email])
     message.send()

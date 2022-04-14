@@ -1,0 +1,126 @@
+{% extends "gcampuscore/base.html" %}
+{% load i18n menu auth_token %}
+{% block navbar_title %}{% endblock %}
+{% block navbar_other %}
+    <ul class="nav navbar-nav me-auto">
+        {% trans "Course data" as course_data_title %}
+        {% include "gcampuscore/components/nav_item.html" with title=course_data_title view_name="gcampusauth:course-update" %}
+        {% trans "Access keys" as access_keys_title %}
+        {% include "gcampuscore/components/nav_item.html" with title=access_keys_title view_name="gcampusauth:course-access-keys" %}
+    </ul>
+{% endblock %}
+{% block main_class %}bg-light min-vh-100{% endblock %}
+{% block content %}
+    <div class="container">
+        <h3 class="py-4">{% trans "Course token" %}</h3>
+        <p>
+            {% blocktranslate trimmed %}
+                With this <b>course token</b>, you can manage your
+                course and edit your student's measurements. Thus,
+                this key should be kept private.
+            {% endblocktranslate %}
+        </p>
+        <h3 class="fw-normal">
+            {% displaytoken user_token_instance.token css_class="bg-white" hidden=True toggle=True %}
+        </h3>
+        <h3 class="mt-5 py-4">{% trans "Course and contact data" %}</h3>
+        <form method="post" class="row g-3 has-validation">
+            {% csrf_token %}
+            <div class="col-md-6">
+                {% with form.teacher_name as field %}
+                    <div class="mb-3">
+                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                        {% include "gcampuscore/forms/components/helptext.html" %}
+                        {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                        {% if field.errors %}
+                            <small class="text-danger">{{ field.errors }}</small>
+                        {% endif %}
+                    </div>
+                {% endwith %}
+            </div>
+            <div class="col-md-6">
+                {% with form.email as field %}
+                    <div class="mb-3">
+                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                        {% include "gcampuscore/forms/components/helptext.html" %}
+                        {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                        {% if email_verified %}
+                            <small class="text-success">
+                                {% include "gcampuscore/icons/patch-check.html" %}
+                                {% trans "Email address verified" %}
+                            </small>
+                            <br>
+                        {% endif %}
+                        {% if field.errors %}
+                            <small class="text-danger">{{ field.errors }}</small>
+                        {% endif %}
+                    </div>
+                {% endwith %}
+            </div>
+            <div class="col-md-6">
+                {% with form.name as field %}
+                    <div class="mb-3">
+                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                        {% include "gcampuscore/forms/components/helptext.html" %}
+                        {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                        {% if field.errors %}
+                            <small class="text-danger">{{ field.errors }}</small>
+                        {% endif %}
+                    </div>
+                {% endwith %}
+            </div>
+            <div class="col-md-6">
+                {% with form.school_name as field %}
+                    <div class="mb-3">
+                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                        {% include "gcampuscore/forms/components/helptext.html" %}
+                        {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                        {% if field.errors %}
+                            <small class="text-danger">{{ field.errors }}</small>
+                        {% endif %}
+                    </div>
+                {% endwith %}
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">
+                    {% trans "Save" %}
+                </button>
+            </div>
+        </form>
+        <h3 class="mt-5 py-4">{% trans "Documents" %}</h3>
+        <div class="list-group list-group-spaced">
+            {% url "gcampusdocuments:course" as url %}
+            {% translate "Save course overview" as title %}
+            {% blocktrans asvar body trimmed %}
+                Download a PDF with a summary of your
+                registration
+                data, your course token, and the all access keys
+                of your course.
+            {% endblocktrans %}
+            {% include "gcampusauth/components/document_download_card.html" with icon="gcampuscore/icons/cloud-download.html" %}
+
+            {% url "gcampusdocuments:accesskeys" as url %}
+            {% translate "Save access keys for students" as title %}
+            {% blocktrans asvar body trimmed %}
+                Download a PDF with all access keys
+                (one key per page/student)
+                of your course with instructions for your
+                students.
+            {% endblocktrans %}
+            {% include "gcampusauth/components/document_download_card.html" with icon="gcampuscore/icons/cloud-download.html" %}
+
+            {% translate "Send to my email" as title %}
+            {% blocktrans asvar body trimmed %}
+                Send your course token and all access keys in a
+                PDF via email.
+                You can change your email address in the course
+                data section.
+            {% endblocktrans %}
+            {% include "gcampusauth/components/document_download_card.html" with url="#" icon="gcampuscore/icons/envelope.html" %}
+        </div>
+    </div>
+{% endblock %}
+{% block body_js %}
+    {{ block.super }}
+    {% displaytoken_js %}
+{% endblock %}
