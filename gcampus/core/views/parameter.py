@@ -17,17 +17,15 @@ from __future__ import annotations
 
 from typing import Optional
 
-from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import TemplateResponseMixin, View
 
-from gcampus.auth import session
-from gcampus.auth.exceptions import TOKEN_EDIT_PERMISSION_ERROR
+from gcampus.auth.exceptions import UnauthenticatedError, TokenEditPermissionError
 from gcampus.auth.fields.token import check_form_and_request_token
-from gcampus.auth.models.token import can_token_edit_measurement
+from gcampus.auth.models.token import BaseToken
 from gcampus.core.forms.measurement import ParameterFormSet
 from gcampus.core.models import Parameter, Measurement
 from gcampus.core.views.base import TitleMixin
@@ -51,13 +49,14 @@ class ParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
     def __init__(self, **kwargs):
         super(ParameterFormSetView, self).__init__(**kwargs)
         self.instance: Optional[Parameter] = None
+        self.token: Optional[BaseToken] = None
 
-    def form_valid(self, formset: ParameterFormSet, pk):
+    def form_valid(self, formset: ParameterFormSet):
         formset.save()
-        return HttpResponseRedirect(self.get_next_url(pk))
+        return HttpResponseRedirect(self.get_next_url())
 
-    def get_next_url(self, pk):
-        return reverse(self.next_view_name, kwargs={"pk": pk})
+    def get_next_url(self):
+        return reverse(self.next_view_name, kwargs={"pk": self.instance.pk})
 
     def get_formset(
         self, request: HttpRequest, pk: int
@@ -79,10 +78,18 @@ class ParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
             edited.
         """
         self.instance = get_object_or_404(Measurement, id=pk)
-        token = session.get_token(request)
-        token_type = session.get_token_type(request)
-        if not can_token_edit_measurement(token, self.instance, token_type=token_type):
-            raise PermissionDenied(TOKEN_EDIT_PERMISSION_ERROR)
+        self.token: BaseToken = request.token
+        if self.token is None:
+            raise UnauthenticatedError()
+        if not self.token.has_perm("gcampuscore.change_measurement", obj=self.instance):
+            raise TokenEditPermissionError()
+        parameter_perms = [
+            "gcampuscore.add_parameter",
+            "gcampuscore.change_parameter",
+            "gcampuscore.delete_parameter",
+        ]
+        if not self.token.has_perms(parameter_perms):
+            raise TokenEditPermissionError()
         if request.method == "POST":
             return self.formset_class(
                 data=request.POST, files=request.FILES, instance=self.instance
@@ -96,7 +103,7 @@ class ParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
         formset = self.get_formset(request, pk)
         if formset.is_valid():
             check_form_and_request_token(formset.management_form, self.request)
-            return self.form_valid(formset, pk)
+            return self.form_valid(formset)
         else:
             return self.render_to_response(self.get_context_data(formset=formset))
 

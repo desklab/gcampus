@@ -1,23 +1,33 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n static map auth_token %}
+{% load i18n static map %}
 {% block extra_head %}
     {{ block.super }}
     {% load_mapbox_css %}
 {% endblock %}
 {% block main_class %}main-pb-0 main-pt-0{% endblock %}
-{% block navbar_title %}
-    <span>{% translate "1. Metadata" %}</span>
-    {% if request.resolver_match.view_name == "gcampuscore:edit-measurement" %}
-        <a href="{% url "gcampuscore:edit-parameters" pk=object.pk %}" class="text-muted text-decoration-none ms-3">{% translate "2. Measured values" %}</a>
-    {% else %}
-        <span class="text-muted text-decoration-none ms-3">{% translate "2. Measured values" %}</span>
-    {% endif %}
+{% block navbar_title %}{% endblock %}
+{% block navbar_other %}
+    <ul class="nav navbar-nav me-auto">
+        {% trans "1. Metadata" as metadata_title %}
+        {% translate "2. Measured values" as values_title %}
+        <li class="nav-item">
+            <span class="nav-link text-dark">{{ metadata_title }}</span>
+        </li>
+        {% if request.resolver_match.view_name == "gcampuscore:edit-measurement" %}
+            <li class="nav-item">
+                <a href="{% url "gcampuscore:edit-parameters" pk=object.pk %}" class="nav-link link-dark">{{ values_title }}</a>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link link-dark disabled">{{ values_title }}</a>
+            </li>
+        {% endif %}
+    </ul>
 {% endblock %}
 {% block content %}
     <div class="container-fluid px-0">
         <form method="POST" id="measurementForm" class="{% if form.errors %}has-validation{% endif %}">
             {% csrf_token %}
-            {% auth_token %}
             <div class="row">
                 <div class="col-7 px-5">
                     <div class="text-danger">

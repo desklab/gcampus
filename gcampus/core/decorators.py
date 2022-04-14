@@ -14,7 +14,9 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from functools import wraps
+from typing import Optional
 
+from django.contrib.sessions.exceptions import SuspiciousSession
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 
@@ -24,10 +26,7 @@ from gcampus.auth.exceptions import (
     TokenCreatePermissionError,
     UnauthenticatedError,
 )
-from gcampus.auth.models.token import (
-    can_token_create_measurement,
-    can_token_edit_measurement,
-)
+from gcampus.auth.models import BaseToken
 from gcampus.core.models import Measurement
 
 
@@ -39,9 +38,12 @@ def require_permission_create_measurement(f):
             # This assumes that all unauthenticated users do not have
             # the permission to create a measurement.
             raise UnauthenticatedError()
-        token = session.get_token(request)
-        token_type = session.get_token_type(request)
-        if not can_token_create_measurement(token, token_type=token_type):
+        token: Optional[BaseToken] = request.token
+        if not token:
+            raise SuspiciousSession(
+                "Token user is authenticated but 'request.token' is 'None'."
+            )
+        if not token.has_perm("gcampuscore.add_measurement"):
             raise TokenCreatePermissionError()
         return f(request, *args, **kwargs)
 
@@ -56,10 +58,13 @@ def require_permission_edit_measurement(f):
             # This assumes that all unauthenticated users do not have
             # the permission to edit a measurement.
             raise UnauthenticatedError()
-        token = session.get_token(request)
-        token_type = session.get_token_type(request)
+        token: Optional[BaseToken] = request.token
+        if not token:
+            raise SuspiciousSession(
+                "Token user is authenticated but 'request.token' is 'None'."
+            )
         measurement: Measurement = get_object_or_404(Measurement, id=pk)
-        if not can_token_edit_measurement(token, measurement, token_type=token_type):
+        if not token.has_perm("gcampuscore.change_measurement", obj=measurement):
             raise TokenEditPermissionError()
         return f(request, pk, *args, **kwargs)
 

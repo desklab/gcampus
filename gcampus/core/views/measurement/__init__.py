@@ -23,9 +23,8 @@ from django.views.decorators.http import require_POST
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from gcampus.auth.fields.token import check_form_and_request_token
-from gcampus.auth.models.token import can_token_edit_measurement
-from gcampus.auth.session import is_authenticated, get_token, get_token_type
+from gcampus.auth.models.token import BaseToken
+from gcampus.auth.session import is_authenticated
 from gcampus.core.decorators import (
     require_permission_create_measurement,
     require_permission_edit_measurement,
@@ -44,16 +43,15 @@ class MeasurementDetailView(TitleMixin, DetailView):
     template_name = "gcampuscore/sites/detail/measurement_detail.html"
 
     def get_context_data(self, **kwargs):
+        kwargs.setdefault("can_edit", False)
         if is_authenticated(self.request) and self.object:
-            token = get_token(self.request)
-            token_type = get_token_type(self.request)
-            if can_token_edit_measurement(token, self.object, token_type=token_type):
-                # Measurement can be edited by the current user
+            token: BaseToken = self.request.token
+            if token.has_perm("gcampuscore.change_measurement", obj=self.object):
+                # Measurement can be edited by the current token user
                 # Create an empty form from the MeasurementDeleteView
                 # to display a delete button.
                 kwargs["can_edit"] = True
-                delete_form = MeasurementDeleteView.form_class()
-                kwargs["delete_form"] = delete_form
+                kwargs["delete_form"] = MeasurementDeleteView.form_class()
         return super(MeasurementDetailView, self).get_context_data(**kwargs)
 
     def get_title(self) -> str:
@@ -87,7 +85,10 @@ class MeasurementCreateView(TitleMixin, CreateView):
         return super().dispatch(*args, **kwargs)
 
     def form_valid(self, form: MeasurementForm):
-        check_form_and_request_token(form, self.request)
+        instance: Measurement = form.instance
+        instance.token = self.request.token
+        # Calling ``super`` will call ``form.save`` which in turn calls
+        # ``instance.save``.
         return super(MeasurementCreateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -105,19 +106,15 @@ class MeasurementEditView(TitleMixin, UpdateView):
     template_name = MeasurementCreateView.template_name
     next_view_name = MeasurementCreateView.next_view_name
 
-    def form_valid(self, form: MeasurementForm):
-        check_form_and_request_token(form, self.request)
-        return super(MeasurementEditView, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse(self.next_view_name, kwargs={"pk": self.object.id})
-
-    def get_title(self) -> str:
-        return _("Edit Measurement {pk:d} - Information").format(pk=self.object.pk)
-
     @method_decorator(require_permission_edit_measurement)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse(self.next_view_name, kwargs={"pk": self.object.pk})
+
+    def get_title(self) -> str:
+        return _("Edit Measurement {pk:d} - Information").format(pk=self.object.pk)
 
 
 class MeasurementDeleteView(TitleMixin, DeleteView):

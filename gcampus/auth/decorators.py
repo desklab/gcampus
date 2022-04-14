@@ -14,8 +14,9 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from functools import wraps
-from typing import Union, List
+from typing import Union, List, Optional
 
+from django.contrib.sessions.exceptions import SuspiciousSession
 from django.http import HttpRequest
 
 from gcampus.auth import session
@@ -24,7 +25,7 @@ from gcampus.auth.exceptions import (
     TokenPermissionError,
     TokenEmptyError,
 )
-from gcampus.auth.models.token import TokenType
+from gcampus.auth.models.token import TokenType, BaseToken
 from gcampus.core.models.util import EMPTY
 
 
@@ -37,11 +38,11 @@ def require_token_type(token_type: Union[TokenType, List[TokenType]]):
         def wrapper(request: HttpRequest, *args, **kwargs):
             if not session.is_authenticated(request):
                 raise UnauthenticatedError()
-            request_token = session.get_token(request)
+            token: Optional[BaseToken] = request.token
+            if not token:
+                raise SuspiciousSession()
             request_token_type = session.get_token_type(request)
-            if request_token in EMPTY:
-                raise TokenEmptyError()
-            if request_token_type not in token_type:
+            if request_token_type not in token_type or not token.is_active:
                 raise TokenPermissionError()
             return f(request, *args, **kwargs)
 
