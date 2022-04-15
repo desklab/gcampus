@@ -17,9 +17,11 @@ import logging
 from datetime import datetime
 from typing import Optional
 
+from django.contrib import messages
 from django.contrib.sessions.exceptions import SuspiciousSession
 from django.http import HttpRequest
 
+from gcampus.auth.exceptions import ACCESS_KEY_DEACTIVATED_ERROR
 from gcampus.auth.models.token import TokenType, BaseToken, AccessKey, CourseToken
 from gcampus.auth.signals import token_user_logged_in
 
@@ -87,7 +89,7 @@ def _set_token_session(session, token: BaseToken, token_type: TokenType):
     session[AUTHENTICATION_BOOLEAN] = True
 
 
-def get_token_instance(request: HttpRequest) -> BaseToken:
+def get_token_instance(request: HttpRequest) -> Optional[BaseToken]:
     """
 
     :raises ValueError: If no token user is authenticated.
@@ -127,6 +129,12 @@ def get_token_instance(request: HttpRequest) -> BaseToken:
     else:
         # There is no other token type.
         raise NotImplementedError()
+
+    if not instance.is_active:
+        messages.error(request, ACCESS_KEY_DEACTIVATED_ERROR)
+        logout(request)
+        return None
+
     return instance
 
 
