@@ -44,10 +44,19 @@
                         {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
                         {% include "gcampuscore/forms/components/helptext.html" %}
                         {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
-                        {% if email_verified %}
+                        {% if object.email_verified %}
                             <small class="text-success">
                                 {% include "gcampuscore/icons/patch-check.html" %}
                                 {% trans "Email address verified" %}
+                            </small>
+                            <br>
+                        {% endif %}
+                        {% if object.new_email %}
+                            <small class="text-danger">
+                                {% include "gcampuscore/icons/patch-question.html" %}
+                                {% blocktrans trimmed with email=object.new_email %}
+                                    Pending email confirmation: {{ email }}
+                                {% endblocktrans %}
                             </small>
                             <br>
                         {% endif %}
