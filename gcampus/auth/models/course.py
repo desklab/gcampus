@@ -19,7 +19,6 @@ from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.db import models
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.crypto import salted_hmac, constant_time_compare
 from django.utils.http import int_to_base36, base36_to_int
 from django.utils.translation import gettext_lazy as _

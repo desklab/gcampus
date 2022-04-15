@@ -249,6 +249,7 @@ class AccessKeyDeactivationForm(forms.ModelForm):
     """This form is only used to activate or deactivate access keys in
     the course administration.
     """
+
     class Meta:
         model = AccessKey
         fields = ("deactivated",)
