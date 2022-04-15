@@ -183,9 +183,6 @@ class MeasurementListPDF(ListDocumentView):
         kwargs["water_count"] = (
             queryset.only("water").order_by().distinct("water").count()
         )
-        kwargs["accesskey_count"] = (
-            queryset.only("token").order_by().distinct("token").count()
-        )
         kwargs["time_first"] = (
             queryset.only("time").values_list("time", flat=True).earliest("time")
         )

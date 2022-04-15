@@ -78,7 +78,6 @@
                     <div class="w-abs-700 float-left measurementmeta-container">
                         <h3 class="measurementmeta-content color-secondary">{% translate "Data subset" %}</h3>
                         <small class="measurementmeta-heading text-muted">{{ measurement_count }} {% translate "measurements" %}</small><br>
-                        <small class="measurementmeta-heading text-muted">{{ accesskey_count }} {% translate "contributors" %}</small><br>
                         <small class="measurementmeta-heading text-muted">{{ water_count }} {% translate "waters" %}</small><br>
                         <br>
                         <h3 class="measurementmeta-content color-secondary">{% translate "Time range" %}</h3>
@@ -115,16 +114,35 @@
                 <div class="rotated-section-heading color-primary w-abs-800">
                     {% translate "Measurements" %}
                 </div>  
-                <div class="measurementdata-container ">
-                    <table>
-                        {% for measurement in measurements %}
-                            <tr>
-                                <td>{{ measurement.water_name }}</td>
-                                <td>{{ measurement.time|localtime|localize }}</td>
-                                <td>{{ measurement.name }}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
+                <div class="measurementdata-container">
+                    {% for measurement in measurements %}
+                        <div class="measurementdata-item">
+                            <span class="measurementdata-id">
+                                # {{ measurement.pk|stringformat:"05d" }}
+                            </span>
+                            <i class="water-icon {{ measurement.water.flow_type }}"></i>
+                            <span>
+                                {{ measurement.water_name }}
+                            </span>
+                            {% comment %} {% include "gcampuscore/icons/people.html" %} {% endcomment %}
+                            <span class="measurementdata-name">
+                                {{ measurement.name }}
+                            </span>
+                            {% comment %} {% include "gcampuscore/icons/calendar4-event.html" %} {% endcomment %}
+                            <span class="measurementdata-time">
+                                {{ measurement.time|date:"Y-m-d" }}
+                            </span>
+                            <br>
+                            <div class="measurementdata-parameters">
+                                {% for parameter in measurement.parameters.all %}
+                                    {{ parameter.parameter_type.name }}:&nbsp;
+                                    {{ parameter.value }}
+                                    {{ parameter.parameter_type.unit }}
+                                    <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
        </div>

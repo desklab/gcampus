@@ -1,0 +1,16 @@
+.water-icon {
+  display: inline-block;
+  width: .2cm;
+  height: .2cm;
+  border-radius: 50%;
+  background-color: $unknown-water;
+  margin-bottom: 0.04cm;
+
+  &.standing {
+    background-color: $standing-water;
+  }
+
+  &.running {
+    background-color: $running-water;
+  }
+}
