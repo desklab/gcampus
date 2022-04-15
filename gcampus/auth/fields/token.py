@@ -33,7 +33,7 @@ from gcampus.auth.models.token import (
     COURSE_TOKEN_LENGTH,
     ACCESS_KEY_LENGTH,
     ALLOWED_TOKEN_CHARS_RE,
-    TokenType,
+    TokenType, BaseToken,
 )
 from gcampus.auth.widgets import (
     HiddenTokenInput,
@@ -72,18 +72,27 @@ def _exists_validator(
         # Key has invalid length or uses invalid characters. No need to
         # access the database.
         raise ValidationError(TOKEN_INVALID_ERROR)
-    if model.objects.filter(token=value).exists():
-        if not check_deactivated:
-            # All good, no need to check for deactivation
-            return
-        elif model.objects.filter(token=value, deactivated=False).exists():
-            # All good, token is a valid access key and not deactivated
+
+    if not check_deactivated:
+        # When there is no need to check for deactivated keys, the
+        # query can be simplified with ``exists``.
+        if model.objects.filter(token=value).exists():
             return
         else:
-            # Token/key is deactivated: Change error message accordingly
+            raise ValidationError(TOKEN_INVALID_ERROR)
+
+    # As it should be verified that the token is active, the actual
+    # token instance has to be queried and ``is_active`` can be checked.
+    # The ``course`` relation is also selected as the course will be
+    # required for the ``is_active`` lookup (check if email verified).
+    try:
+        instance: BaseToken = model.objects.select_related("course").get(token=value)
+        if instance.is_active:
+            # All good, token is valid and active
+            return
+        else:
             raise ValidationError(deactivation_message)
-    else:
-        # Token/key does not exist
+    except model.DoesNotExist:
         raise ValidationError(TOKEN_INVALID_ERROR)
 
 
