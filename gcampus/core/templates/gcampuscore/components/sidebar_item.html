@@ -1,6 +1,6 @@
 {% load menu %}
 <li class="nav-item{% if class %} {{ class }}{% endif %}">
-    <a href="{% if view_name %}{% url view_name %}{% else %}{{ url }}{% endif %}" class="my-1 nav-link {% active_link view_name yesno="active,text-white" %}" {% aria_current view_name %}>
+    <a href="{% if view_name %}{% url view_name %}{% else %}{{ url }}{% endif %}" class="my-1 nav-link {% active_link view_name other_view_names yesno="active,text-white" %}" {% aria_current view_name %}>
         {% if icon %}
             <span class="sidebar-item-icon">
                 {% include icon %}
