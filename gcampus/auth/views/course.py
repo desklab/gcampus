@@ -43,8 +43,11 @@ from django.views.generic.list import (
 from gcampus.auth import session
 from gcampus.auth.decorators import require_course_token, require_permissions
 from gcampus.auth.exceptions import TokenPermissionError
-from gcampus.auth.forms import CourseForm, GenerateAccessKeysForm, \
-    AccessKeyDeactivationForm
+from gcampus.auth.forms import (
+    CourseForm,
+    GenerateAccessKeysForm,
+    AccessKeyDeactivationForm,
+)
 from gcampus.auth.models import Course
 from gcampus.auth.models.course import (
     default_token_generator,
@@ -69,6 +72,10 @@ class CourseUpdateView(TitleMixin, UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super(CourseUpdateView, self).dispatch(request, *args, **kwargs)
 
+    @method_decorator(require_permissions("gcampusauth.change_course"))
+    def post(self, request, *args, **kwargs):
+        return super(CourseUpdateView, self).post(request, *args, **kwargs)
+
     def form_valid(self, form: CourseForm):
         """If the form is valid, save the associated model."""
         self.object = form.save(request=self.request)
@@ -81,7 +88,6 @@ class CourseUpdateView(TitleMixin, UpdateView):
         return token.course
 
     def get_context_data(self, **kwargs):
-        kwargs.setdefault("email_verified", self.object.email_verified)
         return super(CourseUpdateView, self).get_context_data(**kwargs)
 
 
@@ -102,6 +108,10 @@ class AccessKeyCreateView(
     def dispatch(self, request, *args, **kwargs):
         self.object_list = self.get_queryset().prefetch_related("measurements")
         return super(AccessKeyCreateView, self).dispatch(request, *args, **kwargs)
+
+    @method_decorator(require_permissions("gcampusauth.add_accesskey"))
+    def post(self, request, *args, **kwargs):
+        return super(AccessKeyCreateView, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.save()
@@ -210,7 +220,9 @@ class AccessKeyDeactivationView(UpdateView):
     @method_decorator(require_course_token)
     @method_decorator(require_permissions("gcampusauth.change_accesskey"))
     def dispatch(self, request, pk, *args, **kwargs):
-        return super(AccessKeyDeactivationView, self).dispatch(request, pk, *args, **kwargs)
+        return super(AccessKeyDeactivationView, self).dispatch(
+            request, pk, *args, **kwargs
+        )
 
     def _get_course_token(self) -> CourseToken:
         token: CourseToken = self.request.token
