@@ -17,8 +17,7 @@ __all__ = [
     "CourseUpdateView",
     "EmailConfirmationView",
     "AccessKeyCreateView",
-    "deactivate_access_key",
-    "activate_access_key",
+    "AccessKeyDeactivationView",
 ]
 
 import logging
@@ -26,10 +25,8 @@ from datetime import datetime
 from typing import Optional, List
 
 from django.contrib import messages
-from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.http import HttpResponseRedirect, HttpRequest, Http404
-from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.http import urlsafe_base64_decode
@@ -43,16 +40,17 @@ from django.views.generic.list import (
     MultipleObjectTemplateResponseMixin,
 )
 
-from gcampus.auth import exceptions, session
-from gcampus.auth.decorators import require_course_token
-from gcampus.auth.forms import CourseForm, GenerateAccessKeysForm
+from gcampus.auth import session
+from gcampus.auth.decorators import require_course_token, require_permissions
+from gcampus.auth.exceptions import TokenPermissionError
+from gcampus.auth.forms import CourseForm, GenerateAccessKeysForm, \
+    AccessKeyDeactivationForm
 from gcampus.auth.models import Course
 from gcampus.auth.models.course import (
     default_token_generator,
     EmailConfirmationTokenGenerator,
 )
 from gcampus.auth.models.token import AccessKey, CourseToken, TokenType
-from gcampus.auth.session import get_token
 from gcampus.auth.tasks import send_registration_email
 from gcampus.core.views.base import TitleMixin
 
@@ -203,27 +201,35 @@ class EmailConfirmationView(View):
             raise Http404()
 
 
-@require_POST
-@require_course_token
-def deactivate_access_key(request, pk):
-    access_key = get_object_or_404(AccessKey, pk=pk, deactivated=False)
-    parent_token = get_token(request)
-    if access_key.parent_token.token == parent_token:
-        access_key.deactivated = True
-        access_key.save()
-        return redirect("gcampusauth:course-update")
-    else:
-        raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
+class AccessKeyDeactivationView(UpdateView):
+    model = AccessKey
+    form_class = AccessKeyDeactivationForm
+    success_url = reverse_lazy("gcampusauth:course-access-keys")
 
+    @method_decorator(require_POST)
+    @method_decorator(require_course_token)
+    @method_decorator(require_permissions("gcampusauth.change_accesskey"))
+    def dispatch(self, request, pk, *args, **kwargs):
+        return super(AccessKeyDeactivationView, self).dispatch(request, pk, *args, **kwargs)
 
-@require_POST
-@require_course_token
-def activate_access_key(request, pk):
-    access_key = get_object_or_404(AccessKey, pk=pk, deactivated=True)
-    parent_token = get_token(request)
-    if access_key.parent_token.token == parent_token:
-        access_key.deactivated = False
-        access_key.save()
-        return redirect("gcampusauth:course-update")
-    else:
-        raise PermissionDenied(exceptions.TOKEN_INVALID_ERROR)
+    def _get_course_token(self) -> CourseToken:
+        token: CourseToken = self.request.token
+        if not isinstance(token, CourseToken):
+            raise RuntimeError(
+                "The 'dispatch' method should be decorated to only allow a "
+                "'CourseToken' to access this view."
+            )
+        return token
+
+    def form_valid(self, form):
+        token: CourseToken = self._get_course_token()
+        if not token.has_perm("gcampusauth.change_accesskey", obj=self.object):
+            raise TokenPermissionError()
+        return super(AccessKeyDeactivationView, self).form_valid(form)
+
+    def get_queryset(self):
+        queryset = super(AccessKeyDeactivationView, self).get_queryset()
+        # Limiting the queryset to the current course will automatically
+        # raise a ``Http404`` exception if the user tries to modify an
+        # access key that they do not have the permission to edit.
+        return queryset.filter(course_id=self._get_course_token().course_id).all()

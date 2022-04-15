@@ -118,17 +118,34 @@ class BaseToken(DateModelMixin):
             setattr(self, "_permissions", {f"{ct}.{name}" for ct, name in perms})
         return getattr(self, "_permissions")
 
+    def _check_instance_perm(self, obj) -> bool:
+        if obj is None:
+            return True
+        elif isinstance(obj, BaseToken):
+            # The current object is a base token, i.e. an access
+            # key or course token. This would be the case if
+            # for example a course token edits an access key.
+            return self._check_token_instance_perm(obj)
+        elif isinstance(obj, Measurement):
+            # The current object is a measurement. Check whether
+            # the measurement is part of this course (if user is
+            # course token user) or created by the current
+            # access key.
+            return self._check_measurement_instance_perm(obj)
+        else:
+            raise NotImplementedError()
+
     def _check_measurement_instance_perm(self, measurement: Measurement) -> bool:
+        raise NotImplementedError()
+
+    def _check_token_instance_perm(self, token: "BaseToken") -> bool:
         raise NotImplementedError()
 
     def has_perm(self, perm: str, obj=None):
         if not self.is_active:
             return False  # no permissions for deactivated tokens
         if perm in self.get_all_permissions():
-            if not isinstance(obj, Measurement):
-                return True
-            else:
-                return self._check_measurement_instance_perm(obj)
+            return self._check_instance_perm(obj)
         else:
             return False
 
@@ -137,9 +154,7 @@ class BaseToken(DateModelMixin):
             return False  # no permissions for deactivated tokens
         for perm in perms:
             if perm in self.get_all_permissions():
-                if isinstance(
-                    obj, Measurement
-                ) and not self._check_measurement_instance_perm(obj):
+                if not self._check_instance_perm(obj):
                     return False
                 # Otherwise, permission is granted. Continue...
             else:
@@ -172,6 +187,8 @@ class CourseToken(BaseToken):
     TOKEN_LENGTH = COURSE_TOKEN_LENGTH
     DEFAULT_PERMISSIONS = [
         ("gcampusauth", "change_course"),
+        ("gcampusauth", "add_accesskey"),
+        ("gcampusauth", "change_accesskey"),
         ("gcampuscore", "change_measurement"),
         ("gcampuscore", "add_parameter"),
         ("gcampuscore", "change_parameter"),
@@ -201,11 +218,14 @@ class CourseToken(BaseToken):
     def _check_measurement_instance_perm(self, measurement: Measurement) -> bool:
         return measurement.token.course_id == self.course_id
 
+    def _check_token_instance_perm(self, token: "BaseToken") -> bool:
+        return self.course.access_keys.contains(token)
+
 
 class AccessKey(BaseToken):
     class Meta:
         verbose_name = _("Access key")
-        ordering = ("created_at",)
+        ordering = ("deactivated", "created_at", "token")
 
     type = TokenType.access_key
     TOKEN_LENGTH = ACCESS_KEY_LENGTH

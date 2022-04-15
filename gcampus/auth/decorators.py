@@ -51,6 +51,27 @@ def require_token_type(token_type: Union[TokenType, List[TokenType]]):
     return decorator
 
 
+def require_permissions(permissions: Union[str, List[str]]):
+    if isinstance(permissions, str):
+        permissions = [permissions]
+
+    def decorator(f):
+        @wraps(f)
+        def wrapper(request: HttpRequest, *args, **kwargs):
+            if not session.is_authenticated(request):
+                raise UnauthenticatedError()
+            token: Optional[BaseToken] = request.token
+            if not token:
+                raise SuspiciousSession()
+            if not token.has_perms(permissions):
+                raise TokenPermissionError()
+            return f(request, *args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
 require_access_key = require_token_type([TokenType.access_key])
 require_course_token = require_token_type([TokenType.course_token])
 require_any_token = require_token_type([TokenType.access_key, TokenType.course_token])

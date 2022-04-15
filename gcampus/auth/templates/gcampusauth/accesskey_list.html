@@ -45,55 +45,75 @@
         <h3 class="mt-5 py-4">{% trans "Access keys" %}</h3>
         <div class="list-group list-group-spaced">
             {% for access_key in object_list %}
-                <li class="list-group-item list-group-item-spaced">
-                    <h4>{% displaytoken access_key.token hidden=True toggle=True %}</h4>
-                    <small class="text-secondary">
-                        {% with measurement_count=access_key.measurements.count %}
-                            {% if measurement_count > 0 %}
-                                <a class="text-reset text-decoration-none hover-dark dropdown-toggle"
-                                   href="#" id="measurementsDropdown{{ access_key.pk }}"
-                                   role="button"
-                                   data-bs-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <span>{% include "gcampuscore/icons/geo.html" %}</span>
-                                    {% blocktrans trimmed count count=measurement_count %}
-                                        {{ count }} measurement
-                                    {% plural %}
-                                        {{ count }} measurements
-                                    {% endblocktrans %}
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="measurementsDropdown{{ access_key.pk }}">
-                                    {% for measurement in access_key.measurements.all %}
-                                        <li>
-                                            <a class="dropdown-item" href="{% url "gcampuscore:measurement-detail" pk=measurement.pk %}">
-                                                {{ measurement }}
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                <span>
-                                    <span>{% include "gcampuscore/icons/geo.html" %}</span>
-                                    {% blocktrans trimmed count count=measurement_count %}
-                                        {{ count }} measurement
+                <li class="list-group-item list-group-item-spaced d-inline-flex align-items-center"{% if access_key.deactivated %} style="opacity: 0.6;"{% endif %}>
+                    <span class="fs-4">{% displaytoken access_key.token hidden=True toggle=True %}</span>
+                    <small class="ms-3 text-muted">
+                        {% if access_key.deactivated %}
+                            <span class="d-inline-block bg-danger rounded-circle" style="width: .5em; height: .5em; margin: .1em;"></span>
+                            {% translate "Deactivated" %}
+                        {% else %}
+                            <span class="d-inline-block bg-success rounded-circle" style="width: .5em; height: .5em; margin: .1em;"></span>
+                            {% translate "Active" %}
+                        {% endif %}
+                    </small>
+                    <small class="ms-3 text-muted">
+                            {% with measurement_count=access_key.measurements.count %}
+                                {% if measurement_count > 0 %}
+                                    <a class="text-reset text-decoration-none hover-dark dropdown-toggle"
+                                       href="#" id="measurementsDropdown{{ access_key.pk }}"
+                                       role="button"
+                                       data-bs-toggle="dropdown"
+                                       aria-expanded="false">
+                                        <span>{% include "gcampuscore/icons/geo.html" %}</span>
+                                        {% blocktrans trimmed count count=measurement_count %}
+                                            {{ count }} measurement
                                         {% plural %}
-                                        {{ count }} measurements
-                                    {% endblocktrans %}
-                                </span>
-                            {% endif %}
-                        {% endwith %}
-                        <span data-bs-toggle="tooltip" data-bs-placement="top" {% if access_key.last_login %}title="{{ access_key.last_login|timesince:today }}"{% endif %}>
-                            <span class="ms-4">{% include "gcampuscore/icons/calendar4-event.html" %}</span>
-                            <span class="ms-1 align-middle ">
-                                {% translate "Last login:" %}
-                                {% if access_key.last_login %}
-                                    {{ access_key.last_login|localtime|localize }}
+                                            {{ count }} measurements
+                                        {% endblocktrans %}
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="measurementsDropdown{{ access_key.pk }}">
+                                        {% for measurement in access_key.measurements.all %}
+                                            <li>
+                                                <a class="dropdown-item" href="{% url "gcampuscore:measurement-detail" pk=measurement.pk %}">
+                                                    {{ measurement }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
                                 {% else %}
-                                    {% translate "never" %}
+                                    <span>
+                                        <span>{% include "gcampuscore/icons/geo.html" %}</span>
+                                        {% blocktrans trimmed count count=measurement_count %}
+                                            {{ count }} measurement
+                                            {% plural %}
+                                            {{ count }} measurements
+                                        {% endblocktrans %}
+                                    </span>
                                 {% endif %}
-                            </span>
+                            {% endwith %}
+                        </small>
+                    <small class="ms-3 text-muted"{% if access_key.last_login %} data-bs-toggle="tooltip" data-bs-placement="top" title="{{ access_key.last_login|timesince:today }}"{% endif %}>
+                        <span>{% include "gcampuscore/icons/calendar4-event.html" %}</span>
+                        <span class="ms-1 align-middle ">
+                            {% translate "Last login:" %}
+                            {% if access_key.last_login %}
+                                {{ access_key.last_login|localtime|localize }}
+                            {% else %}
+                                {% translate "never" %}
+                            {% endif %}
                         </span>
                     </small>
+                    <form action="{% url "gcampusauth:course-access-keys-deactivate" pk=access_key.pk %}" method="post" class="ms-auto d-inline align-items-center">
+                        <input hidden name="deactivated" value="{{ access_key.deactivated|yesno:"false,true" }}" />
+                        {% csrf_token %}
+                        <button class="ms-1 btn btn-sm" type="submit">
+                            {% if access_key.deactivated %}
+                                {% translate "Activate" %}
+                            {% else %}
+                                {% translate "Deactivate" %}
+                            {% endif %}
+                        </button>
+                    </form>
                 </li>
             {% endfor %}
         </div>

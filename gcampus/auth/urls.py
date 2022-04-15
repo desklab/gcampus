@@ -24,9 +24,8 @@ from gcampus.auth.views import (
     RegisterFormView,
     CourseUpdateView,
     AccessKeyCreateView,
-    deactivate_access_key,
-    activate_access_key,
     EmailConfirmationView,
+    AccessKeyDeactivationView,
 )
 
 app_name = GCampusAuthAppConfig.label
@@ -44,9 +43,8 @@ urlpatterns = [
     # Course Overview
     path("course/", CourseUpdateView.as_view(), name="course-update"),
     path("course/acceskeys/", AccessKeyCreateView.as_view(), name="course-access-keys"),
+    path("course/acceskeys/<int:pk>/", AccessKeyDeactivationView.as_view(), name="course-access-keys-deactivate"),
     path("email/confirm/<courseidb64>/<token>/", EmailConfirmationView.as_view(), name="email-confirmation"),
-    path("course/tokens/<int:pk>/deactivate", deactivate_access_key, name="deactivate"),
-    path("course/tokens/<int:pk>/activate", activate_access_key, name="activate"),
 ]
 # fmt: on
 # pylint: enable=line-too-long

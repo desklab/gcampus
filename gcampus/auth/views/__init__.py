@@ -17,6 +17,7 @@ __all__ = [
     "RegisterFormView",
     "AccessKeyLoginFormView",
     "CourseTokenLoginFormView",
+    "AccessKeyDeactivationView",
     "logout",
     "permission_denied_error_handler",
     "CourseUpdateView",
@@ -39,9 +40,8 @@ from gcampus.auth.exceptions import (
 from gcampus.auth.views.course import (
     CourseUpdateView,
     AccessKeyCreateView,
-    deactivate_access_key,
-    activate_access_key,
     EmailConfirmationView,
+    AccessKeyDeactivationView,
 )
 from gcampus.auth.views.register import RegisterFormView
 from gcampus.auth.views.token import (

@@ -17,6 +17,7 @@ __all__ = [
     "GenerateAccessKeysForm",
     "CourseForm",
     "RegisterForm",
+    "AccessKeyDeactivationForm",
 ]
 
 import logging
@@ -137,6 +138,12 @@ class GenerateAccessKeysForm(forms.ModelForm):
 
 
 class CourseForm(forms.ModelForm):
+    """The course edit form is used to modify the course data such as
+    its name and the email address associated with the course.
+    When changing the email address, a confirmation email will be sent
+    to the new address.
+    """
+
     email = forms.EmailField(max_length=254, required=True, label=gettext_lazy("email"))
 
     class Meta:
@@ -168,13 +175,19 @@ class CourseForm(forms.ModelForm):
                         "by clicking the link in the email."
                     ).format(new_email=new_email),
                 )
-        super(CourseForm, self).save(commit=commit)
+        return super(CourseForm, self).save(commit=commit)
 
     def send_email(self, email: str, token_generator: EmailConfirmationTokenGenerator):
         send_confirmation_email(email, self.instance, token_generator)
 
 
 class RegisterForm(forms.ModelForm):
+    """The register form creates a new course with
+    :attr:`number_of_access_keys` new access keys. Note that the course
+    will be disabled by default as the email will not be confirmed.
+    Thus, the user also receives a confirmation email.
+    """
+
     number_of_access_keys = forms.IntegerField(
         min_value=1,
         max_value=getattr(settings, "REGISTER_MAX_ACCESS_KEY_NUMBER", 30),
@@ -230,3 +243,12 @@ class RegisterForm(forms.ModelForm):
 
     def send_email(self, email: str, token_generator: EmailConfirmationTokenGenerator):
         send_confirmation_email(email, self.instance, token_generator)
+
+
+class AccessKeyDeactivationForm(forms.ModelForm):
+    """This form is only used to activate or deactivate access keys in
+    the course administration.
+    """
+    class Meta:
+        model = AccessKey
+        fields = ("deactivated",)
