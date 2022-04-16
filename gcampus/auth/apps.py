@@ -25,6 +25,7 @@ class GCampusAuthAppConfig(AppConfig):
     verbose_name = _("GCampus Auth")
 
     def ready(self):
+        from . import recievers  # imported to connect all recievers
         from .models import update_last_token_login
 
         token_user_logged_in.connect(update_last_token_login)

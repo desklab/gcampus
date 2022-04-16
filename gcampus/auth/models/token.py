@@ -16,21 +16,17 @@
 import enum
 import logging
 import re
-from typing import Union, Optional, Tuple, Type, List
+from typing import Union, Tuple, List
 
 from django.conf import settings
 from django.contrib.auth.models import Permission, PermissionManager
 from django.contrib.gis.db import models
-from django.db.models.signals import post_save, post_delete
-from django.dispatch import receiver, Signal
-from django.utils import translation
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.auth.models.course import Course
 from gcampus.core.models import Measurement
 from gcampus.core.models.util import DateModelMixin
-from gcampus.documents.tasks import render_cached_document_view
 
 ALLOWED_TOKEN_CHARS: list = settings.ALLOWED_TOKEN_CHARS
 ALLOWED_TOKEN_CHARS_RE = re.compile(
@@ -50,9 +46,6 @@ class TokenType(enum.Enum):
     access_key = ACCESS_KEY_TYPE
     course_token = COURSE_TOKEN_TYPE
 
-
-# Course updated signals are used to indicate changes
-course_updated = Signal()
 
 logger = logging.getLogger("gcampus.auth.models.token")
 
@@ -263,69 +256,6 @@ class AccessKey(BaseToken):
 
     def _check_measurement_instance_perm(self, measurement: Measurement) -> bool:
         return measurement.token_id == self.pk
-
-
-@receiver(post_save, sender=AccessKey)
-@receiver(post_delete, sender=AccessKey)
-def update_access_key_documents(
-    sender: Type[AccessKey], instance: AccessKey, *args, **kwargs  # noqa
-):
-    """Post-save and -delete signal receiver for access keys
-
-    Access keys are typically displayed in various documents of a
-    given course.
-    A rebuild is required every time an access key changes or is
-    deleted. These changes may include e.g. disabling access keys or
-    changes made in the admin interface.
-
-    :param sender: The sender. This is always the type
-        :class:`AccessKey`
-    :param instance: The modified instance. Used to retrieve the
-        associated course token.
-    :param args: Additional arguments passed by the signal
-    :param kwargs: Additional keyword arguments passed by the signal
-    """
-    if kwargs.get("created", False):
-        logger.info(
-            "Access key has been created, skip updating 'CourseOverviewPDF'. The "
-            "update should be triggered by a signal."
-        )
-        return
-    course: Course = instance.course
-    render_cached_document_view.apply_async(
-        args=(
-            "gcampus.documents.views.CourseOverviewPDF",
-            course.pk,
-            translation.get_language(),
-        ),
-    )
-
-
-@receiver(post_save, sender=CourseToken)
-@receiver(course_updated)
-def update_course(
-    sender,  # noqa
-    instance: CourseToken,
-    created: bool = False,
-    update_fields: Optional[Union[tuple, list]] = None,
-    **kwargs,  # noqa
-):
-    """Post-save signal receiver for course token
-
-    This function will update all documents that may require a rebuild
-    when as the model has changed.
-    """
-    update_fields = () if not update_fields else update_fields
-    if "overview_document" in update_fields and not created:
-        # The overview document has been changed on purpose
-        return
-    render_cached_document_view.apply_async(
-        args=(
-            "gcampus.documents.views.CourseOverviewPDF",
-            instance.pk,
-            translation.get_language(),
-        ),
-    )
 
 
 def get_token_length(token_type: TokenType):

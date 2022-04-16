@@ -38,7 +38,8 @@ from gcampus.auth.models.course import (
     default_token_generator,
     EmailConfirmationTokenGenerator,
 )
-from gcampus.auth.models.token import update_access_key_documents, course_updated
+from gcampus.auth.models.token import update_access_key_documents
+from gcampus.auth.signals import course_updated
 from gcampus.auth.tasks import send_email_confirmation_email
 
 logger = logging.getLogger("gcampus.auth.forms.course")
