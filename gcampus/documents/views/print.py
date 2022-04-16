@@ -51,10 +51,10 @@ class CourseOverviewPDF(CachedDocumentView):
         return super(CourseOverviewPDF, self).dispatch(request, *args, **kwargs)
 
     def get_filename(self):
-        if self.object.token_name in EMPTY:
+        if self.object.name in EMPTY:
             return self.filename
         return gettext_lazy("gewaessercampus-overview-{course_name:s}.pdf").format(
-            course_name=slugify(self.object.token_name)
+            course_name=slugify(self.object.name)
         )
 
 
@@ -72,11 +72,11 @@ class AccessKeyCombinedPDF(SingleObjectDocumentView):
         return super(AccessKeyCombinedPDF, self).dispatch(request, *args, **kwargs)
 
     def get_filename(self):
-        if self.object.token_name in EMPTY:
+        if self.object.name in EMPTY:
             return self.filename
         return gettext_lazy(
             "gewaessercampus-accesskey-combined-{course_name:s}.pdf"
-        ).format(course_name=slugify(self.object.token_name))
+        ).format(course_name=slugify(self.object.name))
 
 
 class MeasurementDetailPDF(SingleObjectDocumentView):

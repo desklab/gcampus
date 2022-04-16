@@ -59,6 +59,15 @@ class Course(DateModelMixin):
         null=True,
     )
 
+    def __str__(self):
+        if self.name:
+            if self.school_name:
+                return _("{name!s} ({school_name!s}, course {pk:d})").format(
+                    name=self.name, school_name=self.school_name, pk=self.pk
+                )
+            return _("{name!s} (course {pk})").format(name=self.name, pk=self.pk)
+        return _("Course {pk}").format(pk=self.pk)
+
 
 class EmailConfirmationTokenGenerator:
     """Based on Django's password reset token generator

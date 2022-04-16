@@ -15,7 +15,7 @@ def create_courses(apps, schema_editor):
                 school_name=course_token.school_name,
                 teacher_name=course_token.token_name,
                 teacher_email=course_token.token_name,
-                overview_document=course_token.token_name,
+                overview_document=course_token.overview_document,
             )
             course_token.course = course
             course_token.save()
