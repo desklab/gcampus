@@ -81,7 +81,7 @@ class LoginTestMixin:
         if isinstance(token, CourseToken):
             url = reverse("gcampusauth:login-course-token")
         elif isinstance(token, AccessKey):
-            url = reverse("gcampusauth:login-access_key")
+            url = reverse("gcampusauth:login-access-key")
         else:
             raise NotImplementedError()
         return self.client.post(url, dict(token=token.token))

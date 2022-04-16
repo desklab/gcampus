@@ -14,21 +14,37 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from datetime import datetime
+from unittest.mock import patch
 
+from django.contrib.auth.models import Permission
 from django.forms.utils import ErrorList
 from django.urls import reverse
 
 from gcampus.auth.exceptions import TOKEN_EMPTY_ERROR, TOKEN_INVALID_ERROR
 from gcampus.auth.fields.token import HIDDEN_TOKEN_FIELD_NAME
-from gcampus.core.tests.mixins import WaterTestMixin, FormTestMixin, TokenTestMixin
+from gcampus.core.forms.measurement import MeasurementForm
+from gcampus.core.tests.mixins import (
+    WaterTestMixin,
+    FormTestMixin,
+    TokenTestMixin,
+    LoginTestMixin,
+)
 from gcampus.tasks.tests.utils import BaseMockTaskTest
 
 
+class MockMeasurement:
+    pk = 42
+    id = pk
+
+
 class MeasurementViewTest(
-    TokenTestMixin, WaterTestMixin, FormTestMixin, BaseMockTaskTest
+    LoginTestMixin, TokenTestMixin, WaterTestMixin, FormTestMixin, BaseMockTaskTest
 ):
     today = datetime.today()
     form_data_stub: dict = {
+        "name": "",
+        "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
+        "comment": "",
         "time_0_0": today.day,
         "time_0_1": today.month,
         "time_0_2": today.year,
@@ -36,134 +52,56 @@ class MeasurementViewTest(
         "time_1_1": today.minute,
     }
 
-    def login(self, token):
-        login_response = self.client.post(
-            reverse("gcampusauth:login-access-key"),
-            {"token": token},
-        )
-        return login_response
-
-    def test_valid_token(self):
-        form_data: dict = {
-            "name": "",
-            "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
-            "comment": "",
-            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
-            "water": self.water.pk,
-        }
-
-        form_data.update(self.form_data_stub)
-
-        login_response = self.login(self.tokens[0].token)
-        self.assertEqual(login_response.status_code, 302)
-
-        response = self.client.post(reverse("gcampuscore:add-measurement"), form_data)
-        # 302 means the redirect was successful
-        self.assertEqual(response.status_code, 302)
-
-    def test_invalid_token(self):
-        form_data: dict = {
-            "name": "",
-            "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
-            "comment": "",
-            HIDDEN_TOKEN_FIELD_NAME: "00000000",
-            "water": self.water.pk,
-        }
-        form_data.update(self.form_data_stub)
-        login_response = self.login(self.tokens[0].token)
-        self.assertEqual(login_response.status_code, 302)
-
-        response = self.client.post(reverse("gcampuscore:add-measurement"), form_data)
-        errors = response.context["form"].errors
-        self.assertEqual(response.status_code, 200)
-        self.assertFalse(response.context["form"].is_valid())
-        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, errors)
-        self.assertEqual(len(errors), 1)
-        self.assertEqual(
-            errors[HIDDEN_TOKEN_FIELD_NAME],
-            ErrorList([TOKEN_INVALID_ERROR]),
-        )
-
     def test_course_token(self):
-        form_data: dict = {
-            "name": "",
-            "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
-            "comment": "",
-            HIDDEN_TOKEN_FIELD_NAME: self.course_token,
-            "water": self.water.pk,
-        }
+        form_data: dict = {"water": self.water.pk}
         form_data.update(self.form_data_stub)
-        login_response = self.login(self.tokens[0].token)
+        login_response = self.login(self.course_token)
         self.assertEqual(login_response.status_code, 302)
-
-        response = self.client.post(reverse("gcampuscore:add-measurement"), form_data)
-        errors = response.context["form"].errors
-        self.assertEqual(response.status_code, 200)
-        self.assertFalse(response.context["form"].is_valid())
-        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, errors)
-        self.assertEqual(len(errors), 1)
-        self.assertEqual(
-            errors[HIDDEN_TOKEN_FIELD_NAME],
-            ErrorList([TOKEN_INVALID_ERROR]),
-        )
-
-    def test_valid_extended_token(self):
-        form_data: dict = {
-            "name": "",
-            "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
-            "comment": "",
-            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token + "0",
-            "water": self.water.pk,
-        }
-        form_data.update(self.form_data_stub)
-        login_response = self.login(self.tokens[0].token)
-        self.assertEqual(login_response.status_code, 302)
-
-        response = self.client.post(reverse("gcampuscore:add-measurement"), form_data)
-        errors = response.context["form"].errors
-
-        self.assertEqual(response.status_code, 200)
-        self.assertFalse(response.context["form"].is_valid())
-        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, errors)
-        self.assertEqual(len(errors), 1)
-        self.assertEqual(
-            errors[HIDDEN_TOKEN_FIELD_NAME],
-            ErrorList([TOKEN_INVALID_ERROR]),
-        )
+        with patch.object(MeasurementForm, "save", return_value=MockMeasurement) as m:
+            response = self.client.post(
+                reverse("gcampuscore:add-measurement"), form_data
+            )
+            # 403 means no permission
+            self.assertEqual(response.status_code, 403)
+            m.assert_not_called()
 
     def test_not_logged_in(self):
-        form_data: dict = {
-            "name": "",
-            "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
-            "comment": "",
-            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
-            "water": self.water.pk,
-        }
+        form_data: dict = {"water": self.water.pk}
         form_data.update(self.form_data_stub)
+        with patch.object(MeasurementForm, "save", return_value=MockMeasurement) as m:
+            response = self.client.post(
+                reverse("gcampuscore:add-measurement"), form_data
+            )
+            # 403 means no permission
+            self.assertEqual(response.status_code, 403)
+            m.assert_not_called()
 
-        response = self.client.post(reverse("gcampuscore:add-measurement"), form_data)
-        # 403 means no permission
-        self.assertEqual(response.status_code, 403)
-
-    def test_no_token(self):
-        form_data: dict = {
-            "name": "",
-            "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
-            "comment": "",
-            "water": self.water.pk,
-        }
+    def test_access_key(self):
+        form_data: dict = {"water": self.water.pk}
         form_data.update(self.form_data_stub)
-        login_response = self.login(self.tokens[0].token)
+        login_response = self.login(self.tokens[0])
         self.assertEqual(login_response.status_code, 302)
+        with patch.object(MeasurementForm, "save", return_value=MockMeasurement) as m:
+            response = self.client.post(
+                reverse("gcampuscore:add-measurement"), form_data
+            )
+            self.assertEqual(response.status_code, 302)
+            m.assert_called_once()
 
-        response = self.client.post(reverse("gcampuscore:add-measurement"), form_data)
-        errors = response.context["form"].errors
-
-        self.assertEqual(response.status_code, 200)
-        self.assertFalse(response.context["form"].is_valid())
-        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, errors)
-        self.assertEqual(len(errors), 1)
-        self.assertEqual(
-            errors[HIDDEN_TOKEN_FIELD_NAME],
-            ErrorList([TOKEN_EMPTY_ERROR]),
+    def test_no_permission(self):
+        perm = Permission.objects.get(
+            content_type__app_label="gcampuscore", codename="add_measurement"
         )
+        token = self.tokens[0]
+        login_response = self.login(self.tokens[0])
+        self.assertEqual(login_response.status_code, 302)
+        token.permissions.remove(perm)
+        token.save()
+        form_data: dict = {"water": self.water.pk}
+        form_data.update(self.form_data_stub)
+        with patch.object(MeasurementForm, "save", return_value=MockMeasurement) as m:
+            response = self.client.post(
+                reverse("gcampuscore:add-measurement"), form_data
+            )
+            self.assertEqual(response.status_code, 403)
+            m.assert_not_called()
