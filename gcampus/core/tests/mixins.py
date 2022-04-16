@@ -44,7 +44,7 @@ class FormTestMixin:
 class TokenTestMixin:
     ACCESS_KEY_COUNT: int = 5
     course: Course
-    parent_token: CourseToken
+    course_token: CourseToken
     tokens: List[AccessKey]
 
     def setUp(self) -> None:
@@ -57,7 +57,7 @@ class TokenTestMixin:
         )
         with transaction.atomic():
             self.course.save()
-            self.parent_token = CourseToken.objects.create_token(self.course)
+            self.course_token = CourseToken.objects.create_token(self.course)
             self.tokens = []
             for i in range(self.ACCESS_KEY_COUNT):
                 self.tokens.append(AccessKey.objects.create_token(self.course))

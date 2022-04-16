@@ -24,10 +24,12 @@ from gcampus.auth.exceptions import (
     TOKEN_INVALID_ERROR,
     COURSE_TOKEN_DEACTIVATED_ERROR,
     ACCESS_KEY_DEACTIVATED_ERROR,
+    TokenPermissionError,
 )
 from gcampus.auth.fields.token import HyphenatedTokenField
 from gcampus.auth.forms.token import TOKEN_FIELD_NAME
 from gcampus.auth.models.token import COURSE_TOKEN_LENGTH, ACCESS_KEY_LENGTH
+from gcampus.auth.session import AUTHENTICATION_BOOLEAN
 from gcampus.core.tests.mixins import FormTestMixin, TokenTestMixin
 from gcampus.tasks.tests.utils import BaseMockTaskTest
 
@@ -88,12 +90,12 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
         self.check_form_errors(login_response, error_dict)
 
     def test_course_token(self):
-        token = self.parent_token.token
+        token = self.course_token.token
         login_response = self.login(HyphenatedTokenField.hyphenate(token, 4))
         self.assertEqual(login_response.status_code, 200)
         error_message_max_len = MaxLengthValidator.message % {
             "limit_value": ACCESS_KEY_LENGTH,
-            "show_value": len(self.parent_token.token),
+            "show_value": len(self.course_token.token),
         }
         error_dict = {TOKEN_FIELD_NAME: [error_message_max_len, TOKEN_INVALID_ERROR]}
         self.check_form_errors(login_response, error_dict)
@@ -101,15 +103,17 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
     def test_deactivated_token(self):
         _token = self.tokens[-1]
         _token.deactivated = True
-        try:
-            _token.save()
-            login_response = self.login(HyphenatedTokenField.hyphenate(_token.token, 4))
-            self.assertEqual(login_response.status_code, 200)
-            error_dict = {TOKEN_FIELD_NAME: [ACCESS_KEY_DEACTIVATED_ERROR]}
-            self.check_form_errors(login_response, error_dict)
-        finally:
-            _token.deactivated = False
-            _token.save()
+        _token.save()
+        login_response = self.login(HyphenatedTokenField.hyphenate(_token.token, 4))
+        self.assertEqual(login_response.status_code, 200)
+        error_dict = {TOKEN_FIELD_NAME: [ACCESS_KEY_DEACTIVATED_ERROR]}
+        self.check_form_errors(login_response, error_dict)
+
+    def test_unconfirmed_email_course(self):
+        self.course.email_verified = False
+        self.course.save()
+        login_response = self.login(self.tokens[0].token)
+        self.assertEqual(login_response.status_code, 200)
 
     def test_empty_token(self):
         login_response = self.login("-")
@@ -143,7 +147,7 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
         return "gcampusauth:login-course-token"
 
     def test_valid_token(self):
-        login_response = self.login(self.parent_token.token)
+        login_response = self.login(self.course_token.token)
         self.assertEqual(login_response.status_code, 302)
 
     def test_invalid_token(self):
@@ -156,7 +160,7 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
         )
 
     def test_valid_extended_token(self):
-        token = self.parent_token.token
+        token = self.course_token.token
         token_hyphenated = HyphenatedTokenField.hyphenate(token, 4)
         login_response = self.login(f"{token_hyphenated}-0")
         self.assertEqual(login_response.status_code, 200)
@@ -179,16 +183,12 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
         self.check_form_errors(login_response, error_dict)
 
     def test_deactivated_token(self):
-        self.parent_token.deactivated = True
-        try:
-            self.parent_token.save()
-            login_response = self.login(self.parent_token.token)
-            self.assertEqual(login_response.status_code, 200)
-            error_dict = {TOKEN_FIELD_NAME: [COURSE_TOKEN_DEACTIVATED_ERROR]}
-            self.check_form_errors(login_response, error_dict)
-        finally:
-            self.parent_token.deactivated = False
-            self.parent_token.save()
+        self.course_token.deactivated = True
+        self.course_token.save()
+        login_response = self.login(self.course_token.token)
+        self.assertEqual(login_response.status_code, 200)
+        error_dict = {TOKEN_FIELD_NAME: [COURSE_TOKEN_DEACTIVATED_ERROR]}
+        self.check_form_errors(login_response, error_dict)
 
     def test_empty_token(self):
         login_response = self.login("---")
@@ -197,6 +197,24 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
             login_response,
             {TOKEN_FIELD_NAME: [Field.default_error_messages["required"]]},
         )
+
+    def test_unconfirmed_email_course(self):
+        self.course.email_verified = False
+        self.course.save()
+        login_response = self.login(self.course_token.token)
+        self.assertEqual(login_response.status_code, 200)
+
+    def test_logged_in_deactivated(self):
+        login_response = self.login(self.course_token.token)
+        self.assertEqual(login_response.status_code, 302)
+        self.assertTrue(self.client.session[AUTHENTICATION_BOOLEAN])
+        response = self.client.get(reverse("gcampusauth:course-update"))
+        self.assertEqual(response.status_code, 200)
+        self.course_token.deactivated = True
+        self.course_token.save()
+        response = self.client.get(reverse("gcampusauth:course-update"))
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(self.client.session[AUTHENTICATION_BOOLEAN])
 
     def test_missing_token_field(self):
         login_response = self.login("")

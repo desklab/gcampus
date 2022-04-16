@@ -89,7 +89,7 @@ class MeasurementViewTest(
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            HIDDEN_TOKEN_FIELD_NAME: self.parent_token,
+            HIDDEN_TOKEN_FIELD_NAME: self.course_token,
             "water": self.water.pk,
         }
         form_data.update(self.form_data_stub)

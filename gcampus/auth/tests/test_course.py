@@ -12,6 +12,7 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 from typing import Tuple, List
 from unittest.mock import patch
 
@@ -26,7 +27,7 @@ from gcampus.documents.tasks import render_cached_document_view
 from gcampus.tasks.tests.utils import BaseMockTaskTest
 
 
-class CourseTokenTasksTest(LoginTestMixin, BaseMockTaskTest):
+class CourseTest(LoginTestMixin, BaseMockTaskTest):
 
     DEFAULT_COURSE_DATA: dict = {
         "name": "GCampus Test Case",
