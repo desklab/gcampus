@@ -66,13 +66,6 @@ class MeasurementMapView(TitleMixin, ListView):
     title = "GewässerCampus"
     template_name = "gcampuscore/sites/mapview.html"
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["filter"] = MeasurementFilterSet(
-            self.request.GET, queryset=self.get_queryset()
-        )
-        return context
-
 
 class MeasurementCreateView(TitleMixin, CreateView):
     form_class = MeasurementForm
@@ -97,7 +90,7 @@ class MeasurementCreateView(TitleMixin, CreateView):
         return super(MeasurementCreateView, self).get_context_data(**kwargs)
 
     def get_success_url(self):
-        return reverse(self.next_view_name, kwargs={"pk": self.object.id})
+        return reverse(self.next_view_name, kwargs={"pk": self.object.pk})
 
 
 class MeasurementEditView(TitleMixin, UpdateView):

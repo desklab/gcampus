@@ -41,83 +41,11 @@ class MeasurementFormTest(
         "time_1_1": today.minute,
     }
 
-    def test_no_token(self):
-        """Submitting a form without providing a valid token"""
-        form_data: dict = {
-            "name": "",
-            "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
-            "comment": "",
-            "water": self.water,
-        }
-        form_data.update(self.form_data_stub)
-        form = MeasurementForm(data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, form.errors)
-        self.assertEqual(len(form.errors), 1)
-        self.assertEqual(
-            form.errors[HIDDEN_TOKEN_FIELD_NAME], ErrorList([TOKEN_EMPTY_ERROR])
-        )
-
-    def test_valid_token(self):
-        form_data: dict = {
-            "name": "",
-            "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
-            "comment": "",
-            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
-            "water": self.water,
-        }
-        form_data.update(self.form_data_stub)
-        form = MeasurementForm(data=form_data)
-        self.assertTrue(form.is_valid())
-
-    def test_invalid_token(self):
-        form_data: dict = {
-            "name": "",
-            "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
-            "comment": "",
-            HIDDEN_TOKEN_FIELD_NAME: "This Token Should Definitely Be Invalid",
-            "water": self.water,
-        }
-        form_data.update(self.form_data_stub)
-        form = MeasurementForm(data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertIn(HIDDEN_TOKEN_FIELD_NAME, form.errors)
-        self.assertEqual(len(form.errors), 1)
-        self.assertEqual(
-            form.errors[HIDDEN_TOKEN_FIELD_NAME], ErrorList([TOKEN_INVALID_ERROR])
-        )
-
-    def test_deactivated_token(self):
-        token = self.tokens[0]
-        token.deactivated = True
-        token.save()
-        try:
-            form_data: dict = {
-                "name": "",
-                "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
-                "comment": "",
-                HIDDEN_TOKEN_FIELD_NAME: token.token,
-                "water": self.water,
-            }
-            form_data.update(self.form_data_stub)
-            form = MeasurementForm(data=form_data)
-            self.assertFalse(form.is_valid())
-            self.assertIn(HIDDEN_TOKEN_FIELD_NAME, form.errors)
-            self.assertEqual(len(form.errors), 1)
-            self.assertEqual(
-                form.errors[HIDDEN_TOKEN_FIELD_NAME],
-                ErrorList([ACCESS_KEY_DEACTIVATED_ERROR]),
-            )
-        finally:
-            token.deactivated = False
-            token.save()
-
     def test_missing_water(self):
         form_data: dict = {
             "name": "",
             "location": '{"type":"Point","coordinates":[8.684231,49.411955]}',
             "comment": "",
-            HIDDEN_TOKEN_FIELD_NAME: self.tokens[0].token,
         }
         form_data.update(self.form_data_stub)
         form = MeasurementForm(data=form_data)
