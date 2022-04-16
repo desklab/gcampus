@@ -520,18 +520,45 @@
     }
   },
   {
+    "model": "gcampusauth.course",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-04-08T12:24:12.976Z",
+      "updated_at": "2022-04-15T21:14:46.221Z",
+      "name": "Fortbildung 2022",
+      "school_name": "desklab",
+      "teacher_name": "Fortbildung 2022",
+      "teacher_email": "fortbildung@localhost",
+      "email_verified": true,
+      "new_email": null,
+      "overview_document": null
+    }
+  },
+  {
+    "model": "gcampusauth.course",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-04-08T12:24:12.986Z",
+      "updated_at": "2022-04-15T22:07:15.581Z",
+      "name": "Testteam",
+      "school_name": "desklab",
+      "teacher_name": "Testteam",
+      "teacher_email": "test@localhost",
+      "email_verified": true,
+      "new_email": null,
+      "overview_document": null
+    }
+  },
+  {
     "model": "gcampusauth.coursetoken",
     "pk": 1,
     "fields": {
       "created_at": "2022-03-29T11:11:33.877Z",
-      "updated_at": "2022-03-29T11:12:00.612Z",
-      "token": "3GGABC5DN1E9",
-      "token_name": "Fortbildung 2022",
+      "updated_at": "2022-04-15T10:18:09.554Z",
       "deactivated": false,
-      "school_name": "desklab",
-      "teacher_name": "Axel Schlindwein",
-      "teacher_email": "a.schlindwein@desk-lab.de",
-      "overview_document": ""
+      "last_login": "2022-04-15T21:04:33.095Z",
+      "token": "3GGABC5DN1E9",
+      "course": 1
     }
   },
   {
@@ -539,14 +566,11 @@
     "pk": 2,
     "fields": {
       "created_at": "2022-03-29T11:35:42.757Z",
-      "updated_at": "2022-03-29T11:35:42.757Z",
-      "token": "HZ7X7M29AC1R",
-      "token_name": "Testteam",
+      "updated_at": "2022-04-15T22:07:12.065Z",
       "deactivated": false,
-      "school_name": "desklab",
-      "teacher_name": "Axel",
-      "teacher_email": "a.schlindwein@desk-lab.de",
-      "overview_document": ""
+      "last_login": "2022-04-16T15:47:57.186Z",
+      "token": "HZ7X7M29AC1R",
+      "course": 2
     }
   },
   {
@@ -554,10 +578,11 @@
     "pk": 1,
     "fields": {
       "created_at": "2022-03-29T11:11:33.940Z",
-      "updated_at": "2022-03-29T11:11:33.940Z",
+      "updated_at": "2022-04-15T10:18:09.561Z",
+      "deactivated": false,
+      "last_login": null,
       "token": "T715N8W3",
-      "parent_token": 1,
-      "deactivated": false
+      "course": 1
     }
   },
   {
@@ -565,10 +590,11 @@
     "pk": 2,
     "fields": {
       "created_at": "2022-03-29T11:11:33.944Z",
-      "updated_at": "2022-03-29T11:11:33.944Z",
+      "updated_at": "2022-04-15T10:18:09.571Z",
+      "deactivated": false,
+      "last_login": null,
       "token": "TZR924CJ",
-      "parent_token": 1,
-      "deactivated": false
+      "course": 1
     }
   },
   {
@@ -576,10 +602,11 @@
     "pk": 3,
     "fields": {
       "created_at": "2022-03-29T11:11:33.948Z",
-      "updated_at": "2022-03-29T11:11:33.948Z",
+      "updated_at": "2022-04-15T10:18:09.578Z",
+      "deactivated": false,
+      "last_login": null,
       "token": "P13SA8M7",
-      "parent_token": 1,
-      "deactivated": false
+      "course": 1
     }
   },
   {
@@ -587,10 +614,11 @@
     "pk": 4,
     "fields": {
       "created_at": "2022-03-29T11:11:33.951Z",
-      "updated_at": "2022-03-29T11:11:33.951Z",
+      "updated_at": "2022-04-15T10:18:09.584Z",
+      "deactivated": false,
+      "last_login": null,
       "token": "98K74STJ",
-      "parent_token": 1,
-      "deactivated": false
+      "course": 1
     }
   },
   {
@@ -598,10 +626,11 @@
     "pk": 5,
     "fields": {
       "created_at": "2022-03-29T11:11:33.954Z",
-      "updated_at": "2022-03-29T11:31:31.445Z",
+      "updated_at": "2022-04-15T10:18:09.591Z",
+      "deactivated": true,
+      "last_login": null,
       "token": "3161C6MP",
-      "parent_token": 1,
-      "deactivated": true
+      "course": 1
     }
   },
   {
@@ -609,10 +638,11 @@
     "pk": 6,
     "fields": {
       "created_at": "2022-03-29T11:11:33.957Z",
-      "updated_at": "2022-03-29T11:31:45.876Z",
+      "updated_at": "2022-04-15T10:18:09.597Z",
+      "deactivated": true,
+      "last_login": null,
       "token": "NLQQ9JFP",
-      "parent_token": 1,
-      "deactivated": true
+      "course": 1
     }
   },
   {
@@ -620,10 +650,11 @@
     "pk": 7,
     "fields": {
       "created_at": "2022-03-29T11:11:33.959Z",
-      "updated_at": "2022-03-29T11:11:33.959Z",
+      "updated_at": "2022-04-15T10:18:09.604Z",
+      "deactivated": false,
+      "last_login": null,
       "token": "CWRNS7E2",
-      "parent_token": 1,
-      "deactivated": false
+      "course": 1
     }
   },
   {
@@ -631,10 +662,11 @@
     "pk": 8,
     "fields": {
       "created_at": "2022-03-29T11:11:33.962Z",
-      "updated_at": "2022-03-29T11:11:33.962Z",
+      "updated_at": "2022-04-15T10:18:09.610Z",
+      "deactivated": false,
+      "last_login": null,
       "token": "EEFRKFNX",
-      "parent_token": 1,
-      "deactivated": false
+      "course": 1
     }
   },
   {
@@ -642,10 +674,11 @@
     "pk": 9,
     "fields": {
       "created_at": "2022-03-29T11:11:33.965Z",
-      "updated_at": "2022-03-29T11:11:33.965Z",
+      "updated_at": "2022-04-15T10:18:09.617Z",
+      "deactivated": false,
+      "last_login": null,
       "token": "AFPKXLWF",
-      "parent_token": 1,
-      "deactivated": false
+      "course": 1
     }
   },
   {
@@ -653,10 +686,11 @@
     "pk": 10,
     "fields": {
       "created_at": "2022-03-29T11:11:33.967Z",
-      "updated_at": "2022-03-29T11:11:33.967Z",
+      "updated_at": "2022-04-15T10:18:09.623Z",
+      "deactivated": false,
+      "last_login": null,
       "token": "DT8CCMBH",
-      "parent_token": 1,
-      "deactivated": false
+      "course": 1
     }
   },
   {
@@ -664,10 +698,11 @@
     "pk": 11,
     "fields": {
       "created_at": "2022-03-29T11:35:42.778Z",
-      "updated_at": "2022-03-29T11:35:42.778Z",
+      "updated_at": "2022-04-15T22:05:24.659Z",
+      "deactivated": false,
+      "last_login": null,
       "token": "8ZZRC9ZZ",
-      "parent_token": 2,
-      "deactivated": false
+      "course": 2
     }
   },
   {
@@ -675,10 +710,11 @@
     "pk": 12,
     "fields": {
       "created_at": "2022-03-29T11:35:42.783Z",
-      "updated_at": "2022-03-29T11:35:42.783Z",
+      "updated_at": "2022-04-15T10:18:09.636Z",
+      "deactivated": false,
+      "last_login": null,
       "token": "BQP76SZR",
-      "parent_token": 2,
-      "deactivated": false
+      "course": 2
     }
   },
   {
@@ -686,10 +722,11 @@
     "pk": 13,
     "fields": {
       "created_at": "2022-03-29T11:35:42.787Z",
-      "updated_at": "2022-03-29T11:35:42.787Z",
+      "updated_at": "2022-04-15T10:18:09.642Z",
+      "deactivated": false,
+      "last_login": null,
       "token": "WQSYHXAS",
-      "parent_token": 2,
-      "deactivated": false
+      "course": 2
     }
   },
   {
@@ -697,10 +734,11 @@
     "pk": 14,
     "fields": {
       "created_at": "2022-03-29T11:35:42.792Z",
-      "updated_at": "2022-03-29T11:35:42.792Z",
+      "updated_at": "2022-04-15T10:18:09.649Z",
+      "deactivated": false,
+      "last_login": null,
       "token": "NJBW3D2D",
-      "parent_token": 2,
-      "deactivated": false
+      "course": 2
     }
   },
   {
@@ -708,10 +746,71 @@
     "pk": 15,
     "fields": {
       "created_at": "2022-03-29T11:35:42.795Z",
-      "updated_at": "2022-03-29T11:35:42.795Z",
+      "updated_at": "2022-04-15T10:18:09.655Z",
+      "deactivated": false,
+      "last_login": null,
       "token": "H89WRKDH",
-      "parent_token": 2,
-      "deactivated": false
+      "course": 2
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 46,
+    "fields": {
+      "created_at": "2022-04-15T21:15:32.359Z",
+      "updated_at": "2022-04-15T21:15:32.359Z",
+      "deactivated": false,
+      "last_login": null,
+      "token": "CEGPH4WX",
+      "course": 2
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 47,
+    "fields": {
+      "created_at": "2022-04-15T21:15:36.672Z",
+      "updated_at": "2022-04-15T21:15:36.672Z",
+      "deactivated": false,
+      "last_login": null,
+      "token": "JQFLXX8S",
+      "course": 2
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 48,
+    "fields": {
+      "created_at": "2022-04-15T22:00:44.705Z",
+      "updated_at": "2022-04-15T22:00:44.705Z",
+      "deactivated": false,
+      "last_login": null,
+      "token": "KMHA41TA",
+      "course": 2
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 49,
+    "fields": {
+      "created_at": "2022-04-15T22:00:54.946Z",
+      "updated_at": "2022-04-15T22:02:13.111Z",
+      "deactivated": true,
+      "last_login": null,
+      "token": "4ML18P7K",
+      "course": 2
+    }
+  },
+  {
+    "model": "gcampusauth.accesskey",
+    "pk": 50,
+    "fields": {
+      "created_at": "2022-04-15T22:01:32.154Z",
+      "updated_at": "2022-04-15T22:06:03.332Z",
+      "deactivated": true,
+      "last_login": null,
+      "token": "LH2WCZDE",
+      "course": 2
     }
   },
   {
