@@ -17,8 +17,9 @@ from typing import List
 from django.contrib.gis.geos import Point
 from django.db import transaction
 from django.forms.utils import ErrorList
+from django.urls import reverse
 
-from gcampus.auth.models import CourseToken, AccessKey, Course
+from gcampus.auth.models import CourseToken, AccessKey, Course, BaseToken
 from gcampus.core.models import Water
 from gcampus.core.models.water import WaterType
 
@@ -52,15 +53,14 @@ class TokenTestMixin:
             school_name="GCampus Test Case",
             teacher_name="GCampus Testing",
             teacher_email="testcase@gewaessercampus.de",
+            email_verified=True,
         )
-        self.parent_token = CourseToken(course=self.course)
-        self.tokens = []
         with transaction.atomic():
-            self.parent_token.save()
+            self.course.save()
+            self.parent_token = CourseToken.objects.create_token(self.course)
+            self.tokens = []
             for i in range(self.ACCESS_KEY_COUNT):
-                _token = AccessKey(parent_token=self.parent_token)
-                _token.save()
-                self.tokens.append(_token)
+                self.tokens.append(AccessKey.objects.create_token(self.course))
 
 
 class WaterTestMixin:
@@ -74,3 +74,14 @@ class WaterTestMixin:
             water_type=WaterType.RIVER,
         )
         self.water.save()
+
+
+class LoginTestMixin:
+    def login(self, token: BaseToken):
+        if isinstance(token, CourseToken):
+            url = reverse("gcampusauth:login-course-token")
+        elif isinstance(token, AccessKey):
+            url = reverse("gcampusauth:login-access_key")
+        else:
+            raise NotImplementedError()
+        return self.client.post(url, dict(token=token.token))

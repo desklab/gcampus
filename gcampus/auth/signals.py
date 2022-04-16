@@ -13,9 +13,8 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__all__ = ["token_user_logged_in", "course_updated"]
+__all__ = ["token_user_logged_in"]
 
 from django.dispatch import Signal
 
 token_user_logged_in = Signal()
-course_updated = Signal()

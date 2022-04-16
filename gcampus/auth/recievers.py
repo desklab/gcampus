@@ -12,22 +12,21 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 import logging
-from typing import Optional, Union
+from typing import Optional, Union, Type
 
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.utils.translation import get_language
 
 from gcampus.auth.models import Course, AccessKey
-from gcampus.auth.signals import course_updated
 from gcampus.documents.tasks import render_cached_document_view
 
 logger = logging.getLogger("gcampus.auth.recievers")
 
 
 @receiver(post_save, sender=Course)
-@receiver(course_updated)
 def update_course(
     sender,  # noqa
     instance: Course,
@@ -44,11 +43,12 @@ def update_course(
     if "overview_document" in update_fields and not created:
         # The overview document has been changed on purpose
         return
-    if instance.email_verified:
+    if not instance.email_verified:
         logger.debug(
             "The course is still inactive. No need to spend resources on creating the "
             "document for this course."
         )
+        return
     render_cached_document_view.apply_async(
         args=(
             "gcampus.documents.views.CourseOverviewPDF",
@@ -79,11 +79,7 @@ def update_access_key_documents(
     :param kwargs: Additional keyword arguments passed by the signal
     """
     if kwargs.get("created", False):
-        logger.debug(
-            "Access key has been created, skip updating 'CourseOverviewPDF'. The "
-            "update should be triggered by the 'course_updated' signal once all access "
-            "keys have been created."
-        )
+        logger.debug("Access key has been created, skip updating 'CourseOverviewPDF'.")
         return
     course: Course = instance.course
     render_cached_document_view.apply_async(

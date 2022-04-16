@@ -27,7 +27,6 @@ from django.conf import settings
 from django.contrib import messages
 from django.core import validators
 from django.db import transaction
-from django.db.models.signals import post_save
 from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
@@ -38,8 +37,6 @@ from gcampus.auth.models.course import (
     default_token_generator,
     EmailConfirmationTokenGenerator,
 )
-from gcampus.auth.models.token import update_access_key_documents
-from gcampus.auth.signals import course_updated
 from gcampus.auth.tasks import send_email_confirmation_email
 
 logger = logging.getLogger("gcampus.auth.forms.course")
@@ -134,7 +131,6 @@ class GenerateAccessKeysForm(forms.ModelForm):
             for _ in range(self.cleaned_data["count"]):
                 AccessKey.objects.create_token(self.instance)
             super(GenerateAccessKeysForm, self).save(commit=commit)
-        course_updated.send(sender=self.__class__, instance=self.instance)
         return self.instance
 
 
@@ -207,40 +203,18 @@ class RegisterForm(forms.ModelForm):
         )
 
     def save(self, token_generator=default_token_generator, commit=True):
-        if commit:
-            # The post-save signal for access keys is disabled to avoid
-            # creating the same document over and over.
-            # Document creation is handled by the post-save signal of
-            # course token.
-            disconnected = post_save.disconnect(
-                receiver=update_access_key_documents, sender=AccessKey
-            )
-        else:
-            disconnected = False
-            logger.warning(
-                "'commit' is set to 'False'. Make sure to handle disconnecting the "
-                "'post_save' signal for 'AccessKey'!"
-            )
-        try:
-            with transaction.atomic():
-                obj: Course = super(RegisterForm, self).save(commit=commit)
-                # Create the main course token
-                CourseToken.objects.create_token(obj)
-                for _ in range(self.cleaned_data["number_of_access_keys"]):
-                    # Create the desired number of access keys. The
-                    # 'token' field is generated automatically.
-                    AccessKey.objects.create_token(obj)
+        with transaction.atomic():
+            obj: Course = super(RegisterForm, self).save(commit=commit)
+            # Create the main course token
+            CourseToken.objects.create_token(obj)
+            for _ in range(self.cleaned_data["number_of_access_keys"]):
+                # Create the desired number of access keys. The
+                # 'token' field is generated automatically.
+                AccessKey.objects.create_token(obj)
 
-            # Send the registration email
-            self.send_email(obj.teacher_email, token_generator)
-            return obj
-        finally:
-            # Connect the signal receiver again only if it has been
-            # disconnected.
-            if disconnected:
-                post_save.connect(
-                    receiver=update_access_key_documents, sender=AccessKey
-                )
+        # Send the registration email
+        self.send_email(obj.teacher_email, token_generator)
+        return obj
 
     def send_email(self, email: str, token_generator: EmailConfirmationTokenGenerator):
         send_confirmation_email(email, self.instance, token_generator)
