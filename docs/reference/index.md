@@ -1,7 +1,7 @@
 # Reference
 
 ```{toctree}
-:hidden:
+:maxdepth: 1
 
-core
+models/index
 ```

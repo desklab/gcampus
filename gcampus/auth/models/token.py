@@ -16,6 +16,7 @@
 import enum
 import logging
 import re
+from abc import abstractmethod
 from typing import Union, Tuple, List
 
 from django.conf import settings
@@ -62,22 +63,46 @@ class BaseTokenManager(models.Manager):
 
 
 class BaseToken(DateModelMixin):
+    """The base token provides a common interface and attributes that
+    are shared across the :class:`.AccessKey` and :class:`.CourseToken`
+    models.
+    """
+
     class Meta:
         abstract = True
 
     # The fields below are not implemented in the abstract class and
     # only used for type hints.
+    #: Length in characters of the token. Required to generate a
+    #: random and unique value for the :attr:`.token` field.
+    #: Note that this is attribute is only available in subclasses.
     TOKEN_LENGTH: int
+    #: List of permissions that should be applied by default to all
+    #: newly created instances. Note that this is attribute is only
+    #: available in subclasses.
     DEFAULT_PERMISSIONS: List[Tuple[str, str]]
+    #: The token field contains a unique character of length
+    #: :attr:`.TOKEN_LENGTH` used for authentication.
+    #: Note that this is attribute is only available in subclasses as
+    #: the length varies from model to model.
     token: Union[models.CharField, str]
+    #: The course associated with this token. Note that this is a
+    #: foreign key relation (many to one) for access keys while it is a
+    #: one to one relation for course tokens.
     course: Union[models.ForeignKey, Course]
     course_id: int
+    #: List of permissions (many to many field) for this token.
     permissions: Union[models.ManyToManyField, PermissionManager]
+    #: Type of the token.
     type: TokenType
 
     # Common fields
-    deactivated = models.BooleanField(default=False)
-    last_login = models.DateTimeField(
+    #: Whether the token is deactivated. Deactivated tokens can not be
+    #: used to log in and have no permissions.
+    deactivated: models.BooleanField = models.BooleanField(default=False)
+    #: Date and time of the last login. Updated using the
+    #: :attr:`gcampus.auth.signals.token_user_logged_in` signal.
+    last_login: models.DateTimeField = models.DateTimeField(
         blank=True, null=True, default=None, verbose_name=_("Last login")
     )
 
@@ -90,9 +115,17 @@ class BaseToken(DateModelMixin):
 
     @property
     def is_active(self) -> bool:
+        """Whether the user is active. This is only the case when the
+        user is not :attr:`.deactivated` and the course email is
+        verified (see
+        :attr:`gcampus.auth.models.Course.email_verified`).
+        """
         return not self.deactivated and self.course.email_verified
 
     def apply_default_permissions(self):
+        """Apply all default permissions as specified in
+        :attr:`.DEFAULT_PERMISSIONS`.
+        """
         if not hasattr(self, "DEFAULT_PERMISSIONS") or not self.DEFAULT_PERMISSIONS:
             raise NotImplementedError()
         perms = [
@@ -102,6 +135,9 @@ class BaseToken(DateModelMixin):
         self.permissions.set(perms)
 
     def get_all_permissions(self) -> List[str]:
+        """Return a list of all permissions in the style of
+        ``{app_label}.{codename}``.
+        """
         if not hasattr(self, "_permissions"):
             perms = (
                 self.permissions.all()
@@ -128,9 +164,11 @@ class BaseToken(DateModelMixin):
         else:
             raise NotImplementedError()
 
+    @abstractmethod
     def _check_measurement_instance_perm(self, measurement: Measurement) -> bool:
         raise NotImplementedError()
 
+    @abstractmethod
     def _check_token_instance_perm(self, token: "BaseToken") -> bool:
         raise NotImplementedError()
 
@@ -176,7 +214,6 @@ class CourseToken(BaseToken):
     class Meta:
         verbose_name = _("Course token")
 
-    type = TokenType.course_token
     TOKEN_LENGTH = COURSE_TOKEN_LENGTH
     DEFAULT_PERMISSIONS = [
         ("gcampusauth", "change_course"),
@@ -187,6 +224,7 @@ class CourseToken(BaseToken):
         ("gcampuscore", "change_parameter"),
         ("gcampuscore", "delete_parameter"),
     ]
+    type = TokenType.course_token
 
     token = models.CharField(blank=False, max_length=COURSE_TOKEN_LENGTH, unique=True)
     course = models.OneToOneField(
@@ -220,7 +258,6 @@ class AccessKey(BaseToken):
         verbose_name = _("Access key")
         ordering = ("deactivated", "created_at", "token")
 
-    type = TokenType.access_key
     TOKEN_LENGTH = ACCESS_KEY_LENGTH
     DEFAULT_PERMISSIONS = [
         ("gcampuscore", "add_measurement"),
@@ -229,6 +266,7 @@ class AccessKey(BaseToken):
         ("gcampuscore", "change_parameter"),
         ("gcampuscore", "delete_parameter"),
     ]
+    type = TokenType.access_key
 
     token = models.CharField(blank=False, max_length=ACCESS_KEY_LENGTH, unique=True)
     course = models.ForeignKey(
@@ -256,6 +294,9 @@ class AccessKey(BaseToken):
 
     def _check_measurement_instance_perm(self, measurement: Measurement) -> bool:
         return measurement.token_id == self.pk
+
+    def _check_token_instance_perm(self, token: "BaseToken") -> bool:
+        return False
 
 
 def get_token_length(token_type: TokenType):

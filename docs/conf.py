@@ -27,7 +27,12 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+
+import django
+
+sys.path.insert(0, os.path.abspath(".."))
+os.environ["DJANGO_SETTINGS_MODULE"] = "gcampus.settings.dev"
+django.setup()
 
 
 # -- Project information -----------------------------------------------------
@@ -43,9 +48,19 @@ copyright = f"2022, {author}"
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "sphinx.ext.intersphinx",
     "sphinx.ext.autodoc",
     "myst_parser",
 ]
+
+# Add mappings
+intersphinx_mapping = {
+    "django": (
+        "https://docs.djangoproject.com/en/dev/",
+        "https://docs.djangoproject.com/en/dev/_objects",
+    ),
+    "python": ("https://docs.python.org/3", None),
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]

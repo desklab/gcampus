@@ -63,6 +63,17 @@ class MeasurementAdmin(LeafletGeoAdmin):
     readonly_fields = ADMIN_READ_ONLY_FIELDS + ("location_name",)
     actions = [hide, show]
 
+    def get_queryset(self, request):
+        """
+        Return a QuerySet of all model instances that can be edited by the
+        admin site. This is used by changelist_view.
+        """
+        qs = Measurement.all_objects.all()
+        ordering = self.get_ordering(request)
+        if ordering:
+            qs = qs.order_by(*ordering)
+        return qs
+
 
 class WaterAdmin(LeafletGeoAdmin):
     list_display = ("display_name", "osm_id", "flow_type", "water_type", "updated_at")
