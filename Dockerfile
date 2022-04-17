@@ -28,7 +28,7 @@ USER root
 
 # Install gdal and libproj-dev
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends --no-install-suggests binutils libproj-dev gdal-bin python3-pip python3-gi libpango-1.0-0 libpangoft2-1.0-0 && \
+    apt-get install -y --no-install-recommends --no-install-suggests binutils pandoc libproj-dev gdal-bin python3-pip python3-gi libpango-1.0-0 libpangoft2-1.0-0 && \
     rm -rf /var/lib/apt/lists/*
 
 # Create gcampus directory and user
