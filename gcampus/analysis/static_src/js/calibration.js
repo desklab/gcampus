@@ -37,9 +37,19 @@ Chart.register(
 );
 
 
+function makeArr(startValue, stopValue, cardinality) {
+  var arr = [];
+  var step = (stopValue - startValue) / (cardinality - 1);
+  for (var i = 0; i < cardinality; i++) {
+    arr.push(startValue + (step * i));
+  }
+  return arr;
+}
+
+
 function createChart(name, el, formula, title, x_label, y_label) {
     let x_data = [];
-    let y_data = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5];
+    let y_data = makeArr(0, 1.6, 17);
     for (let i = 0; i < y_data.length; i++) {
         let od = y_data[i];  // noqa: od is used in eval.
         let x = eval(formula).toFixed(2);
@@ -116,8 +126,10 @@ function updateAnnotation(x, y, chart) {
     // Needs calculation since the chart.js x values do not correspond
     // to the xdata but has to be scaled relative to the axis labels
     let len = chart.data.labels.length -1;
-    let x_max = parseFloat(chart.data.labels[len]);
-    chart.options.plugins.annotation.annotations.point1.xValue = len*x/x_max;
+    let x_min = parseFloat(chart.data.labels[0]);
+    let diff = parseFloat(chart.data.labels[len]) - x_min;
+    console.log(x, y, x_min, len, ((x-x_min)/diff)*len);
+    chart.options.plugins.annotation.annotations.point1.xValue = ((x-x_min)/diff)*len;
     chart.options.plugins.annotation.annotations.point1.yValue = y;
     chart.options.plugins.annotation.annotations.point1.display = true;
     chart.update();
