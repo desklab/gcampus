@@ -18,15 +18,30 @@ from typing import Union, List, Optional
 
 from django.contrib.sessions.exceptions import SuspiciousSession
 from django.http import HttpRequest
+from rest_framework.exceptions import Throttled
+from rest_framework.throttling import AnonRateThrottle
 
 from gcampus.auth import session
-from gcampus.auth.exceptions import (
-    UnauthenticatedError,
-    TokenPermissionError,
-    TokenEmptyError,
-)
+from gcampus.auth.exceptions import UnauthenticatedError, TokenPermissionError
 from gcampus.auth.models.token import TokenType, BaseToken
-from gcampus.core.models.util import EMPTY
+
+
+class FrontendAnonRateThrottle(AnonRateThrottle):
+    scope = "frontend_anon"
+
+
+def throttle():
+    def decorator(f):
+        @wraps(f)
+        def wrapper(request: HttpRequest, *args, **kwargs):
+            _throttle = FrontendAnonRateThrottle()
+            if not _throttle.allow_request(request, f):
+                raise Throttled(_throttle.wait())
+            return f(request, *args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 def require_token_type(token_type: Union[TokenType, List[TokenType]]):

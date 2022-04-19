@@ -31,10 +31,14 @@ from django.dispatch import receiver
 from django.http import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy, gettext
 from django.views.generic.edit import FormView
+from rest_framework.decorators import throttle_classes
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 
 from gcampus.auth import session
+from gcampus.auth.decorators import throttle
 from gcampus.auth.exceptions import TOKEN_INVALID_ERROR
 from gcampus.auth.forms.token import (
     AccessKeyForm,
@@ -107,9 +111,9 @@ class LoginFormView(TitleMixin, FormView, ABC):
         else:
             raise PermissionDenied(TOKEN_INVALID_ERROR)
 
-    # TODO remove if not needed
-    # def form_invalid(self, form):
-    #     return self.render_to_response(self.get_context_data(form=form), status=200)
+    @method_decorator(throttle())
+    def post(self, request, *args, **kwargs):
+        return super(LoginFormView, self).post(request, *args, **kwargs)
 
 
 class AccessKeyLoginFormView(LoginFormView):
