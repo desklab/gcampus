@@ -70,7 +70,17 @@ def get_token_name(request: HttpRequest, default: str = None) -> Optional[str]:
 
 
 def is_authenticated(request: HttpRequest) -> bool:
-    return request.session.get(AUTHENTICATION_BOOLEAN, False)
+    session_state = request.session.get(AUTHENTICATION_BOOLEAN, False)
+    if session_state and not request.token:
+        # Try again now. Evaluating 'request.token' might have changed
+        # the status.
+        if not request.session.get(AUTHENTICATION_BOOLEAN, False):
+            return False  # all good
+        else:
+            # Something is wrong.
+            logout(request)
+            raise SuspiciousSession()
+    return session_state
 
 
 def set_token(request: HttpRequest, token: BaseToken, token_type: TokenType):
@@ -95,7 +105,7 @@ def get_token_instance(request: HttpRequest) -> Optional[BaseToken]:
     :raises ValueError: If no token user is authenticated.
     :raises SuspiciousSession: Authenticated but session is invalid.
     """
-    if not is_authenticated(request):
+    if not request.session.get(AUTHENTICATION_BOOLEAN, False):
         raise ValueError("Token user not authenticated.")
     token_pk: Optional[str] = _get_token_pk(request, default=None)
     if token_pk is None:
