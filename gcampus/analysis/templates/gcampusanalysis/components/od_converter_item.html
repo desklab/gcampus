@@ -48,7 +48,7 @@
                     x_label = "{{ parameter.name }}"
                 }
                 let y_label = "{% translate "Optical density" %}";
-                return gcampusanalysis.calibration.createChart("{{ parameter.name }}", chart_element_{{ parameter.pk }}, "{{ parameter.calibration_formula }}", chart_title, x_label, y_label);
+                return gcampusanalysis.calibration.createChart({{ parameter.pk }}, chart_element_{{ parameter.pk }}, "{{ parameter.calibration_formula }}", chart_title, x_label, y_label);
             })();
 
             function Convert_{{ parameter.pk }}(e, chart) {
@@ -59,9 +59,13 @@
                     }
                 } else {
                     let data = new FormData(e.target);
-                    let od = parseFloat(data.get("od"));
                     let concentration = e.target.elements.namedItem("concentration");
-                    let concentration_value = eval('{{ parameter.calibration_formula }}').toFixed(2);  // formula example: '123*od'
+                    let od = parseFloat(data.get("od"));
+                    let concentration_value = (
+                        gcampusanalysis.calibration.convert(
+                            {{ parameter.pk }}, od
+                        )
+                    );
                     concentration.value = String(concentration_value);
                     gcampusanalysis.calibration.updateAnnotation(concentration_value, od, chart)
                 }

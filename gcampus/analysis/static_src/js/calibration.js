@@ -1,19 +1,19 @@
 import {
-    Chart,
     ArcElement,
-    LineElement,
-    PointElement,
-    LineController,
-    ScatterController,
     CategoryScale,
-    LinearScale,
-    LogarithmicScale,
+    Chart,
     Decimation,
     Filler,
     Legend,
+    LinearScale,
+    LineController,
+    LineElement,
+    LogarithmicScale,
+    PointElement,
+    ScatterController,
+    SubTitle,
     Title,
-    Tooltip,
-    SubTitle
+    Tooltip
 } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
 
@@ -46,13 +46,27 @@ function makeArr(startValue, stopValue, cardinality) {
   return arr;
 }
 
+let _functionCache = {};
 
-function createChart(name, el, formula, title, x_label, y_label) {
+
+function convert(pk, value) {
+    if (!_functionCache.hasOwnProperty(pk)) {
+        throw Error(
+            'Parameter ' + String(pk) + ' has not been initialized yet!'
+        );
+    }
+    return _functionCache[pk](value).toFixed(2);
+}
+
+
+function createChart(pk, el, formula, title, x_label, y_label) {
+    _functionCache[pk] = new Function(
+        '\'use strict\'; let od = arguments[0]; return ' + String(formula) + ';'
+    );
     let x_data = [];
     let y_data = makeArr(0, 1.6, 17);
     for (let i = 0; i < y_data.length; i++) {
-        let od = y_data[i];  // noqa: od is used in eval.
-        let x = eval(formula).toFixed(2);
+        let x = convert(pk, y_data[i]);
         x_data.push(x);
     }
     const max_y = 1.6;
@@ -135,4 +149,4 @@ function updateAnnotation(x, y, chart) {
     chart.update();
 }
 
-export {createChart, updateAnnotation};
+export {createChart, updateAnnotation, convert};
