@@ -39,7 +39,9 @@ from gcampus.core.views.measurement.list import MeasurementListView
 
 class MeasurementDetailView(TitleMixin, DetailView):
     model = Measurement
-    queryset = Measurement.objects
+    queryset = Measurement.objects.select_related("water", "token").prefetch_related(
+        "parameters"
+    )
     template_name = "gcampuscore/sites/detail/measurement_detail.html"
 
     def get_context_data(self, **kwargs):
