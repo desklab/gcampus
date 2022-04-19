@@ -73,7 +73,8 @@
 
             function CopyValueToClipboard(pk) {
                 let concentration = document.getElementById("concentration_"+pk).value;
-                navigator.clipboard.writeText(concentration);
+                if (concentration !== '')
+                    navigator.clipboard.writeText(Number(concentration).toLocaleString());
             }
         </script>
     </p>
