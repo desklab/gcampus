@@ -256,7 +256,7 @@ class CourseToken(BaseToken):
 class AccessKey(BaseToken):
     class Meta:
         verbose_name = _("Access key")
-        ordering = ("deactivated", "created_at", "token")
+        ordering = ("created_at", "token")
 
     TOKEN_LENGTH = ACCESS_KEY_LENGTH
     DEFAULT_PERMISSIONS = [
