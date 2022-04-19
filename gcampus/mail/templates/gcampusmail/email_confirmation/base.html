@@ -2,10 +2,10 @@
 {% load i18n auth_token %}
 {% block content %}
     {% translate "Please confirm your email address" as header_text %}
-    {% blocktranslate trimmed reset_url=url asvar content_text %}
+    {% blocktranslate trimmed url=url asvar content_text %}
         Click the link below to confirm your email address:
 
-        <a href="{{ reset_url }}">reset_url</a>
+        <a href="{{ url }}">{{ url }}</a>
 
         This link will be valid for two days.
 
