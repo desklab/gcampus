@@ -30,7 +30,7 @@ from gcampus.auth.fields.token import HyphenatedTokenField
 from gcampus.auth.forms.token import TOKEN_FIELD_NAME
 from gcampus.auth.models.token import COURSE_TOKEN_LENGTH, ACCESS_KEY_LENGTH
 from gcampus.auth.session import AUTHENTICATION_BOOLEAN
-from gcampus.core.tests.mixins import FormTestMixin, TokenTestMixin
+from gcampus.core.tests.mixins import FormTestMixin, TokenTestMixin, ThrottleTestMixin
 from gcampus.tasks.tests.utils import BaseMockTaskTest
 
 
@@ -49,7 +49,9 @@ class MiscellaneousAuthTest(BaseMockTaskTest):
         self.assertEqual(value_3, "")
 
 
-class BaseTokenKeyTest(TokenTestMixin, FormTestMixin, BaseMockTaskTest, ABC):
+class BaseTokenKeyTest(
+    ThrottleTestMixin, TokenTestMixin, FormTestMixin, BaseMockTaskTest, ABC
+):
     def get_login_url(self) -> str:
         raise NotImplementedError()
 

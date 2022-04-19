@@ -13,12 +13,14 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from typing import List
+from unittest import mock
 
 from django.contrib.gis.geos import Point
 from django.db import transaction
 from django.forms.utils import ErrorList
 from django.urls import reverse
 
+from gcampus.auth.decorators import FrontendAnonRateThrottle
 from gcampus.auth.models import CourseToken, AccessKey, Course, BaseToken
 from gcampus.core.models import Water
 from gcampus.core.models.water import WaterType
@@ -39,6 +41,24 @@ class FormTestMixin:
                 self.assertEqual(len(expected_error_list), len(received_errors))
                 for expected_error in expected_error_list:
                     self.assertIn(expected_error, received_errors)
+
+
+class ThrottleTestMixin:
+    def setUp(self):
+        # Mock the 'allow_request' function of FrontendAnonRateThrottle.
+        # All throttled endpoints will be allowed.
+        self.throttle_mock = mock.patch.object(
+            FrontendAnonRateThrottle,
+            "allow_request",
+            return_value=True,
+            autospec=True,
+        )
+        self.throttle_mock.start()
+        super().setUp()
+
+    def tearDown(self):
+        self.throttle_mock.stop()
+        super().tearDown()
 
 
 class TokenTestMixin:
@@ -76,7 +96,7 @@ class WaterTestMixin:
         self.water.save()
 
 
-class LoginTestMixin:
+class LoginTestMixin(ThrottleTestMixin):
     def login(self, token: BaseToken):
         if isinstance(token, CourseToken):
             url = reverse("gcampusauth:login-course-token")
