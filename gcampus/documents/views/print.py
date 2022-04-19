@@ -38,7 +38,7 @@ from gcampus.documents.views.generic import (
 
 class CourseOverviewPDF(CachedDocumentView):
     template_name = "gcampusdocuments/documents/access_course.html"
-    filename = gettext_lazy("gewaessercampus-course-overview.pdf")
+    filename = gettext_lazy("gewaessercampus-course.pdf")
     context_object_name = "course"
     model = Course
     model_file_field = "overview_document"
@@ -53,14 +53,14 @@ class CourseOverviewPDF(CachedDocumentView):
     def get_filename(self):
         if self.object.name in EMPTY:
             return self.filename
-        return gettext_lazy("gewaessercampus-overview-{course_name:s}.pdf").format(
+        return gettext_lazy("gewaessercampus-{course_name!s}.pdf").format(
             course_name=slugify(self.object.name)
         )
 
 
 class AccessKeyCombinedPDF(SingleObjectDocumentView):
     template_name = "gcampusdocuments/documents/access_student_combined.html"
-    filename = gettext_lazy("gewaessercampus-accesskey-combined.pdf")
+    filename = gettext_lazy("gewaessercampus-access-keys.pdf")
     context_object_name = "course"
     model = Course
 
@@ -74,9 +74,9 @@ class AccessKeyCombinedPDF(SingleObjectDocumentView):
     def get_filename(self):
         if self.object.name in EMPTY:
             return self.filename
-        return gettext_lazy(
-            "gewaessercampus-accesskey-combined-{course_name:s}.pdf"
-        ).format(course_name=slugify(self.object.name))
+        return gettext_lazy("{course_name!s}-access-keys.pdf").format(
+            course_name=slugify(self.object.name)
+        )
 
 
 class MeasurementDetailPDF(SingleObjectDocumentView):
