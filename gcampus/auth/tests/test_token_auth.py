@@ -215,7 +215,14 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
         self.course_token.deactivated = True
         self.course_token.save()
         response = self.client.get(reverse("gcampusauth:course-update"))
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 403)
+        self.assertFalse(self.client.session[AUTHENTICATION_BOOLEAN])
+        # After reactivating the token, the user should still be logged
+        # out and unable to access the site.
+        self.course_token.deactivated = False
+        self.course_token.save()
+        response = self.client.get(reverse("gcampusauth:course-update"))
+        self.assertEqual(response.status_code, 403)
         self.assertFalse(self.client.session[AUTHENTICATION_BOOLEAN])
 
     def test_missing_token_field(self):
