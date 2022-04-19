@@ -20,10 +20,12 @@ __all__ = [
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 from django.views.generic import CreateView
 
+from gcampus.auth.decorators import throttle
 from gcampus.auth.forms import RegisterForm
 from gcampus.auth.models import Course
 from gcampus.core.views.base import TitleMixin
@@ -36,6 +38,10 @@ class RegisterFormView(TitleMixin, CreateView):
     title = gettext_lazy("Register a new course")
     success_url = reverse_lazy("gcampuscore:mapview")
     object: Course
+
+    @method_decorator(throttle())
+    def post(self, request, *args, **kwargs):
+        return super(RegisterFormView, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
         super(RegisterFormView, self).form_valid(form)

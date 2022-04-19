@@ -41,7 +41,7 @@ from django.views.generic.list import (
 )
 
 from gcampus.auth import session
-from gcampus.auth.decorators import require_course_token, require_permissions
+from gcampus.auth.decorators import require_course_token, require_permissions, throttle
 from gcampus.auth.exceptions import TokenPermissionError
 from gcampus.auth.forms import (
     CourseForm,
@@ -73,6 +73,7 @@ class CourseUpdateView(TitleMixin, UpdateView):
         return super(CourseUpdateView, self).dispatch(request, *args, **kwargs)
 
     @method_decorator(require_permissions("gcampusauth.change_course"))
+    @method_decorator(throttle())  # Throttled to avoid email spam
     def post(self, request, *args, **kwargs):
         return super(CourseUpdateView, self).post(request, *args, **kwargs)
 
@@ -148,6 +149,7 @@ class EmailConfirmationView(View):
     redirect_url = reverse_lazy("gcampusauth:course-update")
     token_generator: EmailConfirmationTokenGenerator = default_token_generator
 
+    @method_decorator(throttle())  # Try to avoid brute force
     def get(self, request: HttpRequest, courseidb64: str, token: str, *args, **kwargs):
         course: Optional[Course]
         try:
