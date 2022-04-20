@@ -12,6 +12,7 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from importlib.util import find_spec
 
 from gcampus.settings.base import *  # noqa
 
@@ -29,11 +30,14 @@ DATABASES = {
 }
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
-INSTALLED_APPS.append("debug_toolbar")
-MIDDLEWARE.insert(
-    MIDDLEWARE.index("django.middleware.csrf.CsrfViewMiddleware") + 1,
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
-)
+
+if find_spec("debug_toolbar"):
+    # Only install debug toolbar if the module is present
+    INSTALLED_APPS.append("debug_toolbar")
+    MIDDLEWARE.insert(
+        MIDDLEWARE.index("django.middleware.csrf.CsrfViewMiddleware") + 1,
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    )
 
 INTERNAL_IPS = [
     "127.0.0.1",

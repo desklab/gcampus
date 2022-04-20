@@ -18,7 +18,6 @@ django-leaflet~=0.28.2
 django-feather~=0.3.0
 django-filter~=2.4.0
 django-celery-results~=2.2
-django-debug-toolbar~=3.2.4
 
 djangorestframework-gis~=0.18
 djangorestframework~=3.13.1
