@@ -21,8 +21,15 @@ EMPTY = ("", None, False, (), [], {})
 
 
 class DateModelMixin(models.Model):
+    """Base model class to add the common fields required by nearly
+    all models throughout the project.
+    """
+
     class Meta:
         abstract = True
 
+    #: Date and time of when the instance has been created.
     created_at = models.DateTimeField(auto_now_add=True)
+
+    #: Date and time of when the instance has been last updated.
     updated_at = models.DateTimeField(auto_now=True)

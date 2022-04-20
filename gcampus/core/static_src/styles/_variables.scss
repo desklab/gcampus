@@ -17,6 +17,7 @@ $standing-water: shade-color($running-water, 60%);
 $unknown-water: #6D9DC5;
 
 $border-color: $gray-200;
+$input-border-color: $gray-300;
 
 $table-border-color: $border-color;
 $table-group-separator-color: $table-border-color;
@@ -26,7 +27,6 @@ $table-head-height: 2.8rem;
 $table-hover-bg: $gray-100;
 $table-cell-padding-y: .8rem;
 $table-cell-padding-x: .8rem;
-
 
 $utilities: (
   "appearance": (

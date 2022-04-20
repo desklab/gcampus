@@ -13,6 +13,8 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import os
+import datetime
 from pathlib import Path
 
 from django.contrib import messages
@@ -38,6 +40,28 @@ GCAMPUS_HOMEPAGE = "https://gewaessercampus.de/"
 # Primarily used for emails or PDFs
 PRIMARY_HOST = "localhost:8000"
 PREFERRED_SCHEME = "http"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "propagate": True,
+        },
+        "gcampus": {
+            "handlers": ["console"],
+            "level": os.getenv("GCAMPUS_LOG_LEVEL", "DEBUG"),
+            "propagate": True,
+        },
+    },
+}
 
 INSTALLED_APPS = [
     "gcampus.admin.apps.GCampusAdminAppConfig",
@@ -69,14 +93,15 @@ INSTALLED_APPS = [
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "gcampus.core.middleware.TimezoneMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "gcampus.auth.middleware.TokenAuthMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 ROOT_URLCONF = "gcampus.urls"
@@ -118,6 +143,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
+EMAIL_CONFIRMATION_TIMEOUT = datetime.timedelta(days=2)
 AUTH_USER_MODEL = "gcampusauth.User"
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -161,6 +187,9 @@ REST_FRAMEWORK = {
     ],
     "PAGE_SIZE": 100,
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_THROTTLE_RATES": {
+        "frontend_anon": "5/min",
+    },
 }
 
 # Geo Settings

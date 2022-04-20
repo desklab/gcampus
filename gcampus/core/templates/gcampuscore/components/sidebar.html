@@ -21,8 +21,8 @@
             {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/list-ul.html" title=measurements_title view_name="gcampuscore:measurements" %}
             {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/calculator.html" title=converter_title view_name="gcampusanalysis:od_converter" %}
 {#            {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/bar-chart.html" title=analysis_title view_name="gcampusanalysis:analysis_measure" %}#}
-            {% if user_token_is_course_token%}
-                {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/people.html" title=course_title view_name="gcampusauth:course-overview" %}
+            {% if user_token_is_course_token %}
+                {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/people.html" title=course_title view_name="gcampusauth:course-update" other_view_names="gcampusauth:course-access-keys" %}
             {% endif %}
         </ul>
         {# <hr> #}

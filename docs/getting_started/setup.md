@@ -9,6 +9,7 @@ this requirements serve a specific purpose as listed below:
  - **Web framework**: [Django](https://www.djangoproject.com) (with the [GeoDjango module](https://docs.djangoproject.com/en/4.0/ref/contrib/gis/))
  - **Database**: [PostgreSQL](https://www.postgresql.org) (with the [PostGIS spatial database extender](https://postgis.net))
  - **Task queue**: [Celery](https://docs.celeryproject.org/en/stable/index.html) with [Redis](https://redis.io)
+ - **Emails**: [pandoc](https://pandoc.org) to turn HTML emails into a plaintext alternative
  - **Document factory**: [WeasyPrint](https://weasyprint.org) (used to create downloadable PDFs)
  - **JavaScript bundler**: [webpack](https://webpack.js.org)
 
@@ -34,8 +35,11 @@ conda env create -f environment.yml
 
 This should create a new environment called `gcampus` which can be
 activated using `conda activate gcampus`. The `environment.yml` already
-tells conda to install all the required packages such as `libgdal` for
-GeoDjango and `pango` as well as `glib` for WeasyPrint.
+tells conda to install all the required packages such as:
+ - `libgdal`
+ - `glib`
+ - `pango`
+ - `pandoc`
 
 All other Python dependencies located in the `requirements.txt` will be
 installed automatically using `pip`. This is also where the Celery

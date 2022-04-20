@@ -15,26 +15,22 @@
 
 from abc import ABC
 from typing import Optional
-from unittest.mock import patch
 
 from django.core.validators import MaxLengthValidator, MinLengthValidator
-from django.db import transaction
 from django.forms import Field
 from django.urls import reverse
-from django.utils import translation
 
 from gcampus.auth.exceptions import (
     TOKEN_INVALID_ERROR,
     COURSE_TOKEN_DEACTIVATED_ERROR,
     ACCESS_KEY_DEACTIVATED_ERROR,
+    TokenPermissionError,
 )
 from gcampus.auth.fields.token import HyphenatedTokenField
-from gcampus.auth.forms.token import TOKEN_FIELD_NAME, RegisterForm
-from gcampus.auth.models import CourseToken, AccessKey
-from gcampus.auth.models.token import COURSE_TOKEN_LENGTH, ACCESS_KEY_LENGTH, TokenType
-from gcampus.auth.session import set_token_session
-from gcampus.core.tests.mixins import FormTestMixin, TokenTestMixin
-from gcampus.documents.tasks import render_cached_document_view
+from gcampus.auth.forms.token import TOKEN_FIELD_NAME
+from gcampus.auth.models.token import COURSE_TOKEN_LENGTH, ACCESS_KEY_LENGTH
+from gcampus.auth.session import AUTHENTICATION_BOOLEAN
+from gcampus.core.tests.mixins import FormTestMixin, TokenTestMixin, ThrottleTestMixin
 from gcampus.tasks.tests.utils import BaseMockTaskTest
 
 
@@ -53,7 +49,9 @@ class MiscellaneousAuthTest(BaseMockTaskTest):
         self.assertEqual(value_3, "")
 
 
-class BaseTokenKeyTest(TokenTestMixin, FormTestMixin, BaseMockTaskTest, ABC):
+class BaseTokenKeyTest(
+    ThrottleTestMixin, TokenTestMixin, FormTestMixin, BaseMockTaskTest, ABC
+):
     def get_login_url(self) -> str:
         raise NotImplementedError()
 
@@ -94,12 +92,12 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
         self.check_form_errors(login_response, error_dict)
 
     def test_course_token(self):
-        token = self.parent_token.token
+        token = self.course_token.token
         login_response = self.login(HyphenatedTokenField.hyphenate(token, 4))
         self.assertEqual(login_response.status_code, 200)
         error_message_max_len = MaxLengthValidator.message % {
             "limit_value": ACCESS_KEY_LENGTH,
-            "show_value": len(self.parent_token.token),
+            "show_value": len(self.course_token.token),
         }
         error_dict = {TOKEN_FIELD_NAME: [error_message_max_len, TOKEN_INVALID_ERROR]}
         self.check_form_errors(login_response, error_dict)
@@ -107,15 +105,17 @@ class AccessKeyAuthTest(BaseTokenKeyTest):
     def test_deactivated_token(self):
         _token = self.tokens[-1]
         _token.deactivated = True
-        try:
-            _token.save()
-            login_response = self.login(HyphenatedTokenField.hyphenate(_token.token, 4))
-            self.assertEqual(login_response.status_code, 200)
-            error_dict = {TOKEN_FIELD_NAME: [ACCESS_KEY_DEACTIVATED_ERROR]}
-            self.check_form_errors(login_response, error_dict)
-        finally:
-            _token.deactivated = False
-            _token.save()
+        _token.save()
+        login_response = self.login(HyphenatedTokenField.hyphenate(_token.token, 4))
+        self.assertEqual(login_response.status_code, 200)
+        error_dict = {TOKEN_FIELD_NAME: [ACCESS_KEY_DEACTIVATED_ERROR]}
+        self.check_form_errors(login_response, error_dict)
+
+    def test_unconfirmed_email_course(self):
+        self.course.email_verified = False
+        self.course.save()
+        login_response = self.login(self.tokens[0].token)
+        self.assertEqual(login_response.status_code, 200)
 
     def test_empty_token(self):
         login_response = self.login("-")
@@ -149,7 +149,7 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
         return "gcampusauth:login-course-token"
 
     def test_valid_token(self):
-        login_response = self.login(self.parent_token.token)
+        login_response = self.login(self.course_token.token)
         self.assertEqual(login_response.status_code, 302)
 
     def test_invalid_token(self):
@@ -162,7 +162,7 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
         )
 
     def test_valid_extended_token(self):
-        token = self.parent_token.token
+        token = self.course_token.token
         token_hyphenated = HyphenatedTokenField.hyphenate(token, 4)
         login_response = self.login(f"{token_hyphenated}-0")
         self.assertEqual(login_response.status_code, 200)
@@ -185,16 +185,12 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
         self.check_form_errors(login_response, error_dict)
 
     def test_deactivated_token(self):
-        self.parent_token.deactivated = True
-        try:
-            self.parent_token.save()
-            login_response = self.login(self.parent_token.token)
-            self.assertEqual(login_response.status_code, 200)
-            error_dict = {TOKEN_FIELD_NAME: [COURSE_TOKEN_DEACTIVATED_ERROR]}
-            self.check_form_errors(login_response, error_dict)
-        finally:
-            self.parent_token.deactivated = False
-            self.parent_token.save()
+        self.course_token.deactivated = True
+        self.course_token.save()
+        login_response = self.login(self.course_token.token)
+        self.assertEqual(login_response.status_code, 200)
+        error_dict = {TOKEN_FIELD_NAME: [COURSE_TOKEN_DEACTIVATED_ERROR]}
+        self.check_form_errors(login_response, error_dict)
 
     def test_empty_token(self):
         login_response = self.login("---")
@@ -203,6 +199,31 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
             login_response,
             {TOKEN_FIELD_NAME: [Field.default_error_messages["required"]]},
         )
+
+    def test_unconfirmed_email_course(self):
+        self.course.email_verified = False
+        self.course.save()
+        login_response = self.login(self.course_token.token)
+        self.assertEqual(login_response.status_code, 200)
+
+    def test_logged_in_deactivated(self):
+        login_response = self.login(self.course_token.token)
+        self.assertEqual(login_response.status_code, 302)
+        self.assertTrue(self.client.session[AUTHENTICATION_BOOLEAN])
+        response = self.client.get(reverse("gcampusauth:course-update"))
+        self.assertEqual(response.status_code, 200)
+        self.course_token.deactivated = True
+        self.course_token.save()
+        response = self.client.get(reverse("gcampusauth:course-update"))
+        self.assertEqual(response.status_code, 403)
+        self.assertFalse(self.client.session[AUTHENTICATION_BOOLEAN])
+        # After reactivating the token, the user should still be logged
+        # out and unable to access the site.
+        self.course_token.deactivated = False
+        self.course_token.save()
+        response = self.client.get(reverse("gcampusauth:course-update"))
+        self.assertEqual(response.status_code, 403)
+        self.assertFalse(self.client.session[AUTHENTICATION_BOOLEAN])
 
     def test_missing_token_field(self):
         login_response = self.login("")
@@ -221,96 +242,3 @@ class CourseTokenAuthTest(BaseTokenKeyTest):
         }
         error_dict = {TOKEN_FIELD_NAME: [error_message_max_len, TOKEN_INVALID_ERROR]}
         self.check_form_errors(login_response, error_dict)
-
-
-class CourseTokenTasksTest(BaseMockTaskTest):
-
-    DEFAULT_COURSE_DATA: dict = {
-        "school_name": "GCampus Test Case",
-        "teacher_name": "GCampus Testing",
-        "teacher_email": "testcase@gewaessercampus.de",
-        "token_name": "GCampus Test Case",
-    }
-
-    @classmethod
-    def generate_course(cls, access_key_count: int):
-        with transaction.atomic():
-            course = CourseToken(**cls.DEFAULT_COURSE_DATA)
-            course.save()
-            tokens = []
-            for i in range(access_key_count):
-                _token = AccessKey(parent_token=course)
-                _token.save()
-                tokens.append(_token)
-        return course, tokens
-
-    def test_register_form(self):
-        register_form_data = {
-            "number_of_access_keys": 1,
-        }
-        register_form_data.update(self.DEFAULT_COURSE_DATA)
-        form = RegisterForm(data=register_form_data)
-        self.assertTrue(form.is_valid())
-        with patch.object(render_cached_document_view, "apply_async") as mock:
-            instance = form.save()
-            mock.assert_called_once_with(
-                args=(
-                    "gcampus.documents.views.CourseOverviewPDF",
-                    instance.pk,
-                    translation.get_language(),
-                )
-            )
-
-    def test_manual_creation(self):
-        with patch.object(render_cached_document_view, "apply_async") as mock:
-            course, _ = self.generate_course(5)
-            mock.assert_called_once_with(
-                args=(
-                    "gcampus.documents.views.CourseOverviewPDF",
-                    course.pk,
-                    translation.get_language(),
-                )
-            )
-
-    def test_generate_access_key_form(self):
-        _count = 2  # Number of access keys to generate
-        course = CourseToken(**self.DEFAULT_COURSE_DATA)
-        course.save()
-        session = self.client.session
-        set_token_session(
-            session, course.token, TokenType.course_token, course.token_name
-        )
-        session.save()
-        with patch.object(render_cached_document_view, "apply_async") as mock:
-            self.client.post(
-                reverse("gcampusauth:generate-new-access-keys"), data={"count": _count}
-            )
-            self.assertEqual(
-                AccessKey.objects.filter(parent_token=course).count(), _count
-            )
-            mock.assert_called_once_with(
-                args=(
-                    "gcampus.documents.views.CourseOverviewPDF",
-                    course.pk,
-                    translation.get_language(),
-                )
-            )
-
-    def test_disable_access_key_form(self):
-        course, tokens = self.generate_course(5)
-        session = self.client.session
-        set_token_session(
-            session, course.token, TokenType.course_token, course.token_name
-        )
-        session.save()
-        with patch.object(render_cached_document_view, "apply_async") as mock:
-            self.client.post(reverse("gcampusauth:deactivate", args=(tokens[0].pk,)))
-            tokens[0].refresh_from_db()
-            self.assertTrue(tokens[0].deactivated)
-            mock.assert_called_once_with(
-                args=(
-                    "gcampus.documents.views.CourseOverviewPDF",
-                    course.pk,
-                    translation.get_language(),
-                )
-            )

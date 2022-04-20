@@ -1,6 +1,6 @@
 {% load i18n %}
 <span class="displaytoken" data-gcampusauth-toggle="{{ toggle|yesno:"1,0" }}">
-    <span class="badge bg-light text-dark border{% if class %} {{ class }}{% endif %}">
+    <span class="badge bg-light text-dark border{% if css_class %} {{ css_class }}{% endif %}">
         {% if hidden or toggle %}
             <div class="token-field-hidden{% if not hidden %} d-none{% endif %}">
                 {{ token_hidden_html|safe }}

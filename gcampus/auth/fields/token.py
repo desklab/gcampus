@@ -34,13 +34,9 @@ from gcampus.auth.models.token import (
     ACCESS_KEY_LENGTH,
     ALLOWED_TOKEN_CHARS_RE,
     TokenType,
+    BaseToken,
 )
-from gcampus.auth.widgets import (
-    HiddenTokenInput,
-    SplitTokenWidget,
-    SplitKeyWidget,
-    HyphenatedTokenWidget,
-)
+from gcampus.auth.widgets import HiddenTokenInput, HyphenatedTokenWidget
 
 HIDDEN_TOKEN_FIELD_NAME = "gcampus_auth_token"
 
@@ -72,18 +68,27 @@ def _exists_validator(
         # Key has invalid length or uses invalid characters. No need to
         # access the database.
         raise ValidationError(TOKEN_INVALID_ERROR)
-    if model.objects.filter(token=value).exists():
-        if not check_deactivated:
-            # All good, no need to check for deactivation
-            return
-        elif model.objects.filter(token=value, deactivated=False).exists():
-            # All good, token is a valid access key and not deactivated
+
+    if not check_deactivated:
+        # When there is no need to check for deactivated keys, the
+        # query can be simplified with ``exists``.
+        if model.objects.filter(token=value).exists():
             return
         else:
-            # Token/key is deactivated: Change error message accordingly
+            raise ValidationError(TOKEN_INVALID_ERROR)
+
+    # As it should be verified that the token is active, the actual
+    # token instance has to be queried and ``is_active`` can be checked.
+    # The ``course`` relation is also selected as the course will be
+    # required for the ``is_active`` lookup (check if email verified).
+    try:
+        instance: BaseToken = model.objects.select_related("course").get(token=value)
+        if instance.is_active:
+            # All good, token is valid and active
+            return
+        else:
             raise ValidationError(deactivation_message)
-    else:
-        # Token/key does not exist
+    except model.DoesNotExist:
         raise ValidationError(TOKEN_INVALID_ERROR)
 
 
@@ -238,6 +243,7 @@ class HyphenatedTokenField(CharField):
         attrs["data-segment-length"] = self.segment_length
         attrs["data-token-type"] = self.token_type.value
         attrs["placeholder"] = self.placeholder
+        attrs["autocomplete"] = "current-password"
         return attrs
 
 
@@ -251,39 +257,3 @@ def check_form_and_request_token(form: BaseForm, request: HttpRequest):
     form_token = form.cleaned_data[HIDDEN_TOKEN_FIELD_NAME]
     if request_token != form_token:
         raise BadRequest()
-
-
-class SplitTokenField(CharField):
-    widget = SplitTokenWidget
-
-    def to_python(self, value):
-        """
-        Validate that the input is of the correct length.
-        """
-        if isinstance(value, list):
-            if len(value) == 3:
-                return "".join(filter(None, value))
-            else:
-                raise ValueError(
-                    "Expected SplitTokenWidget to return a list of length 3 but"
-                    f" got {len(value)}"
-                )
-        return super(SplitTokenField, self).to_python(value)
-
-
-class SplitKeyField(CharField):
-    widget = SplitKeyWidget
-
-    def to_python(self, value):
-        """
-        Validate that the input is of the correct length.
-        """
-        if isinstance(value, list):
-            if len(value) == 2:
-                return "".join(filter(None, value))
-            else:
-                raise ValueError(
-                    "Expected SplitTokenWidget to return a list of length 2 but"
-                    f" got {len(value)}"
-                )
-        return super(SplitKeyField, self).to_python(value)

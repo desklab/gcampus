@@ -15,23 +15,23 @@
 
 from django.utils.translation import gettext_lazy
 
-from gcampus.auth.models import CourseToken
+from gcampus.auth.models import CourseToken, Course
 from gcampus.mail.messages import EmailTemplate
 
 
 class RegisterEmailTemplate(EmailTemplate):
-    template_path: str = "gcampusmail/register"
+    template_path: str = "gcampusmail/register/base.html"
     subject: str = gettext_lazy("GewässerCampus Course Registration")
     preheader: str = gettext_lazy(
         "The registration of your course on GewässerCampus has been successful. "
         "You may now share the access keys with your students and start measuring."
     )
 
-    def __init__(self, course_token: CourseToken, **kwargs):
-        self.course_token = course_token
+    def __init__(self, course: Course, **kwargs):
+        self.course = course
         super(RegisterEmailTemplate, self).__init__(**kwargs)
 
     def get_context(self, **kwargs) -> dict:
-        if "course_token" not in kwargs:
-            kwargs["course_token"] = self.course_token
+        if "course" not in kwargs:
+            kwargs["course"] = self.course
         return super(RegisterEmailTemplate, self).get_context(**kwargs)

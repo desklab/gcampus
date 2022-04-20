@@ -13,12 +13,15 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from typing import List
+from unittest import mock
 
 from django.contrib.gis.geos import Point
 from django.db import transaction
 from django.forms.utils import ErrorList
+from django.urls import reverse
 
-from gcampus.auth.models import CourseToken, AccessKey
+from gcampus.auth.decorators import FrontendAnonRateThrottle
+from gcampus.auth.models import CourseToken, AccessKey, Course, BaseToken
 from gcampus.core.models import Water
 from gcampus.core.models.water import WaterType
 
@@ -40,25 +43,44 @@ class FormTestMixin:
                     self.assertIn(expected_error, received_errors)
 
 
+class ThrottleTestMixin:
+    def setUp(self):
+        # Mock the 'allow_request' function of FrontendAnonRateThrottle.
+        # All throttled endpoints will be allowed.
+        self.throttle_mock = mock.patch.object(
+            FrontendAnonRateThrottle,
+            "allow_request",
+            return_value=True,
+            autospec=True,
+        )
+        self.throttle_mock.start()
+        super().setUp()
+
+    def tearDown(self):
+        self.throttle_mock.stop()
+        super().tearDown()
+
+
 class TokenTestMixin:
     ACCESS_KEY_COUNT: int = 5
-    parent_token: CourseToken
+    course: Course
+    course_token: CourseToken
     tokens: List[AccessKey]
 
     def setUp(self) -> None:
         super().setUp()
-        self.parent_token = CourseToken(
+        self.course = Course(
             school_name="GCampus Test Case",
             teacher_name="GCampus Testing",
             teacher_email="testcase@gewaessercampus.de",
+            email_verified=True,
         )
-        self.tokens = []
         with transaction.atomic():
-            self.parent_token.save()
+            self.course.save()
+            self.course_token = CourseToken.objects.create_token(self.course)
+            self.tokens = []
             for i in range(self.ACCESS_KEY_COUNT):
-                _token = AccessKey(parent_token=self.parent_token)
-                _token.save()
-                self.tokens.append(_token)
+                self.tokens.append(AccessKey.objects.create_token(self.course))
 
 
 class WaterTestMixin:
@@ -72,3 +94,14 @@ class WaterTestMixin:
             water_type=WaterType.RIVER,
         )
         self.water.save()
+
+
+class LoginTestMixin(ThrottleTestMixin):
+    def login(self, token: BaseToken):
+        if isinstance(token, CourseToken):
+            url = reverse("gcampusauth:login-course-token")
+        elif isinstance(token, AccessKey):
+            url = reverse("gcampusauth:login-access-key")
+        else:
+            raise NotImplementedError()
+        return self.client.post(url, dict(token=token.token))

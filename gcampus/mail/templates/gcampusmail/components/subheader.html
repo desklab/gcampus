@@ -1,15 +1,19 @@
 <table class="container hero-subheader" border="0" cellpadding="0" cellspacing="0" width="620">
     <tr>
         <td class="hero-subheader__title" style="" align="left">
-            {{ title }}
-            {{ title_safe|safe }}
+            <div class="content">
+                {{ title }}
+                {{ title_safe|safe }}
+            </div>
         </td>
     </tr>
 
     <tr>
         <td class="hero-subheader__content" align="left">
-            {{ content }}
-            {{ content_safe|safe }}
+            <div class="content">
+                {{ content }}
+                {{ content_safe|safe }}
+            </div>
         </td>
     </tr>
 </table>

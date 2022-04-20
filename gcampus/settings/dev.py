@@ -29,6 +29,16 @@ DATABASES = {
 }
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
+INSTALLED_APPS.append("debug_toolbar")
+MIDDLEWARE.insert(
+    MIDDLEWARE.index("django.middleware.csrf.CsrfViewMiddleware") + 1,
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+)
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
 EMAIL_BACKEND = (
     "django.core.mail.backends.smtp.EmailBackend"
     if get_env_read_file("GCAMPUS_SMTP_EMAIL", False)

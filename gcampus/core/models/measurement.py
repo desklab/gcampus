@@ -13,7 +13,11 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
 __ALL__ = ["Measurement", "ParameterType", "Parameter"]
+
+from typing import List
 
 from django.contrib.gis.db import models
 from django.contrib.postgres.indexes import GinIndex
@@ -33,14 +37,23 @@ class HiddenManager(models.Manager):
 
 
 class Measurement(util.DateModelMixin):
+    """The measurement model plays a central role in GewässerCampus. It
+    aggregates measured values through the related field
+    :attr:`.parameters`. A user that is logged in with an
+    :class:`gcampus.auth.models.AccessKey` can create measurements.
+    Their access key will be associated with the created measurement
+    with the :attr:`.token` field.
+    """
+
     class Meta:
-        default_manager_name = "all_objects"
+        default_manager_name = "objects"
         verbose_name = _("Measurement")
         verbose_name_plural = _("Measurements")
         indexes = (GinIndex(fields=("search_vector",)),)
         ordering = ("created_at", "name")
 
-    token = models.ForeignKey(
+    #: The token is used to link a measurement to a specific access key.
+    token: models.ForeignKey = models.ForeignKey(
         "gcampusauth.AccessKey",  # noqa
         on_delete=models.SET_NULL,
         blank=False,
@@ -49,48 +62,59 @@ class Measurement(util.DateModelMixin):
         related_name="measurements",
     )
 
-    name = models.CharField(
+    name: models.CharField = models.CharField(
         blank=True,
         max_length=280,
         verbose_name=_("Name"),
         help_text=_("Your forename or team name. This will be publicly visible."),
     )
-    location = models.PointField(blank=False, verbose_name=_("Location"))
-    location_name = models.CharField(
+    #: Location of the measurement
+    location: models.PointField = models.PointField(
+        blank=False, verbose_name=_("Location")
+    )
+    location_name: models.CharField = models.CharField(
         blank=True,
         null=True,
         max_length=280,
         verbose_name=_("Location name"),
         help_text=_("An approximated location for the measurement"),
     )
-    water = models.ForeignKey(
+    water: models.ForeignKey = models.ForeignKey(
         "Water",
         on_delete=models.PROTECT,
         blank=False,
         null=False,
         related_name="measurements",
     )
-    time = models.DateTimeField(
+    time: models.DateTimeField = models.DateTimeField(
         blank=False,
         verbose_name=pgettext_lazy("measurement time", "Time"),
         help_text=_("Date and time of the measurement"),
     )
+    #: Additional comment (or 'note') for the measurement. Note that
+    #: there is also a comment field in the :class:`.Parameter` model.
     comment = models.TextField(
         blank=True,
         verbose_name=_("Note"),
         help_text=_("Note on your measurement. This will be publicly visible."),
     )
+    #: Hidden measurements appear to the user as being deleted. To avoid
+    #: data loss, deleting a measurement will only mark is as hidden.
     hidden = models.BooleanField(default=False, verbose_name=_("Hidden"))
 
-    # The search vector will be overwritten and turned into a postgres
-    # generated column in migration ``0011``.
+    #: The search vector will be overwritten and turned into a postgres
+    #: generated column in migration ``0002_search``.
     search_vector = SearchVectorField(null=True, editable=False)
 
-    # By default, ``objects`` should only return measurements that are
-    # not hidden.
-    # To get all measurements (e.g. in the admin interface), use
-    # the ``all_objects`` manager.
+    #: Related field: List of all parameters associated with this
+    #: measurement.
+    parameters: List[Parameter]
+
+    #: The default manager **without** hidden measurements.
     objects = HiddenManager()
+    #: By default, :attr:`.objects` should only return measurements
+    #: that are not hidden. To get all measurements (e.g. in the admin
+    #: interface), use this manager.
     all_objects = models.Manager()
 
     @property

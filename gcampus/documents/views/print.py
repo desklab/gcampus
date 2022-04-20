@@ -20,17 +20,15 @@ __all__ = [
     "MeasurementListPDF",
 ]
 
-from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy
 
-from gcampus.auth import session
 from gcampus.auth.decorators import require_course_token
-from gcampus.auth.models import CourseToken
+from gcampus.auth.models import Course
+from gcampus.core.filters import MeasurementFilterSet
 from gcampus.core.models import Measurement
 from gcampus.core.models.util import EMPTY
-from gcampus.core.filters import MeasurementFilterSet
 from gcampus.documents.views.generic import (
     SingleObjectDocumentView,
     ListDocumentView,
@@ -40,51 +38,45 @@ from gcampus.documents.views.generic import (
 
 class CourseOverviewPDF(CachedDocumentView):
     template_name = "gcampusdocuments/documents/access_course.html"
-    filename = gettext_lazy("gewaessercampus-course-overview.pdf")
-    context_object_name = "course_token"
-    model = CourseToken
+    filename = gettext_lazy("gewaessercampus-course.pdf")
+    context_object_name = "course"
+    model = Course
     model_file_field = "overview_document"
 
     def get_object(self, queryset=None):
-        if queryset is None:
-            queryset = self.get_queryset()
-        token = session.get_token(self.request)
-        return get_object_or_404(queryset, token=token)
+        return self.request.token.course
 
     @method_decorator(require_course_token)
     def dispatch(self, request, *args, **kwargs):
         return super(CourseOverviewPDF, self).dispatch(request, *args, **kwargs)
 
     def get_filename(self):
-        if self.object.token_name in EMPTY:
+        if self.object.name in EMPTY:
             return self.filename
-        return gettext_lazy("gewaessercampus-overview-{course_name:s}.pdf").format(
-            course_name=slugify(self.object.token_name)
+        return gettext_lazy("gewaessercampus-{course_name!s}.pdf").format(
+            course_name=slugify(self.object.name)
         )
 
 
 class AccessKeyCombinedPDF(SingleObjectDocumentView):
     template_name = "gcampusdocuments/documents/access_student_combined.html"
-    filename = gettext_lazy("gewaessercampus-accesskey-combined.pdf")
-    context_object_name = "course_token"
-    model = CourseToken
+    filename = gettext_lazy("gewaessercampus-access-keys.pdf")
+    context_object_name = "course"
+    model = Course
 
     def get_object(self, queryset=None):
-        if queryset is None:
-            queryset = self.get_queryset()
-        token = session.get_token(self.request)
-        return get_object_or_404(queryset, token=token)
+        return self.request.token.course
 
     @method_decorator(require_course_token)
     def dispatch(self, request, *args, **kwargs):
         return super(AccessKeyCombinedPDF, self).dispatch(request, *args, **kwargs)
 
     def get_filename(self):
-        if self.object.token_name in EMPTY:
+        if self.object.name in EMPTY:
             return self.filename
-        return gettext_lazy(
-            "gewaessercampus-accesskey-combined-{course_name:s}.pdf"
-        ).format(course_name=slugify(self.object.token_name))
+        return gettext_lazy("{course_name!s}-access-keys.pdf").format(
+            course_name=slugify(self.object.name)
+        )
 
 
 class MeasurementDetailPDF(SingleObjectDocumentView):

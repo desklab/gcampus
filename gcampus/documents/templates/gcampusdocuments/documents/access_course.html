@@ -10,7 +10,7 @@
     <style>
         @page {
             @top-right {
-                content: "{% now "d/m/Y H:i:s" %} \A {% translate "version" %} {{ GCAMPUS_VERSION }} \A {% translate "page" %} " counter(page) " {% translate "of" %} " counter(pages);
+                content: "{% now "DATETIME_FORMAT" %} \A {% translate "version" %} {{ GCAMPUS_VERSION }} \A {% translate "page" %} " counter(page) " {% translate "of" %} " counter(pages);
                 white-space: pre-line;
                 color: #606060;
                 font-size: 7pt;
@@ -84,30 +84,30 @@
                             {% translate "name of school" %}
                         </div>
                         <div class="coursedata-content">
-                            {{ course_token.school_name }}
+                            {{ course.school_name }}
                         </div>    
                         <div class="coursedata-heading">
                             {% translate "email" %}
                         </div>
                         <div class="coursedata-content">
-                            {{ course_token.teacher_email }}
+                            {{ course.teacher_email }}
                         </div> 
                         <div class="coursedata-heading">
                             {% translate "name of course" %}
                         </div>
                         <div class="coursedata-content">
-                            {{ course_token.token_name }}
+                            {{ course.name }}
                         </div>
                     </div>
 
                     <div class="float-left w-abs-600">
                         <div class="coursetoken">
-                            {% displaytoken course_token.token hidden=False toggle=False %}  
+                            {% displaytoken course.course_token.token hidden=False toggle=False %}
                         </div>
                         <div class="coursetoken-description">
                             {% blocktrans trimmed %}
                                 The course token is needed to be able to manage all 
-                                measurements of the of the corresponding access keys 
+                                measurements of the corresponding access keys
                                 (see below). 
                                 Therefore, it should not be given to the students.
                             {% endblocktrans %}
@@ -127,25 +127,25 @@
                         This access key is required to create new measurements 
                         and to be able to edit them afterwards. 
                         An access key can be used several times, similar to a 
-                        password, a user name is not necessary. Students working 
+                        password, a username is not necessary. Students working
                         together in a group can use the same access key.
                     {% endblocktrans %}
                 </div> 
                 <div class="accesskey-container overflow-hidden w-abs-1600 h-abs-1100">
-                    {% for token in course_token.access_keys.all|dictsort:"deactivated" %}
-                    {% if token.deactivated == False %}
-                        <div class="accesskey-element float-left overflow-hidden">
-                            <div class="accesskey-counter float-left">
-                                {{ forloop.counter }}
+                    {% for token in course.access_keys.all %}
+                        {% if token.deactivated == False %}
+                            <div class="accesskey-element float-left overflow-hidden">
+                                <div class="accesskey-counter float-left">
+                                    {{ forloop.counter }}
+                                </div>
+                                <div class="accesskey-key float-left">
+                                    {% displaytoken token.token hidden=False toggle=False %}
+                                </div>
+                                <div class="accesskey-notice float-left">
+                                    .
+                                </div>
                             </div>
-                            <div class="accesskey-key float-left">
-                                {% displaytoken token.token hidden=False toggle=False %}
-                            </div>
-                            <div class="accesskey-notice float-left">
-                                .
-                            </div>
-                        </div>
-                    {% endif %}
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>

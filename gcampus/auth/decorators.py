@@ -14,18 +14,34 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from functools import wraps
-from typing import Union, List
+from typing import Union, List, Optional
 
+from django.contrib.sessions.exceptions import SuspiciousSession
 from django.http import HttpRequest
+from rest_framework.exceptions import Throttled
+from rest_framework.throttling import AnonRateThrottle
 
 from gcampus.auth import session
-from gcampus.auth.exceptions import (
-    UnauthenticatedError,
-    TokenPermissionError,
-    TokenEmptyError,
-)
-from gcampus.auth.models.token import TokenType
-from gcampus.core.models.util import EMPTY
+from gcampus.auth.exceptions import UnauthenticatedError, TokenPermissionError
+from gcampus.auth.models.token import TokenType, BaseToken
+
+
+class FrontendAnonRateThrottle(AnonRateThrottle):
+    scope = "frontend_anon"
+
+
+def throttle():
+    def decorator(f):
+        @wraps(f)
+        def wrapper(request: HttpRequest, *args, **kwargs):
+            _throttle = FrontendAnonRateThrottle()
+            if not _throttle.allow_request(request, f):
+                raise Throttled(_throttle.wait())
+            return f(request, *args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 def require_token_type(token_type: Union[TokenType, List[TokenType]]):
@@ -37,11 +53,32 @@ def require_token_type(token_type: Union[TokenType, List[TokenType]]):
         def wrapper(request: HttpRequest, *args, **kwargs):
             if not session.is_authenticated(request):
                 raise UnauthenticatedError()
-            request_token = session.get_token(request)
+            token: Optional[BaseToken] = request.token
+            if not token:
+                raise SuspiciousSession()
             request_token_type = session.get_token_type(request)
-            if request_token in EMPTY:
-                raise TokenEmptyError()
-            if request_token_type not in token_type:
+            if request_token_type not in token_type or not token.is_active:
+                raise TokenPermissionError()
+            return f(request, *args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def require_permissions(permissions: Union[str, List[str]]):
+    if isinstance(permissions, str):
+        permissions = [permissions]
+
+    def decorator(f):
+        @wraps(f)
+        def wrapper(request: HttpRequest, *args, **kwargs):
+            if not session.is_authenticated(request):
+                raise UnauthenticatedError()
+            token: Optional[BaseToken] = request.token
+            if not token:
+                raise SuspiciousSession()
+            if not token.has_perms(permissions):
                 raise TokenPermissionError()
             return f(request, *args, **kwargs)
 

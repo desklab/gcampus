@@ -1,0 +1,12 @@
+<a href="{{ url }}" role="link" class="list-group-item list-group-item-action list-group-item-spaced">
+    <span class="align-items-center row">
+        {% if icon %}
+            <span class="text-secondary fs-1 text-center p-2 col-1">{% include icon %}</span>
+        {% endif %}
+        <span class="col">
+            <span class="mb-0 fs-5">{{ title }}</span>
+            <br>
+            <small class="text-secondary">{{ body }}</small>
+        </span>
+    </span>
+</a>

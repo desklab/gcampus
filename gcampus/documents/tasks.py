@@ -13,6 +13,8 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+__all__ = ["render_cached_document_view", "render_document_to_model"]
+
 import logging
 import time
 from typing import Type, Union, Tuple
@@ -78,7 +80,7 @@ def render_cached_document_view(
         _instance.refresh_from_db(fields=(view_instance.model_file_field,))
         if not force and getattr(_instance, view_instance.model_file_field):
             # The file is already cached and does not have to be rebuilt
-            logger.info("Skip file render as 'force' is set to 'False'.")
+            logger.debug("Skip file render as 'force' is set to 'False'.")
             return
         document_template = render_document_template(
             view_instance.get_template_names(),

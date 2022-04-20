@@ -1,7 +1,7 @@
 {% extends "gcampuscore/base_error.html" %}
 {% load i18n auth_token %}
 {% block exception_message %}
-    {% url "gcampusauth:course-overview" as course_overview_url %}
+    {% url "gcampusauth:course-update" as course_overview_url %}
     {% include "gcampusauth/components/current_token_info.html" %}
     {% if user_token_is_access_key %}
         {# Token deactivated, expired, etc. #}

@@ -22,6 +22,7 @@ from gcampus.auth import session
 def auth(request: HttpRequest) -> dict:
     return {
         "authenticated": session.is_authenticated(request),
+        "user_token_instance": request.token,
         "user_token": session.get_token(request),
         "user_token_type": session.get_token_type(request),
         "user_token_name": session.get_token_name(request),

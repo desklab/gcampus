@@ -14,6 +14,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import time
+from typing import Optional
 
 from django import template
 from django.http import HttpRequest
@@ -31,7 +32,12 @@ def _is_current_view(request: HttpRequest, view_name: str) -> bool:
 
 
 @register.simple_tag(takes_context=True)
-def active_link(context: Context, view_name: str, yesno: str = "active,") -> str:
+def active_link(
+    context: Context,
+    view_name: str,
+    other_view_names: Optional[str] = None,
+    yesno: str = "active,",
+) -> str:
     request: HttpRequest = context["request"]
     yes: str
     no: str
@@ -40,7 +46,10 @@ def active_link(context: Context, view_name: str, yesno: str = "active,") -> str
     else:
         yes = yesno
         no = ""
-    if _is_current_view(request, view_name):
+    views = [view_name]
+    if other_view_names is not None:
+        views += other_view_names.split(",")
+    if any(map(lambda v: _is_current_view(request, v), views)):
         return yes
     else:
         return no
