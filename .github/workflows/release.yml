@@ -1,12 +1,12 @@
 name: Build and Deploy
 
 on:
-  push:
-    tags:
-      - "*"
+  release:
+    types: [ published, created, edited ]
 
 jobs:
   build:
+    if: '!github.event.release.draft'
     runs-on: ubuntu-latest
 
     steps:
@@ -34,8 +34,9 @@ jobs:
           # on the release type.
           tags: |
             type=pep440,pattern={{version}}
+            type=raw,value=dev,enable=${{ github.event.release.prerelease }}
           flavor: |
-            latest=auto
+            latest=${{ !github.event.release.prerelease }}
 
       - name: Build and push
         uses: docker/build-push-action@v2
@@ -50,10 +51,10 @@ jobs:
       tags: ${{ steps.meta.outputs.tags }}
 
   deploy:
+    if: '!github.event.release.draft'
     runs-on: ubuntu-latest
     needs: build
     env:
-      latest: 'ghcr.io/${{ github.repository }}:latest'
       current: 'ghcr.io/${{ github.repository }}:${{ needs.build.outputs.tag }}'
 
     steps:
@@ -74,19 +75,24 @@ jobs:
           echo "${{ secrets.DEPLOY_HOST_KEY }}" >> ~/.ssh/known_hosts
 
       - name: Deploy to production
-        if: contains(needs.build.outputs.tags, env.latest)
+        if: '!github.event.release.prerelease'
         env:
           DOCKER_HOST: 'ssh://${{ secrets.DEPLOY_DOCKER_USER }}@${{ secrets.DEPLOY_DOCKER_HOST }}'
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: 'echo "Production not ready"'
+        run: |
+          docker service update gcampus_gcampus --with-registry-auth --image="${{ env.current }}"
+          docker service update gcampus_gcampus_worker --with-registry-auth --image="${{ env.current }}"
 
-      - name: Deploy to staging environmnet
+      - name: Deploy to staging environment
         env:
           DOCKER_HOST: 'ssh://${{ secrets.DEPLOY_DOCKER_USER }}@${{ secrets.DEPLOY_DOCKER_HOST }}'
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: 'docker service update gcampus_gcampus_dev --with-registry-auth --image="${{ env.current }}"'
+        run: |
+          docker service update gcampus_gcampus_dev --with-registry-auth --image="${{ env.current }}"
+          docker service update gcampus_gcampus_worker_dev --with-registry-auth --image="${{ env.current }}"
 
   static:
+    if: '!github.event.release.draft'
     runs-on: ubuntu-latest
     needs: build
 
@@ -117,7 +123,8 @@ jobs:
       - name: Install Requirements
         run: pip install -r requirements.txt
 
-      - name: Upload static files
+      - name: Upload static files (production environment)
+        if: '!github.event.release.prerelease'
         run: python manage.py collectstatic --no-input
         env:
           USE_S3_STORAGE: True
@@ -125,3 +132,12 @@ jobs:
           S3_SECRET_KEY: ${{secrets.MINIO_SECRET_KEY}}
           S3_ENDPOINT_URL: 'https://files.gewaessercampus.de'
           S3_BUCKET_NAME: 'gcampus'
+
+      - name: Upload static files (staging environment)
+        run: python manage.py collectstatic --no-input
+        env:
+          USE_S3_STORAGE: True
+          S3_ACCESS_KEY: ${{secrets.MINIO_ACCESS_KEY}}
+          S3_SECRET_KEY: ${{secrets.MINIO_SECRET_KEY}}
+          S3_ENDPOINT_URL: 'https://files.gewaessercampus.de'
+          S3_BUCKET_NAME: 'gcampus-dev'
