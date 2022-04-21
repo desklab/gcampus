@@ -140,6 +140,8 @@ WSGI_APPLICATION = "gcampus.wsgi.application"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
