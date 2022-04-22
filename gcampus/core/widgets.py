@@ -162,8 +162,6 @@ class TimeRangeSlider(RangeWidget):
             measurements_per_week = []
         context["week_list_js"] = convert_dates_to_js_milliseconds(week_list)
         context["measurements_per_week"] = measurements_per_week
-        context["max_measurements_per_week"] = max(measurements_per_week)
-        return context
 
 
 class RangeInput(NumberInput):
