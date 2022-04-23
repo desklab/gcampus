@@ -167,6 +167,8 @@ def get_measurements_per_week(
     """
     if not measurement_list:
         return []
+    if len(week_list) <= 1:
+        return []
     measurements_per_week = [0] * (len(week_list) - 1)
 
     for measurement_date in measurement_list:
