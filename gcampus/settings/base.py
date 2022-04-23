@@ -209,6 +209,12 @@ MAP_SETTINGS = {
     "STYLE": "mapbox://styles/axelschlindwein/ckq9e6o4k06fn17o70d7j7l65?optimize=true",
     "MAPBOX_ACCESS_TOKEN": get_env_read_file("MAPBOX_ACCESS_TOKEN"),
 }
+
+# Add backend access key
+MAP_SETTINGS["MAPBOX_BACKEND_ACCESS_TOKEN"] = get_env_read_file(
+    "MAPBOX_BACKEND_ACCESS_TOKEN", MAP_SETTINGS["MAPBOX_ACCESS_TOKEN"]
+)
+
 LEAFLET_CONFIG = {
     "DEFAULT_CENTER": (49.4922, 8.4430),
     "DEFAULT_ZOOM": 8,
