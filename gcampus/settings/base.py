@@ -250,5 +250,6 @@ CELERY_CONFIG = {
     "task_publish_retry": False,
     "broker_transport_options": {
         "max_retries": 1,
+        "global_keyprefix": get_env_read_file("GCAMPUS_CELERY_PREFIX", "gcampus"),
     },
 }
