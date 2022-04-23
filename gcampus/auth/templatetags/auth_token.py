@@ -52,6 +52,8 @@ def can_edit(measurement: Measurement, request: HttpRequest) -> bool:
     if request.token is None:
         return False
     token: BaseToken = request.token
+    if not token:
+        return False
     return token.has_perm("gcampuscore.change_measurement", obj=measurement)
 
 
