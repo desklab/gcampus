@@ -245,15 +245,3 @@ class HyphenatedTokenField(CharField):
         attrs["placeholder"] = self.placeholder
         attrs["autocomplete"] = "current-password"
         return attrs
-
-
-def check_form_and_request_token(form: BaseForm, request: HttpRequest):
-    if HIDDEN_TOKEN_FIELD_NAME not in form.cleaned_data:
-        raise ValueError(
-            "Form does not provide a hidden token field with the "
-            "name 'gcampus.auth.fields.token.HIDDEN_TOKEN_FIELD_NAME'"
-        )
-    request_token = session.get_token(request)
-    form_token = form.cleaned_data[HIDDEN_TOKEN_FIELD_NAME]
-    if request_token != form_token:
-        raise BadRequest()

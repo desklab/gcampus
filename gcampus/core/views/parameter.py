@@ -24,7 +24,6 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import TemplateResponseMixin, View
 
 from gcampus.auth.exceptions import UnauthenticatedError, TokenEditPermissionError
-from gcampus.auth.fields.token import check_form_and_request_token
 from gcampus.auth.models.token import BaseToken
 from gcampus.core.forms.measurement import ParameterFormSet
 from gcampus.core.models import Parameter, Measurement
@@ -102,7 +101,6 @@ class ParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
         # insufficient permissions
         formset = self.get_formset(request, pk)
         if formset.is_valid():
-            check_form_and_request_token(formset.management_form, self.request)
             return self.form_valid(formset)
         else:
             return self.render_to_response(self.get_context_data(formset=formset))
