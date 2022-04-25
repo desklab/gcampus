@@ -15,39 +15,71 @@
 
 from typing import Type
 
-from django.forms import ModelForm, inlineformset_factory, BaseInlineFormSet, Form, CharField, BooleanField, \
-    MultipleChoiceField, EmailField
+from django.forms import (
+    ModelForm,
+    inlineformset_factory,
+    BaseInlineFormSet,
+    Form,
+    CharField,
+    BooleanField,
+    MultipleChoiceField,
+    EmailField,
+)
 from django.forms.formsets import ManagementForm  # noqa
-from django.forms.widgets import Select, Textarea, HiddenInput, NumberInput, CheckboxSelectMultiple
+from django.forms.widgets import (
+    Select,
+    Textarea,
+    HiddenInput,
+    NumberInput,
+    CheckboxSelectMultiple,
+)
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.fields import SplitSplitDateTimeField
 from gcampus.core.models import Measurement, Parameter
 from gcampus.map.widgets import GeoPointWidget
 
-REPORT_PROBLEM_CHOICES = [("Note contains problematic text", "Note contains problematic text"),
-                         ("Values are problematic", "Values are problematic"),
-                         ("Location of measurement is not on public ground",
-                          "Location of measurement is not on public ground",),
-                         ("Location of measurement is not on a water", "Location of measurement is not on a water",),
-                         ("Name of water does not match location", "Name of water does not match location"),
-                         ("Other", "Other")
-                         ]
+REPORT_PROBLEM_CHOICES = [
+    ("Note contains problematic text", _("Note contains problematic text")),
+    ("Values are problematic", _("Values are problematic")),
+    (
+        "Location of measurement is not on public ground",
+        _("Location of measurement is not on public ground"),
+    ),
+    (
+        "Location of measurement is not on a water",
+        _("Location of measurement is not on a water"),
+    ),
+    (
+        "Name of water does not match location",
+        _("Name of water does not match location"),
+    ),
+    ("Other", _("Other")),
+]
 
 
 class ReportForm(Form):
-    text = CharField(required=False, label="Additional information regarding the problem with the measurement",
-                     widget=Textarea,
-                     max_length=500)
-    #TODO Add DSGVO link in help text
-    problem_choices = CharField(label='What is the type of the problem?', widget=Select(choices=REPORT_PROBLEM_CHOICES))
-    email = EmailField(required=False, label='Your email address in case we need to contact you',
-                       help_text="This email address will only be used to contact. LINK TO DSGVO.")
+    text = CharField(
+        required=False,
+        label="Additional information regarding the problem with the measurement",
+        widget=Textarea,
+        max_length=500,
+    )
+    # TODO Add DSGVO link in help text
+    problem_choices = CharField(
+        label="What is the type of the problem?",
+        widget=Select(choices=REPORT_PROBLEM_CHOICES),
+    )
+    email = EmailField(
+        required=False,
+        label="Your email address in case we need to contact you",
+        help_text="This email address will only be used to contact. LINK TO DSGVO.",
+    )
 
     def __init__(self, *args, **kwargs):
         super(ReportForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
+            visible.field.widget.attrs["class"] = "form-control"
 
 
 class MeasurementForm(ModelForm):
