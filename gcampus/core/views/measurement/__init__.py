@@ -15,14 +15,21 @@
 
 from __future__ import annotations
 
+import datetime
+import logging
+from typing import List
+
+from django.contrib import messages
+from django.core.mail import mail_managers
 from django.shortcuts import redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy, resolve
 from django.utils.decorators import method_decorator
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, gettext_lazy
 from django.views.decorators.http import require_POST
 from django.views.generic import DetailView, ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
 
+from gcampus.auth.decorators import throttle
 from gcampus.auth.models.token import BaseToken
 from gcampus.auth.session import is_authenticated
 from gcampus.core.decorators import (
@@ -30,19 +37,23 @@ from gcampus.core.decorators import (
     require_permission_edit_measurement,
 )
 from gcampus.core.filters import MeasurementFilterSet
-from gcampus.core.forms.measurement import MeasurementForm
+from gcampus.core.forms.measurement import MeasurementForm, ReportForm
 from gcampus.core.forms.water import WaterForm
 from gcampus.core.models import Measurement
 from gcampus.core.views.base import TitleMixin
 from gcampus.core.views.measurement.list import MeasurementListView
 
+logger = logging.getLogger("gcampus.core.views.measurement")
 
-class MeasurementDetailView(TitleMixin, DetailView):
+
+class MeasurementDetailView(FormMixin, TitleMixin, DetailView):
     model = Measurement
     queryset = Measurement.objects.select_related("water", "token").prefetch_related(
         "parameters"
     )
     template_name = "gcampuscore/sites/detail/measurement_detail.html"
+    form_class = ReportForm
+
 
     def get_context_data(self, **kwargs):
         kwargs.setdefault("can_edit", False)
@@ -61,6 +72,71 @@ class MeasurementDetailView(TitleMixin, DetailView):
             return str(self.object)
         else:
             raise RuntimeError("'self.object' is not set")
+
+    @method_decorator(throttle())
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    @classmethod
+    def create_measurement_report_string(cls, form, current_url: str, admin_url: str):
+        """Create Measurement Report String
+
+        This function takes the form and extracts problem type and the string that were submitted by a user
+        at the measurement detail page and converts them into a string that is sent via email to
+        the managers
+
+        :param form: List of checked problem types
+        :param current_url: URL of the user
+        :param admin_url: URL to measurement in admin interface
+        :returns: Email string
+        """
+
+        now = datetime.datetime.now()
+        problem_type = form["problem_choices"].data
+
+        email_string = \
+        f"""
+        A user has submitted a problem with the following measurement '{admin_url}', while being on the following URL
+        {current_url}. The time now is {now}.
+        The user thinks this measurement has the following problem: {problem_type}.
+        """
+        if form["text"].data:
+            email_string += f"The user has provided additional information:\n {form['text'].data}\n"
+        else:
+            email_string += f"The user has not provided additional information.\n"
+
+        if form["email"].data:
+            email_string += f"The user has provided an email adddress:\n {form['email'].data}\n"
+        else:
+            email_string += f"The user has not provided an email address.\n"
+
+        return email_string
+
+    def form_valid(self, form):
+        current_url = self.request.get_full_path()
+        info = self.model._meta.app_label, self.model._meta.model_name  # noqa
+        admin_url = reverse("admin:%s_%s_change" % info, kwargs=dict(object_id=self.object.pk))
+        logger.debug(f"Measurement reported, current URL: {current_url}, admin URL: {admin_url}")
+        messages.success(
+            self.request,
+            message=gettext_lazy(
+                "You have successfully reported this "
+                "measurement. The team has been "
+                "informed and will look into your "
+                "request as soon as possible."
+            )
+        )
+        email_text = self.create_measurement_report_string(form, current_url, admin_url)
+        #mail_managers(f"Measurement reported {datetime.datetime.now()}", email_text)
+        return super(MeasurementDetailView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('gcampuscore:measurement-detail', kwargs={'pk': self.object.id})
 
 
 class MeasurementMapView(TitleMixin, ListView):

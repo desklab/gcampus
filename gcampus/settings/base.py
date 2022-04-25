@@ -142,11 +142,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
-# Password validation
-# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
+# Specify emails for admins and managers
+#MANAGERS = os.environ.get("GCAMPUS_MANAGERS").split(",")
+#ADMINS = os.environ.get("GCAMPUS_ADMINS").split(",")
 
 EMAIL_CONFIRMATION_TIMEOUT = datetime.timedelta(days=2)
 AUTH_USER_MODEL = "gcampusauth.User"
+
+# Password validation
+# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",

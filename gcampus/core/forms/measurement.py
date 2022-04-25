@@ -15,14 +15,44 @@
 
 from typing import Type
 
-from django.forms import ModelForm, inlineformset_factory, BaseInlineFormSet
+from django.forms import ModelForm, inlineformset_factory, BaseInlineFormSet, Form, CharField, BooleanField, \
+    MultipleChoiceField, EmailField
 from django.forms.formsets import ManagementForm  # noqa
-from django.forms.widgets import Select, Textarea, HiddenInput, NumberInput
+from django.forms.widgets import Select, Textarea, HiddenInput, NumberInput, CheckboxSelectMultiple
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.fields import SplitSplitDateTimeField
 from gcampus.core.models import Measurement, Parameter
 from gcampus.map.widgets import GeoPointWidget
+
+LIST_OF_VALID_CHOICES = [("Note contains problematic text", "Note contains problematic text"),
+                         ("Values are problematic", "Values are problematic"),
+                         ("Location of measurement is not on public ground",
+                          "Location of measurement is not on public ground",),
+                         ("Location of measurement is not on a water", "Location of measurement is not on a water",),
+                         ("Name of water does not match location", "Name of water does not match location"),
+                         ("Other", "Other")
+                         ]
+
+
+class ReportForm(Form):
+    text = CharField(required=False, label="Additional information regarding the problem with the measurement",
+                     widget=Textarea,
+                     max_length=500)
+    # problem_choices = MultipleChoiceField(
+    #    choices=LIST_OF_VALID_CHOICES,  # this is optional
+    #    widget=CheckboxSelectMultiple,
+    #    required=False
+    # )
+    #TODO Add DSGVO link in help text
+    problem_choices = CharField(label='What is the type of the problem?', widget=Select(choices=LIST_OF_VALID_CHOICES))
+    email = EmailField(required=False, label='Your email address in case we need to contact you',
+                       help_text="This email address will only be used to contact. LINK TO DSGVO.")
+
+    def __init__(self, *args, **kwargs):
+        super(ReportForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
 
 class MeasurementForm(ModelForm):
