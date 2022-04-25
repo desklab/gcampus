@@ -25,7 +25,7 @@ from gcampus.core.fields import SplitSplitDateTimeField
 from gcampus.core.models import Measurement, Parameter
 from gcampus.map.widgets import GeoPointWidget
 
-LIST_OF_VALID_CHOICES = [("Note contains problematic text", "Note contains problematic text"),
+REPORT_PROBLEM_CHOICES = [("Note contains problematic text", "Note contains problematic text"),
                          ("Values are problematic", "Values are problematic"),
                          ("Location of measurement is not on public ground",
                           "Location of measurement is not on public ground",),
@@ -45,7 +45,7 @@ class ReportForm(Form):
     #    required=False
     # )
     #TODO Add DSGVO link in help text
-    problem_choices = CharField(label='What is the type of the problem?', widget=Select(choices=LIST_OF_VALID_CHOICES))
+    problem_choices = CharField(label='What is the type of the problem?', widget=Select(choices=REPORT_PROBLEM_CHOICES))
     email = EmailField(required=False, label='Your email address in case we need to contact you',
                        help_text="This email address will only be used to contact. LINK TO DSGVO.")
 
