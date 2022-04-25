@@ -39,11 +39,6 @@ class ReportForm(Form):
     text = CharField(required=False, label="Additional information regarding the problem with the measurement",
                      widget=Textarea,
                      max_length=500)
-    # problem_choices = MultipleChoiceField(
-    #    choices=LIST_OF_VALID_CHOICES,  # this is optional
-    #    widget=CheckboxSelectMultiple,
-    #    required=False
-    # )
     #TODO Add DSGVO link in help text
     problem_choices = CharField(label='What is the type of the problem?', widget=Select(choices=REPORT_PROBLEM_CHOICES))
     email = EmailField(required=False, label='Your email address in case we need to contact you',
