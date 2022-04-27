@@ -25,7 +25,6 @@ from django.db.models import Q, Count
 from gcampus.auth.models import Course, AccessKey
 from gcampus.core.models import Measurement, Water
 
-
 logger = logging.getLogger("gcampus.core.tasks")
 
 
@@ -53,13 +52,16 @@ def maintenance():
             course.delete()
             removed_courses += 1
 
-    unused_courses: List[Course] = Course.objects.filter(
-        course_token__last_login__lt=(
-            datetime.now() - settings.UNUSED_COURSE_RETENTION_TIME
-        ),
-    ).annotate(measurement_count=Count("access_keys__measurements")).filter(
-        measurement_count=0
-    ).all()
+    unused_courses: List[Course] = (
+        Course.objects.filter(
+            course_token__last_login__lt=(
+                datetime.now() - settings.UNUSED_COURSE_RETENTION_TIME
+            ),
+        )
+        .annotate(measurement_count=Count("access_keys__measurements"))
+        .filter(measurement_count=0)
+        .all()
+    )
     with transaction.atomic():
         for course in unused_courses:
             course.access_keys.delete()
@@ -68,10 +70,14 @@ def maintenance():
             course.delete()
             removed_courses += 1
 
-    old_access_keys: List[AccessKey] = AccessKey.objects.filter(
-        deactivated=False,
-        created_at__lt=datetime.now() - settings.ACCESS_KEY_LIFETIME
-    ).prefetch_related("course").all()
+    old_access_keys: List[AccessKey] = (
+        AccessKey.objects.filter(
+            deactivated=False,
+            created_at__lt=datetime.now() - settings.ACCESS_KEY_LIFETIME,
+        )
+        .prefetch_related("course")
+        .all()
+    )
     courses: Dict[int, List[str]] = {}
     access_key_count = 0
     with transaction.atomic():
@@ -85,3 +91,35 @@ def maintenance():
 
     # TODO: Report to all MANAGERS
 
+
+@shared_task
+def staging_maintenance():
+    if getattr(settings, "ENVIRONMENT", None) != "dev":
+        logger.error(
+            "Task 'staging_maintenance' has been run outside the staging environment"
+        )
+        return
+    Measurement.objects.filter(hidden=True).delete()
+    Measurement.objects.filter(
+        updated_at__lt=datetime.now() - settings.MEASUREMENT_LIFETIME_STAGING
+    ).delete()
+    course_deletion_date = datetime.now() - settings.COURSE_LIFETIME_STAGING
+    AccessKey.objects.filter(
+        Q(last_login__isnull=True) | Q(last_login__lt=course_deletion_date)
+    ).delete()
+    Course.objects.filter(
+        Q(access_keys__isnull=True),
+        Q(course_token__last_login__isnull=True)
+        | Q(course_token__last_login__isnull=course_deletion_date),
+    ).delete()
+
+
+@shared_task
+def refresh_water_from_osm():
+    waters: List[Water] = Water.objects.filter(
+        updated_at__lt=(datetime.now() - settings.WATER_UPDATE_AGE),
+    ).all()[: settings.MAX_CONCURRENT_WATER_UPDATES]
+    with transaction.atomic():
+        for water in waters:
+            water.update_from_osm()
+            water.save()

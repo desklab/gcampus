@@ -75,6 +75,29 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 ENVIRONMENT = get_env_read_file("GCAMPUS_ENV", None)
 
+CELERY_CONFIG["beat_schedule"] = {
+    "weekly-maintenance": {
+        "task": "gcampus.core.tasks.maintenance",
+        "schedule": datetime.timedelta(days=7),
+        "args": tuple(),
+    },
+    "weekly-water-update": {
+        "task": "gcampus.core.tasks.refresh_water_from_osm",
+        "schedule": datetime.timedelta(days=7),
+        "args": tuple(),
+    },
+}
+if ENVIRONMENT == "dev":
+    CELERY_CONFIG["beat_schedule"].update(
+        {
+            "weekly-staging-maintenance": {
+                "task": "gcampus.core.tasks.staging_maintenance",
+                "schedule": datetime.timedelta(days=7),
+                "args": tuple(),
+            }
+        }
+    )
+
 # Sentry integration
 if get_env_read_file("GCAMPUS_SENTRY_DSN", None) is not None:
     SENTRY_DSN = get_env_read_file("GCAMPUS_SENTRY_DSN")

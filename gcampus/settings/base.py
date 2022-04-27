@@ -145,24 +145,18 @@ MANAGERS = get_email_tuple_list(os.environ.get("GCAMPUS_MANAGERS", ""))
 ADMINS = get_email_tuple_list(os.environ.get("GCAMPUS_ADMINS", ""))
 EMAIL_SUBJECT_PREFIX = "[GewässerCampus] "
 
-EMAIL_CONFIRMATION_TIMEOUT = datetime.timedelta(days=2)
+EMAIL_CONFIRMATION_TIMEOUT = datetime.timedelta(days=5)
 AUTH_USER_MODEL = "gcampusauth.User"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 # Internationalization
@@ -258,13 +252,6 @@ CELERY_CONFIG = {
     "broker_transport_options": {
         "max_retries": 1,
         "global_keyprefix": get_env_read_file("GCAMPUS_CELERY_PREFIX", "gcampus"),
-    },
-    "beat_schedule": {
-        "weekly-maintenance": {
-            "task": "gcampus.core.tasks.maintenance",
-            "schedule": datetime.timedelta(days=7),
-            "args": tuple(),
-        }
     },
 }
 
