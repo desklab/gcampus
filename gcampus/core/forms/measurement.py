@@ -21,18 +21,10 @@ from django.forms import (
     BaseInlineFormSet,
     Form,
     CharField,
-    BooleanField,
-    MultipleChoiceField,
     EmailField,
+    ChoiceField,
 )
-from django.forms.formsets import ManagementForm  # noqa
-from django.forms.widgets import (
-    Select,
-    Textarea,
-    HiddenInput,
-    NumberInput,
-    CheckboxSelectMultiple,
-)
+from django.forms.widgets import Select, Textarea, HiddenInput, NumberInput
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.fields import SplitSplitDateTimeField
@@ -40,6 +32,7 @@ from gcampus.core.models import Measurement, Parameter
 from gcampus.map.widgets import GeoPointWidget
 
 REPORT_PROBLEM_CHOICES = [
+    ("Other", _("Other")),
     ("Note contains problematic text", _("Note contains problematic text")),
     ("Values are problematic", _("Values are problematic")),
     (
@@ -54,32 +47,37 @@ REPORT_PROBLEM_CHOICES = [
         "Name of water does not match location",
         _("Name of water does not match location"),
     ),
-    ("Other", _("Other")),
 ]
 
 
 class ReportForm(Form):
     text = CharField(
         required=False,
-        label="Additional information regarding the problem with the measurement",
+        label=_("Additional information"),
         widget=Textarea,
         max_length=500,
     )
-    # TODO Add DSGVO link in help text
-    problem_choices = CharField(
-        label="What is the type of the problem?",
-        widget=Select(choices=REPORT_PROBLEM_CHOICES),
+    problem_choices = ChoiceField(
+        label=_("What is the type of the problem?"),
+        choices=REPORT_PROBLEM_CHOICES,
     )
+    # TODO: Add GDPR link in help text
     email = EmailField(
         required=False,
-        label="Your email address in case we need to contact you",
-        help_text="This email address will only be used to contact. LINK TO DSGVO.",
+        label=_("Email address"),
+        help_text=_(
+            "This email address will only be used to contact you and is not shared "
+            "with anyone else."
+        ),
     )
 
     def __init__(self, *args, **kwargs):
         super(ReportForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
-            visible.field.widget.attrs["class"] = "form-control"
+            if visible.name == "problem_choices":
+                visible.field.widget.attrs["class"] = "form-select"
+            else:
+                visible.field.widget.attrs["class"] = "form-control"
 
 
 class MeasurementForm(ModelForm):
