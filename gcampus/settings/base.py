@@ -269,5 +269,11 @@ CELERY_CONFIG = {
 }
 
 # Maintenance schedule
-MEASUREMENT_RETENTION_TIME = datetime.timedelta(days=30)
-COURSE_RETENTION_TIME = datetime.timedelta(days=7)
+MEASUREMENT_RETENTION_TIME = datetime.timedelta(days=180)
+MEASUREMENT_LIFETIME_STAGING = datetime.timedelta(days=60)
+UNVERIFIED_COURSE_RETENTION_TIME = datetime.timedelta(days=10)
+UNUSED_COURSE_RETENTION_TIME = datetime.timedelta(days=(180 + 30))
+ACCESS_KEY_LIFETIME = datetime.timedelta(days=180)
+COURSE_LIFETIME_STAGING = datetime.timedelta(days=60)
+MAX_CONCURRENT_WATER_UPDATES = 10
+WATER_UPDATE_AGE = datetime.timedelta(days=60)
