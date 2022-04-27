@@ -23,8 +23,6 @@ __all__ = [
     "CourseUpdateView",
     "EmailConfirmationView",
     "AccessKeyCreateView",
-    "deactivate_access_key",
-    "activate_access_key",
 ]
 
 from django.core.exceptions import PermissionDenied
@@ -36,6 +34,7 @@ from gcampus.auth.exceptions import (
     TokenCreatePermissionError,
     TokenEditPermissionError,
     TokenPermissionError,
+    EmailVerificationExpired,
 )
 from gcampus.auth.views.course import (
     CourseUpdateView,
@@ -58,10 +57,12 @@ def permission_denied_error_handler(
 ) -> HttpResponse:
     if isinstance(exception, UnauthenticatedError):
         template_name = "gcampusauth/error/403_unauthenticated.html"
-    if isinstance(exception, TokenCreatePermissionError):
+    elif isinstance(exception, TokenCreatePermissionError):
         template_name = "gcampusauth/error/403_create_permission.html"
-    if isinstance(exception, TokenEditPermissionError):
+    elif isinstance(exception, TokenEditPermissionError):
         template_name = "gcampusauth/error/403_edit_permission.html"
-    if isinstance(exception, TokenPermissionError):
+    elif isinstance(exception, TokenPermissionError):
         template_name = "gcampusauth/error/403_view_permission.html"
+    elif isinstance(exception, EmailVerificationExpired):
+        template_name = "gcampusauth/error/403_email_verification_expired.html"
     return permission_denied(request, exception, template_name=template_name)

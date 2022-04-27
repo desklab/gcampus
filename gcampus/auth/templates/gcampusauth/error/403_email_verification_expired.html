@@ -1,0 +1,31 @@
+{% extends "gcampuscore/base_error.html" %}
+{% load i18n next_url %}
+{% block exception_message %}
+    {% url "gcampusauth:register" as register_url %}
+    {% blocktranslate trimmed %}
+        The email confirmation link you used has expired. Note that it is only
+        valid for 5 days. If the email address of a course is not verified, it
+        will be deleted automatically after some time.
+        <br>
+        Don't worry, you can always
+        <a class="text-dark" href="{{ register_url }}">register</a> a new
+        course with the same email address.
+    {% endblocktranslate %}
+{% endblock %}
+{% block exception_options %}
+    <div class="p-4 p-md-5 border rounded-3 bg-light">
+        <a class="w-100 btn btn-lg btn-primary mb-4" role="button"
+           href="{% url "gcampusauth:login-access-key" %}{% next_url %}">
+            {% translate "Login with access key" %}
+        </a>
+        <a class="w-100 btn btn-lg btn-primary" role="button"
+           href="{% url "gcampusauth:login-course-token" %}{% next_url %}">
+            {% translate "Login with course token" %}
+        </a>
+        <hr class="my-4">
+        <a class="w-100 btn btn-lg" role="button"
+           href="{% url "gcampusauth:register" %}">
+            {% translate "Register a new course" %}
+        </a>
+    </div>
+{% endblock %}

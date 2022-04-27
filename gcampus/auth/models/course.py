@@ -23,6 +23,7 @@ from django.utils.crypto import salted_hmac, constant_time_compare
 from django.utils.http import int_to_base36, base36_to_int
 from django.utils.translation import gettext_lazy as _
 
+from gcampus.auth.exceptions import EmailVerificationExpired
 from gcampus.core.models.util import DateModelMixin
 
 
@@ -114,7 +115,7 @@ class EmailConfirmationTokenGenerator:
         # Check the timestamp is within limit.
         token_age = timedelta(seconds=(self._num_seconds(self._now()) - ts))
         if token_age > settings.EMAIL_CONFIRMATION_TIMEOUT:
-            return False
+            raise EmailVerificationExpired()
 
         return True
 
