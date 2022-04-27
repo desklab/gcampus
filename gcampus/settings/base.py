@@ -259,4 +259,15 @@ CELERY_CONFIG = {
         "max_retries": 1,
         "global_keyprefix": get_env_read_file("GCAMPUS_CELERY_PREFIX", "gcampus"),
     },
+    "beat_schedule": {
+        "weekly-maintenance": {
+            "task": "gcampus.core.tasks.maintenance",
+            "schedule": datetime.timedelta(days=7),
+            "args": tuple(),
+        }
+    },
 }
+
+# Maintenance schedule
+MEASUREMENT_RETENTION_TIME = datetime.timedelta(days=30)
+COURSE_RETENTION_TIME = datetime.timedelta(days=7)

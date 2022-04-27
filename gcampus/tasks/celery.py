@@ -22,6 +22,6 @@ from django.conf import settings
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "gcampus.settings.dev")
 
-app = Celery("gcampus")
+app: Celery = Celery("gcampus")
 app.config_from_object(settings.CELERY_CONFIG)
 app.autodiscover_tasks()
