@@ -14,6 +14,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
+from typing import List, Tuple
 
 
 def get_env_read_file(env: str, default=None):
@@ -55,3 +56,10 @@ def get_env_read_file(env: str, default=None):
         # Return the value of the environment variable without the
         # _FILE suffix
         return not_file
+
+
+def get_email_tuple_list(emails: str) -> List[Tuple[str, str]]:
+    return [
+        (name, email)
+        for name, email in (item.split(":") for item in emails.split(",") if item)
+    ]
