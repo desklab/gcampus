@@ -19,7 +19,6 @@ import datetime
 import logging
 from inspect import cleandoc
 
-from django.conf import settings
 from django.contrib import messages
 from django.core.mail import mail_managers
 from django.shortcuts import redirect
