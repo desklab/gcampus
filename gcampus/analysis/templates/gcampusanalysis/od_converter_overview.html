@@ -12,7 +12,6 @@
             {% with ''|center:row_num as range %}
                 {% for _ in range %}
                     <div class="row">
-
                         {% include "gcampusanalysis/components/od_card.html" with row_pos=0 %}
                         {% if not forloop.counter0|get_iter_num:1 >= param_num %}
                             {% include "gcampusanalysis/components/od_card.html" with row_pos=1 %}
