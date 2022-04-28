@@ -21,3 +21,6 @@ class GCampusCoreAppConfig(AppConfig):
     name = "gcampus.core"
     label = "gcampuscore"
     verbose_name = _("GCampus Core")
+
+    def ready(self):
+        from . import receivers  # imported to connect all receivers

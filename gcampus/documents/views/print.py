@@ -79,11 +79,12 @@ class AccessKeyCombinedPDF(SingleObjectDocumentView):
         )
 
 
-class MeasurementDetailPDF(SingleObjectDocumentView):
+class MeasurementDetailPDF(CachedDocumentView):
     template_name = "gcampusdocuments/documents/measurement_detail.html"
     filename = gettext_lazy("gewaessercampus-measurement-detail.pdf")
     context_object_name = "measurement"
     model = Measurement
+    model_file_field = "document"
 
     def dispatch(self, request, *args, **kwargs):
         return super(MeasurementDetailPDF, self).dispatch(request, *args, **kwargs)

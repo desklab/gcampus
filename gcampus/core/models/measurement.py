@@ -108,6 +108,15 @@ class Measurement(util.DateModelMixin):
     #: generated column in migration ``0002_search``.
     search_vector = SearchVectorField(null=True, editable=False)
 
+    #: File field to cache the measurement detail document for this
+    #: measurement.
+    document = models.FileField(
+        verbose_name=_("Document"),
+        upload_to="documents/measurement",
+        blank=True,
+        null=True,
+    )
+
     #: Related field: List of all parameters associated with this
     #: measurement.
     parameters: List[Parameter]
