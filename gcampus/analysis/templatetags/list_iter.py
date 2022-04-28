@@ -25,11 +25,17 @@ register = template.Library()
 
 @register.filter
 def one_more(lst, row):
+    """
+    Nice little filter if one needs two arguments in a template filter
+    """
     return lst, row
 
 
 @register.filter
 def list_item(lstrow, rowpos):
+    """
+    Get the position of the card in the row (for 3 elements per row)
+    """
     lst, row = lstrow
     try:
         return lst[row * 3 + rowpos]
@@ -39,4 +45,7 @@ def list_item(lstrow, rowpos):
 
 @register.filter
 def get_iter_num(forloop_counter, rowpos):
+    """
+    Gets the current position of the element (given 3 elements per row)
+    """
     return forloop_counter * 3 + rowpos
