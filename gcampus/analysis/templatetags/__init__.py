@@ -12,12 +12,3 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-from gcampus.core.models.measurement import (
-    Measurement,
-    ParameterType,
-    Parameter,
-    Limit,
-    Calibration,
-)
-from gcampus.core.models.water import Water

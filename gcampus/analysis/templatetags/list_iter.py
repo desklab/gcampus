@@ -13,11 +13,30 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from gcampus.core.models.measurement import (
-    Measurement,
-    ParameterType,
-    Parameter,
-    Limit,
-    Calibration,
-)
-from gcampus.core.models.water import Water
+import time
+from typing import Optional
+
+from django import template
+from django.http import HttpRequest
+from django.template import Context
+
+register = template.Library()
+
+
+@register.filter
+def one_more(lst, row):
+    return lst, row
+
+
+@register.filter
+def list_item(lstrow, rowpos):
+    lst, row = lstrow
+    try:
+        return lst[row * 3 + rowpos]
+    except:
+        return None
+
+
+@register.filter
+def get_iter_num(forloop_counter, rowpos):
+    return forloop_counter * 3 + rowpos
