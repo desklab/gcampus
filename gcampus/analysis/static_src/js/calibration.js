@@ -38,12 +38,12 @@ Chart.register(
 
 
 function makeArr(startValue, stopValue, cardinality) {
-  var arr = [];
-  var step = (stopValue - startValue) / (cardinality - 1);
-  for (var i = 0; i < cardinality; i++) {
-    arr.push(startValue + (step * i));
-  }
-  return arr;
+    var arr = [];
+    var step = (stopValue - startValue) / (cardinality - 1);
+    for (var i = 0; i < cardinality; i++) {
+        arr.push(startValue + (step * i));
+    }
+    return arr;
 }
 
 let _functionCache = {};
@@ -59,7 +59,7 @@ function convert(pk, value) {
 }
 
 
-function createChart(pk, el, formula, title, x_label, y_label) {
+function createChart(pk, el, formula, title, x_label, y_label, x_max, x_min) {
     _functionCache[pk] = new Function(
         '\'use strict\'; let od = arguments[0]; return ' + String(formula) + ';'
     );
@@ -69,8 +69,17 @@ function createChart(pk, el, formula, title, x_label, y_label) {
         let x = convert(pk, y_data[i]);
         x_data.push(x);
     }
-    const max_y = 1.6;
-    const max_x = x_data.max;
+    console.log('max', x_max, 'min', x_min);
+    if (x_max == -9999) {
+        console.log('max_if');
+        x_max = x_data.max;
+    }
+    if (x_min == -9999) {
+        console.log('min_if');
+        x_min = x_data.min;
+    }
+    console.log('max', x_max, 'min', x_min);
+    var y_max = 1.6;
     return new Chart(el.getContext('2d'), {
         type: 'line',
         data: {
@@ -84,24 +93,24 @@ function createChart(pk, el, formula, title, x_label, y_label) {
         },
         options: {
             scales: {
+                x: {
+                    type: 'linear',
+                    max: x_max,
+                    min: x_min,
+                    ticks: {},
+                    title: {
+                        display: true,
+                        text: x_label
+                    }
+                },
                 y: {
-                    max: max_y,
-                    min: 0,
+                    max: y_max,
                     ticks: {},
                     title: {
                         display: true,
                         text: y_label
                     }
                 },
-                x: {
-                    max: max_x,
-                    min: 0,
-                    ticks: {},
-                    title: {
-                        display: true,
-                        text: x_label
-                    }
-                }
             },
             elements: {
                 point: {
@@ -139,11 +148,11 @@ function createChart(pk, el, formula, title, x_label, y_label) {
 function updateAnnotation(x, y, chart) {
     // Needs calculation since the chart.js x values do not correspond
     // to the xdata but has to be scaled relative to the axis labels
-    let len = chart.data.labels.length -1;
+    let len = chart.data.labels.length - 1;
     let x_min = parseFloat(chart.data.labels[0]);
     let diff = parseFloat(chart.data.labels[len]) - x_min;
-    console.log(x, y, x_min, len, ((x-x_min)/diff)*len);
-    chart.options.plugins.annotation.annotations.point1.xValue = ((x-x_min)/diff)*len;
+    console.log(x, y, x_min, len, ((x - x_min) / diff) * len);
+    chart.options.plugins.annotation.annotations.point1.xValue = ((x - x_min) / diff) * len;
     chart.options.plugins.annotation.annotations.point1.yValue = y;
     chart.options.plugins.annotation.annotations.point1.display = true;
     chart.update();
