@@ -10,6 +10,7 @@
 {% if can_edit %}
     {% block modals %}
         {{ block.super }}
+        {% include "gcampuscore/components/report_modal.html" %}
         <div class="modal fade"
              id="deleteModal"
              tabindex="-1"
@@ -111,6 +112,11 @@
                                role="link">
                                 {% translate "Download PDF" %}
                             </a>
+                            <button class="btn btn-sm btn btn btn-outline-secondary" type="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#reportModal">
+                                {% translate "Report measurement" %}
+                            </button>
                             {% if can_edit %}
                                 <a href="{% url "gcampuscore:edit-measurement" pk=measurement.pk %}"
                                    class="btn btn-sm btn-secondary"

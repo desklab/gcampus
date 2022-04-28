@@ -21,9 +21,7 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 
 from gcampus import __version__
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-from gcampus.settings.util import get_env_read_file
+from gcampus.settings.util import get_env_read_file, get_email_tuple_list
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -142,11 +140,16 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
-# Password validation
-# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
+# Specify emails for admins and managers
+MANAGERS = get_email_tuple_list(os.environ.get("GCAMPUS_MANAGERS", ""))
+ADMINS = get_email_tuple_list(os.environ.get("GCAMPUS_ADMINS", ""))
+EMAIL_SUBJECT_PREFIX = "[GewässerCampus] "
 
 EMAIL_CONFIRMATION_TIMEOUT = datetime.timedelta(days=2)
 AUTH_USER_MODEL = "gcampusauth.User"
+
+# Password validation
+# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
