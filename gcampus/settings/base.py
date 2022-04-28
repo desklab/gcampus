@@ -192,9 +192,7 @@ REST_FRAMEWORK = {
     ],
     "PAGE_SIZE": 100,
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
-    "DEFAULT_THROTTLE_RATES": {
-        "frontend_anon": "5/min",
-    },
+    "DEFAULT_THROTTLE_RATES": {"frontend_anon": "5/min", "login": "300/h"},
 }
 
 # Geo Settings

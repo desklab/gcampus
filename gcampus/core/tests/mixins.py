@@ -12,6 +12,7 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 from typing import List
 from unittest import mock
 
@@ -19,8 +20,8 @@ from django.contrib.gis.geos import Point
 from django.db import transaction
 from django.forms.utils import ErrorList
 from django.urls import reverse
+from rest_framework.throttling import SimpleRateThrottle
 
-from gcampus.auth.decorators import FrontendAnonRateThrottle
 from gcampus.auth.models import CourseToken, AccessKey, Course, BaseToken
 from gcampus.core.models import Water
 from gcampus.core.models.water import WaterType
@@ -48,7 +49,7 @@ class ThrottleTestMixin:
         # Mock the 'allow_request' function of FrontendAnonRateThrottle.
         # All throttled endpoints will be allowed.
         self.throttle_mock = mock.patch.object(
-            FrontendAnonRateThrottle,
+            SimpleRateThrottle,
             "allow_request",
             return_value=True,
             autospec=True,

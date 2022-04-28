@@ -19,22 +19,39 @@ from typing import Union, List, Optional
 from django.contrib.sessions.exceptions import SuspiciousSession
 from django.http import HttpRequest
 from rest_framework.exceptions import Throttled
-from rest_framework.throttling import AnonRateThrottle
+from rest_framework.throttling import AnonRateThrottle, ScopedRateThrottle
 
 from gcampus.auth import session
 from gcampus.auth.exceptions import UnauthenticatedError, TokenPermissionError
 from gcampus.auth.models.token import TokenType, BaseToken
 
 
-class FrontendAnonRateThrottle(AnonRateThrottle):
-    scope = "frontend_anon"
+class ScopedAnonRateThrottle(AnonRateThrottle):
+    """The default throttle classes do not support switching the scope
+    after initialisation as the rate is determined using the scope when
+    calling ``__init__``.
+
+    This class extends the
+    :class:`rest_framework.throttling.AnonRateThrottle` and allows the
+    passing of a custom scupe when initializing the class.
+
+    :param scope: Optional string to set the scope. If ``None`` is
+        passed, the default scope of the parent class is used.
+    """
+
+    def __init__(self, scope: Optional[str] = None):
+        if scope is not None:
+            self.scope = scope
+        super().__init__()
 
 
-def throttle():
+def throttle(scope: str = "frontend_anon"):
+    """Throttle the decorated view with an optional custom scope."""
+    _throttle = ScopedAnonRateThrottle(scope)
+
     def decorator(f):
         @wraps(f)
         def wrapper(request: HttpRequest, *args, **kwargs):
-            _throttle = FrontendAnonRateThrottle()
             if not _throttle.allow_request(request, f):
                 raise Throttled(_throttle.wait())
             return f(request, *args, **kwargs)
