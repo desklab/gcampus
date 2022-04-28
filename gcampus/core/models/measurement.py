@@ -203,6 +203,7 @@ class ParameterType(models.Model):
 class Limit(models.Model):
     class Meta:
         verbose_name = _("Limit")
+        verbose_name_plural = _("Limits")
 
     limit_type = models.CharField(max_length=20, blank=True)
 

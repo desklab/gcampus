@@ -177,11 +177,11 @@ msgstr "Kursschlüssel"
 
 #: gcampus/auth/models/course.py:31
 msgid "Course"
-msgstr "Kursdaten"
+msgstr "Kurs"
 
 #: gcampus/auth/models/course.py:32
 msgid "Courses"
-msgstr "Kursdaten"
+msgstr "Kurse"
 
 #: gcampus/auth/models/course.py:34
 msgid "Name of course"
@@ -220,28 +220,42 @@ msgstr "Kurs {pk}"
 msgid "Last login"
 msgstr "Letzte Anmeldung"
 
-#: gcampus/auth/models/token.py:239
+#: gcampus/auth/models/token.py:216
+msgid "Course tokens"
+msgstr "Kursschlüssel"
+
+#: gcampus/auth/models/token.py:240
 msgid "course token permissions"
 msgstr "Kursschlüssel Berechtigungen"
 
-#: gcampus/auth/models/token.py:241
+#: gcampus/auth/models/token.py:242
 msgid "Specific permissions for this course token."
 msgstr "Spezifische Berechtigungen für diesen Kursschlüssel"
 
-#: gcampus/auth/models/token.py:247
+#: gcampus/auth/models/token.py:248
 #, python-format
 msgid "Course token %(id)s"
 msgstr "Kursschlüssel %(id)s"
 
-#: gcampus/auth/models/token.py:281
+#: gcampus/auth/models/token.py:260
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:10
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:45
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:8
+#: gcampus/auth/views/course.py:106
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:123
+#: gcampus/mail/templates/gcampusmail/register/overview.html:25
+msgid "Access keys"
+msgstr "Zugangscodes"
+
+#: gcampus/auth/models/token.py:283
 msgid "access key permissions"
 msgstr "Zugangscode Berechtigungen"
 
-#: gcampus/auth/models/token.py:283
+#: gcampus/auth/models/token.py:285
 msgid "Specific permissions for this access key."
 msgstr "Spezifische Berechtigungen für diesen Zugangscode"
 
-#: gcampus/auth/models/token.py:293
+#: gcampus/auth/models/token.py:295
 #, python-format
 msgid "Access key %(id)s"
 msgstr "Zugangscode %(id)s"
@@ -252,15 +266,6 @@ msgstr "Zugangscode %(id)s"
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:78
 msgid "Course data"
 msgstr "Kursdaten"
-
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:10
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:45
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:8
-#: gcampus/auth/views/course.py:106
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:123
-#: gcampus/mail/templates/gcampusmail/register/overview.html:25
-msgid "Access keys"
-msgstr "Zugangscodes"
 
 #: gcampus/auth/templates/gcampusauth/accesskey_list.html:17
 msgid "Generate new access keys"
@@ -882,7 +887,11 @@ msgstr "Funktion"
 msgid "Limit"
 msgstr "Grenzwert"
 
-#: gcampus/core/models/measurement.py:225
+#: gcampus/core/models/measurement.py:206
+msgid "Limits"
+msgstr "Grenzwerte"
+
+#: gcampus/core/models/measurement.py:226
 msgid "Parameters"
 msgstr "Parameter"
 
