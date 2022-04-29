@@ -1,0 +1,30 @@
+{% load i18n l10n auth_token tz map %}
+{% url "gcampuscore:water-detail" pk=water.pk as detail_url %}
+<div class="list-group-item list-group-item-spaced">
+    <h5>
+        <a href="{{ detail_url }}" class="text-dark hover-secondary hover-dark text-decoration-none">
+            {{ water }}
+        </a>
+    </h5>
+    <small class="text-secondary">
+        {# TODO: add more information for each water #}
+        <span class="align-middle">
+            <i class="me-1 cursor-help water-icon {{ water.flow_type }}" data-bs-toggle="tooltip" title="{{ measurement.water.get_flow_type_display|capfirst }}"></i>
+            {% if water.flow_type is not None %}
+                {{ water.flow_type }} {% translate "water" %}
+            {% else %}
+                {% translate "unknown water type" %}
+            {% endif %}
+        </span>
+
+        <span class="ms-4">{% include "gcampuscore/icons/bar-chart.html" %}</span>
+        <span class="ms-1 align-middle ">
+            {% blocktrans trimmed count count=water.measurements.count %}
+                {{ count }} measurement
+            {% plural %}
+                {{ count }} measurements
+            {% endblocktrans %}
+        </span>
+
+    </small>
+</div>

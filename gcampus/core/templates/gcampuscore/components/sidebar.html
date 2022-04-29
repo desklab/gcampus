@@ -13,12 +13,14 @@
         <ul class="nav nav-pills flex-column flex-grow-1">
             {% translate "Explore" context "explore page title" as map_title %}
             {% translate "All Measurements" context "filter page title" as measurements_title %}
+            {% translate "All Waters" context "water page title" as waters_title %}
             {% translate "Analysis" context "analysis page title" as analysis_title %}
             {% translate "Course administration" as course_title %}
             {% translate "Calibration" as converter_title %}
 
             {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/map.html" title=map_title view_name="gcampuscore:mapview" %}
             {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/list-ul.html" title=measurements_title view_name="gcampuscore:measurements" %}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/droplet.html" title=waters_title view_name="gcampuscore:waters" %}
             {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/calculator.html" title=converter_title view_name="gcampusanalysis:od_converter" %}
 {#            {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/bar-chart.html" title=analysis_title view_name="gcampusanalysis:analysis_measure" %}#}
             {% if user_token_is_course_token %}

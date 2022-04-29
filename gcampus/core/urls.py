@@ -25,6 +25,7 @@ from gcampus.core.views.measurement import (
     MeasurementDeleteView,
 )
 from gcampus.core.views.parameter import ParameterFormSetView
+from gcampus.core.views.water import WaterListView, WaterDetailView
 
 # uncomment to test 404 and 500 pages locally
 # from django.views.defaults import page_not_found, server_error
@@ -48,8 +49,10 @@ urlpatterns = [
     path("measurement/<int:pk>/edit/", MeasurementEditView.as_view(), name="edit-measurement"),
     path("measurement/<int:pk>/edit/parameters/", ParameterFormSetView.as_view(), name="edit-parameters"),
     path("measurements/", MeasurementListView.as_view(), name="measurements"),
-#    path("404/", custom_page_not_found), # uncomment to test 404 page locally
-#    path("500/", custom_server_error), # uncomment to test 500 page locally
+    path("waters/", WaterListView.as_view(), name="waters"),
+    path("water/<int:pk>/", WaterDetailView.as_view(), name="water-detail"),
+    # path("404/", custom_page_not_found), # uncomment to test 404 page locally
+    # path("500/", custom_server_error), # uncomment to test 500 page locally
 ]
 # fmt: on
 # pylint: enable=line-too-long
