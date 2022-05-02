@@ -24,7 +24,14 @@
                         {% translate "Copy" %}
                     </button>
                 </div>
-
+            <div class="text-secondary mt-4">
+                        {% blocktranslate trimmed with url="https://desk-lab.de/docs/gcampus-calibration" %}
+                            This tool helps you to convert the optical density you measured with the photometer into
+                            the value of the specific parameter. It uses a standard calibration which has been prepared
+                            by the GewässerCampus team. You can find more information on how to create and
+                            use a calibration <a href={{ url }} class="text-reset">here</a>.
+                        {% endblocktranslate %}
+                    </div>
             </div>
         </form>
     </div>
@@ -35,7 +42,7 @@
         <script>
             let chart_{{ calibration.pk }} = (function () {
                 let chart_element_{{ calibration.pk }} = document.getElementById("myChart_{{ calibration.name }}");
-                let chart_title = "{% translate "Calibration fit for" %} " + "{{ calibration.name }}";
+                let chart_title = "{% translate "Calibration fit for" %} " + "{{ calibration.parameter_type }}";
                 let x_label;
                 if ('{{ parameter.unit }}' !== '') {
                     x_label = "{{ parameter.name }} " + "[{{ parameter.unit }}]";
@@ -43,7 +50,8 @@
                     x_label = "{{ parameter.name }}";
                 }
                 let y_label = "{% translate "Optical density" %}";
-                return gcampusanalysis.calibration.createChart({{ calibration.pk }}, chart_element_{{ calibration.pk }}, "{{ calibration.calibration_formula }}", chart_title, x_label, y_label, {{ calibration.x_max }}, {{ calibration.x_min }});
+                return gcampusanalysis.calibration.createChart({{ calibration.pk }}, chart_element_{{ calibration.pk }},
+                    "{{ calibration.calibration_formula }}", chart_title, x_label, y_label, "{{ calibration.x_max }}", "{{ calibration.x_min }}");
             })();
 
             function Convert_{{ calibration.pk }}(e, chart) {
