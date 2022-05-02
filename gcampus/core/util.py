@@ -41,7 +41,7 @@ ADDRESS_OPTIONS = ("city", "village", "municipality", "county", "state", "countr
 
 
 def get_location_name(
-    location: Union[Tuple[float, float], Point, None]
+        location: Union[Tuple[float, float], Point, None]
 ) -> Optional[str]:
     """Get Location Name (with caching)
 
@@ -153,7 +153,7 @@ def get_weeks_from_today(date: datetime.datetime) -> List[datetime.datetime]:
 
 
 def get_measurements_per_week(
-    week_list: List[datetime.datetime], measurement_list: List[datetime.datetime]
+        week_list: List[datetime.datetime], measurement_list: List[datetime.datetime]
 ) -> List[int]:
     """Get Measurements per weeks
 
@@ -177,7 +177,7 @@ def get_measurements_per_week(
                 measurements_per_week[week_index] += 1
                 break
     measurements_per_week = (
-        np.array(measurements_per_week) / np.max(measurements_per_week) * 100
+            np.array(measurements_per_week) / np.max(measurements_per_week) * 100
     )
     return [int(measurement_val) for measurement_val in measurements_per_week]
 

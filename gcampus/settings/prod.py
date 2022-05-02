@@ -70,14 +70,20 @@ if get_env_read_file("GCAMPUS_EMAIL_HOST_PASSWORD", None) is not None:
 DEFAULT_FROM_EMAIL = get_env_read_file(
     "EMAIL_HOST_PASSWORD", "noreply@gewaessercampus.de"
 )
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
+ENVIRONMENT = get_env_read_file("GCAMPUS_ENV", None)
 
 # Sentry integration
 if get_env_read_file("GCAMPUS_SENTRY_DSN", None) is not None:
     SENTRY_DSN = get_env_read_file("GCAMPUS_SENTRY_DSN")
+    _sentry_kwargs = {}
+    if ENVIRONMENT:
+        _sentry_kwargs["environment"] = ENVIRONMENT
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[DjangoIntegration()],
         traces_sample_rate=1.0,  # capture 100% of transactions
         release=GCAMPUS_VERSION,
+        **_sentry_kwargs,
     )

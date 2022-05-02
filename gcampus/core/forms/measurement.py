@@ -15,14 +15,69 @@
 
 from typing import Type
 
-from django.forms import ModelForm, inlineformset_factory, BaseInlineFormSet
-from django.forms.formsets import ManagementForm  # noqa
+from django.forms import (
+    ModelForm,
+    inlineformset_factory,
+    BaseInlineFormSet,
+    Form,
+    CharField,
+    EmailField,
+    ChoiceField,
+)
 from django.forms.widgets import Select, Textarea, HiddenInput, NumberInput
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.fields import SplitSplitDateTimeField
 from gcampus.core.models import Measurement, Parameter
 from gcampus.map.widgets import GeoPointWidget
+
+REPORT_PROBLEM_CHOICES = [
+    ("Other", _("Other")),
+    ("Note contains problematic text", _("Note contains problematic text")),
+    ("Values are problematic", _("Values are problematic")),
+    (
+        "Location of measurement is not on public ground",
+        _("Location of measurement is not on public ground"),
+    ),
+    (
+        "Location of measurement is not on a water",
+        _("Location of measurement is not on a water"),
+    ),
+    (
+        "Name of water does not match location",
+        _("Name of water does not match location"),
+    ),
+]
+
+
+class ReportForm(Form):
+    text = CharField(
+        required=False,
+        label=_("Additional information"),
+        widget=Textarea,
+        max_length=500,
+    )
+    problem_choices = ChoiceField(
+        label=_("What is the type of the problem?"),
+        choices=REPORT_PROBLEM_CHOICES,
+    )
+    # TODO: Add GDPR link in help text
+    email = EmailField(
+        required=False,
+        label=_("Email address"),
+        help_text=_(
+            "This email address will only be used to contact you and is not shared "
+            "with anyone else."
+        ),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(ReportForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            if visible.name == "problem_choices":
+                visible.field.widget.attrs["class"] = "form-select"
+            else:
+                visible.field.widget.attrs["class"] = "form-control"
 
 
 class MeasurementForm(ModelForm):

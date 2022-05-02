@@ -213,6 +213,7 @@ class BaseToken(DateModelMixin):
 class CourseToken(BaseToken):
     class Meta:
         verbose_name = _("Course token")
+        verbose_name_plural = _("Course tokens")
 
     TOKEN_LENGTH = COURSE_TOKEN_LENGTH
     DEFAULT_PERMISSIONS = [
@@ -256,6 +257,7 @@ class CourseToken(BaseToken):
 class AccessKey(BaseToken):
     class Meta:
         verbose_name = _("Access key")
+        verbose_name_plural = _("Access keys")
         ordering = ("created_at", "token")
 
     TOKEN_LENGTH = ACCESS_KEY_LENGTH

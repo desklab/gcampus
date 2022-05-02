@@ -12,6 +12,7 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 from importlib.util import find_spec
 
 from gcampus.settings.base import *  # noqa
@@ -57,3 +58,4 @@ EMAIL_HOST_USER = get_env_read_file("GCAMPUS_EMAIL_USER", None)
 EMAIL_HOST_PASSWORD = get_env_read_file("GCAMPUS_EMAIL_PASSWORD", None)
 
 DEFAULT_FROM_EMAIL = get_env_read_file("GCAMPUS_FROM_EMAIL", None)
+SERVER_EMAIL = DEFAULT_FROM_EMAIL

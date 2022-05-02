@@ -31,8 +31,6 @@ from pathlib import Path
 
 from gcampus.settings.util import get_env_read_file
 
-STATIC_LOCATION = "static"
-
 if os.environ.get("USE_S3_STORAGE", False):
     # Credentials
     AWS_ACCESS_KEY_ID = get_env_read_file("S3_ACCESS_KEY")
@@ -42,19 +40,20 @@ if os.environ.get("USE_S3_STORAGE", False):
     AWS_STORAGE_BUCKET_NAME = os.environ.get("S3_BUCKET_NAME", "gcampus")
 
     # Other settings
-    AWS_AUTO_CREATE_BUCKET = True
-    AWS_DEFAULT_ACL = None
-    AWS_BUCKET_ACL = None
-    AWS_S3_SECURE_URLS = os.environ.get("S3_SECURE_URLS", True)
+    AWS_QUERYSTRING_AUTH = True  # only applied to media storage
     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
     AWS_QUERYSTRING_EXPIRE = 86400
 
-    STATICFILES_STORAGE = "gcampus.core.storage.StaticFileStorage"
+    DEFAULT_FILE_STORAGE = "gcampus.core.storage.MediaStorage"
+    STATICFILES_STORAGE = "gcampus.core.storage.StaticStorage"
+
+    MEDIA_ROOT = None
+    MEDIA_URL = None
 
     STATIC_URL = "{endpoint:s}/{bucket:s}/{location:s}/".format(
         endpoint=AWS_S3_ENDPOINT_URL,
         bucket=AWS_STORAGE_BUCKET_NAME,
-        location=STATIC_LOCATION,
+        location="static",
     )
 else:
     # Use django's default static file storage class. See

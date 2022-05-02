@@ -16,7 +16,7 @@
 from django.urls import path
 
 from gcampus.analysis.apps import GCampusAnalysisAppConfig
-from gcampus.analysis.views import ODConverterView
+from gcampus.analysis.views import ODConverterOverView, ODConverterDetailView
 
 # Necessary to get the plots to work
 # from gcampus.analysis.dash_apps import Example_Measurement
@@ -26,7 +26,8 @@ from gcampus.analysis.views import ODConverterView
 # fmt: off
 # pylint: disable=line-too-long
 urlpatterns = [
-    path("analysis/convert", ODConverterView.as_view(), name="od_converter"),
+    path("analysis/convert", ODConverterOverView.as_view(), name="od_converter_overview"),
+    path("analysis/convert/<int:pk>/", ODConverterDetailView.as_view(), name="od_converter"),
 ]
 # fmt: on
 # pylint: enable=line-too-long
