@@ -275,6 +275,6 @@ class Calibration(models.Model):
         blank=True, max_length=100, verbose_name=_("Calibration formula")
     )
 
-    x_max = models.FloatField(default=-9999, verbose_name=_("Maximal OD value"))
+    x_max = models.FloatField(default=-9999, verbose_name=_("Maximal parameter value"))
 
-    x_min = models.FloatField(default=-9999, verbose_name=_("Minimal OD value"))
+    x_min = models.FloatField(default=-9999, verbose_name=_("Minimal parameter value"))
