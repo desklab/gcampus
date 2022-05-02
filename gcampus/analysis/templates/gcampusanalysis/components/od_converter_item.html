@@ -1,34 +1,28 @@
 {% load i18n %}
 <div class="col-7 px-5 py-3">
     <div class="mb-3">
-        <form onsubmit="Convert_{{ parameter.pk }}(event, chart_{{ parameter.pk }})">
+        <form onsubmit="Convert_{{ calibration.pk }}(event, chart_{{ calibration.pk }})">
             <div>
-                <label for="od_input_{{ parameter.pk }}">{% translate "Optical density" %}</label>
+                <label for="od_input_{{ calibration.pk }}">{% translate "Optical density" %}</label>
                 <div class="input-group mb-3">
-                    <input name="od" type="number" min="0" max="1.6" step=".01" id="od_input_{{ parameter.pk }}"
+                    <input name="od" type="number" min="0" max="1.6" step=".01" id="od_input_{{ calibration.pk }}"
                            class="form-control"
                            placeholder="{% translate "Optical density" %}">
                     <button type="submit" class="btn btn-primary">
                         {% translate "Convert" %}
                     </button>
                 </div>
-                <label for="concentration_{{ parameter.pk }}">{{ parameter.name }} {% if parameter.unit != "" %}[{{ parameter.unit }}]{% endif %}</label>
+                <label for="concentration_{{ calibration.pk }}">{{ parameter.name }} {% if parameter.unit != "" %}
+                    [{{ parameter.unit }}]{% endif %}</label>
                 <div class="input-group mb-5">
                     <input name="concentration" type="number" style="appearance: none" class="form-control no-spinners"
-                           id="concentration_{{ parameter.pk }}"
+                           id="concentration_{{ calibration.pk }}"
                            placeholder="{% translate "Value" %}"
                            readonly>
-                    <button class="btn btn-secondary" type="button" onclick="CopyValueToClipboard('{{ parameter.pk }}')">
+                    <button class="btn btn-secondary" type="button"
+                            onclick="CopyValueToClipboard('{{ calibration.pk }}')">
                         {% translate "Copy" %}
                     </button>
-                </div>
-                <div class="text-secondary mt-4">
-                    {% blocktranslate trimmed with url="https://desk-lab.de/docs/gcampus-calibration" %}
-                        This tool helps you to convert the optical density you measured with the photometer into
-                        the value of the specific parameter. It uses a standard calibration which has been prepared
-                        by the GewässerCampus team. You can find more information on how to create and
-                        use a calibration <a href={{ url }} class="text-reset">here</a>.
-                    {% endblocktranslate %}
                 </div>
             </div>
         </form>
@@ -36,22 +30,23 @@
 </div>
 <div class="col-5 bg-light py-2 px-5">
     <p class="text-muted">
-        <canvas id="myChart_{{ parameter.name }}" width="400" height="400"></canvas>
+        <canvas id="myChart_{{ calibration.name }}" width="400" height="400"></canvas>
         <script>
-            let chart_{{ parameter.pk }} = (function () {
-                let chart_element_{{ parameter.pk }} = document.getElementById("myChart_{{ parameter.name }}");
-                let chart_title = "{% translate "Calibration fit for" %} " + "{{ parameter.name }}";
+            let chart_{{ calibration.pk }} = (function () {
+                let chart_element_{{ calibration.pk }} = document.getElementById("myChart_{{ calibration.name }}");
+                let chart_title = "{% translate "Calibration fit for" %} " + "{{ calibration.parameter_type }}";
                 let x_label;
                 if ('{{ parameter.unit }}' !== '') {
-                    x_label = "{{ parameter.name }} " +  "[{{ parameter.unit }}]";
+                    x_label = "{{ parameter.name }} " + "[{{ parameter.unit }}]";
                 } else {
-                    x_label = "{{ parameter.name }}"
+                    x_label = "{{ parameter.name }}";
                 }
                 let y_label = "{% translate "Optical density" %}";
-                return gcampusanalysis.calibration.createChart({{ parameter.pk }}, chart_element_{{ parameter.pk }}, "{{ parameter.calibration_formula }}", chart_title, x_label, y_label);
+                return gcampusanalysis.calibration.createChart({{ calibration.pk }}, chart_element_{{ calibration.pk }},
+                    "{{ calibration.calibration_formula }}", chart_title, x_label, y_label, "{{ calibration.x_max }}", "{{ calibration.x_min }}");
             })();
 
-            function Convert_{{ parameter.pk }}(e, chart) {
+            function Convert_{{ calibration.pk }}(e, chart) {
                 e.preventDefault();
                 if (!e.target.checkValidity()) {
                     if (e.target.reportValidity) {
@@ -59,20 +54,20 @@
                     }
                 } else {
                     let data = new FormData(e.target);
-                    let concentration = e.target.elements.namedItem("concentration");
-                    let od = parseFloat(data.get("od"));
+                    let concentration = e.target.elements.namedItem('concentration');
+                    let od = parseFloat(data.get('od'));
                     let concentration_value = (
                         gcampusanalysis.calibration.convert(
-                            {{ parameter.pk }}, od
+                            {{ calibration.pk }}, od
                         )
                     );
                     concentration.value = String(concentration_value);
-                    gcampusanalysis.calibration.updateAnnotation(concentration_value, od, chart)
+                    gcampusanalysis.calibration.updateAnnotation(concentration_value, od, chart);
                 }
             }
 
             function CopyValueToClipboard(pk) {
-                let concentration = document.getElementById("concentration_"+pk).value;
+                let concentration = document.getElementById('concentration_' + pk).value;
                 if (concentration !== '')
                     navigator.clipboard.writeText(Number(concentration).toLocaleString());
             }

@@ -1,0 +1,35 @@
+{% load i18n list_iter %}
+{# Since we need two arguments, one indicating the row the second one the column, we need a filter #}
+{# with two arguments. This is done with 2 filters where th first one ("one_more) just returns both arguments #}
+{# so we can access both in the second filter("list_item"). Look into the list_iter file to see how it is done #}
+{% with object_list|one_more:forloop.counter0|list_item:row_pos as parameter %}
+    <style>
+        .square {
+            width: 120px;
+            height: 120px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .square h1 {
+            color: #fff;
+            font-size: 42pt;
+            line-height: 120px;
+        }
+    </style>
+    <div class="col-md-4">
+        <div class="card p-3 mb-3">
+            <div class="d-flex justify-content-center">
+                <div class="d-flex flex-row align-items-center mt-4">
+                    <div class="square" style="background: #{{ parameter.color }};">
+                        <h1>{{ parameter.short_name }}</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3 justify-content-center">
+                <h5 class="text-center text-secondary">{{ parameter.name }}</h5>
+            </div>
+            <a href="{% url "gcampusanalysis:od_converter" pk=parameter.pk %}" class="stretched-link"></a>
+        </div>
+    </div>
+{% endwith %}

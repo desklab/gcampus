@@ -15,7 +15,7 @@
 
 from __future__ import annotations
 
-__ALL__ = ["Measurement", "ParameterType", "Parameter"]
+__ALL__ = ["Measurement", "ParameterType", "Parameter", "Calibration"]
 
 from typing import List
 
@@ -189,9 +189,8 @@ class ParameterType(models.Model):
     )
     unit = models.CharField(blank=True, max_length=10, verbose_name=_("Unit"))
 
-    calibration_formula = models.CharField(
-        blank=True, max_length=100, verbose_name=_("Formula")
-    )
+    # Hex value of color displayed
+    color = models.CharField(blank=True, verbose_name=_("Color"), max_length=7)
 
     def __str__(self):
         if self.unit in EMPTY:
@@ -255,3 +254,28 @@ class Parameter(util.DateModelMixin):
             "pk": self.pk,
             "name": self.parameter_type.name,
         }
+
+
+class Calibration(models.Model):
+    class Meta:
+        verbose_name = _("Calibration")
+        verbose_name_plural = _("Calibrations")
+
+    name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
+
+    parameter_type = models.ForeignKey(
+        ParameterType,
+        on_delete=models.PROTECT,
+        # We opted to use 'Parameter' in the front-end. See issue
+        # https://github.com/desklab/gcampus/issues/46 for more.
+        verbose_name=_("Parameter"),
+        related_name="calibrations",
+    )
+
+    calibration_formula = models.CharField(
+        blank=True, max_length=100, verbose_name=_("Calibration formula")
+    )
+
+    x_max = models.FloatField(default=-9999, verbose_name=_("Maximal parameter value"))
+
+    x_min = models.FloatField(default=-9999, verbose_name=_("Minimal parameter value"))

@@ -21,7 +21,14 @@ from django.utils.translation import gettext_lazy as _
 from leaflet.admin import LeafletGeoAdmin
 
 from gcampus.admin.options import LinkedInlineMixin
-from gcampus.core.models import Measurement, ParameterType, Parameter, Limit, Water
+from gcampus.core.models import (
+    Measurement,
+    ParameterType,
+    Parameter,
+    Limit,
+    Water,
+    Calibration,
+)
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 
 
@@ -103,6 +110,10 @@ class LimitAdmin(admin.ModelAdmin):
     pass
 
 
+class CalibrationAdmin(admin.ModelAdmin):
+    pass
+
+
 class ParameterAdmin(admin.ModelAdmin):
     readonly_fields = ADMIN_READ_ONLY_FIELDS
     list_filter = ("hidden",)
@@ -115,3 +126,4 @@ admin.site.register(ParameterType, ParameterTypeAdmin)
 admin.site.register(Parameter, ParameterAdmin)
 admin.site.register(Limit, LimitAdmin)
 admin.site.register(Water, WaterAdmin)
+admin.site.register(Calibration, CalibrationAdmin)
