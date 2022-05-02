@@ -151,7 +151,6 @@ function updateAnnotation(x, y, chart) {
     let len = chart.data.labels.length - 1;
     let x_min = parseFloat(chart.data.labels[0]);
     let diff = parseFloat(chart.data.labels[len]) - x_min;
-    console.log(x, y, x_min, len, ((x - x_min) / diff) * len);
     chart.options.plugins.annotation.annotations.point1.xValue = ((x - x_min) / diff) * len;
     chart.options.plugins.annotation.annotations.point1.yValue = y;
     chart.options.plugins.annotation.annotations.point1.display = true;
