@@ -27,6 +27,6 @@ class ODConverterDetailView(TitleMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         kwargs["calibrations"] = Calibration.objects.filter(
-            calibration_parameter_type=self.object
+            parameter_type=self.object
         ).all()
         return super(ODConverterDetailView, self).get_context_data(**kwargs)
