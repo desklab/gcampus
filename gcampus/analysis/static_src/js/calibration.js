@@ -146,12 +146,7 @@ function createChart(pk, el, formula, title, x_label, y_label, x_max, x_min) {
 
 
 function updateAnnotation(x, y, chart) {
-    // Needs calculation since the chart.js x values do not correspond
-    // to the xdata but has to be scaled relative to the axis labels
-    let len = chart.data.labels.length - 1;
-    let x_min = parseFloat(chart.data.labels[0]);
-    let diff = parseFloat(chart.data.labels[len]) - x_min;
-    chart.options.plugins.annotation.annotations.point1.xValue = ((x - x_min) / diff) * len;
+    chart.options.plugins.annotation.annotations.point1.xValue = x;
     chart.options.plugins.annotation.annotations.point1.yValue = y;
     chart.options.plugins.annotation.annotations.point1.display = true;
     chart.update();
