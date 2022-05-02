@@ -15,7 +15,7 @@
 
 from __future__ import annotations
 
-__ALL__ = ["Measurement", "ParameterType", "Parameter"]
+__ALL__ = ["Measurement", "ParameterType", "Parameter", "Calibration"]
 
 from typing import List
 
@@ -262,19 +262,19 @@ class Calibration(models.Model):
 
     name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
 
-    calibration_parameter_type = models.ForeignKey(
+    parameter_type = models.ForeignKey(
         ParameterType,
         on_delete=models.PROTECT,
         # We opted to use 'Parameter' in the front-end. See issue
         # https://github.com/desklab/gcampus/issues/46 for more.
         verbose_name=_("Parameter"),
-        related_name="calibration_parameter",
+        related_name="calibrations",
     )
 
     calibration_formula = models.CharField(
         blank=True, max_length=100, verbose_name=_("Calibration formula")
     )
 
-    x_max = models.FloatField(default=-9999, verbose_name=_("Maximal x value"))
+    x_max = models.FloatField(default=-9999, verbose_name=_("Maximal OD value"))
 
-    x_min = models.FloatField(default=-9999, verbose_name=_("Minimal x value"))
+    x_min = models.FloatField(default=-9999, verbose_name=_("Minimal OD value"))
