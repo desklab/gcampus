@@ -17,7 +17,7 @@
                 padding-top: 1.2cm;
             }
             @top-left {
-                background: url("{% print_static 'gcampusdocuments/assets/gcampus-print-header-left.png' %}"); {# TODO: localize text in logo #}
+                background: url("{% print_static 'gcampusdocuments/assets/gcampus-print-header-left.png' %}");
                 background-repeat: no-repeat;
                 background-position: left;
                 background-size: 100% auto;
@@ -128,7 +128,7 @@
                                     <td class="font-monospace">
                                         {{ parameter.value }} {{ parameter.parameter_type.unit }}
                                     </td>
-                                    <td>
+                                    <td> {# TODO: improve width to fit comments #}
                                         <small class="color-grey">
                                             {% if parameter.comment %}
                                                 {{ parameter.comment }}
