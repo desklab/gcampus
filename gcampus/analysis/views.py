@@ -14,7 +14,7 @@ class ODConverterOverView(TitleMixin, ListView):
     context_object_name = "parameter"
 
     def get_context_data(self, **kwargs):
-        kwargs["row_num"] = math.ceil(len(ParameterType.objects.all()) / 3)
+        kwargs["row_num"] = math.ceil(len(self.object_list) / 3)
         kwargs["param_num"] = len(ParameterType.objects.all())
         return super(ODConverterOverView, self).get_context_data(**kwargs)
 
@@ -26,7 +26,7 @@ class ODConverterDetailView(TitleMixin, DetailView):
     context_object_name = "parameter"
 
     def get_context_data(self, **kwargs):
-        kwargs["calibrations"] = Calibration.objects.all().filter(
+        kwargs["calibrations"] = Calibration.objects.filter(
             calibration_parameter_type=self.object
-        )
+        ).all()
         return super(ODConverterDetailView, self).get_context_data(**kwargs)
