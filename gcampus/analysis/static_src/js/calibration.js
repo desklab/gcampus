@@ -60,6 +60,9 @@ function convert(pk, value) {
 
 
 function createChart(pk, el, formula, title, x_label, y_label, x_max, x_min) {
+
+    x_min = parseFloat(x_min);
+    x_max = parseFloat(x_max);
     _functionCache[pk] = new Function(
         '\'use strict\'; let od = arguments[0]; return ' + String(formula) + ';'
     );
@@ -67,18 +70,15 @@ function createChart(pk, el, formula, title, x_label, y_label, x_max, x_min) {
     let y_data = makeArr(0, 1.6, 17);
     for (let i = 0; i < y_data.length; i++) {
         let x = convert(pk, y_data[i]);
-        x_data.push(x);
+        x_data.push(parseFloat(x));
     }
-    console.log('max', x_max, 'min', x_min);
     if (x_max == -9999) {
-        console.log('max_if');
-        x_max = x_data.max;
+        x_max = parseFloat(x_data[x_data.length - 1]);
     }
     if (x_min == -9999) {
-        console.log('min_if');
-        x_min = x_data.min;
+        x_min = parseFloat(x_data[0]);
     }
-    console.log('max', x_max, 'min', x_min);
+
     var y_max = 1.6;
     return new Chart(el.getContext('2d'), {
         type: 'line',
