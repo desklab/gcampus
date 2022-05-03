@@ -5,7 +5,7 @@
     <ul class="nav navbar-nav me-auto">
         {% trans "Course data" as course_data_title %}
         {% include "gcampuscore/components/nav_item.html" with title=course_data_title view_name="gcampusauth:course-update" %}
-        {% trans "Access keys" as access_keys_title %}
+        {% trans "Manage access keys" as access_keys_title %}
         {% include "gcampuscore/components/nav_item.html" with title=access_keys_title view_name="gcampusauth:course-access-keys" %}
     </ul>
 {% endblock %}
@@ -103,8 +103,8 @@
             {% blocktrans asvar body trimmed %}
                 Download a PDF with a summary of your
                 registration
-                data, your course token, and the all access keys
-                of your course.
+                data, your course token, and all access keys
+                for the students of your course.
             {% endblocktrans %}
             {% include "gcampusauth/components/document_download_card.html" with icon="gcampuscore/icons/cloud-download.html" %}
 
@@ -112,12 +112,12 @@
             {% translate "Save access keys for students" as title %}
             {% blocktrans asvar body trimmed %}
                 Download a PDF with all access keys
-                (one key per page/student)
+                (one key per page)
                 of your course with instructions for your
                 students.
             {% endblocktrans %}
             {% include "gcampusauth/components/document_download_card.html" with icon="gcampuscore/icons/cloud-download.html" %}
-
+            {% comment %}
             {% translate "Send to my email" as title %}
             {% blocktrans asvar body trimmed %}
                 Send your course token and all access keys in a
@@ -126,6 +126,7 @@
                 data section.
             {% endblocktrans %}
             {% include "gcampusauth/components/document_download_card.html" with url="#" icon="gcampuscore/icons/envelope.html" %}
+            {% endcomment %}
         </div>
     </div>
 {% endblock %}
