@@ -38,7 +38,6 @@ class ParameterSerializer(serializers.ModelSerializer):
 class SimplifiedWaterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Water
-        geo_field = "geometry"
         fields = (
             "id",
             "display_name",
@@ -112,6 +111,7 @@ class WaterSerializer(GeoFeatureModelSerializer):
             "name",
             "display_name",
             "geometry",
+            "bbox",
             "osm_id",
             "tags",
             "flow_type",
@@ -120,6 +120,8 @@ class WaterSerializer(GeoFeatureModelSerializer):
             "display_water_type",
             "measurements",
         )
+
+    bbox = serializers.SerializerMethodField(read_only=True)
 
     measurements = serializers.PrimaryKeyRelatedField(
         many=True, queryset=Measurement.objects.all()
@@ -131,6 +133,10 @@ class WaterSerializer(GeoFeatureModelSerializer):
     display_water_type = serializers.CharField(
         source="get_water_type_display", read_only=True
     )
+
+    def get_bbox(self, obj: Water):
+        xmin, ymin, xmax, ymax = obj.geometry.extent
+        return dict(xmin=xmin, ymin=ymin, xmax=xmax, ymax=ymax)
 
 
 class WaterListSerializer(serializers.ModelSerializer):

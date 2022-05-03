@@ -25,31 +25,42 @@
                                     {% endif %}
                                 </h4>
                             </div>
-                            {# Add additional div for placing #}
-                            <div></div>
                         </div>
-
+                        <div class="mt-auto">
+                            <a class="btn btn-sm btn-secondary"
+                               href="{% url "gcampuscore:mapview" %}"
+                               role="link">
+                                {% translate "Explore environment" %}
+                            </a>
+                            {% comment %}
+                            <a class="btn btn-sm btn-secondary"
+                               href=""
+                               role="link">
+                                {% translate "Download PDF" %}
+                            </a>
+                            {% endcomment %}
+                        </div>
                     </div>
                     <div class="col-12 col-md-6">
                         <style>
                             #map-detail {
                                 width: 100%;
-                                height: 320px;
+                                height: 500px;
                             }
                         </style>
-                        {% map onload="loadCluster" container="map-detail" class="shadow-sm" %}
+                        {% map onload="loadMapFeatures" container="map-detail" class="shadow-sm" %}
                     </div>
                 </div>
             </div>
         </div>
         <div class="py-4" id="measurement-body measurement-data">
             <div class="container">
-                <h3 class="mb-4 fw-light">{% translate "Measurements" %}</h3>
+                <h3 class="mb-4 fw-light">{% translate "List of Measurements" %}</h3>
                 <div class="mt-3 list-group list-group-spaced">
-                {% for measurement in object.measurements.all %}
-                    {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement today=today env="water_list" %}
-                {% endfor %}
-            </div>
+                    {% for measurement in object.measurements.all %}
+                        {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement today=today env="water_list" %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
@@ -59,11 +70,59 @@
         {% include "gcampuscore/components/map_popup.html" %}
     </script>
     <script>
-        function loadCluster(event) {
+        function loadMapFeatures(event) {
+            const DEFAULT_COLOR = '#052c65';
+
             let map = event.target;
-            gcampusmap['mapbox-gl'].setupCluster( // TODO: show only measurements of the inspected water
-                '{% url "gcampusapi:measurement-list" %}', map
-            );
+            let sourceID = 'waterFeature';
+            let layerID = 'waterLayer';
+            let layerIDPoint = 'waterPointLayer';
+
+            fetch('{% url "gcampusapi:water-detail" pk=object.pk %}', {
+                method: 'get',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer',
+            }).then(response => response.json())
+                .then(data => {
+                    let bbox = data.properties.bbox;
+                    let margin = 0.1 * (Math.abs(bbox.xmax - bbox.xmin) + Math.abs(bbox.ymax - bbox.ymin));
+                    let bboxPoints = [[bbox.xmin - margin, bbox.ymin - margin], [bbox.xmax + margin, bbox.ymax + margin]];
+                    map.fitBounds(bboxPoints);
+                    map.addSource(sourceID, {
+                        'type': 'geojson',
+                        'data': data,
+                    });
+                    map.addLayer({
+                        'id': layerID,
+                        'type': 'line',
+                        'source': sourceID,
+                        'layout': {},
+                        'paint': {
+                            'line-color': DEFAULT_COLOR,
+                            'line-width': 4,
+                        },
+                        'filter': ['!=', '$type', 'Point']
+                    });
+                    map.addLayer({
+                        'id': layerIDPoint,
+                        'type': 'circle',
+                        'source': sourceID,
+                        'paint': {
+                            'circle-color': DEFAULT_COLOR,
+                            'circle-radius': 8,
+                            'circle-stroke-width': 2,
+                            'circle-stroke-color': '#ffffff'
+                        },
+                        'filter': ['==', '$type', 'Point']
+                    });
+                    gcampusmap['mapbox-gl'].setupCluster( // TODO: show only measurements of the inspected water
+                        '{% url "gcampusapi:measurement-list" %}', map
+                    );
+                });
         }
     </script>
     {% load_mapbox_js %}
