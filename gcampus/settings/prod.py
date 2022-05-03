@@ -15,6 +15,7 @@
 
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.logging import ignore_logger
 
 from gcampus.settings.base import *  # noqa
 
@@ -87,3 +88,4 @@ if get_env_read_file("GCAMPUS_SENTRY_DSN", None) is not None:
         release=GCAMPUS_VERSION,
         **_sentry_kwargs,
     )
+    ignore_logger("CSSUTILS")
