@@ -76,7 +76,10 @@
                                 <br>
                                 <h4>
                                     {% if object.water_name %}
-                                        {{ object.water_name }}
+                                        <a class="text-reset text-decoration-none hover-secondary"
+                                           href="{% url "gcampuscore:water-detail" pk=object.water.pk %}">
+                                            {{ object.water_name }}
+                                        </a>
                                     {% else %}
                                         {% translate "N/A" context "no value provided (water name, comment, etc)" %}
                                     {% endif %}

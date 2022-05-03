@@ -24,10 +24,10 @@
             <span class="ms-1 align-middle">{{ measurement.location_name }}</span>
         </a>
 
-
-        <span >{% include "gcampuscore/icons/people.html" %}</span>
-        <span class="ms-1 me-4 align-middle ">{{ measurement.name }}</span>
-
+        {% if measurement.name != "" %}
+            <span >{% include "gcampuscore/icons/people.html" %}</span>
+            <span class="ms-1 me-4 align-middle ">{{ measurement.name }}</span>
+        {% endif %}
 
         <span data-bs-toggle="tooltip" data-bs-placement="top"
             title="{{ measurement.time|timesince:today }}"

@@ -10,8 +10,8 @@
         {# TODO: add more information for each water #}
         <span class="align-middle">
             <i class="me-1 cursor-help water-icon {{ water.flow_type }}" data-bs-toggle="tooltip" title="{{ measurement.water.get_flow_type_display|capfirst }}"></i>
-            {% if water.flow_type is not None %}
-                {{ water.flow_type }} {% translate "water" %}
+            {% if water.water_type is not None %}
+                {{ water.water_type|title }}
             {% else %}
                 {% translate "unknown water type" %}
             {% endif %}
