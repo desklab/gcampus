@@ -79,26 +79,9 @@
                 </div>
                 <div class="col-7 px-5 py-3">
                     {# Location (map) #}
-                    <hr>
                     {% with field=form.location map_height=400 %}
                         <div class="mb-3">
                             <h5>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h5>
-                            <div class="mb-3 border px-3 rounded-3">
-                                <div class="my-2">
-                                    {% translate "Follow these steps to select the location and the correct water:" %}
-                                </div>
-                                <ol class="mb-2 fw-light">
-                                    <li>{% translate "Drop the pin (click) on the map at the place of your measurement." %}</li>
-                                    <li>
-                                        {% blocktranslate trimmed %}
-                                            Select the correct water from the list below.
-                                            If your water is not shown right away,
-                                            use the last option of the list to start
-                                            a more detailed search or create a new one.
-                                        {% endblocktranslate %}
-                                    </li>
-                                </ol>
-                            </div>
                             <style>.mapboxgl-canvas{border-radius: .5rem;}</style>
                             {{ field }}
                             {% if field.errors %}
@@ -130,31 +113,29 @@
                         </div>
                     {% endwith %}
                 </div>
-                <div class="col-5 bg-light px-5 py-3">
-                    <p class="mt-4 text-muted">
-                        {{ form.location.help_text }}
-                    </p>
+                <div class="col-5 bg-light px-5 py-3 text-muted">
+                    <div class="my-2">
+                        {% translate "Follow these steps to select the location and the correct water:" %}
+                    </div>
+                    <ol class="mb-2 fw-light">
+                        <li>{% translate "Drop the pin (click) on the map at the place of your measurement." %}</li>
+                        <li>
+                            {% blocktranslate trimmed %}
+                                Select the correct water from the list below.
+                                If your water is not shown right away,
+                                use the last option of the list to start
+                                a more detailed search or create a new one.
+                            {% endblocktranslate %}
+                        </li>
+                    </ol>
                 </div>
 
                 <div class="col-7 px-5 py-3">
                     {# Comment #}
-                    <hr>
                     {% with form.comment as field %}
                         <div class="mb-3">
                             <h5>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h5>
-                            <div class="mb-3 border px-3 rounded-3">
-                                <div class="my-2">
-                                    {% blocktranslate trimmed %}
-                                        Add more information on the environmental conditions which may be helpful
-                                        to evaluate your measurement. The following questions are some examples,
-                                        but you can document anything which seems useful to you.
-                                    {% endblocktranslate %}
-                                </div>
-                                <ul class="mb-2 fw-light">
-                                    <li>{% translate "Did you collect your samples from the lakeside / river bank or from the center of the water?" %}</li>
-                                    <li>{% translate "Which visual observations did you make during your measurement?" %}</li>
-                                </ul>
-                            </div>
+
                             {% include "gcampuscore/forms/widgets/textarea.html" with widget=field.subwidgets.0.data %}
                             {% if field.errors %}
                                 <small class="text-danger">{{ field.errors }}</small>
@@ -162,10 +143,20 @@
                         </div>
                     {% endwith %}
                 </div>
-                <div class="col-5 bg-light px-5 py-3">
-                    <p class="mt-4 text-muted">
-                        {{ form.comment.help_text }}
-                    </p>
+                <div class="col-5 bg-light px-5 py-3 text-muted">
+                    <div class="mb-3 px-1">
+                        <div class="my-2">
+                            {% blocktranslate trimmed %}
+                                Add more information on the environmental conditions which may be helpful
+                                to evaluate your measurement. The following questions are some examples,
+                                but you can document anything which seems useful to you.
+                            {% endblocktranslate %}
+                        </div>
+                        <ul class="mb-2 fw-light">
+                            <li>{% translate "Did you collect your samples from the lakeside / river bank or from the center of the water?" %}</li>
+                            <li>{% translate "Which visual observations did you make during your measurement?" %}</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="col-7 px-5 pb-5">

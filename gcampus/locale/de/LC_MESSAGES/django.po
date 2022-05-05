@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-05 13:59+0200\n"
+"POT-Creation-Date: 2022-05-05 14:33+0200\n"
 "PO-Revision-Date: 2022-02-20 23:01+0000\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -55,7 +55,7 @@ msgid "Convert"
 msgstr "Umrechnen"
 
 #: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:20
-#: gcampus/core/forms/measurement.py:118 gcampus/core/models/measurement.py:236
+#: gcampus/core/forms/measurement.py:118 gcampus/core/models/measurement.py:237
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:155
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:127
 msgid "Value"
@@ -770,9 +770,9 @@ msgid "Filter for measurements conducted in a specified time range."
 msgstr ""
 "Nach Messungen suchen die in einem bestimmten Zeitraum gemessen wurden."
 
-#: gcampus/core/filters.py:178 gcampus/core/models/measurement.py:225
-#: gcampus/core/models/measurement.py:233
-#: gcampus/core/models/measurement.py:272
+#: gcampus/core/filters.py:178 gcampus/core/models/measurement.py:226
+#: gcampus/core/models/measurement.py:234
+#: gcampus/core/models/measurement.py:273
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:154
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:126
 msgid "Parameter"
@@ -838,8 +838,8 @@ msgstr ""
 "Diese E-Mail-Adresse wird von uns nur dazu verwendet, um Dich zu "
 "kontaktieren. Sie wird mit niemandem sonst geteilt."
 
-#: gcampus/core/forms/measurement.py:124 gcampus/core/models/measurement.py:99
-#: gcampus/core/models/measurement.py:243
+#: gcampus/core/forms/measurement.py:124 gcampus/core/models/measurement.py:100
+#: gcampus/core/models/measurement.py:244
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:97
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:156
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:98
@@ -857,8 +857,8 @@ msgstr "Messung"
 msgid "Measurements"
 msgstr "Messungen"
 
-#: gcampus/core/models/measurement.py:68 gcampus/core/models/measurement.py:187
-#: gcampus/core/models/measurement.py:265
+#: gcampus/core/models/measurement.py:68 gcampus/core/models/measurement.py:188
+#: gcampus/core/models/measurement.py:266
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:36
 msgid "Name"
 msgstr "Name"
@@ -868,128 +868,128 @@ msgid "Your forename or team name. This will be publicly visible."
 msgstr ""
 "Dein Vorname oder ein Team Name. Diese Information ist öffentlich sichtbar."
 
-#: gcampus/core/models/measurement.py:73
+#: gcampus/core/models/measurement.py:74
 msgid "Location"
 msgstr "Standort"
 
-#: gcampus/core/models/measurement.py:74
+#: gcampus/core/models/measurement.py:75
 #, fuzzy
 #| msgid "An approximated location for the measurement"
 msgid "Location of the measurement"
 msgstr "Standort der Messung"
 
-#: gcampus/core/models/measurement.py:80
+#: gcampus/core/models/measurement.py:81
 msgid "Location name"
 msgstr "Standortname"
 
-#: gcampus/core/models/measurement.py:81
+#: gcampus/core/models/measurement.py:82
 msgid "An approximated location for the measurement"
 msgstr "Ein abgeschätzter Standort der Messung"
 
-#: gcampus/core/models/measurement.py:92
+#: gcampus/core/models/measurement.py:93
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:40
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:89
 msgctxt "measurement time"
 msgid "Time"
 msgstr "Messzeitpunkt"
 
-#: gcampus/core/models/measurement.py:93
+#: gcampus/core/models/measurement.py:94
 msgid "Date and time of the measurement"
 msgstr "Datum und Uhrzeit der Messung"
 
-#: gcampus/core/models/measurement.py:100
+#: gcampus/core/models/measurement.py:101
 msgid "Note on your measurement. This will be publicly visible."
 msgstr "Notiz zu deiner Messung. Die Notiz wird für alle öffentlich einsehbar."
 
-#: gcampus/core/models/measurement.py:104
-#: gcampus/core/models/measurement.py:244
+#: gcampus/core/models/measurement.py:105
+#: gcampus/core/models/measurement.py:245
 msgid "Hidden"
 msgstr "Versteckt"
 
-#: gcampus/core/models/measurement.py:150
+#: gcampus/core/models/measurement.py:151
 #, python-format
 msgid "Measurement in %(location)s by %(name)s"
 msgstr "Messung in %(location)s von %(name)s"
 
-#: gcampus/core/models/measurement.py:155
+#: gcampus/core/models/measurement.py:156
 #, python-format
 msgid "Measurement by %(name)s"
 msgstr "Messung von %(name)s"
 
-#: gcampus/core/models/measurement.py:157
+#: gcampus/core/models/measurement.py:158
 #, python-format
 msgid "Measurement in %(location)s"
 msgstr "Messung in %(location)s"
 
-#: gcampus/core/models/measurement.py:161
+#: gcampus/core/models/measurement.py:162
 #, python-format
 msgid "Measurement %(id)s"
 msgstr "Messung %(id)s"
 
-#: gcampus/core/models/measurement.py:184
-#: gcampus/core/models/measurement.py:217
+#: gcampus/core/models/measurement.py:185
+#: gcampus/core/models/measurement.py:218
 msgid "Parameter type"
 msgstr "Parameter Typ"
 
-#: gcampus/core/models/measurement.py:185
+#: gcampus/core/models/measurement.py:186
 msgid "Parameter types"
 msgstr "Parameter Typen"
 
-#: gcampus/core/models/measurement.py:189
+#: gcampus/core/models/measurement.py:190
 msgid "Short name"
 msgstr "Kurzer Name"
 
-#: gcampus/core/models/measurement.py:191
+#: gcampus/core/models/measurement.py:192
 msgid "Unit"
 msgstr "Einheit"
 
-#: gcampus/core/models/measurement.py:194
+#: gcampus/core/models/measurement.py:195
 msgid "Color"
 msgstr "Farbe"
 
-#: gcampus/core/models/measurement.py:205
+#: gcampus/core/models/measurement.py:206
 msgid "Limit"
 msgstr "Grenzwert"
 
-#: gcampus/core/models/measurement.py:206
+#: gcampus/core/models/measurement.py:207
 msgid "Limits"
 msgstr "Grenzwerte"
 
-#: gcampus/core/models/measurement.py:226
+#: gcampus/core/models/measurement.py:227
 msgid "Parameters"
 msgstr "Parameter"
 
-#: gcampus/core/models/measurement.py:240
+#: gcampus/core/models/measurement.py:241
 msgid "Associated measurement"
 msgstr "Verknüpfte Messung"
 
-#: gcampus/core/models/measurement.py:254
+#: gcampus/core/models/measurement.py:255
 #, python-format
 msgid "Parameter %(pk)s (%(name)s)"
 msgstr "Parameter %(pk)s (%(name)s)"
 
-#: gcampus/core/models/measurement.py:262
+#: gcampus/core/models/measurement.py:263
 #: gcampus/core/templates/gcampuscore/components/sidebar.html:19
 msgid "Calibration"
 msgstr "Kalibrierung"
 
-#: gcampus/core/models/measurement.py:263
+#: gcampus/core/models/measurement.py:264
 #, fuzzy
 #| msgid "Calibration"
 msgid "Calibrations"
 msgstr "Kalibrierung"
 
-#: gcampus/core/models/measurement.py:277
+#: gcampus/core/models/measurement.py:278
 #, fuzzy
 #| msgid "Calibration fit for"
 msgid "Calibration formula"
 msgstr "Kalibrationsfit für"
 
-#: gcampus/core/models/measurement.py:280
+#: gcampus/core/models/measurement.py:281
 msgid "Maximal parameter value"
 msgstr "Maximaler Parameter-Wert"
 
-#: gcampus/core/models/measurement.py:282
+#: gcampus/core/models/measurement.py:283
 msgid "Minimal parameter value"
 msgstr "Minimaler Parameter-Wert"
 
@@ -1289,15 +1289,28 @@ msgstr "1. Metadaten"
 msgid "2. Measured values"
 msgstr "2. Messwerte"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:88
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:98
+msgid "Loading ..."
+msgstr "Lädt ..."
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:105
+msgid "Water not found?"
+msgstr "Gewässer nicht gefunden?"
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:108
+msgid "Search for more waters on OpenStreetMaps"
+msgstr "Suche nach weiteren Gewässern auf OpenStreetMaps"
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:118
 msgid "Follow these steps to select the location and the correct water:"
 msgstr ""
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:91
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:121
 msgid "Drop the pin (click) on the map at the place of your measurement."
 msgstr ""
+"Setze durch einen Klick auf die Karte den Pin an den Ort deiner Messung."
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:93
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:123
 msgid ""
 "Select the correct water from the list below. If your water is not shown "
 "right away, use the last option of the list to start a more detailed search "
@@ -1307,19 +1320,7 @@ msgstr ""
 "Gewässer nicht angezeigt wird, nutze die letzte Option in der Liste, um eine "
 "detaillierte Suche zu starten oder ein neues Gewässer anzulegen."
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:115
-msgid "Loading ..."
-msgstr "Lädt ..."
-
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:122
-msgid "Water not found?"
-msgstr "Gewässer nicht gefunden?"
-
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:125
-msgid "Search for more waters on OpenStreetMaps"
-msgstr "Suche nach weiteren Gewässern auf OpenStreetMaps"
-
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:147
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:149
 msgid ""
 "Add more information on the environmental conditions which may be helpful to "
 "evaluate your measurement. The following questions are some examples, but "
@@ -1329,17 +1330,17 @@ msgstr ""
 "Messung hilfreich sein können. Die folgenden Fragen sind Beispiele, du "
 "kannst alles dokumentieren, was du nützlich findest."
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:154
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:156
 msgid ""
 "Did you collect your samples from the lakeside / river bank or from the "
 "center of the water?"
 msgstr "Wurde die Probe am Ufer oder in der Mitte des Gewässers entnommen?"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:155
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:157
 msgid "Which visual observations did you make during your measurement?"
 msgstr "Welche Beobachtungen hast du während der Messung gemacht?"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:173
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:164
 msgid "Save and Continue"
 msgstr "Speichern und Weiter"
 
