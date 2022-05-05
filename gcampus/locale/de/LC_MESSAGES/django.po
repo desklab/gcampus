@@ -1303,7 +1303,7 @@ msgstr "Suche nach weiteren Gewässern auf OpenStreetMaps"
 
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:118
 msgid "Follow these steps to select the location and the correct water:"
-msgstr ""
+msgstr "Führe die folgenden Schritte aus, um den Ort und das Gewässer auszuwählen."
 
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:121
 msgid "Drop the pin (click) on the map at the place of your measurement."
