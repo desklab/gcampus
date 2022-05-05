@@ -64,10 +64,17 @@
                 </div>        
                 <div class="text-justify h-abs-250 document-description">
                     {% with time=measurement.time|localtime|localize name=measurement.name location=measurement.location_name %}
-                        {%  blocktranslate trimmed %}
-                            This document has been created automatically and contains a summary of the measurement
-                            from {{ name }} on {{ time }} in {{ location }}.
-                        {% endblocktranslate %}
+                        {% if name != "" %}
+                            {%  blocktranslate trimmed %}
+                                This document has been created automatically and contains a summary of the measurement
+                                from {{ name }} on {{ time }} in {{ location }}.
+                            {% endblocktranslate %}
+                        {% else %}
+                            {%  blocktranslate trimmed %}
+                                This document has been created automatically and contains a summary of the measurement
+                                on {{ time }} in {{ location }}.
+                            {% endblocktranslate %}
+                        {% endif %}
                     {% endwith %}
                 </div>
             </div>    

@@ -63,7 +63,8 @@
                     {% translate "Info" %}
                 </div>        
                 <div class="text-justify h-abs-250 document-description">
-                    {%  blocktranslate trimmed %} {# TODO: add note that comments, which may contan important information, are excluded. #}
+                    {# TODO: add note that comments, which may contan important information, are excluded. #}
+                    {%  blocktranslate trimmed %}
                         This document has been created automatically and contains a summary of {{ measurement_count }} measurements.
                     {% endblocktranslate %}
                 </div>
@@ -96,11 +97,11 @@
             <!-- analysis -->
             <div class="w-100">
                 <div class="rotated-section-heading color-primary w-abs-1200">
-                    {% translate "Analysis" %}
+                    {% translate "Notes" %}
                 </div>
                 <div class="measurementdata-container h-abs-1200">
                     {% comment %}
-                        #TODO: add summary plots with bokeh (?)
+                        #TODO: use this space for summary plots with bokeh (?)
                     {% endcomment %}
                 </div>
             </div>
@@ -122,15 +123,7 @@
                             </span>
                             <i class="water-icon {{ measurement.water.flow_type }}"></i>
                             <span>
-                                {{ measurement.water_name }}
-                            </span>
-                            {% comment %} {% include "gcampuscore/icons/people.html" %} {% endcomment %}
-                            <span class="measurementdata-name">
-                                {{ measurement.name }}
-                            </span>
-                            {% comment %} {% include "gcampuscore/icons/calendar4-event.html" %} {% endcomment %}
-                            <span class="measurementdata-time">
-                                {{ measurement.time|date:"Y-m-d" }}
+                                {{ measurement.water_name }} ({{ measurement.time|date:"Y-m-d" }})
                             </span>
                             <br>
                             <div class="measurementdata-parameters">
