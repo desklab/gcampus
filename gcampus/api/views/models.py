@@ -27,7 +27,11 @@ from gcampus.core.models import Measurement, ParameterType, Parameter
 
 
 class MeasurementAPIViewSet(MethodSerializerMixin, viewsets.ReadOnlyModelViewSet):
-    queryset = Measurement.objects.order_by("time").select_related("water")
+    queryset = (
+        Measurement.objects.order_by("time")
+        .select_related("water")
+        .only("location", "water_id", "water__flow_type", "id")
+    )
     serializer_class = MeasurementSerializer
 
     # Use a minimal serializer for lists. This serializer only includes

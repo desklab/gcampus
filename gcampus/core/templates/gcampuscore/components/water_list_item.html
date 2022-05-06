@@ -10,11 +10,7 @@
         {# TODO: add more information for each water #}
         <span class="align-middle">
             <i class="me-1 cursor-help water-icon {{ water.flow_type }}" data-bs-toggle="tooltip" title="{{ measurement.water.get_flow_type_display|capfirst }}"></i>
-            {% if water.water_type is not None %}
-                {{ water.water_type|title }}
-            {% else %}
-                {% translate "unknown water type" %}
-            {% endif %}
+            {{ water.get_water_type_display|capfirst }}
         </span>
 
         <span class="ms-4">{% include "gcampuscore/icons/bar-chart.html" %}</span>

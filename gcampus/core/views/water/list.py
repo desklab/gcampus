@@ -28,15 +28,11 @@ from gcampus.core.views.base import TitleMixin
 class WaterListView(TitleMixin, ListView):
     template_name = "gcampuscore/sites/list/water_list.html"
     model = Water
-    queryset = Water.objects.filter(measurements__isnull=False).annotate(
-        measurement_count=Count("measurements")
+    queryset = (
+        Water.objects.filter(measurements__isnull=False)
+        .annotate(measurement_count=Count("measurements"))
+        .defer("geometry")
     )
     title = gettext_lazy("All waters")
     context_object_name = "water_list"
     # paginate_by = 10
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        kwargs["count"] = self.get_queryset().count()
-        return super(WaterListView, self).get_context_data(
-            object_list=object_list, **kwargs
-        )

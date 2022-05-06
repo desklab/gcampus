@@ -24,7 +24,11 @@ from gcampus.core.views.water.list import WaterListView
 
 class WaterDetailView(TitleMixin, DetailView):
     model = Water
-    queryset = Water.objects.all()
+    queryset = (
+        Water.objects.filter(measurements__isnull=False)
+        .prefetch_related("measurements")
+        .defer("geometry")
+    )
     template_name = "gcampuscore/sites/detail/water_detail.html"
 
     def get_context_data(self, **kwargs):

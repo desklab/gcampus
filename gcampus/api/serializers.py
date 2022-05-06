@@ -91,7 +91,7 @@ class MeasurementListSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = Measurement
         geo_field = "location"
-        fields = ("id", "location", "water_flow_type")
+        fields = ("id", "location", "water_flow_type", "water_id")
 
     water_flow_type = serializers.CharField(read_only=True, source="water.flow_type")
 
