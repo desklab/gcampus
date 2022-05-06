@@ -30,6 +30,7 @@ class WaterListView(TitleMixin, ListView):
     model = Water
     queryset = (
         Water.objects.filter(measurements__isnull=False)
+        .distinct()
         .annotate(measurement_count=Count("measurements"))
         .defer("geometry")
     )

@@ -26,13 +26,11 @@ class WaterDetailView(TitleMixin, DetailView):
     model = Water
     queryset = (
         Water.objects.filter(measurements__isnull=False)
+        .distinct()
         .prefetch_related("measurements")
         .defer("geometry")
     )
     template_name = "gcampuscore/sites/detail/water_detail.html"
-
-    def get_context_data(self, **kwargs):
-        return super(WaterDetailView, self).get_context_data(**kwargs)
 
     def get_title(self) -> str:
         if self.object:
