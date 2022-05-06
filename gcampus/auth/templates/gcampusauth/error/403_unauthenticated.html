@@ -7,7 +7,7 @@
     {% blocktranslate trimmed %}
         Some features, for example adding a new measurement, are limited to
         authenticated users. Please use your access key or the course token
-        to log in. <br>
+        to log in. <br><br>
         If you don't have an access key, your teacher can generate one for you.
         As a teacher you can
         <a class="text-dark" href="{{ register_url }}">register</a> a new
@@ -25,7 +25,7 @@
             {% translate "Login with course token" %}
         </a>
         <hr class="my-4">
-        <a class="w-100 btn btn-lg" role="button"
+        <a class="w-100 btn btn-lg btn-secondary" role="button"
            href="{% url "gcampusauth:register" %}">
             {% translate "Register a new course" %}
         </a>

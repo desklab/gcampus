@@ -56,6 +56,7 @@ from gcampus.auth.models.course import (
 from gcampus.auth.models.token import AccessKey, CourseToken, TokenType
 from gcampus.auth.tasks import send_registration_email
 from gcampus.core.views.base import TitleMixin
+from gcampus.core import settings
 
 logger = logging.getLogger("gcampus.auth.views.course")
 
@@ -139,6 +140,9 @@ class AccessKeyCreateView(
 
     def get_context_data(self, **kwargs):
         kwargs.setdefault("today", datetime.now())
+        kwargs["access_keys_max_count"] = getattr(
+            settings, "REGISTER_MAX_ACCESS_KEY_NUMBER", 30
+        )
         return super(AccessKeyCreateView, self).get_context_data(**kwargs)
 
     def get_queryset(self):

@@ -22,3 +22,7 @@ input[type="number"].appearance-textfield {
 .hover-dark:hover {
   color: black !important;
 }
+
+.hover-secondary:hover {
+  color: $secondary !important;
+}

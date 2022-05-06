@@ -76,7 +76,10 @@
                                 <br>
                                 <h4>
                                     {% if object.water_name %}
-                                        {{ object.water_name }}
+                                        <a class="text-reset text-decoration-none hover-secondary"
+                                           href="{% url "gcampuscore:water-detail" pk=object.water.pk %}">
+                                            {{ object.water_name }}
+                                        </a>
                                     {% else %}
                                         {% translate "N/A" context "no value provided (water name, comment, etc)" %}
                                     {% endif %}
@@ -155,15 +158,15 @@
                     </thead>
                     <tbody>
                     {% for parameter in object.parameters.all %}
-                        <tr>
-                            <td>{{ parameter.parameter_type }}</td>
+                        <tr> {# TODO: fix td width when expanding note, fix postion of button for expanding/collapsing #}
+                            <td>{{ parameter.parameter_type.name }}</td>
                             <td class="font-monospace">
-                                {{ parameter.value }} {{ parameter.parameter_type.unit }}
+                                {{ parameter.value }}&nbsp;{{ parameter.parameter_type.unit }}
                             </td>
                             <td>
                                 {% if parameter.comment %}
                                     <div>
-                                        <a class="text-decoration-none"
+                                        <a class="text-decoration-none text-dark hover-secondary"
                                            data-bs-toggle="collapse"
                                            href="#CommentCollapse{{ forloop.counter }}"
                                            role="button"
@@ -171,7 +174,7 @@
                                            id="CommentCollapseButton{{ forloop.counter }}"
                                            aria-controls="CommentCollapse{{ forloop.counter }}">
                                             {% translate "Expand note" %}
-                                        </a>
+                                        </a> {# TODO: change text to "hide note" when expanded #}
                                     </div>
                                     <div class="collapse"
                                          id="CommentCollapse{{ forloop.counter }}">

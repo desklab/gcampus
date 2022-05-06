@@ -7,7 +7,7 @@
     <ul class="nav navbar-nav me-auto">
         {% trans "Course data" as course_data_title %}
         {% include "gcampuscore/components/nav_item.html" with title=course_data_title view_name="gcampusauth:course-update" %}
-        {% trans "Access keys" as access_keys_title %}
+        {% trans "Manage access keys" as access_keys_title %}
         {% include "gcampuscore/components/nav_item.html" with title=access_keys_title view_name="gcampusauth:course-access-keys" %}
     </ul>
 {% endblock %}
@@ -19,7 +19,7 @@
             {% blocktrans trimmed %}
                 You can generate new access keys for this course without
                 the need to register again. The number of access keys is
-                limited to {{ register_max_access_key }} per course.
+                limited to {{ access_keys_max_count }} per course.
             {% endblocktrans %}
         </small>
         <form method="post" class="row g-3 has-validation mt-2">

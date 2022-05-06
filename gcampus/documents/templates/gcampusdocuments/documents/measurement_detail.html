@@ -17,7 +17,7 @@
                 padding-top: 1.2cm;
             }
             @top-left {
-                background: url("{% print_static 'gcampusdocuments/assets/gcampus-print-header-left.png' %}"); {# TODO: localize text in logo #}
+                background: url("{% print_static 'gcampusdocuments/assets/gcampus-print-header-left.png' %}");
                 background-repeat: no-repeat;
                 background-position: left;
                 background-size: 100% auto;
@@ -64,10 +64,17 @@
                 </div>        
                 <div class="text-justify h-abs-250 document-description">
                     {% with time=measurement.time|localtime|localize name=measurement.name location=measurement.location_name %}
-                        {%  blocktranslate trimmed %}
-                            This document has been created automatically and contains a summary of the measurement
-                            from {{ name }} on {{ time }} in {{ location }}.
-                        {% endblocktranslate %}
+                        {% if name != "" %}
+                            {%  blocktranslate trimmed %}
+                                This document has been created automatically and contains a summary of the measurement
+                                from {{ name }} on {{ time }} in {{ location }}.
+                            {% endblocktranslate %}
+                        {% else %}
+                            {%  blocktranslate trimmed %}
+                                This document has been created automatically and contains a summary of the measurement
+                                on {{ time }} in {{ location }}.
+                            {% endblocktranslate %}
+                        {% endif %}
                     {% endwith %}
                 </div>
             </div>    
@@ -128,7 +135,7 @@
                                     <td class="font-monospace">
                                         {{ parameter.value }} {{ parameter.parameter_type.unit }}
                                     </td>
-                                    <td>
+                                    <td> {# TODO: improve width to fit comments #}
                                         <small class="color-grey">
                                             {% if parameter.comment %}
                                                 {{ parameter.comment }}

@@ -70,7 +70,9 @@ class Measurement(util.DateModelMixin):
     )
     #: Location of the measurement
     location: models.PointField = models.PointField(
-        blank=False, verbose_name=_("Location")
+        blank=False,
+        verbose_name=_("Location"),
+        help_text=_("Location of the measurement"),
     )
     location_name: models.CharField = models.CharField(
         blank=True,

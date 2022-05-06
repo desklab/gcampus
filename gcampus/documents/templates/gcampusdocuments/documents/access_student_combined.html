@@ -17,7 +17,7 @@
                 padding-top: 1.2cm;
             }
             @top-left {
-                background: url("{% print_static 'gcampusdocuments/assets/gcampus-print-header-left.png' %}"); {# TODO: localize text in logo #}
+                background: url("{% print_static 'gcampusdocuments/assets/gcampus-print-header-left.png' %}");
                 background-repeat: no-repeat;
                 background-position: left;
                 background-size: 100% auto;
@@ -30,7 +30,6 @@
     </style>
 </head>
 <body>
-    <!-- TODO: add and use translations -->
 
     <div class="footer-left">
         <span class="bold">{% translate "Document ID" %}</span>: GC-ADMIN-AK
@@ -102,7 +101,7 @@
                                         This link leads to the login page of the 
                                         web application (www.gewaessercampus.de/login). 
                                         After entering the access key, 
-                                        measurements can be or edited.
+                                        measurements can be created or edited.
                                     {% endblocktrans %}
                                 </div>
                             </div>
@@ -144,7 +143,7 @@
                         <div class="firststeps-content">
                             {% blocktrans trimmed %}
                                 To create a new measurement, you must be logged in with 
-                                an access key. You will find your access code at the top 
+                                an access key. You will find your access key at the top
                                 of this page. You can log in via the QR code shown there 
                                 or via www.gewaessercampus.de/login.
                             {% endblocktrans %}
@@ -156,7 +155,7 @@
                         <div class="firststeps-content">
                             {% blocktrans trimmed %}
                                 As soon as you are logged in, you can see your
-                                course token at the top right and you are able to 
+                                access key at the top right and you are able to
                                 create a new measurement via the button next to it.
                             {% endblocktrans %}                            
                         </div> 
@@ -168,7 +167,7 @@
                                 To edit a measurement you have created, 
                                 you have to open the detailed view of this measurement. 
                                 You can use the overview of your measurements or the 
-                                map or the map to find your measurement.
+                                map to find your measurement.
                             {% endblocktrans %}
                         </div>
                     </div>
