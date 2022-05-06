@@ -46,16 +46,20 @@ def update_measurement_document(
             return
         if created:
             return
-        measurement_pk = instance.pk
+        measurement: Measurement = instance
     elif isinstance(instance, Parameter):
-        measurement_pk = instance.measurement_id
+        measurement: Measurement = instance.measurement
     else:
         raise NotImplementedError(f"Unhandled instance '{type(instance)}'")
+
+    if not measurement.document:
+        # Only build the document if it has been build already.
+        return
 
     render_cached_document_view.apply_async(
         args=(
             "gcampus.documents.views.MeasurementDetailPDF",
-            measurement_pk,
+            measurement.pk,
             get_language(),
         ),
     )
