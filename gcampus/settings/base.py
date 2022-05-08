@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 GCAMPUS_VERSION = __version__
 GCAMPUS_HOMEPAGE = "https://gewaessercampus.de/"
+ENVIRONMENT = get_env_read_file("GCAMPUS_ENV", None)
 # Primarily used for emails or PDFs
 PRIMARY_HOST = "localhost:8000"
 PREFERRED_SCHEME = "http"

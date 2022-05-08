@@ -19,7 +19,11 @@
     <meta name="description" content="{% block description %}{% endblock %}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <link rel="icon" href="{% static 'gcampuscore/assets/favicon.ico' %}">
+    {% if ENVIRONMENT == "dev" %}
+        <link rel="icon" href="{% static 'gcampuscore/assets/favicon-dev.png' %}">
+    {% else %}
+        <link rel="icon" href="{% static 'gcampuscore/assets/favicon.ico' %}">
+    {% endif %}
 
     {# Global stylesheets #}
     <link rel="stylesheet" type="text/css" href="{% static 'gcampuscore/styles/main.css' %}">

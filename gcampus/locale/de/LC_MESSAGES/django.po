@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-08 18:01+0200\n"
+"POT-Creation-Date: 2022-05-08 18:02+0200\n"
 "PO-Revision-Date: 2022-02-20 23:01+0000\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -2054,11 +2054,11 @@ msgstr ""
 msgid "GCampus Map"
 msgstr "GCampus Karte"
 
-#: gcampus/settings/base.py:178
+#: gcampus/settings/base.py:172
 msgid "English"
 msgstr "Englisch"
 
-#: gcampus/settings/base.py:178
+#: gcampus/settings/base.py:172
 msgid "German"
 msgstr "Deutsch"
 
