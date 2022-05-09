@@ -23,7 +23,7 @@ from django.db import transaction
 from django.db.models import Q, Count
 from django.utils import timezone, translation
 
-from gcampus.auth.models import Course, AccessKey
+from gcampus.auth.models import Course, AccessKey, CourseToken
 from gcampus.core.models import Measurement, Water
 from gcampus.mail.messages.maintenance import (
     MaintenanceAccessKeys,
@@ -70,7 +70,9 @@ def send_access_key_deactivation_email(
 def maintenance():
     now = timezone.now()
 
-    measurements = Measurement.objects.filter(
+    measurements = Measurement.all_objects.filter(
+        Q(parameters__isnull=True),
+        # AND
         Q(hidden=False),
         # AND
         Q(updated_at__lt=(now - settings.MEASUREMENT_RETENTION_TIME)),
@@ -87,8 +89,8 @@ def maintenance():
     unverified_courses_count = 0
     with transaction.atomic():
         for course in unverified_courses:
-            course.access_keys.delete()
-            course.course_token.delete()
+            AccessKey.objects.filter(course=course).delete()
+            CourseToken.objects.filter(course=course).delete()
             course.delete()
             unverified_courses_count += 1
 
@@ -104,8 +106,8 @@ def maintenance():
     unused_courses_count = 0
     with transaction.atomic():
         for course in unused_courses:
-            course.access_keys.delete()
-            course.course_token.delete()
+            AccessKey.objects.filter(course=course).delete()
+            CourseToken.objects.filter(course=course).delete()
             send_course_deletion_email.apply_async(
                 args=(course.teacher_email, course.name, course.school_name)
             )
@@ -159,7 +161,7 @@ def staging_maintenance():
         return
 
     # Delete all hidden measurements
-    m_hidden = Measurement.objects.filter(hidden=True)
+    m_hidden = Measurement.all_objects.filter(hidden=True)
     m_count = m_hidden.all.count()
     m_hidden.delete()
 
