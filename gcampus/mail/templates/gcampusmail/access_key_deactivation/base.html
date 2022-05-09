@@ -1,0 +1,25 @@
+{% extends "gcampusmail/base.html" %}
+{% load i18n auth_token %}
+{% block content %}
+    {% translate "Automatic access key deactivation" as header_text %}
+    {% translate "N/A" context "no value provided (water name, comment, etc)" as not_any %}
+    {% firstof course_name not_any asvar name %}
+    {% firstof course_school not_any asvar school %}
+    {% url "gcampusauth:course-access-keys" as course_url %}
+    {% blocktranslate trimmed asvar content_text with course_url=url name=name school=school days=days %}
+        Some access keys of the course you registered on GewässerCampus
+        (course name: {{ name }}, school: {{ school }}) have been
+        deactivated as they have been created more than {{ days }} days
+        ago.<br>
+        Students can now no longer use these access keys to create new
+        measurements or edit their old measurements.<br>
+        You can always re-activate access keys in the
+        <a href="{{ course_url }}">course administration</a>.
+        <br>
+        <br>
+        If you think this happened on accident, or you never registered
+        a course on GewässerCampus, don't hesitate to contact us.
+    {% endblocktranslate %}
+    {% include "gcampusmail/components/subheader.html" with title=header_text content_safe=content_text only %}
+    {% include "gcampusmail/access_key_deactivation/list.html" with access_keys=access_keys %}
+{% endblock %}

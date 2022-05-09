@@ -70,7 +70,7 @@ if get_env_read_file("GCAMPUS_EMAIL_HOST_USER", None) is not None:
 if get_env_read_file("GCAMPUS_EMAIL_HOST_PASSWORD", None) is not None:
     EMAIL_HOST_PASSWORD = get_env_read_file("GCAMPUS_EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = get_env_read_file(
-    "GCAMPUS_FROM_EMAIL", "noreply@gewaessercampus.de"
+    "GCAMPUS_FROM_EMAIL", "GewässerCampus <noreply@gewaessercampus.de>"
 )
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 

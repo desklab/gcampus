@@ -1,0 +1,22 @@
+{% extends "gcampusmail/base.html" %}
+{% load i18n auth_token %}
+{% block content %}
+    {% translate "Your course has been deleted" as header_text %}
+    {% translate "N/A" context "no value provided (water name, comment, etc)" as not_any %}
+    {% firstof course_name not_any asvar name %}
+    {% firstof course_school not_any asvar school %}
+    {% blocktranslate trimmed asvar content_text with name=name school=school days=days %}
+        The course you registered on GewässerCampus
+        (course name: {{ name }}, school: {{ school }}) has been deleted
+        due to inactivity.<br>
+        Courses that have <b>no measurements</b> will be deleted
+        <b>{{ days }} days</b> after the last login.
+        All data associated with your course, including your email
+        address has been deleted from our database.
+        <br>
+        <br>
+        If you think this happened on accident, or you never registered
+        a course on GewässerCampus, don't hesitate to contact us.
+    {% endblocktranslate %}
+    {% include "gcampusmail/components/subheader.html" with title=header_text content_safe=content_text only %}
+{% endblock %}

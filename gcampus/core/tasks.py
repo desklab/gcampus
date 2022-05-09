@@ -14,26 +14,66 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
-from datetime import datetime
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 from celery import shared_task
 from django.conf import settings
+from django.core.mail import mail_managers
 from django.db import transaction
 from django.db.models import Q, Count
+from django.utils import timezone, translation
 
 from gcampus.auth.models import Course, AccessKey
 from gcampus.core.models import Measurement, Water
+from gcampus.mail.messages.maintenance import (
+    MaintenanceAccessKeys,
+    MaintenanceCourseDeletion,
+)
 
 logger = logging.getLogger("gcampus.core.tasks")
 
 
 @shared_task
+def send_course_deletion_email(
+    email: str,
+    course_name: Optional[str],
+    course_school: Optional[str],
+    language: Optional[str] = None,
+):
+    if language is None:
+        language = settings.LANGUAGE_CODE
+    translation.activate(language)
+
+    email_template = MaintenanceCourseDeletion(course_name, course_school)
+    message = email_template.as_message([email])
+    message.send()
+
+
+@shared_task
+def send_access_key_deactivation_email(
+    email: str,
+    course_name: Optional[str],
+    course_school: Optional[str],
+    access_keys: List[str],
+    language: Optional[str] = None,
+):
+    if language is None:
+        language = settings.LANGUAGE_CODE
+    translation.activate(language)
+
+    email_template = MaintenanceAccessKeys(course_name, course_school, access_keys)
+    message = email_template.as_message([email])
+    message.send()
+
+
+@shared_task
 def maintenance():
+    now = timezone.now()
+
     measurements = Measurement.objects.filter(
         Q(hidden=False),
         # AND
-        Q(updated_at__lt=(datetime.now() - settings.MEASUREMENT_RETENTION_TIME)),
+        Q(updated_at__lt=(now - settings.MEASUREMENT_RETENTION_TIME)),
         # AND
         Q(comment__isnull=True) | Q(comment__exact=""),
     )
@@ -42,42 +82,40 @@ def maintenance():
 
     unverified_courses: List[Course] = Course.objects.filter(
         email_verified=False,
-        updated_at__lt=(datetime.now() - settings.UNVERIFIED_COURSE_RETENTION_TIME),
+        updated_at__lt=(now - settings.UNVERIFIED_COURSE_RETENTION_TIME),
     ).all()
-    removed_courses = 0
+    unverified_courses_count = 0
     with transaction.atomic():
         for course in unverified_courses:
             course.access_keys.delete()
             course.course_token.delete()
             course.delete()
-            removed_courses += 1
+            unverified_courses_count += 1
 
     unused_courses: List[Course] = (
         Course.objects.filter(
-            course_token__last_login__lt=(
-                datetime.now() - settings.UNUSED_COURSE_RETENTION_TIME
-            ),
+            email_verified=True,
+            course_token__last_login__lt=(now - settings.UNUSED_COURSE_RETENTION_TIME),
         )
         .annotate(measurement_count=Count("access_keys__measurements"))
         .filter(measurement_count=0)
         .all()
     )
+    unused_courses_count = 0
     with transaction.atomic():
         for course in unused_courses:
             course.access_keys.delete()
             course.course_token.delete()
-            # TODO send message to teacher to inform course deletion
+            send_course_deletion_email.apply_async(
+                args=(course.teacher_email, course.name, course.school_name)
+            )
             course.delete()
-            removed_courses += 1
+            unused_courses_count += 1
 
-    old_access_keys: List[AccessKey] = (
-        AccessKey.objects.filter(
-            deactivated=False,
-            created_at__lt=datetime.now() - settings.ACCESS_KEY_LIFETIME,
-        )
-        .prefetch_related("course")
-        .all()
-    )
+    old_access_keys: List[AccessKey] = AccessKey.objects.filter(
+        deactivated=False,
+        created_at__lt=now - settings.ACCESS_KEY_LIFETIME,
+    ).all()
     courses: Dict[int, List[str]] = {}
     access_key_count = 0
     with transaction.atomic():
@@ -87,37 +125,86 @@ def maintenance():
             access_key_count += 1
             courses.setdefault(access_key.course_id, [])
             courses[access_key.course_id].append(access_key.token)
-        # TODO send email to all course teachers
 
-    # TODO: Report to all MANAGERS
+    # Send email notifying the teacher about deactivated courses
+    for course_id, access_keys in courses.items():
+        course = Course.objects.only("teacher_email", "name", "school_name").get(
+            pk=course_id
+        )
+        send_access_key_deactivation_email.apply_async(
+            args=(course.teacher_email, course.name, course.school_name, access_keys)
+        )
+
+    mail_managers(
+        "Maintenance report",
+        f"Environment: {getattr(settings, 'ENVIRONMENT', 'not set')}\n\n"
+        "Changes:\n"
+        f"Measurements marked as deleted: {measurement_count}\n"
+        f"Unverified courses deleted: {unverified_courses_count}\n"
+        f"Unused courses deleted: {unused_courses_count}\n"
+        "Old access keys deactivated: "
+        f"{access_key_count} out of {len(courses)} courses\n\n"
+        f"(Version: {settings.VERSION}, {timezone.now().isoformat()}",
+        fail_silently=True,
+    )
 
 
 @shared_task
 def staging_maintenance():
+    now = timezone.now()
     if getattr(settings, "ENVIRONMENT", None) != "dev":
         logger.error(
             "Task 'staging_maintenance' has been run outside the staging environment"
         )
         return
-    Measurement.objects.filter(hidden=True).delete()
-    Measurement.objects.filter(
-        updated_at__lt=datetime.now() - settings.MEASUREMENT_LIFETIME_STAGING
-    ).delete()
-    course_deletion_date = datetime.now() - settings.COURSE_LIFETIME_STAGING
-    AccessKey.objects.filter(
+
+    # Delete all hidden measurements
+    m_hidden = Measurement.objects.filter(hidden=True)
+    m_count = m_hidden.all.count()
+    m_hidden.delete()
+
+    # Delete all old measurements
+    m_old = Measurement.objects.filter(
+        updated_at__lt=now - settings.MEASUREMENT_LIFETIME_STAGING
+    )
+    m_count += m_old.all().count()
+    m_old.delete()
+
+    # Delete all old access keys
+    course_deletion_date = now - settings.COURSE_LIFETIME_STAGING
+    a = AccessKey.objects.filter(
         Q(last_login__isnull=True) | Q(last_login__lt=course_deletion_date)
-    ).delete()
-    Course.objects.filter(
+    )
+    a_count = a.all().count()
+    a.delete()
+
+    # Delete all old courses
+    c = Course.objects.filter(
         Q(access_keys__isnull=True),
+        # AND
         Q(course_token__last_login__isnull=True)
-        | Q(course_token__last_login__isnull=course_deletion_date),
-    ).delete()
+        | Q(course_token__last_login__lt=course_deletion_date),
+    )
+    c_count = c.all().count()
+    c.delete()
+
+    mail_managers(
+        "'dev' environment maintenance report",
+        f"Environment: {getattr(settings, 'ENVIRONMENT', 'not set')}\n\n"
+        "Changes:\n"
+        f"Measurements deleted: {m_count:d}\n"
+        f"Old access keys deleted: {a_count}\n"
+        f"Old courses deleted: {c_count}\n\n"
+        f"(Version: {settings.VERSION}, {timezone.now().isoformat()}",
+        fail_silently=True,
+    )
 
 
 @shared_task
 def refresh_water_from_osm():
+    now = timezone.now()
     waters: List[Water] = Water.objects.filter(
-        updated_at__lt=(datetime.now() - settings.WATER_UPDATE_AGE),
+        updated_at__lt=(now - settings.WATER_UPDATE_AGE),
     ).all()[: settings.MAX_CONCURRENT_WATER_UPDATES]
     with transaction.atomic():
         for water in waters:
