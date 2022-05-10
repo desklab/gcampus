@@ -284,8 +284,10 @@ class Water(DateModelMixin):
                 f"No element with id '{self.osm_id}' found on OpenStreetMaps. "
                 "Maybe it has been deleted."
             )
+            return
         elif len(elements) > 1:
             logger.error(f"Multiple elements ({len(elements)}) returned by Overpass!")
+            return
         self.update_from_element(elements[0])
 
     def _get_overpass_query(self) -> Optional[str]:
