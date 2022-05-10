@@ -205,9 +205,13 @@ def staging_maintenance():
 @shared_task
 def refresh_water_from_osm():
     now = timezone.now()
-    waters: List[Water] = Water.objects.filter(
-        updated_at__lt=(now - settings.WATER_UPDATE_AGE),
-    ).all()[: settings.MAX_CONCURRENT_WATER_UPDATES]
+    waters: List[Water] = (
+        Water.objects.filter(
+            updated_at__lt=(now - settings.WATER_UPDATE_AGE),
+        )
+        .order_by("updated_at")
+        .all()[: settings.MAX_CONCURRENT_WATER_UPDATES]
+    )
     with transaction.atomic():
         for water in waters:
             water.update_from_osm()
