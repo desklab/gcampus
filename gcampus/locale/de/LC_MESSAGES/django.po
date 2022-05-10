@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-08 18:02+0200\n"
-"PO-Revision-Date: 2022-02-20 23:01+0000\n"
+"POT-Creation-Date: 2022-05-10 14:26+0200\n"
+"PO-Revision-Date: 2022-05-10 14:48+0200\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -30,7 +30,7 @@ msgstr ""
 
 #: gcampus/admin/options.py:27
 msgid "Admin link"
-msgstr ""
+msgstr "Admin link"
 
 #: gcampus/admin/sites.py:21
 msgid "GewässerCampus administration"
@@ -182,7 +182,7 @@ msgstr "E-Mail-Adresse"
 msgid ""
 "An email has been sent to '{new_email!s}'. Please confirm your new email "
 "address by clicking the link in the email. It may take a few minutes for the "
-"email to arrive. "
+"email to arrive."
 msgstr ""
 "Eine Email wurde an '{new_email!s}' verschickt. Bitte bestätige deine neue "
 "Email-Adresse durch einen Klick auf den Link in der Email. Es kann eine "
@@ -258,7 +258,7 @@ msgstr "Kursschlüssel Berechtigungen"
 
 #: gcampus/auth/models/token.py:242
 msgid "Specific permissions for this course token."
-msgstr "Spezifische Berechtigungen für diesen Kursschlüssel"
+msgstr "Spezifische Berechtigungen für diesen Kursschlüssel."
 
 #: gcampus/auth/models/token.py:248
 #, python-format
@@ -279,7 +279,7 @@ msgstr "Zugangscode Berechtigungen"
 
 #: gcampus/auth/models/token.py:285
 msgid "Specific permissions for this access key."
-msgstr "Spezifische Berechtigungen für diesen Zugangscode"
+msgstr "Spezifische Berechtigungen für diesen Zugangscode."
 
 #: gcampus/auth/models/token.py:295
 #, python-format
@@ -295,8 +295,6 @@ msgstr "Kursdaten"
 
 #: gcampus/auth/templates/gcampusauth/accesskey_list.html:10
 #: gcampus/auth/templates/gcampusauth/course_edit_form.html:8
-#, fuzzy
-#| msgid "Generate new access keys"
 msgid "Manage access keys"
 msgstr "Zugangscodes verwalten"
 
@@ -305,11 +303,7 @@ msgid "Generate new access keys"
 msgstr "Zugangscodes erstellen"
 
 #: gcampus/auth/templates/gcampusauth/accesskey_list.html:19
-#, fuzzy, python-format
-#| msgid ""
-#| "You can generate new access keys for this course without the need to "
-#| "register again. The number of access keys is limited to "
-#| "%(register_max_access_key)s per course."
+#, python-format
 msgid ""
 "You can generate new access keys for this course without the need to "
 "register again. The number of access keys is limited to "
@@ -392,14 +386,6 @@ msgid "Show"
 msgstr "Anzeigen"
 
 #: gcampus/auth/templates/gcampusauth/course_create_form.html:11
-#, fuzzy
-#| msgctxt "help text register"
-#| msgid ""
-#| "Register your class or course and generate a list of <b>access keys</b> "
-#| "for your students. These keys can be used to create and later edit "
-#| "measurements on GewässerCampus. <br> Alongside the generated access keys, "
-#| "you will also receive a <b>course token</b> that should be kept private. "
-#| "With this key you can view and edit all your student's measurements."
 msgctxt "help text register"
 msgid ""
 "Register your class or course and generate a list of <b>access keys</b> for "
@@ -454,12 +440,7 @@ msgstr ""
 "falls wir dich kontaktieren müssen."
 
 #: gcampus/auth/templates/gcampusauth/course_create_form.html:104
-#, fuzzy, python-format
-#| msgctxt "help text number of acess keys"
-#| msgid ""
-#| "The number of access keys you want to generate. You can create a maximum "
-#| "of %(maximum)s access keys at once. <br> Students may share one access "
-#| "key in a group so not everyone needs their own access key."
+#, python-format
 msgctxt "help text number of acess keys"
 msgid ""
 "The number of access keys you want to generate. You can create a maximum of "
@@ -474,11 +455,6 @@ msgstr ""
 "du einen zusätzlichen Zugangscode für dich erstellen."
 
 #: gcampus/auth/templates/gcampusauth/course_create_form.html:120
-#, fuzzy
-#| msgctxt "register form accept terms"
-#| msgid ""
-#| "I do accept the <a href=\"#\">terms and conditions</a> as well as the <a "
-#| "href=\"#\">privacy policy</a> for using this web application."
 msgctxt "register form accept terms"
 msgid ""
 "I do accept the <a href=\"https://gewaessercampus.de/terms\">terms and "
@@ -531,10 +507,6 @@ msgid "Save course overview"
 msgstr "Kursübersicht speichern"
 
 #: gcampus/auth/templates/gcampusauth/course_edit_form.html:103
-#, fuzzy
-#| msgid ""
-#| "Download a PDF with a summary of your registration data, your course "
-#| "token, and the all access keys of your course."
 msgid ""
 "Download a PDF with a summary of your registration data, your course token, "
 "and all access keys for the students of your course."
@@ -547,10 +519,6 @@ msgid "Save access keys for students"
 msgstr "Zugangscodes speichern"
 
 #: gcampus/auth/templates/gcampusauth/course_edit_form.html:113
-#, fuzzy
-#| msgid ""
-#| "Download a PDF with all access keys (one key per page/student) of your "
-#| "course with instructions for your students."
 msgid ""
 "Download a PDF with all access keys (one key per page) of your course with "
 "instructions for your students."
@@ -630,17 +598,17 @@ msgstr ""
 #, python-format
 msgid ""
 "The email confirmation link you used has expired. Note that it is only valid "
-"for 5 days. If the email address of a course is not verified, it will be "
-"deleted automatically after some time. <br> Don't worry, you can always <a "
-"class=\"text-dark\" href=\"%(register_url)s\">register</a> a new course with "
-"the same email address."
+"for %(days)s days. If the email address of a course is not verified, it will "
+"be deleted automatically after some time. <br> Don't worry, you can always "
+"<a class=\"text-dark\" href=\"%(register_url)s\">register</a> a new course "
+"with the same email address."
 msgstr ""
 "Der von Dir verwendete E-Mail-Bestätigungslink ist abgelaufen. Bitte "
-"beachte, dass er nur für 5 Tage gültig ist. Wenn die E-Mail-Adresse eines "
-"Kurses nicht verifiziert wird, wird dieser nach einiger Zeit automatisch "
-"gelöscht.<br>Keine Sorge, Du kannst jederzeit einen neuen Kurs mit der "
-"gleichen E-Mail-Adresse <a class=\"text-dark\" href=\"%(register_url)s"
-"\">registrieren</a>."
+"beachte, dass er nur für %(days)s Tage gültig ist. Wenn die E-Mail-Adresse "
+"eines Kurses nicht verifiziert wird, wird dieser nach einiger Zeit "
+"automatisch gelöscht.<br>Keine Sorge, Du kannst jederzeit einen neuen Kurs "
+"mit der gleichen E-Mail-Adresse <a class=\"text-dark\" href="
+"\"%(register_url)s\">registrieren</a>."
 
 #: gcampus/auth/templates/gcampusauth/error/403_email_verification_expired.html:28
 #: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:30
@@ -734,6 +702,9 @@ msgid ""
 "an access key. You have been logged out and are now logged in with the "
 "course token of your email address."
 msgstr ""
+"Scheinbar warst du mit einem anderen Kursschlüssel oder Zugangscode "
+"angemeldet. Du wurdest automatisch abgemeldet und stattdessen mit dem "
+"Zugangscode deiner verifizierten E-Mail-Adresse angemeldet."
 
 #: gcampus/auth/views/register.py:51
 msgid ""
@@ -892,8 +863,6 @@ msgid "Location"
 msgstr "Standort"
 
 #: gcampus/core/models/measurement.py:75
-#, fuzzy
-#| msgid "An approximated location for the measurement"
 msgid "Location of the measurement"
 msgstr "Standort der Messung"
 
@@ -926,10 +895,8 @@ msgid "Hidden"
 msgstr "Versteckt"
 
 #: gcampus/core/models/measurement.py:114
-#, fuzzy
-#| msgid "Documents"
 msgid "Document"
-msgstr "Dokumente"
+msgstr "Dokument"
 
 #: gcampus/core/models/measurement.py:160
 #, python-format
@@ -999,16 +966,12 @@ msgid "Calibration"
 msgstr "Kalibrierung"
 
 #: gcampus/core/models/measurement.py:273
-#, fuzzy
-#| msgid "Calibration"
 msgid "Calibrations"
 msgstr "Kalibrierung"
 
 #: gcampus/core/models/measurement.py:287
-#, fuzzy
-#| msgid "Calibration fit for"
 msgid "Calibration formula"
-msgstr "Kalibrationsfit für"
+msgstr "Kalibrationsformel"
 
 #: gcampus/core/models/measurement.py:290
 msgid "Maximal parameter value"
@@ -1195,11 +1158,11 @@ msgstr ""
 "Der Prozess wurde wegen eines Fehlers abgebrochen. Wir wurden automatisch "
 "informiert und kümmern uns so schnell wie möglich um eine Lösung."
 
-#: gcampus/core/templates/gcampuscore/base.html:65
+#: gcampus/core/templates/gcampuscore/base.html:69
 msgid "New Measurement"
 msgstr "Neue Messung"
 
-#: gcampus/core/templates/gcampuscore/base.html:70
+#: gcampus/core/templates/gcampuscore/base.html:74
 msgid "Log in"
 msgstr "Anmelden"
 
@@ -1227,6 +1190,10 @@ msgstr "Datenschutz"
 #: gcampus/core/templates/gcampuscore/components/footer.html:6
 msgid "Imprint"
 msgstr "Impressum"
+
+#: gcampus/core/templates/gcampuscore/components/footer.html:19
+msgid "Test instance - Data will be deleted periodically"
+msgstr "Test-Instanz - Daten werden regelmäßig gelöscht"
 
 #: gcampus/core/templates/gcampuscore/components/report_modal.html:6
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:121
@@ -1263,8 +1230,6 @@ msgid "All Measurements"
 msgstr "Alle Messungen"
 
 #: gcampus/core/templates/gcampuscore/components/sidebar.html:16
-#, fuzzy
-#| msgid "Waters"
 msgctxt "water page title"
 msgid "All Waters"
 msgstr "Alle Gewässer"
@@ -1424,6 +1389,8 @@ msgstr "Gewässername"
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:93
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:102
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:143
+#: gcampus/mail/templates/gcampusmail/access_key_deactivation/base.html:5
+#: gcampus/mail/templates/gcampusmail/course_deletion/base.html:5
 #: gcampus/mail/templates/gcampusmail/register/overview.html:4
 msgctxt "no value provided (water name, comment, etc)"
 msgid "N/A"
@@ -1457,10 +1424,8 @@ msgid "Expand note"
 msgstr "Notiz ansehen"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/water_detail.html:59
-#, fuzzy
-#| msgid "Your Measurements"
 msgid "List of Measurements"
-msgstr "Deine Messungen"
+msgstr "Liste der Messungen"
 
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:8
 msgid "Download measurement data"
@@ -1476,6 +1441,12 @@ msgid ""
 "these datasets. More details are provided <a class=\"text-reset\" href="
 "\"%(license_url)s\">here</a>."
 msgstr ""
+"GewässerCampus enthält Karten und Informationen über Gewässer von <a class="
+"\"text-reset\" href=\"%(mapbox_url)s\">Mapbox</a> und <a class=\"text-reset"
+"\" href=\"%(osm_url)s\">OpenStreetMap</a> sowie Daten die von Mitwirkenden "
+"von GewässerCampus erfasst wurden. Stellen Sie sicher, dass Sie die Lizenzen "
+"dieser Datensätze respektieren. Mehr Details dazu findest du <a class=\"text-"
+"reset\" href=\"%(license_url)s\">hier</a>."
 
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:33
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:83
@@ -1513,20 +1484,14 @@ msgstr ""
 "Filter-Einstellungen zu restriktiv."
 
 #: gcampus/core/templates/gcampuscore/sites/list/water_list.html:14
-#, fuzzy
-#| msgid "No measurements found"
 msgid "No waters found"
-msgstr "Keine Messungen gefunden"
+msgstr "Keine Gewässer gefunden"
 
 #: gcampus/core/templates/gcampuscore/sites/mapview.html:14
-#, fuzzy
-#| msgid "Measurement time range"
 msgid "Measurement at standing water"
 msgstr "Messung an stehendem Gewässer"
 
 #: gcampus/core/templates/gcampuscore/sites/mapview.html:21
-#, fuzzy
-#| msgid "Measurement time range"
 msgid "Measurement at running water"
 msgstr "Messung an Fließgewässer"
 
@@ -1557,8 +1522,6 @@ msgid "Edit Measurement {pk:d} - Measured Parameters"
 msgstr "Messung {pk:d} bearbeiten - Mess-Parameter"
 
 #: gcampus/core/views/water/list.py:37
-#, fuzzy
-#| msgid "waters"
 msgid "All waters"
 msgstr "Alle Gewässer"
 
@@ -1719,18 +1682,13 @@ msgid "Login of the web application"
 msgstr "Login der Webanwendung"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:100
-#, fuzzy
-#| msgid ""
-#| "This link leads to the login page of the web application (www."
-#| "gewaessercampus.de/login). After entering the access key, measurements "
-#| "can be or edited."
 msgid ""
 "This link leads to the login page of the web application (www."
 "gewaessercampus.de/login). After entering the access key, measurements can "
 "be created or edited."
 msgstr ""
 "Dieser Link führt zur Login-Seite der Webanwendung (www.gewaessercampus.de/"
-"login).Nach der Eingabe des Zugangscodes können Messungen erstellt oder "
+"login). Nach der Eingabe des Zugangscodes können Messungen erstellt oder "
 "bearbeitet werden."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:111
@@ -1769,11 +1727,6 @@ msgid "Login to use more functions"
 msgstr "Login für die Nutzung weiterer Funktionen"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:144
-#, fuzzy
-#| msgid ""
-#| "To create a new measurement, you must be logged in with an access key. "
-#| "You will find your access code at the top of this page. You can log in "
-#| "via the QR code shown there or via www.gewaessercampus.de/login."
 msgid ""
 "To create a new measurement, you must be logged in with an access key. You "
 "will find your access key at the top of this page. You can log in via the QR "
@@ -1789,11 +1742,6 @@ msgid "Create a new measurement"
 msgstr "Neue Messung erstellen"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:156
-#, fuzzy
-#| msgid ""
-#| "As soon as you are logged in, you can see your course token at the top "
-#| "right and you are able to create a new measurement via the button next to "
-#| "it."
 msgid ""
 "As soon as you are logged in, you can see your access key at the top right "
 "and you are able to create a new measurement via the button next to it."
@@ -1807,11 +1755,6 @@ msgid "Edit an existing measurement"
 msgstr "Bearbeiten einer vorhandenen Messung"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:166
-#, fuzzy
-#| msgid ""
-#| "To edit a measurement you have created, you have to open the detailed "
-#| "view of this measurement. You can use the overview of your measurements "
-#| "or the map or the map to find your measurement."
 msgid ""
 "To edit a measurement you have created, you have to open the detailed view "
 "of this measurement. You can use the overview of your measurements or the "
@@ -1850,16 +1793,13 @@ msgstr ""
 "der Messung von %(name)s am %(time)s in %(location)s."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:73
-#, fuzzy, python-format
-#| msgid ""
-#| "This document has been created automatically and contains a summary of "
-#| "the measurement from %(name)s on %(time)s in %(location)s."
+#, python-format
 msgid ""
 "This document has been created automatically and contains a summary of the "
 "measurement on %(time)s in %(location)s."
 msgstr ""
 "Dieses Dokument wurde automatisch erstellt und enthält eine Zusammenfassung "
-"der Messung von %(name)s am %(time)s in %(location)s."
+"der Messung am %(time)s in %(location)s."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:85
 msgid "Metadata"
@@ -1899,10 +1839,8 @@ msgid "Time range"
 msgstr "Zeitspanne"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:100
-#, fuzzy
-#| msgid "Note"
 msgid "Notes"
-msgstr "Notiz"
+msgstr "Notizen"
 
 #: gcampus/documents/views/csv.py:47
 msgid "measurements.csv"
@@ -1957,6 +1895,30 @@ msgstr ""
 "Bitte bestätige deine E-Mail-Adresse für GewässerCampus durch einen Klick "
 "auf den Link in dieser E-Mail."
 
+#: gcampus/mail/messages/maintenance.py:26
+#: gcampus/mail/templates/gcampusmail/course_deletion/base.html:4
+msgid "Your course has been deleted"
+msgstr "Dein Kurs wurde gelöscht"
+
+#: gcampus/mail/messages/maintenance.py:28
+msgid ""
+"The course you registered on GewässerCampus has been deleted due to "
+"inactivity."
+msgstr "Dein Kurs auf GewässerCampus wurde auf Grund von Inaktivität gelöscht."
+
+#: gcampus/mail/messages/maintenance.py:48
+#: gcampus/mail/templates/gcampusmail/access_key_deactivation/base.html:4
+msgid "Automatic access key deactivation"
+msgstr "Automatische Deaktivierung von Zugangscodes"
+
+#: gcampus/mail/messages/maintenance.py:50
+msgid ""
+"Some access keys of your course on GewässerCampus have been deactivated. You "
+"can always re-activate them in the course administration."
+msgstr ""
+"Einige Zugangscodes deines Kurses auf GewässerCampus wurden deaktiviert. Du "
+"kannst sie jederzeit in der Kursverwaltung wieder reaktivieren."
+
 #: gcampus/mail/messages/register.py:24
 msgid "GewässerCampus Course Registration"
 msgstr "GewässerCampus Kurs Registrierung"
@@ -1970,6 +1932,31 @@ msgstr ""
 "kannst nun die Zugangscodes an Schüler:innen verteilen und mit dem Messen "
 "loslegen."
 
+#: gcampus/mail/templates/gcampusmail/access_key_deactivation/base.html:9
+#, python-format
+msgid ""
+"Some access keys of the course you registered on GewässerCampus (course "
+"name: %(name)s, school: %(school)s) have been deactivated as they have been "
+"created more than %(days)s days ago.<br> Students can now no longer use "
+"these access keys to create new measurements or edit their old measurements."
+"<br> You can always re-activate access keys in the <a href=\"%(course_url)s"
+"\">course administration</a>. <br> <br> If you think this happened on "
+"accident, or you never registered a course on GewässerCampus, don't hesitate "
+"to contact us."
+msgstr ""
+"Einige Zugangscodes deines Kurses auf GewässerCampus (Kursname: %(name)s, "
+"Schule: %(school)s) wurden deaktiviert, da sie vor mehr als %(days)s Tagen "
+"erstellt wurden.<br>Schüler:innen können diese Zugangscodes nun nicht mehr "
+"verwenden, um neue Messungen zu erstellen oder ihre alten Messungen zu "
+"bearbeiten.<br>Du kanns die Zugangscodes in der <a href=\"%(course_url)s"
+"\">Kursverwaltung</a> jederzeit wieder aktivieren.<br> <br> Wenn du der "
+"Meinung bist, dass dies versehentlich passiert ist oder du noch nie einen "
+"Kurs auf GewässerCampus registriert hast, kannst du uns gerne kontaktieren."
+
+#: gcampus/mail/templates/gcampusmail/access_key_deactivation/list.html:5
+msgid "The following access keys have been deactivated:"
+msgstr "Die folgenden Zugangscodes wurden deaktiviert:"
+
 #: gcampus/mail/templates/gcampusmail/components/footer.html:9
 msgid ""
 "Development of the web application GewässerCampus is financially supported "
@@ -1977,6 +1964,26 @@ msgid ""
 msgstr ""
 "Die Entwicklung der Webanwendung GewässerCampus wird durch die Deutsche "
 "Bundesstiftung Umwelt finanziell gefördert."
+
+#: gcampus/mail/templates/gcampusmail/course_deletion/base.html:8
+#, python-format
+msgid ""
+"The course you registered on GewässerCampus (course name: %(name)s, school: "
+"%(school)s) has been deleted due to inactivity.<br> Courses that have <b>no "
+"measurements</b> will be deleted <b>%(days)s days</b> after the last login. "
+"All data associated with your course, including your email address has been "
+"deleted from our database. <br> <br> If you think this happened on accident, "
+"or you never registered a course on GewässerCampus, don't hesitate to "
+"contact us."
+msgstr ""
+"Dein Kurs auf GewässerCampus (Kursname: %(name)s, Schule: %(school)s) wurde "
+"Aufgrund von Inaktivität automatisiert gelöscht.<br>Kurse die <b>noch keine "
+"Messungen<b> erstellt haben werden <b>%(days)s Tage</b> nach der letzten "
+"Anmeldung gelöscht. Alle Daten (auch deine E-Mail-Adresse) die mit diesem "
+"Kurs verknüpft waren wurden aus unserer Datenbank gelöscht.<br><br>Wenn du "
+"der Meinung bist, dass dies versehentlich passiert ist oder du noch nie "
+"einen Kurs auf GewässerCampus registriert hast, kannst du uns gerne "
+"kontaktieren."
 
 #: gcampus/mail/templates/gcampusmail/email_confirmation/base.html:4
 msgid "Please confirm your email address"
@@ -1986,29 +1993,22 @@ msgstr "Bitte bestätige deine E-Mail-Adresse"
 #, python-format
 msgid ""
 "Click the link below to confirm your email address: <br> <a href=\"%(url)s\">"
-"%(url)s</a> <br> This link will be valid for 5 days. <br> If you got this "
-"email by accident and did not sign up on GewässerCampus, you can safely "
+"%(url)s</a> <br> This link will be valid for %(days)s days. <br> If you got "
+"this email by accident and did not sign up on GewässerCampus, you can safely "
 "ignore this message and delete it. Feel free to contact us if you have any "
 "issues."
 msgstr ""
 "Klicke den Link um deine E-Mail-Adresse zu bestätigen:<br><a href=\"%(url)s"
-"\">%(url)s</a><br>Dieser Link ist für 5 Tage aktiv.<br>Solltest du diese E-"
-"Mail versehentlich bekommen haben kannst du sie einfach ignorieren und "
-"löschen. Bei weiteren Fragen kannst du uns jederzeit kontaktieren."
+"\">%(url)s</a><br>Dieser Link ist für %(days)s Tage aktiv.<br>Solltest du "
+"diese E-Mail versehentlich bekommen haben kannst du sie einfach ignorieren "
+"und löschen. Bei weiteren Fragen kannst du uns jederzeit kontaktieren."
 
 #: gcampus/mail/templates/gcampusmail/register/base.html:7
 msgid "Thank you for registering a course!"
 msgstr "Vielen Dank für die Registrierung!"
 
 #: gcampus/mail/templates/gcampusmail/register/base.html:9
-#, fuzzy, python-format
-#| msgid ""
-#| "The registration of your course on GewässerCampus has been successful. "
-#| "You may now share the access keys with your students and start measuring. "
-#| "<br> <b>We are excited to see your data!</b> <br> Here is a summary of "
-#| "your registered course. If any of this information is incorrect or "
-#| "incomplete, you can always update your course on <a href=\"%(course_url)s"
-#| "\">GewässerCampus</a>."
+#, python-format
 msgid ""
 "The registration of your course on GewässerCampus has been successful. You "
 "may now share the access keys with your students and start measuring. <br> "
@@ -2054,11 +2054,11 @@ msgstr ""
 msgid "GCampus Map"
 msgstr "GCampus Karte"
 
-#: gcampus/settings/base.py:172
+#: gcampus/settings/base.py:174
 msgid "English"
 msgstr "Englisch"
 
-#: gcampus/settings/base.py:172
+#: gcampus/settings/base.py:174
 msgid "German"
 msgstr "Deutsch"
 

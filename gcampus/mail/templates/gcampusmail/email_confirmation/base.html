@@ -2,12 +2,12 @@
 {% load i18n auth_token %}
 {% block content %}
     {% translate "Please confirm your email address" as header_text %}
-    {% blocktranslate trimmed asvar content_text %}
+    {% blocktranslate trimmed asvar content_text with url=url days=email_confirmation_timeout %}
         Click the link below to confirm your email address:
         <br>
         <a href="{{ url }}">{{ url }}</a>
         <br>
-        This link will be valid for 5 days.
+        This link will be valid for {{ days }} days.
         <br>
         If you got this email by accident and did not sign up on GewässerCampus,
         you can safely ignore this message and delete it. Feel free to contact

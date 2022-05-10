@@ -2,9 +2,9 @@
 {% load i18n next_url %}
 {% block exception_message %}
     {% url "gcampusauth:register" as register_url %}
-    {% blocktranslate trimmed %}
+    {% blocktranslate trimmed with days=email_confirmation_timeout %}
         The email confirmation link you used has expired. Note that it is only
-        valid for 5 days. If the email address of a course is not verified, it
+        valid for {{ days }} days. If the email address of a course is not verified, it
         will be deleted automatically after some time.
         <br>
         Don't worry, you can always

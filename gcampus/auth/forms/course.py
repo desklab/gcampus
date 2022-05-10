@@ -170,7 +170,7 @@ class CourseForm(forms.ModelForm):
                         "An email has been sent to '{new_email!s}'. "
                         "Please confirm your new email address "
                         "by clicking the link in the email. "
-                        "It may take a few minutes for the email to arrive. "
+                        "It may take a few minutes for the email to arrive."
                     ).format(new_email=new_email),
                 )
         return super(CourseForm, self).save(commit=commit)
