@@ -13,6 +13,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from django.conf import settings
 from django.http import HttpRequest
 
 from gcampus.auth.models.token import TokenType
@@ -32,4 +33,5 @@ def auth(request: HttpRequest) -> dict:
         "user_token_is_course_token": (
             session.get_token_type(request) is TokenType.course_token
         ),
+        "email_confirmation_timeout": settings.EMAIL_CONFIRMATION_TIMEOUT.days,
     }

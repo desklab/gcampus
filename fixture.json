@@ -175,8 +175,7 @@
     "fields": {
       "name": "pH - Wert",
       "short_name": "pH",
-      "unit": "",
-      "calibration_formula": "(2*od)+6"
+      "unit": ""
     }
   },
   {
@@ -185,8 +184,7 @@
     "fields": {
       "name": "Nitrat",
       "short_name": "Ni",
-      "unit": "mg/L",
-      "calibration_formula": "28*od"
+      "unit": "mg/L"
     }
   },
   {
@@ -195,8 +193,7 @@
     "fields": {
       "name": "Sulfat",
       "short_name": "Su",
-      "unit": "mg/L",
-      "calibration_formula": "120*od"
+      "unit": "mg/L"
     }
   },
   {

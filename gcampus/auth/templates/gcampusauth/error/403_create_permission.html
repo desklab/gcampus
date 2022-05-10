@@ -1,5 +1,5 @@
 {% extends "gcampuscore/base_error.html" %}
-{% load i18n auth_token %}
+{% load i18n auth_token next_url %}
 {% block exception_message %}
     {% url "gcampusauth:course-update" as course_overview_url %}
     {% include "gcampusauth/components/current_token_info.html" %}
@@ -23,7 +23,7 @@
 {% block exception_options %}
     <div class="p-4 p-md-5 border rounded-3 bg-light">
         <a class="w-100 btn btn-lg btn-primary" role="button"
-           href="{% url "gcampusauth:login-access-key" %}">
+           href="{% url "gcampusauth:login-access-key" %}{% next_url %}">
             {% translate "Login with access key" %}
         </a>
         <hr class="my-4">

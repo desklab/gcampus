@@ -1,0 +1,17 @@
+{% extends "gcampusmail/components/paragraph.html" %}
+{% load i18n auth_token %}
+{% block content %}
+    <p>
+        {% blocktrans trimmed %}
+            The following access keys have been deactivated:
+        {% endblocktrans %}
+    </p>
+    <br>
+    <ol>
+        {% for access_key in access_keys %}
+            <li style="margin-bottom: 8px">
+                {% displaytoken access_key hidden=False toggle=False %}
+            </li>
+        {% endfor %}
+    </ol>
+{% endblock %}

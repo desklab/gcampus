@@ -34,7 +34,9 @@ ALLOWED_HOSTS = []
 
 # Application definition
 GCAMPUS_VERSION = __version__
+VERSION = GCAMPUS_VERSION
 GCAMPUS_HOMEPAGE = "https://gewaessercampus.de/"
+ENVIRONMENT = get_env_read_file("GCAMPUS_ENV", None)
 # Primarily used for emails or PDFs
 PRIMARY_HOST = "localhost:8000"
 PREFERRED_SCHEME = "http"
@@ -145,24 +147,18 @@ MANAGERS = get_email_tuple_list(os.environ.get("GCAMPUS_MANAGERS", ""))
 ADMINS = get_email_tuple_list(os.environ.get("GCAMPUS_ADMINS", ""))
 EMAIL_SUBJECT_PREFIX = "[GewässerCampus] "
 
-EMAIL_CONFIRMATION_TIMEOUT = datetime.timedelta(days=2)
+EMAIL_CONFIRMATION_TIMEOUT = datetime.timedelta(days=5)
 AUTH_USER_MODEL = "gcampusauth.User"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 # Internationalization
@@ -260,3 +256,13 @@ CELERY_CONFIG = {
         "global_keyprefix": get_env_read_file("GCAMPUS_CELERY_PREFIX", "gcampus"),
     },
 }
+
+# Maintenance schedule
+MEASUREMENT_RETENTION_TIME = datetime.timedelta(days=180)
+MEASUREMENT_LIFETIME_STAGING = datetime.timedelta(days=60)
+UNVERIFIED_COURSE_RETENTION_TIME = datetime.timedelta(days=10)
+UNUSED_COURSE_RETENTION_TIME = datetime.timedelta(days=(180 + 30))
+ACCESS_KEY_LIFETIME = datetime.timedelta(days=180)
+COURSE_LIFETIME_STAGING = datetime.timedelta(days=60)
+MAX_CONCURRENT_WATER_UPDATES = 10
+WATER_UPDATE_AGE = datetime.timedelta(days=60)

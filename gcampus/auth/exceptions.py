@@ -12,6 +12,7 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 from abc import ABC
 from typing import Optional
 
@@ -37,6 +38,10 @@ ACCESS_KEY_DEACTIVATED_ERROR = _(
 COURSE_TOKEN_DEACTIVATED_ERROR = _(
     "This course token has been deactivated and can no longer be used."
 )
+
+
+class EmailVerificationExpired(PermissionDenied):
+    pass
 
 
 class TokenPermissionDenied(PermissionDenied, ABC):

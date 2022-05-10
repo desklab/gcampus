@@ -12,6 +12,11 @@
             /
             <a class="footer-link" href="https://openstreetmap.org/copyright">OpenStreetMap</a>
         </span>
-        <a class="mx-2 footer-link" href="https://github.com/desklab/gcampus">v{{ GCAMPUS_VERSION }}</a>
+        <span class="mx-2 bg-warning px-2 py-1 rounded-3">
+            <a class="footer-link text-dark" href="https://github.com/desklab/gcampus">
+                v{{ GCAMPUS_VERSION }}
+            </a>
+            <span class="ms-1">{% translate "Test instance - Data will be deleted periodically" %}</span>
+        </span>
     </div>
 </div>
