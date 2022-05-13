@@ -14,6 +14,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import sentry_sdk
+from celery.schedules import crontab
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import ignore_logger
 
@@ -78,12 +79,12 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 CELERY_CONFIG["beat_schedule"] = {
     "weekly-maintenance": {
         "task": "gcampus.core.tasks.maintenance",
-        "schedule": datetime.timedelta(days=7),
+        "schedule": crontab(minute=0, hour=10, day_of_week="mon"),
         "args": tuple(),
     },
     "weekly-water-update": {
         "task": "gcampus.core.tasks.refresh_water_from_osm",
-        "schedule": datetime.timedelta(days=7),
+        "schedule": crontab(minute=20, hour=2, day_of_week="tue"),
         "args": tuple(),
     },
 }
@@ -92,7 +93,7 @@ if ENVIRONMENT in ["dev"]:
         {
             "weekly-staging-maintenance": {
                 "task": "gcampus.core.tasks.staging_maintenance",
-                "schedule": datetime.timedelta(days=7),
+                "schedule": crontab(minute=30, hour=10, day_of_week="mon"),
                 "args": tuple(),
             }
         }

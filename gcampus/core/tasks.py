@@ -146,7 +146,7 @@ def maintenance():
         f"Unused courses deleted: {unused_courses_count}\n"
         "Old access keys deactivated: "
         f"{access_key_count} out of {len(courses)} courses\n\n"
-        f"(Version: {settings.VERSION}, {timezone.now().isoformat()}",
+        f"(Version: {settings.VERSION}, {timezone.now().isoformat()})",
         fail_silently=True,
     )
 
@@ -197,7 +197,7 @@ def staging_maintenance():
         f"Measurements deleted: {m_count:d}\n"
         f"Old access keys deleted: {a_count}\n"
         f"Old courses deleted: {c_count}\n\n"
-        f"(Version: {settings.VERSION}, {timezone.now().isoformat()}",
+        f"(Version: {settings.VERSION}, {timezone.now().isoformat()})",
         fail_silently=True,
     )
 
