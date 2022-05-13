@@ -263,8 +263,13 @@ def query(
         endpoint = getattr(
             settings, "OVERPASS_SERVER", "https://overpass-api.de/api/interpreter"
         )
+    user_agent = getattr(
+        settings, "OVERPASS_USERAGENT", f"GewaesserCampus ({settings.GCAMPUS_HOMEPAGE})"
+    )
     response: requests.Response = requests.post(
-        endpoint, data=overpass_query.encode("utf-8")
+        endpoint,
+        data=overpass_query.encode("utf-8"),
+        headers={"User-Agent": user_agent},
     )
     if response.ok:
         return _parse(response, **parse_kwargs)
