@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-14 19:57+0200\n"
+"POT-Creation-Date: 2022-05-16 13:19+0200\n"
 "PO-Revision-Date: 2022-05-10 14:48+0200\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -1441,8 +1441,8 @@ msgid ""
 "document is intended to provide you with all the information of this "
 "measurement in a well printable layout."
 msgstr ""
-"PDF mit den detaillierten Informationen dieser Messung herunterladen. "
-"Dieses Dokument dient der Zusammenfassung der Informationen in einem auf den "
+"PDF mit den detaillierten Informationen dieser Messung herunterladen. Dieses "
+"Dokument dient der Zusammenfassung der Informationen in einem auf den "
 "Ausdruck optimiertem Format."
 
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:202
@@ -1455,8 +1455,8 @@ msgid ""
 "this measurement. This document is referenced as M08 in the teaching "
 "materials."
 msgstr ""
-"PDF mit Vorlage zur Beurteilung der Gewässergüte herunterladen. "
-"Dieses Dokument wird in den Unterrichtsmaterialien als M08 bezeichnet-"
+"PDF mit Vorlage zur Beurteilung der Gewässergüte herunterladen. Dieses "
+"Dokument wird in den Unterrichtsmaterialien als M08 bezeichnet-"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/water_detail.html:59
 msgid "List of Measurements"
@@ -1716,10 +1716,11 @@ msgid ""
 "more information on how to enter your date into the web application as well "
 "as the access key you which you need to sign in."
 msgstr ""
-"Dieses Dokument hilft dir bei der Dokumentation deiner Messung. Die erste Seite "
-"enthält ein strukturiertes Protokoll, dass du ausfüllen solltest, während du deine "
-"Messung durchführst. AUf der Rückseite findest weitere Informationen zur Webanwendung, "
-"eine Anleitung zum Eintragen deiner Messung dort und den dazu benötigten Zugangscode."
+"Dieses Dokument hilft dir bei der Dokumentation deiner Messung. Die erste "
+"Seite enthält ein strukturiertes Protokoll, dass du während deiner Messung "
+"ausfüllen sollst. Auf der Rückseite findest weitere Informationen zum "
+"Eintragen deiner Messung in der Webanwendung und den dazu benötigten "
+"Zugangscode."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:83
 #, fuzzy
@@ -1735,7 +1736,7 @@ msgstr "Speichern und Weiter"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:93
 msgid "When was the sample extracted from the water?"
-msgstr ""
+msgstr "Wann wurde die Gewässerprobe entnommen?"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:110
 msgid ""
@@ -1744,6 +1745,11 @@ msgid ""
 "point of your measurement at a digital map later. You may also you use a "
 "mobile device to document the exact coordinates of your location."
 msgstr ""
+"Markiere auf einer Skizze deiner Umgebung die Stelle, an der deine Probe "
+"entnommen wurde. Ergänze markante Landschaftsmarken, damit du die Stelle "
+"später auf einer digitalen Karte leicht wiederfinden kannst. Zusätzlich "
+"kannst du die genau Position mit Hilfe der GPS-Koordinaten eines Smartphones "
+"bestimmen. "
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:126
 #, fuzzy
@@ -1757,12 +1763,17 @@ msgid ""
 "include the existing flora and fauna or the visual impression of the water "
 "quality."
 msgstr ""
+"Beschreibe deine Beobachtungen des Gewässers und der Umgebung. Dies umfasst "
+"zum Beispiel die vorhandene Flora und Fauna oder eine qualitative "
+"Einschätzung der Wasserqualität (z.B. Trübung, Farbe, Geruch)."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:148
 msgid ""
 "Document the results (the Optical Density) of your chemical water analysis "
 "for each parameter."
 msgstr ""
+"Notiere die Ergebnisse (die Optische Dichte) deiner chemischen Wasseranalyse "
+"für jeden Parameter."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:192
 msgid "Login of the web application"
@@ -1814,11 +1825,6 @@ msgid "Login to use more functions"
 msgstr "Login für die Nutzung weiterer Funktionen"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:240
-#, fuzzy
-#| msgid ""
-#| "To create a new measurement, you must be logged in with an access key. "
-#| "You will find your access key at the top of this page. You can log in via "
-#| "the QR code shown there or via www.gewaessercampus.de/login."
 msgid ""
 "To create a new measurement, you must be logged in with an access key. You "
 "will find your access key at the bottom of this page. You can log in via the "
@@ -1895,8 +1901,8 @@ msgid ""
 "Assess the quality of this water based on the concentration of the "
 "parameters you have measured."
 msgstr ""
-"Beurteile die Qualität dieses Gewässers auf Basis der Konzentration "
-"der gemessenen Parameter."
+"Beurteile die Qualität dieses Gewässers auf Basis der Konzentration der "
+"gemessenen Parameter."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:68
 #, python-format
@@ -1982,19 +1988,19 @@ msgstr "gewaessercampus-messung.pdf"
 msgid "gewaessercampus-measurement-detail-{name:s}.pdf"
 msgstr "gewaessercampus-messung-{name:s}.pdf"
 
-#: gcampus/documents/views/print.py:101
+#: gcampus/documents/views/print.py:102
 #, fuzzy
 #| msgid "gewaessercampus-measurement-list.pdf"
 msgid "gewaessercampus-measurement-assessment.pdf"
 msgstr "gewaessercampus-messungen-beurteilung.pdf"
 
-#: gcampus/documents/views/print.py:111
+#: gcampus/documents/views/print.py:113
 #, fuzzy
 #| msgid "gewaessercampus-measurement-detail-{name:s}.pdf"
 msgid "gewaessercampus-measurement-assessment-{name:s}.pdf"
 msgstr "gewaessercampus-messung-beurteilung-{name:s}.pdf"
 
-#: gcampus/documents/views/print.py:118
+#: gcampus/documents/views/print.py:119
 msgid "gewaessercampus-measurement-list.pdf"
 msgstr "gewaessercampus-messungen-liste.pdf"
 
