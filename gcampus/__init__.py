@@ -15,5 +15,5 @@
 
 from django.utils.version import get_version
 
-VERSION = (0, 4, 1, "beta", 2)
+VERSION = (0, 4, 1, "beta", 3)
 __version__ = get_version(VERSION)
