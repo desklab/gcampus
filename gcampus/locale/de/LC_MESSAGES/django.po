@@ -1723,16 +1723,12 @@ msgstr ""
 "Zugangscode."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:83
-#, fuzzy
-#| msgid "Location of the measurement"
 msgid "Documentation of the measurement"
-msgstr "Standort der Messung"
+msgstr "Dokumentation der Messung"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:89
-#, fuzzy
-#| msgid "Save and Continue"
 msgid "Date and time"
-msgstr "Speichern und Weiter"
+msgstr "Datum und Uhrzeit"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:93
 msgid "When was the sample extracted from the water?"
@@ -1752,10 +1748,8 @@ msgstr ""
 "bestimmen. "
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:126
-#, fuzzy
-#| msgid "Explore environment"
 msgid "Environment"
-msgstr "Umgebung erkunden"
+msgstr "Umgebung"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:130
 msgid ""
