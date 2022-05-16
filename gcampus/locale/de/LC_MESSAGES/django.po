@@ -1430,8 +1430,6 @@ msgid "Expand note"
 msgstr "Notiz ansehen"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:194
-#, fuzzy
-#| msgid "Save course overview"
 msgid "Save detail view"
 msgstr "Detailansicht speichern"
 
@@ -1447,7 +1445,7 @@ msgstr ""
 
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:202
 msgid "Save template for assessment (M08)"
-msgstr "Vorlage für Gewässergutachten (M08) herunterladen"
+msgstr "Vorlage für Gewässergutachten (M08) speichern"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:203
 msgid ""
