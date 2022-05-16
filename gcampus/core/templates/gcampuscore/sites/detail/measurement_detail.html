@@ -110,16 +110,6 @@
                                role="link">
                                 {% translate "Explore environment" %}
                             </a>
-                            <a class="btn btn-sm btn-secondary"
-                               href="{% url "gcampusdocuments:measurement-detail" pk=measurement.pk %}"
-                               role="link">
-                                {% translate "Download PDF" %}
-                            </a>
-                            <button class="btn btn-sm btn btn btn-outline-secondary" type="button"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#reportModal">
-                                {% translate "Report measurement" %}
-                            </button>
                             {% if can_edit %}
                                 <a href="{% url "gcampuscore:edit-measurement" pk=measurement.pk %}"
                                    class="btn btn-sm btn-secondary"
@@ -131,6 +121,11 @@
                                     {% translate "Delete" %}
                                 </button>
                             {% endif %}
+                            <button class="btn btn-sm btn btn btn-outline-secondary" type="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#reportModal">
+                                {% translate "Report measurement" %}
+                            </button>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
@@ -191,6 +186,26 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="container py-4">
+            <h3 class="mt-3 fw-light">{% trans "Documents" %}</h3>
+            <div class="mt-4 list-group list-group-spaced">
+            {% url "gcampusdocuments:measurement-detail" pk=measurement.pk as url%}
+            {% translate "Save detail view" as title %}
+            {% blocktrans asvar body trimmed %}
+                Download a PDF with the detailed information of this measurement.
+                This document is intended to provide you with all the information of this measurement in a well printable layout.
+            {% endblocktrans %}
+            {% include "gcampusauth/components/document_download_card.html" with icon="gcampuscore/icons/cloud-download.html" %}
+
+            {% url "gcampusdocuments:measurement-assessment" pk=measurement.pk as url %}
+            {% translate "Save template for assessment (M08)" as title %}
+            {% blocktrans asvar body trimmed %}
+                Download a PDF with a template to assess the ecological quality based on this measurement.
+                This document is referenced as M08 in the teaching materials.
+            {% endblocktrans %}
+            {% include "gcampusauth/components/document_download_card.html" with icon="gcampuscore/icons/cloud-download.html" %}
+        </div>
         </div>
     </div>
 {% endblock %}
