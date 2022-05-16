@@ -1456,7 +1456,7 @@ msgid ""
 "materials."
 msgstr ""
 "PDF mit Vorlage zur Beurteilung der Gewässergüte herunterladen. Dieses "
-"Dokument wird in den Unterrichtsmaterialien als M08 bezeichnet-"
+"Dokument wird in den Unterrichtsmaterialien als M08 bezeichnet."
 
 #: gcampus/core/templates/gcampuscore/sites/detail/water_detail.html:59
 msgid "List of Measurements"
