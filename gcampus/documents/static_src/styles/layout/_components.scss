@@ -1,0 +1,19 @@
+.box {
+  border: 1px solid $grey-600;
+  border-radius: 0.2cm;
+  margin-left: 0.2cm;
+}
+
+.parameter-box {
+  width: 100%;
+  height: 0.8cm;
+  margin-bottom: 0.2cm;
+}
+
+.assessment-box {
+  border: 1px solid $grey-600;
+  border-radius: 0.2cm;
+  margin: 0.1cm;
+  width: 95%;
+  height: 95%;
+}

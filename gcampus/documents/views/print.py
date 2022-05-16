@@ -97,6 +97,23 @@ class MeasurementDetailPDF(CachedDocumentView):
         )
 
 
+class MeasurementAssessmentPDF(SingleObjectDocumentView):
+    template_name = "gcampusdocuments/documents/measurement_assessment.html"
+    filename = gettext_lazy("gewaessercampus-measurement-assessment.pdf")
+    context_object_name = "measurement"
+    model = Measurement
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(MeasurementAssessmentPDF, self).dispatch(request, *args, **kwargs)
+
+    def get_filename(self):
+        if self.object.name in EMPTY:
+            return self.filename
+        return gettext_lazy(
+            "gewaessercampus-measurement-assessment-{name:s}.pdf"
+        ).format(name=slugify(self.object.name))
+
+
 class MeasurementListPDF(ListDocumentView):
     template_name = "gcampusdocuments/documents/measurement_list.html"
     filename = gettext_lazy("gewaessercampus-measurement-list.pdf")
