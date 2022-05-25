@@ -79,39 +79,42 @@
                 </div>
                 <div class="col-7 px-5 py-3">
                     {# Location (map) #}
-                    {% with field=form.location map_height=400 %}
-                        <div class="mb-3">
+                    <div class="mb-3">
+                        {% with field=form.location map_height=400 %}
                             <h5>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h5>
                             <style>.mapboxgl-canvas{border-radius: .5rem;}</style>
                             {{ field }}
                             {% if field.errors %}
                                 <small class="text-danger">{{ field.errors }}</small>
                             {% endif %}
-                            {% if form.water.errors %}
+                        {% endwith %}
+                        {% with field=form.water %}
+                            {{ field }}
+                            {% if field.errors %}
                                 <small class="text-danger">{{ form.water.errors }}</small>
                             {% endif %}
-                            <div class="list-group list-group-spaced mt-2" id="waterSuggestions">
-                                <div class="list-group-item list-group-item-spaced d-none"
-                                     id="waterLoading">
-                                    <div class="spinner-border spinner-border-sm" role="status"></div>
-                                    <span class="ms-2">
-                                        {% translate "Loading ..." %}
-                                    </span>
-                                </div>
-                                <div class="list-group-item list-group-item-hover list-group-item-spaced cursor-pointer text-center d-none"
-                                     id="waterOsm">
-                                    <div class="shadow-box"></div>
-                                    <div class="shadow-box shadow-box-2"></div>
-                                    {% translate "Water not found?" %}
-                                    <br>
-                                    <small>
-                                        {% translate "Search for more waters on OpenStreetMaps" %}
-                                    </small>
-                                </div>
-                                {% include "gcampuscore/components/water_custom.html" with form=water_form only %}
+                        {% endwith %}
+                        <div class="list-group list-group-spaced mt-2" id="waterSuggestions">
+                            <div class="list-group-item list-group-item-spaced d-none"
+                                 id="waterLoading">
+                                <div class="spinner-border spinner-border-sm" role="status"></div>
+                                <span class="ms-2">
+                                    {% translate "Loading ..." %}
+                                </span>
                             </div>
+                            <div class="list-group-item list-group-item-hover list-group-item-spaced cursor-pointer text-center d-none"
+                                 id="waterOsm">
+                                <div class="shadow-box"></div>
+                                <div class="shadow-box shadow-box-2"></div>
+                                {% translate "Water not found?" %}
+                                <br>
+                                <small>
+                                    {% translate "Search for more waters on OpenStreetMaps" %}
+                                </small>
+                            </div>
+                            {% include "gcampuscore/components/water_custom.html" with form=water_form only %}
                         </div>
-                    {% endwith %}
+                    </div>
                 </div>
                 <div class="col-5 bg-light px-5 py-3 text-muted">
                     <div class="my-2">

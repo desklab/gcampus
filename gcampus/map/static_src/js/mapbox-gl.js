@@ -69,9 +69,6 @@ function initMap(
             'top-right'
         );
     }
-    if (onload !== null) {
-        map.on('load', onload);
-    }
     map.on('load', function (e) {
         // The target of the event will be set by dispatch event and can
         // thus not be used.
@@ -83,6 +80,9 @@ function initMap(
         });
         // Here, the target will be set to 'window'
         window.dispatchEvent(event);
+        if (onload !== null) {
+            onload(e);
+        }
     });
     if (window._maps === undefined) {
         window._maps = {};

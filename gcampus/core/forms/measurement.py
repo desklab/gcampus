@@ -92,6 +92,7 @@ class MeasurementForm(ModelForm):
             # widget:
             # "time": DateTimeInput(attrs=dict(type="datetime-local")),
             "location": GeoPointWidget(),
+            "water": HiddenInput(),
         }
 
 

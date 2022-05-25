@@ -71,6 +71,7 @@ class MapboxGLPointWidget {
             // Set the value of the input element used for the form.
             this._input.value = JSON.stringify(val);
         }
+        this._map.fire('edit', {detail: {widget: this}});
     }
 
     _addMarker() {
@@ -82,12 +83,10 @@ class MapboxGLPointWidget {
 
     _onMapClicked(e) {
         this.setLngLat(e.lngLat);
-        this._map.fire('edit', {detail: {widget: this}});
     }
 
     _onMarkerDragged(e) {
         this.setLngLat(e.target.getLngLat());
-        this._map.fire('edit', {detail: {widget: this}});
     }
 
     getLngLat() {

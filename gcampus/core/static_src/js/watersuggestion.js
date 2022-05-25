@@ -201,6 +201,16 @@ class WaterList {
         document.getElementById('customWaterForm').addEventListener(
             'submit', this.saveCustomWater.bind(this)
         );
+        let hiddenInput = document.querySelector(
+            'input[type="hidden"][name="water"]'
+        );
+        if (hiddenInput !== null && hiddenInput !== undefined) {
+            try {
+                this.currentPermanentHighlight = Number.parseInt(hiddenInput.value);
+            } finally {
+                hiddenInput.remove();
+            }
+        }
     }
 
     setState(state) {
@@ -320,7 +330,7 @@ class WaterList {
         let {lng, lat} = pointWidget.getLngLat();
         this.lat = lat;
         this.lng = lng;
-
+        console.log("hello");
         this.setState({
             loading: true,
             hasDatabase: false,
@@ -472,6 +482,7 @@ class WaterList {
         });
         // Add highlight layer. This will automatically update once the
         // highlighted data source is set.
+        console.log("hello1");
         this.map.on('edit', this.mapUpdate.bind(this));
     }
 

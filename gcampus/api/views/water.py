@@ -63,11 +63,6 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         :returns: Serialized GeoJSON representation of all missing
             waters in the bounding box provided as URL parameters.
         """
-        queryset: QuerySet = self.filter_queryset(self.get_queryset())
-        # Get a list of all OSM IDs that are already present in the
-        # database. This will be used later to filter the Overpass
-        # results.
-        osm_ids: List[int] = list(queryset.values_list("osm_id", flat=True))
         # Construct a filter set and retrieve the GeoLookupValue
         # object from the current request.
         geo_lookup_value: GeoLookupValue = self._get_geo_lookup_value(request)
@@ -81,12 +76,15 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         waters: List[Water] = []
         with transaction.atomic():
             for element in result:
-                if element.osm_id in osm_ids:
-                    # Skip existing waters
-                    continue
-                water: Water = Water.from_element(element)
-                water.save()
-                waters.append(water)
+                try:
+                    water = Water.objects.get(osm_id=element.osm_id)
+                    water.update_from_element(element)
+                    water.save()
+                    waters.append(water)
+                except Water.DoesNotExist:
+                    water: Water = Water.from_element(element)
+                    water.save()
+                    waters.append(water)
         serializer = self.get_serializer(waters, many=True)
         return Response(serializer.data)
 
