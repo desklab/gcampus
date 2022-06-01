@@ -11,11 +11,12 @@ class ODConverterOverView(TitleMixin, ListView):
     title = _("Optical Density Converter")
     template_name = "gcampusanalysis/od_converter_overview.html"
     model = ParameterType
-    context_object_name = "parameter"
 
     def get_context_data(self, **kwargs):
-        kwargs["row_num"] = math.ceil(len(self.object_list) / 3)
-        kwargs["param_num"] = len(ParameterType.objects.all())
+        available_parameters = ParameterType.objects.filter(calibrations__isnull=False)
+        kwargs["parameters"] = available_parameters
+        kwargs["row_num"] = math.ceil(len(available_parameters) / 3)
+        kwargs["param_num"] = len(available_parameters)
         return super(ODConverterOverView, self).get_context_data(**kwargs)
 
 
