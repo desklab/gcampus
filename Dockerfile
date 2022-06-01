@@ -43,8 +43,7 @@ COPY --from=static --chown=gcampus /usr/src/gcampus/requirements.txt /srv/gcampu
 
 # Install dependencies for gcampus
 RUN python3 -m venv venv && \
-    /srv/gcampus/venv/bin/pip install --no-cache-dir -r requirements.txt && \
-    /srv/gcampus/venv/bin/pip install --no-cache-dir gunicorn
+    /srv/gcampus/venv/bin/pip install --no-cache-dir -r requirements.txt
 
 COPY --from=static --chown=gcampus /usr/src/gcampus /srv/gcampus
 

@@ -13,10 +13,24 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from gunicorn.workers.base import Worker
+from gevent import monkey
+from psycogreen.gevent import patch_psycopg
+
+
+def post_fork_patch(server, worker: Worker):
+    monkey.patch_all()
+    patch_psycopg()
+    worker.log.info("Patched 'psycopg'")
+
+
 wsgi_app = "gcampus.wsgi"
 errorlog = "-"  # log to stderr
 loglevel = "info"
 # capture_output = True
 bind = "0.0.0.0:8000"
 workers = 4
-worker_class = "sync"  # default worker. Change if needed
+worker_class = "gevent"
+post_fork = post_fork_patch
+max_requests = 2000
+max_requests_jitter = 20
