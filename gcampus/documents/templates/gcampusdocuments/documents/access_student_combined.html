@@ -56,126 +56,30 @@
 
 {% for token in course.access_keys.all %}
     {% if not token.deactivated %}
-
         <article>
+
             <div class="gcampus-print-page">
 
                 <!-- general information -->
                 <div class="w-100">
-                    <div class="rotated-section-heading color-grey w-abs-300">
+                    <div class="rotated-section-heading color-grey w-abs-350">
                         {% translate "Info" %}
                     </div>
-                    <div class="text-justify h-abs-300 student-document-description">
+                    <div class="text-justify h-abs-350 student-document-description">
                         {% blocktrans trimmed %}
-                            This document will guide you through the documentation of a measurement.
-                            The first page contains a structured protocol which you should fill out at the water
-                            while you are analysing your samples. On the backside you will find more information
-                            on how to enter your date into the web application as well as the access key you
-                            which you need to sign in.
+                            This document was created automatically and contains an
+                            access key and further information for using the
+                            GewässerCampus web application.
                         {% endblocktrans %}
                     </div>
                 </div>
 
-
-                <!-- first steps -->
-                <div class="w-100">
-                    <div class="rotated-section-heading color-primary w-abs-1400">
-                        {% translate "Documentation of the measurement" %}
-                    </div>
-                    <div class="w-abs-1500 firststeps">
-
-                        <div class="w-abs-1500">
-                            <div class="firststeps-heading">
-                                {% translate "Date and time" %}
-                            </div>
-                            <div class="firststeps-content h-abs-100">
-                                <div class="float-left w-abs-700">
-                                    {% blocktrans trimmed %}
-                                        When was the sample extracted from the water?
-                                    {% endblocktrans %}
-                                </div>
-                                <div class="w-abs-700 h-abs-100 float-right">
-                                    <div class="box w-100 h-100">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="w-abs-1500">
-                            <div class="firststeps-heading">
-                                {% translate "Location" %}
-                            </div>
-                            <div class="firststeps-content h-abs-400">
-                                <div class="float-left w-abs-700">
-                                    {% blocktrans trimmed %}
-                                        Use a sketch to document the exact location of your measurement.
-                                        Add significant objects located near to the water to make it easier
-                                        to find the point of your measurement at a digital map later.
-                                        You may also you use a mobile device to document the exact
-                                        coordinates of your location.
-                                    {% endblocktrans %}
-                                </div>
-                                <div class="w-abs-700 h-abs-400 float-right">
-                                    <div class="box w-100 h-100"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="w-abs-1500">
-                            <div class="firststeps-heading">
-                                {% translate "Environment" %}
-                            </div>
-                            <div class="firststeps-content h-abs-400">
-                                <div class="float-left w-abs-500">
-                                    {% blocktrans trimmed %}
-                                        Note any relevant observation of the environment of the water.
-                                        This may include the existing flora and fauna or
-                                        the visual impression of the water quality.
-                                    {% endblocktrans %}
-                                </div>
-                                <div class="w-abs-900 h-abs-400 float-right">
-                                    <div class="box w-100 h-100"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="w-abs-1500">
-                            <div class="firststeps-heading">
-                                {% translate "Parameter" %}
-                            </div>
-                            <div class="firststeps-content h-abs-400">
-                                <div class="float-left w-abs-700">
-                                    {% blocktrans trimmed %}
-                                        Document the results (the Optical Density) of
-                                        your chemical water analysis for each parameter.
-                                    {% endblocktrans %}
-                                </div>
-                                <div class="w-abs-700 h-abs-400 float-right">
-                                    <div class="box parameter-box"></div>
-                                    <div class="box parameter-box"></div>
-                                    <div class="box parameter-box"></div>
-                                    <div class="box parameter-box"></div>
-                                    <div class="box parameter-box"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-
-            </div>
-        </article>
-
-        <article>
-            <div class="gcampus-print-page">
-
                 <!-- course data and token -->
-                <div class="w-100 mt-100">
-                    <div class="rotated-section-heading color-secondary w-abs-700">
+                <div class="w-100">
+                    <div class="rotated-section-heading color-secondary w-abs-800">
                         {% translate "Access key" %}
                     </div>
-                    <div class="coursedata-container overflow-hidden h-abs-700 w-abs-1600">
+                    <div class="coursedata-container overflow-hidden h-abs-800 w-abs-1600">
 
                         <div class="float-left w-abs-400">
                             <div class="accesskey-single">
@@ -239,7 +143,7 @@
                         <div class="firststeps-content">
                             {% blocktrans trimmed %}
                                 To create a new measurement, you must be logged in with
-                                an access key. You will find your access key at the bottom
+                                an access key. You will find your access key at the top
                                 of this page. You can log in via the QR code shown there
                                 or via www.gewaessercampus.de/login.
                             {% endblocktrans %}

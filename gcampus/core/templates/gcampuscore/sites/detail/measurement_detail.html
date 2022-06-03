@@ -197,15 +197,7 @@
                 This document is intended to provide you with all the information of this measurement in a well printable layout.
             {% endblocktrans %}
             {% include "gcampusauth/components/document_download_card.html" with icon="gcampuscore/icons/cloud-download.html" %}
-
-            {% url "gcampusdocuments:measurement-assessment" pk=measurement.pk as url %}
-            {% translate "Save template for assessment (M08)" as title %}
-            {% blocktrans asvar body trimmed %}
-                Download a PDF with a template to assess the ecological quality based on this measurement.
-                This document is referenced as M08 in the teaching materials.
-            {% endblocktrans %}
-            {% include "gcampusauth/components/document_download_card.html" with icon="gcampuscore/icons/cloud-download.html" %}
-        </div>
+            </div>
         </div>
     </div>
 {% endblock %}
