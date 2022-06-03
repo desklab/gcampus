@@ -11,7 +11,7 @@ environment variables can be used:
   - S3_BUCKET_NAME: String - Bucket to store files.
   - S3_SECURE_URLS: Boolean - Whether to use "https" for requests to S3.
 """
-#  Copyright (C) 2021 desklab gUG (haftungsbeschränkt)
+#  Copyright (C) 2021-2022 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
