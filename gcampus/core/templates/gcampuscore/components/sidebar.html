@@ -33,11 +33,9 @@
         <ul class="mt-auto nav nav-pills flex-column flex-shrink-0">
             {% translate "About the project" as about_title %}
             {% translate "Teaching material" as teaching_material_title %}
-            {% translate "Report a problem" as report_title %}
 
             {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/box-arrow-up-right.html" class="sidebar-item-hidden" title=about_title url="https://gewaessercampus.de/" new_tab="true" %}
             {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/box-arrow-up-right.html" class="sidebar-item-hidden" title=teaching_material_title url="https://desk-lab.de/docs/" new_tab="true" %}
-            {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/question-circle.html" title=report_title url="https://desk-lab.de/about/contact/" new_tab="true" %}
         </ul>
     </div>
 </nav>

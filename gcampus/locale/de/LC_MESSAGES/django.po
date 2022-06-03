@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-03 13:24+0200\n"
+"POT-Creation-Date: 2022-06-03 17:44+0200\n"
 "PO-Revision-Date: 2022-05-10 14:48+0200\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -1180,19 +1180,23 @@ msgstr "Filter anwenden"
 msgid "Reset filter"
 msgstr "Filter zurücksetzen"
 
-#: gcampus/core/templates/gcampuscore/components/footer.html:4
+#: gcampus/core/templates/gcampuscore/components/footer.html:12
 msgid "Terms and conditions"
 msgstr "Nutzungsbedingungen"
 
-#: gcampus/core/templates/gcampuscore/components/footer.html:5
+#: gcampus/core/templates/gcampuscore/components/footer.html:13
 msgid "Privacy policy"
 msgstr "Datenschutz"
 
-#: gcampus/core/templates/gcampuscore/components/footer.html:6
+#: gcampus/core/templates/gcampuscore/components/footer.html:14
 msgid "Imprint"
 msgstr "Impressum"
 
-#: gcampus/core/templates/gcampuscore/components/footer.html:20
+#: gcampus/core/templates/gcampuscore/components/footer.html:16
+msgid "a project by"
+msgstr "ein Projekt von"
+
+#: gcampus/core/templates/gcampuscore/components/footer.html:23
 msgid "Test instance - Data will be deleted periodically"
 msgstr "Test-Instanz - Daten werden regelmäßig gelöscht"
 
@@ -1247,10 +1251,6 @@ msgstr "Über das Projekt"
 #: gcampus/core/templates/gcampuscore/components/sidebar.html:35
 msgid "Teaching material"
 msgstr "Unterrichtsmaterialien"
-
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:36
-msgid "Report a problem"
-msgstr "Problem melden"
 
 #: gcampus/core/templates/gcampuscore/components/water_custom.html:36
 msgid "Water still not found?"
@@ -1685,8 +1685,8 @@ msgid ""
 "This document was created automatically and contains an access key and "
 "further information for using the GewässerCampus web application."
 msgstr ""
-"Dieses Dokument wurde automatisch erstellt und enthält einen Zugangscode"
-"und weitere Informationen zur Nutzung der GewässerCampus Webanwendung."
+"Dieses Dokument wurde automatisch erstellt und enthält einen Zugangscode und "
+"weitere Informationen zur Nutzung der GewässerCampus Webanwendung."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:96
 msgid "Login of the web application"

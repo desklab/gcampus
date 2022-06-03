@@ -1,10 +1,7 @@
 {% load i18n %}
 <div class="border-top footer container">
-    <div class="text-end py-3">
-        <a class="mx-2 footer-link" href="https://gewaessercampus.de/terms">{% translate "Terms and conditions" %}</a>
-        <a class="mx-2 footer-link" href="https://gewaessercampus.de/gdp">{% translate "Privacy policy" %}</a>
-        <a class="mx-2 footer-link" href="https://gewaessercampus.de/imprint">{% translate "Imprint" %}</a>
-        <span class="ms-3 me-2">
+    <div class="text-end py-3 text-secondary">
+        <span class="me-3">
             &copy;
             <a class="footer-link" href="https://gewaessercampus.de/license">GewässerCampus</a>
             /
@@ -12,16 +9,22 @@
             /
             <a class="footer-link" href="https://openstreetmap.org/copyright">OpenStreetMap</a>
         </span>
+        <a class="ms-3 me-2 footer-link" href="https://gewaessercampus.de/terms">{% translate "Terms and conditions" %}</a>
+        <a class="mx-2 footer-link" href="https://gewaessercampus.de/gdp">{% translate "Privacy policy" %}</a>
+        <a class="ms-2 me-3 footer-link" href="https://gewaessercampus.de/imprint">{% translate "Imprint" %}</a>
+        <span class="mx-3">
+            {% translate "a project by" %}<a class="footer-link" href="https://desk-lab.de"> <i>desklab</i></a>
+        </span>
         {% if ENVIRONMENT == "dev" %}
-            <span class="mx-2 bg-warning px-2 py-1 rounded-3">
+            <span class="mx-3 bg-warning px-2 py-1 rounded-3">
                 <a class="footer-link text-dark" href="https://github.com/desklab/gcampus">
                     v{{ GCAMPUS_VERSION }}
                 </a>
                 <span class="ms-1">{% translate "Test instance - Data will be deleted periodically" %}</span>
             </span>
         {% else %}
-            <span class="mx-2">
-                <a class="footer-link text-dark" href="https://github.com/desklab/gcampus">
+            <span class="mx-3">
+                <a class="footer-link" href="https://github.com/desklab/gcampus">
                     v{{ GCAMPUS_VERSION }}
                 </a>
             </span>
