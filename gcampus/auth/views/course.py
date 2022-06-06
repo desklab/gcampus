@@ -140,9 +140,13 @@ class AccessKeyCreateView(
 
     def get_context_data(self, **kwargs):
         kwargs.setdefault("today", datetime.now())
-        kwargs["access_keys_max_count"] = getattr(
-            settings, "REGISTER_MAX_ACCESS_KEY_NUMBER", 30
-        )
+        max_count = getattr(settings, "REGISTER_MAX_ACCESS_KEY_NUMBER", 30)
+        kwargs["access_keys_max_count"] = max_count
+        current_count = len(self.object_list)
+        allowed_count = max_count - current_count
+        kwargs["disabled"] = ""
+        if allowed_count == 0:
+            kwargs["disabled"] = "disabled"
         return super(AccessKeyCreateView, self).get_context_data(**kwargs)
 
     def get_queryset(self):

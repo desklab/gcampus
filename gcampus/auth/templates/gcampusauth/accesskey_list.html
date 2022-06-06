@@ -37,9 +37,14 @@
                 {% endwith %}
             </div>
             <div class="col-12">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary" {{ disabled }}>
                     {% trans "Generate" %}
                 </button>
+            <div>
+                {% if disabled %}
+                    {% trans "You have reached the maximum amount of accesskeys. Please register a new course to generate more accesskeys." %}
+                {% endif %}
+            </div>
             </div>
         </form>
         <h3 class="mt-5 py-4">{% trans "Access keys" %}</h3>
