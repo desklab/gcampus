@@ -20,6 +20,7 @@ from django.forms import MultiWidget, NumberInput, CheckboxInput
 from django.forms.utils import to_current_timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import pgettext
+from django.utils import timezone
 from django_filters.widgets import RangeWidget
 from leaflet.forms.widgets import LeafletWidget
 
@@ -157,9 +158,9 @@ class TimeRangeSlider(RangeWidget):
 
             measurements_per_week = get_measurements_per_week(week_list, all_dates)
         except Measurement.DoesNotExist:
-            # Create an empty list instead
-            week_list = []
-            measurements_per_week = []
+            # Create a list with todays date twice and no measurement entries
+            week_list = [timezone.now(), timezone.now()]
+            measurements_per_week = [0]
         context["week_list_js"] = convert_dates_to_js_milliseconds(week_list)
         context["measurements_per_week"] = measurements_per_week
         return context

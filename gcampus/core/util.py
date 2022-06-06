@@ -179,8 +179,6 @@ def get_measurements_per_week(
     measurements_per_week = (
         np.array(measurements_per_week) / np.max(measurements_per_week) * 100
     )
-    if not measurements_per_week:
-        return []
     return [int(measurement_val) for measurement_val in measurements_per_week]
 
 
