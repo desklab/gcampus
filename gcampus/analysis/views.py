@@ -13,7 +13,9 @@ class ODConverterOverView(TitleMixin, ListView):
     model = ParameterType
 
     def get_context_data(self, **kwargs):
-        available_parameters = ParameterType.objects.filter(calibrations__isnull=False)
+        available_parameters = ParameterType.objects.filter(
+            calibrations__isnull=False
+        ).distinct()
         kwargs["parameters"] = available_parameters
         kwargs["row_num"] = math.ceil(len(available_parameters) / 3)
         kwargs["param_num"] = len(available_parameters)
