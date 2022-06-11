@@ -117,6 +117,8 @@ class ParameterForm(ModelForm):
                 attrs={
                     "class": "form-control form-control-sm",
                     "placeholder": _("Value"),
+                    "min": 0,
+                    "max": 100000,
                 }
             ),
             "comment": Textarea(
