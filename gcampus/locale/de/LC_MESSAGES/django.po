@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-03 17:44+0200\n"
-"PO-Revision-Date: 2022-05-10 14:48+0200\n"
+"POT-Creation-Date: 2022-06-11 14:59+0200\n"
+"PO-Revision-Date: 2022-06-11 15:04+0200\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -71,7 +71,7 @@ msgstr "Kalibrationsfit für"
 
 #: gcampus/analysis/templates/gcampusanalysis/od_converter_detail.html:9
 #: gcampus/analysis/templates/gcampusanalysis/od_converter_overview.html:9
-#: gcampus/analysis/views.py:11 gcampus/analysis/views.py:24
+#: gcampus/analysis/views.py:11 gcampus/analysis/views.py:26
 msgid "Optical Density Converter"
 msgstr "Umrechner für Optische Dichte"
 
@@ -266,7 +266,7 @@ msgid "Course token %(id)s"
 msgstr "Kursschlüssel %(id)s"
 
 #: gcampus/auth/models/token.py:260
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:45
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:63
 #: gcampus/auth/views/course.py:107
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:123
 #: gcampus/mail/templates/gcampusmail/register/overview.html:25
@@ -302,31 +302,40 @@ msgstr "Zugangscodes verwalten"
 msgid "Generate new access keys"
 msgstr "Zugangscodes erstellen"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:19
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:23
 #, python-format
 msgid ""
-"You can generate new access keys for this course without the need to "
-"register again. The number of access keys is limited to "
-"%(access_keys_max_count)s per course."
+"You have reached the maximum (%(max_count)s) number of access keys.<br> If "
+"you need more access keys, consider <a class=\"alert-link\" href="
+"\"%(register_url)s\">registering a new course</a>."
 msgstr ""
-"Du kannst neue Zugangscodes erstellen ohne dafür einen neuen Kurs zu "
-"registrieren. Allerdings ist die Anzahl der Zugangscodes beschränkt auf "
-"%(access_keys_max_count)s pro Kurs."
+"Du hast das Maximum (%(max_count)s) an erlaubten Zugangscodes erreicht.<br> "
+"Solltest du mehr benötigen kannst du dafür jederzeit einen neuen <a class="
+"\"alert-link\" href=\"%(register_url)s\">Kurs registrieren</a>."
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:41
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:35
+#, python-format
+msgid ""
+"Please note that the number of access keys is limited to <strong>"
+"%(max_count)s per course</strong>."
+msgstr ""
+"Bitte beachte, dass die Anzahl der Zugangsschlüssel auf <strong>"
+"%(max_count)s pro Kurs</strong> begrenzt ist."
+
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:58
 msgid "Generate"
 msgstr "Erstellen"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:53
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:71
 msgid "Deactivated"
 msgstr "Deaktiviert"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:56
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:74
 msgid "Active"
 msgstr "Aktiv"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:68
 #: gcampus/auth/templates/gcampusauth/accesskey_list.html:86
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:104
 #: gcampus/core/templates/gcampuscore/components/water_list_item.html:18
 #, python-format
 msgid "%(count)s measurement"
@@ -334,19 +343,19 @@ msgid_plural "%(count)s measurements"
 msgstr[0] "%(count)s Messung"
 msgstr[1] "%(count)s Messungen"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:98
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:116
 msgid "Last login:"
 msgstr "Letzte Anmeldung:"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:102
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:120
 msgid "never"
 msgstr "Noch nie"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:111
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:129
 msgid "Activate"
 msgstr "Aktivieren"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:113
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:131
 msgid "Deactivate"
 msgstr "Deaktivieren"
 
@@ -687,17 +696,17 @@ msgstr ""
 msgid "You successfully generated {count:d} new access keys"
 msgstr "Du hast erfolgreich {count:d} neue Zugangscodes erstellt"
 
-#: gcampus/auth/views/course.py:174
+#: gcampus/auth/views/course.py:175
 msgid "All done! The course you registered is now active."
 msgstr "Geschafft! Dein registrierter Kurs ist jetzt aktiv."
 
-#: gcampus/auth/views/course.py:183
+#: gcampus/auth/views/course.py:184
 msgid "Email confirmed. You email is now set to {new_email!s}."
 msgstr ""
 "E-Mail-Adresse bestätigt! Deine E-Mail-Adresse wurde zu {new_email!s} "
 "geändert."
 
-#: gcampus/auth/views/course.py:202
+#: gcampus/auth/views/course.py:203
 msgid ""
 "It seems like you have been logged in with a different course token or with "
 "an access key. You have been logged out and are now logged in with the "
@@ -829,7 +838,7 @@ msgstr ""
 "Diese E-Mail-Adresse wird von uns nur dazu verwendet, um Dich zu "
 "kontaktieren. Sie wird mit niemandem sonst geteilt."
 
-#: gcampus/core/forms/measurement.py:125 gcampus/core/models/measurement.py:100
+#: gcampus/core/forms/measurement.py:127 gcampus/core/models/measurement.py:100
 #: gcampus/core/models/measurement.py:253
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:97
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:151
@@ -1159,11 +1168,11 @@ msgstr ""
 "Der Prozess wurde wegen eines Fehlers abgebrochen. Wir wurden automatisch "
 "informiert und kümmern uns so schnell wie möglich um eine Lösung."
 
-#: gcampus/core/templates/gcampuscore/base.html:69
+#: gcampus/core/templates/gcampuscore/base.html:82
 msgid "New Measurement"
 msgstr "Neue Messung"
 
-#: gcampus/core/templates/gcampuscore/base.html:74
+#: gcampus/core/templates/gcampuscore/base.html:87
 msgid "Log in"
 msgstr "Anmelden"
 
@@ -1176,7 +1185,7 @@ msgid "Apply filter"
 msgstr "Filter anwenden"
 
 #: gcampus/core/templates/gcampuscore/components/filter.html:15
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:111
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:109
 msgid "Reset filter"
 msgstr "Filter zurücksetzen"
 
@@ -1199,6 +1208,18 @@ msgstr "ein Projekt von"
 #: gcampus/core/templates/gcampuscore/components/footer.html:23
 msgid "Test instance - Data will be deleted periodically"
 msgstr "Test-Instanz - Daten werden regelmäßig gelöscht"
+
+#: gcampus/core/templates/gcampuscore/components/pagination.html:3
+msgid "Navigate list pages"
+msgstr "Seiten navigieren"
+
+#: gcampus/core/templates/gcampuscore/components/pagination.html:9
+msgid "Previous"
+msgstr "Zurück"
+
+#: gcampus/core/templates/gcampuscore/components/pagination.html:92
+msgid "Next"
+msgstr "Weiter"
 
 #: gcampus/core/templates/gcampuscore/components/report_modal.html:6
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:127
@@ -1482,11 +1503,11 @@ msgstr ""
 msgid "Print summary"
 msgstr "Zusammenfassung drucken"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:101
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:99
 msgid "No measurements found"
 msgstr "Keine Messungen gefunden"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:104
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:102
 msgid ""
 "Unfortunately, no measurements can be found. <br> Maybe your filter settings "
 "are too restrictive."
@@ -1536,47 +1557,47 @@ msgstr "Messung {pk:d} bearbeiten - Mess-Parameter"
 msgid "All waters"
 msgstr "Alle Gewässer"
 
-#: gcampus/core/widgets.py:42
+#: gcampus/core/widgets.py:43
 msgid "Hour"
 msgstr "Stunde"
 
-#: gcampus/core/widgets.py:46
+#: gcampus/core/widgets.py:47
 msgctxt "hour input short"
 msgid "HH"
 msgstr ""
 
-#: gcampus/core/widgets.py:49
+#: gcampus/core/widgets.py:50
 msgid "Minute"
 msgstr "Minute"
 
-#: gcampus/core/widgets.py:53
+#: gcampus/core/widgets.py:54
 msgctxt "minute input short"
 msgid "MM"
 msgstr "MM"
 
-#: gcampus/core/widgets.py:75
+#: gcampus/core/widgets.py:76
 msgid "Day"
 msgstr "Tag"
 
-#: gcampus/core/widgets.py:79
+#: gcampus/core/widgets.py:80
 msgctxt "day input short"
 msgid "DD"
 msgstr "TT"
 
-#: gcampus/core/widgets.py:82
+#: gcampus/core/widgets.py:83
 msgid "Month"
 msgstr "Monat"
 
-#: gcampus/core/widgets.py:86
+#: gcampus/core/widgets.py:87
 msgctxt "month input short"
 msgid "MM"
 msgstr "MM"
 
-#: gcampus/core/widgets.py:90
+#: gcampus/core/widgets.py:91
 msgid "Year"
 msgstr "Jahr"
 
-#: gcampus/core/widgets.py:91
+#: gcampus/core/widgets.py:92
 msgctxt "year input short"
 msgid "YYYY"
 msgstr "JJJJ"
@@ -2076,6 +2097,15 @@ msgstr "Deutsch"
 #: gcampus/tasks/apps.py:24
 msgid "GCampus Tasks"
 msgstr "GCampus Aufgaben"
+
+#~ msgid ""
+#~ "You can generate new access keys for this course without the need to "
+#~ "register again. The number of access keys is limited to "
+#~ "%(access_keys_max_count)s per course."
+#~ msgstr ""
+#~ "Du kannst neue Zugangscodes erstellen ohne dafür einen neuen Kurs zu "
+#~ "registrieren. Allerdings ist die Anzahl der Zugangscodes beschränkt auf "
+#~ "%(access_keys_max_count)s pro Kurs."
 
 #~ msgid "Documentation of the measurement"
 #~ msgstr "Dokumentation der Messung"
