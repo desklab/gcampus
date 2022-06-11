@@ -132,7 +132,13 @@ python manage.py loaddata fixture.json
 ```
 
 A user with credentials `admin` and `admin` will be created from the
-fixture.
+fixture. Note that the fixture does not include the default permissions.
+To apply these permissions to all token users, run the following
+command:
+
+```shell
+python manage.py defaultpermissions
+```
 
 Build static files using webpack:
 
