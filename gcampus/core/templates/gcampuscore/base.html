@@ -8,7 +8,7 @@
     can be found at https://github.com/desklab/gcampus.
     -->
     <meta charset="utf-8"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>{% block title %}
         {% if page_title %}
             {{ page_title }} - GewässerCampus
@@ -20,13 +20,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     {% if ENVIRONMENT == "dev" %}
-        <link rel="icon" href="{% static 'gcampuscore/assets/favicon-dev.png' %}">
+        <link rel="icon"
+              href="{% static 'gcampuscore/assets/favicon-dev.png' %}">
     {% else %}
         <link rel="icon" href="{% static 'gcampuscore/assets/favicon.ico' %}">
     {% endif %}
 
     {# Global stylesheets #}
-    <link rel="stylesheet" type="text/css" href="{% static 'gcampuscore/styles/main.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'gcampuscore/styles/main.css' %}">
     {% block extra_head %}
         {% displaytoken_head %} {# Required for header #}
         {# Override this in templates to add extra stylesheets #}
@@ -35,15 +37,21 @@
 
 <body class="{% block body_class %}{% endblock %}">
 {% if messages %}
-    <div role="alert" aria-live="assertive" aria-atomic="true" class="messages-toast-frame">
+    <div role="alert" aria-live="assertive" aria-atomic="true"
+         class="messages-toast-frame">
         <div class="toast-container p-3">
             {% for message in messages %}
-                <div class="toast align-items-center text-white {% if message.tags %}bg-{{ message.tags }}{% else %}bg-light{% endif %} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast align-items-center text-white {% if message.tags %}bg-
+                    {{ message.tags }}{% else %}bg-light{% endif %} border-0"
+                     role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="d-flex">
                         <div class="toast-body">
                             {{ message }}
                         </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        <button type="button"
+                                class="btn-close btn-close-white me-2 m-auto"
+                                data-bs-dismiss="toast"
+                                aria-label="Close"></button>
                     </div>
                 </div>
             {% endfor %}
@@ -59,10 +67,15 @@
                 <nav class="navbar gcampus-navbar navbar-light bg-white fixed-top border-bottom navbar-expand">
                     <div class="container-fluid flex-nowrap">
                         <div class="mw-75 flex-shrink-1" id="navbar-title">
-                            <button class="btn d-block d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-expanded="{{ sidebar_open|yesno:"true,false" }}" aria-controls="sidebar">
+                            <button class="btn d-block d-md-none" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#sidebar"
+                                    aria-expanded="{{ sidebar_open|yesno:"true,false" }}"
+                                    aria-controls="sidebar">
                                 Menu
                             </button>
-                            {% block navbar_title %}<div class="navbar-brand">{% firstof page_title "No Page Title Provided" %}</div>{% endblock %}
+                            {% block navbar_title %}
+                                <div class="navbar-brand">{% firstof page_title "No Page Title Provided" %}</div>{% endblock %}
                         </div>
                         {% block navbar_other %}{% endblock %}
                         <ul class="nav navbar-nav text-nowrap flex-nowrap">
@@ -80,6 +93,11 @@
                 </nav>
                 {% block content %}
                 {% endblock %}
+                {% block pagination %}
+                    {% if is_paginated and page_obj.has_other_pages %}
+                        {% include "gcampuscore/components/pagination.html" %}
+                    {% endif %}
+                {% endblock %}
             </main>
             {% include "gcampuscore/components/footer.html" %}
         </div>
@@ -87,7 +105,8 @@
 {% endblock body %}
 
 {# Global javascript #}
-<script type="text/javascript" src="{% static 'gcampuscore/js/main.js' %}"></script>
+<script type="text/javascript"
+        src="{% static 'gcampuscore/js/main.js' %}"></script>
 {% block body_js %}
     <script type="text/javascript">
         const SIDEBAR_STATE_COOKIE_NAME = '{{ sidebar_cookie_name }}';
@@ -108,11 +127,13 @@
 
         const sidebarElement = document.getElementById('sidebar');
         const sidebarControl = document.querySelector('[aria-controls="sidebar"]');
+
         function toggleSidebar() {
             let open = sidebarElement.classList.toggle('show');
             setSidebarCookie(open);
             sidebarControl.setAttribute("aria-expanded", open);
         }
+
         if (desiredSidebarState === '1') {
             document.getElementById('sidebar').classList.add('show');
             sidebarControl.setAttribute("aria-expanded", true);
@@ -121,15 +142,15 @@
             sidebarControl.setAttribute("aria-expanded", false);
         }
 
-        sidebarElement.addEventListener('hide.bs.collapse', function() {
+        sidebarElement.addEventListener('hide.bs.collapse', function () {
             setSidebarCookie(false);
         });
-        sidebarElement.addEventListener('show.bs.collapse', function() {
+        sidebarElement.addEventListener('show.bs.collapse', function () {
             setSidebarCookie(true);
         });
         const mainContent = document.querySelector('main');
         if (mainContent !== undefined) {
-            mainContent.addEventListener('transitionend', function() {
+            mainContent.addEventListener('transitionend', function () {
                 for (let map in window._maps) {
                     window._maps[map].resize();
                 }
@@ -149,23 +170,6 @@
 {% endif %}
 {% block extra_body %}
     {# Override this in templates to add extra javascript #}
-{% endblock %}
-{% block pagination %}
-    {% if is_paginated %}
-        <div class="pagination">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                    <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
-                {% endif %}
-                <span class="page-current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-                {% if page_obj.has_next %}
-                    <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
-                {% endif %}
-            </span>
-        </div>
-    {% endif %}
 {% endblock %}
 </body>
 </html>

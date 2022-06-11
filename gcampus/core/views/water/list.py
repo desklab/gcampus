@@ -36,4 +36,4 @@ class WaterListView(TitleMixin, ListView):
     )
     title = gettext_lazy("All waters")
     context_object_name = "water_list"
-    # paginate_by = 10
+    paginate_by = 10

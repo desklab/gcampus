@@ -38,7 +38,7 @@ class MeasurementListView(TitleMixin, ListView):
     title = gettext_lazy("All measurements")
     context_object_name = "measurement_list"
     filter: MeasurementFilterSet
-    # paginate_by = 10
+    paginate_by = 10
 
     def get_queryset(self):
         if not hasattr(self, "filter"):
