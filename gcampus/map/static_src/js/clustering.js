@@ -36,7 +36,11 @@ function createMeasurementPopup(coords, map, data, template) {
     item.querySelector('a').setAttribute('href', url);
     getContentElement(item, 'waterName').innerText = waterName;
     getContentElement(item, 'flowType').innerText = flowTypeDisplay;
-    getContentElement(item, 'measurementName').innerText = name;
+    if (name === "" || name === undefined || name === null) {
+        getContentElement(item, 'measurementName').parent.remove();
+    } else {
+        getContentElement(item, 'measurementName').innerText = name;
+    }
     getContentElement(item, 'measurementTime').innerText = (
         new Date(time).toLocaleString()
     );
