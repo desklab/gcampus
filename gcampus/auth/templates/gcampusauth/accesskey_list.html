@@ -15,39 +15,52 @@
 {% block content %}
     <div class="container">
         <h3 class="py-4">{% trans "Generate new access keys" %}</h3>
-        <small class="text-sm text-muted">
-            {% blocktrans trimmed %}
-                You can generate new access keys for this course without
-                the need to register again. The number of access keys is
-                limited to {{ access_keys_max_count }} per course.
-            {% endblocktrans %}
-        </small>
-        <form method="post" class="row g-3 has-validation mt-2">
-            {% csrf_token %}
-            <div class="col-auto">
-                {% with form.count as field %}
-                    <div class="mb-3">
-                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                        {% include "gcampuscore/forms/components/helptext.html" %}
-                        {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
-                        {% if field.errors %}
-                            <small class="text-danger">{{ field.errors }}</small>
-                        {% endif %}
-                    </div>
-                {% endwith %}
+        {% if disabled %}
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                {% url "gcampusauth:register" as register_url %}
+                {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-3" %}
+                <div>
+                    {% blocktrans trimmed with max_count=max_count register_url=register_url %}
+                        You have reached the maximum ({{ max_count }}) number
+                        of access keys.<br>
+                        If you need more access keys, consider
+                        <a class="alert-link" href="{{ register_url }}">registering a new course</a>.
+                    {% endblocktrans %}
+                </div>
             </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary" {{ disabled }}>
-                    {% trans "Generate" %}
-                </button>
-            <div>
-                {% if disabled %}
-                    {% trans "You have reached the maximum amount of accesskeys. Please register a new course to generate more accesskeys." %}
-                {% endif %}
+        {% else %}
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-3" %}
+                <div>
+                    {% blocktrans trimmed with max_count=max_count %}
+                        Please note that the number of access keys is
+                        limited to
+                        <strong>{{ max_count }} per course</strong>.
+                    {% endblocktrans %}
+                </div>
             </div>
-            </div>
-        </form>
-        <h3 class="mt-5 py-4">{% trans "Access keys" %}</h3>
+            <form method="post" class="row g-3 has-validation mt-2">
+                {% csrf_token %}
+                <div class="col-auto">
+                    {% with form.count as field %}
+                        <div>
+                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                            {% include "gcampuscore/forms/components/helptext.html" %}
+                            {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                            {% if field.errors %}
+                                <small class="text-danger">{{ field.errors }}</small>
+                            {% endif %}
+                        </div>
+                    {% endwith %}
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">
+                        {% trans "Generate" %}
+                    </button>
+                </div>
+            </form>
+        {% endif %}
+        <h3 class="mt-5 py-4">{% trans "Access keys" %} ({{ count }})</h3>
         <div class="list-group list-group-spaced">
             {% for access_key in object_list %}
                 <li class="list-group-item list-group-item-spaced d-inline-flex align-items-center"{% if access_key.deactivated %} style="opacity: 0.6;"{% endif %}>
