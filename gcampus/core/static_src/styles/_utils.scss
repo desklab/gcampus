@@ -6,23 +6,41 @@ input[type="number"].appearance-textfield {
     margin: 0;
   }
 }
-.cursor-pointer{
+
+.cursor-pointer {
   cursor: pointer;
 }
+
 .cursor-help {
   cursor: help;
 }
 
-.no-spinners::-webkit-inner-spin-button{
+.no-spinners::-webkit-inner-spin-button {
   -webkit-appearance: none !important;
 }
+
 .no-spinners[type=number] {
   -moz-appearance: textfield;
 }
+
 .hover-dark:hover {
   color: black !important;
 }
 
 .hover-secondary:hover {
   color: $secondary !important;
+}
+
+a.stretched-link:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.second {
+  position: relative;
+  z-index: 1;
 }

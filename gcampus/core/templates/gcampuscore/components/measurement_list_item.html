@@ -4,34 +4,37 @@
 {% url "gcampuscore:water-detail" pk=measurement.water.pk as water_url %}
 <div class="list-group-item list-group-item-spaced">
     <h5>
-        <a href="{{ detail_url }}" class="text-dark hover-secondary hover-dark text-decoration-none">
+        <a href="{{ detail_url }}" class="text-dark hover-secondary hover-dark text-decoration-none stretched-link">
             {% translate "Measurement" %} #{{ measurement.pk|stringformat:"05d" }}
         </a>
     </h5>
     <small class="text-secondary">
         {% if env != "water_list" %}
-            <a class="text-reset text-decoration-none hover-dark me-4" href="{{ water_url }}">
+            <a class="text-reset text-decoration-none hover-dark me-4 second" href="{{ water_url }}">
                 <span class="align-middle">
-                    <i class="me-1 cursor-help water-icon {{ measurement.water.flow_type }}" data-bs-toggle="tooltip" title="{{ measurement.water.get_flow_type_display|capfirst }}"></i>
+                    <i class="me-1 cursor-help water-icon {{ measurement.water.flow_type }}" data-bs-toggle="tooltip"
+                       title="{{ measurement.water.get_flow_type_display|capfirst }}"></i>
                     {{ measurement.water_name }}
                 </span>
             </a>
         {% endif %}
 
-        <a class="text-reset text-decoration-none hover-dark me-4"
-           href="{% url "gcampuscore:mapview" %}{% map_options_url lat=measurement.location.y|unlocalize lng=measurement.location.x|unlocalize zoom=14 %}">
+        <a class="text-reset text-decoration-none hover-dark me-4 second"
+           href="
+
+                   {% url "gcampuscore:mapview" %}{% map_options_url lat=measurement.location.y|unlocalize lng=measurement.location.x|unlocalize zoom=14 %}">
             <span>{% include "gcampuscore/icons/geo.html" %}</span>
             <span class="ms-1 align-middle">{{ measurement.location_name }}</span>
         </a>
 
         {% if measurement.name != "" %}
-            <span >{% include "gcampuscore/icons/people.html" %}</span>
+            <span>{% include "gcampuscore/icons/people.html" %}</span>
             <span class="ms-1 me-4 align-middle ">{{ measurement.name }}</span>
         {% endif %}
 
         <span data-bs-toggle="tooltip" data-bs-placement="top"
-            title="{{ measurement.time|timesince:today }}"
-            class="me-4">
+              title="{{ measurement.time|timesince:today }}"
+              class="me-4">
             <span>{% include "gcampuscore/icons/calendar4-event.html" %}</span>
             <span class="ms-1 align-middle ">{{ measurement.time|localtime|localize }}</span>
         </span>
