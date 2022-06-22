@@ -327,10 +327,13 @@ class WaterList {
      */
     mapUpdate(e) {
         let pointWidget = e.detail.widget;
-        let {lng, lat} = pointWidget.getLngLat();
+        let lngLat = pointWidget.getLngLat();
+        if (lngLat === null || lngLat === undefined) {
+            return;
+        }
+        let {lng, lat} = lngLat;
         this.lat = lat;
         this.lng = lng;
-        console.log("hello");
         this.setState({
             loading: true,
             hasDatabase: false,
@@ -482,7 +485,6 @@ class WaterList {
         });
         // Add highlight layer. This will automatically update once the
         // highlighted data source is set.
-        console.log("hello1");
         this.map.on('edit', this.mapUpdate.bind(this));
     }
 
