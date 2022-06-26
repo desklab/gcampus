@@ -8,3 +8,4 @@ myst-parser~=0.17.0
 furo~=2022.2
 pre-commit
 django-debug-toolbar~=3.2.4
+fonttools~=4.33.3
