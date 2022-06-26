@@ -1,56 +1,59 @@
 {% load static %}
 <style>
-@font-face {
-    font-family: 'JetBrains Mono';
-    src: url('{% static 'gcampusauth/fonts/JetBrainsMono-Regular.woff2' %}') format('woff'),
-        url('{% static 'gcampusauth/fonts/JetBrainsMono-Regular.ttf' %}') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'JetBrains Mono';
-    src: url('{% static 'gcampusauth/fonts/JetBrainsMono-Thin.woff2' %}') format('woff'),
-    url('{% static 'gcampusauth/fonts/JetBrainsMono-Thin.ttf' %}') format('truetype');
-    font-weight: 100;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'JetBrains Mono';
-    src: url('{% static 'gcampusauth/fonts/JetBrainsMono-ExtraLight.woff2' %}') format('woff'),
-    url('{% static 'gcampusauth/fonts/JetBrainsMono-ExtraLight.ttf' %}') format('truetype');
-    font-weight: 200;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'JetBrains Mono';
-    src: url('{% static 'gcampusauth/fonts/JetBrainsMono-Light.woff2' %}') format('woff'),
-    url('{% static 'gcampusauth/fonts/JetBrainsMono-Light.ttf' %}') format('truetype');
-    font-weight: 300;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'JetBrains Mono';
-    src: url('{% static 'gcampusauth/fonts/JetBrainsMono-Medium.woff2' %}') format('woff'),
-    url('{% static 'gcampusauth/fonts/JetBrainsMono-Medium.ttf' %}') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'JetBrains Mono';
-    src: url('{% static 'gcampusauth/fonts/JetBrainsMono-Bold.woff2' %}') format('woff'),
-    url('{% static 'gcampusauth/fonts/JetBrainsMono-Bold.ttf' %}') format('truetype');
-    font-weight: 600;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'JetBrains Mono';
-    src: url('{% static 'gcampusauth/fonts/JetBrainsMono-ExtraBold.woff2' %}') format('woff'),
-    url('{% static 'gcampusauth/fonts/JetBrainsMono-ExtraBold.ttf' %}') format('truetype');
-    font-weight: 700;
-    font-style: normal;
-}
+    @font-face {
+        font-family: 'JetBrains Mono';
+        src: url('{% static 'gcampusauth/fonts/JetBrainsMono-Medium.woff2' %}') format('woff'),
+        url('{% static 'gcampusauth/fonts/JetBrainsMono-Medium.ttf' %}') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+    {% comment %}
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('{% static 'gcampusauth/fonts/JetBrainsMono-Regular.woff2' %}') format('woff'),
+                url('{% static 'gcampusauth/fonts/JetBrainsMono-Regular.ttf' %}') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('{% static 'gcampusauth/fonts/JetBrainsMono-Thin.woff2' %}') format('woff'),
+            url('{% static 'gcampusauth/fonts/JetBrainsMono-Thin.ttf' %}') format('truetype');
+            font-weight: 100;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('{% static 'gcampusauth/fonts/JetBrainsMono-ExtraLight.woff2' %}') format('woff'),
+            url('{% static 'gcampusauth/fonts/JetBrainsMono-ExtraLight.ttf' %}') format('truetype');
+            font-weight: 200;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('{% static 'gcampusauth/fonts/JetBrainsMono-Light.woff2' %}') format('woff'),
+            url('{% static 'gcampusauth/fonts/JetBrainsMono-Light.ttf' %}') format('truetype');
+            font-weight: 300;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('{% static 'gcampusauth/fonts/JetBrainsMono-Bold.woff2' %}') format('woff'),
+            url('{% static 'gcampusauth/fonts/JetBrainsMono-Bold.ttf' %}') format('truetype');
+            font-weight: 600;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('{% static 'gcampusauth/fonts/JetBrainsMono-ExtraBold.woff2' %}') format('woff'),
+            url('{% static 'gcampusauth/fonts/JetBrainsMono-ExtraBold.ttf' %}') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+        }
+    {% endcomment %}
+
 .token-char {
-    font-weight: 500;
+    font-weight: normal;
     font-family: 'JetBrains Mono', monospace;
 }
 .token-hidden {
@@ -66,6 +69,7 @@
 }
 .token-separator {
     display: inline-block;
+    font-weight: normal;
     font-family: 'JetBrains Mono', monospace;
     width: 0.6ch;
     margin-left: 0.2ch;
@@ -77,7 +81,7 @@
 
 @media print {
     .token-char {
-        font-weight: 500;
+        font-weight: normal;
         font-family: 'JetBrains Mono', monospace;
     }
     
@@ -91,6 +95,7 @@
     
     .token-separator {
         display: inline-block;
+        font-weight: normal;
         font-family: 'JetBrains Mono', monospace;
         width: 0.08cm;
         margin-left: 0.04cm;
