@@ -1,5 +1,5 @@
 /*!
- * Copyright (C) 2021-2022 desklab gUG (haftungsbeschränkt)
+ * Copyright (C) 2022 desklab gUG (haftungsbeschränkt)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -15,20 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-.gcampus-navbar {
-  height: $gcampus-navbar-height;
-  border-bottom: solid $border-width transparentize($blue-600, 0.4);
-  margin-bottom: map-get($spacers, 2);
-}
-
-#navbar-title {
-  overflow-y: hidden;
-  overflow-x: auto;
-}
-
-main {
-  padding-top: calc(#{$gcampus-navbar-height} + #{map-get($spacers, 3)});
-  &.main-pt-0 {
-    padding-top: $gcampus-navbar-height;
-  }
-}
+//.nav-pills {
+//  $nav-pills-hover-background-color: inherit !default;
+//  --#{$prefix}nav-pills-hover-background-color: #{$nav-pills-hover-background-color};
+//
+//  .nav-link:hover,
+//  .nav-link:focus {
+//    background-color: var(--#{$prefix}nav-pills-hover-background-color) !important;
+//  }
+//}

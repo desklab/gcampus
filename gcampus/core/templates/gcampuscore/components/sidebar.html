@@ -1,15 +1,14 @@
 {% load i18n %}
-<nav class="sidebar collapse text-white bg-dark{% if sidebar_open %} show{% endif %}" id="sidebar">
+<nav class="sidebar collapse{% if sidebar_open %} show{% endif %}" id="sidebar">
     <div>
-        <div class="navbar gcampus-navbar justify-content-start flex-nowrap">
-            <button class="btn text-white d-md-inline-block d-none pt-0 " type="button" id="sidebarToggleButton" onclick="toggleSidebar()" aria-controls="sidebar">
+        <div class="navbar gcampus-navbar justify-content-start flex-nowrap px-2">
+            <button class="btn text-white d-md-inline-block d-none pt-0" type="button" id="sidebarToggleButton" onclick="toggleSidebar()" aria-controls="sidebar">
                 <span class="fs-4">{% include "gcampuscore/icons/list.html" %}</span>
             </button>
-            <a href="/" class="fs-5 btn text-white fw-bold sidebar-title p-0">
-                <span class="text-primary">Gewässer</span><span>Campus</span>
+            <a href="/" class="fs-5 btn text-white fw-bold sidebar-title gcampus-logo p-0">
+                <span>Gewässer</span><span>Campus</span>
             </a>
         </div>
-        <hr class="mt-0">
         <ul class="nav nav-pills flex-column flex-grow-1">
             {% translate "Explore" context "explore page title" as map_title %}
             {% translate "All Measurements" context "filter page title" as measurements_title %}

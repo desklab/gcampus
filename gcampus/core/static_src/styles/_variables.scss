@@ -1,17 +1,7 @@
-$white:    #fff;
-$gray-50: #f5f7fa;
-$gray-100: #f0f2f5;
-$gray-200: #e6eaed;
-$gray-300: #d5dade;
-$gray-400: #b5b9bd;
-$gray-500: #989c9e;
-$gray-600: #6d6f73;
-$gray-700: #5c5e61;
-$gray-800: #3c3d40;
-$gray-900: #1f2021;
-$black: #000000;
-
 // $primary: #679436;
+
+$prefix: gcampus-;
+
 $running-water: #0d6efd;
 $standing-water: shade-color($running-water, 60%);
 $unknown-water: #6D9DC5;
@@ -62,3 +52,29 @@ $gcampus-footer-height: 50px;
 $font-family-sans-serif: Carlito, Calibri, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
 $font-family-monospace: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
 
+$font-weight-lighter: normal !default;
+$font-weight-light: normal !default;
+$font-weight-normal: normal !default;
+$font-weight-semibold: bold !default;
+$font-weight-bold: bold !default;
+$font-weight-bolder: bold !default;
+
+$enable-caret: true;
+$enable-rounded: false;
+// $enable-shadows: false;
+$enable-gradients: false;
+$enable-transitions: true;
+$enable-reduced-motion: true;
+$enable-smooth-scroll: true;
+$enable-grid-classes: true;
+$enable-cssgrid: false;
+$enable-button-pointers: true;
+$enable-rfs: true;
+$enable-validation-icons: true;
+$enable-negative-margins: false;
+$enable-deprecation-messages: true;
+$enable-important-utilities: true;
+
+$badge-border-radius: 0;
+$alert-border-radius: 0;
+$tooltip-border-radius: 0;

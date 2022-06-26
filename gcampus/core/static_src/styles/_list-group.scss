@@ -53,7 +53,6 @@
   transition-duration: .25s;
   transition-timing-function: ease;
   padding: map-get($spacers, 3) !important;
-  border-radius: .5rem !important;
   border-width: $border-width !important;
 
   .shadow-box {
@@ -65,7 +64,6 @@
     height: 100%;
     background-color: $white;
     border: $list-group-border-width solid transparentize($list-group-border-color, 0.02);
-    border-radius: .5rem !important;
     &.shadow-box-2 {
       z-index: -200;
       top: .75rem;
@@ -80,7 +78,6 @@
   cursor: pointer;
   pointer-events: all;
   position: absolute;
-  border-radius: .5rem !important;
   top: 0;
   bottom: 0;
   left: 0;

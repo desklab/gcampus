@@ -60,6 +60,8 @@ function initMap(
     });
     let nav = new mapboxgl.NavigationControl();
     map.addControl(nav, 'top-left');
+
+    MapboxGeocoder.prototype.render
     if (hasSearch) {
         map.addControl(
             new MapboxGeocoder({
