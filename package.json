@@ -23,25 +23,25 @@
   "devDependencies": {
     "autoprefixer": "^10.3.3",
     "clean-webpack-plugin": "^4.0.0",
-    "copy-webpack-plugin": "^10.2.4",
+    "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.2.0",
     "eslint": "^8.11.0",
     "extract-loader": "^5.1.0",
     "file-loader": "^6.2.0",
     "postcss": "^8.3.6",
-    "postcss-loader": "^6.1.1",
+    "postcss-loader": "^7.0.0",
     "sass": "^1.38.2",
-    "sass-loader": "^12.1.0",
+    "sass-loader": "^13.0.1",
     "style-loader": "^3.2.1",
     "terser-webpack-plugin": "^5.2.0",
     "webpack": "^5.51.1",
     "webpack-cli": "^4.8.0",
-    "webpack-remove-empty-scripts": "^0.7.3"
+    "webpack-remove-empty-scripts": "^0.8.1"
   },
   "dependencies": {
     "@mapbox/mapbox-gl-geocoder": "^5.0.0",
     "@popperjs/core": "^2.9.3",
-    "bootstrap": "^5.1.0",
+    "bootstrap": "^5.2.0-beta1",
     "mapbox-gl": "^2.4.1",
     "chart.js": "^3.7.1",
     "chartjs-plugin-annotation": "^1.4.0"
