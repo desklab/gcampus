@@ -196,7 +196,7 @@ class ParameterType(models.Model):
 
     name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
     short_name = models.CharField(
-        blank=True, max_length=10, verbose_name=_("Short name")
+        blank=True, max_length=50, verbose_name=_("Short name")
     )
     unit = models.CharField(blank=True, max_length=10, verbose_name=_("Unit"))
 
