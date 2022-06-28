@@ -169,31 +169,34 @@
       "search_vector": "'noah':1A 'philippsburg':3A 'verwaltungsverband':2A"
     }
   },
-  {
-    "model": "gcampuscore.parametertype",
+{
+    "model": "gcampuscore.ParameterType",
     "pk": 1,
     "fields": {
-      "name": "pH - Wert",
-      "short_name": "pH",
-      "unit": ""
+      "name": "Nitrat",
+      "short_name": "NO<sub>3</sub>",
+      "unit": "mg/L",
+      "color": "854B4B"
     }
   },
   {
-    "model": "gcampuscore.parametertype",
+    "model": "gcampuscore.ParameterType",
     "pk": 2,
     "fields": {
-      "name": "Nitrat",
-      "short_name": "Ni",
-      "unit": "mg/L"
+      "name": "Nitrit",
+      "short_name": "NO<sub>2</sub>",
+      "unit": "mg/L",
+      "color": "B79219"
     }
   },
   {
-    "model": "gcampuscore.parametertype",
+    "model": "gcampuscore.ParameterType",
     "pk": 3,
     "fields": {
-      "name": "Sulfat",
-      "short_name": "Su",
-      "unit": "mg/L"
+      "name": "Phosphat",
+      "short_name": "PO<sub>4</sub>",
+      "unit": "mg/L",
+      "color": "337A9D"
     }
   },
   {
