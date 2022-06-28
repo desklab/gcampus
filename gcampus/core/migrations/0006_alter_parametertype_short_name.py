@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("gcampuscore", "0006_alter_limit_options_alter_calibration_x_max_and_more"),
+        ("gcampuscore", "0005_measurement_document_cache"),
     ]
 
     operations = [
