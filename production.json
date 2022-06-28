@@ -1,0 +1,118 @@
+[
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 1,
+    "fields": {
+      "name": "Nitrat",
+      "short_name": "NO<sub>3</sub>",
+      "unit": "mg/L",
+      "color": "854B4B"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 2,
+    "fields": {
+      "name": "Nitrit",
+      "short_name": "NO<sub>2</sub>",
+      "unit": "mg/L",
+      "color": "B79219"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 4,
+    "fields": {
+      "name": "pH-Wert",
+      "short_name": "pH",
+      "unit": "",
+      "color": "339D8F"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 5,
+    "fields": {
+      "name": "Sulfat",
+      "short_name": "SO<sub>4</sub>",
+      "unit": "mg/L",
+      "color": "337A9D"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 6,
+    "fields": {
+      "name": "Ammonium",
+      "short_name": "NH<sub>4</sub>",
+      "unit": "mg/L",
+      "color": "4B8552"
+    }
+  },
+  {
+    "model": "gcampuscore.calibration",
+    "pk": 1,
+    "fields": {
+      "name": "Ammonium",
+      "parameter_type": 6,
+      "calibration_formula": "1.110617*od",
+      "x_max": 1.6,
+      "x_min": 0.0
+    }
+  },
+  {
+    "model": "gcampuscore.calibration",
+    "pk": 2,
+    "fields": {
+      "name": "Sulfat",
+      "parameter_type": 5,
+      "calibration_formula": "250*od",
+      "x_max": 350,
+      "x_min": 0.0
+    }
+  },
+  {
+    "model": "gcampuscore.calibration",
+    "pk": 3,
+    "fields": {
+      "name": "Nitrit",
+      "parameter_type": 2,
+      "calibration_formula": "0.955748*od",
+      "x_max": 1.8,
+      "x_min": 0.0
+    }
+  },
+  {
+    "model": "gcampuscore.calibration",
+    "pk": 4,
+    "fields": {
+      "name": "Nitrat (0 - 4mg/L)",
+      "parameter_type": 1,
+      "calibration_formula": "5.405405*od",
+      "x_max": 4.0,
+      "x_min": 0.0
+    }
+  },
+  {
+    "model": "gcampuscore.calibration",
+    "pk": 5,
+    "fields": {
+      "name": "pH-Wert 4,25 - 6,25",
+      "parameter_type": 4,
+      "calibration_formula": "(od-2.9331)/(-0.4604)",
+      "x_max": 6.25,
+      "x_min": 4.25
+    }
+  },
+  {
+    "model": "gcampuscore.calibration",
+    "pk": 6,
+    "fields": {
+      "name": "pH-Wert 6 - 9",
+      "parameter_type": 4,
+      "calibration_formula": "(od+1.0958)/(0.1817)",
+      "x_max": 9.0,
+      "x_min": 6.0
+    }
+  }
+]
