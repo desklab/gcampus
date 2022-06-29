@@ -43,12 +43,24 @@ class Command(RichCommand):
         for fontpath in fonts:
             fontname = fontpath.name.split(".")[0]
             woffpath = fontpath.parent / f"{fontname}.woff2"
-            if not convert_all and woffpath.exists():
+            font = TTFont(file=str(fontpath))
+            # According to Microsoft's documentation, the second entry
+            # of the name table denotes the font family name.
+            font_family_name = str(font["name"].names[1])
+            if font_family_name == "Carlito":
+                # Correct the descent height of the Carlito font
+                font["OS/2"].sTypoDescender = -154
+                font["hhea"].descent = -154
+                font["OS/2"].usWinDescent = 165
+                # Save the TTF font to permanently write these values
+                font.save(str(fontpath))
+            elif not convert_all and woffpath.exists():
                 self.console.print(
                     f"Skip font '{fontpath.name}' as '{woffpath.name}' already exists"
                 )
                 continue
-            font = TTFont(file=str(fontpath))
+
+            # Convert font to '.woff2'
             font.flavor = "woff2"
             woff2_obj = BytesIO()
             font.save(woff2_obj)
