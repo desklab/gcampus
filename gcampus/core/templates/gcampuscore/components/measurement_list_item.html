@@ -20,12 +20,25 @@
         {% endif %}
 
         <a class="text-reset text-decoration-none hover-dark me-4 second"
-           href="
-
-                   {% url "gcampuscore:mapview" %}{% map_options_url lat=measurement.location.y|unlocalize lng=measurement.location.x|unlocalize zoom=14 %}">
+           href="{% url "gcampuscore:mapview" %}
+            {% map_options_url lat=measurement.location.y|unlocalize lng=measurement.location.x|unlocalize zoom=14 %}">
             <span>{% include "gcampuscore/icons/geo.html" %}</span>
             <span class="ms-1 align-middle">{{ measurement.location_name }}</span>
         </a>
+
+        {% if measurement.parameters.count != 0 %}
+            <a class="text-reset text-decoration-none hover-dark me-4 second" href="">
+                <span class="align-middle">
+                    {% for parameter in measurement.parameters.all %}
+                        <i class="cursor-help indicator-circle" style="background-color: #{{ parameter.parameter_type.color|lower }} !important;"
+                           data-bs-toggle="tooltip" title="{{ parameter.parameter_type.name|capfirst }}"></i>
+                    {% endfor %}
+                    <span class="ms-1">
+                        {{ measurement.parameters.count }} Parameter
+                    </span>
+                </span>
+            </a>
+        {% endif %}
 
         {% if measurement.name != "" %}
             <span>{% include "gcampuscore/icons/people.html" %}</span>

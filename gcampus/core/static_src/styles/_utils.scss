@@ -44,3 +44,11 @@ a.stretched-link:before {
   position: relative;
   z-index: 1;
 }
+
+.indicator-circle {
+  display: inline-block;
+  width: .7rem;
+  height: .7rem;
+  border-radius: 50%;
+  margin-left: -.4rem;
+}
