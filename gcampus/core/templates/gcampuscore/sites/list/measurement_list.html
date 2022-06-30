@@ -6,30 +6,41 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{% translate "Download measurement data" %}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     {% with "https://openstreetmap.org/copyright" as osm_url %}
                         {% with "https://www.mapbox.com" as mapbox_url %}
                             {% with "https://gewaessercampus.de/license" as license_url %}
                                 {% blocktranslate trimmed %}
-                                    GewässerCampus includes maps and information on water bodies and their names from
-                                    <a class="text-reset" href="{{ mapbox_url }}">Mapbox</a>
+                                    GewässerCampus includes maps and information
+                                    on water bodies and their names from
+                                    <a class="text-reset"
+                                       href="{{ mapbox_url }}">Mapbox</a>
                                     and
                                     <a class="text-reset" href="{{ osm_url }}">OpenStreetMap</a>
-                                    as well as measurement data of GewässerCampus contributors.
-                                    Make sure you respect the licenses of these datasets. More details are provided
-                                    <a class="text-reset" href="{{ license_url }}">here</a>.
+                                    as well as measurement data of
+                                    GewässerCampus contributors.
+                                    Make sure you respect the licenses of these
+                                    datasets. More details are provided
+                                    <a class="text-reset"
+                                       href="{{ license_url }}">here</a>.
                                 {% endblocktranslate %}
                             {% endwith %}
                         {% endwith %}
                     {% endwith %}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
                         {% translate "Close" %}
                     </button>
-                    <a href="{% url "gcampusdocuments:measurement-list-csv" %}{% request_params %}" class="btn btn-secondary">
+                    <a href="
+
+
+                            {% url "gcampusdocuments:measurement-list-csv" %}{% request_params %}"
+                       class="btn btn-secondary">
                         {% translate "Download data" %}
                     </a>
                 </div>
@@ -39,55 +50,66 @@
 {% endblock %}
 {% block content %}
     <div class="container-fluid">
-        <form method="GET">
-            <div class="row align-items-center">
-                <div class="col">
+        <form method="GET" class="row align-items-center">
+            <div class="col-auto">
+                <div class="input-group">
                     {% with filter.form.name as field %}
                         {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
                     {% endwith %}
+
+                    <button type="submit" class="btn btn-primary d-inline"
+                            aria-label="{% translate "Search" %}">
+                        {% include "gcampuscore/icons/search.html" %}
+                    </button>
                 </div>
-                <div class="col-auto">
-                    <button class="btn btn-secondary position-relative"
-                            type="button" data-bs-toggle="offcanvas"
-                            data-bs-target="#offcanvasFilter"
-                            aria-controls="offcanvasFilter">
-                        {% translate "Filter" %}
-                        {% if filter_status %}
-                            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-warning border border-light rounded-pill">
+            </div>
+            <div class="col-auto">
+                <small>
+                    {% blocktranslate trimmed with count=count %}
+                        Found {{ count }} measurements
+                    {% endblocktranslate %}
+                </small>
+            </div>
+            <div class="col-auto ms-auto">
+                {% if object_list %}
+                    <span title="{% translate "Download data" %}"
+                          class="d-inline-block" tabindex="0"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="bottom">
+                        <button type="button"
+                                class="btn btn-light"
+                                aria-label="{% translate "Download data" %}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#downloadModal">
+                            {% include "gcampuscore/icons/file-earmark-spreadsheet.html" %}
+                        </button>
+                    </span>
+                    <a href="{% url "gcampusdocuments:measurement-list-pdf" %}{% request_params %}"
+                       class="btn btn-light"
+                       title="{% translate "Print summary" %}"
+                       data-bs-toggle="tooltip"
+                       data-bs-placement="bottom"
+                       aria-label="{% translate "Print summary" %}">
+                        {% include "gcampuscore/icons/printer.html" %}
+                    </a>
+                {% endif %}
+                <button class="btn btn-outline-primary d-inline position-relative"
+                        type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasFilter"
+                        aria-controls="offcanvasFilter">
+                    {% translate "Filter" %}
+                    {% if filter_status %}
+                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-warning border border-light rounded-pill">
                             <span class="visually-hidden">
                                 {% translate "Additional filters applied" %}
                             </span>
                             </span>
-                        {% endif %}
-                    </button>
-
-                </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-secondary">
-                        {% translate "Search" %}
-                    </button>
-                </div>
+                    {% endif %}
+                </button>
+                {% include "gcampuscore/components/filter.html" %}
             </div>
-            {% include "gcampuscore/components/filter.html" %}
         </form>
         {% if object_list %}
-            <div class="bg-light p-3 mt-3">
-                <div class="row">
-                    <div class="col-auto d-flex align-items-center text-dark">
-                        {% blocktranslate trimmed %}
-                            Found {{ count }} measurements matching your search criteria.
-                        {% endblocktranslate %}
-                    </div>
-                    <div class="col-auto ms-auto">
-                        <button type="button" class="btn btn-sm btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#downloadModal">
-                            {% translate "Download data" %}
-                        </button>
-                        <a href="{% url "gcampusdocuments:measurement-list-pdf" %}{% request_params %}" class="btn btn-sm btn-secondary">
-                            {% translate "Print summary" %}
-                        </a>
-                    </div>
-                </div>
-            </div>
             <div class="mt-3 list-group">
                 {% for measurement in object_list %}
                     {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement edit=measurement|can_edit:request today=today %}
@@ -105,7 +127,8 @@
                         Maybe your filter settings are too restrictive.
                     {% endblocktranslate %}
                 </p>
-                <a class="btn btn-outline-dark" role="button" href="{% url "gcampuscore:measurements" %}">
+                <a class="btn btn-outline-dark" role="button"
+                   href="{% url "gcampuscore:measurements" %}">
                     {% translate "Reset filter" %}
                 </a>
             </div>
@@ -113,7 +136,8 @@
     </div>
 {% endblock content %}
 {% block extra_body %}
-    <script type="text/javascript" src="{% static 'gcampuscore/js/filter.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'gcampuscore/js/filter.js' %}"></script>
     <script type="text/javascript">
         let my_measurement_toggle = document.getElementById("{{ filter.form.my_measurements.id_for_label }}");
         let my_course_toggle = document.getElementById("{{ filter.form.my_course.id_for_label }}");
