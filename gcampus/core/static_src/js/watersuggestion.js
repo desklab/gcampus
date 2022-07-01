@@ -15,8 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const DEFAULT_COLOR = '#052c65';
-const HIGHLIGHT_COLOR = '#0d6efd';
+const rootStyle = getComputedStyle(document.documentElement);
+const DEFAULT_COLOR = rootStyle.getPropertyValue('--gcampus-unspecific-water');
+const HIGHLIGHT_COLOR = rootStyle.getPropertyValue('--gcampus-highlight-water');
 const waterSuggestionTemplate = (
     document.getElementById('waterSuggestionTemplate').text
 );
@@ -122,7 +123,7 @@ function fetchOverpassLookup(lng, lat) {
  * @returns {NodeList}
  */
 function ListItem(feature) {
-    let {display_name, display_flow_type, flow_type} = feature.properties;
+    let {display_name, display_water_type, flow_type} = feature.properties;
     let id = feature.id;
     let inputId = 'waterSuggestion' + String(id);
     let item = document.createElement('div');
@@ -138,7 +139,7 @@ function ListItem(feature) {
     label.setAttribute('data-feature-id', id);
     nameElement.innerText = display_name;
     descriptionElement.innerText = (
-        display_flow_type.charAt(0).toUpperCase() + display_flow_type.slice(1)
+        display_water_type.charAt(0).toUpperCase() + display_water_type.slice(1)
     );
     if (flow_type === 'standing' || flow_type === 'running') {
         let icon = document.createElement('i');

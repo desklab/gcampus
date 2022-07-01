@@ -71,8 +71,8 @@
     </script>
     <script>
         function loadMapFeatures(event) {
-            const DEFAULT_COLOR = '#052c65';
-
+            const rootStyle = getComputedStyle(document.documentElement);
+            const DEFAULT_COLOR = rootStyle.getPropertyValue('--gcampus-unspecific-water');
             let map = event.target;
             let sourceID = 'waterFeature';
             let layerID = 'waterLayer';
