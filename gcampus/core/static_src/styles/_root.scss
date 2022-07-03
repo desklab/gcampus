@@ -16,6 +16,7 @@
  */
 
 :root {
+  --#{$prefix}primary-light: #{$blue-400};
   --#{$prefix}unspecific-water: #{$unspecific-water};
   --#{$prefix}highlight-water: #{$highlight-water};
   --#{$prefix}standing-water: #{$standing-water};
