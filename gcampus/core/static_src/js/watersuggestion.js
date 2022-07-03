@@ -143,9 +143,7 @@ function ListItem(feature) {
     );
     if (flow_type === 'standing' || flow_type === 'running') {
         let icon = document.createElement('i');
-        icon.classList.add('water-icon');
-        icon.classList.add('me-1');
-        icon.classList.add(flow_type);
+        icon.classList.add('circle-icon', 'water-icon', 'me-1', flow_type);
         descriptionElement.insertAdjacentElement('afterbegin', icon);
     }
     return item.childNodes;

@@ -23,32 +23,7 @@ input[type="number"].appearance-textfield {
   -moz-appearance: textfield;
 }
 
-.hover-dark:hover {
-  color: black !important;
-}
-
-.hover-secondary:hover {
-  color: $secondary !important;
-}
-
-a.stretched-link:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-}
-
 .second {
   position: relative;
   z-index: 1;
-}
-
-.indicator-circle {
-  display: inline-block;
-  width: .7rem;
-  height: .7rem;
-  border-radius: 50%;
-  margin-left: -.4rem;
 }
