@@ -115,3 +115,13 @@ $theme-colors: (
   "light":      $light,
   "dark":       $dark
 );
+
+// Different water categories:
+$running-water: #5297D7;
+// $standing-water: #41B09D;
+$standing-water: $green-400;
+$unknown-water: $gray-500;
+
+// Selecting waters
+$unspecific-water: $blue-500;
+$highlight-water: $yellow-400;

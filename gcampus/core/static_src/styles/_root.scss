@@ -15,29 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-.water-icon {
-  display: inline-block;
-  width: .7rem;
-  height: .7rem;
-  border-radius: 50%;
-  background-color: $unknown-water;
-  border: $border-width solid darken($unknown-water, 5);
-
-  &.standing {
-    background-color: $standing-water;
-    border: $border-width solid darken($standing-water, 5);
-  }
-
-  &.running {
-    background-color: $running-water;
-    border: $border-width solid darken($running-water, 5);
-  }
-}
-
 :root {
-  --gcampus-standing-water: #{$standing-water};
-  --gcampus-running-water: #{$running-water};
-  --gcampus-unknown-water: #{$unknown-water};
-  --gcampus-unspecific-water: #{$unspecific-water};
-  --gcampus-highlight-water: #{$highlight-water};
+  --#{$prefix}unspecific-water: #{$unspecific-water};
+  --#{$prefix}highlight-water: #{$highlight-water};
+  --#{$prefix}standing-water: #{$standing-water};
+  --#{$prefix}running-water: #{$running-water};
+  --#{$prefix}unknown-water: #{$unknown-water};
 }

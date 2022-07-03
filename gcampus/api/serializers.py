@@ -23,7 +23,7 @@ from gcampus.core.models import Measurement, Parameter, ParameterType, Water
 class ParameterTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParameterType
-        fields = ("name", "unit")
+        fields = ("name", "short_name", "unit", "color")
 
 
 class ParameterSerializer(serializers.ModelSerializer):
@@ -58,9 +58,7 @@ class SimplifiedWaterSerializer(serializers.ModelSerializer):
 
 
 class MeasurementSerializer(GeoFeatureModelSerializer):
-    parameters = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Parameter.objects.all()
-    )
+    parameters = ParameterSerializer(many=True, read_only=True)
     water = SimplifiedWaterSerializer()
     url = serializers.SerializerMethodField(read_only=True)
     title = serializers.SerializerMethodField(read_only=True)

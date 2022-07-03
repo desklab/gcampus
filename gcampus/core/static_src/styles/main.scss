@@ -3,6 +3,7 @@
 // Custom gcampus variables
 @import "colors";
 @import "variables";
+@import "maps";
 
 // Bootstrap variables
 @import "node_modules/bootstrap/scss/variables";
@@ -52,6 +53,8 @@
 @import "utils";
 
 // Other gcampus related styles
+@import "root";
+@import "icon";
 @import "dropdown";
 @import "sidebar";
 @import "nav";
@@ -62,6 +65,5 @@
 @import "tables";
 @import "rangeslider";
 @import "histogram";
-@import "water";
 @import "footer";
 @import "map";

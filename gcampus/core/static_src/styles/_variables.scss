@@ -1,69 +1,11 @@
-// $primary: #679436;
-
 $prefix: gcampus-;
 
-$running-water: #0d6efd;
-$standing-water: shade-color($running-water, 60%);
-$unknown-water: #6D9DC5;
-$unspecific-water: #31838c;
-$highlight-water: #fd850d;
-
-$border-color: $gray-200;
-$input-border-color: $gray-300;
-
-$table-border-color: $border-color;
-$table-group-separator-color: $table-border-color;
-$table-border-width: .12rem;
-$table-head-height: 2.8rem;
-
-$table-hover-bg: $gray-100;
-$table-cell-padding-y: .8rem;
-$table-cell-padding-x: .8rem;
-
-$utilities: (
-  "appearance": (
-    property: appearance,
-    values: (
-      none: none,
-      textfield: textfield
-    )
-  ),
-  "max-width": (
-    property: max-width,
-    class: mw,
-    values: (
-      100: 100%,
-      75: 75%,
-      60: 60%,
-      50: 50%,
-    )
-  ),
-  //"min-height": (
-  //  property: min-height,
-  //  class: min-h,
-  //  values: (100: 100%)
-  //),
-);
-
-$sidebar-opened-width: 260px;
-$sidebar-closed-width: 4.5rem;
-
-$gcampus-navbar-height: 72px;
-$gcampus-footer-height: 50px;
-
-$font-family-sans-serif: Carlito, Calibri, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
-$font-family-monospace: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
-
-$font-weight-lighter: normal !default;
-$font-weight-light: normal !default;
-$font-weight-normal: normal !default;
-$font-weight-semibold: bold !default;
-$font-weight-bold: bold !default;
-$font-weight-bolder: bold !default;
-
+// ---------------------------------------------------------------------
+// Options
+// ---------------------------------------------------------------------
 $enable-caret: true;
 $enable-rounded: false;
-// $enable-shadows: false;
+$enable-shadows: false;
 $enable-gradients: false;
 $enable-transitions: true;
 $enable-reduced-motion: true;
@@ -77,6 +19,91 @@ $enable-negative-margins: false;
 $enable-deprecation-messages: true;
 $enable-important-utilities: true;
 
+// ---------------------------------------------------------------------
+// Spacing
+// ---------------------------------------------------------------------
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: $spacer * .25,
+  2: $spacer * .5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+);
+
+// ---------------------------------------------------------------------
+// Typography
+// ---------------------------------------------------------------------
+$font-family-sans-serif: Carlito, Calibri, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-family-monospace: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+$font-size-root: null;
+$font-size-base: 1rem; // Assumes the browser default, typically `16px`
+$font-size-sm: $font-size-base * .875;
+$font-size-lg: $font-size-base * 1.25;
+
+$font-weight-lighter: normal;
+$font-weight-light: normal;
+$font-weight-normal: normal;
+$font-weight-semibold: bold;
+$font-weight-bold: bold;
+$font-weight-bolder: bold;
+
+$h1-font-size: $font-size-base * 2.5;
+$h2-font-size: $font-size-base * 2;
+$h3-font-size: $font-size-base * 1.75;
+$h4-font-size: $font-size-base * 1.5;
+$h5-font-size: $font-size-base * 1.25;
+$h6-font-size: $font-size-base;
+
+$font-sizes: (
+  1: $h1-font-size,
+  2: $h2-font-size,
+  3: $h3-font-size,
+  4: $h4-font-size,
+  5: $h5-font-size,
+  6: $h6-font-size
+);
+
+$headings-margin-bottom: map-get($spacers, 2);
+$headings-font-weight: $font-weight-normal;
+$headings-line-height: 1.2;
+
+$display-font-sizes: $font-sizes;
+
+$display-font-weight: $font-weight-normal;
+
+
+// ---------------------------------------------------------------------
+// Links
+// ---------------------------------------------------------------------
+$link-color: $primary;
+
+$border-color: $gray-200;
+$input-border-color: $gray-300;
+
+$table-border-color: $border-color;
+$table-group-separator-color: $table-border-color;
+$table-border-width: .12rem;
+$table-head-height: 2.8rem;
+
+$table-hover-bg: $gray-100;
+$table-cell-padding-y: .8rem;
+$table-cell-padding-x: .8rem;
+
+$sidebar-opened-width: 260px;
+$sidebar-closed-width: 4.5rem;
+
+$gcampus-navbar-height: 72px;
+$gcampus-footer-height: 50px;
+
+
+
 $badge-border-radius: 0;
 $alert-border-radius: 0;
 $tooltip-border-radius: 0;
+
+//$btn-padding-x: 2em;
+
+$table-variants: ();
