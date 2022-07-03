@@ -1,6 +1,5 @@
 {% load i18n l10n auth_token tz map %}
 {% url "gcampuscore:measurement-detail" pk=measurement.pk as detail_url %}
-{% url "gcampuscore:edit-measurement" pk=measurement.pk as edit_url %}
 {% url "gcampuscore:water-detail" pk=measurement.water.pk as water_url %}
 <div class="list-group-item p-3 list-group-item-action">
     <h5>

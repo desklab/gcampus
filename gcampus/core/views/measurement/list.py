@@ -33,7 +33,10 @@ class MeasurementListView(TitleMixin, ListView):
     template_name = "gcampuscore/sites/list/measurement_list.html"
     model = Measurement
     queryset = (
-        Measurement.objects.select_related("water").defer("water__geometry").all()
+        Measurement.objects.prefetch_related("parameters__parameter_type")
+        .select_related("water")
+        .defer("water__geometry")
+        .all()
     )
     title = gettext_lazy("All measurements")
     context_object_name = "measurement_list"
