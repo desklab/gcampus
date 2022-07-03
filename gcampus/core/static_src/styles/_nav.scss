@@ -24,3 +24,12 @@
 //    background-color: var(--#{$prefix}nav-pills-hover-background-color) !important;
 //  }
 //}
+
+.gcampus-navbar {
+  .nav-item {
+    .nav-link.active {
+      border-bottom: solid map-get($border-widths, 3) $primary;
+    }
+  }
+}
+

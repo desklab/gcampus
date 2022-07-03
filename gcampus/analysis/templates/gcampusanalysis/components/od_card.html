@@ -22,7 +22,7 @@
             <div class="d-flex justify-content-center">
                 <div class="d-flex flex-row align-items-center mt-4">
                     <div class="square" style="background: #{{ parameter.color }};">
-                        <h1>{{ parameter.short_name }}</h1>
+                        <h1>{{ parameter.short_name|safe }}</h1>
                     </div>
                 </div>
             </div>

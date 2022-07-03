@@ -9,12 +9,15 @@
     <ul class="nav navbar-nav me-auto">
         {% trans "1. Metadata" as metadata_title %}
         {% translate "2. Measured values" as values_title %}
-        <li class="nav-item">
-            <a href="{% url "gcampuscore:edit-measurement" pk=object.pk %}" class="nav-link link-dark">{{ metadata_title }}</a>
-        </li>
-        <li class="nav-item">
-            <span class="nav-link text-dark">{{ values_title }}</span>
-        </li>
+        {% url "gcampuscore:edit-measurement" pk=object.pk as edit_url %}
+        {% include "gcampuscore/components/nav_item.html" with url=edit_url title=metadata_title view_name="gcampuscore:edit-measurement" %}
+        {% if request.resolver_match.view_name == "gcampuscore:edit-parameters" %}
+            {% url "gcampuscore:edit-parameters" pk=object.pk as parameter_url %}
+            {% include "gcampuscore/components/nav_item.html" with url=parameter_url title=values_title view_name="gcampuscore:edit-parameters" %}
+        {% else %}
+            {% url "gcampuscore:add-parameters" pk=object.pk as parameter_url %}
+            {% include "gcampuscore/components/nav_item.html" with url=parameter_url title=values_title view_name="gcampuscore:add-parameters" %}
+        {% endif %}
     </ul>
 {% endblock %}
 {% block content %}
@@ -28,30 +31,33 @@
                         {% endfor %}
                     </div>
                     {% csrf_token %}
-                    {% for field in formset.management_form  %}
+                    {% for field in formset.management_form %}
                         {% comment %}
                         This is used instead of {{ formset.management_form }}
                         to hide errors coming from the management form.
                         {% endcomment %}
                         {{ field }}
                     {% endfor %}
-                    <ol class="list-group list-group-numbered" id="id_{{ formset.prefix }}-FORM-CONTAINER">
+                    <ul class="list-group"
+                        id="id_{{ formset.prefix }}-FORM-CONTAINER">
                         {% for form in formset %}
                             {% include "gcampuscore/forms/components/parameter_form.html" with form=form show=True only %}
                         {% endfor %}
                         <div class="list-group-item text-center">
-                            <button type="button" id="id_{{ formset.prefix }}-ADD"
+                            <button type="button"
+                                    id="id_{{ formset.prefix }}-ADD"
                                     class="btn btn-primary btn-sm w-50">
                                 {% include "gcampuscore/icons/plus-lg.html" %}
                                 {% translate "Add" %}
                             </button>
                         </div>
-                    </ol>
+                    </ul>
                     <div class="mt-3 w-100 align-items-end d-flex">
                         <a href="." class="ms-auto btn btn-secondary btn-block">
                             {% translate "Discard" %}
                         </a>
-                        <button type="submit" class="ms-2 btn btn-primary btn-block">
+                        <button type="submit"
+                                class="ms-2 btn btn-primary btn-block">
                             {% translate "Save" %}
                         </button>
                     </div>

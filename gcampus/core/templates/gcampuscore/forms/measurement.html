@@ -10,14 +10,13 @@
     <ul class="nav navbar-nav me-auto">
         {% trans "1. Metadata" as metadata_title %}
         {% translate "2. Measured values" as values_title %}
-        <li class="nav-item">
-            <span class="nav-link text-dark">{{ metadata_title }}</span>
-        </li>
         {% if request.resolver_match.view_name == "gcampuscore:edit-measurement" %}
-            <li class="nav-item">
-                <a href="{% url "gcampuscore:edit-parameters" pk=object.pk %}" class="nav-link link-dark">{{ values_title }}</a>
-            </li>
+            {% url "gcampuscore:edit-measurement" pk=object.pk as edit_url %}
+            {% include "gcampuscore/components/nav_item.html" with url=edit_url title=metadata_title view_name="gcampuscore:edit-measurement" %}
+            {% url "gcampuscore:edit-parameters" pk=object.pk as parameter_url %}
+            {% include "gcampuscore/components/nav_item.html" with url=parameter_url title=values_title view_name="gcampuscore:edit-parameters" %}
         {% else %}
+            {% include "gcampuscore/components/nav_item.html" with title=metadata_title view_name="gcampuscore:add-measurement" %}
             <li class="nav-item">
                 <a class="nav-link link-dark disabled">{{ values_title }}</a>
             </li>
