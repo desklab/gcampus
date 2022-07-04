@@ -61,14 +61,14 @@
         <h3 class="mt-5 py-2">{% trans "Access keys" %} ({{ count }})</h3>
         <div class="list-group list-group-spaced">
             {% for access_key in object_list %}
-                <li class="list-group-item list-group-item-spaced d-inline-flex align-items-center"{% if access_key.deactivated %} style="opacity: 0.6;"{% endif %}>
+                <li class="list-group-item list-group-item-spaced d-inline-flex align-items-center">
                     <span class="fs-4">{% displaytoken access_key.token hidden=True toggle=True %}</span>
                     <small class="ms-3 text-muted">
                         {% if access_key.deactivated %}
-                            <span class="d-inline-block bg-danger rounded-circle" style="width: .5em; height: .5em; margin: .1em;"></span>
+                            <span class="d-inline-block bg-danger circle-icon me-1"></span>
                             {% translate "Deactivated" %}
                         {% else %}
-                            <span class="d-inline-block bg-success rounded-circle" style="width: .5em; height: .5em; margin: .1em;"></span>
+                            <span class="d-inline-block bg-success circle-icon me-1"></span>
                             {% translate "Active" %}
                         {% endif %}
                     </small>

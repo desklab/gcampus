@@ -449,7 +449,7 @@ class WaterList {
                 'line-width': [
                     'case',
                     ['boolean', ['feature-state', 'highlight'], false],
-                    5,
+                    7,
                     4,
                 ]
             },

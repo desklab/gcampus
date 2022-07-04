@@ -42,7 +42,7 @@
   input:checked + .list-group-item-spaced {
     $_border-width-padding: 2 * $border-width;
     $_padding: map-get($spacers, 3);
-    border-color: $primary;
+    border-color: $blue-500;
     border-width: 3 * $border-width !important;
     padding: calc(#{$_padding} - #{$_border-width-padding}) !important;
   }
