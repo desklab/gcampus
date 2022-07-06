@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-11 14:59+0200\n"
-"PO-Revision-Date: 2022-06-11 15:04+0200\n"
+"POT-Creation-Date: 2022-07-07 00:07+0200\n"
+"PO-Revision-Date: 2022-07-07 00:10+0200\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -67,7 +67,7 @@ msgstr "Kopieren"
 
 #: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:37
 msgid "Calibration fit for"
-msgstr "Kalibrationsfit für"
+msgstr "Kalibrierung für"
 
 #: gcampus/analysis/templates/gcampusanalysis/od_converter_detail.html:9
 #: gcampus/analysis/templates/gcampusanalysis/od_converter_overview.html:9
@@ -266,7 +266,7 @@ msgid "Course token %(id)s"
 msgstr "Kursschlüssel %(id)s"
 
 #: gcampus/auth/models/token.py:260
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:63
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:61
 #: gcampus/auth/views/course.py:107
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:123
 #: gcampus/mail/templates/gcampusmail/register/overview.html:25
@@ -322,20 +322,20 @@ msgstr ""
 "Bitte beachte, dass die Anzahl der Zugangsschlüssel auf <strong>"
 "%(max_count)s pro Kurs</strong> begrenzt ist."
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:58
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:51
 msgid "Generate"
 msgstr "Erstellen"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:71
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:69
 msgid "Deactivated"
 msgstr "Deaktiviert"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:74
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:72
 msgid "Active"
 msgstr "Aktiv"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:86
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:104
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:84
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:102
 #: gcampus/core/templates/gcampuscore/components/water_list_item.html:18
 #, python-format
 msgid "%(count)s measurement"
@@ -343,19 +343,19 @@ msgid_plural "%(count)s measurements"
 msgstr[0] "%(count)s Messung"
 msgstr[1] "%(count)s Messungen"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:116
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:114
 msgid "Last login:"
 msgstr "Letzte Anmeldung:"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:120
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:118
 msgid "never"
 msgstr "Noch nie"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:129
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:127
 msgid "Activate"
 msgstr "Aktivieren"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:131
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:129
 msgid "Deactivate"
 msgstr "Deaktivieren"
 
@@ -370,7 +370,7 @@ msgid "Course administration"
 msgstr "Kursverwaltung"
 
 #: gcampus/auth/templates/gcampusauth/components/auth_menu.html:19
-#: gcampus/core/filters.py:194
+#: gcampus/core/filters.py:191
 msgid "Your Measurements"
 msgstr "Deine Messungen"
 
@@ -503,7 +503,7 @@ msgstr "Ausstehende E-Mail Bestätigung: %(email)s"
 
 #: gcampus/auth/templates/gcampusauth/course_edit_form.html:95
 #: gcampus/core/templates/gcampuscore/components/water_custom.html:31
-#: gcampus/core/templates/gcampuscore/forms/parameters.html:56
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:62
 msgid "Save"
 msgstr "Speichern"
 
@@ -753,7 +753,7 @@ msgid "GCampus Core"
 msgstr "GewässerCampus"
 
 #: gcampus/core/filters.py:165
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:67
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:60
 msgid "Search"
 msgstr "Suchen"
 
@@ -782,17 +782,25 @@ msgstr "Parameter"
 msgid "Filter for measurements containing specific parameters."
 msgstr "Nach Messungen mit bestimmten Parameter filtern."
 
-#: gcampus/core/filters.py:189
+#: gcampus/core/filters.py:185
 msgid "Measurements by your course"
 msgstr "Messungen deines Kurses"
 
-#: gcampus/core/filters.py:190
-msgid "Display only measurements that have been conducted by my course."
-msgstr "Nur Messungen anzeigen, die von meinem Kurs durchgeführt wurden."
+#: gcampus/core/filters.py:186
+msgid "Display measurements that have been conducted by your course."
+msgstr "Messungen anzeigen, die von deinem Kurs durchgeführt wurden."
 
-#: gcampus/core/filters.py:195
-msgid "Display only measurements that have been conducted by me."
-msgstr "Nur Messungen anzeigen, die von mir durchgeführt wurden."
+#: gcampus/core/filters.py:192
+msgid "Display measurements that have been conducted by you."
+msgstr "Messungen anzeigen, die von dir durchgeführt wurden."
+
+#: gcampus/core/filters.py:196
+msgid "Other courses"
+msgstr "Andere Kurse"
+
+#: gcampus/core/filters.py:197
+msgid "Display measurements conducted by other courses."
+msgstr "Messungen anzeigen, die von anderen Kursen durchgeführt wurden."
 
 #: gcampus/core/forms/measurement.py:35
 msgid "Other"
@@ -800,7 +808,7 @@ msgstr "Sonstiges"
 
 #: gcampus/core/forms/measurement.py:36
 msgid "Note contains problematic text"
-msgstr "Notiz enthält problemtatischen Text"
+msgstr "Notiz enthält problematischen Text"
 
 #: gcampus/core/forms/measurement.py:37
 msgid "Values are problematic"
@@ -848,7 +856,7 @@ msgid "Note"
 msgstr "Notiz"
 
 #: gcampus/core/models/measurement.py:50
-#: gcampus/core/templates/gcampuscore/components/measurement_list_item.html:8
+#: gcampus/core/templates/gcampuscore/components/measurement_list_item.html:7
 msgid "Measurement"
 msgstr "Messung"
 
@@ -1168,11 +1176,11 @@ msgstr ""
 "Der Prozess wurde wegen eines Fehlers abgebrochen. Wir wurden automatisch "
 "informiert und kümmern uns so schnell wie möglich um eine Lösung."
 
-#: gcampus/core/templates/gcampuscore/base.html:82
+#: gcampus/core/templates/gcampuscore/base.html:112
 msgid "New Measurement"
 msgstr "Neue Messung"
 
-#: gcampus/core/templates/gcampuscore/base.html:87
+#: gcampus/core/templates/gcampuscore/base.html:118
 msgid "Log in"
 msgstr "Anmelden"
 
@@ -1185,7 +1193,7 @@ msgid "Apply filter"
 msgstr "Filter anwenden"
 
 #: gcampus/core/templates/gcampuscore/components/filter.html:15
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:109
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:131
 msgid "Reset filter"
 msgstr "Filter zurücksetzen"
 
@@ -1237,7 +1245,7 @@ msgstr ""
 #: gcampus/core/templates/gcampuscore/components/report_modal.html:42
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:26
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:54
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:30
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:37
 msgid "Close"
 msgstr "Schließen"
 
@@ -1265,11 +1273,11 @@ msgctxt "analysis page title"
 msgid "Analysis"
 msgstr "Auswertung"
 
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:34
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:35
 msgid "About the project"
 msgstr "Über das Projekt"
 
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:35
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:36
 msgid "Teaching material"
 msgstr "Unterrichtsmaterialien"
 
@@ -1295,29 +1303,29 @@ msgstr "1. Metadaten"
 msgid "2. Measured values"
 msgstr "2. Messwerte"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:102
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:100
 msgid "Loading ..."
 msgstr "Lädt ..."
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:109
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:107
 msgid "Water not found?"
 msgstr "Gewässer nicht gefunden?"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:112
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:110
 msgid "Search for more waters on OpenStreetMaps"
 msgstr "Suche nach weiteren Gewässern auf OpenStreetMaps"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:121
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:119
 msgid "Follow these steps to select the location and the correct water:"
 msgstr ""
 "Führe die folgenden Schritte aus, um den Ort und das Gewässer auszuwählen:"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:124
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:122
 msgid "Drop the pin (click) on the map at the place of your measurement."
 msgstr ""
 "Setze durch einen Klick auf die Karte den Pin an den Ort deiner Messung."
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:126
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:124
 msgid ""
 "Select the correct water from the list below. If your water is not shown "
 "right away, use the last option of the list to start a more detailed search "
@@ -1327,7 +1335,7 @@ msgstr ""
 "Gewässer nicht angezeigt wird, nutze die letzte Option in der Liste, um eine "
 "detaillierte Suche zu starten oder ein neues Gewässer anzulegen."
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:152
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:150
 msgid ""
 "Add more information on the environmental conditions which may be helpful to "
 "evaluate your measurement. The following questions are some examples, but "
@@ -1337,17 +1345,17 @@ msgstr ""
 "Messung hilfreich sein können. Die folgenden Fragen sind Beispiele, du "
 "kannst alles dokumentieren, was du nützlich findest."
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:159
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:157
 msgid ""
 "Did you collect your samples from the lakeside / river bank or from the "
 "center of the water?"
 msgstr "Wurde die Probe am Ufer oder in der Mitte des Gewässers entnommen?"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:160
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:158
 msgid "Which visual observations did you make during your measurement?"
 msgstr "Welche Beobachtungen hast du während der Messung gemacht?"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:167
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:165
 msgid "Save and Continue"
 msgstr "Speichern und Weiter"
 
@@ -1355,11 +1363,11 @@ msgstr "Speichern und Weiter"
 msgid "Add Parameters"
 msgstr "Parameter Hinzufügen"
 
-#: gcampus/core/templates/gcampuscore/forms/parameters.html:47
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:52
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: gcampus/core/templates/gcampuscore/forms/parameters.html:53
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:58
 msgid "Discard"
 msgstr "Verwerfen"
 
@@ -1463,7 +1471,7 @@ msgstr "Liste der Messungen"
 msgid "Download measurement data"
 msgstr "Messdaten herunterladen"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:15
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:16
 #, python-format
 msgid ""
 "GewässerCampus includes maps and information on water bodies and their names "
@@ -1480,34 +1488,35 @@ msgstr ""
 "dieser Datensätze respektieren. Mehr Details dazu findest du <a class=\"text-"
 "reset\" href=\"%(license_url)s\">hier</a>."
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:33
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:83
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:44
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:74
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:80
 msgid "Download data"
 msgstr "Daten herunterladen"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:54
-msgid "Filter"
-msgstr "Filter"
-
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:58
-msgid "Additional filters applied"
-msgstr "Weitere Filter werden angewendet"
-
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:77
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:67
 #, python-format
-msgid "Found %(count)s measurements matching your search criteria."
-msgstr ""
-"Es wurden %(count)s Messungen gefunden, die zu den Suchkriterien passen."
+msgid "Found %(count)s measurements"
+msgstr "%(count)s Messungen gefunden"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:86
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:88
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:91
 msgid "Print summary"
 msgstr "Zusammenfassung drucken"
 
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:99
+msgid "Filter"
+msgstr "Filter"
+
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:103
+msgid "Additional filters applied"
+msgstr "Weitere Filter werden angewendet"
+
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:120
 msgid "No measurements found"
 msgstr "Keine Messungen gefunden"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:102
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:123
 msgid ""
 "Unfortunately, no measurements can be found. <br> Maybe your filter settings "
 "are too restrictive."
@@ -1539,12 +1548,12 @@ msgstr ""
 msgid "Create new measurement"
 msgstr "Neue Messung erstellen"
 
-#: gcampus/core/views/measurement/__init__.py:189
+#: gcampus/core/views/measurement/__init__.py:194
 #, python-brace-format
 msgid "Edit Measurement {pk:d} - Information"
 msgstr "Messung {pk:d} bearbeiten - Information"
 
-#: gcampus/core/views/measurement/list.py:38
+#: gcampus/core/views/measurement/list.py:41
 msgid "All measurements"
 msgstr "Alle Messungen"
 
@@ -2097,6 +2106,10 @@ msgstr "Deutsch"
 #: gcampus/tasks/apps.py:24
 msgid "GCampus Tasks"
 msgstr "GCampus Aufgaben"
+
+#~ msgid "Found %(count)s measurements matching your search criteria."
+#~ msgstr ""
+#~ "Es wurden %(count)s Messungen gefunden, die zu den Suchkriterien passen."
 
 #~ msgid ""
 #~ "You can generate new access keys for this course without the need to "
