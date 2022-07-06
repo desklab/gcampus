@@ -29,16 +29,9 @@ function createMeasurementPopup(coords, map, data, template) {
         .addTo(map);
     let item = popup.getElement().querySelector('.mapboxgl-popup-content');
     let {name, time, parameters, url, water} = data.properties;
-    // let parameterCount = parameters.length;
     let waterName = water.display_name;
-    let flowType = water.flow_type;
-    let flowTypeDisplay = (
-        water.display_flow_type.charAt(0).toUpperCase()
-        + water.display_flow_type.slice(1)
-    );
     item.querySelector('a').setAttribute('href', url);
     getContentElement(item, 'waterName').innerText = waterName;
-    getContentElement(item, 'flowType').innerText = flowTypeDisplay;
     if (name === "" || name === undefined || name === null) {
         getContentElement(item, 'measurementName').parent.remove();
     } else {
@@ -47,12 +40,6 @@ function createMeasurementPopup(coords, map, data, template) {
     getContentElement(item, 'measurementTime').innerText = (
         new Date(time).toLocaleString()
     );
-    if (flowType === 'standing' || flowType === 'running') {
-        let icon = document.createElement('i');
-        icon.classList.add('circle-icon', 'water-icon', 'me-2', flowType);
-        getContentElement(item, 'waterName')
-            .insertAdjacentElement('afterbegin', icon);
-    }
     let parameterIndicators = getContentElement(item, 'parameterList');
     for (let parameter of parameters) {
         let container = document.createElement('div');
