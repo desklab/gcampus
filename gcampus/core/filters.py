@@ -22,7 +22,7 @@ from django.contrib.postgres.search import SearchQuery
 from django.contrib.sessions.exceptions import SuspiciousSession
 from django.core.validators import EMPTY_VALUES
 from django.db.models import QuerySet
-from django.forms import CheckboxSelectMultiple
+from django.forms import CheckboxSelectMultiple, BaseForm
 from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 from django_filters import (
@@ -60,16 +60,16 @@ class SplitDateTimeFilter(DateTimeFilter):
     field_class = SplitSplitDateTimeField
 
 
-class MyCourseFilter(BooleanFilter):
+class CourseFilter(BooleanFilter):
     field_class = ToggleField
 
     def filter(self, qs, value):
-        if value:
+        if not value:
             request: HttpRequest = _get_filter_request(self)
             if request is None:
                 return qs
             elif not session.is_authenticated(request):
-                raise UnauthenticatedError()
+                return qs
             else:
                 token: BaseToken = request.token
                 if not token:
@@ -78,7 +78,7 @@ class MyCourseFilter(BooleanFilter):
         return qs
 
 
-class MyMeasurementsFilter(BooleanFilter):
+class AccessKeyFilter(BooleanFilter):
     """Filter all personal measurements
 
     This filter only returns measurements that have been created with
@@ -97,14 +97,14 @@ class MyMeasurementsFilter(BooleanFilter):
         :raises UnauthenticatedError: User not authenticated
         :raises TokenPermissionError: Not an access key
         """
-        if value:
+        if not value:
             request: HttpRequest = _get_filter_request(self)
             if request is None:
                 return qs
             elif not session.is_authenticated(request):
-                raise UnauthenticatedError()
+                return qs
             elif session.get_token_type(request) is not TokenType.access_key:
-                raise TokenPermissionError()
+                return qs
             else:
                 token: AccessKey = request.token
                 if not isinstance(token, AccessKey):
@@ -178,19 +178,21 @@ class MeasurementFilterSet(FilterSet):
         label=_("Parameter"),
         help_text=_("Filter for measurements containing specific parameters."),
     )
-    # location = GeolocationFilter(
-    #    field_name="location",
-    #    lookup_expr="distance_lte",
-    #    label=_("Location"),
-    #    help_text=_("Filter by radius after selecting a location"),
-    # )
-    my_course = MyCourseFilter(
-        field_name="my_course",
+
+    same_course = CourseFilter(
+        field_name="same_course",
+        exclude=True,
         label=_("Measurements by your course"),
-        help_text=_("Display only measurements that have been conducted by my course."),
+        help_text=_("Display measurements that have been conducted by your course."),
     )
-    my_measurements = MyMeasurementsFilter(
-        field_name="my_measurements",
+    same_access_key = AccessKeyFilter(
+        field_name="same_access_key",
+        exclude=True,
         label=_("Your Measurements"),
-        help_text=_("Display only measurements that have been conducted by me."),
+        help_text=_("Display measurements that have been conducted by you."),
+    )
+    other_courses = CourseFilter(
+        field_name="other_courses",
+        label=_("Other courses"),
+        help_text=_("Display measurements conducted by other courses."),
     )

@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n params %}
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
     <div class="offcanvas-header">
         <h4 id="offcanvasFilterLabel">
@@ -11,7 +11,7 @@
             <button type="submit" class="btn btn-secondary position-relative">
                 {% translate "Apply filter" %}
             </button>
-            <a class="btn btn-secondary position-relative" role="button" href="{% url "gcampuscore:measurements" %}">
+            <a class="btn btn-secondary position-relative" role="button" href="{% measurements_url %}">
                 {% translate "Reset filter" %}
             </a>
         </div>
@@ -23,8 +23,6 @@
                     {{ field }}
                 </div>
             {% endwith %}
-
-
             {% with filter.form.parameter_types as field %}
                 <div class="mb-3">
                     {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
@@ -33,18 +31,25 @@
                 </div>
             {% endwith %}
             <div class="mb-3">
-                {% if user_token_is_access_key or user_token_is_course_token %}
-                    {% with filter.form.my_course as field %}
-                        <div class="form-check form-switch">
+                {% if authenticated %}
+                    {% with filter.form.same_course as field %}
+                        <div class="form-check">
                             {{ field }}
                             {% include "gcampuscore/forms/components/label.html" with class="form-check-label" %}
                             {% include "gcampuscore/forms/components/helptext.html" %}
                         </div>
                     {% endwith %}
-                {% endif %}
-                {% if user_token_is_access_key %}
-                    {% with filter.form.my_measurements as field %}
-                        <div class="form-check form-switch">
+                    {% if user_token_is_access_key %}
+                        {% with filter.form.same_access_key as field %}
+                            <div class="form-check">
+                                {{ field }}
+                                {% include "gcampuscore/forms/components/label.html" with class="form-check-label" %}
+                                {% include "gcampuscore/forms/components/helptext.html" %}
+                            </div>
+                        {% endwith %}
+                    {% endif %}
+                    {% with filter.form.other_courses as field %}
+                        <div class="form-check">
                             {{ field }}
                             {% include "gcampuscore/forms/components/label.html" with class="form-check-label" %}
                             {% include "gcampuscore/forms/components/helptext.html" %}

@@ -1,6 +1,8 @@
 {% load menu %}
 <li class="nav-item{% if class %} {{ class }}{% endif %}">
-    <a href="{% if view_name %}{% url view_name %}{% else %}{{ url }}{% endif %}" {% if new_tab == "true" %}target="_blank"{% endif %} class="my-1 nav-link px-4 {% active_link view_name other_view_names yesno="active," %}" {% aria_current view_name %}>
+    <a href="{% if url %}{{ url }}{% elif view_name %}{% url view_name %}{% if url_extra %}{{ url_extra }}{% endif %}{% else %}#{% endif %}"
+       {% if new_tab == "true" %}target="_blank"{% endif %}
+       class="my-1 nav-link px-4 {% active_link view_name other_view_names yesno="active," %}" {% aria_current view_name %}>
         {% if icon %}
             <span class="sidebar-item-icon">
                 {% include icon %}

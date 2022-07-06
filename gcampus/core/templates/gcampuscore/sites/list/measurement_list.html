@@ -56,7 +56,6 @@
                     {% with filter.form.name as field %}
                         {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
                     {% endwith %}
-
                     <button type="submit" class="btn btn-primary d-inline"
                             aria-label="{% translate "Search" %}">
                         {% include "gcampuscore/icons/search.html" %}
@@ -128,7 +127,7 @@
                     {% endblocktranslate %}
                 </p>
                 <a class="btn btn-outline-dark" role="button"
-                   href="{% url "gcampuscore:measurements" %}">
+                   href="{% measurements_url %}">
                     {% translate "Reset filter" %}
                 </a>
             </div>
@@ -136,36 +135,6 @@
     </div>
 {% endblock content %}
 {% block extra_body %}
-    <script type="text/javascript"
-            src="{% static 'gcampuscore/js/filter.js' %}"></script>
-    <script type="text/javascript">
-        let my_measurement_toggle = document.getElementById("{{ filter.form.my_measurements.id_for_label }}");
-        let my_course_toggle = document.getElementById("{{ filter.form.my_course.id_for_label }}");
-
-        function toggleMeasurement() {
-            if (my_measurement_toggle.checked && my_course_toggle.checked) {
-                my_course_toggle.checked = false;
-            }
-        }
-
-        function toggleCourse() {
-            if (my_measurement_toggle.checked && my_course_toggle.checked) {
-                my_measurement_toggle.checked = false;
-            }
-        }
-
-        if (my_measurement_toggle !== null) {
-            my_measurement_toggle.addEventListener('click', function () {
-                toggleMeasurement();
-            });
-        }
-        if (my_course_toggle !== null) {
-            my_course_toggle.addEventListener('click', function () {
-                toggleCourse();
-            });
-        }
-
-        gcampuscore['filter'].initRangeSlider(week_list_js);
-    </script>
+    <script type="text/javascript" src="{% static 'gcampuscore/js/filter.js' %}"></script>
 {% endblock extra_body %}
 
