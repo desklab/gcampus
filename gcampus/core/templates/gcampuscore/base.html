@@ -110,7 +110,8 @@
                         {% block navbar_other %}{% endblock %}
                         <ul class="nav navbar-nav text-nowrap flex-nowrap">
                             {% translate "New Measurement" as new_title %}
-                            {% include "gcampuscore/components/nav_item.html" with title=new_title icon="gcampuscore/icons/plus-lg.html" view_name="gcampuscore:add-measurement" %}
+                            {% url "gcampuscore:add-measurement" as new_measurement_url %}
+                            {% include "gcampuscore/components/nav_item.html" with url=new_measurement_url title=new_title icon="gcampuscore/icons/plus-lg.html" %}
                             {% if authenticated %}
                                 {% include "gcampusauth/components/auth_menu.html" %}
                             {% else %}
