@@ -58,7 +58,8 @@
     height: .7rem;
 
     .indicator-icon {
-      position: absolute;
+      position: relative;
+      top: 0;
       bottom: 0;
       z-index: 0;
 
