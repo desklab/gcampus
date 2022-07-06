@@ -2,8 +2,9 @@
     <div class='px-2 container'>
         <div class='pt-2'>
             <span class='fs-6 text-bolder' data-content-type="waterName"></span>
-            <br>
-            <span class='badge bg-light text-dark' data-content-type="flowType"></span>
+            <div class="mt-1">
+                <div class="indicator-list" data-content-type="parameterList"></div>
+            </div>
         </div>
         <hr class='py-0 my-2'>
         <div class='text-secondary'>
@@ -14,9 +15,6 @@
             <div>
                 {% include "gcampuscore/icons/calendar4-event.html" %}
                 <span class='ms-2 align-middle' data-content-type="measurementTime"></span>
-            </div>
-            <div class="mt-2">
-                <div class="indicator-list" data-content-type="parameterList"></div>
             </div>
         </div>
     </div>
