@@ -33,7 +33,7 @@ function createMeasurementPopup(coords, map, data, template) {
     item.querySelector('a').setAttribute('href', url);
     getContentElement(item, 'waterName').innerText = waterName;
     if (name === "" || name === undefined || name === null) {
-        getContentElement(item, 'measurementName').parent.remove();
+        getContentElement(item, 'measurementName').parentElement.remove();
     } else {
         getContentElement(item, 'measurementName').innerText = name;
     }
