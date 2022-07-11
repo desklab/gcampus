@@ -30,6 +30,12 @@
                             <p>{{ error }}</p>
                         {% endfor %}
                     </div>
+                    <div class="mb-3 box box-info">
+                        <div class="my-2">
+                            {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                            {% translate "Convert each optical density into the concentration of the parameter you measured and document the resulting value here. Use the note field to describe your procedure in the case you deviated from the standard protocoll." %}
+                        </div>
+                    </div>
                     {% csrf_token %}
                     {% for field in formset.management_form %}
                         {% comment %}

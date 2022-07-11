@@ -4,7 +4,7 @@
     {{ block.super }}
     {% load_mapbox_css %}
 {% endblock %}
-{% block main_class %}main-pb-0 main-pt-0{% endblock %}
+{% block main_class %}main-pb-0 bg-light main-pt-0{% endblock %}
 {% block navbar_title %}{% endblock %}
 {% block navbar_other %}
     <ul class="nav navbar-nav me-auto">
@@ -24,151 +24,149 @@
     </ul>
 {% endblock %}
 {% block content %}
-    <div class="container-fluid px-0">
-        <form method="POST" id="measurementForm" class="{% if form.errors %}has-validation{% endif %}">
-            {% csrf_token %}
-            <div class="row">
-                <div class="col-7 px-5">
-                    <div class="text-danger">
-                        {% for error in form.non_field_errors %}
-                            <p>{{ error }}</p>
-                        {% endfor %}
-                        {% for error in form.token_errors %}
-                            <p>{{ error }}</p>
-                        {% endfor %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <form method="POST" id="measurementForm" class="{% if form.errors %}has-validation{% endif %}">
+                    {% csrf_token %}
+                    <div class="px-5">
+                        <div class="text-danger">
+                            {% for error in form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                            {% for error in form.token_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
-                <div class="col-5 bg-light px-5 py-3"></div>
 
-                <div class="col-7 px-5 py-3">
-                    {# Name #}
-                    {% with form.name as field %}
-                        <div class="mb-3">
-                            <h5>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h5>
-                            {# {% include "gcampuscore/forms/components/helptext.html" %} #}
-                            {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
-                            {% if field.errors %}
-                                <small class="text-danger">{{ field.errors }}</small>
-                            {% endif %}
-                        </div>
-                    {% endwith %}
-                </div>
-                <div class="col-5 bg-light px-5 py-3">
-                    <p class="mt-4 text-muted">
-                        {{ form.name.help_text }}
-                    </p>
-                </div>
+                    <div class="px-5 py-3">
+                        {# Name #}
+                        {% with form.name as field %}
+                            <div class="mb-3">
+                                <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h4>
+                                <div class="my-2 box box-info">
+                                    {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                                    {{ form.name.help_text }}
+                                </div>
+                                {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                                {% if field.errors %}
+                                    <small class="text-danger">{{ field.errors }}</small>
+                                {% endif %}
+                            </div>
+                        {% endwith %}
+                    </div>
 
-                <div class="col-7 px-5 py-3">
-                    {# Date and time of measurement #}
-                    {% with form.time as field %}
+                    <div class="px-5 py-3">
+                        {# Date and time of measurement #}
+                        {% with form.time as field %}
+                            <div class="mb-3">
+                                <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h4>
+                                <div class="my-2 box box-info">
+                                    {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                                    {{ form.time.help_text }}
+                                </div>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <small class="text-danger">{{ field.errors }}</small>
+                                {% endif %}
+                            </div>
+                        {% endwith %}
+                    </div>
+                    <div class="px-5 py-3">
+                        {# Location (map) #}
                         <div class="mb-3">
-                            <h5>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h5>
-                            {{ field }}
-                            {% if field.errors %}
-                                <small class="text-danger">{{ field.errors }}</small>
-                            {% endif %}
-                        </div>
-                    {% endwith %}
-                </div>
-                <div class="col-5 bg-light px-5 py-3">
-                    <p class="mt-4 text-muted">
-                        {{ form.time.help_text }}
-                    </p>
-                </div>
-                <div class="col-7 px-5 py-3">
-                    {# Location (map) #}
-                    <div class="mb-3">
-                        {% with field=form.location map_height=400 %}
-                            <h5>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h5>
-                            {{ field }}
-                            {% if field.errors %}
-                                <small class="text-danger">{{ field.errors }}</small>
-                            {% endif %}
-                        {% endwith %}
-                        {% with field=form.water %}
-                            {{ field }}
-                            {% if field.errors %}
-                                <small class="text-danger">{{ form.water.errors }}</small>
-                            {% endif %}
-                        {% endwith %}
-                        <div class="list-group list-group-spaced mt-2" id="waterSuggestions">
-                            <div class="list-group-item list-group-item-spaced d-none"
-                                 id="waterLoading">
-                                <div class="spinner-border spinner-border-sm" role="status"></div>
-                                <span class="ms-2">
+                            {% with field=form.location map_height=400 %}
+                                <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-1" %}</h4>
+                                <div class="mb-3 box box-info">
+                                    <div class="my-2">
+                                        {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                                        {% translate "Follow these steps to select the location and the correct water:" %}
+                                    </div>
+                                    <ol class="mb-2 fw-light">
+                                        <li>{% translate "<b>Drop the pin (click) on the map</b> at the place of your measurement." %}</li>
+                                        <li>
+                                            {% blocktranslate trimmed %}
+                                                <b>Select the correct water from the list below.</b>
+                                                If your water is not shown right away,
+                                                use the last option of the list to start
+                                                a more detailed search or create a new one.
+                                            {% endblocktranslate %}
+                                        </li>
+                                    </ol>
+                                </div>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <small class="text-danger">{{ field.errors }}</small>
+                                {% endif %}
+                            {% endwith %}
+
+                            {% with field=form.water %}
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="my-2 box box-error">
+                                        {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                                        {{ form.water.errors }}
+                                    </div>
+                                {% endif %}
+                            {% endwith %}
+                            <div class="list-group list-group-spaced mt-2" id="waterSuggestions">
+                                <div class="list-group-item list-group-item-spaced d-none"
+                                     id="waterLoading">
+                                    <div class="spinner-border spinner-border-sm" role="status"></div>
+                                    <span class="ms-2">
                                     {% translate "Loading ..." %}
                                 </span>
+                                </div>
+                                <div class="list-group-item list-group-item-hover list-group-item-spaced cursor-pointer text-center d-none"
+                                     id="waterOsm">
+                                    <div class="shadow-box"></div>
+                                    <div class="shadow-box shadow-box-2"></div>
+                                    {% translate "Water not found?" %}
+                                    <br>
+                                    <small>
+                                        {% translate "Search for more waters on OpenStreetMaps" %}
+                                    </small>
+                                </div>
+                                {% include "gcampuscore/components/water_custom.html" with form=water_form only %}
                             </div>
-                            <div class="list-group-item list-group-item-hover list-group-item-spaced cursor-pointer text-center d-none"
-                                 id="waterOsm">
-                                <div class="shadow-box"></div>
-                                <div class="shadow-box shadow-box-2"></div>
-                                {% translate "Water not found?" %}
-                                <br>
-                                <small>
-                                    {% translate "Search for more waters on OpenStreetMaps" %}
-                                </small>
+                        </div>
+                    </div>
+
+                    <div class="px-5 py-3">
+                        {# Comment #}
+                        {% with form.comment as field %}
+                            <div class="mb-3">
+                                <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h4>
+                                <div class="mb-3 box box-info">
+                                    <div class="my-2">
+                                        {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                                        {% blocktranslate trimmed %}
+                                            Add more <b>information on the environmental conditions</b> which may be helpful
+                                            to evaluate your measurement, e.g.:
+                                        {% endblocktranslate %}
+                                    </div>
+                                    <ul class="mb-2 fw-light">
+                                        <li>{% translate "Did you collect your samples from the lakeside / river bank or from the center of the water?" %}</li>
+                                        <li>{% translate "Which visual observations did you make during your measurement?" %}</li>
+                                    </ul>
+                                </div>
+                                {% include "gcampuscore/forms/widgets/textarea.html" with widget=field.subwidgets.0.data %}
+                                {% if field.errors %}
+                                    <small class="text-danger">{{ field.errors }}</small>
+                                {% endif %}
                             </div>
-                            {% include "gcampuscore/components/water_custom.html" with form=water_form only %}
-                        </div>
+                        {% endwith %}
                     </div>
-                </div>
-                <div class="col-5 bg-light px-5 py-3 text-muted">
-                    <div class="my-2">
-                        {% translate "Follow these steps to select the location and the correct water:" %}
+                    <div class="text-end px-5 mb-5">
+                        <button class="btn btn-primary">
+                            {% translate "Save and Continue" %}
+                        </button>
                     </div>
-                    <ol class="mb-2 fw-light">
-                        <li>{% translate "Drop the pin (click) on the map at the place of your measurement." %}</li>
-                        <li>
-                            {% blocktranslate trimmed %}
-                                Select the correct water from the list below.
-                                If your water is not shown right away,
-                                use the last option of the list to start
-                                a more detailed search or create a new one.
-                            {% endblocktranslate %}
-                        </li>
-                    </ol>
-                </div>
-
-                <div class="col-7 px-5 py-3">
-                    {# Comment #}
-                    {% with form.comment as field %}
-                        <div class="mb-3">
-                            <h5>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h5>
-
-                            {% include "gcampuscore/forms/widgets/textarea.html" with widget=field.subwidgets.0.data %}
-                            {% if field.errors %}
-                                <small class="text-danger">{{ field.errors }}</small>
-                            {% endif %}
-                        </div>
-                    {% endwith %}
-                </div>
-                <div class="col-5 bg-light px-5 py-3 text-muted">
-                    <div class="mb-3 px-1">
-                        <div class="my-2">
-                            {% blocktranslate trimmed %}
-                                Add more information on the environmental conditions which may be helpful
-                                to evaluate your measurement. The following questions are some examples,
-                                but you can document anything which seems useful to you.
-                            {% endblocktranslate %}
-                        </div>
-                        <ul class="mb-2 fw-light">
-                            <li>{% translate "Did you collect your samples from the lakeside / river bank or from the center of the water?" %}</li>
-                            <li>{% translate "Which visual observations did you make during your measurement?" %}</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="col-7 px-5 pb-5">
-                    <button class="btn btn-primary btn-lg">
-                        {% translate "Save and Continue" %}
-                    </button>
-                </div>
-                <div class="col-5 bg-light px-5 py-3"></div>
+                </form>
+                <form action="{% url "gcampusapi:water-list" %}" method="post" id="customWaterForm"></form>
             </div>
-        </form>
-    <form action="{% url "gcampusapi:water-list" %}" method="post" id="customWaterForm"></form>
+        </div>
     </div>
 {% endblock %}
 {% block extra_body %}

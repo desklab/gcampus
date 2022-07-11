@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-07 00:07+0200\n"
+"POT-Creation-Date: 2022-07-11 18:23+0200\n"
 "PO-Revision-Date: 2022-07-07 00:10+0200\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -478,7 +478,7 @@ msgstr ""
 msgid "Register"
 msgstr "Registrieren"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:17
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:18
 #: gcampus/mail/templates/gcampusmail/register/overview.html:8
 msgid ""
 "With this <b>course token</b>, you can manage your course and edit your "
@@ -488,35 +488,35 @@ msgstr ""
 "Messungen deiner Schüler:innen bearbeiten. Daher sollte er nicht "
 "veröffentlicht werden."
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:26
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:27
 msgid "Course and contact data"
 msgstr "Kurs- und Kontaktdaten"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:50
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:51
 msgid "Email address verified"
 msgstr "E-Mail-Adresse verifiziert"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:57
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:58
 #, python-format
 msgid "Pending email confirmation: %(email)s"
 msgstr "Ausstehende E-Mail Bestätigung: %(email)s"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:95
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:96
 #: gcampus/core/templates/gcampuscore/components/water_custom.html:31
-#: gcampus/core/templates/gcampuscore/forms/parameters.html:62
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:68
 msgid "Save"
 msgstr "Speichern"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:99
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:100
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:191
 msgid "Documents"
 msgstr "Dokumente"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:102
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:103
 msgid "Save course overview"
 msgstr "Kursübersicht speichern"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:103
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:104
 msgid ""
 "Download a PDF with a summary of your registration data, your course token, "
 "and all access keys for the students of your course."
@@ -524,11 +524,11 @@ msgstr ""
 "Lade eine PDF Datei mit einer Übersicht deines Kurses mit deinem "
 "Kursschlüssel und einer Liste aller Zugangscodes herunter."
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:112
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:113
 msgid "Save access keys for students"
 msgstr "Zugangscodes speichern"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:113
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:114
 msgid ""
 "Download a PDF with all access keys (one key per page) of your course with "
 "instructions for your students."
@@ -1303,59 +1303,58 @@ msgstr "1. Metadaten"
 msgid "2. Measured values"
 msgstr "2. Messwerte"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:100
-msgid "Loading ..."
-msgstr "Lädt ..."
-
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:107
-msgid "Water not found?"
-msgstr "Gewässer nicht gefunden?"
-
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:110
-msgid "Search for more waters on OpenStreetMaps"
-msgstr "Suche nach weiteren Gewässern auf OpenStreetMaps"
-
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:119
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:84
 msgid "Follow these steps to select the location and the correct water:"
 msgstr ""
 "Führe die folgenden Schritte aus, um den Ort und das Gewässer auszuwählen:"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:122
-msgid "Drop the pin (click) on the map at the place of your measurement."
-msgstr ""
-"Setze durch einen Klick auf die Karte den Pin an den Ort deiner Messung."
-
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:124
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:87
 msgid ""
-"Select the correct water from the list below. If your water is not shown "
-"right away, use the last option of the list to start a more detailed search "
-"or create a new one."
+"<b>Drop the pin (click) on the map</b> at the place of your measurement."
 msgstr ""
-"Wähle das richtige Gewässer aus der Liste unter der Karte aus. Falls dein "
+"Setze durch einen <b>Klick auf die Karte</b> den Pin an den Ort deiner Messung."
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:89
+msgid ""
+"<b>Select the correct water from the list below.</b> If your water is not "
+"shown right away, use the last option of the list to start a more detailed "
+"search or create a new one."
+msgstr ""
+"<b>Wähle das richtige Gewässer aus der Liste unter der Karte aus.</b> Falls dein "
 "Gewässer nicht angezeigt wird, nutze die letzte Option in der Liste, um eine "
 "detaillierte Suche zu starten oder ein neues Gewässer anzulegen."
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:150
-msgid ""
-"Add more information on the environmental conditions which may be helpful to "
-"evaluate your measurement. The following questions are some examples, but "
-"you can document anything which seems useful to you."
-msgstr ""
-"Ergänze Information zu den Umweltbedingung, die bei der Auswertung der "
-"Messung hilfreich sein können. Die folgenden Fragen sind Beispiele, du "
-"kannst alles dokumentieren, was du nützlich findest."
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:118
+msgid "Loading ..."
+msgstr "Lädt ..."
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:157
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:125
+msgid "Water not found?"
+msgstr "Gewässer nicht gefunden?"
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:128
+msgid "Search for more waters on OpenStreetMaps"
+msgstr "Suche nach weiteren Gewässern auf OpenStreetMaps"
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:144
+msgid ""
+"Add more <b>information on the environmental conditions</b> which may be "
+"helpful to evaluate your measurement, e.g.:"
+msgstr ""
+"Ergänze <b>Informationen zu den Umweltbedingung</b>, die bei der Auswertung der "
+"Messung hilfreich sein können, z.B.:"
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:150
 msgid ""
 "Did you collect your samples from the lakeside / river bank or from the "
 "center of the water?"
 msgstr "Wurde die Probe am Ufer oder in der Mitte des Gewässers entnommen?"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:158
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:151
 msgid "Which visual observations did you make during your measurement?"
 msgstr "Welche Beobachtungen hast du während der Messung gemacht?"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:165
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:163
 msgid "Save and Continue"
 msgstr "Speichern und Weiter"
 
@@ -1363,11 +1362,21 @@ msgstr "Speichern und Weiter"
 msgid "Add Parameters"
 msgstr "Parameter Hinzufügen"
 
-#: gcampus/core/templates/gcampuscore/forms/parameters.html:52
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:36
+msgid ""
+"Convert each optical density into the concentration of the parameter you "
+"measured and document the resulting value here. Use the note field to "
+"describe your procedure in the case you deviated from the standard protocoll."
+msgstr ""
+"Rechne die gemessene optische Dichte in die Konzentration des Parameters um "
+"und gebe das Ergebnis hier ein. Nutze das Notizfeld, um dein Vorgehen zu beschreiben, "
+"falls du von der vorgeschlagenen Vorgehensweise abgewichen bist."
+
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:58
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: gcampus/core/templates/gcampuscore/forms/parameters.html:58
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:64
 msgid "Discard"
 msgstr "Verwerfen"
 

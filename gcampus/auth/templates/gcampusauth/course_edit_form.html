@@ -13,13 +13,14 @@
 {% block content %}
     <div class="container">
         <h3 class="py-4">{% trans "Course token" %}</h3>
-        <p>
+        <div class="box box-info mb-3">
+            {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
             {% blocktranslate trimmed %}
                 With this <b>course token</b>, you can manage your
                 course and edit your student's measurements. Thus,
                 this key should be kept private.
             {% endblocktranslate %}
-        </p>
+        </div>
         <h3 class="fw-normal">
             {% displaytoken user_token_instance.token css_class="bg-white" hidden=True toggle=True %}
         </h3>

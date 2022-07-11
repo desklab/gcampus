@@ -16,7 +16,7 @@
     <div class="container">
         <h3 class="py-2">{% trans "Generate new access keys" %}</h3>
         {% if disabled %}
-            <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <div class="box box-warning d-flex align-items-center py-2" role="alert">
                 {% url "gcampusauth:register" as register_url %}
                 {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-3" %}
                 <div>
