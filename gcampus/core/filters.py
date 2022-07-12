@@ -19,9 +19,8 @@ from django.conf import settings
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
 from django.contrib.postgres.search import SearchQuery
-from django.contrib.sessions.exceptions import SuspiciousSession
 from django.core.validators import EMPTY_VALUES
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
 from django.forms import CheckboxSelectMultiple, BaseForm
 from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
@@ -36,12 +35,11 @@ from django_filters import (
 )
 
 from gcampus.auth import session
-from gcampus.auth.exceptions import UnauthenticatedError, TokenPermissionError
-from gcampus.auth.models.token import TokenType, AccessKey, BaseToken
+from gcampus.auth.models.token import TokenType, BaseToken
 from gcampus.core.fields import SplitSplitDateTimeField, LocationRadiusField
 from gcampus.core.fields.datetime import HistogramDateTimeField
 from gcampus.core.fields.personal import ToggleField
-from gcampus.core.models import ParameterType, Measurement
+from gcampus.core.models import ParameterType
 from gcampus.core.models.util import EMPTY
 
 
@@ -60,56 +58,10 @@ class SplitDateTimeFilter(DateTimeFilter):
     field_class = SplitSplitDateTimeField
 
 
-class CourseFilter(BooleanFilter):
+class BooleanNoOpFilter(BooleanFilter):
     field_class = ToggleField
 
     def filter(self, qs, value):
-        if not value:
-            request: HttpRequest = _get_filter_request(self)
-            if request is None:
-                return qs
-            elif not session.is_authenticated(request):
-                return qs
-            else:
-                token: BaseToken = request.token
-                if not token:
-                    raise SuspiciousSession()
-                qs = self.get_method(qs)(token__course_id=token.course_id)
-        return qs
-
-
-class AccessKeyFilter(BooleanFilter):
-    """Filter all personal measurements
-
-    This filter only returns measurements that have been created with
-    the access key of the current user. Consequently, this filter is
-    only available to users logged in with an access key.
-    """
-
-    field_class = ToggleField
-
-    def filter(self, qs, value: bool):
-        """Apply filter
-
-        :param qs: Current query set. Previous filters might be applied
-            already.
-        :param value: Whether to filter only personal measurements
-        :raises UnauthenticatedError: User not authenticated
-        :raises TokenPermissionError: Not an access key
-        """
-        if not value:
-            request: HttpRequest = _get_filter_request(self)
-            if request is None:
-                return qs
-            elif not session.is_authenticated(request):
-                return qs
-            elif session.get_token_type(request) is not TokenType.access_key:
-                return qs
-            else:
-                token: AccessKey = request.token
-                if not isinstance(token, AccessKey):
-                    raise RuntimeError()
-                qs = self.get_method(qs)(token=token)
         return qs
 
 
@@ -160,6 +112,38 @@ class DateRange(DateFromToRangeFilter):
 
 
 class MeasurementFilterSet(FilterSet):
+    form: BaseForm
+
+    def filter_queryset(self, queryset) -> QuerySet:
+        queryset = super(MeasurementFilterSet, self).filter_queryset(queryset)
+        if self.request and session.is_authenticated(self.request):
+            token: BaseToken = self.request.token
+            same_course: bool = self.form["same_course"].data
+            other_courses: bool = self.form["other_courses"].data
+
+            if not other_courses:
+                queryset = queryset.filter(token__course_id=token.course_id)
+
+            if session.get_token_type(self.request) is TokenType.access_key:
+                same_access_key: bool = self.form["same_access_key"].data
+                if not same_access_key and not same_course:
+                    queryset = queryset.exclude(token__course_id=token.course_id)
+                elif not same_access_key and same_course:
+                    queryset = queryset.exclude(token=token)
+                if same_access_key and not same_course:
+                    queryset = queryset.filter(
+                        # same token OR NOT same course
+                        Q(token=token)
+                        | ~Q(token__course_id=token.course_id)
+                    )
+                if same_access_key and same_course:
+                    # Nothing to filter
+                    pass
+            else:
+                if not same_course:
+                    queryset = queryset.exclude(token__course_id=token.course_id)
+        return queryset
+
     name = MeasurementSearchFilter(
         field_name="search_vector",
         label=_("Search"),
@@ -179,19 +163,17 @@ class MeasurementFilterSet(FilterSet):
         help_text=_("Filter for measurements containing specific parameters."),
     )
 
-    same_course = CourseFilter(
+    same_course = BooleanNoOpFilter(
         field_name="same_course",
-        exclude=True,
         label=_("Measurements by your course"),
         help_text=_("Display measurements that have been conducted by your course."),
     )
-    same_access_key = AccessKeyFilter(
+    same_access_key = BooleanNoOpFilter(
         field_name="same_access_key",
-        exclude=True,
         label=_("Your Measurements"),
         help_text=_("Display measurements that have been conducted by you."),
     )
-    other_courses = CourseFilter(
+    other_courses = BooleanNoOpFilter(
         field_name="other_courses",
         label=_("Other courses"),
         help_text=_("Display measurements conducted by other courses."),
