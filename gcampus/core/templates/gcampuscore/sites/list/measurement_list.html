@@ -36,10 +36,7 @@
                             data-bs-dismiss="modal">
                         {% translate "Close" %}
                     </button>
-                    <a href="
-
-
-                            {% url "gcampusdocuments:measurement-list-csv" %}{% request_params %}"
+                    <a href="{% url "gcampusdocuments:measurement-list-csv" %}?{% request_params %}"
                        class="btn btn-secondary">
                         {% translate "Download data" %}
                     </a>
@@ -83,7 +80,7 @@
                             {% include "gcampuscore/icons/file-earmark-spreadsheet.html" %}
                         </button>
                     </span>
-                    <a href="{% url "gcampusdocuments:measurement-list-pdf" %}{% request_params %}"
+                    <a href="{% url "gcampusdocuments:measurement-list-pdf" %}?{% request_params %}"
                        class="btn btn-light"
                        title="{% translate "Print summary" %}"
                        data-bs-toggle="tooltip"

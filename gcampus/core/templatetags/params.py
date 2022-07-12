@@ -13,11 +13,12 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from typing import Optional
+
 from django import template
-from django.http import HttpRequest
+from django.http import HttpRequest, QueryDict
 from django.template import Context
 from django.urls import reverse
-from django.utils.encoding import iri_to_uri
 from django.utils.http import urlencode
 
 from gcampus.auth import session
@@ -27,10 +28,15 @@ register = template.Library()
 
 
 @register.simple_tag(takes_context=True)
-def request_params(context: Context) -> str:
+def request_params(context: Context, exclude: Optional[str] = None) -> str:
     request: HttpRequest = context["request"]
-    query_string = request.META.get("QUERY_STRING", "")
-    return ("?" + iri_to_uri(query_string)) if query_string else ""
+    query_dict: QueryDict = request.GET.copy()
+    if exclude is not None:
+        exclude = exclude.split(",")
+        for e in exclude:
+            if e in query_dict:
+                query_dict.pop(e)
+    return query_dict.urlencode()
 
 
 @register.simple_tag(takes_context=True)
