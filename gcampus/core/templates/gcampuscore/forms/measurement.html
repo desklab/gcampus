@@ -96,16 +96,15 @@
                                     </ol>
                                 </div>
                                 {{ field }}
-                                {% if field.errors %}
-                                    <small class="text-danger">{{ field.errors }}</small>
-                                {% endif %}
                             {% endwith %}
 
                             {% with field=form.water %}
                                 {{ field }}
-                                {% if field.errors %}
+                                {% if form.location.errors or form.water.errors %}
                                     <div class="my-2 box box-error">
                                         {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                                        <b>{% translate "Error:" %}</b>
+                                        {{ form.location.errors }}
                                         {{ form.water.errors }}
                                     </div>
                                 {% endif %}
