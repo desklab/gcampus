@@ -1826,11 +1826,11 @@ msgid ""
 "respective licenses is available online."
 msgstr ""
 "Das Projekt <span class=\"color-secondary\">Gewässer</span><span class="
-"\"color-primary\">Campus</span>stellt weitere Unterrichtsmaterialien und "
-"Informationen zur Analyse der Gewässergüte unterwww.gewaessercampus.de zur "
-"Verfügung.Dieses Dokument enthält Karten und Angaben zu Gewässern und deren "
-"Namen von Mapbox (www.mapbox.com) undOpenStreetMap (www.openstreetmap.org) "
-"sowie Messdaten von GewässerCampus-Nutzer:innen.Weitere Informationen zu den "
+"\"color-primary\">Campus</span> stellt weitere Unterrichtsmaterialien und "
+"Informationen zur Analyse der Gewässergüte unter www.gewaessercampus.de zur "
+"Verfügung. Dieses Dokument enthält Karten und Angaben zu Gewässern und deren "
+"Namen von Mapbox (www.mapbox.com) und OpenStreetMap (www.openstreetmap.org) "
+"sowie Messdaten von GewässerCampus-Nutzer:innen. Weitere Informationen zu den "
 "entsprechenden Lizenzen sind online verfügbar."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:68
@@ -1874,7 +1874,7 @@ msgstr "Zusammenfassung"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:80
 msgid "Data subset"
-msgstr "Daten Teilauszug"
+msgstr "Datensatz"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:81
 msgid "measurements"
