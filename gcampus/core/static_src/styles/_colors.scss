@@ -1,0 +1,127 @@
+/*!
+ * Copyright (C) 2022 desklab gUG (haftungsbeschränkt)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+$white: #ffffff;
+$black: #101119;
+
+$gray-900: #1f2021;
+$gray-800: #3c3d40;
+$gray-700: #5c5e61;
+$gray-600: #6d6f73;
+$gray-500: #989c9e;
+$gray-400: #b5b9bd;
+$gray-300: #d5dade;
+$gray-200: #e6eaed;
+$gray-100: #f0f2f5;
+
+$blue-900: #091728;
+$blue-800: #0d2139;
+$blue-700: #153051;
+$blue-600: #1a4579;
+$blue-500: #2760a4;
+$blue-400: #6293ce;
+$blue-300: #7cacdf;
+$blue-200: #adcbeb;
+$blue-100: #deeaf7;
+
+$green-900: #111811;
+$green-800: #213121;
+$green-700: #3a553a;
+$green-600: #4b6d4a;
+$green-500: #588157;
+$green-400: #6e9c6d;
+$green-300: #97c497;
+$green-200: #bedabe;
+$green-100: #f2f8f2;
+
+$yellow-900: #433409;
+$yellow-800: #81620e;
+$yellow-700: #a57e12;
+$yellow-600: #ca9a16;
+$yellow-500: #e8b321;
+$yellow-400: #ebbf47;
+$yellow-300: #edc55a;
+$yellow-200: #f5dd9c;
+$yellow-100: #fbf2d9;
+
+$red-900: #340910;
+$red-800: #56101a;
+$red-700: #781724;
+$red-600: #9a1d2e;
+$red-500: #bc2438;
+$red-400: #d52941;
+$red-300: #e86272;
+$red-200: #eda6b0;
+$red-100: #f8dbe0;
+
+$purple-900: #452966;
+$purple-800: #593483;
+$purple-700: #6d40a0;
+$purple-600: #8150b9;
+$purple-500: #966dc5;
+$purple-400: #ab8ad0;
+$purple-300: #c0a7dc;
+$purple-200: #d5c5e8;
+$purple-100: #eae2f3;
+
+// Primary colors
+$blue:    $blue-500;
+$green:   $green-500;
+$yellow:  $yellow-500;
+$purple:  $purple-500;
+$red:     $red-500;
+
+$colors: (
+  "blue":       $blue,
+  "purple":     $purple,
+  "red":        $red,
+  "yellow":     $yellow,
+  "green":      $green,
+  "white":      $white,
+  "gray":       $gray-600,
+  "gray-dark":  $gray-800
+);
+
+$primary:    $blue;
+$secondary:  $gray-800;
+$success:    $green;
+$info:       $purple;
+$warning:    $yellow;
+$danger:     $red;
+$light:      $gray-100;
+$dark:       $gray-900;
+
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark
+);
+
+// Different water categories:
+$running-water: #3f84c9;
+// $standing-water: #41B09D;
+$standing-water: #5ba659;
+$unknown-water: $gray-500;
+
+// Selecting waters
+$unspecific-water: $gray-600;
+$highlight-water: $yellow-400;

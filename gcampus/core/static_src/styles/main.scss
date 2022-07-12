@@ -1,22 +1,24 @@
 @import "node_modules/bootstrap/scss/functions";
 
 // Custom gcampus variables
+@import "colors";
 @import "variables";
+@import "maps";
 
 // Bootstrap variables
 @import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/maps";
 @import "node_modules/bootstrap/scss/mixins";
-@import "node_modules/bootstrap/scss/utilities";
+@import "node_modules/bootstrap/scss/root";
 
 // Layout & components
-@import "node_modules/bootstrap/scss/root";
+@import "node_modules/bootstrap/scss/utilities";
 @import "node_modules/bootstrap/scss/reboot";
 @import "node_modules/bootstrap/scss/type";
 @import "node_modules/bootstrap/scss/images";
 @import "node_modules/bootstrap/scss/containers";
 @import "node_modules/bootstrap/scss/grid";
 @import "node_modules/bootstrap/scss/tables";
-
 @import "node_modules/bootstrap/scss/forms";
 @import "node_modules/bootstrap/scss/buttons";
 @import "node_modules/bootstrap/scss/transitions";
@@ -51,8 +53,13 @@
 @import "utils";
 
 // Other gcampus related styles
+@import "type";
+@import "root";
+@import "icon";
+@import "link";
 @import "dropdown";
 @import "sidebar";
+@import "nav";
 @import "navbar";
 @import "toasts";
 @import "list-group";
@@ -60,6 +67,5 @@
 @import "tables";
 @import "rangeslider";
 @import "histogram";
-@import "water";
 @import "footer";
 @import "map";

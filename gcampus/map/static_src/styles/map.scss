@@ -15,5 +15,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@import "node_modules/bootstrap/scss/functions";
+@import "../../../core/static_src/styles/colors";
+@import "../../../core/static_src/styles/variables";
+@import "node_modules/bootstrap/scss/variables";
+
+
 @import "node_modules/mapbox-gl/dist/mapbox-gl";
 @import "node_modules/@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder";
+
+.mapboxgl-ctrl-geocoder {
+  border-radius: 0;
+  border: solid $border-color $border-width;
+  box-shadow: none !important;
+}
+
+.mapboxgl-ctrl-group {
+  border-radius: 0;
+  border: solid $border-color $border-width;
+  box-shadow: none !important;
+}

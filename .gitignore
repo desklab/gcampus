@@ -27,3 +27,6 @@ static/
 
 # Generated documentation
 /docs/_build
+
+# Affinity
+*.afdesign

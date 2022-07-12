@@ -36,6 +36,10 @@ Chart.register(
     annotationPlugin,
 );
 
+const rootStyle = getComputedStyle(document.documentElement);
+const PRIMARY_COLOR = rootStyle.getPropertyValue('--gcampus-primary');
+const PRIMARY_COLOR_LIGHT = rootStyle.getPropertyValue('--gcampus-primary-light');
+
 
 function makeArr(startValue, stopValue, cardinality) {
     var arr = [];
@@ -86,7 +90,7 @@ function createChart(pk, el, formula, title, x_label, y_label, x_max, x_min) {
             labels: x_data,
             datasets: [{
                 data: y_data,
-                borderColor: '#3e95cd',
+                borderColor: PRIMARY_COLOR,
                 fill: false
             },
             ]
@@ -130,7 +134,9 @@ function createChart(pk, el, formula, title, x_label, y_label, x_max, x_min) {
                             type: 'point',
                             xValue: 0,
                             yValue: 0,
-                            backgroundColor: 'rgba(13, 110, 253, 0.25)'
+                            backgroundColor: PRIMARY_COLOR_LIGHT,
+                            borderColor: PRIMARY_COLOR,
+                            borderWidth: '3'
                         }
                     }
                 },

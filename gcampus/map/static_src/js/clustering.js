@@ -23,40 +23,45 @@ function getContentElement(parent, contentType) {
 }
 
 function createMeasurementPopup(coords, map, data, template) {
-    let item = document.createElement('div');
-    item.innerHTML = template;
+    let popup = new mapboxgl.Popup()
+        .setLngLat(coords)
+        .setHTML(template)
+        .addTo(map);
+    let item = popup.getElement().querySelector('.mapboxgl-popup-content');
     let {name, time, parameters, url, water} = data.properties;
-    // let parameterCount = parameters.length;
     let waterName = water.display_name;
-    let flowType = water.flow_type;
-    let flowTypeDisplay = (
-        water.display_flow_type.charAt(0).toUpperCase()
-        + water.display_flow_type.slice(1)
-    );
     item.querySelector('a').setAttribute('href', url);
     getContentElement(item, 'waterName').innerText = waterName;
-    getContentElement(item, 'flowType').innerText = flowTypeDisplay;
     if (name === "" || name === undefined || name === null) {
-        getContentElement(item, 'measurementName').parent.remove();
+        getContentElement(item, 'measurementName').parentElement.remove();
     } else {
         getContentElement(item, 'measurementName').innerText = name;
     }
     getContentElement(item, 'measurementTime').innerText = (
         new Date(time).toLocaleString()
     );
-    if (flowType === 'standing' || flowType === 'running') {
+    let parameterIndicators = getContentElement(item, 'parameterList');
+    for (let parameter of parameters) {
+        let container = document.createElement('div');
+        container.classList.add('indicator-container');
         let icon = document.createElement('i');
-        icon.classList.add('water-icon');
-        icon.classList.add('me-2');
-        icon.classList.add(flowType);
-        getContentElement(item, 'waterName')
-            .insertAdjacentElement('afterbegin', icon);
+        icon.classList.add('circle-icon', 'indicator-icon');
+        icon.setAttribute(
+            'style',
+            'background-color: #'
+            + String(parameter.parameter_type.color).toLowerCase()
+            + ' !important;'
+        );
+        icon.setAttribute('title', String(parameter.parameter_type.name));
+        icon.setAttribute('data-bs-toggle', 'tooltip');
+        container.insertAdjacentElement('afterbegin', icon);
+        parameterIndicators.insertAdjacentElement('beforeend', container);
+        try {
+            new gcampuscore.main.Tooltip(icon);
+        } catch (e) {
+            console.error('Unable to call `gcampuscore.main.Tooltip`');
+        }
     }
-
-    new mapboxgl.Popup()
-        .setLngLat(coords)
-        .setHTML(item.innerHTML)
-        .addTo(map);
 }
 
 /**

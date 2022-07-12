@@ -29,6 +29,36 @@
     {# Global stylesheets #}
     <link rel="stylesheet" type="text/css"
           href="{% static 'gcampuscore/styles/main.css' %}">
+    <style>
+        @font-face {
+            font-family: 'Carlito';
+            src: url('{% static 'gcampuscore/fonts/Carlito-Regular.woff2' %}') format('woff'),
+                url('{% static 'gcampuscore/fonts/Carlito-Regular.ttf' %}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Carlito';
+            src: url('{% static 'gcampuscore/fonts/Carlito-Bold.woff2' %}') format('woff'),
+                url('{% static 'gcampuscore/fonts/Carlito-Bold.ttf' %}') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Carlito';
+            src: url('{% static 'gcampuscore/fonts/Carlito-BoldItalic.woff2' %}') format('woff'),
+                url('{% static 'gcampuscore/fonts/Carlito-BoldItalic.ttf' %}') format('truetype');
+            font-weight: bold;
+            font-style: italic;
+        }
+        @font-face {
+            font-family: 'Carlito';
+            src: url('{% static 'gcampuscore/fonts/Carlito-Italic.woff2' %}') format('woff'),
+                url('{% static 'gcampuscore/fonts/Carlito-Italic.ttf' %}') format('truetype');
+            font-weight: normal;
+            font-style: italic;
+        }
+    </style>
     {% block extra_head %}
         {% displaytoken_head %} {# Required for header #}
         {# Override this in templates to add extra stylesheets #}
@@ -80,7 +110,8 @@
                         {% block navbar_other %}{% endblock %}
                         <ul class="nav navbar-nav text-nowrap flex-nowrap">
                             {% translate "New Measurement" as new_title %}
-                            {% include "gcampuscore/components/nav_item.html" with title=new_title icon="gcampuscore/icons/plus-lg.html" view_name="gcampuscore:add-measurement" %}
+                            {% url "gcampuscore:add-measurement" as new_measurement_url %}
+                            {% include "gcampuscore/components/nav_item.html" with url=new_measurement_url title=new_title icon="gcampuscore/icons/plus-lg.html" %}
                             {% if authenticated %}
                                 {% include "gcampusauth/components/auth_menu.html" %}
                             {% else %}

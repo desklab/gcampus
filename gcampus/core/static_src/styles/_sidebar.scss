@@ -17,16 +17,33 @@
 
 $sidebar-transition: .12s;
 
+.gcampus-logo {
+  :first-child {
+    color: $blue-200;
+  }
+}
+
 .sidebar {
   @include media-breakpoint-up(md) {
     display: flex !important; // Overwrite collapse's display: none
     position: fixed;
     flex-direction: column;
     justify-content: space-between;
+    background-color: $primary;
     z-index: $zindex-offcanvas;
     top: 0;
     left: 0;
     bottom: 0;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    * {
+      --#{$prefix}nav-link-color: #{$blue-100};
+      --#{$prefix}nav-link-hover-color: #{$white};
+      --#{$prefix}nav-pills-link-active-bg: #{$blue-700};
+      --#{$prefix}nav-pills-link-active-color: #{$blue-100};
+      --#{$prefix}btn-border-width: 0;
+    }
 
     &.collapse {
       width: $sidebar-closed-width;

@@ -1,0 +1,71 @@
+/*!
+ * Copyright (C) 2022 desklab gUG (haftungsbeschränkt)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+.circle-icon {
+  display: inline-block;
+  width: .7rem;
+  height: .7rem;
+  border-radius: 50%;
+  box-shadow: inset 0px 0px 0px $border-width transparentize($black, 0.9);
+
+  &.indicator-icon {
+    margin-left: -.4rem;
+    z-index: 1000;
+
+    &:hover {
+      z-index: 1010;
+    }
+  }
+
+  &.water-icon {
+    background-color: var(--#{$prefix}unknown-water);
+
+    &.standing {
+      background-color: var(--#{$prefix}standing-water);
+    }
+
+    &.running {
+      background-color: var(--#{$prefix}running-water);
+    }
+  }
+}
+
+.indicator-list {
+  display: inline-block;
+
+  :first-child {
+    margin-left: 0 !important;
+  }
+
+  .indicator-container {
+    display: inline-block;
+    margin-left: -.4rem;
+    width: .7rem;
+    height: .7rem;
+
+    .indicator-icon {
+      position: relative;
+      top: 0;
+      bottom: 0;
+      z-index: 0;
+
+      &:hover {
+        z-index: 1;
+      }
+    }
+  }
+}

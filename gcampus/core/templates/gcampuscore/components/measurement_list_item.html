@@ -1,31 +1,49 @@
 {% load i18n l10n auth_token tz map %}
 {% url "gcampuscore:measurement-detail" pk=measurement.pk as detail_url %}
-{% url "gcampuscore:edit-measurement" pk=measurement.pk as edit_url %}
 {% url "gcampuscore:water-detail" pk=measurement.water.pk as water_url %}
-<div class="list-group-item list-group-item-spaced">
+<div class="list-group-item p-3 list-group-item-action">
     <h5>
-        <a href="{{ detail_url }}" class="text-dark hover-secondary hover-dark text-decoration-none stretched-link">
+        <a href="{{ detail_url }}" class="link-decoration-none-dark stretched-link">
             {% translate "Measurement" %} #{{ measurement.pk|stringformat:"05d" }}
         </a>
     </h5>
     <small class="text-secondary">
         {% if env != "water_list" %}
-            <a class="text-reset text-decoration-none hover-dark me-4 second" href="{{ water_url }}">
+            <a class="link-decoration-none-dark me-4 second" href="{{ water_url }}">
                 <span class="align-middle">
-                    <i class="me-1 cursor-help water-icon {{ measurement.water.flow_type }}" data-bs-toggle="tooltip"
+                    <i class="me-1 circle-icon water-icon {{ measurement.water.flow_type }}" data-bs-toggle="tooltip"
                        title="{{ measurement.water.get_flow_type_display|capfirst }}"></i>
                     {{ measurement.water_name }}
                 </span>
             </a>
         {% endif %}
 
-        <a class="text-reset text-decoration-none hover-dark me-4 second"
-           href="
-
-                   {% url "gcampuscore:mapview" %}{% map_options_url lat=measurement.location.y|unlocalize lng=measurement.location.x|unlocalize zoom=14 %}">
+        <a class="link-decoration-none-dark me-4 second"
+           href="{% url "gcampuscore:mapview" %}{% map_options_url lat=measurement.location.y|unlocalize lng=measurement.location.x|unlocalize zoom=14 %}">
             <span>{% include "gcampuscore/icons/geo.html" %}</span>
             <span class="ms-1 align-middle">{{ measurement.location_name }}</span>
         </a>
+
+        {% if measurement.parameters.count != 0 %}
+            <a class="link-decoration-none-dark me-4 second" href="{{ detail_url }}">
+                <span class="align-middle">
+                    <div class="indicator-list">
+                        {% for parameter in measurement.parameters.all %}
+                            <div class="indicator-container">
+                                <i class="circle-icon indicator-icon"
+                                   style="background-color: #{{ parameter.parameter_type.color|lower }} !important;"
+                                   data-bs-toggle="tooltip"
+                                   title="{{ parameter.parameter_type.name|capfirst }}">
+                                </i>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <span class="ms-1">
+                        {{ measurement.parameters.count }} Parameter
+                    </span>
+                </span>
+            </a>
+        {% endif %}
 
         {% if measurement.name != "" %}
             <span>{% include "gcampuscore/icons/people.html" %}</span>

@@ -1,0 +1,60 @@
+/*!
+ * Copyright (C) 2022 desklab gUG (haftungsbeschränkt)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+@each $color, $value in $theme-colors {
+  .link-decoration-none-#{$color} {
+    text-decoration: none;
+    color: $value !important;
+
+    &:hover,
+    &:focus {
+      color: if(color-contrast($value) == $color-contrast-light, lighten($value, $link-shade-percentage), darken($value, $link-shade-percentage)) !important; // stylelint-disable-line declaration-no-important
+    }
+  }
+}
+
+.hover-dark:hover {
+  color: black !important;
+}
+
+.hover-secondary:hover {
+  color: $secondary !important;
+}
+
+a.stretched-link:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.link-icon {
+  &:before {
+    content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiBjbGFzcz0iYmkgYmktYXJyb3ctcmlnaHQtY2lyY2xlLWZpbGwiIHZpZXdCb3g9IjAgMCAxNiAxNiI-PHBhdGggZD0iTTggMGE4IDggMCAxIDEgMCAxNkE4IDggMCAwIDEgOCAwek00LjUgNy41YS41LjUgMCAwIDAgMCAxaDUuNzkzbC0yLjE0NyAyLjE0NmEuNS41IDAgMCAwIC43MDguNzA4bDMtM2EuNS41IDAgMCAwIDAtLjcwOGwtMy0zYS41LjUgMCAxIDAtLjcwOC43MDhMMTAuMjkzIDcuNUg0LjV6Ii8-PC9zdmc-");
+    display: inline;
+    vertical-align: baseline;
+    opacity: 0.75;
+  }
+
+  &:hover {
+    &:before {
+      opacity: 0.65;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {% load menu %}
 <li class="nav-item">
-    <a href="{% if view_name %}{% url view_name %}{% if url_extra %}{{ url_extra }}{% endif %}{% else %}#{% endif %}"
+    <a href="{% if url %}{{ url }}{% elif view_name %}{% url view_name %}{% if url_extra %}{{ url_extra }}{% endif %}{% else %}#{% endif %}"
        class="nav-link link-dark {% active_link view_name yesno="active" %}" {% aria_current view_name %}>
         {% if icon %}
             <span class="me-1">{% include icon %}</span>

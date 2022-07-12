@@ -1,5 +1,5 @@
 /*!
- * Copyright (C) 2021-2022 desklab gUG (haftungsbeschränkt)
+ * Copyright (C) 2022 desklab gUG (haftungsbeschränkt)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -15,27 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-.water-icon {
-  display: inline-block;
-  width: .7rem;
-  height: .7rem;
-  border-radius: 50%;
-  background-color: $unknown-water;
-  border: $border-width solid darken($unknown-water, 5);
-
-  &.standing {
-    background-color: $standing-water;
-    border: $border-width solid darken($standing-water, 5);
-  }
-
-  &.running {
-    background-color: $running-water;
-    border: $border-width solid darken($running-water, 5);
-  }
-}
-
-:root {
-  --gcampus-standing-water: #{$standing-water};
-  --gcampus-running-water: #{$running-water};
-  --gcampus-unknown-water: #{$unknown-water};
-}
+// Type display classes
+//@each $display, $font-size in $display-font-sizes {
+//  .display-#{$display} {
+//    display: inline-block;
+//    @include font-size($font-size);
+//    font-weight: $display-font-weight;
+//    line-height: $display-line-height;
+//    color: $display-color;
+//    //margin: 0 calc(-1 * map-get($spacers, 2));
+//    //padding: 0 map-get($spacers, 2);
+//    background: linear-gradient(to bottom, transparent 65%, $display-background 0);
+//  }
+//}

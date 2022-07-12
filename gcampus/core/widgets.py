@@ -176,8 +176,8 @@ class ToggleInput(CheckboxInput):
         attrs = attrs or {}
         klass = "form-check-input"
         if "class" in attrs:
-            klass = f"{klass} {attrs['class']}"
-        attrs.update({"class": klass, "role": "switch"})
+            klass = " ".join([klass, attrs["class"]])
+        attrs.update({"class": klass})
         return super(ToggleInput, self).get_context(name, value, attrs)
 
 

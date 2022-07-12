@@ -203,7 +203,7 @@ OVERPASS_CACHE = 60 * 60 * 24 * 2
 MAP_SETTINGS = {
     "CENTER": (8.4430, 49.4922),
     "ZOOM": 8,
-    "STYLE": "mapbox://styles/axelschlindwein/ckq9e6o4k06fn17o70d7j7l65?optimize=true",
+    "STYLE": "mapbox://styles/axelschlindwein/cl4odlfc5000p14mrdd9ucxu4?optimize=true",
     "MAPBOX_ACCESS_TOKEN": get_env_read_file("MAPBOX_ACCESS_TOKEN"),
 }
 

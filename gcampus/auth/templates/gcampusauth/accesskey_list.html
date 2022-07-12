@@ -14,9 +14,9 @@
 {% block main_class %}bg-light min-vh-100{% endblock %}
 {% block content %}
     <div class="container">
-        <h3 class="py-4">{% trans "Generate new access keys" %}</h3>
+        <h3 class="py-2">{% trans "Generate new access keys" %}</h3>
         {% if disabled %}
-            <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <div class="box box-warning d-flex align-items-center py-2" role="alert">
                 {% url "gcampusauth:register" as register_url %}
                 {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-3" %}
                 <div>
@@ -29,48 +29,46 @@
                 </div>
             </div>
         {% else %}
-            <div class="alert alert-warning d-flex align-items-center" role="alert">
-                {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-3" %}
-                <div>
+            <div class="text-dark d-flex align-items-center mb-2" role="alert">
+                {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-2" %}
+                <span>
                     {% blocktrans trimmed with max_count=max_count %}
                         Please note that the number of access keys is
                         limited to
                         <strong>{{ max_count }} per course</strong>.
                     {% endblocktrans %}
-                </div>
+                </span>
             </div>
-            <form method="post" class="row g-3 has-validation mt-2">
+            <form method="post" class="row row-cols-lg-auto has-validation align-items-center">
                 {% csrf_token %}
-                <div class="col-auto">
-                    {% with form.count as field %}
-                        <div>
-                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                            {% include "gcampuscore/forms/components/helptext.html" %}
-                            {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
-                            {% if field.errors %}
-                                <small class="text-danger">{{ field.errors }}</small>
-                            {% endif %}
-                        </div>
-                    {% endwith %}
-                </div>
                 <div class="col-12">
-                    <button type="submit" class="btn btn-primary">
-                        {% trans "Generate" %}
-                    </button>
+                    {% with form.count as field %}
+                        {% include "gcampuscore/forms/components/label.html" %}
+                        {% include "gcampuscore/forms/components/helptext.html" %}
+                        <div class="input-group">
+                            {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                            <button type="submit" class="btn d-inline btn-primary">
+                                {% trans "Generate" %}
+                            </button>
+                        </div>
+                        {% if field.errors %}
+                            <small class="text-danger">{{ field.errors }}</small>
+                        {% endif %}
+                    {% endwith %}
                 </div>
             </form>
         {% endif %}
-        <h3 class="mt-5 py-4">{% trans "Access keys" %} ({{ count }})</h3>
+        <h3 class="mt-5 py-2">{% trans "Access keys" %} ({{ count }})</h3>
         <div class="list-group list-group-spaced">
             {% for access_key in object_list %}
-                <li class="list-group-item list-group-item-spaced d-inline-flex align-items-center"{% if access_key.deactivated %} style="opacity: 0.6;"{% endif %}>
+                <li class="list-group-item list-group-item-spaced d-inline-flex align-items-center">
                     <span class="fs-4">{% displaytoken access_key.token hidden=True toggle=True %}</span>
                     <small class="ms-3 text-muted">
                         {% if access_key.deactivated %}
-                            <span class="d-inline-block bg-danger rounded-circle" style="width: .5em; height: .5em; margin: .1em;"></span>
+                            <span class="d-inline-block bg-danger circle-icon me-1"></span>
                             {% translate "Deactivated" %}
                         {% else %}
-                            <span class="d-inline-block bg-success rounded-circle" style="width: .5em; height: .5em; margin: .1em;"></span>
+                            <span class="d-inline-block bg-success circle-icon me-1"></span>
                             {% translate "Active" %}
                         {% endif %}
                     </small>

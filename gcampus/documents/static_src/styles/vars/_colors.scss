@@ -1,22 +1,72 @@
-$primary: #4a90e2;
-$secondary: #083973;
-
-$black: #000000;
 $white: #ffffff;
+$black: #101119;
 
-$grey-900: #1f1f1f;
-$grey-800: #404040;
-$grey-700: #5f5f5f;
-$grey-600: #737373;
-$grey-500: #9c9c9c;
-$grey-400: #bbbbbb;
-$grey-300: #dedede;
-$grey-200: #ededed;
-$grey-100: #f4f4f4;
-$grey-50: #fafafa;
+$grey-900: #1f2021;
+$grey-800: #3c3d40;
+$grey-700: #5c5e61;
+$grey-600: #6d6f73;
+$grey-500: #989c9e;
+$grey-400: #b5b9bd;
+$grey-300: #d5dade;
+$grey-200: #e6eaed;
+$grey-100: #f0f2f5;
 
-$nice-light-blue: #dfe7ec;
+$blue-900: #091728;
+$blue-800: #0d2139;
+$blue-700: #153051;
+$blue-600: #1a4579;
+$blue-500: #2760a4;
+$blue-400: #6293ce;
+$blue-300: #7cacdf;
+$blue-200: #adcbeb;
+$blue-100: #deeaf7;
 
-$running-water: #0d6efd;
-$standing-water: shade-color($running-water, 60%);
-$unknown-water: #6D9DC5;
+$green-900: #111811;
+$green-800: #213121;
+$green-700: #3a553a;
+$green-600: #4b6d4a;
+$green-500: #588157;
+$green-400: #6e9c6d;
+$green-300: #97c497;
+$green-200: #bedabe;
+$green-100: #f2f8f2;
+
+$yellow-900: #433409;
+$yellow-800: #81620e;
+$yellow-700: #a57e12;
+$yellow-600: #ca9a16;
+$yellow-500: #e8b321;
+$yellow-400: #ebbf47;
+$yellow-300: #edc55a;
+$yellow-200: #f5dd9c;
+$yellow-100: #fbf2d9;
+
+$red-900: #340910;
+$red-800: #56101a;
+$red-700: #781724;
+$red-600: #9a1d2e;
+$red-500: #bc2438;
+$red-400: #d52941;
+$red-300: #e86272;
+$red-200: #eda6b0;
+$red-100: #f8dbe0;
+
+$blue:    $blue-500;
+$green:   $green-500;
+$yellow:  $yellow-500;
+$red:     $red-500;
+
+$primary:    $blue;
+$secondary:  $grey-800;
+$success:    $green;
+$warning:    $yellow;
+$danger:     $red;
+$light:      $grey-100;
+$dark:       $grey-900;
+
+$running-water: #3f84c9;
+$standing-water: #5ba659;
+$unknown-water: $grey-500;
+
+$unspecific-water: $grey-600;
+$highlight-water: $yellow-400;

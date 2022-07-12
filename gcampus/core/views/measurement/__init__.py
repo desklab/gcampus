@@ -182,6 +182,11 @@ class MeasurementEditView(TitleMixin, UpdateView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        if "water_form" not in kwargs:
+            kwargs["water_form"] = WaterForm()
+        return super(MeasurementEditView, self).get_context_data(**kwargs)
+
     def get_success_url(self):
         return reverse(self.next_view_name, kwargs={"pk": self.object.pk})
 

@@ -17,6 +17,8 @@
 
 .gcampus-navbar {
   height: $gcampus-navbar-height;
+  border-bottom: solid $border-width transparentize($blue-600, 0.4);
+  margin-bottom: map-get($spacers, 2);
 }
 
 #navbar-title {

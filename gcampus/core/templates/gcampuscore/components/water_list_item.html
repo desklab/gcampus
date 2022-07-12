@@ -1,6 +1,6 @@
 {% load i18n l10n auth_token tz map %}
 {% url "gcampuscore:water-detail" pk=water.pk as detail_url %}
-<div class="list-group-item list-group-item-spaced">
+<div class="list-group-item list-group-item-action p-3">
     <h5>
         <a href="{{ detail_url }}" class="text-dark hover-secondary hover-dark text-decoration-none">
             {{ water }}
@@ -9,7 +9,7 @@
     <small class="text-secondary">
         {# TODO: add more information for each water #}
         <span class="align-middle">
-            <i class="me-1 cursor-help water-icon {{ water.flow_type }}" data-bs-toggle="tooltip" title="{{ measurement.water.get_flow_type_display|capfirst }}"></i>
+            <i class="me-1 circle-icon water-icon {{ water.flow_type }}" data-bs-toggle="tooltip" title="{{ measurement.water.get_flow_type_display|capfirst }}"></i>
             {{ water.get_water_type_display|capfirst }}
         </span>
 

@@ -88,7 +88,7 @@
                     <div class="w-abs-800 float-left">
                         <div class ="w-abs-800 h-abs-600">
                             {% get_map_settings 'MAPBOX_BACKEND_ACCESS_TOKEN' as mapbox_access_token %}
-                            <img src="https://api.mapbox.com/styles/v1/axelschlindwein/ckq9e6o4k06fn17o70d7j7l65/static/{{ map_overlay }}/[{{ bbox_long_min|unlocalize }},{{ bbox_lat_min|unlocalize }},{{ bbox_long_max|unlocalize }},{{ bbox_lat_max|unlocalize }}]/800x600?padding=50&access_token={{ mapbox_access_token }}" alt="Map image">
+                            <img src="https://api.mapbox.com/styles/v1/axelschlindwein/cl4odlfc5000p14mrdd9ucxu4/static/{{ map_overlay }}/[{{ bbox_long_min|unlocalize }},{{ bbox_lat_min|unlocalize }},{{ bbox_long_max|unlocalize }},{{ bbox_lat_max|unlocalize }}]/800x600?padding=50&access_token={{ mapbox_access_token }}" alt="Map image">
                         </div>
                     </div>
                 </div>
@@ -121,7 +121,7 @@
                             <span class="measurementdata-id">
                                 # {{ measurement.pk|stringformat:"05d" }}
                             </span>
-                            <i class="water-icon {{ measurement.water.flow_type }}"></i>
+                            <i class="circle-icon water-icon {{ measurement.water.flow_type }}"></i>
                             <span>
                                 {{ measurement.water_name }} ({{ measurement.time|date:"Y-m-d" }})
                             </span>

@@ -17,6 +17,8 @@
 
 import mapboxgl from '!mapbox-gl';
 
+
+
 class MapboxGLPointWidget {
     TYPE = 'Point';
     _map;
@@ -26,8 +28,13 @@ class MapboxGLPointWidget {
     _value;  // GeoJSON object that will be stringified later
 
     constructor(map, input) {
+        let rootStyle = getComputedStyle(document.documentElement);
+        const primaryColor = rootStyle.getPropertyValue('--gcampus-primary');
         this._map = map;
-        this._marker = new mapboxgl.Marker({draggable: true});
+        this._marker = new mapboxgl.Marker({
+            draggable: true,
+            color: primaryColor
+        });
         this._markerAdded = false;
         this._input = input;
 

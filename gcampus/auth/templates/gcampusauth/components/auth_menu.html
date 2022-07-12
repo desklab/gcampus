@@ -1,4 +1,4 @@
-{% load i18n auth_token %}
+{% load i18n auth_token params %}
 <li class="nav-item dropdown ms-4">
     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
        role="button"
@@ -8,7 +8,7 @@
     <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="navbarDropdownMenuLink">
         {% if user_token_is_course_token %}
             <li><a class="dropdown-item"
-                   href="{% url "gcampuscore:measurements" %}?my_course=on">{% translate "Course Measurements" %}</a>
+                   href="{% measurements_url other_courses=False %}">{% translate "Course Measurements" %}</a>
             </li>
             <li>
                 <a class="dropdown-item"
@@ -16,11 +16,11 @@
             </li>
         {% else %}
             <li><a class="dropdown-item"
-                   href="{% url "gcampuscore:measurements" %}?my_measurements=on">{% translate "Your Measurements" %}</a>
+                   href="{% measurements_url other_courses=False same_course=False %}">{% translate "Your Measurements" %}</a>
             </li>
             <li>
                 <a class="dropdown-item"
-                   href="{% url "gcampuscore:measurements" %}?my_course=on">{% translate "Course Measurements" %}</a>
+                   href="{% measurements_url other_courses=False %}">{% translate "Course Measurements" %}</a>
             </li>
         {% endif %}
         <li><hr class="dropdown-divider"></li>
