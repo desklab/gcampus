@@ -29,7 +29,7 @@ class WaterListView(TitleMixin, ListView):
     template_name = "gcampuscore/sites/list/water_list.html"
     model = Water
     queryset = (
-        Water.objects.filter(measurements__isnull=False)
+        Water.objects.filter(measurements__isnull=False, measurements__hidden=False)
         .distinct()
         .annotate(measurement_count=Count("measurements"))
         .defer("geometry")
