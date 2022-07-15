@@ -86,7 +86,7 @@
     "model": "gcampuscore.calibration",
     "pk": 4,
     "fields": {
-      "name": "Nitrat (0 - 4mg/L)",
+      "name": "Nitrat (0 - 4 mg/L)",
       "parameter_type": 1,
       "calibration_formula": "5.405405*od",
       "x_max": 4.0,
@@ -97,6 +97,17 @@
     "model": "gcampuscore.calibration",
     "pk": 5,
     "fields": {
+      "name": "Nitrat (0 - 50 mg/L)",
+      "parameter_type": 1,
+      "calibration_formula": "68.027210*od",
+      "x_max": 50.0,
+      "x_min": 0.0
+    }
+  },
+  {
+    "model": "gcampuscore.calibration",
+    "pk": 6,
+    "fields": {
       "name": "pH-Wert 4,25 - 6,25",
       "parameter_type": 4,
       "calibration_formula": "(od-2.9331)/(-0.4604)",
@@ -106,7 +117,7 @@
   },
   {
     "model": "gcampuscore.calibration",
-    "pk": 6,
+    "pk": 7,
     "fields": {
       "name": "pH-Wert 6 - 9",
       "parameter_type": 4,
