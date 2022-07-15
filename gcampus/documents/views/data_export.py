@@ -13,12 +13,13 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__all__ = ["CSVListView"]
+__all__ = ["DataExportView", "CSVExportView", "XLSXExportView"]
 
 import csv
 from io import StringIO
 from typing import Tuple, Optional, Iterator
 
+import xlsx_streaming
 from django.db.models import QuerySet
 from django.http import StreamingHttpResponse
 from django.utils.translation import gettext_lazy as _
@@ -30,21 +31,13 @@ from gcampus.core.models import Water
 from gcampus.core.models.measurement import Measurement, ParameterType
 
 
-class CSVListView(MultipleObjectMixin, View):
-    model = Measurement
-    queryset = Measurement.objects.all()
-    ordering: Tuple[str, ...] = ("pk",)
-    parameter_types: Tuple[str, ...]
-    values: QuerySet
-    response_class = StreamingHttpResponse
-    content_type: str = "text/csv"
-
+class DataExportView(MultipleObjectMixin, View):
     def get(self, request):
         self.parameter_types: Tuple[str, ...] = tuple(
             ParameterType.objects.values_list("name", flat=True).order_by("pk")
         )
         self.values = self.get_queryset()
-        return self.render_to_response(_("measurements.csv"))
+        return self.render_to_response(_(f"measurements.{self.file_ending}"))
 
     def render_to_response(self, filename, **response_kwargs):
         response_kwargs.setdefault("content_type", self.content_type)
@@ -54,30 +47,17 @@ class CSVListView(MultipleObjectMixin, View):
             **response_kwargs,
         )
 
-    def _stream(self):
-        with StringIO() as buffer:
-            writer = csv.DictWriter(
-                buffer,
-                delimiter=",",
-                quoting=csv.QUOTE_ALL,
-                fieldnames=self.get_headers(),
-            )
-            writer.writeheader()
-            for row in self.get_rows():
-                writer.writerow(row)  # write the row to the buffer
-                buffer.seek(0)  # reset buffer to beginning
-                yield buffer.read()
-                # Again, reset buffer to beginning and delete its
-                # content.
-                buffer.seek(0)
-                buffer.truncate()
-
     def get_rows(self) -> Iterator[dict]:
+        if self.file_ending == "xlsx":
+            yield self.get_headers()
         current: Optional[dict] = None
         for measurement in self.values:
             measurement = self._replace_nones_with_str(measurement)
             if current is not None and current["id"] != measurement["pk"]:
-                yield current
+                if self.file_ending == "xlsx":
+                    yield current.values()
+                else:
+                    yield current
                 current = None
             if current is None:
                 water_name = Water.get_water_name(
@@ -95,7 +75,10 @@ class CSVListView(MultipleObjectMixin, View):
             if parameter_value != "":
                 parameter_name = measurement["parameters__parameter_type__name"]
                 current[parameter_name] = parameter_value
-        yield current
+        if self.file_ending == "xlsx":
+            yield current.values()
+        else:
+            yield current
 
     def get_headers(self) -> Tuple[str, ...]:
         headers = ("id", "name", "location_name", "water_name", "time")
@@ -130,3 +113,47 @@ class CSVListView(MultipleObjectMixin, View):
         return {
             key: ("" if value is None else value) for key, value in some_dict.items()
         }
+
+
+class CSVExportView(DataExportView):
+    model = Measurement
+    queryset = Measurement.objects.all()
+    ordering: Tuple[str, ...] = ("pk",)
+    parameter_types: Tuple[str, ...]
+    values: QuerySet
+    response_class = StreamingHttpResponse
+    content_type: str = "text/csv"
+    file_ending = "csv"
+
+    def _stream(self):
+        with StringIO() as buffer:
+            writer = csv.DictWriter(
+                buffer,
+                delimiter=",",
+                quoting=csv.QUOTE_ALL,
+                fieldnames=self.get_headers(),
+            )
+            writer.writeheader()
+            for row in self.get_rows():
+                writer.writerow(row)  # write the row to the buffer
+                buffer.seek(0)  # reset buffer to beginning
+                yield buffer.read()
+                # Again, reset buffer to beginning and delete its
+                # content.
+                buffer.seek(0)
+                buffer.truncate()
+
+
+class XLSXExportView(DataExportView):
+    model = Measurement
+    queryset = Measurement.objects.all()
+    ordering: Tuple[str, ...] = ("pk",)
+    parameter_types: Tuple[str, ...]
+    values: QuerySet
+    response_class = StreamingHttpResponse
+    content_type: str = "application/vnd.xlsxformats-officedocument.spreadsheetml.sheet"
+    file_ending = "xlsx"
+
+    def _stream(self):
+        stream = xlsx_streaming.stream_queryset_as_xlsx(self.get_rows(), batch_size=10)
+        return stream
