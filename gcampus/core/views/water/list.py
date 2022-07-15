@@ -33,6 +33,7 @@ class WaterListView(TitleMixin, ListView):
         .distinct()
         .annotate(measurement_count=Count("measurements"))
         .defer("geometry")
+        .order_by("-measurement_count", "name")
     )
     title = gettext_lazy("All waters")
     context_object_name = "water_list"

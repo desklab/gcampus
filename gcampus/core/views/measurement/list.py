@@ -36,6 +36,7 @@ class MeasurementListView(TitleMixin, ListView):
         Measurement.objects.prefetch_related("parameters__parameter_type")
         .select_related("water")
         .defer("water__geometry")
+        .order_by("-time")
         .all()
     )
     title = gettext_lazy("All measurements")
