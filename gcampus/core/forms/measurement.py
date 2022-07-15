@@ -61,13 +61,12 @@ class ReportForm(Form):
         label=_("What is the type of the problem?"),
         choices=REPORT_PROBLEM_CHOICES,
     )
-    # TODO: Add GDPR link in help text
     email = EmailField(
         required=False,
         label=_("Email address"),
         help_text=_(
             "This email address will only be used to contact you and is not shared "
-            "with anyone else."
+            "with anyone else. See our privacy policy for more details."
         ),
     )
 
