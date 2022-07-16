@@ -26,5 +26,6 @@ djangorestframework-gis~=0.18
 djangorestframework~=3.13.1
 
 weasyprint~=53.3
+xlsx-streaming==1.1.0
 
 numpy~=1.22.3
