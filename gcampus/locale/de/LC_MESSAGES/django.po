@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-15 13:23+0200\n"
+"POT-Creation-Date: 2022-07-16 14:33+0200\n"
 "PO-Revision-Date: 2022-07-12 18:45+0200\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -753,7 +753,7 @@ msgid "GCampus Core"
 msgstr "GewässerCampus"
 
 #: gcampus/core/filters.py:149
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:57
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:61
 msgid "Search"
 msgstr "Suchen"
 
@@ -844,8 +844,8 @@ msgid ""
 "anyone else. See our privacy policy for more details."
 msgstr ""
 "Diese E-Mail-Adresse wird von uns nur dazu verwendet, um Dich zu "
-"kontaktieren, falls wir Rückfragen haben. Sie wird mit niemandem sonst geteilt. "
-"Weitere Informationen findest du in der Datenschutzerklärung."
+"kontaktieren, falls wir Rückfragen haben. Sie wird mit niemandem sonst "
+"geteilt. Weitere Informationen findest du in der Datenschutzerklärung."
 
 #: gcampus/core/forms/measurement.py:90
 msgid "Location and water"
@@ -1198,7 +1198,7 @@ msgid "Apply filter"
 msgstr "Filter anwenden"
 
 #: gcampus/core/templates/gcampuscore/components/filter.html:15
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:128
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:132
 msgid "Reset filter"
 msgstr "Filter zurücksetzen"
 
@@ -1508,34 +1508,41 @@ msgstr ""
 "\"%(license_url)s\">hier</a>."
 
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:41
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:71
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:77
-msgid "Download data"
-msgstr "Daten herunterladen"
+msgid "Download CSV file"
+msgstr "CSV-Datei laden"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:64
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:45
+msgid "Download Excel file"
+msgstr "Excel-Datei laden"
+
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:68
 #, python-format
 msgid "Found %(count)s measurements"
 msgstr "%(count)s Messungen gefunden"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:85
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:88
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:75
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:81
+msgid "Download data"
+msgstr "Daten herunterladen"
+
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:89
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:92
 msgid "Print summary"
 msgstr "Zusammenfassung drucken"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:96
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:100
 msgid "Filter"
 msgstr "Filter"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:100
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:104
 msgid "Additional filters applied"
 msgstr "Weitere Filter werden angewendet"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:117
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:121
 msgid "No measurements found"
 msgstr "Keine Messungen gefunden"
 
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:120
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:124
 msgid ""
 "Unfortunately, no measurements can be found. <br> Maybe your filter settings "
 "are too restrictive."
@@ -1902,9 +1909,10 @@ msgstr "Zeitspanne"
 msgid "Notes"
 msgstr "Notizen"
 
-#: gcampus/documents/views/csv.py:47
-msgid "measurements.csv"
-msgstr "messungen.csv"
+#: gcampus/documents/views/data_export.py:53
+#, python-format
+msgid "measurements.%(ext)s"
+msgstr "messungen.%(ext)s"
 
 #: gcampus/documents/views/generic.py:96
 #, python-format
@@ -2188,9 +2196,6 @@ msgstr "GCampus Aufgaben"
 #~ msgstr ""
 #~ "Beurteile die Qualität dieses Gewässers auf Basis der Konzentration der "
 #~ "gemessenen Parameter."
-
-#~ msgid "Download PDF"
-#~ msgstr "PDF herunterladen"
 
 #~ msgid "Analysis"
 #~ msgstr "Auswertung"
