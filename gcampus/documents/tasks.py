@@ -20,6 +20,7 @@ import time
 from typing import Type, Union, Tuple
 
 from celery import shared_task
+from django.conf import settings
 from django.core.files import File
 from django.db.models import Model
 from django.utils import translation
@@ -59,6 +60,10 @@ def render_cached_document_view(
     :param force: Force document rebuild even if document is already
         saved in the model.
     """
+    # Overwrite language to export all files in the default project
+    # language for now. Caching different documents for each language
+    # should be implemented at some point.
+    language: str = settings.LANGUAGE_CODE
     translation.activate(language)
     if isinstance(view, str):
         view = import_string(view)
