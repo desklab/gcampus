@@ -37,12 +37,12 @@
                         {% translate "Close" %}
                     </button>
                     <a href="{% url "gcampusdocuments:measurement-list-csv" %}?{% request_params %}"
-                       class="btn btn-secondary">
-                        {% translate "Download Csv" %}
+                       class="btn btn-primary">
+                        {% translate "Download CSV file" %}
                     </a>
                      <a href="{% url "gcampusdocuments:measurement-list-xlsx" %}?{% request_params %}"
-                        class="btn btn-secondary">
-                        {% translate "Download Xlsx" %}
+                        class="btn btn-primary">
+                        {% translate "Download Excel file" %}
                     </a>
                 </div>
             </div>

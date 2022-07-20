@@ -16,13 +16,14 @@
 __all__ = ["DataExportView", "CSVExportView", "XLSXExportView"]
 
 import csv
+from abc import abstractmethod, ABC
 from io import StringIO
-from typing import Tuple, Optional, Iterator
+from typing import Tuple, Optional, Iterator, Type
 
 import xlsx_streaming
 from django.db.models import QuerySet
-from django.http import StreamingHttpResponse
-from django.utils.translation import gettext_lazy as _
+from django.http import StreamingHttpResponse, HttpResponse
+from django.utils.translation import gettext
 from django.views import View
 from django.views.generic.list import MultipleObjectMixin
 
@@ -31,13 +32,26 @@ from gcampus.core.models import Water
 from gcampus.core.models.measurement import Measurement, ParameterType
 
 
-class DataExportView(MultipleObjectMixin, View):
+class DataExportView(MultipleObjectMixin, View, ABC):
+    model = Measurement
+    queryset = Measurement.objects.all()
+    parameter_types: Tuple[str, ...]
+    values: QuerySet
+    file_ending: str
+    content_type: str
+    response_class: Type[HttpResponse] = StreamingHttpResponse
+
+    @abstractmethod
+    def _stream(self) -> Iterator:
+        raise NotImplementedError()
+
     def get(self, request):
         self.parameter_types: Tuple[str, ...] = tuple(
             ParameterType.objects.values_list("name", flat=True).order_by("pk")
         )
         self.values = self.get_queryset()
-        return self.render_to_response(_(f"measurements.{self.file_ending}"))
+        filename: str = gettext("measurements.%(ext)s") % {"ext": self.file_ending}
+        return self.render_to_response(filename)
 
     def render_to_response(self, filename, **response_kwargs):
         response_kwargs.setdefault("content_type", self.content_type)
@@ -47,7 +61,7 @@ class DataExportView(MultipleObjectMixin, View):
             **response_kwargs,
         )
 
-    def get_rows(self) -> Iterator[dict]:
+    def iter_rows(self) -> Iterator[dict]:
         if self.file_ending == "xlsx":
             yield self.get_headers()
         current: Optional[dict] = None
@@ -116,14 +130,9 @@ class DataExportView(MultipleObjectMixin, View):
 
 
 class CSVExportView(DataExportView):
-    model = Measurement
-    queryset = Measurement.objects.all()
     ordering: Tuple[str, ...] = ("pk",)
-    parameter_types: Tuple[str, ...]
-    values: QuerySet
-    response_class = StreamingHttpResponse
     content_type: str = "text/csv"
-    file_ending = "csv"
+    file_ending: str = "csv"
 
     def _stream(self):
         with StringIO() as buffer:
@@ -134,7 +143,7 @@ class CSVExportView(DataExportView):
                 fieldnames=self.get_headers(),
             )
             writer.writeheader()
-            for row in self.get_rows():
+            for row in self.iter_rows():
                 writer.writerow(row)  # write the row to the buffer
                 buffer.seek(0)  # reset buffer to beginning
                 yield buffer.read()
@@ -145,15 +154,9 @@ class CSVExportView(DataExportView):
 
 
 class XLSXExportView(DataExportView):
-    model = Measurement
-    queryset = Measurement.objects.all()
     ordering: Tuple[str, ...] = ("pk",)
-    parameter_types: Tuple[str, ...]
-    values: QuerySet
-    response_class = StreamingHttpResponse
     content_type: str = "application/vnd.xlsxformats-officedocument.spreadsheetml.sheet"
     file_ending = "xlsx"
 
-    def _stream(self):
-        stream = xlsx_streaming.stream_queryset_as_xlsx(self.get_rows(), batch_size=10)
-        return stream
+    def _stream(self) -> Iterator:
+        return xlsx_streaming.stream_queryset_as_xlsx(self.iter_rows(), batch_size=10)
