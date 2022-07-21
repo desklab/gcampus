@@ -11,7 +11,7 @@
         </li>
         {% if paginator.num_pages <= 5 %}
             {# Pages 1 to 5 are always displayed #}
-            {% for p in paginator.page_range|slice:":3" %}
+            {% for p in paginator.page_range %}
                 <li class="page-item{% if p == page_obj.number %} active{% endif %}">
                     <a class="page-link"
                        href="?page={{ p }}&{% request_params exclude="page" %}">{{ p }}</a>
