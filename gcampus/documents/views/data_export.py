@@ -23,7 +23,7 @@ from typing import Tuple, Optional, Iterator, Type
 import xlsx_streaming
 from django.db.models import QuerySet
 from django.http import StreamingHttpResponse, HttpResponse
-from django.utils.translation import gettext
+from django.utils.translation import gettext as _
 from django.views import View
 from django.views.generic.list import MultipleObjectMixin
 
@@ -50,7 +50,7 @@ class DataExportView(MultipleObjectMixin, View, ABC):
             ParameterType.objects.values_list("name", flat=True).order_by("pk")
         )
         self.values = self.get_queryset()
-        filename: str = gettext("measurements.%(ext)s") % {"ext": self.file_ending}
+        filename: str = _("measurements.%(ext)s") % {"ext": self.file_ending}
         return self.render_to_response(filename)
 
     def render_to_response(self, filename, **response_kwargs):
@@ -159,4 +159,12 @@ class XLSXExportView(DataExportView):
     file_ending = "xlsx"
 
     def _stream(self) -> Iterator:
-        return xlsx_streaming.stream_queryset_as_xlsx(self.iter_rows(), batch_size=10)
+        with open("template.xlsx", "rb") as template:
+            stream = xlsx_streaming.stream_queryset_as_xlsx(
+                self.iter_rows(), batch_size=10, xlsx_template=template
+            )
+        return stream
+
+    def get_headers(self) -> Tuple[str, ...]:
+        headers = (_("ID"), _("Name"), _("Location name"), _("Water name"), _("Time"))
+        return headers + self.parameter_types

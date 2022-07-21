@@ -135,51 +135,71 @@ def get_geo_locator() -> Nominatim:
     )
 
 
-def get_weeks_from_today(date: datetime.datetime) -> List[datetime.datetime]:
-    """Get Weeks from today
+def get_intervals_from_today(date: datetime.datetime) -> List[datetime.datetime]:
+    """Get intervals from today
 
     Returns a list of datetime objects that contain dates going back
-    weekly from today to a given date.
+    either from weeks, months or years, depending on the time interval
+    from today to a given date.
 
     :param date: Datetime object to get the number of weeks
-    :returns: List of datetime objects one week apart
+    :returns: List of datetime objects one interval (week, month or year) apart
     """
     today = timezone.now()
-    num_weeks = math.ceil((today - date).days / 7) + 1
+    num_bins = math.ceil((today - date).days / 7) + 1
+    if not num_bins > 52:
+
+        dates: List[datetime.datetime] = [
+            today - datetime.timedelta(weeks=x) for x in reversed(range(num_bins))
+        ]
+        return dates
+
+    num_bins = math.ceil((today - date).days / 30) + 1
+    if not num_bins > 48:
+        dates: List[datetime.datetime] = [
+            today - datetime.timedelta(weeks=x * 4) for x in reversed(range(num_bins))
+        ]
+        return dates
+
+    num_bins = math.ceil((today - date).days / 365) + 1
     dates: List[datetime.datetime] = [
-        today - datetime.timedelta(weeks=x) for x in reversed(range(num_weeks))
+        today - datetime.timedelta(weeks=x * 52) for x in reversed(range(num_bins))
     ]
+
     return dates
 
 
-def get_measurements_per_week(
-    week_list: List[datetime.datetime], measurement_list: List[datetime.datetime]
+def get_measurement_intervals(
+    interval_list: List[datetime.datetime], measurement_list: List[datetime.datetime]
 ) -> List[int]:
-    """Get Measurements per weeks
+    """Get Measurements per bins
 
     Returns a list of percentages (ints) representing how many
-    measurements were conducted in this week.
+    measurements were conducted in this time interval (weeks, months or years).
 
-    :param week_list: List of weeks to create numbers of measurements in
+    :param interval_list: List of intervals to create numbers of measurements in
     :param measurement_list: List of measurements
     :returns: List of percentages representing how many measurements
-        were conducted in this week
+        were conducted in this interval (week, month or year)
     """
     if not measurement_list:
         return []
-    if len(week_list) <= 1:
+    if len(interval_list) <= 1:
         return []
-    measurements_per_week = [0] * (len(week_list) - 1)
-
+    measurements_per_interval = [0] * (len(interval_list) - 1)
     for measurement_date in measurement_list:
-        for week_index in range(len(week_list) - 1):
-            if week_list[week_index] <= measurement_date <= week_list[week_index + 1]:
-                measurements_per_week[week_index] += 1
+        for interval_index in range(len(interval_list) - 1):
+            if (
+                interval_list[interval_index]
+                <= measurement_date
+                <= interval_list[interval_index + 1]
+            ):
+                measurements_per_interval[interval_index] += 1
                 break
-    measurements_per_week = (
-        np.array(measurements_per_week) / np.max(measurements_per_week) * 100
+    measurements_per_interval = (
+        np.array(measurements_per_interval) / np.max(measurements_per_interval) * 100
     )
-    return [int(measurement_val) for measurement_val in measurements_per_week]
+    return [int(measurement_val) for measurement_val in measurements_per_interval]
 
 
 def convert_dates_to_js_milliseconds(dates: List[datetime.datetime]) -> List[int]:

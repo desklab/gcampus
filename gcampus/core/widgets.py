@@ -26,9 +26,9 @@ from leaflet.forms.widgets import LeafletWidget
 
 from gcampus.core.models import Measurement
 from gcampus.core.util import (
-    get_weeks_from_today,
+    get_intervals_from_today,
     convert_dates_to_js_milliseconds,
-    get_measurements_per_week,
+    get_measurement_intervals,
 )
 
 
@@ -152,17 +152,19 @@ class TimeRangeSlider(RangeWidget):
             earliest_date: datetime = Measurement.objects.values_list(
                 "time", flat=True
             ).earliest("time")
-            week_list = get_weeks_from_today(earliest_date)
+            interval_list = get_intervals_from_today(earliest_date)
 
             all_dates = list(Measurement.objects.values_list("time", flat=True).all())
 
-            measurements_per_week = get_measurements_per_week(week_list, all_dates)
+            measurements_per_interval = get_measurement_intervals(
+                interval_list, all_dates
+            )
         except Measurement.DoesNotExist:
             # Create a list with todays date twice and no measurement entries
-            week_list = [timezone.now(), timezone.now()]
-            measurements_per_week = [0]
-        context["week_list_js"] = convert_dates_to_js_milliseconds(week_list)
-        context["measurements_per_week"] = measurements_per_week
+            interval_list = [timezone.now(), timezone.now()]
+            measurements_per_interval = [0]
+        context["interval_list_js"] = convert_dates_to_js_milliseconds(interval_list)
+        context["measurements_per_interval"] = measurements_per_interval
         return context
 
 

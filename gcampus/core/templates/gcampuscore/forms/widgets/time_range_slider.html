@@ -1,8 +1,8 @@
-{% with week_list_js|length as list_len %}
+{% with interval_list_js|length as list_len %}
     <ul class="chart">
-        {% for week in measurements_per_week %}
+        {% for interval in measurements_per_interval %}
             <li>
-                <span style="height:{{ week }}%"></span>
+                <span style="height:{{ interval }}%"></span>
             </li>
         {% endfor %}
 
@@ -31,7 +31,7 @@
                type="range"/>
         <span style="float:left;" id="from_span"></span>
     </div>
-    <script type="text/javascript">let week_list_js = [{{ week_list_js|join:', ' }}];</script>
+    <script type="text/javascript">let interval_list_js = [{{ interval_list_js|join:', ' }}];</script>
     <style>
 
 

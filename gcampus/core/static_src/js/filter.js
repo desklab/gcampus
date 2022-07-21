@@ -1,7 +1,7 @@
 import Offcanvas from 'bootstrap/js/src/offcanvas';
 
 
-function initRangeSlider(week_list_js) {
+function initRangeSlider(interval_list_js) {
     let parent = document.querySelector('.range-slider');
     if (!parent) return;
 
@@ -10,7 +10,7 @@ function initRangeSlider(week_list_js) {
 
     // Set start and endpoint to first and last entry of week_list_js
     let left_slider_index = 0;
-    let right_slider_index = week_list_js.length - 1;
+    let right_slider_index = interval_list_js.length - 1;
 
     // Check if there is already a set value in the hidden inputs
     // This means that the filter has been used and the slider as well
@@ -22,16 +22,16 @@ function initRangeSlider(week_list_js) {
         let right_slider_date = Date.parse(numberS[1].value);
 
         // Get index of closest date in week_list_js
-        left_slider_index = closest_index(left_slider_date, week_list_js);
-        right_slider_index = closest_index(right_slider_date, week_list_js);
+        left_slider_index = closest_index(left_slider_date, interval_list_js);
+        right_slider_index = closest_index(right_slider_date, interval_list_js);
 
         // Set slider values
         rangeS[0].value = left_slider_index;
         rangeS[1].value = right_slider_index;
     }
     // Turn milliseconds into dates
-    let start_date = new Date(week_list_js[left_slider_index]);
-    let end_date = new Date(week_list_js[right_slider_index]);
+    let start_date = new Date(interval_list_js[left_slider_index]);
+    let end_date = new Date(interval_list_js[right_slider_index]);
 
     // Set date strings
     document.getElementById('from_span').innerHTML = start_date.toLocaleDateString();
@@ -47,8 +47,8 @@ function initRangeSlider(week_list_js) {
                 [slide1, slide2] = [slide2, slide1];
 
             }
-            let start_date = new Date(week_list_js[slide1]);
-            let end_date = new Date(week_list_js[slide2]);
+            let start_date = new Date(interval_list_js[slide1]);
+            let end_date = new Date(interval_list_js[slide2]);
 
             numberS[0].valueAsDate = start_date;
             numberS[1].valueAsDate = end_date;
