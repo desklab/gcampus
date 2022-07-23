@@ -98,7 +98,7 @@
                             <br>
                             <p>
                                 {% if object.comment %}
-                                    {{ object.comment }}
+                                    {{ object.comment|linebreaks  }}
                                 {% else %}
                                     {% translate "N/A" context "no value provided (water name, comment, etc)" %}
                                 {% endif %}
