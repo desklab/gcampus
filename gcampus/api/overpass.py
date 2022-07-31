@@ -32,10 +32,15 @@ __all__ = [
 __author__ = "Jonas Drotleff <j.drotleff@desk-lab.de>"
 
 import abc
+import logging
+import re
 from dataclasses import dataclass
 from typing import Optional, List, Tuple
+from urllib import request
 
 import requests
+from requests.exceptions import Timeout
+from django.utils.translation import gettext
 from django.conf import settings
 from django.contrib.gis.geos import (
     GEOSGeometry,
@@ -47,6 +52,9 @@ from django.contrib.gis.geos import (
     GeometryCollection,
     MultiLineString,
 )
+
+timeout_regex = re.compile(r"\[timeout:\d+\]")
+logger = logging.getLogger("gcampus.api.overpass")
 
 
 @dataclass
@@ -266,11 +274,22 @@ def query(
     user_agent = getattr(
         settings, "OVERPASS_USERAGENT", f"GewaesserCampus ({settings.GCAMPUS_HOMEPAGE})"
     )
-    response: requests.Response = requests.post(
-        endpoint,
-        data=overpass_query.encode("utf-8"),
-        headers={"User-Agent": user_agent},
-    )
+    request_timeout = getattr(settings, "OVERPASS_TIMEOUT", 20)
+    if timeout_regex.search(overpass_query) is None:
+        logger.warning("Overpass query does not contain a timeout.")
+    else:
+        # Add 1 second to the timeout to avoid a request timeout just
+        # before the overpass server returns a timeout.
+        request_timeout += 1
+    try:
+        response: requests.Response = requests.post(
+            endpoint,
+            data=overpass_query.encode("utf-8"),
+            headers={"User-Agent": user_agent},
+            timeout=request_timeout,
+        )
+    except Timeout:
+        raise OverpassAPIError(gettext(""))
     if response.ok:
         return _parse(response, **parse_kwargs)
     else:
