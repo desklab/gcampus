@@ -8,7 +8,7 @@ function initRangeSlider(interval_list_js) {
     let rangeS = parent.querySelectorAll('input[type=range]');
     let numberS = parent.querySelectorAll('input[type=date]');
 
-    // Set start and endpoint to first and last entry of week_list_js
+    // Set start and endpoint to first and last entry of interval_list_js
     let left_slider_index = 0;
     let right_slider_index = interval_list_js.length - 1;
 
@@ -21,13 +21,32 @@ function initRangeSlider(interval_list_js) {
         let left_slider_date = Date.parse(numberS[0].value);
         let right_slider_date = Date.parse(numberS[1].value);
 
-        // Get index of closest date in week_list_js
+        // Get index of closest date in interval_list_js
         left_slider_index = closest_index(left_slider_date, interval_list_js);
         right_slider_index = closest_index(right_slider_date, interval_list_js);
 
         // Set slider values
         rangeS[0].value = left_slider_index;
         rangeS[1].value = right_slider_index;
+
+        // Set slider int values needed for coloring the bars
+        var slide1 = parseFloat(rangeS[0].value);
+        var slide2 = parseFloat(rangeS[1].value);
+
+        if (slide1 > slide2) {
+            [slide1, slide2] = [slide2, slide1];
+        }
+
+        // Color the bars depending opn the slider position
+        for (var i = 0; i < interval_list_js.length - 1; i++) {
+            if (i < slide1 || i > slide2) {
+                document.getElementById('bar_el_' + i).style.background = '#adcbeb';
+            } else {
+                document.getElementById('bar_el_' + i).style.background = '#2760a4';
+            }
+
+        }
+
     }
     // Turn milliseconds into dates
     let start_date = new Date(interval_list_js[left_slider_index]);
@@ -55,6 +74,22 @@ function initRangeSlider(interval_list_js) {
 
             document.getElementById('from_span').innerHTML = start_date.toLocaleDateString();
             document.getElementById('to_span').innerHTML = end_date.toLocaleDateString();
+
+
+            // Don't know how to access the color vars, TODO need to fix this
+            const rootStyle = getComputedStyle(document.documentElement);
+
+            const darkBlue = rootStyle.getPropertyValue('--gcampus-blue-500');
+            const lightBlue = rootStyle.getPropertyValue('--gcampus-blue-200');
+
+            // Color bars depending on slider positions
+            for (var i = 0; i < interval_list_js.length - 1; i++) {
+                if (i < slide1 || i > slide2) {
+                    document.getElementById('bar_el_' + i).style.background = '#adcbeb';
+                } else {
+                    document.getElementById('bar_el_' + i).style.background = '#2760a4';
+                }
+            }
         };
     });
 

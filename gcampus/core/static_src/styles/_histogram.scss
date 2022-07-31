@@ -18,7 +18,7 @@
 .chart {
   display: table;
   table-layout: fixed;
-  width: 85%;
+  width: 50%;
   padding: 0;
   height: 100px;
   margin: 0 auto;
@@ -32,11 +32,12 @@
   display: table-cell;
   vertical-align: bottom;
   height: 100px;
+  background: #1da1f2;
 
 }
 
 .chart span {
   margin: 0 .05em;
   display: block;
-  background: rgba(209, 236, 250, 0.75);
+  background: #2760a4;
 }

@@ -1,8 +1,9 @@
+{% load static %}
 {% with interval_list_js|length as list_len %}
     <ul class="chart">
         {% for interval in measurements_per_interval %}
             <li>
-                <span style="height:{{ interval }}%"></span>
+                <span id="bar_el_{{ forloop.counter0 }}" style="height:{{ interval }}%"></span>
             </li>
         {% endfor %}
 
@@ -14,9 +15,6 @@
                    name="{{ widget.subwidgets.0.name }}"
                    {% if widget.subwidgets.0.value != None %}value="{{ widget.subwidgets.0.value|stringformat:'s' }}"{% endif %}
                    id="start_date" type="date"/>
-
-
-
             <input hidden
                    name="{{ widget.subwidgets.1.name }}"
                     {% if widget.subwidgets.1.value != None %}
@@ -31,12 +29,13 @@
                type="range"/>
         <span style="float:left;" id="from_span"></span>
     </div>
-    <script type="text/javascript">let interval_list_js = [{{ interval_list_js|join:', ' }}];</script>
-    <style>
-
-
-    </style>
 {% endwith %}
+
+    <script type="text/javascript" src="{% static 'gcampuscore/js/filter.js' %}"></script>
+    <script type="text/javascript">
+        let interval_list_js = [{{ interval_list_js|join:', ' }}]
+            gcampuscore.filter.initRangeSlider(interval_list_js);
+    </script>
 
 
 
