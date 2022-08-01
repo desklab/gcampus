@@ -83,4 +83,10 @@
   left: 0;
   right: 0;
   background-color: transparentize($white, 0.2);
+  color: $gray-900;
+  transition: $transition-base;
+  &:hover {
+    background-color: transparentize($white, 0.4);
+    color: $gray-700;
+  }
 }

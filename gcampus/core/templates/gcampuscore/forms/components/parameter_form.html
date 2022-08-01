@@ -1,4 +1,5 @@
-<li class="list-group-item list-group-item-action d-flex justify-content-between align-items-start py-3 collapse{% if show %} show{% endif %}" aria-expanded="{% if show %}true{% else %}false{% endif %}" id="id_{{ form.prefix }}-FORM">
+{% load i18n %}
+<li class="list-group-item list-group-item-spaced d-flex justify-content-between align-items-start py-3 collapse{% if not show %} d-none{% endif %}" aria-expanded="{% if show %}true{% else %}false{% endif %}" id="id_{{ form.prefix }}-FORM">
     <div class="ms-2 flex-fill">
         <div class="row">
             <div class="col-md">
@@ -34,4 +35,16 @@
             {{ hidden }}
         {% endfor %}
     </div>
+    {% if overlay %}
+        <div class="list-group-item-overlay text-center d-flex flex-column justify-content-center" id="id_{{ formset.prefix }}-ADD">
+            <h4>{% include "gcampuscore/icons/plus-circle.html" %}</h4>
+            <div>
+                {% translate "Add a parameter" %}
+                <br>
+                <small>
+                    {% translate "Click to add a new parameter to your measurement" %}
+                </small>
+            </div>
+        </div>
+    {% endif %}
 </li>

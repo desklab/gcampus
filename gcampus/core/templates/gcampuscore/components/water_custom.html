@@ -1,11 +1,7 @@
 {% load i18n %}
 <input class="form-check-input me-2 list-group-item-spaced-input"
-       id="customWaterInput"
-       type="radio"
-       name="water"/>
-<div class="list-group-item list-group-item-spaced d-none"
-     id="waterCustom">
-
+       id="customWaterInput" type="radio" name="water"/>
+<div class="list-group-item list-group-item-spaced d-none" id="waterCustom">
     {% with form.name as field %}
         <div class="mb-3">
             {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}

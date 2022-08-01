@@ -109,26 +109,20 @@ class DynamicFormset {
 
     delete(index) {
         let formElement = this.getByID('FORM', index);
-        formElement.classList.add('collapse', 'show');
-        let collapse = new Collapse(formElement, {toggle: false});
-        collapse.hide();
-        formElement.addEventListener('hidden.bs.collapse', () => {
-            if (this.isFormNew(index)) {
-                // Form is new (i.e. created by JavaScript) and can be
-                // removed safely.
-                formElement.remove();
-                this.totalFormCount--;  // Decrement number of forms
-            } else {
-                // Form was initially created by the backand and is thus
-                // already in the database. It can not be deleted by
-                // removing the element.
-                formElement.classList.add('d-none');  // Hide element
-                let deleteFlag = this.getByID('DELETE', index);
+        if (this.isFormNew(index)) {
+            // Form is new (i.e. created by JavaScript) and can be
+            // removed safely.
+            formElement.remove();
+            this.totalFormCount--;  // Decrement number of forms
+        } else {
+            // Form was initially created by the backand and is thus
+            // already in the database. It can not be deleted by
+            // removing the element.
+            formElement.classList.add('d-none');  // Hide element
+            let deleteFlag = this.getByID('DELETE', index);
 
-                deleteFlag.value = 1;
-            }
-        });
-
+            deleteFlag.value = 1;
+        }
     }
 
     addForm() {
@@ -143,7 +137,7 @@ class DynamicFormset {
         }
         // Find newly created element and immanently trigger collapse
         let newElement = this.getByID('FORM', formNumber);
-        new Collapse(newElement, {trigger: true});
+        newElement.classList.remove("d-none");
         // Add button event listener
         this.registerDeleteButton(formNumber);
         this.totalFormCount++;

@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-01 12:35+0200\n"
+"POT-Creation-Date: 2022-08-01 15:13+0200\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -502,8 +502,8 @@ msgid "Pending email confirmation: %(email)s"
 msgstr "Ausstehende E-Mail Bestätigung: %(email)s"
 
 #: gcampus/auth/templates/gcampusauth/course_edit_form.html:96
-#: gcampus/core/templates/gcampuscore/components/water_custom.html:31
-#: gcampus/core/templates/gcampuscore/forms/parameters.html:68
+#: gcampus/core/templates/gcampuscore/components/water_custom.html:27
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:61
 msgid "Save"
 msgstr "Speichern"
 
@@ -1304,17 +1304,25 @@ msgstr "Über das Projekt"
 msgid "Teaching material"
 msgstr "Unterrichtsmaterialien"
 
-#: gcampus/core/templates/gcampuscore/components/water_custom.html:36
+#: gcampus/core/templates/gcampuscore/components/water_custom.html:32
 msgid "Water still not found?"
 msgstr "Gewässer immer noch nicht gefunden?"
 
-#: gcampus/core/templates/gcampuscore/components/water_custom.html:39
+#: gcampus/core/templates/gcampuscore/components/water_custom.html:35
 msgid "Click to add a new water to the database"
 msgstr "Klicke hier um ein neues Gewässer in der Datenbank zu speichern"
 
 #: gcampus/core/templates/gcampuscore/forms/components/label.html:5
 msgid "(optional)"
 msgstr "(optional)"
+
+#: gcampus/core/templates/gcampuscore/forms/components/parameter_form.html:42
+msgid "Add a parameter"
+msgstr "Parameter hinzufügen"
+
+#: gcampus/core/templates/gcampuscore/forms/components/parameter_form.html:45
+msgid "Click to add a new parameter to your measurement"
+msgstr "Klicke hier um einen neuen Parameter zu deiner Messung hinzuzufügen"
 
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:11
 #: gcampus/core/templates/gcampuscore/forms/parameters.html:10
@@ -1401,11 +1409,7 @@ msgstr ""
 "und gebe das Ergebnis hier ein. Nutze das Notizfeld, um dein Vorgehen zu "
 "beschreiben, falls du von der vorgeschlagenen Vorgehensweise abgewichen bist."
 
-#: gcampus/core/templates/gcampuscore/forms/parameters.html:58
-msgid "Add"
-msgstr "Hinzufügen"
-
-#: gcampus/core/templates/gcampuscore/forms/parameters.html:64
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:57
 msgid "Discard"
 msgstr "Verwerfen"
 
@@ -2184,6 +2188,9 @@ msgstr "Deutsch"
 #: gcampus/tasks/apps.py:24
 msgid "GCampus Tasks"
 msgstr "GCampus Aufgaben"
+
+#~ msgid "Add"
+#~ msgstr "Hinzufügen"
 
 #~ msgid "Location and water"
 #~ msgstr "Standort und Gewässer"
