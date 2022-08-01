@@ -79,7 +79,6 @@
                         <div class="mb-3">
                             {% with field=form.location map_height=400 %}
                                 <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-1" %}</h4>
-                                {{ field }}
                                 {% if form.location.errors %}
                                     <div class="my-2 box box-error">
                                         {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-1" %}
@@ -87,6 +86,7 @@
                                         {{ form.location.errors }}
                                     </div>
                                 {% endif %}
+                                {{ field }}
                             {% endwith %}
                         </div>
                         <div class="mb-3">

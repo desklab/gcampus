@@ -93,6 +93,21 @@ class MeasurementForm(ModelForm):
             "location": GeoPointWidget(),
             "water": HiddenInput(),
         }
+        error_messages = {
+            "location": {
+                "required": _(
+                    "No location has been selected. "
+                    "Click on the map to select the location of your measurement."
+                ),
+            },
+            "water": {
+                "required": _(
+                    "No water has been selected. "
+                    "After selecting a location on the map, choose one of the "
+                    "suggested nearby waters."
+                ),
+            },
+        }
 
 
 class ParameterForm(ModelForm):
