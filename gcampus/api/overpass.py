@@ -289,7 +289,7 @@ def query(
             timeout=request_timeout,
         )
     except Timeout:
-        raise OverpassAPIError(gettext(""))
+        raise OverpassAPIError()
     if response.ok:
         return _parse(response, **parse_kwargs)
     else:
