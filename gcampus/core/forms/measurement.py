@@ -84,11 +84,6 @@ class MeasurementForm(ModelForm):
         model = Measurement
         fields = ("name", "time", "location", "comment", "water")
         field_classes = {"time": SplitSplitDateTimeField}
-        labels = {
-            # In the user interface, both the location and water
-            # field are combined in one form element.
-            "location": _("Location and water"),
-        }
         widgets = {
             # Inputs with type="datetime-local" are not well-supported
             # to this date. If we decide to replace the
