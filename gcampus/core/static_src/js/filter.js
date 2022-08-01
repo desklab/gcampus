@@ -1,6 +1,11 @@
 import Offcanvas from 'bootstrap/js/src/offcanvas';
 
 
+const rootStyle = getComputedStyle(document.documentElement);
+const BLUE_PRIMARY = rootStyle.getPropertyValue('--gcampus-primary');
+const BLUE_200 = rootStyle.getPropertyValue('--gcampus-blue-200');
+
+
 function initRangeSlider(interval_list_js) {
     let parent = document.querySelector('.range-slider');
     if (!parent) return;
@@ -40,9 +45,9 @@ function initRangeSlider(interval_list_js) {
         // Color the bars depending opn the slider position
         for (var i = 0; i < interval_list_js.length - 1; i++) {
             if (i < slide1 || i > slide2) {
-                document.getElementById('bar_el_' + i).style.background = '#adcbeb';
+                document.getElementById('bar_el_' + i).style.background = BLUE_200;
             } else {
-                document.getElementById('bar_el_' + i).style.background = '#2760a4';
+                document.getElementById('bar_el_' + i).style.background = BLUE_PRIMARY;
             }
 
         }
@@ -75,19 +80,12 @@ function initRangeSlider(interval_list_js) {
             document.getElementById('from_span').innerHTML = start_date.toLocaleDateString();
             document.getElementById('to_span').innerHTML = end_date.toLocaleDateString();
 
-
-            // Don't know how to access the color vars, TODO need to fix this
-            const rootStyle = getComputedStyle(document.documentElement);
-
-            const darkBlue = rootStyle.getPropertyValue('--gcampus-blue-500');
-            const lightBlue = rootStyle.getPropertyValue('--gcampus-blue-200');
-
             // Color bars depending on slider positions
             for (var i = 0; i < interval_list_js.length - 1; i++) {
                 if (i < slide1 || i > slide2) {
-                    document.getElementById('bar_el_' + i).style.background = '#adcbeb';
+                    document.getElementById('bar_el_' + i).style.background = BLUE_200;
                 } else {
-                    document.getElementById('bar_el_' + i).style.background = '#2760a4';
+                    document.getElementById('bar_el_' + i).style.background = BLUE_PRIMARY;
                 }
             }
         };

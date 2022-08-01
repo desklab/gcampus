@@ -1,9 +1,10 @@
 .range-slider {
-  width: 300px;
+  width: 70%;
+  min-width: 400px;
   margin: auto;
   text-align: center;
   position: relative;
-  height: 6em;
+  height: calc($spacer * .25 + $font-size-base + $form-range-thumb-height + $form-range-thumb-focus-box-shadow-width * 2);
 
   input[type=range] {
     position: absolute;

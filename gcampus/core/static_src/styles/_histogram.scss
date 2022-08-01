@@ -18,7 +18,8 @@
 .chart {
   display: table;
   table-layout: fixed;
-  width: 50%;
+  width: 70%;
+  min-width: 400px;
   padding: 0;
   height: 100px;
   margin: 0 auto;

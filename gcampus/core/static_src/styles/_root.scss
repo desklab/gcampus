@@ -22,4 +22,8 @@
   --#{$prefix}standing-water: #{$standing-water};
   --#{$prefix}running-water: #{$running-water};
   --#{$prefix}unknown-water: #{$unknown-water};
+  @each $color, $value in $blues {
+    --#{$prefix}#{$color}: #{$value};
+  }
 }
+
