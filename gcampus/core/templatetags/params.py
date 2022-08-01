@@ -42,8 +42,8 @@ def request_params(context: Context, exclude: Optional[str] = None) -> str:
 @register.simple_tag(takes_context=True)
 def filter_params(context: Context, **kwargs) -> str:
     request: HttpRequest = context["request"]
-    kwargs.setdefault("other_courses", True)
     if session.is_authenticated(request):
+        kwargs.setdefault("other_courses", True)
         if session.get_token_type(request) is TokenType.access_key:
             kwargs.setdefault("same_access_key", True)
         kwargs.setdefault("same_course", True)

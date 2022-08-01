@@ -13,7 +13,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import Tuple, List, Optional
+from typing import Tuple, List, Optional, Set
 
 from django.conf import settings
 from django.contrib.gis.geos import Point
@@ -143,6 +143,35 @@ class MeasurementFilterSet(FilterSet):
                 if not same_course:
                     queryset = queryset.exclude(token__course_id=token.course_id)
         return queryset
+
+    def get_status(self) -> bool:
+        """Get Filter Status
+
+        This function takes a list of new filters and returns a bool
+        corresponding to the status of the filter
+
+        :returns: Bool if filter is set
+        """
+        applied_filters: Set[str] = set(self.form.changed_data)
+        # Ignore the name (search field) as it is seperated in the UI
+        # from the other filter fields.
+        applied_filters -= {"name"}
+        if self.request and session.is_authenticated(self.request):
+            if self.form["other_courses"].value():
+                applied_filters -= {"other_courses"}
+            else:
+                applied_filters |= {"other_courses"}
+            if self.form["same_course"].value():
+                applied_filters -= {"same_course"}
+            else:
+                applied_filters |= {"same_course"}
+            if session.get_token_type(self.request) is TokenType.access_key:
+                if self.form["same_access_key"].value():
+                    applied_filters -= {"same_access_key"}
+                else:
+                    applied_filters |= {"same_access_key"}
+
+        return len(applied_filters) != 0
 
     name = MeasurementSearchFilter(
         field_name="search_vector",

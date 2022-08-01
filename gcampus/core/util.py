@@ -14,21 +14,20 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import datetime
-import time
 import math
-from typing import List, Tuple, Optional, Union, Set
+import time
+from typing import List, Tuple, Optional, Union
 
 import numpy as np
-from django.utils import timezone
 from django.conf import settings
 from django.contrib.gis.geos import Point
 from django.core.cache import cache
+from django.utils import timezone
 from geopy import Location
 from geopy.exc import GeocoderServiceError
 from geopy.geocoders import Nominatim
 
 from gcampus.core.apps import GCampusCoreAppConfig
-from gcampus.core.models.util import EMPTY
 
 """Address Options
 
@@ -215,42 +214,3 @@ def convert_dates_to_js_milliseconds(dates: List[datetime.datetime]) -> List[int
         int(time.mktime(date.timetuple())) * 1000 for date in dates
     ]
     return dates_milliseconds
-
-
-def get_all_filters(old_filters: Set[str], new_filters: List[str]) -> List[str]:
-    """Get Number of Filters
-
-    This function takes a list of old filters and a list of new filters and returns a list of the
-    all applied filters.
-
-    :param old_filters: List of old applied filters
-    :param new_filters: List of new applied filters
-    :returns: List of new applied filters
-    """
-    all_filters = set(old_filters)
-    for filter_item in new_filters:
-        all_filters.add(filter_item)
-    # For some reason every time the filter button is pressed the
-    # location filter is set. Since the location filter
-    # needs some further improvement I'll fix it like this
-    # TODO fix location filter and remove this
-    if "location" in all_filters:
-        all_filters.remove("location")
-
-    return list(all_filters)
-
-
-def get_filter_status(new_filters: List[str]) -> bool:
-    """Get Filter Status
-
-    This function takes a list of new filters and returns a bool corresponding
-    to the status of the filter
-
-    :param new_filters: List of new applied filters
-    :returns: Bool if filter is set
-    """
-    if "name" in new_filters:
-        new_filters.remove("name")
-    if new_filters in EMPTY:
-        return False
-    return True
