@@ -115,7 +115,7 @@ class DynamicFormset {
             formElement.remove();
             this.totalFormCount--;  // Decrement number of forms
         } else {
-            // Form was initially created by the backand and is thus
+            // Form was initially created by the backend and is thus
             // already in the database. It can not be deleted by
             // removing the element.
             formElement.classList.add('d-none');  // Hide element
