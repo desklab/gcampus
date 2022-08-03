@@ -79,20 +79,7 @@
                         <div class="mb-3">
                             {% with field=form.location map_height=400 %}
                                 <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-1" %}</h4>
-                                {% if form.location.errors %}
-                                    <div class="my-2 box box-error">
-                                        {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-1" %}
-                                        <b>{% translate "Error" %}</b>
-                                        {{ form.location.errors }}
-                                    </div>
-                                {% endif %}
-                                {{ field }}
-                            {% endwith %}
-                        </div>
-                        <div class="mb-3">
-                            {% with field=form.water %}
-                                <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-1" %}</h4>
-                                <div class="mb-3 box box-info" id="waterSuggestionsInfo">
+                                <div class="mb-3 box box-info">
                                     <div class="my-2">
                                         {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
                                         {% translate "Follow these steps to select the location and the correct water:" %}
@@ -109,6 +96,19 @@
                                         </li>
                                     </ol>
                                 </div>
+                                {% if form.location.errors %}
+                                    <div class="my-2 box box-error">
+                                        {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                                        <b>{% translate "Error" %}</b>
+                                        {{ form.location.errors }}
+                                    </div>
+                                {% endif %}
+                                {{ field }}
+                            {% endwith %}
+                        </div>
+                        <div class="mb-3">
+                            {% with field=form.water %}
+                                <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-1" %}</h4>
                                 {{ field }}
                                 {% if form.water.errors %}
                                     <div class="my-2 box box-error">
@@ -119,6 +119,16 @@
                                 {% endif %}
                             {% endwith %}
                             <div class="list-group list-group-spaced mt-2" id="waterSuggestions">
+                                <div class="list-group-item list-group-item-spaced text-center shadow-box" id="waterSuggestionsInfo">
+                                    {% translate "Nearby waters" %}
+                                    <br>
+                                    <small>
+                                        {% blocktranslate trimmed %}
+                                            Select a location on the map to load
+                                            nearby waters
+                                        {% endblocktranslate %}
+                                    </small>
+                                </div>
                                 <div class="list-group-item list-group-item-spaced d-flex align-items-center d-none"
                                      id="waterLoading">
                                     <div class="spinner-border spinner-border-sm flex-shrink-1" role="status"></div>
@@ -130,14 +140,12 @@
                                     </div>
 
                                 </div>
-                                <div class="list-group-item list-group-item-hover list-group-item-spaced cursor-pointer text-center d-none"
+                                <div class="list-group-item list-group-item-hover list-group-item-spaced cursor-pointer text-center shadow-box d-none"
                                      id="waterOsm">
-                                    <div class="shadow-box"></div>
-                                    <div class="shadow-box shadow-box-2"></div>
                                     {% translate "Water not found?" %}
                                     <br>
-                                    <small>
-                                        {% translate "Search for more waters on OpenStreetMaps" %}
+                                    <small class="text-decoration-underline">
+                                        {% translate "Search for more waters on OpenStreetMap" %}
                                     </small>
                                 </div>
                                 {% include "gcampuscore/components/water_custom.html" with form=water_form only %}
