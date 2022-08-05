@@ -187,7 +187,7 @@ class MeasurementFilterSet(FilterSet):
     parameter_types = ParameterTypeFilter(
         field_name="parameter_types",
         queryset=ParameterType.objects.all(),
-        widget=CheckboxSelectMultiple,
+        widget=CheckboxSelectMultiple(attrs={"class": "form-check-input"}),
         label=_("Parameter"),
         help_text=_("Filter for measurements containing specific parameters."),
     )

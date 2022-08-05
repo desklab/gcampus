@@ -7,56 +7,64 @@
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <div class="col-auto mb-2">
-            <button type="submit" class="btn btn-secondary position-relative">
-                {% translate "Apply filter" %}
-            </button>
-            <a class="btn btn-secondary position-relative" role="button" href="{% measurements_url %}">
-                {% translate "Reset filter" %}
-            </a>
-        </div>
         <div>
             {% with filter.form.time_range as field %}
-                <div class="mb-3">
-                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                <div class="mb-4">
+                    <span class="fs-5 fw-semibold mb-3">{% translate "Measurement time range" %}</span>
                     {% include "gcampuscore/forms/components/helptext.html" %}
                     {{ field }}
                 </div>
             {% endwith %}
             {% with filter.form.parameter_types as field %}
-                <div class="mb-3">
-                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                <div class="mb-4">
+                    <span class="fs-5 fw-semibold mb-3">{% translate "Parameter" %}</span>
                     {% include "gcampuscore/forms/components/helptext.html" %}
-                    {{ field }}
+                    {% for parameter in filter.form.parameter_types %}
+                        <div class="form-check">
+                            {{ parameter.tag }}
+                            <label for="{{ parameter.id_for_label }}" class="form-check-label">
+                                {{ parameter.choice_label }}
+                            </label>
+                        </div>
+                    {% endfor %}
                 </div>
             {% endwith %}
-            <div class="mb-3">
+            <div class="mb-4">
                 {% if authenticated %}
-                    {% with filter.form.same_course as field %}
-                        <div class="form-check">
-                            {{ field }}
-                            {% include "gcampuscore/forms/components/label.html" with class="form-check-label" %}
-                            {% include "gcampuscore/forms/components/helptext.html" %}
-                        </div>
-                    {% endwith %}
+                    <span class="fs-5 fw-semibold mb-3">{% translate "Measurement author" %}</span>
                     {% if user_token_is_access_key %}
                         {% with filter.form.same_access_key as field %}
                             <div class="form-check">
                                 {{ field }}
-                                {% include "gcampuscore/forms/components/label.html" with class="form-check-label" %}
+                                <span class="form-check-label">{% translate "Your measurements" %}</span>
                                 {% include "gcampuscore/forms/components/helptext.html" %}
                             </div>
                         {% endwith %}
                     {% endif %}
+                    {% with filter.form.same_course as field %}
+                        <div class="form-check">
+                            {{ field }}
+                            <span class="form-check-label">{% translate "Measurements of your course" %}</span>
+                            {% include "gcampuscore/forms/components/helptext.html" %}
+                        </div>
+                    {% endwith %}
                     {% with filter.form.other_courses as field %}
                         <div class="form-check">
                             {{ field }}
-                            {% include "gcampuscore/forms/components/label.html" with class="form-check-label" %}
+                            <span class="form-check-label">{% translate "Measurements of other courses" %}</span>
                             {% include "gcampuscore/forms/components/helptext.html" %}
                         </div>
                     {% endwith %}
                 {% endif %}
             </div>
+        </div>
+        <div class="col-auto mb-2">
+            <a class="btn btn-secondary position-relative" role="button" href="{% measurements_url %}">
+                {% translate "Reset filter" %}
+            </a>
+            <button type="submit" class="btn btn-primary position-relative">
+                {% translate "Apply filter" %}
+            </button>
         </div>
     </div>
 </div>
