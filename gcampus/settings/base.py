@@ -19,6 +19,7 @@ from pathlib import Path
 
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
+from django.utils.timezone import utc
 
 from gcampus import __version__
 from gcampus.settings.util import get_env_read_file, get_email_tuple_list
@@ -190,6 +191,10 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_THROTTLE_RATES": {"frontend_anon": "5/min", "login": "300/h"},
 }
+
+# Measurement settings
+MEASUREMENT_MIN_TIME = datetime.datetime(1900, month=1, day=1, tzinfo=utc)
+MEASUREMENT_MAX_TIME = datetime.datetime(2100, month=1, day=1, tzinfo=utc)
 
 # Geo Settings
 NOMINATIM_USER_AGENT = "gcampus"

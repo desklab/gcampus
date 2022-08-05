@@ -12,9 +12,10 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 from typing import Type
 
+from django.conf import settings
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.forms import (
     ModelForm,
     inlineformset_factory,
@@ -25,12 +26,23 @@ from django.forms import (
     ChoiceField,
 )
 from django.forms.widgets import Select, Textarea, HiddenInput, NumberInput
+from django.utils.formats import localize
+from django.utils.timezone import localtime
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy
 
 from gcampus.core.fields import SplitSplitDateTimeField
 from gcampus.core.models import Measurement, Parameter
 from gcampus.map.widgets import GeoPointWidget
 
+_MIN_TIME = settings.MEASUREMENT_MIN_TIME
+_MAX_TIME = settings.MEASUREMENT_MAX_TIME
+_MIN_TIME_ERROR = _("The measurement time has to be after {time!s}.").format(
+    time=localize(localtime(_MIN_TIME))
+)
+_MAX_TIME_ERROR = _("The measurement time has to be before {time!s}.").format(
+    time=localize(localtime(_MAX_TIME))
+)
 REPORT_PROBLEM_CHOICES = [
     ("Other", _("Other")),
     ("Note contains problematic text", _("Note contains problematic text")),
@@ -80,10 +92,18 @@ class ReportForm(Form):
 
 
 class MeasurementForm(ModelForm):
+    time = SplitSplitDateTimeField(
+        label=pgettext_lazy("measurement time", "Time"),
+        help_text=_("Date and time of the measurement"),
+        validators=(
+            MinValueValidator(_MIN_TIME, message=_MIN_TIME_ERROR),
+            MaxValueValidator(_MAX_TIME, message=_MAX_TIME_ERROR),
+        ),
+    )
+
     class Meta:
         model = Measurement
-        fields = ("name", "time", "location", "comment", "water")
-        field_classes = {"time": SplitSplitDateTimeField}
+        fields = ("name", "location", "comment", "water")
         widgets = {
             # Inputs with type="datetime-local" are not well-supported
             # to this date. If we decide to replace the

@@ -16,11 +16,12 @@
 import datetime
 from typing import Optional
 
+from django.conf import settings
 from django.forms import MultiWidget, NumberInput, CheckboxInput
 from django.forms.utils import to_current_timezone
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import pgettext
-from django.utils import timezone
 from django_filters.widgets import RangeWidget
 from leaflet.forms.widgets import LeafletWidget
 
@@ -72,6 +73,8 @@ class SplitDateWidget(MultiWidget):
     def __init__(self, attrs: Optional[dict] = None, date_format=None):
         if attrs is None:
             attrs = {}
+        min_time: datetime.datetime = settings.MEASUREMENT_MIN_TIME
+        max_time: datetime.datetime = settings.MEASUREMENT_MAX_TIME
         day_attrs = {
             "title": _("Day"),
             "maxlength": 2,
@@ -87,7 +90,10 @@ class SplitDateWidget(MultiWidget):
             "placeholder": pgettext("month input short", "MM"),
         }
         year_attrs = {
+            "minlength": 4,
             "maxlength": 4,
+            "min": min_time.year,
+            "max": max_time.year,
             "title": _("Year"),
             "placeholder": pgettext("year input short", "YYYY"),
         }
