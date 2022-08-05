@@ -13,11 +13,9 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import Tuple, List, Optional, Set
+from typing import List, Optional, Set
 
 from django.conf import settings
-from django.contrib.gis.geos import Point
-from django.contrib.gis.measure import Distance
 from django.contrib.postgres.search import SearchQuery
 from django.core.validators import EMPTY_VALUES
 from django.db.models import QuerySet, Q
@@ -36,7 +34,7 @@ from django_filters import (
 
 from gcampus.auth import session
 from gcampus.auth.models.token import TokenType, BaseToken
-from gcampus.core.fields import SplitSplitDateTimeField, LocationRadiusField
+from gcampus.core.fields import SplitSplitDateTimeField
 from gcampus.core.fields.datetime import HistogramDateTimeField
 from gcampus.core.fields.personal import ToggleField
 from gcampus.core.models import ParameterType
@@ -89,21 +87,6 @@ class MeasurementSearchFilter(CharFilter):
         qs = self.get_method(qs)(
             **{self.field_name: SearchQuery(value, config=self.TSVECTOR_CONF)}
         )
-        return qs
-
-
-class GeolocationFilter(Filter):
-    field_class = LocationRadiusField
-
-    def filter(self, qs: QuerySet, value: Tuple[Point, int]) -> QuerySet:
-        if value in EMPTY or None in value:
-            return qs
-        if self.distinct:
-            qs = qs.distinct()
-        query_name = f"{self.field_name}__{self.lookup_expr}"
-        point, distance = value
-        query = {query_name: (point, Distance(km=distance))}
-        qs = self.get_method(qs)(**query)
         return qs
 
 
