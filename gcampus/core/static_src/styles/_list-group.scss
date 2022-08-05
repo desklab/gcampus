@@ -35,7 +35,7 @@
 
   input.list-group-item-spaced-input {
     position: absolute;
-    clip: rect(0,0,0,0);
+    clip: rect(0, 0, 0, 0);
     pointer-events: none;
   }
 
@@ -55,22 +55,18 @@
   padding: map-get($spacers, 3) !important;
   border-width: $border-width !important;
 
-  .shadow-box {
-    z-index: -100;
-    position: absolute;
-    left: .3rem;
-    right: .3rem;
-    top: .4rem;
-    height: 100%;
-    background-color: $white;
-    border: $list-group-border-width solid transparentize($list-group-border-color, 0.02);
-    &.shadow-box-2 {
-      z-index: -200;
-      top: .75rem;
-      right: .65rem;
-      left: .65rem;
-      border: $list-group-border-width solid transparentize($list-group-border-color, 0.04);
-    }
+  &.shadow-box {
+    box-shadow: 0 10px 0 -6px $list-group-bg,
+    0 10.5px 0 -5px transparentize($list-group-border-color, 0.025),
+    0 21px 0 -12px $list-group-bg,
+    0 21.5px 0 -11px transparentize($list-group-border-color, 0.05),
+  }
+
+  &.list-group-item-hover.shadow-box:hover {
+    box-shadow: 0 10px 0 -6px $list-group-hover-bg,
+    0 10.5px 0 -5px transparentize($list-group-border-color, 0.025),
+    0 21px 0 -12px $list-group-hover-bg,
+    0 21.5px 0 -11px transparentize($list-group-border-color, 0.05),
   }
 }
 
@@ -83,4 +79,11 @@
   left: 0;
   right: 0;
   background-color: transparentize($white, 0.2);
+  color: $gray-900;
+  transition: $transition-base;
+
+  &:hover {
+    background-color: transparentize($white, 0.4);
+    color: $gray-700;
+  }
 }

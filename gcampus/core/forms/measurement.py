@@ -84,11 +84,6 @@ class MeasurementForm(ModelForm):
         model = Measurement
         fields = ("name", "time", "location", "comment", "water")
         field_classes = {"time": SplitSplitDateTimeField}
-        labels = {
-            # In the user interface, both the location and water
-            # field are combined in one form element.
-            "location": _("Location and water"),
-        }
         widgets = {
             # Inputs with type="datetime-local" are not well-supported
             # to this date. If we decide to replace the
@@ -97,6 +92,21 @@ class MeasurementForm(ModelForm):
             # "time": DateTimeInput(attrs=dict(type="datetime-local")),
             "location": GeoPointWidget(),
             "water": HiddenInput(),
+        }
+        error_messages = {
+            "location": {
+                "required": _(
+                    "No location has been selected. "
+                    "Click on the map to select the location of your measurement."
+                ),
+            },
+            "water": {
+                "required": _(
+                    "No water has been selected. "
+                    "After selecting a location on the map, choose one of the "
+                    "suggested nearby waters."
+                ),
+            },
         }
 
 

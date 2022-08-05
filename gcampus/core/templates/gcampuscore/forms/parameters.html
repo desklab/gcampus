@@ -21,10 +21,11 @@
     </ul>
 {% endblock %}
 {% block content %}
-    <div class="container pb-3">
+    <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <form method="POST">
+            <div class="col-lg-10">
+                <form method="POST" class="px-5 py-3">
+                    <h4><label class="mb-2">{% translate "Parameters" %}</label></h4>
                     <div class="text-danger">
                         {% for error in formset.non_form_errors %}
                             <p>{{ error }}</p>
@@ -44,19 +45,12 @@
                         {% endcomment %}
                         {{ field }}
                     {% endfor %}
-                    <ul class="list-group"
+                    <ul class="list-group list-group-spaced"
                         id="id_{{ formset.prefix }}-FORM-CONTAINER">
                         {% for form in formset %}
                             {% include "gcampuscore/forms/components/parameter_form.html" with form=form show=True only %}
                         {% endfor %}
-                        <div class="list-group-item text-center">
-                            <button type="button"
-                                    id="id_{{ formset.prefix }}-ADD"
-                                    class="btn btn-primary btn-sm w-50">
-                                {% include "gcampuscore/icons/plus-lg.html" %}
-                                {% translate "Add" %}
-                            </button>
-                        </div>
+                        {% include "gcampuscore/forms/components/parameter_form.html" with form=formset.empty_form formset=formset show=True overlay=True only %}
                     </ul>
                     <div class="mt-3 w-100 align-items-end d-flex">
                         <a href="." class="ms-auto btn btn-secondary btn-block">

@@ -20,15 +20,21 @@ import logging
 from inspect import cleandoc
 
 from django.contrib import messages
+from django.conf import settings
 from django.core.mail import mail_managers
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
-from django.utils.translation import gettext_lazy
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext, gettext_lazy
 from django.views.decorators.http import require_POST
 from django.views.generic import DetailView, ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
+from django.views.generic.edit import (
+    CreateView,
+    UpdateView,
+    DeleteView,
+    ModelFormMixin,
+    FormMixin,
+)
 
 from gcampus.auth.decorators import throttle
 from gcampus.auth.models.token import BaseToken
@@ -127,7 +133,7 @@ class MeasurementDetailView(FormMixin, TitleMixin, DetailView):
         )
         messages.success(
             self.request,
-            message=gettext_lazy(
+            message=gettext(
                 "You have successfully reported this measurement. The team has been "
                 "informed and will look into your request as soon as possible."
             ),
@@ -146,11 +152,38 @@ class MeasurementMapView(TitleMixin, ListView):
     template_name = "gcampuscore/sites/mapview.html"
 
 
-class MeasurementCreateView(TitleMixin, CreateView):
-    form_class = MeasurementForm
-    title = _("Create new measurement")
+class MesurementFormViewMixin(TitleMixin, ModelFormMixin):
     template_name = "gcampuscore/forms/measurement.html"
     next_view_name = "gcampuscore:add-parameters"
+
+    def get_context_data(self, **kwargs):
+        if "water_form" not in kwargs:
+            kwargs["water_form"] = WaterForm()
+        if "loading_texts" not in kwargs:
+            req_timeout = getattr(settings, "OVERPASS_TIMEOUT", 20)
+            kwargs["loading_texts"] = [
+                gettext("Looking for nearby waters on OpenStreetMap."),
+                gettext("This may take up to {delay:d} seconds.").format(
+                    delay=req_timeout
+                ),
+                gettext(
+                    "It looks like your requests takes a bit longer. "
+                    "We are still looking for nearby waters."
+                ),
+                gettext(
+                    "Due to the complexity of geospatial data, "
+                    "this may take up to {delay:d} seconds."
+                ).format(delay=req_timeout),
+            ]
+        return super(MesurementFormViewMixin, self).get_context_data(**kwargs)
+
+    def get_success_url(self):
+        return reverse(self.next_view_name, kwargs={"pk": self.object.pk})
+
+
+class MeasurementCreateView(MesurementFormViewMixin, CreateView):
+    form_class = MeasurementForm
+    title = gettext_lazy("Create new measurement")
 
     @method_decorator(require_permission_create_measurement)
     def dispatch(self, *args, **kwargs):
@@ -163,16 +196,8 @@ class MeasurementCreateView(TitleMixin, CreateView):
         # ``instance.save``.
         return super(MeasurementCreateView, self).form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        if "water_form" not in kwargs:
-            kwargs["water_form"] = WaterForm()
-        return super(MeasurementCreateView, self).get_context_data(**kwargs)
 
-    def get_success_url(self):
-        return reverse(self.next_view_name, kwargs={"pk": self.object.pk})
-
-
-class MeasurementEditView(TitleMixin, UpdateView):
+class MeasurementEditView(MesurementFormViewMixin, UpdateView):
     model = Measurement
     form_class = MeasurementForm
     template_name = MeasurementCreateView.template_name
@@ -182,16 +207,10 @@ class MeasurementEditView(TitleMixin, UpdateView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        if "water_form" not in kwargs:
-            kwargs["water_form"] = WaterForm()
-        return super(MeasurementEditView, self).get_context_data(**kwargs)
-
-    def get_success_url(self):
-        return reverse(self.next_view_name, kwargs={"pk": self.object.pk})
-
     def get_title(self) -> str:
-        return _("Edit Measurement {pk:d} - Information").format(pk=self.object.pk)
+        return gettext("Edit Measurement {pk:d} - Information").format(
+            pk=self.object.pk
+        )
 
 
 class MeasurementDeleteView(TitleMixin, DeleteView):

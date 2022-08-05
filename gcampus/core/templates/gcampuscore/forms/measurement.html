@@ -4,7 +4,7 @@
     {{ block.super }}
     {% load_mapbox_css %}
 {% endblock %}
-{% block main_class %}main-pb-0 bg-light main-pt-0{% endblock %}
+{% block main_class %}bg-light{% endblock %}
 {% block navbar_title %}{% endblock %}
 {% block navbar_other %}
     <ul class="nav navbar-nav me-auto">
@@ -73,6 +73,7 @@
                             </div>
                         {% endwith %}
                     </div>
+
                     <div class="px-5 py-3">
                         {# Location (map) #}
                         <div class="mb-3">
@@ -95,36 +96,56 @@
                                         </li>
                                     </ol>
                                 </div>
-                                {{ field }}
-                            {% endwith %}
-
-                            {% with field=form.water %}
-                                {{ field }}
-                                {% if form.location.errors or form.water.errors %}
+                                {% if form.location.errors %}
                                     <div class="my-2 box box-error">
                                         {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-1" %}
-                                        <b>{% translate "Error:" %}</b>
+                                        <b>{% translate "Error" %}</b>
                                         {{ form.location.errors }}
+                                    </div>
+                                {% endif %}
+                                {{ field }}
+                            {% endwith %}
+                        </div>
+                        <div class="mb-3">
+                            {% with field=form.water %}
+                                <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-1" %}</h4>
+                                {{ field }}
+                                {% if form.water.errors %}
+                                    <div class="my-2 box box-error">
+                                        {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                                        <b>{% translate "Error" %}</b>
                                         {{ form.water.errors }}
                                     </div>
                                 {% endif %}
                             {% endwith %}
                             <div class="list-group list-group-spaced mt-2" id="waterSuggestions">
-                                <div class="list-group-item list-group-item-spaced d-none"
-                                     id="waterLoading">
-                                    <div class="spinner-border spinner-border-sm" role="status"></div>
-                                    <span class="ms-2">
-                                    {% translate "Loading ..." %}
-                                </span>
-                                </div>
-                                <div class="list-group-item list-group-item-hover list-group-item-spaced cursor-pointer text-center d-none"
-                                     id="waterOsm">
-                                    <div class="shadow-box"></div>
-                                    <div class="shadow-box shadow-box-2"></div>
-                                    {% translate "Water not found?" %}
+                                <div class="list-group-item list-group-item-spaced text-center shadow-box" id="waterSuggestionsInfo">
+                                    {% translate "Nearby waters" %}
                                     <br>
                                     <small>
-                                        {% translate "Search for more waters on OpenStreetMaps" %}
+                                        {% blocktranslate trimmed %}
+                                            Select a location on the map to load
+                                            nearby waters
+                                        {% endblocktranslate %}
+                                    </small>
+                                </div>
+                                <div class="list-group-item list-group-item-spaced d-flex align-items-center d-none"
+                                     id="waterLoading">
+                                    <div class="spinner-border spinner-border-sm flex-shrink-1" role="status"></div>
+                                    <div class="d-flex flex-column align-items-start ms-4">
+                                        <span class="mb-0">
+                                            <b>{% translate "Loading ..." %}</b>
+                                        </span>
+                                        <small class="fade show" id="loadingText"></small>
+                                    </div>
+
+                                </div>
+                                <div class="list-group-item list-group-item-hover list-group-item-spaced cursor-pointer text-center shadow-box d-none"
+                                     id="waterOsm">
+                                    {% translate "Water not found?" %}
+                                    <br>
+                                    <small class="text-decoration-underline">
+                                        {% translate "Search for more waters on OpenStreetMap" %}
                                     </small>
                                 </div>
                                 {% include "gcampuscore/components/water_custom.html" with form=water_form only %}
@@ -173,6 +194,7 @@
     <script type="text/html" id="waterSuggestionTemplate">
         {% include "gcampuscore/components/water_suggestion.html" %}
     </script>
+    {{ loading_texts|json_script:"loadingTexts" }}
     <script type="text/javascript" src="{% static 'gcampuscore/js/watersuggestion.js' %}"></script>
     <script type="text/javascript" src="{% static 'gcampuscore/js/autofocus.js' %}"></script>
 {% endblock %}

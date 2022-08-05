@@ -87,6 +87,8 @@ class Measurement(util.DateModelMixin):
         blank=False,
         null=False,
         related_name="measurements",
+        verbose_name=_("Water"),
+        help_text=_("The water associated with this measurement"),
     )
     time: models.DateTimeField = models.DateTimeField(
         blank=False,

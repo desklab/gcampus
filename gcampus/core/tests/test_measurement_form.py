@@ -52,6 +52,5 @@ class MeasurementFormTest(
         self.assertFalse(form.is_valid())
         self.assertIn("water", form.errors)
         self.assertEqual(len(form.errors), 1)
-        self.assertEqual(
-            form.errors["water"], ErrorList([Field.default_error_messages["required"]])
-        )
+        expected_error = form._meta.error_messages["water"]["required"]
+        self.assertEqual(form.errors["water"], ErrorList([expected_error]))

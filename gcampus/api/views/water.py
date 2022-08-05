@@ -23,6 +23,7 @@ from typing import List, Optional, Tuple
 
 from django.db import transaction
 from django.db.models import QuerySet
+from django.conf import settings
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 from rest_framework.pagination import PageNumberPagination
@@ -124,8 +125,9 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         """
         a_lng, a_lat, b_lng, b_lat = bbox
         bbox_str: str = ",".join(f"{f:.5f}" for f in [a_lat, a_lng, b_lat, b_lng])
+        timeout = getattr(settings, "OVERPASS_TIMEOUT", 20)
         return f"""
-        [bbox:{bbox_str}][out:json];
+        [bbox:{bbox_str}][out:json][timeout:{timeout:d}];
         (
           way["natural"="water"]
             ["water"!="river"]

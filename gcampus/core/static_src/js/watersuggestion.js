@@ -21,8 +21,11 @@ const HIGHLIGHT_COLOR = rootStyle.getPropertyValue('--gcampus-highlight-water');
 const waterSuggestionTemplate = (
     document.getElementById('waterSuggestionTemplate').text
 );
+const infoElement = document.getElementById('waterSuggestionsInfo');
 const parentElement = document.getElementById('waterSuggestions');
+const loadingTexts = JSON.parse(document.getElementById('loadingTexts').textContent);
 const loadingElement = document.getElementById('waterLoading');
+const loadingTextElement = document.getElementById('loadingText');
 const osmElement = document.getElementById('waterOsm');
 const customWaterElement = document.getElementById('waterCustom');
 const measurementForm = document.getElementById('measurementForm');
@@ -212,12 +215,12 @@ class WaterList {
         }
     }
 
-    setState(state) {
+    setState(newState) {
         let keys = Object.keys(this.state);
         for (let i = 0; i < keys.length; i++) {
             let key = keys[i];
-            if (Object.prototype.hasOwnProperty.call(state, key))
-                this.state[key] = state[key];
+            if (Object.prototype.hasOwnProperty.call(newState, key))
+                this.state[key] = newState[key];
         }
         this.render();
     }
@@ -329,6 +332,8 @@ class WaterList {
         let lngLat = pointWidget.getLngLat();
         if (lngLat === null || lngLat === undefined) {
             return;
+        } else {
+            infoElement.setAttribute('style', 'display: none;');
         }
         let {lng, lat} = lngLat;
         this.lat = lat;
@@ -368,9 +373,28 @@ class WaterList {
         this.setState({
             loading: true
         });
+        let counter = 0;
+        loadingTextElement.textContent = loadingTexts[counter++];
+        let maxCounter = loadingTexts.length;
+        let textTimeout = null;
+        let textInterval = setInterval(() => {
+            loadingTextElement.classList.remove("show");
+            textTimeout = setTimeout(() => {
+                if (counter >= maxCounter)
+                    counter = 0;
+                loadingTextElement.textContent = loadingTexts[counter++];
+                loadingTextElement.classList.add("show");
+            }, 250);
+        }, 3000);
         fetchOverpassLookup(this.lng, this.lat)
             .then(data => this.setFeatures(data.features, 'osm'))
-            .catch(this.onError.bind(this));
+            .catch(this.onError.bind(this))
+            .finally(() => {
+                clearInterval(textInterval);
+                if (textTimeout !== null)
+                    clearTimeout(textTimeout);
+                loadingTextElement.textContent = "";
+            });
     }
 
     saveCustomWater(e) {
@@ -490,9 +514,9 @@ class WaterList {
     render() {
         let {features, loading, hasDatabase, hasOsm, hasCustom} = this.state;
         parentElement.querySelectorAll(
-            'input.list-group-item-input,label.list-group-item-spaced'
+            'input.list-group-item-spaced-input,label.list-group-item-spaced'
         ).forEach(
-            (el) => parentElement.removeChild(el)
+            (el) => el.parentNode && el.parentNode.removeChild(el)
         );
         for (let i = 0; i < features.length; i++) {
             let feature = features[i];
