@@ -31,6 +31,11 @@ from pathlib import Path
 
 from gcampus.settings.util import get_env_read_file
 
+# S3 endpoint should be proxied to the '/static/' endpoint of
+# the web application. This is necessary for JavaScript workers as they
+# have to obey the same-origin policy.
+STATIC_URL = "/static/"
+
 if os.environ.get("USE_S3_STORAGE", False):
     # Credentials
     AWS_ACCESS_KEY_ID = get_env_read_file("S3_ACCESS_KEY")
@@ -49,12 +54,6 @@ if os.environ.get("USE_S3_STORAGE", False):
 
     MEDIA_ROOT = None
     MEDIA_URL = None
-
-    STATIC_URL = "{endpoint:s}/{bucket:s}/{location:s}/".format(
-        endpoint=AWS_S3_ENDPOINT_URL,
-        bucket=AWS_STORAGE_BUCKET_NAME,
-        location="static",
-    )
 else:
     # Use django's default static file storage class. See
     # https://docs.djangoproject.com/en/3.1/ref/settings/#staticfiles-storage
@@ -62,5 +61,4 @@ else:
     _BASE_DIR = Path(__file__).resolve().parent.parent.parent
     STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
     # STATIC_ROOT = os.path.join(_BASE_DIR.parent, "static")
-    STATIC_URL = "/static/"
     MEDIA_ROOT = str(_BASE_DIR / "media")
