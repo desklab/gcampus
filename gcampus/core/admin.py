@@ -13,6 +13,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import httpx
 from django.contrib.gis import admin
 from django.db import transaction
 from django.db.models import QuerySet
@@ -37,11 +38,12 @@ def hide(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):  # noqa
 
 
 def osm_update(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):  # noqa
-    water: Water
     with transaction.atomic():
-        for water in queryset:
-            water.update_from_osm()
-            water.save()
+        with httpx.Client as client:
+            water: Water  # Used for type hints
+            for water in queryset:
+                water.update_from_osm(client=client)
+                water.save()
 
 
 def show(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):  # noqa

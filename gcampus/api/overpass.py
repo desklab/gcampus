@@ -36,11 +36,8 @@ import logging
 import re
 from dataclasses import dataclass
 from typing import Optional, List, Tuple
-from urllib import request
 
-import requests
-from requests.exceptions import Timeout
-from django.utils.translation import gettext
+import httpx
 from django.conf import settings
 from django.contrib.gis.geos import (
     GEOSGeometry,
@@ -235,7 +232,7 @@ def union(geometries: List[GEOSGeometry]) -> Optional[GEOSGeometry]:
     return _geos_union
 
 
-def _parse(response: requests.Response, **kwargs) -> List[Element]:
+def _parse(response: httpx.Response, **kwargs) -> List[Element]:
     if "object_hook" not in kwargs:
         kwargs["object_hook"] = _object_hook
     json_result = response.json(**kwargs)
@@ -250,6 +247,8 @@ def query(
     overpass_query: str,
     *,
     endpoint: Optional[str] = None,
+    request_timeout: Optional[int] = None,
+    client: Optional[httpx.Client] = None,
     **parse_kwargs,
 ) -> List[Element]:
     """Query Overpass API
@@ -261,6 +260,11 @@ def query(
         in the Django settings is used. Defaults to
         ``https://overpass-api.de/api/interpreter``.
     :type endpoint: Optional[str]
+    :param client: Optional timeout for the request. If no timeout is
+        specified, the default timeout is taken from the settings.
+    :type client: Optional[int]
+    :param client: Optional HTTPX client for sending requests.
+    :type client: Optional[httpx.Client]
     :param parse_kwargs: Additional keyword arguments passed to the
         ``_parse`` function.
     :returns: List of all elements
@@ -272,25 +276,35 @@ def query(
             settings, "OVERPASS_SERVER", "https://overpass-api.de/api/interpreter"
         )
     user_agent = getattr(
-        settings, "OVERPASS_USERAGENT", f"GewaesserCampus ({settings.GCAMPUS_HOMEPAGE})"
+        settings, "REQUEST_USER_AGENT", f"GewaesserCampus ({settings.GCAMPUS_HOMEPAGE})"
     )
-    request_timeout = getattr(settings, "OVERPASS_TIMEOUT", 20)
+    if request_timeout is None:
+        request_timeout = getattr(settings, "OVERPASS_TIMEOUT", 20)
     if timeout_regex.search(overpass_query) is None:
         logger.warning("Overpass query does not contain a timeout.")
     else:
         # Add 1 second to the timeout to avoid a request timeout just
         # before the overpass server returns a timeout.
         request_timeout += 1
+    if client is None:
+        _client = httpx.Client()
+    else:
+        _client = client
     try:
-        response: requests.Response = requests.post(
+        response: httpx.Response = _client.post(
             endpoint,
-            data=overpass_query.encode("utf-8"),
+            content=overpass_query,
             headers={"User-Agent": user_agent},
             timeout=request_timeout,
         )
-    except Timeout:
+    except httpx.TimeoutException:
         raise OverpassAPIError()
-    if response.ok:
+    finally:
+        if client is None:
+            # Close '_client' manually. Otherwise, the client has to be
+            # closed by the caller of this function.
+            _client.close()
+    if response.is_success:
         return _parse(response, **parse_kwargs)
     else:
         raise OverpassAPIError(response.text)

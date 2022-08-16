@@ -204,7 +204,9 @@ GEOLOCKUP_CACHE_TIMEOUT = 60 * 60 * 24 * 100  # 100 days
 # OVERPASS_SERVER = "https://overpass-api.de/api/interpreter"
 OVERPASS_SERVER = "https://overpass.kumi.systems/api/interpreter"
 OVERPASS_CACHE = 60 * 60 * 24 * 2
-OVERPASS_TIMEOUT = 20  # timeout in seconds
+OVERPASS_TIMEOUT = 20  # Timeout in seconds
+REQUEST_TIMEOUT = 5  # Short timeout for simple requests
+REQUEST_USER_AGENT = f"GewaesserCampus ({GCAMPUS_HOMEPAGE})"
 
 MAP_SETTINGS = {
     "CENTER": (8.4430, 49.4922),

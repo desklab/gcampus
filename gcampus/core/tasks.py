@@ -16,6 +16,7 @@
 import logging
 from typing import List, Dict, Optional
 
+import httpx
 from celery import shared_task
 from django.conf import settings
 from django.core.mail import mail_managers
@@ -213,6 +214,7 @@ def refresh_water_from_osm():
         .all()[: settings.MAX_CONCURRENT_WATER_UPDATES]
     )
     with transaction.atomic():
-        for water in waters:
-            water.update_from_osm()
-            water.save()
+        with httpx.Client() as client:
+            for water in waters:
+                water.update_from_osm(client=client)
+                water.save()
