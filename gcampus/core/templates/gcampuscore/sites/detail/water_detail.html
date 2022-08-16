@@ -26,6 +26,25 @@
                                 </h4>
                             </div>
                         </div>
+                        {% if object.osm_id %} {# Links are only available for OSM entries #}
+                            <div class="mb-2">
+                                <small class="text-muted">{% translate "Links" %}</small>
+                                <ul style="list-style-type: '&rarr;  ';">
+                                        <li>
+                                            <a class="link-dark" target="_blank" href="{{ object.osm_url }}">
+                                                {% translate "OpenStreetMap" %}
+                                            </a>
+                                        </li>
+                                    {% if object.wikipedia_url %}
+                                        <li>
+                                            <a class="link-dark" target="_blank" href="{{ object.wikipedia_url }}">
+                                                {% translate "Wikipedia" %}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        {% endif %}
                         <div class="mt-auto">
                             <a class="btn btn-sm btn-secondary"
                                href="{% url "gcampuscore:mapview" %}"
@@ -45,7 +64,7 @@
                         <style>
                             #map-detail {
                                 width: 100%;
-                                height: 500px;
+                                height: 320px;
                             }
                         </style>
                         {% map onload="loadMapFeatures" container="map-detail" class="shadow-sm" %}

@@ -23,15 +23,16 @@ __all__ = [
 ]
 
 import logging
+from functools import lru_cache
 from typing import Optional, List, Union
 
 import httpx
 from django.conf import settings
 from django.contrib.gis.db.models import GeometryField
 from django.db import models
-from django.utils.translation import gettext_lazy, pgettext_lazy
+from django.utils.translation import gettext_lazy, pgettext_lazy, get_language
 
-from gcampus.api import overpass
+from gcampus.api import overpass, wikidata
 from gcampus.api.overpass import Element
 from gcampus.core.models.util import EMPTY, DateModelMixin
 
@@ -268,6 +269,33 @@ class Water(DateModelMixin):
             name=element.get_name(),
             osm_element_type=element.get_element_type(),
         )
+
+    @property
+    @lru_cache
+    def osm_url(self) -> Optional[str]:
+        return f"https://www.openstreetmap.org/{self.osm_element_type}/{self.osm_id}"
+
+    @property
+    @lru_cache
+    def wikipedia_url(self) -> Optional[str]:
+        language = get_language()
+        url = None
+        if f"wikipedia:{language}" in self.tags:
+            page = self.tags[f"wikipedia:{language}"]
+            return f"https://{language}.wikipedia.org/wiki/{page}"
+        elif "wikipedia" in self.tags:
+            page: str = self.tags["wikipedia"]
+            if page.startswith(language):
+                return f"https://{language}.wikipedia.org/wiki/{page}"
+            else:
+                # Language does not match!
+                # Do not yet return, try Wikidata first
+                url = f"https://wikipedia.org/wiki/{page}"
+        if "wikidata" in self.tags:
+            _url = wikidata.get_wikipedia_url(self.tags["wikidata"], language=language)
+            if _url not in EMPTY:
+                url = _url
+        return url
 
     def update_from_element(self, element: Element):
         self.osm_id = element.osm_id
