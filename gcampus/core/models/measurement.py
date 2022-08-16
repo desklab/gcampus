@@ -262,6 +262,14 @@ class Parameter(util.DateModelMixin):
     objects = HiddenManager()
     all_objects = models.Manager()
 
+    @property
+    def is_comment_short(self):
+        """Short comments are less than 51 characters long and do not
+        contain any breaks. Short comments can be displayed in the
+        parameter table whereas longer comments need to be in their own
+        small modal."""
+        return len(self.comment) <= 50 and "\n" not in self.comment
+
     def __str__(self):
         return _("Parameter %(pk)s (%(name)s)") % {
             "pk": self.pk,
