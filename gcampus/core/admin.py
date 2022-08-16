@@ -97,10 +97,7 @@ class WaterAdmin(LeafletGeoAdmin):
                 "<span class='errors'>{error_message}</span>",
                 error_message=_("No OpenStreetMap ID provided!"),
             )
-        url: str = escape(
-            "https://www.openstreetmap.org/"
-            f"{instance.osm_element_type}/{instance.osm_id}"
-        )
+        url: str = escape(instance.osm_url)
         return format_html('<a href="{url}">{url}</a>', url=url)
 
 

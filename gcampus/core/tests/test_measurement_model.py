@@ -64,7 +64,7 @@ class MeasurementModelTest(BaseMockTaskTest):
         time.sleep(1.5)  # Sleep because geocoding is rate-limited
         measurement.save()
         measurement.location = LOCATION_OCEAN
-        self.assertTrue(measurement.is_location_changed())
+        self.assertTrue(measurement.did_location_change())
 
     def test_hidden_measurement(self):
         measurement = Measurement(

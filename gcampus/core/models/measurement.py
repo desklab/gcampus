@@ -134,7 +134,7 @@ class Measurement(util.DateModelMixin):
     def water_name(self):
         return self.water.display_name
 
-    def is_location_changed(self, update_fields=None):
+    def did_location_change(self, update_fields=None):
         if update_fields is not None and "location" in update_fields:
             # The ``update_fields`` parameter explicitly states that the
             # geographic location has been changed.
@@ -153,7 +153,7 @@ class Measurement(util.DateModelMixin):
 
     def save(self, **kwargs):
         update_fields = kwargs.get("update_fields", None)
-        if self.is_location_changed(update_fields=update_fields):
+        if self.did_location_change(update_fields=update_fields):
             self.location_name = get_location_name(self.location)
         return super(Measurement, self).save(**kwargs)
 
