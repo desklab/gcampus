@@ -138,8 +138,8 @@
                         },
                         'filter': ['==', '$type', 'Point']
                     });
-                    gcampusmap['mapbox-gl'].setupCluster( // TODO: show only measurements of the inspected water
-                        '{% url "gcampusapi:measurement-list" %}', map
+                    gcampusmap['mapbox-gl'].setupCluster(
+                        '{% url "gcampusapi:measurement-list" %}?water={{ object.id }}', map
                     );
                 });
         }

@@ -75,9 +75,9 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     # External apps
     "leaflet",
+    "django_filters",
     "rest_framework",
     "rest_framework_gis",
-    "django_filters",
     "django_celery_results",
     # gcampus specific apps
     "gcampus.tasks",
