@@ -12,10 +12,10 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
+from gcampus.api.filtersets import MeasurementFilter
 from gcampus.api.serializers import (
     MeasurementSerializer,
     ParameterTypeSerializer,
@@ -40,6 +40,7 @@ class MeasurementAPIViewSet(MethodSerializerMixin, viewsets.ReadOnlyModelViewSet
     # Pagination is disabled such that the api works better with
     # the map view
     pagination_class = None
+    filterset_class = MeasurementFilter
 
 
 class ParameterTypeAPIViewSet(viewsets.ReadOnlyModelViewSet):

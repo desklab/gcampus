@@ -23,13 +23,16 @@ __all__ = [
 ]
 
 import logging
+from functools import lru_cache
 from typing import Optional, List, Union
 
+import httpx
+from django.conf import settings
 from django.contrib.gis.db.models import GeometryField
 from django.db import models
-from django.utils.translation import gettext_lazy, pgettext_lazy
+from django.utils.translation import gettext_lazy, pgettext_lazy, get_language
 
-from gcampus.api import overpass
+from gcampus.api import overpass, wikidata
 from gcampus.api.overpass import Element
 from gcampus.core.models.util import EMPTY, DateModelMixin
 
@@ -267,6 +270,33 @@ class Water(DateModelMixin):
             osm_element_type=element.get_element_type(),
         )
 
+    @property
+    @lru_cache
+    def osm_url(self) -> Optional[str]:
+        return f"https://www.openstreetmap.org/{self.osm_element_type}/{self.osm_id}"
+
+    @property
+    @lru_cache
+    def wikipedia_url(self) -> Optional[str]:
+        language = get_language()
+        url = None
+        if f"wikipedia:{language}" in self.tags:
+            page = self.tags[f"wikipedia:{language}"]
+            return f"https://{language}.wikipedia.org/wiki/{page}"
+        elif "wikipedia" in self.tags:
+            page: str = self.tags["wikipedia"]
+            if page.startswith(language):
+                return f"https://{language}.wikipedia.org/wiki/{page}"
+            else:
+                # Language does not match!
+                # Do not yet return, try Wikidata first
+                url = f"https://wikipedia.org/wiki/{page}"
+        if "wikidata" in self.tags:
+            _url = wikidata.get_wikipedia_url(self.tags["wikidata"], language=language)
+            if _url not in EMPTY:
+                url = _url
+        return url
+
     def update_from_element(self, element: Element):
         self.osm_id = element.osm_id
         self.tags = element.tags
@@ -274,11 +304,27 @@ class Water(DateModelMixin):
         self.name = element.get_name()
         self.osm_element_type = element.get_element_type()
 
-    def update_from_osm(self):
-        query = self._get_overpass_query()
+    def update_from_osm(
+        self, client: Optional[httpx.Client], timeout: Optional[int] = None
+    ):
+        """Update the information of this water from OpenStreetMap using
+        the Overpass API. Note that the timeout passed as a keyword
+        argument differs from the default ``OVERPASS_TIMEOUT`` as simple
+        queries should take less time and the timeout should thereby be
+        much shorter. Instead, the default ``REQUEST_TIMEOUT`` setting
+        is used.
+
+        :param client: Optional client for the request.
+        :param timeout: Optional timeout for the request and Overpass query.
+        """
+        if timeout is None:
+            timeout = getattr(settings, "REQUEST_TIMEOUT", 5)
+        query = self._get_overpass_query(timeout=timeout)
         if query is None:
             return
-        elements: List[Element] = overpass.query(query)
+        elements: List[Element] = overpass.query(
+            query, client=client, request_timeout=timeout
+        )
         if len(elements) == 0:
             logger.warning(
                 f"No element with id '{self.osm_id}' found on OpenStreetMaps. "
@@ -290,8 +336,19 @@ class Water(DateModelMixin):
             return
         self.update_from_element(elements[0])
 
-    def _get_overpass_query(self) -> Optional[str]:
+    def _get_overpass_query(self, timeout: Optional[int] = None) -> Optional[str]:
+        """Generate an Overpass query for the current water instance
+        e.g. to update the model. Note that the timeout passed as a
+        keyword argument differs from the default ``OVERPASS_TIMEOUT``
+        as this timeout should be much shorter. Instead, the default
+        ``REQUEST_TIMEOUT`` setting is used.
+
+        :param timeout: Optional timeout set in the Overpass query.
+        :returns: String of the Overpass query.
+        """
         if self.osm_id is None or self.osm_element_type in EMPTY:
             return None
         element_type: OSMElementType = OSMElementType(self.osm_element_type)
-        return f"[out:json];{element_type.value!s}(id:{self.osm_id:d});out geom;"
+        if timeout is None:
+            timeout = getattr(settings, "REQUEST_TIMEOUT", 5)
+        return f"[out:json][timeout:{timeout:d}];{element_type.value!s}(id:{self.osm_id:d});out geom;"

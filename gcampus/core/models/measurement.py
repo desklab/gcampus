@@ -134,7 +134,7 @@ class Measurement(util.DateModelMixin):
     def water_name(self):
         return self.water.display_name
 
-    def is_location_changed(self, update_fields=None):
+    def did_location_change(self, update_fields=None):
         if update_fields is not None and "location" in update_fields:
             # The ``update_fields`` parameter explicitly states that the
             # geographic location has been changed.
@@ -153,7 +153,7 @@ class Measurement(util.DateModelMixin):
 
     def save(self, **kwargs):
         update_fields = kwargs.get("update_fields", None)
-        if self.is_location_changed(update_fields=update_fields):
+        if self.did_location_change(update_fields=update_fields):
             self.location_name = get_location_name(self.location)
         return super(Measurement, self).save(**kwargs)
 
@@ -261,6 +261,14 @@ class Parameter(util.DateModelMixin):
     # the ``all_objects`` manager.
     objects = HiddenManager()
     all_objects = models.Manager()
+
+    @property
+    def is_comment_short(self):
+        """Short comments are less than 51 characters long and do not
+        contain any breaks. Short comments can be displayed in the
+        parameter table whereas longer comments need to be in their own
+        small modal."""
+        return len(self.comment) <= 50 and "\n" not in self.comment
 
     def __str__(self):
         return _("Parameter %(pk)s (%(name)s)") % {
