@@ -103,7 +103,7 @@ class MeasurementForm(ModelForm):
 
     class Meta:
         model = Measurement
-        fields = ("name", "location", "comment", "water")
+        fields = ("name", "location", "comment", "water", "time")
         widgets = {
             # Inputs with type="datetime-local" are not well-supported
             # to this date. If we decide to replace the
