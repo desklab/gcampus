@@ -15,6 +15,14 @@
 {% block content %}
     <div class="container">
         <h3 class="py-2">{% trans "Generate new access keys" %}</h3>
+        <div class="box box-info mb-3">
+            {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+            {% blocktranslate trimmed %}
+                These <b>access keys</b> are used to create new
+                measurements. A single key can be shared by a group of
+                students working together.
+            {% endblocktranslate %}
+        </div>
         {% if disabled %}
             <div class="box box-warning d-flex align-items-center py-2" role="alert">
                 {% url "gcampusauth:register" as register_url %}
@@ -29,17 +37,7 @@
                 </div>
             </div>
         {% else %}
-            <div class="text-dark d-flex align-items-center mb-2" role="alert">
-                {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-2" %}
-                <span>
-                    {% blocktrans trimmed with max_count=max_count %}
-                        Please note that the number of access keys is
-                        limited to
-                        <strong>{{ max_count }} per course</strong>.
-                    {% endblocktrans %}
-                </span>
-            </div>
-            <form method="post" class="row row-cols-lg-auto has-validation align-items-center">
+            <form method="post" class="row row-cols-lg-auto has-validation align-items-center mb-2">
                 {% csrf_token %}
                 <div class="col-12">
                     {% with form.count as field %}
@@ -57,6 +55,16 @@
                     {% endwith %}
                 </div>
             </form>
+            <div class="text-dark d-flex align-items-center" role="alert">
+                {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-2" %}
+                <span>
+                    {% blocktrans trimmed with max_count=max_count %}
+                        Please note that the number of access keys is
+                        limited to
+                        <strong>{{ max_count }} per course</strong>.
+                    {% endblocktrans %}
+                </span>
+            </div>
         {% endif %}
         <h3 class="mt-5 py-2">{% trans "Access keys" %} ({{ count }})</h3>
         <div class="list-group list-group-spaced">
