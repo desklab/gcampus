@@ -37,8 +37,9 @@ function createMeasurementPopup(coords, map, data, template) {
     } else {
         getContentElement(item, 'measurementName').innerText = name;
     }
+
     getContentElement(item, 'measurementTime').innerText = (
-        new Date(time).toLocaleString()
+        new Date(time).toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})
     );
     let parameterIndicators = getContentElement(item, 'parameterList');
     for (let parameter of parameters) {
