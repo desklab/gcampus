@@ -20,6 +20,12 @@ __all__ = [
     "MeasurementListPDF",
 ]
 
+import base64
+from typing import Tuple, List
+
+from django.contrib.gis.db.models import Extent
+from django.contrib.gis.geos import Point
+from django.db.models import QuerySet
 from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy
@@ -34,6 +40,7 @@ from gcampus.documents.views.generic import (
     ListDocumentView,
     CachedDocumentView,
 )
+from gcampus.map.static import get_static_map
 
 
 class CourseOverviewPDF(CachedDocumentView):
@@ -85,9 +92,14 @@ class MeasurementDetailPDF(CachedDocumentView):
     context_object_name = "measurement"
     model = Measurement
     model_file_field = "document"
+    object: Measurement
 
-    def dispatch(self, request, *args, **kwargs):
-        return super(MeasurementDetailPDF, self).dispatch(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        map_bytes: bytes = get_static_map(
+            [self.object.location], center=self.object.location.tuple
+        )
+        kwargs["map"] = f"data:image/png;base64,{base64.b64encode(map_bytes).decode()}"
+        return super(MeasurementDetailPDF, self).get_context_data(**kwargs)
 
     def get_filename(self):
         if self.object.name in EMPTY:
@@ -102,52 +114,22 @@ class MeasurementListPDF(ListDocumentView):
     filename = gettext_lazy("gewaessercampus-measurement-list.pdf")
     context_object_name = "measurements"
     model = Measurement
+    filter: MeasurementFilterSet
 
-    def bounding_box(self):
-        # TODO: dirty proof of concept, fix
-        long_max = (
-            self.object_list.order_by("time").values_list("location")[0][0].coords[0]
-        )
-        long_min = (
-            self.object_list.order_by("time").values_list("location")[0][0].coords[0]
-        )
-        lat_max = (
-            self.object_list.order_by("time").values_list("location")[0][0].coords[1]
-        )
-        lat_min = (
-            self.object_list.order_by("time").values_list("location")[0][0].coords[1]
-        )
-        for measurement in self.object_list.order_by("time"):
-            coords = measurement.location.coords
-            if coords[0] > long_max:
-                long_max = coords[0]
-            if coords[0] < long_min:
-                long_min = coords[0]
-            if coords[1] > lat_max:
-                lat_max = coords[1]
-            if coords[1] < lat_min:
-                lat_min = coords[1]
-        return long_min, long_max, lat_min, lat_max
+    def get_bbox(self) -> Tuple[float, float, float, float]:
+        qs = self.get_queryset().all()  # creates a copy of the qs
+        aggregation_result = qs.aggregate(bbox=Extent("location"))
+        return aggregation_result["bbox"]
 
-    def map_overlay(self):
-        marker_list = ""
-        for measurement in self.object_list:
-            marker_list += (
-                "pin-l+083973("
-                + str(measurement.location.coords[0])
-                + ","
-                + str(measurement.location.coords[1])
-                + "),"
+    def get_queryset(self) -> QuerySet:
+        if not hasattr(self, "filter"):
+            self.filter = MeasurementFilterSet(
+                self.request.GET,
+                queryset=super(MeasurementListPDF, self).get_queryset(),
+                request=self.request,
             )
-        marker_list = marker_list[:-1]
-        return marker_list
-
-    def get_queryset(self):
-        queryset = super(MeasurementListPDF, self).get_queryset()
-        filterset = MeasurementFilterSet(
-            self.request.GET, queryset=queryset, request=self.request
-        )
-        return filterset.qs
+        self.queryset = self.filter.qs
+        return super(MeasurementListPDF, self).get_queryset()
 
     def get_context_data(self, *, object_list=None, **kwargs):
         queryset = object_list if object_list is not None else self.object_list
@@ -182,11 +164,12 @@ class MeasurementListPDF(ListDocumentView):
         kwargs["time_last"] = (
             queryset.only("time").values_list("time", flat=True).latest("time")
         )
-        bbox = self.bounding_box()
-        kwargs["bbox_long_min"] = bbox[0]
-        kwargs["bbox_long_max"] = bbox[1]
-        kwargs["bbox_lat_min"] = bbox[2]
-        kwargs["bbox_lat_max"] = bbox[3]
-        kwargs["map_overlay"] = self.map_overlay()
+        points: List[Point] = queryset.all().values_list("location", flat=True)
+        map_bytes: bytes = get_static_map(
+            points,
+            bbox=(self.get_bbox() if len(points) > 1 else None),
+            center=(points[0].tuple if len(points) == 1 else None),
+        )
+        kwargs["map"] = f"data:image/png;base64,{base64.b64encode(map_bytes).decode()}"
         context.update(kwargs)
         return super().get_context_data(**context)
