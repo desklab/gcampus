@@ -73,7 +73,10 @@ def get_wikipedia_urls(
     except httpx.TimeoutException:
         return {}
     finally:
-        client.close()
+        if client is None:
+            # Close '_client' manually. Otherwise, the client has to be
+            # closed by the caller of this function.
+            _client.close()
     if response.is_success:
         sitelinks: Optional[dict] = (
             response.json()
