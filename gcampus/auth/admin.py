@@ -18,7 +18,6 @@ from django.contrib.gis import admin
 from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from gcampus.admin.options import LinkedInlineMixin
 from gcampus.auth.models import AccessKey, CourseToken, User, Course
 from gcampus.core.admin import MeasurementInline
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
@@ -36,19 +35,22 @@ deactivate_token.short_description = _("Deactivate selected tokens")
 reactivate_token.short_description = _("Reactivate selected tokens")
 
 
-class AccessKeyInline(LinkedInlineMixin, admin.TabularInline):
+class AccessKeyInline(admin.TabularInline):
+    show_change_link = True
     model = AccessKey
-    fields = ("token", "deactivated") + LinkedInlineMixin.readonly_fields
+    fields = ("token", "deactivated")
     extra = 0
 
 
-class CourseTokenInline(LinkedInlineMixin, admin.TabularInline):
+class CourseTokenInline(admin.TabularInline):
+    show_change_link = True
     model = CourseToken
-    fields = ("token", "deactivated") + LinkedInlineMixin.readonly_fields
+    fields = ("token", "deactivated")
     extra = 0
 
 
-class CourseInline(LinkedInlineMixin, admin.TabularInline):
+class CourseInline(admin.TabularInline):
+    show_change_link = True
     model = Course
     extra = 0
 

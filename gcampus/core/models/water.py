@@ -186,6 +186,19 @@ class Water(DateModelMixin):
     )
     name = models.CharField(null=False, default="", blank=True, max_length=200)
 
+    requires_update = models.BooleanField(
+        default=False,
+        verbose_name=gettext_lazy("requires update"),
+    )
+
+    #: Internal comment used in the review process. Should not be
+    #: public.
+    internal_comment = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name=gettext_lazy("internal comment"),
+    )
+
     _default_water_name: str = gettext_lazy("Unnamed {water_type!s}")
 
     def save(self, **kwargs):

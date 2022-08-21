@@ -21,7 +21,6 @@ from django.utils.html import escape, format_html
 from django.utils.translation import gettext_lazy as _
 from leaflet.admin import LeafletGeoAdmin
 
-from gcampus.admin.options import LinkedInlineMixin
 from gcampus.core.models import (
     Measurement,
     ParameterType,
@@ -55,19 +54,32 @@ show.short_description = _("Show selected items for all users")
 osm_update.short_description = _("Update from OpenStreetMap")
 
 
-class MeasurementInline(LinkedInlineMixin, admin.TabularInline):
+class MeasurementInline(admin.TabularInline):
+    show_change_link = True
     model = Measurement
-    fields = ("name", "water") + LinkedInlineMixin.readonly_fields
+    fields = ("name", "water")
     extra = 0
 
 
-class ParameterInline(LinkedInlineMixin, admin.TabularInline):
+class ParameterInline(admin.TabularInline):
+    show_change_link = True
     model = Parameter
     extra = 0
 
 
 class MeasurementAdmin(LeafletGeoAdmin):
-    list_filter = ("hidden",)
+    list_filter = ("hidden", "requires_review")
+    list_display = (
+        "__str__",
+        "name",
+        "water_name",
+        "location_name",
+        "time",
+        "token",
+        "hidden",
+        "requires_review",
+    )
+    list_display_links = ("__str__",)
     inlines = [ParameterInline]
     readonly_fields = ADMIN_READ_ONLY_FIELDS + ("location_name",)
     actions = [hide, show]
@@ -85,7 +97,15 @@ class MeasurementAdmin(LeafletGeoAdmin):
 
 
 class WaterAdmin(LeafletGeoAdmin):
-    list_display = ("display_name", "osm_id", "flow_type", "water_type", "updated_at")
+    list_filter = ("osm_element_type", "flow_type", "requires_update")
+    list_display = (
+        "display_name",
+        "osm_id",
+        "flow_type",
+        "water_type",
+        "updated_at",
+        "requires_update",
+    )
     inlines = [MeasurementInline]
     actions = (osm_update,)
     readonly_fields = ADMIN_READ_ONLY_FIELDS + ("osm_url",)
