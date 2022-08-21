@@ -145,7 +145,7 @@ def get_intervals_from_today(date: datetime.datetime) -> List[datetime.datetime]
     :returns: List of datetime objects one interval (week, month or year) apart
     """
     today = timezone.now()
-    num_bins = math.ceil((today - date).days / 7) + 1
+    num_bins = math.ceil((today - date).days / 7) + 2
     if not num_bins > 52:
 
         dates: List[datetime.datetime] = [
@@ -153,14 +153,14 @@ def get_intervals_from_today(date: datetime.datetime) -> List[datetime.datetime]
         ]
         return dates
 
-    num_bins = math.ceil((today - date).days / 30) + 1
+    num_bins = math.ceil((today - date).days / 30) + 2
     if not num_bins > 48:
         dates: List[datetime.datetime] = [
             today - datetime.timedelta(weeks=x * 4) for x in reversed(range(num_bins))
         ]
         return dates
 
-    num_bins = math.ceil((today - date).days / 365) + 1
+    num_bins = math.ceil((today - date).days / 365) + 2
     dates: List[datetime.datetime] = [
         today - datetime.timedelta(weeks=x * 52) for x in reversed(range(num_bins))
     ]
