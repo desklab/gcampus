@@ -197,7 +197,6 @@ MEASUREMENT_MIN_TIME = datetime.datetime(1900, month=1, day=1, tzinfo=utc)
 MEASUREMENT_MAX_TIME = datetime.datetime(2100, month=1, day=1, tzinfo=utc)
 
 # Geo Settings
-NOMINATIM_USER_AGENT = "gcampus"
 NOMINATIM_DOMAIN = "nominatim.openstreetmap.org"
 GEOLOCKUP_CACHE_TIMEOUT = 60 * 60 * 24 * 100  # 100 days
 
