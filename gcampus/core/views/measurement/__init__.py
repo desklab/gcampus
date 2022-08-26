@@ -59,6 +59,7 @@ class MeasurementDetailView(FormMixin, TitleMixin, DetailView):
     )
     template_name = "gcampuscore/sites/detail/measurement_detail.html"
     form_class = ReportForm
+    object: Measurement
 
     def get_context_data(self, **kwargs):
         kwargs.setdefault("can_edit", False)

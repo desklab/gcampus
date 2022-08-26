@@ -85,32 +85,31 @@
                     {% translate "Metadata" %}
                 </div>        
                 <div class="container measurementinfo-container h-abs-800">
-                        <div class="w-abs-700 float-left measurementmeta-container">
-                            <h5 class="measurementmeta-heading text-muted">{% translate "Water name" %}</h5>
-                                {% if object.water_name %}
-                                    <h3 class="measurementmeta-content color-secondary">{{ object.water_name }}
-                                {% else %}
-                                    <h3 class="measurementmeta-content color-grey">{% translate "N/A" context "no value provided (water name, comment, etc)" %}
-                                {% endif %}
-                            </h3>
-                            <h5 class="measurementmeta-heading text-muted">{% translate "Time" %}</h5>
-                            <h3 class="measurementmeta-content color-secondary">{{ object.time|localtime|localize }}</h3>
-                            <h5 class="measurementmeta-heading text-muted">{% translate "Note" %}</h5>
-                                {% if object.comment %}
-                                    <p>{{ object.comment }}
-                                {% else %}
-                                    <p class="measurementmeta-content color-grey">{% translate "N/A" context "no value provided (water name, comment, etc)" %}
-                                {% endif %}
-                            </p>
-                        </div>
-                        <div class="w-abs-800 float-left">
+                    <div class="w-abs-700 float-left measurementmeta-container">
+                        <h5 class="measurementmeta-heading text-muted">{% translate "Water name" %}</h5>
+                            {% if object.water_name %}
+                                <h3 class="measurementmeta-content color-secondary">{{ object.water_name }}
+                            {% else %}
+                                <h3 class="measurementmeta-content color-grey">{% translate "N/A" context "no value provided (water name, comment, etc)" %}
+                            {% endif %}
+                        </h3>
+                        <h5 class="measurementmeta-heading text-muted">{% translate "Time" %}</h5>
+                        <h3 class="measurementmeta-content color-secondary">{{ object.time|localtime|localize }}</h3>
+                        <h5 class="measurementmeta-heading text-muted">{% translate "Note" %}</h5>
+                            {% if object.comment %}
+                                <p>{{ object.comment }}
+                            {% else %}
+                                <p class="measurementmeta-content color-grey">{% translate "N/A" context "no value provided (water name, comment, etc)" %}
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="w-abs-800 float-left">
                             <div class ="w-abs-800 h-abs-600">
                                 <img src="{{ map }}" alt="Map image">
                             </div>
                         </div>
-                    </div>
                 </div>
-            </div> 
+            </div>
 
             <!-- measured values -->
             <div class="w-100">
@@ -151,7 +150,6 @@
                 </div>
             </div>
        </div>
-
     </article>
 </body>
 </html>

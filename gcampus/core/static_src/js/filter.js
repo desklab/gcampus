@@ -42,8 +42,8 @@ function initRangeSlider(interval_list_js) {
             [slide1, slide2] = [slide2, slide1];
         }
 
-        // Color the bars depending opn the slider position
-        for (var i = 0; i < interval_list_js.length - 1; i++) {
+        // Color the bars depending on the slider position
+        for (let i = 0; i < interval_list_js.length - 1; i++) {
             if (i < slide1 || i > slide2) {
                 document.getElementById('bar_el_' + i).style.background = BLUE_200;
             } else {
@@ -81,7 +81,7 @@ function initRangeSlider(interval_list_js) {
             document.getElementById('to_span').innerHTML = end_date.toLocaleDateString();
 
             // Color bars depending on slider positions
-            for (var i = 0; i < interval_list_js.length - 1; i++) {
+            for (let i = 0; i < interval_list_js.length - 1; i++) {
                 if (i < slide1 || i > slide2) {
                     document.getElementById('bar_el_' + i).style.background = BLUE_200;
                 } else {

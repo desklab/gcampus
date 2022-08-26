@@ -191,12 +191,14 @@
 {% endblock body_js %}
 {% if messages %}
     <script type="text/javascript">
-        let toastElList = [].slice.call(document.querySelectorAll('.toast'));
-        let toastList = toastElList.map(function (toastEl) {
-            let toast = new gcampuscore.main.Toast(toastEl, {delay: 10000});
-            toast.show();
-            return toast
-        });
+        (function () {
+            let toastElList = [].slice.call(document.querySelectorAll('.toast'));
+            toastElList.map(function (toastEl) {
+                let toast = new gcampuscore.main.Toast(toastEl, {delay: 10000});
+                toast.show();
+                return toast
+            });
+        })();
     </script>
 {% endif %}
 {% block extra_body %}

@@ -260,6 +260,7 @@ def query(
         in the Django settings is used. Defaults to
         ``https://overpass-api.de/api/interpreter``.
     :type endpoint: Optional[str]
+    :param request_timeout: Timeout in seconds for the query.
     :param client: Optional timeout for the request. If no timeout is
         specified, the default timeout is taken from the settings.
     :type client: Optional[int]

@@ -15,9 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import Collapse from 'bootstrap/js/src/collapse';
-
-
 const TEMPLATE_POSTFIX = 'EMPTY_FORM_TEMPLATE';
 
 

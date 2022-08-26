@@ -364,4 +364,8 @@ class Water(DateModelMixin):
         element_type: OSMElementType = OSMElementType(self.osm_element_type)
         if timeout is None:
             timeout = getattr(settings, "REQUEST_TIMEOUT", 5)
-        return f"[out:json][timeout:{timeout:d}];{element_type.value!s}(id:{self.osm_id:d});out geom;"
+        return (
+            f"[out:json][timeout:{timeout:d}];"
+            f"{element_type.value!s}(id:{self.osm_id:d});"
+            "out geom;"
+        )
