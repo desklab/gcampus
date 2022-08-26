@@ -20,8 +20,8 @@ from typing import Optional, Dict
 
 import httpx
 from django.conf import settings
-from django.utils.translation import get_language
 from django.core.cache import cache
+from django.utils.translation import get_language
 
 from gcampus.core.models.util import EMPTY
 

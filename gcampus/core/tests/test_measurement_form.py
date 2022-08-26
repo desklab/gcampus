@@ -15,15 +15,8 @@
 
 from datetime import datetime
 
-from django.forms import Field
 from django.forms.utils import ErrorList
 
-from gcampus.auth.exceptions import (
-    TOKEN_EMPTY_ERROR,
-    TOKEN_INVALID_ERROR,
-    ACCESS_KEY_DEACTIVATED_ERROR,
-)
-from gcampus.auth.fields.token import HIDDEN_TOKEN_FIELD_NAME
 from gcampus.core.forms.measurement import MeasurementForm
 from gcampus.core.tests.mixins import WaterTestMixin, FormTestMixin, TokenTestMixin
 from gcampus.tasks.tests.utils import BaseMockTaskTest

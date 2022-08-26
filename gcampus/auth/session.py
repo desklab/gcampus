@@ -14,7 +14,6 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
-from datetime import datetime
 from typing import Optional
 
 from django.contrib import messages

@@ -21,9 +21,9 @@ __all__ = [
 
 from typing import List, Optional, Tuple
 
+from django.conf import settings
 from django.db import transaction
 from django.db.models import QuerySet
-from django.conf import settings
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 from rest_framework.pagination import PageNumberPagination

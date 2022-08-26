@@ -13,13 +13,13 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import os
 import datetime
+import os
 from pathlib import Path
 
 from django.contrib import messages
-from django.utils.translation import gettext_lazy as _
 from django.utils.timezone import utc
+from django.utils.translation import gettext_lazy as _
 
 from gcampus import __version__
 from gcampus.settings.util import get_env_read_file, get_email_tuple_list

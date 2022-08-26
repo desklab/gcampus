@@ -24,7 +24,6 @@ from gcampus.auth.exceptions import (
     TOKEN_INVALID_ERROR,
     COURSE_TOKEN_DEACTIVATED_ERROR,
     ACCESS_KEY_DEACTIVATED_ERROR,
-    TokenPermissionError,
 )
 from gcampus.auth.fields.token import HyphenatedTokenField
 from gcampus.auth.forms.token import TOKEN_FIELD_NAME

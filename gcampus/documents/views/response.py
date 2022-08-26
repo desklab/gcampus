@@ -16,10 +16,10 @@
 from io import BytesIO
 from typing import Type
 
-from django.utils import translation
 from django.db.models import Model
 from django.db.models.fields.files import FieldFile
 from django.http import StreamingHttpResponse, HttpRequest
+from django.utils import translation
 
 from gcampus.documents.document import (
     render_document,

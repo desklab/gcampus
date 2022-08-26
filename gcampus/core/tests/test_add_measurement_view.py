@@ -17,11 +17,8 @@ from datetime import datetime
 from unittest.mock import patch
 
 from django.contrib.auth.models import Permission
-from django.forms.utils import ErrorList
 from django.urls import reverse
 
-from gcampus.auth.exceptions import TOKEN_EMPTY_ERROR, TOKEN_INVALID_ERROR
-from gcampus.auth.fields.token import HIDDEN_TOKEN_FIELD_NAME
 from gcampus.core.forms.measurement import MeasurementForm
 from gcampus.core.tests.mixins import (
     WaterTestMixin,

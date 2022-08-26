@@ -18,7 +18,6 @@
 import mapboxgl from '!mapbox-gl';
 
 
-
 class MapboxGLPointWidget {
     TYPE = 'Point';
     _map;

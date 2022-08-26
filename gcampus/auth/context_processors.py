@@ -16,8 +16,8 @@
 from django.conf import settings
 from django.http import HttpRequest
 
-from gcampus.auth.models.token import TokenType
 from gcampus.auth import session
+from gcampus.auth.models.token import TokenType
 
 
 def auth(request: HttpRequest) -> dict:

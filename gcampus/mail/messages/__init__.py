@@ -20,8 +20,8 @@ import pypandoc
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.http import HttpRequest
 from django.template.loader import render_to_string
-from premailer import transform
 from lxml import html as lxml_html
+from premailer import transform
 
 from gcampus.core import get_base_url
 from gcampus.documents.utils import mock_request
