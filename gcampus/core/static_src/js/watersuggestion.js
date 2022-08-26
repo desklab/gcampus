@@ -255,7 +255,7 @@ class WaterList {
                 }
             }
         }
-        this.highlightFeature(this.currentPermanentHighlight);
+        this.highlightFeature(this.currentPermanentHighlight, true);
 
         if (source === 'osm') {
             this.setState({
@@ -288,9 +288,11 @@ class WaterList {
      * others.
      *
      * @param featureId {number}: Feature ID
+     * @param force {boolean}: Highlight the feature forcefully (do not
+     *  check whether it is already highlighted).
      */
-    highlightFeature(featureId) {
-        if (this.currentHighlight === featureId) {
+    highlightFeature(featureId, force = false) {
+        if (!force && this.currentHighlight === featureId) {
             return;
         }
         this.map.removeFeatureState({
