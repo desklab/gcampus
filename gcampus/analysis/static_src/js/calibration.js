@@ -42,9 +42,9 @@ const PRIMARY_COLOR_LIGHT = rootStyle.getPropertyValue('--gcampus-primary-light'
 
 
 function makeArr(startValue, stopValue, cardinality) {
-    var arr = [];
-    var step = (stopValue - startValue) / (cardinality - 1);
-    for (var i = 0; i < cardinality; i++) {
+    let arr = [];
+    let step = (stopValue - startValue) / (cardinality - 1);
+    for (let i = 0; i < cardinality; i++) {
         arr.push(startValue + (step * i));
     }
     return arr;
@@ -64,7 +64,6 @@ function convert(pk, value) {
 
 
 function createChart(pk, el, formula, title, x_label, y_label, x_max, x_min) {
-
     x_min = parseFloat(x_min);
     x_max = parseFloat(x_max);
     _functionCache[pk] = new Function(
@@ -76,10 +75,10 @@ function createChart(pk, el, formula, title, x_label, y_label, x_max, x_min) {
         let x = convert(pk, y_data[i]);
         x_data.push(parseFloat(x));
     }
-    if (x_max == -9999) {
+    if (x_max === -9999) {
         x_max = parseFloat(x_data[x_data.length - 1]);
     }
-    if (x_min == -9999) {
+    if (x_min === -9999) {
         x_min = parseFloat(x_data[0]);
     }
 
@@ -158,4 +157,27 @@ function updateAnnotation(x, y, chart) {
     chart.update();
 }
 
-export {createChart, updateAnnotation, convert};
+
+function formConversion(e, id, chart) {
+    e.preventDefault();
+    if (!e.target.checkValidity()) {
+        if (e.target.reportValidity) {
+            e.target.reportValidity();
+        }
+    } else {
+        let data = new FormData(e.target);
+        let concentration = e.target.elements.namedItem('concentration');
+        let od = parseFloat(data.get('od'));
+        let concentration_value = convert(id, od);
+        concentration.value = String(concentration_value);
+        updateAnnotation(concentration_value, od, chart);
+    }
+}
+
+function copyToClipboard(id) {
+    let concentration = document.getElementById('concentration_' + id).value;
+    if (concentration !== '')
+        navigator.clipboard.writeText(Number(concentration).toLocaleString());
+}
+
+export {createChart, updateAnnotation, convert, formConversion, copyToClipboard};

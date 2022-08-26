@@ -1,9 +1,5 @@
 {% extends "gcampuscore/base.html" %}
 {% load i18n static %}
-{% block extra_head %}
-    {{ block.super }}
-    <script type="text/javascript" src="{% static 'gcampusanalysis/js/calibration.js' %}"></script>
-{% endblock %}
 {% block main_class %}main-pb-0 main-pt-0{% endblock %}
 {% block navbar_title %}
     {% translate "Optical Density Converter" %} - {{ parameter.name }}
@@ -47,5 +43,35 @@
             </div>
         {% endfor %}
     </div>
+{% endblock %}
+{% block body_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'gcampusanalysis/js/calibration.js' %}"></script>
+    <script type="text/javascript">
+        {% for calibration in calibrations %}
+        let chart{{ calibration.pk }} = (function () {
+            let xLabel = '{{ parameter.name }}';
+            if ('{{ parameter.unit }}' !== '') {
+                xLabel = xLabel + ' [{{ parameter.unit }}]';
+            }
+            return gcampusanalysis.calibration.createChart(
+                {{ calibration.pk }},
+                document.getElementById("chart{{ calibration.name }}"),
+                '{{ calibration.calibration_formula }}',
+                '{% blocktranslate with parameter_type=calibration.parameter_type %}Calibration fit for {{ parameter_type }}{% endblocktranslate %}',
+                xLabel,
+                '{% translate "Optical density" %}',
+                '{{ calibration.x_max }}',
+                '{{ calibration.x_min }}'
+            );
+        })();
+
+        document.getElementById('conversionForm{{ calibration.pk }}')
+            .addEventListener(
+                'submit',
+                (event) => gcampusanalysis.calibration.formConversion(event, {{ calibration.pk }}, chart{{ calibration.pk }})
+            );
+        {% endfor %}
+    </script>
 {% endblock %}
 
