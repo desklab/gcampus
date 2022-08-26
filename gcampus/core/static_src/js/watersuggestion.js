@@ -227,7 +227,14 @@ class WaterList {
 
     setFeatures(features, source) {
         if (source === 'osm') {
-            features = this.state.features.concat(features || []);
+            features = features || [];
+            let newIds = features.map(f => f.id);
+            // Concat the old features with the new features.
+            // The old features are stored in the database and have been
+            // retrieved on the first request.
+            features = features.concat(
+                this.state.features.filter(f => !newIds.includes(f.id))
+            );
         } else if (source === 'custom') {
             features = this.state.features.concat([features]);
         } else if (source === 'db') {

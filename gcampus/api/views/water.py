@@ -61,8 +61,8 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         (OpenStreetMaps) API.
 
         :param request: Current request, provided automatically.
-        :returns: Serialized GeoJSON representation of all missing
-            waters in the bounding box provided as URL parameters.
+        :returns: Serialized GeoJSON representation of all waters in the
+            bounding box provided as URL parameters.
         """
         # Construct a filter set and retrieve the GeoLookupValue
         # object from the current request.
