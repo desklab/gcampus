@@ -254,37 +254,28 @@ class WaterList {
             this.currentPermanentHighlight = features.id;
         } else {
             if (this.currentPermanentHighlight !== null) {
-                let hlFeature = features.filter(
-                    (f) => f.id === this.currentPermanentHighlight
-                );
-                if (hlFeature.length !== 1) {
+                let ids = features.map(f => f.id);
+                if (!ids.includes(this.currentPermanentHighlight)) {
                     this.currentPermanentHighlight = null;
                 }
             }
         }
         this.highlightFeature(this.currentPermanentHighlight, true);
 
+        let newState = {
+            loading: false,
+            features: features,
+        };
         if (source === 'osm') {
-            this.setState({
-                loading: false,
-                features: features,
-                hasOsm: true,
-            });
+            newState.hasOsm = true;
         } else if (source === 'custom') {
-            this.setState({
-                loading: false,
-                features: features,
-                hasDatabase: true,
-                hasOsm: true,
-                hasCustom: true
-            });
+            newState.hasDatabase = true;
+            newState.hasOsm = true;
+            newState.hasCustom = true;
         } else {
-            this.setState({
-                loading: false,
-                features: features,
-                hasDatabase: true
-            });
+            newState.hasDatabase = true;
         }
+        this.setState(newState);
     }
 
     /**
