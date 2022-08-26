@@ -56,12 +56,28 @@ class CourseInline(admin.TabularInline):
 
 
 class CourseAdmin(admin.ModelAdmin):
+    list_filter = ("email_verified",)
+    list_display = (
+        "__str__",
+        "name",
+        "school_name",
+        "teacher_name",
+        "email_verified",
+    )
+    list_display_links = ("__str__",)
     inlines = [CourseTokenInline, AccessKeyInline]
     readonly_fields = ADMIN_READ_ONLY_FIELDS
 
 
 class AccessKeyAdmin(admin.ModelAdmin):
     list_filter = ("deactivated",)
+    list_display = (
+        "masked_token",
+        "course",
+        "last_login",
+        "deactivated",
+    )
+    list_display_links = ("masked_token",)
     filter_horizontal = ("permissions",)
     inlines = [MeasurementInline]
     readonly_fields = ADMIN_READ_ONLY_FIELDS
@@ -70,6 +86,13 @@ class AccessKeyAdmin(admin.ModelAdmin):
 
 class CourseTokenAdmin(admin.ModelAdmin):
     list_filter = ("deactivated",)
+    list_display = (
+        "masked_token",
+        "course",
+        "last_login",
+        "deactivated",
+    )
+    list_display_links = ("masked_token",)
     filter_horizontal = ("permissions",)
     readonly_fields = ADMIN_READ_ONLY_FIELDS
     actions = [deactivate_token, reactivate_token]

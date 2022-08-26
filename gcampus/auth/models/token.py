@@ -16,6 +16,7 @@
 import enum
 import logging
 import re
+import textwrap
 from abc import abstractmethod
 from typing import Union, Tuple, List
 
@@ -88,7 +89,7 @@ class BaseToken(DateModelMixin):
     token: Union[models.CharField, str]
     #: The course associated with this token. Note that this is a
     #: foreign key relation (many to one) for access keys while it is a
-    #: one to one relation for course tokens.
+    #: one-to-one relation for course tokens.
     course: Union[models.ForeignKey, Course]
     course_id: int
     #: List of permissions (many to many field) for this token.
@@ -121,6 +122,14 @@ class BaseToken(DateModelMixin):
         :attr:`gcampus.auth.models.Course.email_verified`).
         """
         return not self.deactivated and self.course.email_verified
+
+    @property
+    def masked_token(self) -> str:
+        if self.token is None or self.token == "":
+            return ""
+        length = len(self.token)
+        masked_token: str = ("*" * (length - 3)) + self.token[-3:]
+        return "-".join(textwrap.wrap(masked_token, 4))
 
     def apply_default_permissions(self):
         """Apply all default permissions as specified in
