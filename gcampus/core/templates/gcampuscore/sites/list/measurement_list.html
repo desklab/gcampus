@@ -137,5 +137,8 @@
 {% endblock content %}
 {% block extra_body %}
     <script type="text/javascript" src="{% static 'gcampuscore/js/filter.js' %}"></script>
+    <script type="text/javascript">
+        (function () {gcampuscore.filter.initRangeSlider(interval_list_js);})();
+    </script>
 {% endblock extra_body %}
 
