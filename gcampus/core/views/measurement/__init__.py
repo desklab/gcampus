@@ -124,7 +124,8 @@ class MeasurementDetailView(FormMixin, TitleMixin, DetailView):
         return cleandoc(email_string)
 
     def form_valid(self, form):
-        self.object.update(requires_review=True)
+        self.object.requires_review = True
+        self.object.save(update_fields=("requires_review",))
         current_url = self.request.get_full_path()
         info = self.model._meta.app_label, self.model._meta.model_name  # noqa
         admin_url = reverse(
