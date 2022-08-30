@@ -14,7 +14,7 @@ RUN npm run build && rm -rf gcampus/*/static_src package*.json node_modules
 ########################################################################
 # gcampus Dockerfile
 ########################################################################
-FROM python:3.9-slim
+FROM python:3.10-slim
 LABEL maintainer="Jonas Drotleff <j.drotleff@desk-lab.de>"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
