@@ -68,7 +68,13 @@ class ParameterInline(admin.TabularInline):
 
 
 class MeasurementAdmin(LeafletGeoAdmin):
-    list_filter = ("hidden", "requires_review")
+    search_fields = (
+        "name",
+        "water__name",
+        "location_name",
+        "comment",
+    )
+    list_filter = ("hidden", "requires_review", "time", "updated_at")
     list_display = (
         "__str__",
         "name",
@@ -97,6 +103,7 @@ class MeasurementAdmin(LeafletGeoAdmin):
 
 
 class WaterAdmin(LeafletGeoAdmin):
+    search_fields = ("name", "osm_id")
     list_filter = ("osm_element_type", "flow_type", "requires_update")
     list_display = (
         "display_name",
@@ -134,8 +141,15 @@ class CalibrationAdmin(admin.ModelAdmin):
 
 
 class ParameterAdmin(admin.ModelAdmin):
+    search_fields = ("parameter_type__name",)
+    list_filter = ("parameter_type", "hidden")
+    list_display = (
+        "__str__",
+        "parameter_type",
+        "measurement",
+        "hidden",
+    )
     readonly_fields = ADMIN_READ_ONLY_FIELDS
-    list_filter = ("hidden",)
     default_manager_name = "all_objects"
     actions = [hide, show]
 

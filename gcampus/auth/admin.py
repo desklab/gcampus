@@ -57,6 +57,7 @@ class CourseInline(admin.TabularInline):
 
 class CourseAdmin(admin.ModelAdmin):
     list_filter = ("email_verified",)
+    search_fields = ("name", "school_name", "teacher_name")
     list_display = (
         "__str__",
         "name",
@@ -70,7 +71,8 @@ class CourseAdmin(admin.ModelAdmin):
 
 
 class AccessKeyAdmin(admin.ModelAdmin):
-    list_filter = ("deactivated",)
+    list_filter = ("deactivated", "last_login")
+    search_fields = ("course__name", "course__school_name", "course__teacher_name")
     list_display = (
         "masked_token",
         "course",
@@ -85,7 +87,8 @@ class AccessKeyAdmin(admin.ModelAdmin):
 
 
 class CourseTokenAdmin(admin.ModelAdmin):
-    list_filter = ("deactivated",)
+    list_filter = ("deactivated", "last_login")
+    search_fields = ("course__name", "course__school_name", "course__teacher_name")
     list_display = (
         "masked_token",
         "course",
