@@ -95,26 +95,6 @@
     }
   },
   {
-    "model": "gcampuscore.limit",
-    "pk": 1,
-    "fields": {
-      "limit_type": "gut",
-      "limit_value": 80.0,
-      "parameter_limit": 2,
-      "graph_color": "yellow"
-    }
-  },
-  {
-    "model": "gcampuscore.limit",
-    "pk": 2,
-    "fields": {
-      "limit_type": "sehr gut",
-      "limit_value": 40.0,
-      "parameter_limit": 2,
-      "graph_color": "green"
-    }
-  },
-  {
     "model": "gcampuscore.parameter",
     "pk": 4,
     "fields": {

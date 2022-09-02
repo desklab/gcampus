@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("gcampuscore", "0008_bachindex_saprobicindex_structureindex_trophicindex_and_more"),
+        ("gcampuscore", "0008_measurement_internal_comment_and_more"),
     ]
 
     operations = [
