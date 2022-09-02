@@ -98,7 +98,7 @@
                             <br>
                             <p>
                                 {% if object.comment %}
-                                    {{ object.comment|linebreaks  }}
+                                    {{ object.comment|linebreaks }}
                                 {% else %}
                                     {% translate "N/A" context "no value provided (water name, comment, etc)" %}
                                 {% endif %}
@@ -106,7 +106,8 @@
                         </div>
                         <div class="mt-auto">
                             <a class="btn btn-sm btn-secondary"
-                               href="{% url "gcampuscore:mapview" %}{% map_options_url lng=measurement.location.x|unlocalize lat=measurement.location.y|unlocalize zoom=14 %}"
+                               href="
+                                       {% url "gcampuscore:mapview" %}{% map_options_url lng=measurement.location.x|unlocalize lat=measurement.location.y|unlocalize zoom=14 %}"
                                role="link">
                                 {% translate "Explore environment" %}
                             </a>
@@ -153,8 +154,16 @@
                     </thead>
                     <tbody>
                     {% for parameter in object.parameters.all %}
-                        <tr> {# TODO: fix td width when expanding note, fix postion of button for expanding/collapsing #}
-                            <td>{{ parameter.parameter_type.name }}</td>
+                        <tr>
+                            {# TODO: fix td width when expanding note, fix postion of button for expanding/collapsing #}
+                            <td>
+                                <i class="circle-icon indicator-icon"
+                                   style="background-color: #{{ parameter.parameter_type.color|lower }} !important;"
+                                   data-bs-toggle="tooltip"
+                                   title="{{ parameter.parameter_type.name|capfirst }}">
+                                </i>
+                                <span class="ms-2">{{ parameter.parameter_type.name }}</span>
+                            </td>
                             <td class="font-monospace">
                                 {{ parameter.value }}&nbsp;{{ parameter.parameter_type.unit }}
                             </td>
@@ -187,16 +196,46 @@
                 </table>
             </div>
         </div>
+
+
+        <div class="py-4" id="measurement-body measurement-data">
+            <div class="container">
+                <h3 class="mb-4 fw-light">{% translate "Water Quality Indices" %}</h3>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-xl-4 py-3">
+                        <div class="mb-4">
+                            {% include "gcampuscore/components/trophic_index.html" with measurement=measurement %}
+                        </div>
+                        {% if measurement.water.flow_type == "running" %}
+                            {% include "gcampuscore/components/saprobic_index.html" with measurement=measurement %}
+                        {% endif %}
+                    </div>
+                    <div class="col-12 col-xl-4 py-3">
+                        {% include "gcampuscore/components/bach_index.html" with measurement=measurement %}
+                    </div>
+                    {% if measurement.water.flow_type == "running" %}
+                        <div class="col-12 col-xl-4 py-3">
+                            {% include "gcampuscore/components/structural_index.html" with measurement=measurement %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+
         <div class="container py-4">
             <h3 class="mt-3 fw-light">{% trans "Documents" %}</h3>
             <div class="mt-4 list-group list-group-spaced">
-            {% url "gcampusdocuments:measurement-detail" pk=measurement.pk as url%}
-            {% translate "Save detail view" as title %}
-            {% blocktrans asvar body trimmed %}
-                Download a PDF with the detailed information of this measurement.
-                This document is intended to provide you with all the information of this measurement in a well printable layout.
-            {% endblocktrans %}
-            {% include "gcampusauth/components/document_download_card.html" with icon="gcampuscore/icons/cloud-download.html" %}
+                {% url "gcampusdocuments:measurement-detail" pk=measurement.pk as url %}
+                {% translate "Save detail view" as title %}
+                {% blocktrans asvar body trimmed %}
+                    Download a PDF with the detailed information of this measurement.
+                    This document is intended to provide you with all the information of this measurement in a well
+                    printable layout.
+                {% endblocktrans %}
+                {% include "gcampusauth/components/document_download_card.html" with icon="gcampuscore/icons/cloud-download.html" %}
             </div>
         </div>
     </div>

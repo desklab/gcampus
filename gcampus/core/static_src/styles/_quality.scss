@@ -1,0 +1,91 @@
+.index-classification {
+
+  &.bach-class-I {
+    color: $quality-1;
+  }
+
+  &.bach-class-I-II {
+    color: $quality-2;
+  }
+
+  &.bach-class-II {
+    color: $quality-3;
+  }
+
+  &.bach-class-II-III {
+    color: $quality-4;
+  }
+
+  &.bach-class-III {
+    color: $quality-5;
+  }
+
+  &.bach-class-III-IV {
+    color: $quality-6;
+  }
+
+  &.bach-class-IV {
+    color: $quality-7;
+  }
+
+  &.saprobic-class-I {
+    color: $quality-1;
+  }
+
+  &.saprobic-class-I-II {
+    color: $quality-2;
+  }
+
+  &.saprobic-class-II {
+    color: $quality-3;
+  }
+
+  &.saprobic-class-II-III {
+    color: $quality-4;
+  }
+
+  &.saprobic-class-III {
+    color: $quality-5;
+  }
+
+  &.saprobic-class-III-IV {
+    color: $quality-6;
+  }
+
+  &.saprobic-class-IV {
+    color: $quality-7;
+  }
+
+  &.structure-class-I {
+    color: $quality-1;
+  }
+
+  &.structure-class-II {
+    color: $quality-2;
+  }
+
+  &.structure-class-III {
+    color: $quality-3;
+  }
+
+  &.structure-class-IV {
+    color: $quality-4;
+  }
+
+  &.structure-class-V {
+    color: $quality-5;
+  }
+
+  &.structure-class-VI {
+    color: $quality-6;
+  }
+
+  &.structure-class-VII {
+    color: $quality-7;
+  }
+
+  &.class-unknown {
+    color: $gray-500;
+  }
+}
+

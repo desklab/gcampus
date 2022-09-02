@@ -24,6 +24,7 @@ from django.forms import (
     CharField,
     EmailField,
     ChoiceField,
+    ModelChoiceField,
 )
 from django.forms.widgets import Select, Textarea, HiddenInput, NumberInput
 from django.utils.formats import localize
@@ -32,7 +33,8 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
 from gcampus.core.fields import SplitSplitDateTimeField
-from gcampus.core.models import Measurement, Parameter
+from gcampus.core.models import Measurement, Parameter, ParameterType
+from gcampus.core.models.measurement import ParameterTypeCategory
 from gcampus.map.widgets import GeoPointWidget
 
 _MIN_TIME = settings.MEASUREMENT_MIN_TIME
@@ -103,7 +105,7 @@ class MeasurementForm(ModelForm):
 
     class Meta:
         model = Measurement
-        fields = ("name", "location", "comment", "water")
+        fields = ("name", "location", "comment", "water", "time")
         widgets = {
             # Inputs with type="datetime-local" are not well-supported
             # to this date. If we decide to replace the
@@ -130,7 +132,7 @@ class MeasurementForm(ModelForm):
         }
 
 
-class ParameterForm(ModelForm):
+class ChemicalParameterForm(ModelForm):
     """Parameter Form
 
     Data points (see :class:`gcampus.core.models.DataPoint`) are used
@@ -142,11 +144,54 @@ class ParameterForm(ModelForm):
     (see :attr:`.DataPointFormSet`).
     """
 
+    parameter_type = ModelChoiceField(queryset=ParameterType.objects.filter(
+        category=ParameterTypeCategory.CHEMICAL))
+
     class Meta:
         model = Parameter
         fields = ("parameter_type", "value", "comment")
         widgets = {
-            "parameter_type": Select(attrs={"class": "form-select form-select-sm"}),
+            "parameter_type": Select(
+                attrs={"class": "form-select form-select-sm"}),
+            "value": NumberInput(
+                attrs={
+                    "class": "form-control form-control-sm",
+                    "placeholder": _("Value"),
+                    "min": 0,
+                    "max": 100000,
+                }
+            ),
+            "comment": Textarea(
+                attrs={
+                    "class": "form-control form-control-sm",
+                    "placeholder": _("Note"),
+                    "rows": 2,
+                }
+            ),
+        }
+
+
+class BiologicalParameterForm(ModelForm):
+    """Parameter Form
+
+    Data points (see :class:`gcampus.core.models.DataPoint`) are used
+    to add data to a measurement. A data point form is always served
+    in the context of a measurement, thus, the measurement itself is
+    not exposed in the form.
+
+    In most cases, it is advised to use a form set
+    (see :attr:`.DataPointFormSet`).
+    """
+
+    parameter_type = ModelChoiceField(queryset=ParameterType.objects.filter(
+        category=ParameterTypeCategory.BIOLOGICAL))
+
+    class Meta:
+        model = Parameter
+        fields = ("parameter_type", "value", "comment")
+        widgets = {
+            "parameter_type": Select(
+                attrs={"class": "form-select form-select-sm"}),
             "value": NumberInput(
                 attrs={
                     "class": "form-control form-control-sm",
@@ -180,10 +225,42 @@ class DynamicInlineFormset(BaseInlineFormSet):
         return empty_form
 
 
-ParameterFormSet: Type[DynamicInlineFormset] = inlineformset_factory(
+class BaseParameterFormset(DynamicInlineFormset):
+    parameter_category: ParameterTypeCategory
+
+    def __init__(self, *args, **kwargs):
+        if not hasattr(self, "parameter_category"):
+            raise NotImplementedError(
+                "'parameter_category' has to be specified!")
+        kwargs.setdefault(
+            "queryset",
+            Parameter.objects.filter(
+                parameter_type__category=self.parameter_category)
+        )
+        super(BaseParameterFormset, self).__init__(*args, **kwargs)
+
+
+class ChemicalParameterFormset(BaseParameterFormset):
+    parameter_category: ParameterTypeCategory = ParameterTypeCategory.CHEMICAL
+
+
+class BiologicalParameterFormset(BaseParameterFormset):
+    parameter_category: ParameterTypeCategory = ParameterTypeCategory.BIOLOGICAL
+
+
+ChemicalParameterFormSet: Type[DynamicInlineFormset] = inlineformset_factory(
     Measurement,
     Parameter,
-    form=ParameterForm,
+    form=ChemicalParameterForm,
+    can_delete=True,
+    extra=0,
+    formset=DynamicInlineFormset,
+)
+
+BiologicalParameterFormSet: Type[DynamicInlineFormset] = inlineformset_factory(
+    Measurement,
+    Parameter,
+    form=BiologicalParameterForm,
     can_delete=True,
     extra=0,
     formset=DynamicInlineFormset,

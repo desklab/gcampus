@@ -1,4 +1,4 @@
-{% extends "gcampuscore/base.html" %}
+parameters.html{% extends "gcampuscore/base.html" %}
 {% load i18n static %}
 {% block title %}
     {% translate "Add Parameters" %}
@@ -7,17 +7,23 @@
 {% block navbar_title %}{% endblock %}
 {% block navbar_other %}
     <ul class="nav navbar-nav me-auto">
-        {% trans "1. Metadata" as metadata_title %}
-        {% translate "2. Measured values" as values_title %}
+        {% translate "1. Metadata" as metadata_title %}
+        {% translate "2. Chemical Parameters" as chemical_parameters_title %}
+        {% translate "3. Biological Parameters" as biological_parameters_title %}
+
         {% url "gcampuscore:edit-measurement" pk=object.pk as edit_url %}
         {% include "gcampuscore/components/nav_item.html" with url=edit_url title=metadata_title view_name="gcampuscore:edit-measurement" %}
-        {% if request.resolver_match.view_name == "gcampuscore:edit-parameters" %}
-            {% url "gcampuscore:edit-parameters" pk=object.pk as parameter_url %}
-            {% include "gcampuscore/components/nav_item.html" with url=parameter_url title=values_title view_name="gcampuscore:edit-parameters" %}
+
+        {% if request.resolver_match.view_name == "gcampuscore:edit-chemical-parameters" %}
+            {% url "gcampuscore:edit-chemical-parameters" pk=object.pk as chemical_parameter_url %}
+            {% include "gcampuscore/components/nav_item.html" with url=chemical_parameter_url title=chemical_parameters_title view_name="gcampuscore:edit-chemical-parameters" %}
         {% else %}
-            {% url "gcampuscore:add-parameters" pk=object.pk as parameter_url %}
-            {% include "gcampuscore/components/nav_item.html" with url=parameter_url title=values_title view_name="gcampuscore:add-parameters" %}
+            {% url "gcampuscore:add-chemical-parameters" pk=object.pk as chemical_parameter_url %}
+            {% include "gcampuscore/components/nav_item.html" with url=chemical_parameter_url title=chemical_parameters_title view_name="gcampuscore:add-chemical-parameters" %}
         {% endif %}
+
+        {% url "gcampuscore:edit-biological-parameters" pk=object.pk as biological_parameter_url %}
+        {% include "gcampuscore/components/nav_item.html" with url=biological_parameter_url title=biological_parameters_title view_name="gcampuscore:edit-biological-parameters" %}
     </ul>
 {% endblock %}
 {% block content %}
