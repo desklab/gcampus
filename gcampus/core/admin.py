@@ -13,6 +13,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import httpx
 from django.contrib.gis import admin
 from django.db import transaction
 from django.db.models import QuerySet
@@ -20,7 +21,6 @@ from django.utils.html import escape, format_html
 from django.utils.translation import gettext_lazy as _
 from leaflet.admin import LeafletGeoAdmin
 
-from gcampus.admin.options import LinkedInlineMixin
 from gcampus.core.models import (
     Measurement,
     ParameterType,
@@ -40,11 +40,12 @@ def hide(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):  # noqa
 
 
 def osm_update(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):  # noqa
-    water: Water
     with transaction.atomic():
-        for water in queryset:
-            water.update_from_osm()
-            water.save()
+        with httpx.Client as client:
+            water: Water  # Used for type hints
+            for water in queryset:
+                water.update_from_osm(client=client)
+                water.save()
 
 
 def show(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):  # noqa
@@ -56,13 +57,15 @@ show.short_description = _("Show selected items for all users")
 osm_update.short_description = _("Update from OpenStreetMap")
 
 
-class MeasurementInline(LinkedInlineMixin, admin.TabularInline):
+class MeasurementInline(admin.TabularInline):
+    show_change_link = True
     model = Measurement
-    fields = ("name", "water") + LinkedInlineMixin.readonly_fields
+    fields = ("name", "water")
     extra = 0
 
 
-class ParameterInline(LinkedInlineMixin, admin.TabularInline):
+class ParameterInline(admin.TabularInline):
+    show_change_link = True
     model = Parameter
     extra = 0
 
@@ -94,7 +97,24 @@ def create_or_update_indices(modeladmin: admin.ModelAdmin, request, queryset: Qu
 
 
 class MeasurementAdmin(LeafletGeoAdmin):
-    list_filter = ("hidden",)
+    search_fields = (
+        "name",
+        "water__name",
+        "location_name",
+        "comment",
+    )
+    list_filter = ("hidden", "requires_review", "time", "updated_at")
+    list_display = (
+        "__str__",
+        "name",
+        "water_name",
+        "location_name",
+        "time",
+        "token",
+        "hidden",
+        "requires_review",
+    )
+    list_display_links = ("__str__",)
     inlines = [ParameterInline]
     readonly_fields = ADMIN_READ_ONLY_FIELDS + ("location_name",)
     actions = [hide, show, create_or_update_indices]
@@ -112,7 +132,16 @@ class MeasurementAdmin(LeafletGeoAdmin):
 
 
 class WaterAdmin(LeafletGeoAdmin):
-    list_display = ("display_name", "osm_id", "flow_type", "water_type", "updated_at")
+    search_fields = ("name", "osm_id")
+    list_filter = ("osm_element_type", "flow_type", "requires_update")
+    list_display = (
+        "display_name",
+        "osm_id",
+        "flow_type",
+        "water_type",
+        "updated_at",
+        "requires_update",
+    )
     inlines = [MeasurementInline]
     actions = (osm_update,)
     readonly_fields = ADMIN_READ_ONLY_FIELDS + ("osm_url",)
@@ -124,10 +153,7 @@ class WaterAdmin(LeafletGeoAdmin):
                 "<span class='errors'>{error_message}</span>",
                 error_message=_("No OpenStreetMap ID provided!"),
             )
-        url: str = escape(
-            "https://www.openstreetmap.org/"
-            f"{instance.osm_element_type}/{instance.osm_id}"
-        )
+        url: str = escape(instance.osm_url)
         return format_html('<a href="{url}">{url}</a>', url=url)
 
 
@@ -140,8 +166,15 @@ class CalibrationAdmin(admin.ModelAdmin):
 
 
 class ParameterAdmin(admin.ModelAdmin):
+    search_fields = ("parameter_type__name",)
+    list_filter = ("parameter_type", "hidden")
+    list_display = (
+        "__str__",
+        "parameter_type",
+        "measurement",
+        "hidden",
+    )
     readonly_fields = ADMIN_READ_ONLY_FIELDS
-    list_filter = ("hidden",)
     default_manager_name = "all_objects"
     actions = [hide, show]
 

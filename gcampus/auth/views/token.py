@@ -34,8 +34,6 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy, gettext
 from django.views.generic.edit import FormView
-from rest_framework.decorators import throttle_classes
-from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 
 from gcampus.auth import session
 from gcampus.auth.decorators import throttle

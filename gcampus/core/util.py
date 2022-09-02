@@ -116,9 +116,12 @@ def __get_location_name(location: Tuple[float, float]) -> Optional[str]:
     :param location: Tuple of longitude and latitude as floats
     :returns: Optional string of location name
     """
-    long, lat = location
+    lng, lat = location
     geo_loc = get_geo_locator()
-    loc: Optional[Location] = geo_loc.reverse((lat, long), exactly_one=True, timeout=5)
+    timeout = getattr(settings, "REQUEST_TIMEOUT", 5)
+    loc: Optional[Location] = geo_loc.reverse(
+        (lat, lng), exactly_one=True, timeout=timeout
+    )
     if loc is not None and "address" in loc.raw:
         address = loc.raw["address"]
         for opt in ADDRESS_OPTIONS:
@@ -129,7 +132,7 @@ def __get_location_name(location: Tuple[float, float]) -> Optional[str]:
 
 def get_geo_locator() -> Nominatim:
     return Nominatim(
-        user_agent=getattr(settings, "NOMINATIM_USER_AGENT", "gcampus"),
+        user_agent=getattr(settings, "REQUEST_USER_AGENT", "GewaesserCampus"),
         domain=getattr(settings, "NOMINATIM_DOMAIN", "nominatim.openstreetmap.org"),
     )
 
@@ -145,7 +148,7 @@ def get_intervals_from_today(date: datetime.datetime) -> List[datetime.datetime]
     :returns: List of datetime objects one interval (week, month or year) apart
     """
     today = timezone.now()
-    num_bins = math.ceil((today - date).days / 7) + 1
+    num_bins = math.ceil((today - date).days / 7) + 2
     if not num_bins > 52:
 
         dates: List[datetime.datetime] = [
@@ -153,14 +156,14 @@ def get_intervals_from_today(date: datetime.datetime) -> List[datetime.datetime]
         ]
         return dates
 
-    num_bins = math.ceil((today - date).days / 30) + 1
+    num_bins = math.ceil((today - date).days / 30) + 2
     if not num_bins > 48:
         dates: List[datetime.datetime] = [
             today - datetime.timedelta(weeks=x * 4) for x in reversed(range(num_bins))
         ]
         return dates
 
-    num_bins = math.ceil((today - date).days / 365) + 1
+    num_bins = math.ceil((today - date).days / 365) + 2
     dates: List[datetime.datetime] = [
         today - datetime.timedelta(weeks=x * 52) for x in reversed(range(num_bins))
     ]

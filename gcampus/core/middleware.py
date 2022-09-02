@@ -15,9 +15,9 @@
 
 __all__ = ["TimezoneMiddleware"]
 
+from django.conf import settings
 from django.http import HttpRequest
 from django.utils import timezone
-from django.conf import settings
 
 
 class TimezoneMiddleware:

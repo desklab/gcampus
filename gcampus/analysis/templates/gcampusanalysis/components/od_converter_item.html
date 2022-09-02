@@ -1,7 +1,7 @@
 {% load i18n %}
 <div class="col-7 px-5 py-3">
     <div class="mb-3">
-        <form onsubmit="Convert_{{ calibration.pk }}(event, chart_{{ calibration.pk }})">
+        <form id="conversionForm{{ calibration.pk }}">
             <div>
                 <label for="od_input_{{ calibration.pk }}">{% translate "Optical density" %}</label>
                 <div class="input-group mb-3">
@@ -20,7 +20,7 @@
                            placeholder="{% translate "Value" %}"
                            readonly>
                     <button class="btn btn-secondary" type="button"
-                            onclick="CopyValueToClipboard('{{ calibration.pk }}')">
+                            onclick="gcampusanalysis.calibration.copyToClipboard('{{ calibration.pk }}')">
                         {% translate "Copy" %}
                     </button>
                 </div>
@@ -30,47 +30,9 @@
 </div>
 <div class="col-5 bg-light py-2 px-5">
     <p class="text-muted">
-        <canvas id="myChart_{{ calibration.name }}" width="400" height="400"></canvas>
+        <canvas id="chart{{ calibration.name }}" width="400" height="400"></canvas>
         <script>
-            let chart_{{ calibration.pk }} = (function () {
-                let chart_element_{{ calibration.pk }} = document.getElementById("myChart_{{ calibration.name }}");
-                let chart_title = "{% translate "Calibration fit for" %} " + "{{ calibration.parameter_type }}";
-                let x_label;
-                if ('{{ parameter.unit }}' !== '') {
-                    x_label = "{{ parameter.name }} " + "[{{ parameter.unit }}]";
-                } else {
-                    x_label = "{{ parameter.name }}";
-                }
-                let y_label = "{% translate "Optical density" %}";
-                return gcampusanalysis.calibration.createChart({{ calibration.pk }}, chart_element_{{ calibration.pk }},
-                    "{{ calibration.calibration_formula }}", chart_title, x_label, y_label, "{{ calibration.x_max }}", "{{ calibration.x_min }}");
-            })();
 
-            function Convert_{{ calibration.pk }}(e, chart) {
-                e.preventDefault();
-                if (!e.target.checkValidity()) {
-                    if (e.target.reportValidity) {
-                        e.target.reportValidity();
-                    }
-                } else {
-                    let data = new FormData(e.target);
-                    let concentration = e.target.elements.namedItem('concentration');
-                    let od = parseFloat(data.get('od'));
-                    let concentration_value = (
-                        gcampusanalysis.calibration.convert(
-                            {{ calibration.pk }}, od
-                        )
-                    );
-                    concentration.value = String(concentration_value);
-                    gcampusanalysis.calibration.updateAnnotation(concentration_value, od, chart);
-                }
-            }
-
-            function CopyValueToClipboard(pk) {
-                let concentration = document.getElementById('concentration_' + pk).value;
-                if (concentration !== '')
-                    navigator.clipboard.writeText(Number(concentration).toLocaleString());
-            }
         </script>
     </p>
 </div>

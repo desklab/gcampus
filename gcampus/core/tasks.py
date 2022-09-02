@@ -16,6 +16,7 @@
 import logging
 from typing import List, Dict, Optional
 
+import httpx
 from celery import shared_task
 from django.conf import settings
 from django.core.mail import mail_managers
@@ -160,43 +161,38 @@ def staging_maintenance():
         )
         return
 
-    # Delete all hidden measurements
-    m_hidden = Measurement.all_objects.filter(hidden=True)
-    m_count = m_hidden.all.count()
-    m_hidden.delete()
-
-    # Delete all old measurements
-    m_old = Measurement.objects.filter(
-        updated_at__lt=now - settings.MEASUREMENT_LIFETIME_STAGING
+    # Delete all old and hidden measurements
+    measurements = Measurement.all_objects.filter(
+        Q(hidden=True) | Q(updated_at__lt=now - settings.MEASUREMENT_LIFETIME_STAGING)
     )
-    m_count += m_old.all().count()
-    m_old.delete()
+    total, detail = measurements.delete()
+    measurement_count = detail.get("gcampuscore.Measurement", 0)
 
     # Delete all old access keys
     course_deletion_date = now - settings.COURSE_LIFETIME_STAGING
-    a = AccessKey.objects.filter(
+    access_keys = AccessKey.objects.filter(
         Q(last_login__isnull=True) | Q(last_login__lt=course_deletion_date)
     )
-    a_count = a.all().count()
-    a.delete()
+    total, detail = access_keys.delete()
+    access_key_count = detail.get("gcampusauth.AccessKey", 0)
 
     # Delete all old courses
-    c = Course.objects.filter(
+    courses = Course.objects.filter(
         Q(access_keys__isnull=True),
         # AND
         Q(course_token__last_login__isnull=True)
         | Q(course_token__last_login__lt=course_deletion_date),
     )
-    c_count = c.all().count()
-    c.delete()
+    total, detail = courses.delete()
+    course_count = detail.get("gcampusauth.Course", 0)
 
     mail_managers(
         "'dev' environment maintenance report",
         f"Environment: {getattr(settings, 'ENVIRONMENT', 'not set')}\n\n"
         "Changes:\n"
-        f"Measurements deleted: {m_count:d}\n"
-        f"Old access keys deleted: {a_count}\n"
-        f"Old courses deleted: {c_count}\n\n"
+        f"Measurements deleted: {measurement_count:d}\n"
+        f"Old access keys deleted: {access_key_count:d}\n"
+        f"Old courses deleted: {course_count:d}\n\n"
         f"(Version: {settings.VERSION}, {timezone.now().isoformat()})",
         fail_silently=True,
     )
@@ -213,6 +209,7 @@ def refresh_water_from_osm():
         .all()[: settings.MAX_CONCURRENT_WATER_UPDATES]
     )
     with transaction.atomic():
-        for water in waters:
-            water.update_from_osm()
-            water.save()
+        with httpx.Client() as client:
+            for water in waters:
+                water.update_from_osm(client=client)
+                water.save()

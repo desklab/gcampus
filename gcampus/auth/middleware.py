@@ -22,8 +22,8 @@ from django.http import HttpRequest
 from django.utils.deprecation import MiddlewareMixin
 from django.utils.functional import SimpleLazyObject
 
-from gcampus.auth.models.token import BaseToken
 from gcampus.auth import session
+from gcampus.auth.models.token import BaseToken
 
 
 def get_token_instance(request: HttpRequest) -> Optional[BaseToken]:

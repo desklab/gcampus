@@ -18,7 +18,6 @@ from django.contrib.gis import admin
 from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from gcampus.admin.options import LinkedInlineMixin
 from gcampus.auth.models import AccessKey, CourseToken, User, Course
 from gcampus.core.admin import MeasurementInline
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
@@ -36,30 +35,51 @@ deactivate_token.short_description = _("Deactivate selected tokens")
 reactivate_token.short_description = _("Reactivate selected tokens")
 
 
-class AccessKeyInline(LinkedInlineMixin, admin.TabularInline):
+class AccessKeyInline(admin.TabularInline):
+    show_change_link = True
     model = AccessKey
-    fields = ("token", "deactivated") + LinkedInlineMixin.readonly_fields
+    fields = ("token", "deactivated")
     extra = 0
 
 
-class CourseTokenInline(LinkedInlineMixin, admin.TabularInline):
+class CourseTokenInline(admin.TabularInline):
+    show_change_link = True
     model = CourseToken
-    fields = ("token", "deactivated") + LinkedInlineMixin.readonly_fields
+    fields = ("token", "deactivated")
     extra = 0
 
 
-class CourseInline(LinkedInlineMixin, admin.TabularInline):
+class CourseInline(admin.TabularInline):
+    show_change_link = True
     model = Course
     extra = 0
 
 
 class CourseAdmin(admin.ModelAdmin):
+    list_filter = ("email_verified",)
+    search_fields = ("name", "school_name", "teacher_name")
+    list_display = (
+        "__str__",
+        "name",
+        "school_name",
+        "teacher_name",
+        "email_verified",
+    )
+    list_display_links = ("__str__",)
     inlines = [CourseTokenInline, AccessKeyInline]
     readonly_fields = ADMIN_READ_ONLY_FIELDS
 
 
 class AccessKeyAdmin(admin.ModelAdmin):
-    list_filter = ("deactivated",)
+    list_filter = ("deactivated", "last_login")
+    search_fields = ("course__name", "course__school_name", "course__teacher_name")
+    list_display = (
+        "masked_token",
+        "course",
+        "last_login",
+        "deactivated",
+    )
+    list_display_links = ("masked_token",)
     filter_horizontal = ("permissions",)
     inlines = [MeasurementInline]
     readonly_fields = ADMIN_READ_ONLY_FIELDS
@@ -67,7 +87,15 @@ class AccessKeyAdmin(admin.ModelAdmin):
 
 
 class CourseTokenAdmin(admin.ModelAdmin):
-    list_filter = ("deactivated",)
+    list_filter = ("deactivated", "last_login")
+    search_fields = ("course__name", "course__school_name", "course__teacher_name")
+    list_display = (
+        "masked_token",
+        "course",
+        "last_login",
+        "deactivated",
+    )
+    list_display_links = ("masked_token",)
     filter_horizontal = ("permissions",)
     readonly_fields = ADMIN_READ_ONLY_FIELDS
     actions = [deactivate_token, reactivate_token]

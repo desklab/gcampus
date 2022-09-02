@@ -55,8 +55,8 @@ from gcampus.auth.models.course import (
 )
 from gcampus.auth.models.token import AccessKey, CourseToken, TokenType
 from gcampus.auth.tasks import send_registration_email
-from gcampus.core.views.base import TitleMixin
 from gcampus.core import settings
+from gcampus.core.views.base import TitleMixin
 
 logger = logging.getLogger("gcampus.auth.views.course")
 

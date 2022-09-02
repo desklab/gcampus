@@ -16,6 +16,7 @@
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
+from gcampus.api.filtersets import MeasurementAPIFilterSet
 from gcampus.api.serializers import (
     MeasurementSerializer,
     ParameterTypeSerializer,
@@ -38,8 +39,10 @@ class MeasurementAPIViewSet(MethodSerializerMixin, viewsets.ReadOnlyModelViewSet
     # the bare minimum used for displaying the measurements on a map.
     serializer_class_list = MeasurementListSerializer
     # Pagination is disabled such that the api works better with
-    # the map view
+    # the map view.
     pagination_class = None
+    # Measurement filter set used to filter for specific waters.
+    filterset_class = MeasurementAPIFilterSet
 
 
 class ParameterTypeAPIViewSet(viewsets.ReadOnlyModelViewSet):

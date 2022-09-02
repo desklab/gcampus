@@ -13,15 +13,19 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+__ALL__ = [
+    "HyphenatedTokenField",
+    "access_key_exists_validator",
+    "course_token_exists_validator",
+    "any_token_exists_validator",
+]
+
 from typing import Union, Type, List
 
-from django.core.exceptions import ValidationError, BadRequest
-from django.forms import CharField, BaseForm
-from django.http import HttpRequest
+from django.core.exceptions import ValidationError
+from django.forms import CharField
 
-from gcampus.auth import session
 from gcampus.auth.exceptions import (
-    TOKEN_EMPTY_ERROR,
     TOKEN_INVALID_ERROR,
     COURSE_TOKEN_DEACTIVATED_ERROR,
     ACCESS_KEY_DEACTIVATED_ERROR,
@@ -36,9 +40,7 @@ from gcampus.auth.models.token import (
     TokenType,
     BaseToken,
 )
-from gcampus.auth.widgets import HiddenTokenInput, HyphenatedTokenWidget
-
-HIDDEN_TOKEN_FIELD_NAME = "gcampus_auth_token"
+from gcampus.auth.widgets import HyphenatedTokenWidget
 
 
 def _exists_validator(
@@ -118,7 +120,7 @@ def course_token_exists_validator(value: str, check_deactivated: bool = True):
 def any_token_exists_validator(value: str, check_deactivated: bool = True):
     """Validator to Check the Existence of a Course Token or Access Key
 
-    Check whether a token exists. The token can either be a access key
+    Check whether a token exists. The token can either be an access key
     or a course token. The function will first check whether the
     provided token exists as an access key and fall back to a course
     token if no matching access key can be found.
@@ -138,25 +140,6 @@ def any_token_exists_validator(value: str, check_deactivated: bool = True):
         # exists
         course_token_exists_validator(value, check_deactivated=check_deactivated)
     # At this point, a token has been found. Nothing is returned.
-
-
-class HiddenTokenField(CharField):
-    # The hidden token input will never render
-    widget = HiddenTokenInput
-
-    # This is the most important part: Validate the provided token
-    default_validators = [any_token_exists_validator]
-
-    def validate(self, value):
-        # Strangely, this method 'validate' is only used to validate
-        # whether a required field is not empty. Thus, this only checks
-        # if the field is empty.
-        # For all other checks (i.e. all validators), the
-        # 'run_validators' method is used instead.
-        try:
-            super(HiddenTokenField, self).validate(value)
-        except ValidationError:
-            raise ValidationError(TOKEN_EMPTY_ERROR)
 
 
 class HyphenatedTokenField(CharField):

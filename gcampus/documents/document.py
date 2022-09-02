@@ -28,6 +28,7 @@ from django.http import HttpRequest
 from django.template.loader import render_to_string
 from weasyprint import HTML, Document
 
+from gcampus.core import get_base_url
 from gcampus.documents.utils import mock_request, url_fetcher
 
 
@@ -52,7 +53,7 @@ def render_document(
     using=None,
 ) -> Document:
     document_str = render_document_template(template, context, request, using)
-    html = HTML(string=document_str, url_fetcher=url_fetcher)
+    html = HTML(string=document_str, url_fetcher=url_fetcher, base_url=get_base_url())
     return html.render()
 
 

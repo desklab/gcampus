@@ -6,8 +6,8 @@ dependencies:
   - python=3.10
   - pip=22
   - libgdal=3.4
-  - glib=2.70
+  - glib=2.72
   - pango=1.50
-  - pandoc=2.18
+  - pandoc=2.19
   - pip:
       - '-r requirements-dev.txt'

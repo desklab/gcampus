@@ -21,9 +21,9 @@ __all__ = [
 
 from typing import List, Optional, Tuple
 
+from django.conf import settings
 from django.db import transaction
 from django.db.models import QuerySet
-from django.conf import settings
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 from rest_framework.pagination import PageNumberPagination
@@ -61,8 +61,8 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         (OpenStreetMaps) API.
 
         :param request: Current request, provided automatically.
-        :returns: Serialized GeoJSON representation of all missing
-            waters in the bounding box provided as URL parameters.
+        :returns: Serialized GeoJSON representation of all waters in the
+            bounding box provided as URL parameters.
         """
         # Construct a filter set and retrieve the GeoLookupValue
         # object from the current request.

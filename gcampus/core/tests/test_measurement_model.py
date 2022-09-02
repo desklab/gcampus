@@ -19,9 +19,9 @@ import unittest
 from django.contrib.gis.geos import GEOSGeometry, Point
 from django.utils import timezone
 
+from gcampus.core.models import Measurement, Water
 from gcampus.core.models.water import WaterType
 from gcampus.tasks.tests.utils import BaseMockTaskTest
-from gcampus.core.models import Measurement, Water
 
 LOCATION_HEIDELBERG = GEOSGeometry("POINT(8.69079 49.40768)")
 LOCATION_BOCKHORN = GEOSGeometry("POINT(8.073680 53.453274)")
@@ -64,7 +64,7 @@ class MeasurementModelTest(BaseMockTaskTest):
         time.sleep(1.5)  # Sleep because geocoding is rate-limited
         measurement.save()
         measurement.location = LOCATION_OCEAN
-        self.assertTrue(measurement.is_location_changed())
+        self.assertTrue(measurement.did_location_change())
 
     def test_hidden_measurement(self):
         measurement = Measurement(

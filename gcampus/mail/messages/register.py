@@ -15,7 +15,7 @@
 
 from django.utils.translation import gettext_lazy
 
-from gcampus.auth.models import CourseToken, Course
+from gcampus.auth.models import Course
 from gcampus.mail.messages import EmailTemplate
 
 

@@ -160,7 +160,9 @@ class TimeRangeSlider(RangeWidget):
             ).earliest("time")
             interval_list = get_intervals_from_today(earliest_date)
 
-            all_dates = list(Measurement.objects.values_list("time", flat=True).all())
+            all_dates = list(
+                Measurement.objects.values_list("time", flat=True).filter(hidden=False)
+            )
 
             measurements_per_interval = get_measurement_intervals(
                 interval_list, all_dates

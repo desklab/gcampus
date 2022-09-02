@@ -3,14 +3,14 @@
     <ul class="chart">
         {% for interval in measurements_per_interval %}
             <li>
-                <span id="bar_el_{{ forloop.counter0 }}" style="height:{{ interval }}%"></span>
+                <span id="bar_el_{{ forloop.counter0 }}"
+                      style="height:{{ interval }}%">
+                </span>
             </li>
         {% endfor %}
-
     </ul>
     <div class="range-slider">
         <span>
-
             <input hidden
                    name="{{ widget.subwidgets.0.name }}"
                    {% if widget.subwidgets.0.value != None %}value="{{ widget.subwidgets.0.value|stringformat:'s' }}"{% endif %}
@@ -21,21 +21,26 @@
                    value="{{ widget.subwidgets.1.value|stringformat:'s' }}"{% endif %}
                    id="end_date"
                    type="date"/>
-
         </span>
         <span style="float:right;" id="to_span"></span>
-        <input class="form-range" value="0" min="0" max="{{ list_len|add:"-1" }}" step="1" type="range"/>
-        <input class="form-range" value="{{ list_len|add:"-1" }}" min="0" max="{{ list_len|add:"-1" }}" step="1"
+        <input class="form-range"
+               value="0"
+               min="0"
+               max="{{ list_len|add:"-1" }}"
+               step="1"
+               type="range"/>
+        <input class="form-range"
+               value="{{ list_len|add:"-1" }}"
+               min="0"
+               max="{{ list_len|add:"-1" }}"
+               step="1"
                type="range"/>
         <span style="float:left;" id="from_span"></span>
     </div>
 {% endwith %}
-
-    <script type="text/javascript" src="{% static 'gcampuscore/js/filter.js' %}"></script>
-    <script type="text/javascript">
-        let interval_list_js = [{{ interval_list_js|join:', ' }}]
-            gcampuscore.filter.initRangeSlider(interval_list_js);
-    </script>
+<script type="text/javascript">
+    let interval_list_js = [{{ interval_list_js|join:', ' }}]
+</script>
 
 
 

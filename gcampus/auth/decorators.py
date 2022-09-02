@@ -19,7 +19,7 @@ from typing import Union, List, Optional
 from django.contrib.sessions.exceptions import SuspiciousSession
 from django.http import HttpRequest
 from rest_framework.exceptions import Throttled
-from rest_framework.throttling import AnonRateThrottle, ScopedRateThrottle
+from rest_framework.throttling import AnonRateThrottle
 
 from gcampus.auth import session
 from gcampus.auth.exceptions import UnauthenticatedError, TokenPermissionError

@@ -1,9 +1,9 @@
-{% load auth_token print_static i18n l10n settings tz %}
+{% load auth_token static i18n l10n tz %}
 <!doctype html>
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <link href="{% print_static "gcampusdocuments/styles/gcampus.css" %}" rel="stylesheet">
+    <link href="{% static "gcampusdocuments/styles/gcampus.css" %}" rel="stylesheet">
     <title>gcampus Document</title>
     <meta name="id" content="gcampus-doc-01">
     {% displaytoken_head %}
@@ -17,7 +17,7 @@
                 padding-top: 1.2cm;
             }
             @top-left {
-                background: url("{% print_static 'gcampusdocuments/assets/gcampus-print-header-left.png' %}");
+                background: url("{% static 'gcampusdocuments/assets/gcampus-print-header-left.png' %}");
                 background-repeat: no-repeat;
                 background-position: left;
                 background-size: 100% auto;
@@ -50,7 +50,7 @@
             {% endblocktrans %}
         </div>
         <div class="footer-qrcode float-right">
-            <img src="{% print_static 'gcampusdocuments/assets/gcampus-qr-code.png' %}" alt="">
+            <img src="{% static 'gcampusdocuments/assets/gcampus-qr-code.png' %}" alt="">
         </div>
     </div>
 
@@ -87,8 +87,7 @@
                     </div>
                     <div class="w-abs-800 float-left">
                         <div class ="w-abs-800 h-abs-600">
-                            {% get_map_settings 'MAPBOX_BACKEND_ACCESS_TOKEN' as mapbox_access_token %}
-                            <img src="https://api.mapbox.com/styles/v1/axelschlindwein/cl4odlfc5000p14mrdd9ucxu4/static/{{ map_overlay }}/[{{ bbox_long_min|unlocalize }},{{ bbox_lat_min|unlocalize }},{{ bbox_long_max|unlocalize }},{{ bbox_lat_max|unlocalize }}]/800x600?padding=50&access_token={{ mapbox_access_token }}" alt="Map image">
+                            <img src="{{ map }}" alt="Map image">
                         </div>
                     </div>
                 </div>

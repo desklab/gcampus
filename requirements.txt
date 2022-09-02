@@ -1,31 +1,31 @@
-django~=4.0
+django~=4.1
 
-django-storages~=1.12.3
-boto3~=1.21.22
+django-storages~=1.13.1
+boto3~=1.24.62
 psycogreen~=1.0.2
-psycopg2-binary~=2.8.6
+psycopg2-binary~=2.9.3
 celery[redis]~=5.2
-redis~=4.0.2
+redis~=4.3.4
 gevent~=21.12
 gunicorn[gevent]~=20.1
 
 geopy~=2.2.0
-requests~=2.27.1
-rich~=11.2.0
-premailer~=3.10.0
-lxml~=4.8.0
-pypandoc~=1.7.5
-sentry-sdk~=1.5.4
-django-rich~=1.2.0
+httpx~=0.23
+rich~=12.5
+premailer~=3.10
+lxml~=4.9.1
+pypandoc~=1.8
+sentry-sdk~=1.9
+django-rich~=1.4
 django-leaflet~=0.28.2
 django-feather~=0.3.0
-django-filter~=2.4.0
-django-celery-results~=2.2
+django-filter~=22.1
+django-celery-results~=2.4.0
 
-djangorestframework-gis~=0.18
+djangorestframework-gis~=1.0.0
 djangorestframework~=3.13.1
 
 weasyprint~=53.3
 xlsx-streaming==1.1.0
 
-numpy~=1.22.3
+numpy~=1.23.2

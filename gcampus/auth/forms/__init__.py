@@ -13,10 +13,10 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from gcampus.auth.forms.token import CourseTokenForm, AccessKeyForm
 from gcampus.auth.forms.course import (
     GenerateAccessKeysForm,
     CourseForm,
     RegisterForm,
     AccessKeyDeactivationForm,
 )
+from gcampus.auth.forms.token import CourseTokenForm, AccessKeyForm

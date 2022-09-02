@@ -19,4 +19,4 @@ default_app_config = "gcampus.core.apps.GCampusCoreAppConfig"
 
 
 def get_base_url() -> str:
-    return f"{settings.PREFERRED_SCHEME}://{settings.PRIMARY_HOST}/"
+    return f"{settings.PREFERRED_SCHEME}://{settings.PRIMARY_HOST}"

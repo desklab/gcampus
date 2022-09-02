@@ -12,6 +12,7 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 from typing import Type
 
 from django.conf import settings
@@ -144,15 +145,15 @@ class ChemicalParameterForm(ModelForm):
     (see :attr:`.DataPointFormSet`).
     """
 
-    parameter_type = ModelChoiceField(queryset=ParameterType.objects.filter(
-        category=ParameterTypeCategory.CHEMICAL))
+    parameter_type = ModelChoiceField(
+        queryset=ParameterType.objects.filter(category=ParameterTypeCategory.CHEMICAL)
+    )
 
     class Meta:
         model = Parameter
         fields = ("parameter_type", "value", "comment")
         widgets = {
-            "parameter_type": Select(
-                attrs={"class": "form-select form-select-sm"}),
+            "parameter_type": Select(attrs={"class": "form-select form-select-sm"}),
             "value": NumberInput(
                 attrs={
                     "class": "form-control form-control-sm",
@@ -183,15 +184,15 @@ class BiologicalParameterForm(ModelForm):
     (see :attr:`.DataPointFormSet`).
     """
 
-    parameter_type = ModelChoiceField(queryset=ParameterType.objects.filter(
-        category=ParameterTypeCategory.BIOLOGICAL))
+    parameter_type = ModelChoiceField(
+        queryset=ParameterType.objects.filter(category=ParameterTypeCategory.BIOLOGICAL)
+    )
 
     class Meta:
         model = Parameter
         fields = ("parameter_type", "value", "comment")
         widgets = {
-            "parameter_type": Select(
-                attrs={"class": "form-select form-select-sm"}),
+            "parameter_type": Select(attrs={"class": "form-select form-select-sm"}),
             "value": NumberInput(
                 attrs={
                     "class": "form-control form-control-sm",
@@ -230,12 +231,10 @@ class BaseParameterFormset(DynamicInlineFormset):
 
     def __init__(self, *args, **kwargs):
         if not hasattr(self, "parameter_category"):
-            raise NotImplementedError(
-                "'parameter_category' has to be specified!")
+            raise NotImplementedError("'parameter_category' has to be specified!")
         kwargs.setdefault(
             "queryset",
-            Parameter.objects.filter(
-                parameter_type__category=self.parameter_category)
+            Parameter.objects.filter(parameter_type__category=self.parameter_category),
         )
         super(BaseParameterFormset, self).__init__(*args, **kwargs)
 

@@ -85,7 +85,7 @@ def send_confirmation_email(
 
 class GenerateAccessKeysForm(forms.ModelForm):
     """This form is used to generate new access keys for a given course.
-    Note that the amout of access keys that can be associated with a
+    Note that the amount of access keys that can be associated with a
     course is limited by ``REGISTER_MAX_ACCESS_KEY_NUMBER`` in the
     project settings.
     """

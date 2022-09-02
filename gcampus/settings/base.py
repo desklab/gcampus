@@ -13,13 +13,13 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import os
 import datetime
+import os
 from pathlib import Path
 
 from django.contrib import messages
-from django.utils.translation import gettext_lazy as _
 from django.utils.timezone import utc
+from django.utils.translation import gettext_lazy as _
 
 from gcampus import __version__
 from gcampus.settings.util import get_env_read_file, get_email_tuple_list
@@ -75,9 +75,9 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     # External apps
     "leaflet",
+    "django_filters",
     "rest_framework",
     "rest_framework_gis",
-    "django_filters",
     "django_celery_results",
     # gcampus specific apps
     "gcampus.tasks",
@@ -197,19 +197,22 @@ MEASUREMENT_MIN_TIME = datetime.datetime(1900, month=1, day=1, tzinfo=utc)
 MEASUREMENT_MAX_TIME = datetime.datetime(2100, month=1, day=1, tzinfo=utc)
 
 # Geo Settings
-NOMINATIM_USER_AGENT = "gcampus"
 NOMINATIM_DOMAIN = "nominatim.openstreetmap.org"
 GEOLOCKUP_CACHE_TIMEOUT = 60 * 60 * 24 * 100  # 100 days
 
 # OVERPASS_SERVER = "https://overpass-api.de/api/interpreter"
 OVERPASS_SERVER = "https://overpass.kumi.systems/api/interpreter"
 OVERPASS_CACHE = 60 * 60 * 24 * 2
-OVERPASS_TIMEOUT = 20  # timeout in seconds
+OVERPASS_TIMEOUT = 20  # Timeout in seconds
+REQUEST_TIMEOUT = 5  # Short timeout for simple requests
+REQUEST_USER_AGENT = f"GewaesserCampus ({GCAMPUS_HOMEPAGE})"
 
 MAP_SETTINGS = {
     "CENTER": (8.4430, 49.4922),
     "ZOOM": 8,
+    "STYLE_ID": "cl4odlfc5000p14mrdd9ucxu4",
     "STYLE": "mapbox://styles/axelschlindwein/cl4odlfc5000p14mrdd9ucxu4?optimize=true",
+    "USERNAME": get_env_read_file("MAPBOX_USERNAME"),
     "MAPBOX_ACCESS_TOKEN": get_env_read_file("MAPBOX_ACCESS_TOKEN"),
 }
 

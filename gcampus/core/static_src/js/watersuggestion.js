@@ -227,7 +227,14 @@ class WaterList {
 
     setFeatures(features, source) {
         if (source === 'osm') {
-            features = this.state.features.concat(features || []);
+            features = features || [];
+            let newIds = features.map(f => f.id);
+            // Concat the old features with the new features.
+            // The old features are stored in the database and have been
+            // retrieved on the first request.
+            features = features.concat(
+                this.state.features.filter(f => !newIds.includes(f.id))
+            );
         } else if (source === 'custom') {
             features = this.state.features.concat([features]);
         } else if (source === 'db') {
@@ -247,37 +254,28 @@ class WaterList {
             this.currentPermanentHighlight = features.id;
         } else {
             if (this.currentPermanentHighlight !== null) {
-                let hlFeature = features.filter(
-                    (f) => f.id === this.currentPermanentHighlight
-                );
-                if (hlFeature.length !== 1) {
+                let ids = features.map(f => f.id);
+                if (!ids.includes(this.currentPermanentHighlight)) {
                     this.currentPermanentHighlight = null;
                 }
             }
         }
-        this.highlightFeature(this.currentPermanentHighlight);
+        this.highlightFeature(this.currentPermanentHighlight, true);
 
+        let newState = {
+            loading: false,
+            features: features,
+        };
         if (source === 'osm') {
-            this.setState({
-                loading: false,
-                features: features,
-                hasOsm: true,
-            });
+            newState.hasOsm = true;
         } else if (source === 'custom') {
-            this.setState({
-                loading: false,
-                features: features,
-                hasDatabase: true,
-                hasOsm: true,
-                hasCustom: true
-            });
+            newState.hasDatabase = true;
+            newState.hasOsm = true;
+            newState.hasCustom = true;
         } else {
-            this.setState({
-                loading: false,
-                features: features,
-                hasDatabase: true
-            });
+            newState.hasDatabase = true;
         }
+        this.setState(newState);
     }
 
     /**
@@ -288,9 +286,11 @@ class WaterList {
      * others.
      *
      * @param featureId {number}: Feature ID
+     * @param force {boolean}: Highlight the feature forcefully (do not
+     *  check whether it is already highlighted).
      */
-    highlightFeature(featureId) {
-        if (this.currentHighlight === featureId) {
+    highlightFeature(featureId, force = false) {
+        if (!force && this.currentHighlight === featureId) {
             return;
         }
         this.map.removeFeatureState({

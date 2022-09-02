@@ -31,30 +31,37 @@ from pathlib import Path
 
 from gcampus.settings.util import get_env_read_file
 
+# S3 endpoint should be proxied to the '/static/' endpoint of
+# the web application. This is necessary for JavaScript workers as they
+# have to obey the same-origin policy.
+STATIC_URL = "/static/"  # Must end in a slash
+
 if os.environ.get("USE_S3_STORAGE", False):
     # Credentials
     AWS_ACCESS_KEY_ID = get_env_read_file("S3_ACCESS_KEY")
     AWS_SECRET_ACCESS_KEY = get_env_read_file("S3_SECRET_KEY")
-    # Location
-    AWS_S3_ENDPOINT_URL = os.environ.get("S3_ENDPOINT_URL", "http://localhost:9000")
+    # Location of the files
     AWS_STORAGE_BUCKET_NAME = os.environ.get("S3_BUCKET_NAME", "gcampus")
+    # Used to access the S3 server
+    AWS_S3_ENDPOINT_URL = os.environ.get("S3_ENDPOINT_URL", "http://localhost:9000")
+    # Used for constructing a custom URL
+    AWS_S3_URL_PROTOCOL = os.environ.get("S3_URL_PROTOCOL", "https:")
+    AWS_S3_CUSTOM_DOMAIN = os.environ.get(
+        "S3_CUSTOM_DOMAIN", f"localhost:9000/{AWS_STORAGE_BUCKET_NAME}"
+    )
+    # Use ``STATIC_URL`` instead of custom URL
+    AWS_STATIC_USE_STATIC_URL = os.environ.get("USE_STATIC_URL", False)
 
     # Other settings
     AWS_QUERYSTRING_AUTH = True  # only applied to media storage
     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
-    AWS_QUERYSTRING_EXPIRE = 86400
+    AWS_QUERYSTRING_EXPIRE = 86400  # 24 hours
 
     DEFAULT_FILE_STORAGE = "gcampus.core.storage.MediaStorage"
     STATICFILES_STORAGE = "gcampus.core.storage.StaticStorage"
 
     MEDIA_ROOT = None
     MEDIA_URL = None
-
-    STATIC_URL = "{endpoint:s}/{bucket:s}/{location:s}/".format(
-        endpoint=AWS_S3_ENDPOINT_URL,
-        bucket=AWS_STORAGE_BUCKET_NAME,
-        location="static",
-    )
 else:
     # Use django's default static file storage class. See
     # https://docs.djangoproject.com/en/3.1/ref/settings/#staticfiles-storage
@@ -62,5 +69,4 @@ else:
     _BASE_DIR = Path(__file__).resolve().parent.parent.parent
     STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
     # STATIC_ROOT = os.path.join(_BASE_DIR.parent, "static")
-    STATIC_URL = "/static/"
     MEDIA_ROOT = str(_BASE_DIR / "media")

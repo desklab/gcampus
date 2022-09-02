@@ -7,9 +7,38 @@
 {% block body_class %}d-flex flex-column min-vh-100{% endblock %}
 {% block main_class %}main-pt-0 px-0{% endblock %}
 {% block navbar_title %}<span>{{ object }}</span>{% endblock %}
-{% if can_edit %}
-    {% block modals %}
-        {{ block.super }}
+{% block modals %}
+    {{ block.super }}
+    {% for parameter in object.parameters.all %}
+        {% if not parameter.is_comment_short %}
+            <div class="modal fade"
+                 id="parameterModal{{ parameter.id }}"
+                 tabindex="-1"
+                 aria-labelledby="parameterModalLabel{{ parameter.id }}"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"
+                                id="parameterModalLabel{{ parameter.id }}">
+                                {% translate "Note" %}
+                                – {{ parameter.parameter_type.name }}
+                            </h5>
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {{ parameter.comment|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    {% if can_edit %}
         {% include "gcampuscore/components/report_modal.html" %}
         <div class="modal fade"
              id="deleteModal"
@@ -38,7 +67,7 @@
                                 </li>
                                 <li>
                                     <b>{% translate "Time" context "measurement time" %}:</b>
-                                    {{ object.time|localtime|localtime|localize }}
+                                    {{ object.time|localtime|localize }}
                                 </li>
                                 <li>
                                     <b>{% translate "Water name" %}:</b>
@@ -62,8 +91,8 @@
                 </div>
             </div>
         </div>
-    {% endblock %}
-{% endif %}
+    {% endif %}
+{% endblock %}
 {% block content %}
     <div class="container-fluid px-0">
         <div class="bg-light" id="measurement-head">
@@ -88,7 +117,7 @@
                             <div>
                                 <small class="text-muted">{% translate "Time" context "measurement time" %}</small>
                                 <br>
-                                <h4>{{ object.time|localtime|localtime|localize }}</h4>
+                                <h4>{{ object.time|localtime|localize }}</h4>
                             </div>
                             {# Add additional div for placing #}
                             <div></div>
@@ -106,8 +135,7 @@
                         </div>
                         <div class="mt-auto">
                             <a class="btn btn-sm btn-secondary"
-                               href="
-                                       {% url "gcampuscore:mapview" %}{% map_options_url lng=measurement.location.x|unlocalize lat=measurement.location.y|unlocalize zoom=14 %}"
+                               href="{% url "gcampuscore:mapview" %}{% map_options_url lng=measurement.location.x|unlocalize lat=measurement.location.y|unlocalize zoom=14 %}"
                                role="link">
                                 {% translate "Explore environment" %}
                             </a>
@@ -155,7 +183,6 @@
                     <tbody>
                     {% for parameter in object.parameters.all %}
                         <tr>
-                            {# TODO: fix td width when expanding note, fix postion of button for expanding/collapsing #}
                             <td>
                                 <i class="circle-icon indicator-icon"
                                    style="background-color: #{{ parameter.parameter_type.color|lower }} !important;"
@@ -164,28 +191,20 @@
                                 </i>
                                 <span class="ms-2">{{ parameter.parameter_type.name }}</span>
                             </td>
+                        <tr>
                             <td class="font-monospace">
                                 {{ parameter.value }}&nbsp;{{ parameter.parameter_type.unit }}
                             </td>
                             <td>
                                 {% if parameter.comment %}
-                                    <div>
-                                        <a class="text-decoration-none text-dark hover-secondary"
-                                           data-bs-toggle="collapse"
-                                           href="#CommentCollapse{{ forloop.counter }}"
-                                           role="button"
-                                           onclick="setCookie()"
-                                           id="CommentCollapseButton{{ forloop.counter }}"
-                                           aria-controls="CommentCollapse{{ forloop.counter }}">
-                                            {% translate "Expand note" %}
-                                        </a> {# TODO: change text to "hide note" when expanded #}
-                                    </div>
-                                    <div class="collapse"
-                                         id="CommentCollapse{{ forloop.counter }}">
-                                        <div class="card card-body">
-                                            <small>{{ parameter.comment }}</small>
-                                        </div>
-                                    </div>
+                                    {% if parameter.is_comment_short %}
+                                        {{ parameter.comment|linebreaksbr }}
+                                    {% else %}
+                                        <a href="#" data-bs-toggle="modal"
+                                           data-bs-target="#parameterModal{{ parameter.id }}">
+                                            {% translate "Show note" %}
+                                        </a>
+                                    {% endif %}
                                 {% else %}
                                     {% translate "N/A" context "no value provided (water name, comment, etc)" %}
                                 {% endif %}

@@ -159,10 +159,8 @@ class XLSXExportView(DataExportView):
     file_ending = "xlsx"
 
     def _stream(self) -> Iterator:
-        with open("template.xlsx", "rb") as template:
-            stream = xlsx_streaming.stream_queryset_as_xlsx(
-                self.iter_rows(), batch_size=10, xlsx_template=template
-            )
+
+        stream = xlsx_streaming.stream_queryset_as_xlsx(self.iter_rows(), batch_size=10)
         return stream
 
     def get_headers(self) -> Tuple[str, ...]:

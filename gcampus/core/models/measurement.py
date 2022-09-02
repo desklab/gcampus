@@ -106,6 +106,23 @@ class Measurement(util.DateModelMixin):
     #: data loss, deleting a measurement will only mark is as hidden.
     hidden = models.BooleanField(default=False, verbose_name=_("Hidden"))
 
+    #: Used for moderation and review of measurements: If a measurement
+    #: is reported using the report form, it is automatically marked
+    #: "requires review". This makes it easier to search for
+    #: problematic measurements in the admin interface.
+    requires_review = models.BooleanField(
+        default=False,
+        verbose_name=_("requires review"),
+    )
+
+    #: Internal comment used in the review process. Should not be
+    #: public.
+    internal_comment = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name=_("internal comment"),
+    )
+
     #: The search vector will be overwritten and turned into a postgres
     #: generated column in migration ``0002_search``.
     search_vector = SearchVectorField(null=True, editable=False)
@@ -134,7 +151,7 @@ class Measurement(util.DateModelMixin):
     def water_name(self):
         return self.water.display_name
 
-    def is_location_changed(self, update_fields=None):
+    def did_location_change(self, update_fields=None):
         if update_fields is not None and "location" in update_fields:
             # The ``update_fields`` parameter explicitly states that the
             # geographic location has been changed.
@@ -153,23 +170,15 @@ class Measurement(util.DateModelMixin):
 
     def save(self, **kwargs):
         update_fields = kwargs.get("update_fields", None)
-        if self.is_location_changed(update_fields=update_fields):
+        if self.did_location_change(update_fields=update_fields):
             self.location_name = get_location_name(self.location)
         return super(Measurement, self).save(**kwargs)
 
     def __str__(self):
-        if self.location_name not in util.EMPTY and self.name not in util.EMPTY:
-            return _("Measurement in %(location)s by %(name)s") % {
-                "location": self.location_name,
-                "name": self.name,
-            }
-        elif self.location_name in util.EMPTY and self.name not in util.EMPTY:
-            return _("Measurement by %(name)s") % {"name": self.name}
-        elif self.location_name not in util.EMPTY and self.name in util.EMPTY:
-            return _("Measurement in %(location)s") % {
-                "location": self.location_name,
-            }
+        if self.pk is not None:
+            return _("Measurement #{id:05d}").format(id=self.pk)
         else:
+            # In this case, ``id`` will be replaced with ``None``
             return _("Measurement %(id)s") % {"id": self.pk}
 
     def _do_insert(self, manager, using, fields, update_pk, raw):
@@ -261,6 +270,14 @@ class Parameter(util.DateModelMixin):
     # the ``all_objects`` manager.
     objects = HiddenManager()
     all_objects = models.Manager()
+
+    @property
+    def is_comment_short(self):
+        """Short comments are less than 51 characters long and do not
+        contain any breaks. Short comments can be displayed in the
+        parameter table whereas longer comments need to be in their own
+        small modal."""
+        return len(self.comment) <= 50 and "\n" not in self.comment
 
     def __str__(self):
         return _("Parameter %(pk)s (%(name)s)") % {

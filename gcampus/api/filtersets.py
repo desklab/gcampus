@@ -13,12 +13,19 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__all__ = ["WaterLookupFilterSet"]
+__all__ = ["WaterLookupFilterSet", "MeasurementAPIFilterSet"]
 
-from django_filters.rest_framework import FilterSet
+from django_filters.rest_framework import FilterSet, ModelMultipleChoiceFilter
 
 from gcampus.api.filters import GeoLookupFilter
+from gcampus.core.models import Water
 
 
 class WaterLookupFilterSet(FilterSet):
     geo = GeoLookupFilter(field_name="geometry", required=True)
+
+
+class MeasurementAPIFilterSet(FilterSet):
+    water = ModelMultipleChoiceFilter(
+        field_name="water_id", queryset=Water.objects.all()
+    )

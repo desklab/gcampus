@@ -19,8 +19,8 @@ import datetime
 import logging
 from inspect import cleandoc
 
-from django.contrib import messages
 from django.conf import settings
+from django.contrib import messages
 from django.core.mail import mail_managers
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
@@ -59,6 +59,7 @@ class MeasurementDetailView(FormMixin, TitleMixin, DetailView):
     )
     template_name = "gcampuscore/sites/detail/measurement_detail.html"
     form_class = ReportForm
+    object: Measurement
 
     def get_context_data(self, **kwargs):
         kwargs.setdefault("can_edit", False)
@@ -123,6 +124,8 @@ class MeasurementDetailView(FormMixin, TitleMixin, DetailView):
         return cleandoc(email_string)
 
     def form_valid(self, form):
+        self.object.requires_review = True
+        self.object.save(update_fields=("requires_review",))
         current_url = self.request.get_full_path()
         info = self.model._meta.app_label, self.model._meta.model_name  # noqa
         admin_url = reverse(

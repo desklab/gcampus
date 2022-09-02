@@ -15,8 +15,8 @@
 
 from django.utils import timezone
 
-from gcampus.auth.models.token import BaseToken, AccessKey, CourseToken
 from gcampus.auth.models.course import Course
+from gcampus.auth.models.token import BaseToken, AccessKey, CourseToken
 from gcampus.auth.models.user import User
 
 
