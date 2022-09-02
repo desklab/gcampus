@@ -176,6 +176,7 @@
       "name": "Nitrat",
       "short_name": "NO<sub>3</sub>",
       "unit": "mg/L",
+      "identifier": "no3",
       "color": "854B4B"
     }
   },
@@ -186,6 +187,7 @@
       "name": "Nitrit",
       "short_name": "NO<sub>2</sub>",
       "unit": "mg/L",
+      "identifier": "no2",
       "color": "B79219"
     }
   },
@@ -196,27 +198,8 @@
       "name": "Phosphat",
       "short_name": "PO<sub>4</sub>",
       "unit": "mg/L",
+      "identifier": "po4",
       "color": "337A9D"
-    }
-  },
-  {
-    "model": "gcampuscore.limit",
-    "pk": 1,
-    "fields": {
-      "limit_type": "gut",
-      "limit_value": 80.0,
-      "parameter_limit": 2,
-      "graph_color": "yellow"
-    }
-  },
-  {
-    "model": "gcampuscore.limit",
-    "pk": 2,
-    "fields": {
-      "limit_type": "sehr gut",
-      "limit_value": 40.0,
-      "parameter_limit": 2,
-      "graph_color": "green"
     }
   },
   {

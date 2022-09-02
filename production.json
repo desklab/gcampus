@@ -6,7 +6,9 @@
       "name": "Nitrat",
       "short_name": "NO<sub>3</sub>",
       "unit": "mg/L",
-      "color": "854B4B"
+      "identifier": "no3",
+      "color": "854B4B",
+      "category": "ch"
     }
   },
   {
@@ -16,7 +18,9 @@
       "name": "Nitrit",
       "short_name": "NO<sub>2</sub>",
       "unit": "mg/L",
-      "color": "B79219"
+      "identifier": "no2",
+      "color": "B79219",
+      "category": "ch"
     }
   },
   {
@@ -26,7 +30,9 @@
       "name": "pH-Wert",
       "short_name": "pH",
       "unit": "",
-      "color": "339D8F"
+      "identifier": "ph",
+      "color": "339D8F",
+      "category": "ch"
     }
   },
   {
@@ -36,7 +42,9 @@
       "name": "Sulfat",
       "short_name": "SO<sub>4</sub>",
       "unit": "mg/L",
-      "color": "337A9D"
+      "identifier": "so4",
+      "color": "337A9D",
+      "category": "ch"
     }
   },
   {
@@ -46,7 +54,69 @@
       "name": "Ammonium",
       "short_name": "NH<sub>4</sub>",
       "unit": "mg/L",
-      "color": "4B8552"
+      "identifier": "nh4",
+      "color": "4B8552",
+      "category": "ch"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 7,
+    "fields": {
+      "name": "Phosphat",
+      "short_name": "PO<sub>4</sub>",
+      "unit": "mg/L",
+      "identifier": "po4",
+      "color": "ffffff",
+      "category": "ch"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 8,
+    "fields": {
+      "name": "BSB",
+      "short_name": "BSB<sub>5</sub>",
+      "unit": "mg/L",
+      "identifier": "bsb5",
+      "color": "ffffff",
+      "category": "ch"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 9,
+    "fields": {
+      "name": "Sauerstoffsättigung",
+      "short_name": "O<sub>2</sub>",
+      "unit": "%",
+      "identifier": "o2",
+      "color": "ffffff",
+      "category": "ch"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 10,
+    "fields": {
+      "name": "Leitfähigkeit",
+      "short_name": "",
+      "unit": "µS/cm",
+      "identifier": "conductivity",
+      "color": "ffffff",
+      "category": "ch"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 11,
+    "fields": {
+      "name": "Temperatur",
+      "short_name": "T",
+      "unit": "°C",
+      "identifier": "temp",
+      "color": "ffffff",
+      "category": "ch"
     }
   },
   {
