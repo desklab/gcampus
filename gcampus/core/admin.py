@@ -25,9 +25,12 @@ from gcampus.core.models import (
     Measurement,
     ParameterType,
     Parameter,
-    Limit,
     Water,
     Calibration,
+    BACHIndex,
+    SaprobicIndex,
+    TrophicIndex,
+    StructureIndex,
 )
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 
@@ -64,11 +67,37 @@ class ParameterInline(LinkedInlineMixin, admin.TabularInline):
     extra = 0
 
 
+@admin.action(description=_("Create or update Water Quality Indices"))
+def create_or_update_indices(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):
+    measurement: Measurement
+    with transaction.atomic():
+        for measurement in queryset:
+            bach_index, created = BACHIndex.objects.get_or_create(
+                measurement_id=measurement.pk
+            )
+            bach_index.update()
+
+            saprobic_index, created = SaprobicIndex.objects.get_or_create(
+                measurement_id=measurement.pk
+            )
+            saprobic_index.update()
+
+            structure_index, created = StructureIndex.objects.get_or_create(
+                measurement_id=measurement.pk
+            )
+            structure_index.update()
+
+            trophic_index, created = TrophicIndex.objects.get_or_create(
+                measurement_id=measurement.pk
+            )
+            trophic_index.update()
+
+
 class MeasurementAdmin(LeafletGeoAdmin):
     list_filter = ("hidden",)
     inlines = [ParameterInline]
     readonly_fields = ADMIN_READ_ONLY_FIELDS + ("location_name",)
-    actions = [hide, show]
+    actions = [hide, show, create_or_update_indices]
 
     def get_queryset(self, request):
         """
@@ -106,10 +135,6 @@ class ParameterTypeAdmin(admin.ModelAdmin):
     inlines = [ParameterInline]
 
 
-class LimitAdmin(admin.ModelAdmin):
-    pass
-
-
 class CalibrationAdmin(admin.ModelAdmin):
     pass
 
@@ -121,9 +146,60 @@ class ParameterAdmin(admin.ModelAdmin):
     actions = [hide, show]
 
 
+@admin.action(description=_("Recalculate selected indices"))
+def update_bach_index(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):
+    index: BACHIndex
+    with transaction.atomic():
+        for index in queryset:
+            index.update()
+
+
+class BACHIndexAdmin(admin.ModelAdmin):
+    actions = [update_bach_index]
+
+
+@admin.action(description=_("Recalculate selected indices"))
+def update_saprobic_index(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):
+    index: SaprobicIndex
+    with transaction.atomic():
+        for index in queryset:
+            index.update()
+
+
+class SaprobicIndexAdmin(admin.ModelAdmin):
+    actions = [update_saprobic_index]
+
+
+@admin.action(description=_("Recalculate selected indices"))
+def update_trophic_index(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):
+    index: TrophicIndex
+    with transaction.atomic():
+        for index in queryset:
+            index.update()
+
+
+class TrophicIndexAdmin(admin.ModelAdmin):
+    actions = [update_trophic_index]
+
+
+@admin.action(description=_("Recalculate selected indices"))
+def update_structure_index(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):
+    index: StructureIndex
+    with transaction.atomic():
+        for index in queryset:
+            index.update()
+
+
+class StructureIndexAdmin(admin.ModelAdmin):
+    actions = [update_structure_index]
+
+
 admin.site.register(Measurement, MeasurementAdmin)
 admin.site.register(ParameterType, ParameterTypeAdmin)
 admin.site.register(Parameter, ParameterAdmin)
-admin.site.register(Limit, LimitAdmin)
 admin.site.register(Water, WaterAdmin)
 admin.site.register(Calibration, CalibrationAdmin)
+admin.site.register(BACHIndex, BACHIndexAdmin)
+admin.site.register(SaprobicIndex, SaprobicIndexAdmin)
+admin.site.register(TrophicIndex, TrophicIndexAdmin)
+admin.site.register(StructureIndex, StructureIndexAdmin)
