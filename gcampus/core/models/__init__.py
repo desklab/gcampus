@@ -17,7 +17,10 @@ from gcampus.core.models.measurement import (
     Measurement,
     ParameterType,
     Parameter,
-    Limit,
     Calibration,
 )
 from gcampus.core.models.water import Water
+from gcampus.core.models.index.bach import BACHIndex
+from gcampus.core.models.index.saprobic import SaprobicIndex
+from gcampus.core.models.index.trophic import TrophicIndex
+from gcampus.core.models.index.structure import StructureIndex

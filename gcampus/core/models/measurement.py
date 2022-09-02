@@ -191,6 +191,14 @@ class Measurement(util.DateModelMixin):
         )
 
 
+class ParameterTypeCategory(models.TextChoices):
+    NA = "undefined", _("undefined")
+    BIOLOGICAL = "biological", _("biological")
+    CHEMICAL = "chemical", _("chemical")
+    PHYSICAL_STRUCTURAL = "physical-structural", _("physical-structural")
+    __empty__ = _("unknown")
+
+
 class ParameterType(models.Model):
     class Meta:
         verbose_name = _("Parameter type")
@@ -201,6 +209,17 @@ class ParameterType(models.Model):
         blank=True, max_length=50, verbose_name=_("Short name")
     )
     unit = models.CharField(blank=True, max_length=10, verbose_name=_("Unit"))
+    identifier = models.CharField(
+        blank=True,
+        max_length=20,
+        verbose_name=_("Identifier"),
+    )
+    category = models.CharField(
+        max_length=20,
+        choices=ParameterTypeCategory.choices,
+        default=ParameterTypeCategory.NA,
+        verbose_name=_("Category"),
+    )
 
     # Hex value of color displayed
     color = models.CharField(blank=True, verbose_name=_("Color"), max_length=7)
@@ -210,25 +229,6 @@ class ParameterType(models.Model):
             return f"{self.name}"
         else:
             return f"{self.name} ({self.unit})"
-
-
-class Limit(models.Model):
-    class Meta:
-        verbose_name = _("Limit")
-        verbose_name_plural = _("Limits")
-
-    limit_type = models.CharField(max_length=20, blank=True)
-
-    limit_value = models.FloatField(blank=True)
-
-    parameter_limit = models.ForeignKey(
-        ParameterType,
-        related_name="parameter_limit",
-        on_delete=models.PROTECT,
-        default=True,
-        verbose_name=_("Parameter type"),
-    )
-    graph_color = models.CharField(max_length=20, default="red")
 
 
 class Parameter(util.DateModelMixin):
