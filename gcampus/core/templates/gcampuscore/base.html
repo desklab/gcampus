@@ -9,26 +9,16 @@
     -->
     <meta charset="utf-8"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>{% block title %}
-        {% if page_title %}
-            {{ page_title }} - GewässerCampus
-        {% else %}
-            GewässerCampus
-        {% endif %}
-    {% endblock %}</title>
+    <title>{% block title %}{% if page_title %}{{ page_title }} - GewässerCampus{% else %}GewässerCampus{% endif %}{% endblock %}</title>
     <meta name="description" content="{% block description %}{% endblock %}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
     {% if ENVIRONMENT == "dev" %}
-        <link rel="icon"
-              href="{% static 'gcampuscore/assets/favicon-dev.png' %}">
+        <link rel="icon" href="{% static 'gcampuscore/assets/favicon-dev.png' %}">
     {% else %}
         <link rel="icon" href="{% static 'gcampuscore/assets/favicon.png' %}">
     {% endif %}
-
     {# Global stylesheets #}
-    <link rel="stylesheet" type="text/css"
-          href="{% static 'gcampuscore/styles/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'gcampuscore/styles/main.css' %}">
     <style>
         @font-face {
             font-family: 'Carlito';
@@ -96,19 +86,18 @@
             <main class="{% block main_class %}{% endblock %}">
                 <nav class="navbar gcampus-navbar navbar-light bg-white fixed-top border-bottom navbar-expand">
                     <div class="container-fluid flex-nowrap">
-                        <div class="mw-75 flex-shrink-1" id="navbar-title">
-                            <button class="btn d-block d-md-none" type="button"
+                        <div class="mw-75 flex-shrink-1 d-md-block d-flex flex-row gap-md-0 gap-3 align-items-center" id="navbar-title">
+                            <button class="btn btn-lg btn-toolbar d-block d-md-none" type="button"
                                     data-bs-toggle="collapse"
                                     data-bs-target="#sidebar"
-                                    aria-expanded="{{ sidebar_open|yesno:"true,false" }}"
+                                    aria-expanded="false"
                                     aria-controls="sidebar">
-                                Menu
+                                {% include "gcampuscore/icons/list.html" %}
                             </button>
-                            {% block navbar_title %}
-                                <div class="navbar-brand">{% firstof page_title "No Page Title Provided" %}</div>{% endblock %}
+                            {% block navbar_title %}<div class="navbar-brand">{{ page_title }}</div>{% endblock %}
                         </div>
                         {% block navbar_other %}{% endblock %}
-                        <ul class="nav navbar-nav text-nowrap flex-nowrap">
+                        <ul class="nav navbar-nav text-nowrap flex-nowrap d-none d-md-flex">
                             {% translate "New Measurement" as new_title %}
                             {% url "gcampuscore:add-measurement" as new_measurement_url %}
                             {% include "gcampuscore/components/nav_item.html" with url=new_measurement_url title=new_title icon="gcampuscore/icons/plus-lg.html" %}
@@ -136,58 +125,12 @@
 {% endblock body %}
 
 {# Global javascript #}
-<script type="text/javascript"
-        src="{% static 'gcampuscore/js/main.js' %}"></script>
+<script type="text/javascript">
+    window.SIDEBAR_STATE_COOKIE_NAME = '{{ sidebar_cookie_name }}';
+    window.TIME_ZONE_COOKIE_NAME = '{{ TIME_ZONE_COOKIE_NAME }}';
+</script>
+<script type="text/javascript" src="{% static 'gcampuscore/js/main.js' %}"></script>
 {% block body_js %}
-    <script type="text/javascript">
-        const SIDEBAR_STATE_COOKIE_NAME = '{{ sidebar_cookie_name }}';
-
-        let timeZone = new Intl.DateTimeFormat().resolvedOptions().timeZone;
-        gcampuscore.main.setCookie('{{ TIME_ZONE_COOKIE_NAME }}', timeZone);
-
-        function setSidebarCookie(state) {
-            gcampuscore.main.setCookie(SIDEBAR_STATE_COOKIE_NAME, (state) ? "1" : "0", 90);
-        }
-
-        let desiredSidebarState = gcampuscore.main.getCookie(SIDEBAR_STATE_COOKIE_NAME);
-
-        let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new gcampuscore.main.Tooltip(tooltipTriggerEl);
-        });
-
-        const sidebarElement = document.getElementById('sidebar');
-        const sidebarControl = document.querySelector('[aria-controls="sidebar"]');
-
-        function toggleSidebar() {
-            let open = sidebarElement.classList.toggle('show');
-            setSidebarCookie(open);
-            sidebarControl.setAttribute("aria-expanded", open);
-        }
-
-        if (desiredSidebarState === '1') {
-            document.getElementById('sidebar').classList.add('show');
-            sidebarControl.setAttribute("aria-expanded", true);
-        } else if (desiredSidebarState === '0') {
-            document.getElementById('sidebar').classList.remove('show');
-            sidebarControl.setAttribute("aria-expanded", false);
-        }
-
-        sidebarElement.addEventListener('hide.bs.collapse', function () {
-            setSidebarCookie(false);
-        });
-        sidebarElement.addEventListener('show.bs.collapse', function () {
-            setSidebarCookie(true);
-        });
-        const mainContent = document.querySelector('main');
-        if (mainContent !== undefined) {
-            mainContent.addEventListener('transitionend', function () {
-                for (let map in window._maps) {
-                    window._maps[map].resize();
-                }
-            });
-        }
-    </script>
 {% endblock body_js %}
 {% if messages %}
     <script type="text/javascript">

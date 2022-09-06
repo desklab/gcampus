@@ -1,9 +1,9 @@
 {% load params %}
 {% load i18n %}
-<nav class="sidebar collapse{% if sidebar_open %} show{% endif %}" id="sidebar">
+<nav class="sidebar collapse{% if sidebar_open %} show-sidebar{% endif %} fixed-top" id="sidebar">
     <div>
         <div class="navbar gcampus-navbar justify-content-start flex-nowrap px-2">
-            <button class="btn text-white d-md-inline-block d-none pt-0" type="button" id="sidebarToggleButton" onclick="toggleSidebar()" aria-controls="sidebar">
+            <button class="btn text-white d-md-inline-block d-none pt-0" type="button" id="sidebarToggleButton" onclick="gcampuscore.main.toggleSidebar()" aria-controls="sidebar">
                 <span class="fs-4">{% include "gcampuscore/icons/list.html" %}</span>
             </button>
             <a href="/" class="fs-5 btn text-white fw-bold sidebar-title gcampus-logo p-0">

@@ -72,10 +72,10 @@
                 </div>
             </div>
         </div>
-        <div class="py-4" id="measurement-body measurement-data">
+        <div class="py-4">
             <div class="container">
                 <h3 class="mb-4 fw-light">{% translate "List of Measurements" %}</h3>
-                <div class="mt-3 list-group list-group-spaced">
+                <div class="mt-3 list-group">
                     {% for measurement in object.measurements.all %}
                         {% include "gcampuscore/components/measurement_list_item.html" with measurement=measurement today=today env="water_list" %}
                     {% endfor %}
