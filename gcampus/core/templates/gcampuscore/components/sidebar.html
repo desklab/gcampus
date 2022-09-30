@@ -1,5 +1,5 @@
-{% load params %}
-{% load i18n %}
+{% load auth_token %}
+{% load i18n next_url params %}
 <nav class="sidebar collapse{% if sidebar_open %} show-sidebar{% endif %} fixed-top" id="sidebar">
     <div>
         <div class="navbar gcampus-navbar justify-content-start flex-nowrap px-2">
@@ -28,8 +28,27 @@
                 {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/people.html" title=course_title view_name="gcampusauth:course-update" other_view_names="gcampusauth:course-access-keys" %}
             {% endif %}
         </ul>
-        {# <hr> #}
     </div>
+    <hr class="d-block d-md-none border-top opacity-100 border-1">
+    <div class="d-block d-md-none">
+        <ul class="mt-auto nav nav-pills flex-column flex-shrink-0">
+            {% translate "New Measurement" as new_title %}
+            {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/plus-lg.html" title=new_title view_name="gcampuscore:add-measurement" %}
+
+            {% if authenticated %}
+                <div class="ms-4">
+                    {% displaytoken user_token hidden=True toggle=True %}
+                </div>
+                {% translate "Logout" as auth_title %}
+                {% include "gcampuscore/components/sidebar_item.html" with title=auth_title view_name="gcampusauth:logout" %}
+            {% else %}
+                {% translate "Log in" as auth_title %}
+                {% next_url as auth_url_extra %}
+                {% include "gcampuscore/components/sidebar_item.html" with title=auth_title view_name="gcampusauth:login" url_extra=auth_url_extra icon="gcampuscore/icons/box-arrow-in-right.html" %}
+            {% endif %}
+        </ul>
+    </div>
+    <hr class="d-block d-md-none border-top opacity-100 border-1">
     <div>
         <ul class="mt-auto nav nav-pills flex-column flex-shrink-0">
             {% translate "About the project" as about_title %}
@@ -38,5 +57,9 @@
             {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/box-arrow-up-right.html" class="sidebar-item-hidden" title=about_title url="https://gewaessercampus.de/" new_tab=True %}
             {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/box-arrow-up-right.html" class="sidebar-item-hidden" title=teaching_material_title url="https://desk-lab.de/docs/" new_tab=True %}
         </ul>
+    </div>
+    <hr class="d-block d-md-none border-top opacity-100 border-1">
+    <div class="d-block d-md-none footer pt-3 pb-4">
+        {% include "gcampuscore/components/footer_content.html" %}
     </div>
 </nav>

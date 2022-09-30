@@ -130,6 +130,7 @@
     window.TIME_ZONE_COOKIE_NAME = '{{ TIME_ZONE_COOKIE_NAME }}';
 </script>
 <script type="text/javascript" src="{% static 'gcampuscore/js/main.js' %}"></script>
+{% if authenticated %}{% displaytoken_js %}{% endif %}
 {% block body_js %}
 {% endblock body_js %}
 {% if messages %}
