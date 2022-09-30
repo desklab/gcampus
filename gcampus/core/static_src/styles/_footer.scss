@@ -1,11 +1,9 @@
 .footer {
-  width: 100% !important;
-  border-top: 1px solid $secondary;
   font-size: 8pt;
-  position: fixed;
-  bottom: 0;
-  background-color: white;
-  height: $gcampus-footer-height;
+  background-color: $white;
+  @include media-breakpoint-up(md) {
+    height: $gcampus-footer-height;
+  }
 }
 
 .footer-link {
@@ -17,9 +15,12 @@
   color: black;
 }
 
-main {
-  padding-bottom: calc(#{$gcampus-footer-height} + #{map-get($spacers, 3)});
-  &.main-pb-0 {
-    padding-bottom: $gcampus-footer-height;
+@include media-breakpoint-up(md) {
+  main {
+    padding-bottom: calc(#{$gcampus-footer-height} + #{map-get($spacers, 3)});
+
+    &.main-pb-0 {
+      padding-bottom: $gcampus-footer-height;
+    }
   }
 }
