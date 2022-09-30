@@ -1,38 +1,33 @@
 {% load i18n %}
-<div class="col-7 px-5 py-3">
-    <div class="mb-3">
-        <form id="conversionForm{{ calibration.pk }}">
-            <div>
-                <label for="od_input_{{ calibration.pk }}">{% translate "Optical density" %}</label>
-                <div class="input-group mb-3">
-                    <input name="od" type="number" min="0" max="1.6" step=".01" id="od_input_{{ calibration.pk }}"
-                           class="form-control"
-                           placeholder="{% translate "Optical density" %}">
-                    <button type="submit" class="btn btn-primary">
-                        {% translate "Convert" %}
-                    </button>
-                </div>
-                <label for="concentration_{{ calibration.pk }}">{{ parameter.name }} {% if parameter.unit != "" %}
-                    [{{ parameter.unit }}]{% endif %}</label>
-                <div class="input-group mb-5">
-                    <input name="concentration" type="number" style="appearance: none" class="form-control no-spinners"
-                           id="concentration_{{ calibration.pk }}"
-                           placeholder="{% translate "Value" %}"
-                           readonly>
-                    <button class="btn btn-secondary" type="button"
-                            onclick="gcampusanalysis.calibration.copyToClipboard('{{ calibration.pk }}')">
-                        {% translate "Copy" %}
-                    </button>
-                </div>
+<div class="col-12 col-md-7 py-3">
+    <form id="conversionForm{{ calibration.pk }}">
+        <div>
+            <label for="od_input_{{ calibration.pk }}">{% translate "Optical density" %}</label>
+            <div class="input-group mb-3">
+                <input name="od" type="number" min="0" max="1.6" step=".01" id="od_input_{{ calibration.pk }}"
+                       class="form-control"
+                       placeholder="{% translate "Optical density" %}">
+                <button type="submit" class="btn btn-primary">
+                    {% translate "Convert" %}
+                </button>
             </div>
-        </form>
-    </div>
+            <label for="concentration_{{ calibration.pk }}">{{ parameter.name }} {% if parameter.unit != "" %}
+                [{{ parameter.unit }}]{% endif %}</label>
+            <div class="input-group mb-5">
+                <input name="concentration" type="number" style="appearance: none" class="form-control no-spinners"
+                       id="concentration_{{ calibration.pk }}"
+                       placeholder="{% translate "Value" %}"
+                       readonly>
+                <button class="btn btn-secondary" type="button"
+                        onclick="gcampusanalysis.calibration.copyToClipboard('{{ calibration.pk }}')">
+                    {% translate "Copy" %}
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
-<div class="col-5 bg-light py-2 px-5">
+<div class="col-12 col-md-5 bg-light py-2">
     <p class="text-muted">
         <canvas id="chart{{ calibration.name }}" width="400" height="400"></canvas>
-        <script>
-
-        </script>
     </p>
 </div>
