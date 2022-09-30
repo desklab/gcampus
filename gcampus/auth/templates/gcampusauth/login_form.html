@@ -64,8 +64,5 @@
     </div>
 {% endblock %}
 {% block extra_body %}
-    {% if authenticated %}
-        {% displaytoken_js %}
-    {% endif %}
     {% include "gcampusauth/js/token_input.html" %}
 {% endblock %}
