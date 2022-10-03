@@ -79,7 +79,6 @@ function setup() {
 
     // Setup tooltips
     let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    console.log(tooltipTriggerList);
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new Tooltip(tooltipTriggerEl);
     });
