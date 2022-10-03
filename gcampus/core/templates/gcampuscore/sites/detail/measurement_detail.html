@@ -38,8 +38,8 @@
             </div>
         {% endif %}
     {% endfor %}
+    {% include "gcampuscore/components/report_modal.html" %}
     {% if can_edit %}
-        {% include "gcampuscore/components/report_modal.html" %}
         <div class="modal fade"
              id="deleteModal"
              tabindex="-1"
