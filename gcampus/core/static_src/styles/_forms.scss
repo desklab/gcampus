@@ -22,15 +22,6 @@ $font-size-factor: math.div($font-size-lg, $font-size-base);
   width: 100%;
   margin-right: -1 * $border-width;
   font-family: 'JetBrains Mono', monospace;
-
-  &[data-token-type="access"] {
-    min-width: $font-size-factor * 9em;
-  }
-
-  &[data-token-type="course"] {
-    min-width: $font-size-factor * 14em;
-  }
-
 }
 
 // Fix issues with safari (see twbs/bootstrap#34760)
