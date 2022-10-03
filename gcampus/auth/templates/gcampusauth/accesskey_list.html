@@ -69,9 +69,9 @@
         <h3 class="mt-5 py-2">{% trans "Access keys" %} ({{ count }})</h3>
         <div class="list-group list-group-spaced">
             {% for access_key in object_list %}
-                <li class="list-group-item list-group-item-spaced d-inline-flex align-items-center">
+                <li class="list-group-item list-group-item-spaced d-inline-flex align-items-start flex-md-row flex-column align-items-md-center gap-md-3">
                     <span class="fs-4">{% displaytoken access_key.token hidden=True toggle=True %}</span>
-                    <small class="ms-3 text-muted">
+                    <small class="text-muted">
                         {% if access_key.deactivated %}
                             <span class="d-inline-block bg-danger circle-icon me-1"></span>
                             {% translate "Deactivated" %}
@@ -80,7 +80,7 @@
                             {% translate "Active" %}
                         {% endif %}
                     </small>
-                    <small class="ms-3 text-muted">
+                    <small class="text-muted">
                             {% with measurement_count=access_key.measurements.count %}
                                 {% if measurement_count > 0 %}
                                     <a class="text-reset text-decoration-none hover-dark dropdown-toggle"
@@ -116,7 +116,7 @@
                                 {% endif %}
                             {% endwith %}
                         </small>
-                    <small class="ms-3 text-muted"{% if access_key.last_login %} data-bs-toggle="tooltip" data-bs-placement="top" title="{{ access_key.last_login|timesince:today }}"{% endif %}>
+                    <small class="text-muted"{% if access_key.last_login %} data-bs-toggle="tooltip" data-bs-placement="top" title="{{ access_key.last_login|timesince:today }}"{% endif %}>
                         <span>{% include "gcampuscore/icons/calendar4-event.html" %}</span>
                         <span class="ms-1 align-middle ">
                             {% translate "Last login:" %}
