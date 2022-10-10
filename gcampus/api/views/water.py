@@ -25,6 +25,7 @@ from django.conf import settings
 from django.db import transaction
 from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
+from django_filters.utils import translate_validation
 from rest_framework import viewsets, generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
@@ -107,11 +108,7 @@ class OverpassLookupAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
             request, self.get_queryset(), self
         )
         if not filterset.is_valid():
-            # This code should never be reached. As the filter set is
-            # already used in `self.filter_queryset` to retrieve the
-            # database OSM IDs in `self.list`, code like this should
-            # already have cause an exception.
-            raise RuntimeError("Filter set is invalid.")
+            raise translate_validation(filterset.errors)
         return filterset.form.cleaned_data.get("geo")
 
     @staticmethod
