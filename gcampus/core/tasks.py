@@ -183,7 +183,13 @@ def staging_maintenance():
         Q(course_token__last_login__isnull=True)
         | Q(course_token__last_login__lt=course_deletion_date),
     )
-    total, detail = courses.delete()
+    course_token_count = 0
+    for course in courses:
+        _, detail = AccessKey.objects.filter(course=course).delete()
+        access_key_count += detail.get("gcampusauth.AccessKey", 0)
+        _, detail = CourseToken.objects.filter(course=course).delete()
+        course_token_count += detail.get("gcampusauth.CourseToken", 0)
+    _, detail = courses.delete()
     course_count = detail.get("gcampusauth.Course", 0)
 
     mail_managers(
@@ -192,6 +198,7 @@ def staging_maintenance():
         "Changes:\n"
         f"Measurements deleted: {measurement_count:d}\n"
         f"Old access keys deleted: {access_key_count:d}\n"
+        f"Old course tokens deleted: {course_token_count:d}\n"
         f"Old courses deleted: {course_count:d}\n\n"
         f"(Version: {settings.VERSION}, {timezone.now().isoformat()})",
         fail_silently=True,
