@@ -52,6 +52,13 @@ def update_measurement_document(
     else:
         raise NotImplementedError(f"Unhandled instance '{type(instance)}'")
 
+    if measurement.hidden:
+        # Do not build documents for hidden measurements. Make sure to
+        # delete old documents.
+        if measurement.document:
+            measurement.document.delete(save=True)
+        return
+
     if not measurement.document:
         # Only build the document if it has been build already.
         return
