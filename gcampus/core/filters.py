@@ -19,7 +19,7 @@ from django.conf import settings
 from django.contrib.postgres.search import SearchQuery
 from django.core.validators import EMPTY_VALUES
 from django.db.models import QuerySet, Q
-from django.forms import CheckboxSelectMultiple, BaseForm
+from django.forms import CheckboxSelectMultiple, BaseForm, Select
 from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 from django_filters import (
@@ -30,6 +30,7 @@ from django_filters import (
     ModelMultipleChoiceFilter,
     BooleanFilter,
     DateFromToRangeFilter,
+    ChoiceFilter,
 )
 
 from gcampus.auth import session
@@ -39,6 +40,7 @@ from gcampus.core.fields.datetime import HistogramDateTimeField
 from gcampus.core.fields.personal import ToggleField
 from gcampus.core.models import ParameterType
 from gcampus.core.models.util import EMPTY
+from gcampus.core.models.water import FlowType
 
 
 def _get_filter_request(filter_instance: Filter) -> Optional[HttpRequest]:
@@ -173,6 +175,15 @@ class MeasurementFilterSet(FilterSet):
         widget=CheckboxSelectMultiple(attrs={"class": "form-check-input"}),
         label=_("Parameter"),
         help_text=_("Filter for measurements containing specific parameters."),
+    )
+    flow_type = ChoiceFilter(
+        field_name="water__flow_type",
+        null_label=FlowType.__empty__,
+        widget=Select(attrs={"class": "form-select form-select-sm"}),
+        choices=(
+            (FlowType.RUNNING.value, FlowType.RUNNING.label),
+            (FlowType.STANDING.value, FlowType.STANDING.label),
+        ),
     )
 
     same_course = BooleanNoOpFilter(

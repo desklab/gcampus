@@ -15,6 +15,13 @@
                     {{ field }}
                 </div>
             {% endwith %}
+            {% with filter.form.flow_type as field %}
+                <div class="mb-4">
+                    <span class="fs-5 fw-semibold mb-3">{% translate "Flow type" %}</span>
+                    {% include "gcampuscore/forms/components/helptext.html" %}
+                    {{ field }}
+                </div>
+            {% endwith %}
             {% with filter.form.parameter_types as field %}
                 <div class="mb-4">
                     <span class="fs-5 fw-semibold mb-3">{% translate "Parameter" %}</span>
