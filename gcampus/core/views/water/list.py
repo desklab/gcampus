@@ -23,6 +23,7 @@ from django.views.generic import ListView
 
 from gcampus.core.models import Water
 from gcampus.core.views.base import TitleMixin
+from gcampus.core.filters import WaterFilterSet
 
 
 class WaterListView(TitleMixin, ListView):
@@ -38,3 +39,23 @@ class WaterListView(TitleMixin, ListView):
     title = gettext_lazy("All waters")
     context_object_name = "water_list"
     paginate_by = 10
+
+    def get_queryset(self):
+        if not hasattr(self, "filter"):
+            self.filter = WaterFilterSet(
+                self.request.GET, queryset=self.queryset, request=self.request
+            )
+        self.queryset = self.filter.qs
+        return super(WaterListView, self).get_queryset()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        if "filter" not in kwargs:
+            kwargs["filter"] = self.filter
+
+        if "filter_status" not in kwargs:
+            kwargs["filter_status"] = False
+
+        kwargs["count"] = self.get_queryset().count()
+        return super(WaterListView, self).get_context_data(
+            object_list=object_list, **kwargs
+        )

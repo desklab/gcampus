@@ -13,7 +13,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import List, Optional, Set
+from typing import List, Optional, Set, Tuple
 
 from django.conf import settings
 from django.contrib.postgres.search import SearchQuery
@@ -31,6 +31,7 @@ from django_filters import (
     BooleanFilter,
     DateFromToRangeFilter,
     ChoiceFilter,
+    MultipleChoiceFilter,
 )
 
 from gcampus.auth import session
@@ -40,7 +41,29 @@ from gcampus.core.fields.datetime import HistogramDateTimeField
 from gcampus.core.fields.personal import ToggleField
 from gcampus.core.models import ParameterType
 from gcampus.core.models.util import EMPTY
-from gcampus.core.models.water import FlowType
+from gcampus.core.models.water import FlowType, WaterType, Water
+from gcampus.core.widgets import DropdownMultipleSelect
+
+WATER_TYPES = (
+    (WaterType.RIVER.value, WaterType.RIVER.label),
+    (WaterType.STREAM.value, WaterType.STREAM.label),
+    (WaterType.TIDAL_CHANNEL.value, WaterType.TIDAL_CHANNEL.label),
+    (WaterType.CANAL.value, WaterType.CANAL.label),
+    (WaterType.DRAIN.value, WaterType.DRAIN.label),
+    (WaterType.DITCH.value, WaterType.DITCH.label),
+    (WaterType.WETLAND.value, WaterType.WETLAND.label),
+    (WaterType.LAKE.value, WaterType.LAKE.label),
+    (WaterType.BASIN.value, WaterType.BASIN.label),
+    (WaterType.POND.value, WaterType.POND.label),
+    (WaterType.RESERVOIR.value, WaterType.RESERVOIR.label),
+    (WaterType.LAGOON.value, WaterType.LAGOON.label),
+    (WaterType.COASTLINE.value, WaterType.COASTLINE.label),
+    (WaterType.BAY.value, WaterType.BAY.label),
+    (WaterType.OXBOW.value, WaterType.OXBOW.label),
+    (WaterType.HARBOUR.value, WaterType.HARBOUR.label),
+    (WaterType.WASTEWATER.value, WaterType.WASTEWATER.label),
+    (WaterType.SPRING.value, WaterType.SPRING.label),
+)
 
 
 def _get_filter_request(filter_instance: Filter) -> Optional[HttpRequest]:
@@ -62,6 +85,19 @@ class BooleanNoOpFilter(BooleanFilter):
     field_class = ToggleField
 
     def filter(self, qs, value):
+        return qs
+
+
+class WaterTypeFilter(ModelMultipleChoiceFilter):
+    def filter(self, qs, value: List[WaterType]):
+        water_type_ids = [water_type.id for water_type in value]
+        if water_type_ids in EMPTY or None in water_type_ids:
+            return qs
+        if self.distinct:
+            qs = qs.distinct()
+        query_name = f"water_type__pk__in"
+        for WATER_type_id in water_type_ids:
+            qs = self.get_method(qs)(**{query_name: [WATER_type_id]})
         return qs
 
 
@@ -94,6 +130,28 @@ class MeasurementSearchFilter(CharFilter):
 
 class DateRange(DateFromToRangeFilter):
     field_class = HistogramDateTimeField
+
+
+class WaterFilterSet(FilterSet):
+    form: BaseForm
+
+    water_type = MultipleChoiceFilter(
+        choices=WATER_TYPES, widget=CheckboxSelectMultiple
+    )
+
+    class Meta:
+        model = Water
+        fields = ["water_type"]
+
+    flow_type = ChoiceFilter(
+        field_name="flow_type",
+        null_label=FlowType.__empty__,
+        widget=Select(attrs={"class": "form-select form-select-sm"}),
+        choices=(
+            (FlowType.RUNNING.value, FlowType.RUNNING.label),
+            (FlowType.STANDING.value, FlowType.STANDING.label),
+        ),
+    )
 
 
 class MeasurementFilterSet(FilterSet):

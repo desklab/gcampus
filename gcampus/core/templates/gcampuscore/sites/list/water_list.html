@@ -2,6 +2,42 @@
 {% load i18n static params auth_token %}
 {% block content %}
      <div class="container-fluid">
+        <form method="GET" class="row align-items-center gap-2">
+            <div class="col-12 col-md-auto">
+                <div class="input-group">
+                    {% with filter.form.name as field %}
+                        {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                    {% endwith %}
+                    <button type="submit" class="btn btn-primary d-inline"
+                            aria-label="{% translate "Search" %}">
+                        {% include "gcampuscore/icons/search.html" %}
+                    </button>
+                </div>
+            </div>
+            <div class="col-auto">
+                <small>
+                    {% blocktranslate trimmed with count=count %}
+                        Found {{ count }} waters
+                    {% endblocktranslate %}
+                </small>
+            </div>
+            <div class="col-auto ms-auto">
+                <button class="btn btn-outline-primary d-inline position-relative"
+                        type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasFilter"
+                        aria-controls="offcanvasFilter">
+                    {% translate "Filter" %}
+                    {% if filter_status %}
+                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-warning border border-light rounded-pill">
+                            <span class="visually-hidden">
+                                {% translate "Additional filters applied" %}
+                            </span>
+                            </span>
+                    {% endif %}
+                </button>
+                {% include "gcampuscore/components/water_filter.html" %}
+            </div>
+        </form>
         {% if object_list %}
             <div class="mt-3 list-group">
                 {% for water in object_list %}
@@ -17,4 +53,6 @@
         {% endif %}
     </div>
 {% endblock content %}
-
+{% block extra_body %}
+    <script type="text/javascript" src="{% static 'gcampuscore/js/filter.js' %}"></script>
+{% endblock extra_body %}
