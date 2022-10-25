@@ -78,18 +78,23 @@ class ParameterTypeFilter(ModelMultipleChoiceFilter):
         return qs
 
 
-class MeasurementSearchFilter(CharFilter):
+class SearchFilter(CharFilter):
     TSVECTOR_CONF = getattr(settings, "TSVECTOR_CONF")
+
+    def __init__(self, *args, related_fields: Optional[List[str]] = None, **kwargs):
+        super(SearchFilter, self).__init__(*args, **kwargs)
+        self.related_fields: List[str] = related_fields or []
 
     def filter(self, qs, value):
         if value in EMPTY_VALUES:
             return qs
         if self.distinct:
             qs = qs.distinct()
-        qs = self.get_method(qs)(
-            **{self.field_name: SearchQuery(value, config=self.TSVECTOR_CONF)}
-        )
-        return qs
+        search_query = SearchQuery(value, config=self.TSVECTOR_CONF)
+        query = Q(**{self.field_name: search_query})
+        for related_field in self.related_fields:
+            query |= Q(**{f"{related_field}__{self.field_name}": search_query})
+        return self.get_method(qs)(query)
 
 
 class DateRange(DateFromToRangeFilter):
@@ -158,9 +163,10 @@ class MeasurementFilterSet(FilterSet):
 
         return len(applied_filters) != 0
 
-    name = MeasurementSearchFilter(
+    name = SearchFilter(
         field_name="search_vector",
         label=_("Search"),
+        related_fields=["water"],
         help_text=_("Fulltext search for measurements."),
     )
     time_range = DateRange(
