@@ -29,6 +29,8 @@ from typing import Optional, List, Union
 import httpx
 from django.conf import settings
 from django.contrib.gis.db.models import GeometryField
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVectorField
 from django.db import models
 from django.utils.translation import gettext_lazy, pgettext_lazy, get_language
 
@@ -155,8 +157,12 @@ class Water(DateModelMixin):
     class Meta:
         verbose_name = gettext_lazy("Water")
         verbose_name_plural = gettext_lazy("Waters")
+        indexes = (GinIndex(fields=("search_vector",)),)
         ordering = ("name", "osm_id")
 
+    #: The search vector will be overwritten and turned into a postgres
+    #: generated column in migration ``0002_search``.
+    search_vector = SearchVectorField(null=True, editable=False)
     geometry = GeometryField(blank=False, verbose_name=gettext_lazy("Geometry"))
     tags = models.JSONField(
         default=dict, blank=True, null=False, verbose_name=gettext_lazy("Tags")
