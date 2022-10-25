@@ -15,25 +15,25 @@ class Migration(migrations.Migration):
             model_name="measurement",
             name="internal_comment",
             field=models.TextField(
-                blank=True, null=True, verbose_name="Internal comment"
+                blank=True, null=True, verbose_name="internal comment"
             ),
         ),
         migrations.AddField(
             model_name="measurement",
             name="requires_review",
-            field=models.BooleanField(default=False, verbose_name="Requires review"),
+            field=models.BooleanField(default=False, verbose_name="requires review"),
         ),
         migrations.AddField(
             model_name="water",
             name="internal_comment",
             field=models.TextField(
-                blank=True, null=True, verbose_name="Internal comment"
+                blank=True, null=True, verbose_name="internal comment"
             ),
         ),
         migrations.AddField(
             model_name="water",
             name="requires_update",
-            field=models.BooleanField(default=False, verbose_name="Requires update"),
+            field=models.BooleanField(default=False, verbose_name="requires update"),
         ),
         migrations.AlterField(
             model_name="measurement",
