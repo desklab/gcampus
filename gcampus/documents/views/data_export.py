@@ -28,8 +28,7 @@ from django.views import View
 from django.views.generic.list import MultipleObjectMixin
 
 from gcampus.core.filters import MeasurementFilterSet
-from gcampus.core.models import Water
-from gcampus.core.models.measurement import Measurement, ParameterType
+from gcampus.core.models import Water, Measurement, ParameterType
 
 
 class DataExportView(MultipleObjectMixin, View, ABC):
