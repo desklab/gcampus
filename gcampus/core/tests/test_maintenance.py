@@ -12,19 +12,39 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from datetime import timedelta
 
+from datetime import timedelta
+from unittest import mock
+
+from celery import Task
 from django.conf import settings
+from django.test import TestCase
 from django.utils import timezone
 
 from gcampus.auth.models import Course, AccessKey, CourseToken
 from gcampus.core.models import Measurement, Parameter
 from gcampus.core.tasks import maintenance
-from gcampus.tasks.tests.utils import BaseMockTaskTest
 
 
-class MaintenanceTest(BaseMockTaskTest):
+class MaintenanceTest(TestCase):
     fixtures = ["test.json"]
+
+    @classmethod
+    def setUpClass(cls):
+        # Mock the 'apply_async' function of a Celery task. All tasks
+        # will be skipped.
+        cls.task_mock = mock.patch.object(
+            Task,
+            "apply_async",
+            autospec=True,
+        )
+        cls.task_mock.start()
+        super(MaintenanceTest, cls).setUpClass()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.task_mock.stop()
+        super(MaintenanceTest, cls).tearDownClass()
 
     def test_maintenance(self):
         now = timezone.now()
