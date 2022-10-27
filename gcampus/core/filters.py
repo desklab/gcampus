@@ -42,7 +42,6 @@ from gcampus.core.fields.personal import ToggleField
 from gcampus.core.models import ParameterType
 from gcampus.core.models.util import EMPTY
 from gcampus.core.models.water import FlowType, WaterType, Water
-from gcampus.core.widgets import DropdownMultipleSelect
 
 WATER_TYPES = (
     (WaterType.RIVER.value, WaterType.RIVER.label),
