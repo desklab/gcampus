@@ -216,6 +216,13 @@ class Water(DateModelMixin):
                 self.flow_type = self.guess_flow_type(self.water_type)
         return super(Water, self).save(**kwargs)
 
+    def _do_insert(self, manager, using, fields, update_pk, raw):
+        mod_fields = list(fields)
+        for i, field in enumerate(mod_fields):
+            if field.name == "search_vector":
+                del mod_fields[i]
+        return super(Water, self)._do_insert(manager, using, mod_fields, update_pk, raw)
+
     @property
     def display_name(self) -> str:
         """Retrieve human-readable name. Defaults to the :attr:`.name`
