@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-19 20:08+0200\n"
+"POT-Creation-Date: 2022-10-27 16:51+0200\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -27,10 +27,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: \n"
-
-#: gcampus/admin/options.py:27
-msgid "Admin link"
-msgstr "Admin link"
 
 #: gcampus/admin/sites.py:21
 msgid "GewässerCampus administration"
@@ -44,38 +40,34 @@ msgstr "GewässerCampus-Systemverwaltung"
 msgid "GCampus Analysis"
 msgstr "GCampus Analyse"
 
-#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:6
-#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:10
-#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:44
+#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:5
+#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:9
+#: gcampus/analysis/templates/gcampusanalysis/od_converter_detail.html:59
 msgid "Optical density"
 msgstr "Optische Dichte"
 
-#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:12
+#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:11
 msgid "Convert"
 msgstr "Umrechnen"
 
-#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:20
-#: gcampus/core/forms/measurement.py:153 gcampus/core/models/measurement.py:250
+#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:19
+#: gcampus/core/forms/measurement.py:154 gcampus/core/models/parameter.py:135
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:179
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:127
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:125
 msgid "Value"
 msgstr "Wert"
 
-#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:24
+#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:23
 msgid "Copy"
 msgstr "Kopieren"
 
-#: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:37
-msgid "Calibration fit for"
-msgstr "Kalibrierung für"
-
-#: gcampus/analysis/templates/gcampusanalysis/od_converter_detail.html:9
+#: gcampus/analysis/templates/gcampusanalysis/od_converter_detail.html:5
 #: gcampus/analysis/templates/gcampusanalysis/od_converter_overview.html:9
 #: gcampus/analysis/views.py:11 gcampus/analysis/views.py:26
 msgid "Optical Density Converter"
 msgstr "Umrechner für Optische Dichte"
 
-#: gcampus/analysis/templates/gcampusanalysis/od_converter_detail.html:17
+#: gcampus/analysis/templates/gcampusanalysis/od_converter_detail.html:13
 #, python-format
 msgid ""
 "This tool helps you to convert the optical density you measured with the "
@@ -84,7 +76,7 @@ msgstr ""
 "Mit diesem Werkzeug kannst du die mit dem Photometer gemessene Optische "
 "Dichte in <b>%(name)s</b> in %(unit)s umrechnen."
 
-#: gcampus/analysis/templates/gcampusanalysis/od_converter_detail.html:22
+#: gcampus/analysis/templates/gcampusanalysis/od_converter_detail.html:18
 #, python-format
 msgid ""
 "This tool helps you to convert the optical density you measured with the "
@@ -93,9 +85,14 @@ msgstr ""
 "Mit diesem Werkzeug kannst du die mit dem Photometer gemessene Optische "
 "Dichte in <b>%(name)s</b> umrechnen."
 
-#: gcampus/analysis/templates/gcampusanalysis/od_converter_detail.html:29
+#: gcampus/analysis/templates/gcampusanalysis/od_converter_detail.html:25
 msgid "Select different parameter"
 msgstr "Anderen Parameter auswählen"
+
+#: gcampus/analysis/templates/gcampusanalysis/od_converter_detail.html:57
+#, python-format
+msgid "Calibration fit for %(parameter_type)s"
+msgstr "Kalibrierung für"
 
 #: gcampus/analysis/templates/gcampusanalysis/od_converter_overview.html:16
 #, python-format
@@ -116,11 +113,11 @@ msgstr ""
 msgid "GCampus API"
 msgstr "GCampus API"
 
-#: gcampus/auth/admin.py:35
+#: gcampus/auth/admin.py:34
 msgid "Deactivate selected tokens"
 msgstr "Ausgewählte Token sperren"
 
-#: gcampus/auth/admin.py:36
+#: gcampus/auth/admin.py:35
 msgid "Reactivate selected tokens"
 msgstr "Ausgewählte Token freigeben"
 
@@ -192,12 +189,12 @@ msgstr ""
 msgid "Number of access keys"
 msgstr "Anzahl der Zugangscodes"
 
-#: gcampus/auth/forms/token.py:33 gcampus/auth/models/token.py:259
+#: gcampus/auth/forms/token.py:33 gcampus/auth/models/token.py:268
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:80
 msgid "Access key"
 msgstr "Zugangscode"
 
-#: gcampus/auth/forms/token.py:42 gcampus/auth/models/token.py:215
+#: gcampus/auth/forms/token.py:42 gcampus/auth/models/token.py:224
 #: gcampus/auth/templates/gcampusauth/course_edit_form.html:15
 #: gcampus/mail/templates/gcampusmail/register/overview.html:5
 msgid "Course token"
@@ -244,28 +241,28 @@ msgstr "{name!s} (Kurs {pk})"
 msgid "Course {pk}"
 msgstr "Kurs {pk}"
 
-#: gcampus/auth/models/token.py:106
+#: gcampus/auth/models/token.py:107
 msgid "Last login"
 msgstr "Letzte Anmeldung"
 
-#: gcampus/auth/models/token.py:216
+#: gcampus/auth/models/token.py:225
 msgid "Course tokens"
 msgstr "Kursschlüssel"
 
-#: gcampus/auth/models/token.py:240
+#: gcampus/auth/models/token.py:249
 msgid "course token permissions"
 msgstr "Kursschlüssel Berechtigungen"
 
-#: gcampus/auth/models/token.py:242
+#: gcampus/auth/models/token.py:251
 msgid "Specific permissions for this course token."
 msgstr "Spezifische Berechtigungen für diesen Kursschlüssel."
 
-#: gcampus/auth/models/token.py:248
+#: gcampus/auth/models/token.py:257
 #, python-format
 msgid "Course token %(id)s"
 msgstr "Kursschlüssel %(id)s"
 
-#: gcampus/auth/models/token.py:260
+#: gcampus/auth/models/token.py:269
 #: gcampus/auth/templates/gcampusauth/accesskey_list.html:69
 #: gcampus/auth/views/course.py:107
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:123
@@ -273,15 +270,15 @@ msgstr "Kursschlüssel %(id)s"
 msgid "Access keys"
 msgstr "Zugangscodes"
 
-#: gcampus/auth/models/token.py:283
+#: gcampus/auth/models/token.py:292
 msgid "access key permissions"
 msgstr "Zugangscode Berechtigungen"
 
-#: gcampus/auth/models/token.py:285
+#: gcampus/auth/models/token.py:294
 msgid "Specific permissions for this access key."
 msgstr "Spezifische Berechtigungen für diesen Zugangscode."
 
-#: gcampus/auth/models/token.py:295
+#: gcampus/auth/models/token.py:304
 #, python-format
 msgid "Access key %(id)s"
 msgstr "Zugangscode %(id)s"
@@ -379,11 +376,12 @@ msgid "Course administration"
 msgstr "Kursverwaltung"
 
 #: gcampus/auth/templates/gcampusauth/components/auth_menu.html:19
-#: gcampus/core/filters.py:185
+#: gcampus/core/filters.py:260
 msgid "Your Measurements"
 msgstr "Deine Messungen"
 
 #: gcampus/auth/templates/gcampusauth/components/auth_menu.html:28
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:42
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -572,7 +570,7 @@ msgstr ""
 #: gcampus/auth/templates/gcampusauth/error/403_email_verification_expired.html:19
 #: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:21
 #: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:26
-#: gcampus/auth/views/token.py:120
+#: gcampus/auth/views/token.py:118
 msgid "Login with access key"
 msgstr "Mit Zugangscode anmelden"
 
@@ -599,13 +597,13 @@ msgstr ""
 #: gcampus/auth/templates/gcampusauth/error/403_email_verification_expired.html:23
 #: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:25
 #: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:30
-#: gcampus/auth/views/token.py:126
+#: gcampus/auth/views/token.py:124
 msgid "Login with course token"
 msgstr "Mit Kursschlüssel anmelden"
 
 #: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:24
 #: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:34
-#: gcampus/auth/templates/gcampusauth/login_form.html:56
+#: gcampus/auth/templates/gcampusauth/login_form.html:50
 msgid ""
 "If you login with a different access key or course token, you will "
 "automatically be logged out from your old key."
@@ -675,8 +673,8 @@ msgstr ""
 
 #: gcampus/auth/templates/gcampusauth/login_form.html:3
 #: gcampus/auth/templates/gcampusauth/login_form.html:4
-#: gcampus/auth/templates/gcampusauth/login_form.html:50
-#: gcampus/auth/views/token.py:56
+#: gcampus/auth/templates/gcampusauth/login_form.html:44
+#: gcampus/auth/views/token.py:54
 msgid "Login"
 msgstr "Anmelden"
 
@@ -685,11 +683,11 @@ msgstr "Anmelden"
 msgid ""
 "Some features, for example adding a new measurement, are limited to "
 "authenticated users. Please use your access key to <a class=\"text-dark\" "
-"href=\"%(login_accesskey_url)s\"> log in as a student </a>. If you don't "
-"have an access key, your teacher can generate one for you. <br><br> As a "
-"teacher you can <a class=\"text-dark\" href=\"%(login_coursetoken_url)s\"> "
-"login with a course token </a> or <a class=\"text-dark\" href="
-"\"%(register_url)s\"> register </a> a new course."
+"href=\"%(login_accesskey_url)s\">log in as a student</a>. If you don't have "
+"an access key, your teacher can generate one for you. <br><br> As a teacher "
+"you can <a class=\"text-dark\" href=\"%(login_coursetoken_url)s\">login with "
+"a course token</a> or <a class=\"text-dark\" href=\"%(register_url)s"
+"\">register</a> a new course."
 msgstr ""
 "Einige Funktionen wie zum Beispiel das Hinzufügen von Messungen sind nur für "
 "angemeldete Nutzer zugänglich. Bitte verwende deinen Zugangscode um dich <a "
@@ -733,27 +731,27 @@ msgstr ""
 "Der Kurs wurde erfolgreich registriert! Ein Aktivierungslink wurde an deine "
 "E-Mail-Adresse gesendet."
 
-#: gcampus/auth/views/token.py:133
+#: gcampus/auth/views/token.py:131
 msgid "Successfully logged out"
 msgstr "Du wurdest erfolgreich abgemeldet"
 
-#: gcampus/core/admin.py:53
+#: gcampus/core/admin.py:52
 msgid "Hide selected items for all users"
 msgstr "Ausgewählte Einträge für alle Nutzer verstecken"
 
-#: gcampus/core/admin.py:54
+#: gcampus/core/admin.py:53
 msgid "Show selected items for all users"
 msgstr "Ausgewählte Einträge für alle Nutzer anzeigen"
 
-#: gcampus/core/admin.py:55
+#: gcampus/core/admin.py:54
 msgid "Update from OpenStreetMap"
 msgstr "Mit OpenStreetMap updaten"
 
-#: gcampus/core/admin.py:112
+#: gcampus/core/admin.py:120
 msgid "OpenStreetMap URL"
 msgstr "OpenStreetMap URL"
 
-#: gcampus/core/admin.py:117
+#: gcampus/core/admin.py:125
 msgid "No OpenStreetMap ID provided!"
 msgstr "Keine OpenStreetMap ID angegeben!"
 
@@ -761,103 +759,103 @@ msgstr "Keine OpenStreetMap ID angegeben!"
 msgid "GCampus Core"
 msgstr "GewässerCampus"
 
-#: gcampus/core/filters.py:161
+#: gcampus/core/filters.py:226
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:61
+#: gcampus/core/templates/gcampuscore/sites/list/water_list.html:12
 msgid "Search"
 msgstr "Suchen"
 
-#: gcampus/core/filters.py:162
+#: gcampus/core/filters.py:228
 msgid "Fulltext search for measurements."
 msgstr "Volltextsuche für Messungen."
 
-#: gcampus/core/filters.py:167
+#: gcampus/core/filters.py:233
 #: gcampus/core/templates/gcampuscore/components/filter.html:13
 msgid "Measurement time range"
 msgstr "Messzeitraum"
 
-#: gcampus/core/filters.py:168
+#: gcampus/core/filters.py:234
 msgid "Filter for measurements conducted in a specified time range."
 msgstr ""
 "Nach Messungen suchen die in einem bestimmten Zeitraum gemessen wurden."
 
-#: gcampus/core/filters.py:174 gcampus/core/models/measurement.py:239
-#: gcampus/core/models/measurement.py:247
-#: gcampus/core/models/measurement.py:294
-#: gcampus/core/templates/gcampuscore/components/filter.html:20
+#: gcampus/core/filters.py:240 gcampus/core/models/parameter.py:106
+#: gcampus/core/models/parameter.py:126 gcampus/core/models/parameter.py:132
+#: gcampus/core/templates/gcampuscore/components/filter.html:27
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:178
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:126
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:124
 msgid "Parameter"
 msgstr "Parameter"
 
-#: gcampus/core/filters.py:175
+#: gcampus/core/filters.py:241
 msgid "Filter for measurements containing specific parameters."
 msgstr "Nach Messungen mit bestimmten Parameter filtern."
 
-#: gcampus/core/filters.py:180
+#: gcampus/core/filters.py:255
 msgid "Measurements by your course"
 msgstr "Messungen deines Kurses"
 
-#: gcampus/core/filters.py:181
+#: gcampus/core/filters.py:256
 msgid "Display measurements that have been conducted by your course."
 msgstr "Messungen anzeigen, die von deinem Kurs durchgeführt wurden."
 
-#: gcampus/core/filters.py:186
+#: gcampus/core/filters.py:261
 msgid "Display measurements that have been conducted by you."
 msgstr "Messungen anzeigen, die von dir durchgeführt wurden."
 
-#: gcampus/core/filters.py:190
+#: gcampus/core/filters.py:265
 msgid "Other courses"
 msgstr "Andere Kurse"
 
-#: gcampus/core/filters.py:191
+#: gcampus/core/filters.py:266
 msgid "Display measurements conducted by other courses."
 msgstr "Messungen anzeigen, die von anderen Kursen durchgeführt wurden."
 
-#: gcampus/core/forms/measurement.py:40
+#: gcampus/core/forms/measurement.py:41
 msgid "The measurement time has to be after {time!s}."
 msgstr "Der Messzeitpunkt muss nach {time!s} sein."
 
-#: gcampus/core/forms/measurement.py:43
+#: gcampus/core/forms/measurement.py:44
 msgid "The measurement time has to be before {time!s}."
 msgstr "Der Messzeitpunkt muss vor {time!s} sein."
 
-#: gcampus/core/forms/measurement.py:47
+#: gcampus/core/forms/measurement.py:48
 msgid "Other"
 msgstr "Sonstiges"
 
-#: gcampus/core/forms/measurement.py:48
+#: gcampus/core/forms/measurement.py:49
 msgid "Note contains problematic text"
 msgstr "Notiz enthält problematischen Text"
 
-#: gcampus/core/forms/measurement.py:49
+#: gcampus/core/forms/measurement.py:50
 msgid "Values are problematic"
 msgstr "Messwerte sind problematisch"
 
-#: gcampus/core/forms/measurement.py:52
+#: gcampus/core/forms/measurement.py:53
 msgid "Location of measurement is not on public ground"
 msgstr "Standort der Messung ist nicht öffentlich zugänglich"
 
-#: gcampus/core/forms/measurement.py:56
+#: gcampus/core/forms/measurement.py:57
 msgid "Location of measurement is not on a water"
 msgstr "Standort der Messung ist kein Gewässer"
 
-#: gcampus/core/forms/measurement.py:60
+#: gcampus/core/forms/measurement.py:61
 msgid "Name of water does not match location"
 msgstr "Problem mit dem Gewässernamen"
 
-#: gcampus/core/forms/measurement.py:68
+#: gcampus/core/forms/measurement.py:69
 msgid "Additional information"
 msgstr "Weitere Informationen"
 
-#: gcampus/core/forms/measurement.py:73
+#: gcampus/core/forms/measurement.py:74
 msgid "What is the type of the problem?"
 msgstr "Welche Kategorie beschreibt das Problem am besten?"
 
-#: gcampus/core/forms/measurement.py:78
+#: gcampus/core/forms/measurement.py:79
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: gcampus/core/forms/measurement.py:80
+#: gcampus/core/forms/measurement.py:81
 msgid ""
 "This email address will only be used to contact you and is not shared with "
 "anyone else. See our privacy policy for more details."
@@ -866,18 +864,18 @@ msgstr ""
 "kontaktieren, falls wir Rückfragen haben. Sie wird mit niemandem sonst "
 "geteilt. Weitere Informationen findest du in der Datenschutzerklärung."
 
-#: gcampus/core/forms/measurement.py:96 gcampus/core/models/measurement.py:95
+#: gcampus/core/forms/measurement.py:97 gcampus/core/models/measurement.py:94
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:69
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:118
 msgctxt "measurement time"
 msgid "Time"
 msgstr "Messzeitpunkt"
 
-#: gcampus/core/forms/measurement.py:97 gcampus/core/models/measurement.py:96
+#: gcampus/core/forms/measurement.py:98 gcampus/core/models/measurement.py:95
 msgid "Date and time of the measurement"
 msgstr "Datum und Uhrzeit der Messung"
 
-#: gcampus/core/forms/measurement.py:119
+#: gcampus/core/forms/measurement.py:120
 msgid ""
 "No location has been selected. Click on the map to select the location of "
 "your measurement."
@@ -885,7 +883,7 @@ msgstr ""
 "Kein Standort ausgewählt. Klicke auf die Karte um den Standort der Messung "
 "festzulegen."
 
-#: gcampus/core/forms/measurement.py:125
+#: gcampus/core/forms/measurement.py:126
 msgid ""
 "No water has been selected. After selecting a location on the map, choose "
 "one of the suggested nearby waters."
@@ -893,69 +891,68 @@ msgstr ""
 "Kein Gewässer ausgewählt. Nachdem ein Standort auf der Karte festgelegt "
 "wurde, kann das Gewässer aus den Vorschlägen ausgewählt werden."
 
-#: gcampus/core/forms/measurement.py:161 gcampus/core/models/measurement.py:102
-#: gcampus/core/models/measurement.py:257
+#: gcampus/core/forms/measurement.py:162 gcampus/core/models/measurement.py:101
+#: gcampus/core/models/parameter.py:142
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:24
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:126
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:180
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:98
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:128
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:126
 msgid "Note"
 msgstr "Notiz"
 
-#: gcampus/core/models/measurement.py:50
+#: gcampus/core/models/measurement.py:49
 #: gcampus/core/templates/gcampuscore/components/measurement_list_item.html:7
 msgid "Measurement"
 msgstr "Messung"
 
-#: gcampus/core/models/measurement.py:51
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:117
+#: gcampus/core/models/measurement.py:50
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:116
 msgid "Measurements"
 msgstr "Messungen"
 
-#: gcampus/core/models/measurement.py:68 gcampus/core/models/measurement.py:201
-#: gcampus/core/models/measurement.py:287
+#: gcampus/core/models/measurement.py:67 gcampus/core/models/parameter.py:36
+#: gcampus/core/models/parameter.py:100
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:65
-#: gcampus/documents/views/data_export.py:167
+#: gcampus/documents/views/data_export.py:180
 msgid "Name"
 msgstr "Name"
 
-#: gcampus/core/models/measurement.py:69
+#: gcampus/core/models/measurement.py:68
 msgid "Your forename or team name. This will be publicly visible."
 msgstr ""
 "Dein Vorname oder ein Team Name. Diese Information ist öffentlich sichtbar."
 
-#: gcampus/core/models/measurement.py:74
+#: gcampus/core/models/measurement.py:73
 msgid "Location"
 msgstr "Standort"
 
-#: gcampus/core/models/measurement.py:75
+#: gcampus/core/models/measurement.py:74
 msgid "Location of the measurement"
 msgstr "Standort der Messung"
 
-#: gcampus/core/models/measurement.py:81
-#: gcampus/documents/views/data_export.py:167
+#: gcampus/core/models/measurement.py:80
+#: gcampus/documents/views/data_export.py:181
 msgid "Location name"
 msgstr "Standortname"
 
-#: gcampus/core/models/measurement.py:82
+#: gcampus/core/models/measurement.py:81
 msgid "An approximated location for the measurement"
 msgstr "Ein abgeschätzter Standort der Messung"
 
-#: gcampus/core/models/measurement.py:90 gcampus/core/models/water.py:156
+#: gcampus/core/models/measurement.py:89 gcampus/core/models/water.py:158
 msgid "Water"
 msgstr "Gewässer"
 
-#: gcampus/core/models/measurement.py:91
+#: gcampus/core/models/measurement.py:90
 msgid "The water associated with this measurement"
 msgstr "Das Gewässer an dem die Messung durchgeführt wurde"
 
-#: gcampus/core/models/measurement.py:103
+#: gcampus/core/models/measurement.py:102
 msgid "Note on your measurement. This will be publicly visible."
 msgstr "Notiz zu deiner Messung. Die Notiz wird für alle öffentlich einsehbar."
 
-#: gcampus/core/models/measurement.py:107
-#: gcampus/core/models/measurement.py:258
+#: gcampus/core/models/measurement.py:106 gcampus/core/models/parameter.py:143
 msgid "Hidden"
 msgstr "Versteckt"
 
@@ -963,216 +960,224 @@ msgstr "Versteckt"
 msgid "requires review"
 msgstr "erfordert Überprüfung"
 
-#: gcampus/core/models/measurement.py:120 gcampus/core/models/water.py:196
+#: gcampus/core/models/measurement.py:122 gcampus/core/models/water.py:205
 msgid "internal comment"
 msgstr "interner Kommentar"
 
-#: gcampus/core/models/measurement.py:130
+#: gcampus/core/models/measurement.py:132
 msgid "Document"
 msgstr "Dokument"
 
-#: gcampus/core/models/measurement.py:175
+#: gcampus/core/models/measurement.py:178
 #, python-brace-format
 msgid "Measurement #{id:05d}"
 msgstr "Messung #{id:05d}"
 
-#: gcampus/core/models/measurement.py:198
-#: gcampus/core/models/measurement.py:231
+#: gcampus/core/models/measurement.py:181
+#, python-format
+msgid "Measurement %(id)s"
+msgstr "Messung %(id)s"
+
+#: gcampus/core/models/parameter.py:31 gcampus/core/models/parameter.py:85
 msgid "Parameter type"
 msgstr "Parameter Typ"
 
-#: gcampus/core/models/measurement.py:199
+#: gcampus/core/models/parameter.py:32
 msgid "Parameter types"
 msgstr "Parameter Typen"
 
-#: gcampus/core/models/measurement.py:203
+#: gcampus/core/models/parameter.py:40
 msgid "Short name"
 msgstr "Kurzer Name"
 
-#: gcampus/core/models/measurement.py:205
+#: gcampus/core/models/parameter.py:45
 msgid "Unit"
 msgstr "Einheit"
 
-#: gcampus/core/models/measurement.py:208
+#: gcampus/core/models/parameter.py:50
 msgid "Color"
 msgstr "Farbe"
 
-#: gcampus/core/models/measurement.py:219
+#: gcampus/core/models/parameter.py:73
 msgid "Limit"
 msgstr "Grenzwert"
 
-#: gcampus/core/models/measurement.py:220
+#: gcampus/core/models/parameter.py:74
 msgid "Limits"
 msgstr "Grenzwerte"
 
-#: gcampus/core/models/measurement.py:240
-#: gcampus/core/templates/gcampuscore/forms/parameters.html:28
-msgid "Parameters"
-msgstr "Parameter"
-
-#: gcampus/core/models/measurement.py:254
-msgid "Associated measurement"
-msgstr "Verknüpfte Messung"
-
-#: gcampus/core/models/measurement.py:276
-#, python-format
-msgid "Parameter %(pk)s (%(name)s)"
-msgstr "Parameter %(pk)s (%(name)s)"
-
-#: gcampus/core/models/measurement.py:284
+#: gcampus/core/models/parameter.py:96
 #: gcampus/core/templates/gcampuscore/components/sidebar.html:19
 msgid "Calibration"
 msgstr "Kalibrierung"
 
-#: gcampus/core/models/measurement.py:285
+#: gcampus/core/models/parameter.py:97
 msgid "Calibrations"
 msgstr "Kalibrierung"
 
-#: gcampus/core/models/measurement.py:299
+#: gcampus/core/models/parameter.py:111
 msgid "Calibration formula"
 msgstr "Kalibrationsformel"
 
-#: gcampus/core/models/measurement.py:302
+#: gcampus/core/models/parameter.py:115
 msgid "Maximal parameter value"
 msgstr "Maximaler Parameter-Wert"
 
-#: gcampus/core/models/measurement.py:304
+#: gcampus/core/models/parameter.py:119
 msgid "Minimal parameter value"
 msgstr "Minimaler Parameter-Wert"
 
-#: gcampus/core/models/water.py:43
+#: gcampus/core/models/parameter.py:127
+#: gcampus/core/templates/gcampuscore/forms/parameters.html:28
+msgid "Parameters"
+msgstr "Parameter"
+
+#: gcampus/core/models/parameter.py:139
+msgid "Associated measurement"
+msgstr "Verknüpfte Messung"
+
+#: gcampus/core/models/parameter.py:163
+#, python-format
+msgid "Parameter %(pk)s (%(name)s)"
+msgstr "Parameter %(pk)s (%(name)s)"
+
+#: gcampus/core/models/water.py:45
 msgctxt "osm node"
 msgid "node"
 msgstr "Node (Knoten)"
 
-#: gcampus/core/models/water.py:44
+#: gcampus/core/models/water.py:46
 msgctxt "osm way"
 msgid "way"
 msgstr "Way (Weg)"
 
-#: gcampus/core/models/water.py:45
+#: gcampus/core/models/water.py:47
 msgctxt "osm relation"
 msgid "relation"
 msgstr "Relation"
 
-#: gcampus/core/models/water.py:46 gcampus/core/models/water.py:68
-#: gcampus/core/models/water.py:126
+#: gcampus/core/models/water.py:48 gcampus/core/models/water.py:70
+#: gcampus/core/models/water.py:128
 msgid "unknown"
 msgstr "unbekannt"
 
-#: gcampus/core/models/water.py:50
+#: gcampus/core/models/water.py:52
 msgid "wetland"
 msgstr "Feuchtgebiet"
 
-#: gcampus/core/models/water.py:51
+#: gcampus/core/models/water.py:53
 msgid "coastline"
 msgstr "Küstenlinie"
 
-#: gcampus/core/models/water.py:52
+#: gcampus/core/models/water.py:54
 msgid "bay"
 msgstr "Bucht"
 
-#: gcampus/core/models/water.py:53
+#: gcampus/core/models/water.py:55
 msgid "river"
 msgstr "Fluss"
 
-#: gcampus/core/models/water.py:54
+#: gcampus/core/models/water.py:56
 msgid "stream"
 msgstr "Bach"
 
-#: gcampus/core/models/water.py:55
+#: gcampus/core/models/water.py:57
 msgid "tidal channel"
 msgstr "Gezeitenwasserlauf"
 
-#: gcampus/core/models/water.py:56
+#: gcampus/core/models/water.py:58
 msgid "canal"
 msgstr "Kanal"
 
-#: gcampus/core/models/water.py:57
+#: gcampus/core/models/water.py:59
 msgid "drain"
 msgstr "Abwassergraben"
 
-#: gcampus/core/models/water.py:58
+#: gcampus/core/models/water.py:60
 msgid "ditch"
 msgstr "Graben"
 
-#: gcampus/core/models/water.py:59
+#: gcampus/core/models/water.py:61
 msgid "lagoon"
 msgstr "Lagune"
 
-#: gcampus/core/models/water.py:60
+#: gcampus/core/models/water.py:62
 msgid "oxbow"
 msgstr "Altwassersee"
 
-#: gcampus/core/models/water.py:61
+#: gcampus/core/models/water.py:63
 msgid "lake"
 msgstr "See"
 
-#: gcampus/core/models/water.py:62
+#: gcampus/core/models/water.py:64
 msgid "basin"
 msgstr "künstliches Wasser Becken"
 
-#: gcampus/core/models/water.py:63
+#: gcampus/core/models/water.py:65
 msgid "harbour"
 msgstr "Hafen"
 
-#: gcampus/core/models/water.py:64
+#: gcampus/core/models/water.py:66
 msgid "pond"
 msgstr "Teich"
 
-#: gcampus/core/models/water.py:65
+#: gcampus/core/models/water.py:67
 msgid "reservoir"
 msgstr "Reservoir"
 
-#: gcampus/core/models/water.py:66
+#: gcampus/core/models/water.py:68
 msgid "wastewater"
 msgstr "Abwasser"
 
-#: gcampus/core/models/water.py:67
+#: gcampus/core/models/water.py:69
 msgid "spring"
 msgstr "Quelle"
 
-#: gcampus/core/models/water.py:124
+#: gcampus/core/models/water.py:126
 msgid "standing water"
 msgstr "stehendes Gewässer"
 
-#: gcampus/core/models/water.py:125
+#: gcampus/core/models/water.py:127
 msgid "running water"
 msgstr "Fließgewässer"
 
-#: gcampus/core/models/water.py:157
+#: gcampus/core/models/water.py:159
 msgid "Waters"
 msgstr "Gewässer"
 
-#: gcampus/core/models/water.py:160
+#: gcampus/core/models/water.py:166
 msgid "Geometry"
 msgstr "Geometrie"
 
-#: gcampus/core/models/water.py:162
+#: gcampus/core/models/water.py:168
 msgid "Tags"
 msgstr "Tags"
 
-#: gcampus/core/models/water.py:165
+#: gcampus/core/models/water.py:171
 msgid "OpenStreetMap ID"
 msgstr "OpenStreetMap ID"
 
-#: gcampus/core/models/water.py:178
+#: gcampus/core/models/water.py:184
+#: gcampus/core/templates/gcampuscore/components/filter.html:20
+#: gcampus/core/templates/gcampuscore/components/water_filter.html:13
+#: gcampus/core/templates/gcampuscore/components/water_filter.html:22
+#: gcampus/documents/views/data_export.py:184
 msgid "Flow type"
 msgstr "Fließtyp"
 
-#: gcampus/core/models/water.py:185
+#: gcampus/core/models/water.py:191 gcampus/documents/views/data_export.py:183
 msgid "Water type"
 msgstr "Gewässer Typ"
 
-#: gcampus/core/models/water.py:190
+#: gcampus/core/models/water.py:197
 msgid "requires update"
 msgstr "erfordert Aktualisierung"
 
-#: gcampus/core/models/water.py:199
+#: gcampus/core/models/water.py:208
 msgid "Unnamed {water_type!s}"
 msgstr "{water_type!s} ohne Namen"
 
-#: gcampus/core/models/water.py:239
+#: gcampus/core/models/water.py:248
 msgid "Unnamed water"
 msgstr "Unbenanntes Gewässer"
 
@@ -1217,60 +1222,65 @@ msgstr ""
 "Der Prozess wurde wegen eines Fehlers abgebrochen. Wir wurden automatisch "
 "informiert und kümmern uns so schnell wie möglich um eine Lösung."
 
-#: gcampus/core/templates/gcampuscore/base.html:112
+#: gcampus/core/templates/gcampuscore/base.html:101
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:35
 msgid "New Measurement"
 msgstr "Neue Messung"
 
-#: gcampus/core/templates/gcampuscore/base.html:118
+#: gcampus/core/templates/gcampuscore/base.html:107
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:45
 msgid "Log in"
 msgstr "Anmelden"
 
 #: gcampus/core/templates/gcampuscore/components/filter.html:5
+#: gcampus/core/templates/gcampuscore/components/water_filter.html:5
 msgid "Additional Filteroptions"
 msgstr "Weitere Filtermöglichkeiten"
 
-#: gcampus/core/templates/gcampuscore/components/filter.html:34
+#: gcampus/core/templates/gcampuscore/components/filter.html:41
 msgid "Measurement author"
 msgstr "Autor der Messung"
 
-#: gcampus/core/templates/gcampuscore/components/filter.html:39
+#: gcampus/core/templates/gcampuscore/components/filter.html:46
 msgid "Your measurements"
 msgstr "Deine Messungen"
 
-#: gcampus/core/templates/gcampuscore/components/filter.html:47
+#: gcampus/core/templates/gcampuscore/components/filter.html:54
 msgid "Measurements of your course"
 msgstr "Messungen deines Kurses"
 
-#: gcampus/core/templates/gcampuscore/components/filter.html:54
+#: gcampus/core/templates/gcampuscore/components/filter.html:61
 msgid "Measurements of other courses"
 msgstr "Messungen von anderen Kursen"
 
-#: gcampus/core/templates/gcampuscore/components/filter.html:63
+#: gcampus/core/templates/gcampuscore/components/filter.html:70
+#: gcampus/core/templates/gcampuscore/components/water_filter.html:30
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:132
 msgid "Reset filter"
 msgstr "Filter zurücksetzen"
 
-#: gcampus/core/templates/gcampuscore/components/filter.html:66
+#: gcampus/core/templates/gcampuscore/components/filter.html:73
+#: gcampus/core/templates/gcampuscore/components/water_filter.html:33
 msgid "Apply filter"
 msgstr "Filter anwenden"
 
-#: gcampus/core/templates/gcampuscore/components/footer.html:12
+#: gcampus/core/templates/gcampuscore/components/footer_content.html:11
 msgid "Terms and conditions"
 msgstr "Nutzungsbedingungen"
 
-#: gcampus/core/templates/gcampuscore/components/footer.html:13
+#: gcampus/core/templates/gcampuscore/components/footer_content.html:12
 msgid "Privacy policy"
 msgstr "Datenschutz"
 
-#: gcampus/core/templates/gcampuscore/components/footer.html:14
+#: gcampus/core/templates/gcampuscore/components/footer_content.html:13
 msgid "Imprint"
 msgstr "Impressum"
 
-#: gcampus/core/templates/gcampuscore/components/footer.html:16
+#: gcampus/core/templates/gcampuscore/components/footer_content.html:15
 msgid "a project by"
 msgstr "ein Projekt von"
 
-#: gcampus/core/templates/gcampuscore/components/footer.html:23
+#: gcampus/core/templates/gcampuscore/components/footer_content.html:22
 msgid "Test instance - Data will be deleted periodically"
 msgstr "Test-Instanz - Daten werden regelmäßig gelöscht"
 
@@ -1330,11 +1340,11 @@ msgctxt "analysis page title"
 msgid "Analysis"
 msgstr "Auswertung"
 
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:35
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:54
 msgid "About the project"
 msgstr "Über das Projekt"
 
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:36
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:55
 msgid "Teaching material"
 msgstr "Unterrichtsmaterialien"
 
@@ -1492,7 +1502,7 @@ msgstr "Bist du dir sicher, dass du diese Messung löschen willst?"
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:104
 #: gcampus/core/templates/gcampuscore/sites/detail/water_detail.html:18
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:89
-#: gcampus/documents/views/data_export.py:167
+#: gcampus/documents/views/data_export.py:182
 msgid "Water name"
 msgstr "Gewässername"
 
@@ -1503,7 +1513,7 @@ msgstr "Gewässername"
 #: gcampus/core/templates/gcampuscore/sites/detail/water_detail.html:24
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:93
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:102
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:143
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:141
 #: gcampus/mail/templates/gcampusmail/access_key_deactivation/base.html:5
 #: gcampus/mail/templates/gcampusmail/course_deletion/base.html:5
 #: gcampus/mail/templates/gcampusmail/register/overview.html:4
@@ -1526,7 +1536,7 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:174
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:119
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:117
 msgid "Measured values"
 msgstr "Messwerte"
 
@@ -1609,10 +1619,12 @@ msgid "Print summary"
 msgstr "Zusammenfassung drucken"
 
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:100
+#: gcampus/core/templates/gcampuscore/sites/list/water_list.html:29
 msgid "Filter"
 msgstr "Filter"
 
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:104
+#: gcampus/core/templates/gcampuscore/sites/list/water_list.html:33
 msgid "Additional filters applied"
 msgstr "Weitere Filter werden angewendet"
 
@@ -1628,7 +1640,12 @@ msgstr ""
 "Leider konnten keine Messungen gefunden werden. <br> Vielleicht sind deine "
 "Filter-Einstellungen zu restriktiv."
 
-#: gcampus/core/templates/gcampuscore/sites/list/water_list.html:14
+#: gcampus/core/templates/gcampuscore/sites/list/water_list.html:19
+#, python-format
+msgid "Found %(count)s waters"
+msgstr "%(count)s Gewässer gefunden"
+
+#: gcampus/core/templates/gcampuscore/sites/list/water_list.html:50
 msgid "No waters found"
 msgstr "Keine Gewässer gefunden"
 
@@ -1640,7 +1657,7 @@ msgstr "Messung an stehendem Gewässer"
 msgid "Measurement at running water"
 msgstr "Messung an Fließgewässer"
 
-#: gcampus/core/views/measurement/__init__.py:138
+#: gcampus/core/views/measurement/__init__.py:140
 msgid ""
 "You have successfully reported this measurement. The team has been informed "
 "and will look into your request as soon as possible."
@@ -1648,16 +1665,16 @@ msgstr ""
 "Du hast diese Messung erfolgreich gemeldet. Das Team wurde informiert und "
 "wird Deine Anfrage so schnell wie möglich prüfen."
 
-#: gcampus/core/views/measurement/__init__.py:166
+#: gcampus/core/views/measurement/__init__.py:168
 msgid "Looking for nearby waters on OpenStreetMap."
 msgstr "Suche nach umliegenden Gewässern auf OpenStreetMap."
 
-#: gcampus/core/views/measurement/__init__.py:167
+#: gcampus/core/views/measurement/__init__.py:169
 #, python-brace-format
 msgid "This may take up to {delay:d} seconds."
 msgstr "Das kann bis zu {delay:d} Sekunden dauern."
 
-#: gcampus/core/views/measurement/__init__.py:171
+#: gcampus/core/views/measurement/__init__.py:173
 msgid ""
 "It looks like your requests takes a bit longer. We are still looking for "
 "nearby waters."
@@ -1665,7 +1682,7 @@ msgstr ""
 "Scheinbar dauert die Anfrage etwas länger. Wir suchen weiter nach Gewässern "
 "in der Nähe der Messung."
 
-#: gcampus/core/views/measurement/__init__.py:175
+#: gcampus/core/views/measurement/__init__.py:177
 #, python-brace-format
 msgid ""
 "Due to the complexity of geospatial data, this may take up to {delay:d} "
@@ -1674,11 +1691,11 @@ msgstr ""
 "Aufgrund der Komplexität von Karten-Daten kann die Anfrage bis zu {delay:d} "
 "Sekunden dauern."
 
-#: gcampus/core/views/measurement/__init__.py:187
+#: gcampus/core/views/measurement/__init__.py:189
 msgid "Create new measurement"
 msgstr "Neue Messung erstellen"
 
-#: gcampus/core/views/measurement/__init__.py:212
+#: gcampus/core/views/measurement/__init__.py:214
 #, python-brace-format
 msgid "Edit Measurement {pk:d} - Information"
 msgstr "Messung {pk:d} bearbeiten - Information"
@@ -1692,7 +1709,7 @@ msgstr "Alle Messungen"
 msgid "Edit Measurement {pk:d} - Measured Parameters"
 msgstr "Messung {pk:d} bearbeiten - Mess-Parameter"
 
-#: gcampus/core/views/water/list.py:38
+#: gcampus/core/views/water/list.py:39
 msgid "All waters"
 msgstr "Alle Gewässer"
 
@@ -1977,7 +1994,7 @@ msgid "Metadata"
 msgstr "Metadaten"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:96
-#: gcampus/documents/views/data_export.py:167
+#: gcampus/documents/views/data_export.py:185
 msgid "Time"
 msgstr "Zeitpunkt"
 
@@ -2010,16 +2027,16 @@ msgstr "Gewässer"
 msgid "Time range"
 msgstr "Zeitspanne"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:100
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:99
 msgid "Notes"
 msgstr "Notizen"
 
-#: gcampus/documents/views/data_export.py:53
+#: gcampus/documents/views/data_export.py:52
 #, python-format
 msgid "measurements.%(ext)s"
 msgstr "messungen.%(ext)s"
 
-#: gcampus/documents/views/data_export.py:167
+#: gcampus/documents/views/data_export.py:179
 msgid "ID"
 msgstr "ID"
 
@@ -2028,31 +2045,31 @@ msgstr "ID"
 msgid "Empty list and “%(class_name)s.allow_empty” is False."
 msgstr ""
 
-#: gcampus/documents/views/print.py:41
+#: gcampus/documents/views/print.py:48
 msgid "gewaessercampus-course.pdf"
 msgstr "gewaessercampus-kurs.pdf"
 
-#: gcampus/documents/views/print.py:56
+#: gcampus/documents/views/print.py:63
 msgid "gewaessercampus-{course_name!s}.pdf"
 msgstr "gewaessercampus-{course_name!s}.pdf"
 
-#: gcampus/documents/views/print.py:63
+#: gcampus/documents/views/print.py:70
 msgid "gewaessercampus-access-keys.pdf"
 msgstr "gewaessercampus-zugangscodes.pdf"
 
-#: gcampus/documents/views/print.py:77
+#: gcampus/documents/views/print.py:84
 msgid "{course_name!s}-access-keys.pdf"
 msgstr "{course_name!s}-zugangscodes.pdf"
 
-#: gcampus/documents/views/print.py:84
+#: gcampus/documents/views/print.py:91
 msgid "gewaessercampus-measurement-detail.pdf"
 msgstr "gewaessercampus-messung.pdf"
 
-#: gcampus/documents/views/print.py:95
+#: gcampus/documents/views/print.py:107
 msgid "gewaessercampus-measurement-detail-{name:s}.pdf"
 msgstr "gewaessercampus-messung-{name:s}.pdf"
 
-#: gcampus/documents/views/print.py:102
+#: gcampus/documents/views/print.py:114
 msgid "gewaessercampus-measurement-list.pdf"
 msgstr "gewaessercampus-messungen-liste.pdf"
 
@@ -2170,13 +2187,13 @@ msgstr "Bitte bestätige deine E-Mail-Adresse"
 #, python-format
 msgid ""
 "Click the link below to confirm your email address: <br> <a href=\"%(url)s\">"
-"%(url)s</a> <br> This link will be valid for %(days)s days. <br> If you got "
-"this email by accident and did not sign up on GewässerCampus, you can safely "
+"%(url)s</a> <br> This link is valid for %(days)s days. <br> If you got this "
+"email by accident and did not sign up on GewässerCampus, you can safely "
 "ignore this message and delete it. Feel free to contact us if you have any "
 "issues."
 msgstr ""
 "Klicke den Link um deine E-Mail-Adresse zu bestätigen:<br><a href=\"%(url)s"
-"\">%(url)s</a><br>Dieser Link ist für %(days)s Tage aktiv.<br>Solltest du "
+"\">%(url)s</a><br>Dieser Link ist für %(days)s Tage gültig.<br>Solltest du "
 "diese E-Mail versehentlich bekommen haben kannst du sie einfach ignorieren "
 "und löschen. Bei weiteren Fragen kannst du uns jederzeit kontaktieren."
 
@@ -2242,6 +2259,9 @@ msgstr "Deutsch"
 #: gcampus/tasks/apps.py:24
 msgid "GCampus Tasks"
 msgstr "GCampus Aufgaben"
+
+#~ msgid "Admin link"
+#~ msgstr "Admin link"
 
 #~ msgid "Measurement in %(location)s by %(name)s"
 #~ msgstr "Messung in %(location)s von %(name)s"
