@@ -44,14 +44,14 @@ jobs:
         ports:
           - 5432:5432
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install dependencies with apt
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends --no-install-suggests pandoc binutils libproj-dev gdal-bin libpango-1.0-0 libpangoft2-1.0-0
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: '16'
           cache: 'npm'
@@ -62,7 +62,7 @@ jobs:
       - name: Build static files
         run: npm run build
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'pip'
