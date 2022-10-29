@@ -74,19 +74,6 @@ class BooleanNoOpFilter(BooleanFilter):
         return qs
 
 
-class WaterTypeFilter(ModelMultipleChoiceFilter):
-    def filter(self, qs, value: List[WaterType]):
-        water_type_ids = [water_type.id for water_type in value]
-        if water_type_ids in EMPTY or None in water_type_ids:
-            return qs
-        if self.distinct:
-            qs = qs.distinct()
-        query_name = f"water_type__pk__in"
-        for WATER_type_id in water_type_ids:
-            qs = self.get_method(qs)(**{query_name: [WATER_type_id]})
-        return qs
-
-
 class ParameterTypeFilter(ModelMultipleChoiceFilter):
     def filter(self, qs, value: List[ParameterType]):
         parameter_type_ids = [parameter_type.id for parameter_type in value]
