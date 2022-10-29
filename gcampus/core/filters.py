@@ -113,21 +113,16 @@ class DateRange(DateFromToRangeFilter):
 class WaterFilterSet(FilterSet):
     form: BaseForm
 
-    class Meta:
-        model = Water
-        fields = ["water_type"]
-
     water_type = MultipleChoiceFilter(
-        choices=WATER_TYPES, widget=CheckboxSelectMultiple
+        field_name="water_type",
+        choices=WATER_TYPES,
+        widget=CheckboxSelectMultiple(attrs={"class": "form-check-input"}),
     )
     flow_type = ChoiceFilter(
         field_name="flow_type",
         null_label=FlowType.__empty__,
         widget=Select(attrs={"class": "form-select form-select-sm"}),
-        choices=(
-            (FlowType.RUNNING.value, FlowType.RUNNING.label),
-            (FlowType.STANDING.value, FlowType.STANDING.label),
-        ),
+        choices=FLOW_TYPES,
     )
 
 
