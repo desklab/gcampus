@@ -295,7 +295,8 @@ function setupCluster(url, map) {
     });
 
     let measurementCache = {};
-    let detailApiUrl, _parameters = url.split("?");
+    let splittedUrl = url.split('?');
+    let detailApiUrl = splittedUrl[0];
     if (detailApiUrl.slice(-1) !== '/') {
         detailApiUrl += '/';
     }
