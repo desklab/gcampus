@@ -21,6 +21,7 @@ from django.core.validators import EMPTY_VALUES
 from django.db.models import QuerySet, Q
 from django.forms import CheckboxSelectMultiple, BaseForm, Select
 from django.http import HttpRequest
+from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
 from django_filters import (
     Filter,
@@ -43,26 +44,12 @@ from gcampus.core.models import ParameterType
 from gcampus.core.models.util import EMPTY
 from gcampus.core.models.water import FlowType, WaterType, Water
 
-WATER_TYPES = (
-    (WaterType.RIVER.value, WaterType.RIVER.label),
-    (WaterType.STREAM.value, WaterType.STREAM.label),
-    (WaterType.TIDAL_CHANNEL.value, WaterType.TIDAL_CHANNEL.label),
-    (WaterType.CANAL.value, WaterType.CANAL.label),
-    (WaterType.DRAIN.value, WaterType.DRAIN.label),
-    (WaterType.DITCH.value, WaterType.DITCH.label),
-    (WaterType.WETLAND.value, WaterType.WETLAND.label),
-    (WaterType.LAKE.value, WaterType.LAKE.label),
-    (WaterType.BASIN.value, WaterType.BASIN.label),
-    (WaterType.POND.value, WaterType.POND.label),
-    (WaterType.RESERVOIR.value, WaterType.RESERVOIR.label),
-    (WaterType.LAGOON.value, WaterType.LAGOON.label),
-    (WaterType.COASTLINE.value, WaterType.COASTLINE.label),
-    (WaterType.BAY.value, WaterType.BAY.label),
-    (WaterType.OXBOW.value, WaterType.OXBOW.label),
-    (WaterType.HARBOUR.value, WaterType.HARBOUR.label),
-    (WaterType.WASTEWATER.value, WaterType.WASTEWATER.label),
-    (WaterType.SPRING.value, WaterType.SPRING.label),
-)
+WATER_TYPES = [
+    (value, capfirst(label)) for value, label in WaterType.choices if value is not None
+]
+FLOW_TYPES = [
+    (value, capfirst(label)) for value, label in FlowType.choices if value is not None
+]
 
 
 def _get_filter_request(filter_instance: Filter) -> Optional[HttpRequest]:
@@ -139,14 +126,13 @@ class DateRange(DateFromToRangeFilter):
 class WaterFilterSet(FilterSet):
     form: BaseForm
 
-    water_type = MultipleChoiceFilter(
-        choices=WATER_TYPES, widget=CheckboxSelectMultiple
-    )
-
     class Meta:
         model = Water
         fields = ["water_type"]
 
+    water_type = MultipleChoiceFilter(
+        choices=WATER_TYPES, widget=CheckboxSelectMultiple
+    )
     flow_type = ChoiceFilter(
         field_name="flow_type",
         null_label=FlowType.__empty__,
@@ -243,10 +229,7 @@ class MeasurementFilterSet(FilterSet):
         field_name="water__flow_type",
         null_label=FlowType.__empty__,
         widget=Select(attrs={"class": "form-select form-select-sm"}),
-        choices=(
-            (FlowType.RUNNING.value, FlowType.RUNNING.label),
-            (FlowType.STANDING.value, FlowType.STANDING.label),
-        ),
+        choices=FLOW_TYPES,
     )
 
     same_course = BooleanNoOpFilter(
