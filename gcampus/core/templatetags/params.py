@@ -55,3 +55,8 @@ def measurements_url(context: Context, **kwargs) -> str:
     return "?".join(
         [reverse("gcampuscore:measurements"), filter_params(context, **kwargs)]
     )
+
+
+@register.simple_tag(takes_context=True)
+def waters_url(context: Context, **kwargs) -> str:
+    return "?".join([reverse("gcampuscore:waters"), filter_params(context, **kwargs)])

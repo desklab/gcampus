@@ -19,9 +19,10 @@
             {% translate "Calibration" as converter_title %}
 
             {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/map.html" title=map_title view_name="gcampuscore:mapview" %}
-            {% measurements_url as filter_url %}
-            {% include "gcampuscore/components/sidebar_item.html" with url=filter_url icon="gcampuscore/icons/list-ul.html" title=measurements_title view_name="gcampuscore:measurements" %}
-            {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/droplet.html" title=waters_title view_name="gcampuscore:waters" %}
+            {% measurements_url as measurements_filter_url %}
+            {% include "gcampuscore/components/sidebar_item.html" with url=measurements_filter_url icon="gcampuscore/icons/list-ul.html" title=measurements_title view_name="gcampuscore:measurements" %}
+            {% waters_url as waters_filter_url %}
+            {% include "gcampuscore/components/sidebar_item.html" with url=waters_filter_url icon="gcampuscore/icons/droplet.html" title=waters_title view_name="gcampuscore:waters" %}
             {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/calculator.html" title=converter_title view_name="gcampusanalysis:od_converter_overview" other_view_names="gcampusanalysis:od_converter" %}
 {#            {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/bar-chart.html" title=analysis_title view_name="gcampusanalysis:analysis_measure" %}#}
             {% if user_token_is_course_token %}
