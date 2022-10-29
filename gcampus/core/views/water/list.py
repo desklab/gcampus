@@ -39,6 +39,7 @@ class WaterListView(TitleMixin, ListView):
     title = gettext_lazy("All waters")
     context_object_name = "water_list"
     paginate_by = 10
+    filter: WaterFilterSet
 
     def get_queryset(self):
         if not hasattr(self, "filter"):
