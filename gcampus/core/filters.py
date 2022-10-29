@@ -124,6 +124,11 @@ class WaterFilterSet(FilterSet):
         widget=Select(attrs={"class": "form-select form-select-sm"}),
         choices=FLOW_TYPES,
     )
+    name = SearchFilter(
+        field_name="search_vector",
+        label=_("Search"),
+        help_text=_("Fulltext search for waters."),
+    )
 
 
 class MeasurementFilterSet(FilterSet):
