@@ -20,15 +20,26 @@ from typing import Optional
 from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.utils.translation import gettext_lazy
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext
 from django.views.generic.base import TemplateResponseMixin, View
+from django.views.generic.edit import ModelFormMixin, CreateView, UpdateView
 
-from gcampus.auth.exceptions import UnauthenticatedError, \
-    TokenEditPermissionError
+from gcampus.auth.exceptions import UnauthenticatedError, TokenEditPermissionError
 from gcampus.auth.models.token import BaseToken
-from gcampus.core.forms.measurement import ChemicalParameterFormSet, \
-    BiologicalParameterFormSet
+from gcampus.core.decorators import (
+    require_permission_edit_measurement,
+    require_permission_create_measurement,
+)
+from gcampus.core.forms.measurement import (
+    ChemicalParameterFormSet,
+    BiologicalParameterFormSet,
+    StructureIndexForm,
+)
 from gcampus.core.models import Parameter, Measurement
+from gcampus.core.models.index.structure import StructureIndex
 from gcampus.core.views.base import TitleMixin
 
 
@@ -59,8 +70,9 @@ class ChemicalParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
         formset.save()
         return HttpResponseRedirect(self.get_next_url())
 
-    def get_formset(self, request: HttpRequest,
-                    pk: int) -> ChemicalParameterFormSetView.formset_class:
+    def get_formset(
+        self, request: HttpRequest, pk: int
+    ) -> ChemicalParameterFormSetView.formset_class:
         """Get Formset
 
         Get the formset for the current request based on the instance of
@@ -81,8 +93,7 @@ class ChemicalParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
         self.token: BaseToken = request.token
         if self.token is None:
             raise UnauthenticatedError()
-        if not self.token.has_perm("gcampuscore.change_measurement",
-                                   obj=self.instance):
+        if not self.token.has_perm("gcampuscore.change_measurement", obj=self.instance):
             raise TokenEditPermissionError()
         parameter_perms = [
             "gcampuscore.add_parameter",
@@ -105,8 +116,7 @@ class ChemicalParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
         if formset.is_valid():
             return self.form_valid(formset)
         else:
-            return self.render_to_response(
-                self.get_context_data(formset=formset))
+            return self.render_to_response(self.get_context_data(formset=formset))
 
     def get(self, request: HttpRequest, pk: int, *args, **kwargs):
         # This will raise an exception if the provided token has
@@ -118,7 +128,7 @@ class ChemicalParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
 class BiologicalParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
     formset_class = BiologicalParameterFormSet
     template_name = "gcampuscore/forms/parameters-biological.html"
-    next_view_name = "gcampuscore:measurement-detail"
+    next_view_name = "gcampuscore:edit-structure-index"
 
     def get_title(self) -> str:
         return _("Edit Measurement {pk:d} - Biological Parameters").format(
@@ -143,7 +153,7 @@ class BiologicalParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
         return HttpResponseRedirect(self.get_next_url())
 
     def get_formset(
-            self, request: HttpRequest, pk: int
+        self, request: HttpRequest, pk: int
     ) -> BiologicalParameterFormSetView.formset_class:
         """Get Formset
 
@@ -165,8 +175,7 @@ class BiologicalParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
         self.token: BaseToken = request.token
         if self.token is None:
             raise UnauthenticatedError()
-        if not self.token.has_perm("gcampuscore.change_measurement",
-                                   obj=self.instance):
+        if not self.token.has_perm("gcampuscore.change_measurement", obj=self.instance):
             raise TokenEditPermissionError()
         parameter_perms = [
             "gcampuscore.add_parameter",
@@ -189,11 +198,32 @@ class BiologicalParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
         if formset.is_valid():
             return self.form_valid(formset)
         else:
-            return self.render_to_response(
-                self.get_context_data(formset=formset))
+            return self.render_to_response(self.get_context_data(formset=formset))
 
     def get(self, request: HttpRequest, pk: int, *args, **kwargs):
         # This will raise an exception if the provided token has
         # insufficient permissions
         formset = self.get_formset(request, pk)
         return self.render_to_response(self.get_context_data(formset=formset))
+
+
+class StructureIndexFormViewMixin(TitleMixin, ModelFormMixin):
+    template_name = "gcampuscore/forms/structure-index.html"
+    next_view_name = "gcampuscore:measurement-detail"
+
+    def get_success_url(self):
+        return reverse(self.next_view_name, kwargs={"pk": self.object.pk})
+
+
+class StructureIndexEditView(StructureIndexFormViewMixin, UpdateView):
+    model = StructureIndex
+    form_class = StructureIndexForm
+
+    @method_decorator(require_permission_edit_measurement)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get_title(self) -> str:
+        return gettext("Edit Measurement {pk:d} - Structure Index").format(
+            pk=self.object.pk
+        )

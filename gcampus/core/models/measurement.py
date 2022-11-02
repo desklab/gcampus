@@ -204,7 +204,7 @@ class ParameterTypeCategory(models.TextChoices):
     NA = "undefined", _("undefined")
     BIOLOGICAL = "biological", _("biological")
     CHEMICAL = "chemical", _("chemical")
-    PHYSICAL_STRUCTURAL = "physical-structural", _("physical-structural")
+    PHYSICAL = "physical", _("physical")
     __empty__ = _("unknown")
 
 

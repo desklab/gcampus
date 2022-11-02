@@ -10,6 +10,7 @@ parameters.html{% extends "gcampuscore/base.html" %}
         {% translate "1. Metadata" as metadata_title %}
         {% translate "2. Chemical Parameters" as chemical_parameters_title %}
         {% translate "3. Biological Parameters" as biological_parameters_title %}
+        {% translate "4. Structural Parameters" as structure_index_title %}
 
         {% url "gcampuscore:edit-measurement" pk=object.pk as edit_url %}
         {% include "gcampuscore/components/nav_item.html" with url=edit_url title=metadata_title view_name="gcampuscore:edit-measurement" %}
@@ -24,6 +25,9 @@ parameters.html{% extends "gcampuscore/base.html" %}
             {% url "gcampuscore:add-biological-parameters" pk=object.pk as biological_parameter_url %}
             {% include "gcampuscore/components/nav_item.html" with url=biological_parameter_url title=biological_parameters_title view_name="gcampuscore:add-biological-parameters" %}
         {% endif %}
+        {% url "gcampuscore:edit-structure-index" pk=object.pk as structure_index_url %}
+        {% include "gcampuscore/components/nav_item.html" with url=structure_index_url title=structure_index_title view_name="gcampuscore:edit-structure-index" %}
+
     </ul>
 {% endblock %}
 {% block content %}

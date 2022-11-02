@@ -395,13 +395,13 @@ class StructureIndex(WaterQualityIndex):
     @classmethod
     def calculate_classification(cls, value) -> Union[None, str]:
         if value is not None:
-            if value <= 1:
+            if value <= 1.5:
                 return "I"
-            if value <= 2:
+            if value <= 2.5:
                 return "II"
-            if value <= 3:
+            if value <= 3.5:
                 return "III"
-            if value <= 4:
+            if value <= 4.5:
                 return "IV"
             if value <= 5:
                 return "V"
@@ -411,13 +411,13 @@ class StructureIndex(WaterQualityIndex):
     @classmethod
     def calculate_description(cls, value) -> Union[None, str]:
         if value is not None:
-            if value <= 1:
+            if value <= 1.5:
                 return "natürlich"
-            if value <= 2:
+            if value <= 2.5:
                 return "naturnah"
-            if value <= 3:
+            if value <= 3.5:
                 return "verändert"
-            if value <= 4:
+            if value <= 4.5:
                 return "beeinträchtigt"
             if value <= 5:
                 return "geschädigt"

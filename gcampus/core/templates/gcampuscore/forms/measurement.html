@@ -11,6 +11,7 @@
         {% translate "1. Metadata" as metadata_title %}
         {% translate "2. Chemical Parameters" as chemical_parameters_title %}
         {% translate "3. Biological Parameters" as biological_parameters_title %}
+        {% translate "4. Structural Parameters" as structure_index_title %}
 
 
         {% if request.resolver_match.view_name == "gcampuscore:edit-measurement" %}
@@ -22,6 +23,9 @@
 
             {% url "gcampuscore:edit-biological-parameters" pk=object.pk as biological_parameter_url %}
             {% include "gcampuscore/components/nav_item.html" with url=biological_parameter_url title=biological_parameters_title view_name="gcampuscore:edit-biological-parameters" %}
+
+            {% url "gcampuscore:edit-structure-index" pk=object.pk as structure_index_url %}
+            {% include "gcampuscore/components/nav_item.html" with url=structure_index_url title=structure_index_title view_name="gcampuscore:edit-structure-index" %}
         {% else %}
             {% include "gcampuscore/components/nav_item.html" with title=metadata_title view_name="gcampuscore:add-measurement" %}
             <li class="nav-item">

@@ -34,7 +34,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
 from gcampus.core.fields import SplitSplitDateTimeField
-from gcampus.core.models import Measurement, Parameter, ParameterType
+from gcampus.core.models import Measurement, Parameter, ParameterType, StructureIndex
 from gcampus.core.models.measurement import ParameterTypeCategory
 from gcampus.map.widgets import GeoPointWidget
 
@@ -208,6 +208,46 @@ class BiologicalParameterForm(ModelForm):
                     "rows": 2,
                 }
             ),
+        }
+
+
+class StructureIndexForm(ModelForm):
+    """Structural Index Form
+
+    Data points (see :class:`gcampus.core.models.DataPoint`) are used
+    to add data to a measurement. A data point form is always served
+    in the context of a measurement, thus, the measurement itself is
+    not exposed in the form.
+
+    In most cases, it is advised to use a form set
+    (see :attr:`.DataPointFormSet`).
+    """
+
+    class Meta:
+        model = StructureIndex
+        fields = (
+            "utilization",
+            "margin",
+            "course",
+            "bank_vegetation",
+            "bank_structure",
+            "cross_section",
+            "flow",
+            "depth_variance",
+            "riverbed",
+            "continuity",
+        )
+        widgets = {
+            "utilization": Select(attrs={"class": "form-select form-select-sm"}),
+            "margin": Select(attrs={"class": "form-select form-select-sm"}),
+            "course": Select(attrs={"class": "form-select form-select-sm"}),
+            "bank_vegetation": Select(attrs={"class": "form-select form-select-sm"}),
+            "bank_structure": Select(attrs={"class": "form-select form-select-sm"}),
+            "cross_section": Select(attrs={"class": "form-select form-select-sm"}),
+            "flow": Select(attrs={"class": "form-select form-select-sm"}),
+            "depth_variance": Select(attrs={"class": "form-select form-select-sm"}),
+            "riverbed": Select(attrs={"class": "form-select form-select-sm"}),
+            "continuity": Select(attrs={"class": "form-select form-select-sm"}),
         }
 
 

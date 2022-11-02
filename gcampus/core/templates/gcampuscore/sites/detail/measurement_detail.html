@@ -169,52 +169,92 @@
                 </div>
             </div>
         </div>
-        <div class="py-4" id="measurement-body measurement-data">
-            <div class="container">
-                <h3 class="mb-4 fw-light">{% translate "Measured values" %}</h3>
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th scope="col">{% translate "Parameter" %}</th>
-                        <th scope="col">{% translate "Value" %}</th>
-                        <th scope="col">{% translate "Note" %}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for parameter in object.parameters.all %}
-                        <tr>
-                            <td>
-                                <i class="circle-icon indicator-icon"
-                                   style="background-color: #{{ parameter.parameter_type.color|lower }} !important;"
-                                   data-bs-toggle="tooltip"
-                                   title="{{ parameter.parameter_type.name|capfirst }}">
-                                </i>
-                                <span class="ms-2">{{ parameter.parameter_type.name }}</span>
-                            </td>
-                            <td class="font-monospace">
-                                {{ parameter.value }}&nbsp;{{ parameter.parameter_type.unit }}
-                            </td>
-                            <td>
-                                {% if parameter.comment %}
-                                    {% if parameter.is_comment_short %}
-                                        {{ parameter.comment|linebreaksbr }}
-                                    {% else %}
-                                        <a href="#" data-bs-toggle="modal"
-                                           data-bs-target="#parameterModal{{ parameter.id }}">
-                                            {% translate "Show note" %}
-                                        </a>
-                                    {% endif %}
-                                {% else %}
-                                    {% translate "N/A" context "no value provided (water name, comment, etc)" %}
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
+        {% if object.parameters.all %}
+            <div class="py-4" id="measurement-body measurement-data">
+                <div class="container">
+                    <h3 class="mb-4 fw-light">{% translate "Biological & Chemical Parameters" %}</h3>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">{% translate "Parameter" %}</th>
+                            <th scope="col">{% translate "Value" %}</th>
+                            <th scope="col">{% translate "Note" %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for parameter in object.parameters.all %}
+                            <tr>
+                                <td>
+                                    <i class="circle-icon indicator-icon"
+                                       style="background-color: #{{ parameter.parameter_type.color|lower }} !important;"
+                                       data-bs-toggle="tooltip"
+                                       title="{{ parameter.parameter_type.name|capfirst }}">
+                                    </i>
+                                    <span class="ms-2">{{ parameter.parameter_type.name }}</span>
+                                </td>
+                                <td class="font-monospace">
+                                    {{ parameter.value }}&nbsp;{{ parameter.parameter_type.unit }}
+                                </td>
+                                <td>
+                                    {% if parameter.comment %}
+                                        {% if parameter.is_comment_short %}
+                                            {{ parameter.comment|linebreaksbr }}
+                                        {% else %}
+                                            <a href="#" data-bs-toggle="modal"
+                                               data-bs-target="#parameterModal{{ parameter.id }}">
+                                                {% translate "Show note" %}
+                                            </a>
+                                        {% endif %}
+                                    {% else %}
+                                        {% translate "N/A" context "no value provided (water name, comment, etc)" %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if object.water.flow_type == "running" and object.structure_index.validity > 0 %}
+            <div class="py-4" id="measurement-body measurement-data">
+                <div class="container">
+                    <h3 class="mb-4 fw-light">{% translate "Structural Parameters" %}</h3>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">{% translate "Parameter" %}</th>
+                            <th scope="col">{% translate "Value" %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% translate "Water Utilization" as utilization_name %}
+                            {% include "gcampuscore/components/structure_index_parameter.html" with category=object.structure_index.utilization value=object.structure_index.get_utilization_display name=utilization_name %}
+                            {% translate "Water Margin" as margin_name %}
+                            {% include "gcampuscore/components/structure_index_parameter.html" with category=object.structure_index.margin value=object.structure_index.get_margin_display name=margin_name %}
+                            {% translate "Water Course" as course_name %}
+                            {% include "gcampuscore/components/structure_index_parameter.html" with category=object.structure_index.course value=object.structure_index.get_course_display name=course_name %}
+                            {% translate "Bank Vegetation" as bank_vegetation_name %}
+                            {% include "gcampuscore/components/structure_index_parameter.html" with category=object.structure_index.bank_vegetation value=object.structure_index.get_bank_vegetation_display name=bank_vegetation_name %}
+                            {% translate "Bank Structure" as bank_structure_name %}
+                            {% include "gcampuscore/components/structure_index_parameter.html" with category=object.structure_index.bank_structure value=object.structure_index.get_bank_structure_display name=bank_structure_name %}
+                            {% translate "Water Cross Section" as cross_section_name %}
+                            {% include "gcampuscore/components/structure_index_parameter.html" with category=object.structure_index.cross_section value=object.structure_index.get_cross_section_display name=cross_section_name %}
+                            {% translate "Water Flow" as flow_name %}
+                            {% include "gcampuscore/components/structure_index_parameter.html" with category=object.structure_index.flow value=object.structure_index.get_flow_display name=flow_name %}
+                            {% translate "Water Depth Variance" as depth_variance_name %}
+                            {% include "gcampuscore/components/structure_index_parameter.html" with category=object.structure_index.depth_variance value=object.structure_index.get_depth_variance_display name=depth_variance_name %}
+                            {% translate "Riverbed" as riverbed_name %}
+                            {% include "gcampuscore/components/structure_index_parameter.html" with category=object.structure_index.riverbed value=object.structure_index.get_riverbed_display name=riverbed_name %}
+                            {% translate "Water Continuity" as continuity_name %}
+                            {% include "gcampuscore/components/structure_index_parameter.html" with category=object.structure_index.continuity value=object.structure_index.get_continuity_display name=continuity_name %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
 
         <div class="py-4" id="measurement-body measurement-data">
             <div class="container">
@@ -235,7 +275,7 @@
                     </div>
                     {% if measurement.water.flow_type == "running" %}
                         <div class="col-12 col-xl-4 py-3">
-                            {% include "gcampuscore/components/structural_index.html" with measurement=measurement %}
+                            {% include "gcampuscore/components/structure_index.html" with measurement=measurement %}
                         </div>
                     {% endif %}
                 </div>
