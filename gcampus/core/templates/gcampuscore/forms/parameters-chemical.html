@@ -8,9 +8,9 @@ parameters.html{% extends "gcampuscore/base.html" %}
 {% block navbar_other %}
     <ul class="nav navbar-nav me-auto">
         {% translate "1. Metadata" as metadata_title %}
-        {% translate "2. Chemical Parameters" as chemical_parameters_title %}
-        {% translate "3. Biological Parameters" as biological_parameters_title %}
-        {% translate "4. Structural Parameters" as structure_index_title %}
+        {% translate "2. Measured Parameters" as chemical_parameters_title %}
+        {% translate "3. Saprobic Abundancies" as biological_parameters_title %}
+        {% translate "4. Structural Assessment" as structure_index_title %}
 
         {% url "gcampuscore:edit-measurement" pk=object.pk as edit_url %}
         {% include "gcampuscore/components/nav_item.html" with url=edit_url title=metadata_title view_name="gcampuscore:edit-measurement" %}

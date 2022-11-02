@@ -29,25 +29,44 @@
                 <span class="align-middle">
                     <div class="indicator-list">
                         {% for parameter in measurement.parameters.all %}
-                            <div class="indicator-container">
-                                <i class="circle-icon indicator-icon"
-                                   style="background-color: #{{ parameter.parameter_type.color|lower }} !important;"
-                                   data-bs-toggle="tooltip"
-                                   title="{{ parameter.parameter_type.name|capfirst }}">
-                                </i>
-                            </div>
+                            {% if parameter.parameter_type.category == "chemical" %}
+                                <div class="indicator-container">
+                                    <i class="circle-icon indicator-icon"
+                                       style="background-color: #{{ parameter.parameter_type.color|lower }} !important;"
+                                       data-bs-toggle="tooltip"
+                                       title="{{ parameter.parameter_type.name|capfirst }}">
+                                    </i>
+                                </div>
+                            {% endif %}
                         {% endfor %}
                     </div>
+                    {% if measurement.saprobic_index.validity != 0 %}
+                        {% translate "Saprobic Index" as saprobic_index_tooltip %}
+                        <span class="ms-1 me-1 text-primary"data-bs-toggle="tooltip"
+                                       title="{{ saprobic_index_tooltip }}">
+                            {% include "gcampuscore/icons/bug-fill.html" %}
+                        </span>
+                    {% endif %}
+
+                    {% if measurement.structure_index.validity != 0 %}
+                        {% translate "Structure Index" as structure_index_tooltip %}
+                        <span class="ms-1 me-1 text-primary" data-bs-toggle="tooltip"
+                                       title="{{ structure_index_tooltip }}">
+                            {% include "gcampuscore/icons/rulers.html" %}
+                        </span>
+                    {% endif %}
+                    {% comment %}
                     <span class="ms-1">
-                        {{ measurement.parameters.count }} Parameter
+                        {{ measurement.parameters.count }}
                     </span>
+                    {% endcomment %}
                 </span>
             </a>
         {% endif %}
 
         {% if measurement.name != "" %}
             <span>{% include "gcampuscore/icons/people.html" %}</span>
-            <span class="ms-1 me-4 align-middle ">{{ measurement.name }}</span>
+            <span class="ms-1 me-4 align-middle">{{ measurement.name }}</span>
         {% endif %}
 
         <span data-bs-toggle="tooltip" data-bs-placement="top"

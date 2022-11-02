@@ -42,7 +42,7 @@ class WaterQualityIndex(models.Model):
     )
 
     description: models.CharField = models.CharField(
-        max_length=30,
+        max_length=50,
         null=True,
         blank=True,
         verbose_name=_("Description"),

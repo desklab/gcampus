@@ -58,13 +58,22 @@ class SaprobicIndex(WaterQualityIndex):
         if commit:
             self.save()
 
+    def _update_value(self, commit=True):
+        parameters = self.measurement.parameters.all()
+        kwargs = dict()
+        for p in parameters:
+            kwargs[p.parameter_type.identifier] = p.value
+        self.value = self.calculate_index(kwargs=kwargs)
+        if commit:
+            self.save()
+
     @classmethod
-    def calculate_index(cls, **kwargs) -> Union[None, float]:
+    def calculate_index(cls, kwargs) -> Union[None, float]:
         saprobic = 0
         total_abundance = 0
 
         for species in cls.SAPROBIC_INDICATORS:
-            if species in kwargs:
+            if species[0] in kwargs:
                 abundance = kwargs.get(species[0])
                 saprobic += abundance * species[1]
                 total_abundance += abundance
@@ -120,12 +129,12 @@ class SaprobicIndex(WaterQualityIndex):
             return None
 
     @classmethod
-    def calculate_validity(cls, **kwargs) -> float:
+    def calculate_validity(cls, kwargs) -> float:
         validity = 0
         abundance_sum = 0
 
         for species in cls.SAPROBIC_INDICATORS:
-            if species in kwargs:
+            if species[0] in kwargs:
                 abundance_sum += kwargs.get(species[0])
 
         if abundance_sum < 15:
