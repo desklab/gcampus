@@ -42,30 +42,12 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-8">
                 <div class="text-secondary fw-light">
                     {% translate "Validity" %}
                 </div>
                 <div class="fw-bold">
                     {% widthratio measurement.saprobic_index.validity 1 100 %}%
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="text-secondary fw-light">
-                    {% translate "Observations" %}
-                </div>
-                <div class="indicator-list">
-                    {% for parameter in measurement.parameters.all %}
-                        {% if parameter.parameter_type.category == "biological" %}
-                            <div class="indicator-container">
-                                <i class="circle-icon indicator-icon"
-                                   style="background-color: #{{ parameter.parameter_type.color|lower }} !important;"
-                                   data-bs-toggle="tooltip"
-                                   title="{{ parameter.parameter_type.name|capfirst }}">
-                                </i>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
                 </div>
             </div>
         </div>

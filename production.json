@@ -7,7 +7,7 @@
       "short_name": "NO<sub>3</sub>",
       "unit": "mg/L",
       "identifier": "no3",
-      "color": "854B4B",
+      "color": "B79219",
       "category": "chemical"
     }
   },
@@ -19,7 +19,7 @@
       "short_name": "NO<sub>2</sub>",
       "unit": "mg/L",
       "identifier": "no2",
-      "color": "B79219",
+      "color": "4D2E2E",
       "category": "chemical"
     }
   },
@@ -31,7 +31,7 @@
       "short_name": "pH",
       "unit": "",
       "identifier": "ph",
-      "color": "339D8F",
+      "color": "4B8552",
       "category": "chemical"
     }
   },
@@ -43,7 +43,7 @@
       "short_name": "SO<sub>4</sub>",
       "unit": "mg/L",
       "identifier": "so4",
-      "color": "337A9D",
+      "color": "1B4154",
       "category": "chemical"
     }
   },
@@ -55,7 +55,7 @@
       "short_name": "NH<sub>4</sub>",
       "unit": "mg/L",
       "identifier": "nh4",
-      "color": "4B8552",
+      "color": "339D8F",
       "category": "chemical"
     }
   },
@@ -67,7 +67,7 @@
       "short_name": "PO<sub>4</sub>",
       "unit": "mg/L",
       "identifier": "po4",
-      "color": "ffffff",
+      "color": "996637",
       "category": "chemical"
     }
   },
@@ -79,7 +79,7 @@
       "short_name": "BSB<sub>5</sub>",
       "unit": "mg/L",
       "identifier": "bsb5",
-      "color": "cbcbcb",
+      "color": "775F13",
       "category": "chemical"
     }
   },
@@ -91,7 +91,7 @@
       "short_name": "O<sub>2</sub>",
       "unit": "%",
       "identifier": "o2",
-      "color": "cbcbcb",
+      "color": "28472C",
       "category": "chemical"
     }
   },
@@ -103,7 +103,7 @@
       "short_name": "",
       "unit": "µS/cm",
       "identifier": "conductivity",
-      "color": "cbcbcb",
+      "color": "854B4B",
       "category": "chemical"
     }
   },
@@ -115,7 +115,7 @@
       "short_name": "T",
       "unit": "°C",
       "identifier": "temp",
-      "color": "cbcbcb",
+      "color": "337A9D",
       "category": "chemical"
     }
   },
@@ -127,7 +127,7 @@
       "short_name": "plecoptera",
       "unit": "",
       "identifier": "plecoptera",
-      "color": "ffffff",
+      "color": "",
       "category": "biological"
     }
   },
@@ -139,7 +139,7 @@
       "short_name": "odonata",
       "unit": "",
       "identifier": "odonata",
-      "color": "ffffff",
+      "color": "",
       "category": "biological"
     }
   },
@@ -151,7 +151,7 @@
       "short_name": "hirudinea",
       "unit": "",
       "identifier": "hirudinea",
-      "color": "ffffff",
+      "color": "",
       "category": "biological"
     }
   },
@@ -163,7 +163,7 @@
       "short_name": "gastropoda",
       "unit": "",
       "identifier": "gastropoda",
-      "color": "ffffff",
+      "color": "",
       "category": "biological"
     }
   },
@@ -175,7 +175,7 @@
       "short_name": "diptera",
       "unit": "",
       "identifier": "diptera",
-      "color": "ffffff",
+      "color": "",
       "category": "biological"
     }
   },
@@ -187,7 +187,7 @@
       "short_name": "amphipoda",
       "unit": "",
       "identifier": "amphipoda",
-      "color": "ffffff",
+      "color": "",
       "category": "biological"
     }
   },
@@ -199,7 +199,7 @@
       "short_name": "trichoptera",
       "unit": "",
       "identifier": "trichoptera",
-      "color": "ffffff",
+      "color": "",
       "category": "biological"
     }
   },

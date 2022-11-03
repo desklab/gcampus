@@ -48,7 +48,7 @@
                 </div>
                 {% if measurement.trophic_index.validity >= 0.25 %}
                     <div class="fw-bold">
-                        {% widthratio measurement.bach_index.validity 1 100 %}%
+                        {% widthratio measurement.trophic_index.validity 1 100 %}%
                     </div>
                 {% else %}
                     <div class="fw-bold">
