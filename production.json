@@ -8,7 +8,7 @@
       "unit": "mg/L",
       "identifier": "no3",
       "color": "854B4B",
-      "category": "ch"
+      "category": "chemical"
     }
   },
   {
@@ -20,7 +20,7 @@
       "unit": "mg/L",
       "identifier": "no2",
       "color": "B79219",
-      "category": "ch"
+      "category": "chemical"
     }
   },
   {
@@ -32,7 +32,7 @@
       "unit": "",
       "identifier": "ph",
       "color": "339D8F",
-      "category": "ch"
+      "category": "chemical"
     }
   },
   {
@@ -44,7 +44,7 @@
       "unit": "mg/L",
       "identifier": "so4",
       "color": "337A9D",
-      "category": "ch"
+      "category": "chemical"
     }
   },
   {
@@ -56,7 +56,7 @@
       "unit": "mg/L",
       "identifier": "nh4",
       "color": "4B8552",
-      "category": "ch"
+      "category": "chemical"
     }
   },
   {
@@ -68,7 +68,7 @@
       "unit": "mg/L",
       "identifier": "po4",
       "color": "ffffff",
-      "category": "ch"
+      "category": "chemical"
     }
   },
   {
@@ -79,8 +79,8 @@
       "short_name": "BSB<sub>5</sub>",
       "unit": "mg/L",
       "identifier": "bsb5",
-      "color": "ffffff",
-      "category": "ch"
+      "color": "cbcbcb",
+      "category": "chemical"
     }
   },
   {
@@ -91,8 +91,8 @@
       "short_name": "O<sub>2</sub>",
       "unit": "%",
       "identifier": "o2",
-      "color": "ffffff",
-      "category": "ch"
+      "color": "cbcbcb",
+      "category": "chemical"
     }
   },
   {
@@ -103,8 +103,8 @@
       "short_name": "",
       "unit": "µS/cm",
       "identifier": "conductivity",
-      "color": "ffffff",
-      "category": "ch"
+      "color": "cbcbcb",
+      "category": "chemical"
     }
   },
   {
@@ -115,8 +115,92 @@
       "short_name": "T",
       "unit": "°C",
       "identifier": "temp",
+      "color": "cbcbcb",
+      "category": "chemical"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 12,
+    "fields": {
+      "name": "Steinfliegelarven",
+      "short_name": "plecoptera",
+      "unit": "",
+      "identifier": "plecoptera",
       "color": "ffffff",
-      "category": "ch"
+      "category": "biological"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 13,
+    "fields": {
+      "name": "Libellenlarven",
+      "short_name": "odonata",
+      "unit": "",
+      "identifier": "odonata",
+      "color": "ffffff",
+      "category": "biological"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 14,
+    "fields": {
+      "name": "Egel",
+      "short_name": "hirudinea",
+      "unit": "",
+      "identifier": "hirudinea",
+      "color": "ffffff",
+      "category": "biological"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 15,
+    "fields": {
+      "name": "Schnecken",
+      "short_name": "gastropoda",
+      "unit": "",
+      "identifier": "gastropoda",
+      "color": "ffffff",
+      "category": "biological"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 16,
+    "fields": {
+      "name": "Mückenlarven",
+      "short_name": "diptera",
+      "unit": "",
+      "identifier": "diptera",
+      "color": "ffffff",
+      "category": "biological"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 17,
+    "fields": {
+      "name": "Flohkrebse",
+      "short_name": "amphipoda",
+      "unit": "",
+      "identifier": "amphipoda",
+      "color": "ffffff",
+      "category": "biological"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 18,
+    "fields": {
+      "name": "Köcherfliegelarven",
+      "short_name": "trichoptera",
+      "unit": "",
+      "identifier": "trichoptera",
+      "color": "ffffff",
+      "category": "biological"
     }
   },
   {

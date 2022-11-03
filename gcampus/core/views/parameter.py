@@ -21,18 +21,14 @@ from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.utils.translation import gettext_lazy
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import gettext
 from django.views.generic.base import TemplateResponseMixin, View
-from django.views.generic.edit import ModelFormMixin, CreateView, UpdateView
+from django.views.generic.edit import ModelFormMixin, UpdateView
 
 from gcampus.auth.exceptions import UnauthenticatedError, TokenEditPermissionError
 from gcampus.auth.models.token import BaseToken
-from gcampus.core.decorators import (
-    require_permission_edit_measurement,
-    require_permission_create_measurement,
-)
+from gcampus.core.decorators import require_permission_edit_measurement
 from gcampus.core.forms.measurement import (
     ChemicalParameterFormSet,
     BiologicalParameterFormSet,
