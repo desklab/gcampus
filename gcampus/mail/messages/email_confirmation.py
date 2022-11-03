@@ -28,7 +28,10 @@ class ConfirmationEmailTemplate(EmailTemplate):
     )
 
     def __init__(self, url: str, **kwargs):
-        self.url = f"{get_base_url()[:-1]}{url}"
+        base_url: str = get_base_url()
+        if base_url.endswith("/"):
+            base_url = base_url[:-1]
+        self.url = f"{base_url}{url}"
         super(ConfirmationEmailTemplate, self).__init__(**kwargs)
 
     def get_context(self, **kwargs) -> dict:

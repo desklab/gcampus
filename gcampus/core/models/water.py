@@ -29,6 +29,8 @@ from typing import Optional, List, Union
 import httpx
 from django.conf import settings
 from django.contrib.gis.db.models import GeometryField
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVectorField
 from django.db import models
 from django.utils.translation import gettext_lazy, pgettext_lazy, get_language
 
@@ -155,8 +157,12 @@ class Water(DateModelMixin):
     class Meta:
         verbose_name = gettext_lazy("Water")
         verbose_name_plural = gettext_lazy("Waters")
+        indexes = (GinIndex(fields=("search_vector",)),)
         ordering = ("name", "osm_id")
 
+    #: The search vector will be overwritten and turned into a postgres
+    #: generated column in migration ``0002_search``.
+    search_vector = SearchVectorField(null=True, editable=False)
     geometry = GeometryField(blank=False, verbose_name=gettext_lazy("Geometry"))
     tags = models.JSONField(
         default=dict, blank=True, null=False, verbose_name=gettext_lazy("Tags")
@@ -209,6 +215,22 @@ class Water(DateModelMixin):
             if not self.flow_type:
                 self.flow_type = self.guess_flow_type(self.water_type)
         return super(Water, self).save(**kwargs)
+
+    def _do_insert(self, manager, using, fields, update_pk, raw):
+        mod_fields = list(fields)
+        for i, field in enumerate(mod_fields):
+            if field.name == "search_vector":
+                del mod_fields[i]
+        return super(Water, self)._do_insert(manager, using, mod_fields, update_pk, raw)
+
+    def _do_update(self, base_qs, using, pk_val, values, update_fields, forced_update):
+        mod_values = list(values)
+        for i, (field, _, value) in enumerate(mod_values):
+            if field.name == "search_vector":
+                del mod_values[i]
+        return super(Water, self)._do_update(
+            base_qs, using, pk_val, mod_values, update_fields, forced_update
+        )
 
     @property
     def display_name(self) -> str:

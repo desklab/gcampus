@@ -27,6 +27,12 @@ import 'bootstrap/js/src/util';
 import '../styles/main.scss';
 
 
+const SIDEBAR_STATE_COOKIE_NAME = window.SIDEBAR_STATE_COOKIE_NAME;
+const TIME_ZONE_COOKIE_NAME = window.TIME_ZONE_COOKIE_NAME;
+const sidebarElement = document.getElementById('sidebar');
+const sidebarControl = document.querySelector('[aria-controls="sidebar"]');
+
+
 function setCookie(name, value, days) {
     const expirationDate = new Date();
     expirationDate.setTime(
@@ -54,4 +60,52 @@ function getCookie(name) {
     return null;
 }
 
-export {Toast, Tooltip, Collapse, Dropdown, Alert, setCookie, getCookie};
+function setSidebarCookie(state) {
+    setCookie(SIDEBAR_STATE_COOKIE_NAME, (state) ? "1" : "0", 90);
+}
+
+
+function toggleSidebar() {
+    let open = sidebarElement.classList.toggle('show-sidebar');
+    setSidebarCookie(open);
+    sidebarControl.setAttribute("aria-expanded", open);
+}
+
+
+function setup() {
+    // Setup timezone cookie
+    let timeZone = new Intl.DateTimeFormat().resolvedOptions().timeZone;
+    setCookie(TIME_ZONE_COOKIE_NAME, timeZone);
+
+    // Setup tooltips
+    let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new Tooltip(tooltipTriggerEl);
+    });
+
+    // Setup sidebar
+    let desiredSidebarState = getCookie(SIDEBAR_STATE_COOKIE_NAME);
+    if (desiredSidebarState === '1') {
+        document.getElementById('sidebar').classList.add('show-sidebar');
+        sidebarControl.setAttribute("aria-expanded", true);
+    } else if (desiredSidebarState === '0') {
+        document.getElementById('sidebar').classList.remove('show-sidebar');
+        sidebarControl.setAttribute("aria-expanded", false);
+    }
+
+    sidebarElement.addEventListener('hide.bs.collapse', () => setSidebarCookie(false));
+    sidebarElement.addEventListener('show.bs.collapse', () => setSidebarCookie(true));
+
+    const mainContent = document.querySelector('main');
+    if (mainContent !== undefined) {
+        mainContent.addEventListener('transitionend', function () {
+            for (let map in window._maps) {
+                window._maps[map].resize();
+            }
+        });
+    }
+}
+
+setup();
+
+export {Toast, Tooltip, toggleSidebar};

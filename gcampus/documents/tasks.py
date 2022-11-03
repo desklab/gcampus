@@ -28,6 +28,7 @@ from django.utils.module_loading import import_string
 from django.views import View
 from weasyprint import HTML
 
+from gcampus.core import get_base_url
 from gcampus.documents.document import as_bytes_io, render_document_template
 from gcampus.documents.utils import url_fetcher
 from gcampus.tasks.lock import redis_lock
@@ -114,7 +115,7 @@ def render_document_to_model(
 ):
     translation.activate(language)
     model, instance = get_instance_retry(model, instance)
-    html = HTML(string=template, url_fetcher=url_fetcher)
+    html = HTML(string=template, url_fetcher=url_fetcher, base_url=get_base_url())
     document = html.render()
     filelike_obj = as_bytes_io(document)
     setattr(instance, model_file_field, File(filelike_obj, name=filename))

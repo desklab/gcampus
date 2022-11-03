@@ -11,19 +11,13 @@
         Some features, for example adding a new measurement,
         are limited to authenticated users.
         Please use your access key to
-        <a class="text-dark" href="{{ login_accesskey_url }}">
-            log in as a student
-        </a>.
+        <a class="text-dark" href="{{ login_accesskey_url }}">log in as a student</a>.
         If you don't have an access key, your teacher can generate one for you.
         <br><br>
         As a teacher you can
-        <a class="text-dark" href="{{ login_coursetoken_url }}">
-            login with a course token
-        </a>
+        <a class="text-dark" href="{{ login_coursetoken_url }}">login with a course token</a>
         or
-        <a class="text-dark" href="{{ register_url }}">
-            register
-        </a>
+        <a class="text-dark" href="{{ register_url }}">register</a>
         a new course.
     {% endblocktranslate %}
 {% endblock %}
@@ -64,8 +58,5 @@
     </div>
 {% endblock %}
 {% block extra_body %}
-    {% if authenticated %}
-        {% displaytoken_js %}
-    {% endif %}
     {% include "gcampusauth/js/token_input.html" %}
 {% endblock %}

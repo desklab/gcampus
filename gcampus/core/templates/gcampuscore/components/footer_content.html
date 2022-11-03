@@ -1,0 +1,31 @@
+{% load i18n %}
+<div class="py-md-3 text-secondary d-md-block d-flex flex-column text-md-end ms-4 gap-1 ms-md-auto align-items-start">
+    <span class="me-md-3">
+        &copy;
+        <a class="footer-link" href="https://gewaessercampus.de/license">GewässerCampus</a>
+        /
+        <a class="footer-link" href="https://mapbox.com">Mapbox</a>
+        /
+        <a class="footer-link" href="https://openstreetmap.org/copyright">OpenStreetMap</a>
+    </span>
+    <a class="ms-md-3 me-md-2 footer-link" href="https://gewaessercampus.de/terms">{% translate "Terms and conditions" %}</a>
+    <a class="mx-md-2 footer-link" href="https://gewaessercampus.de/gdp">{% translate "Privacy policy" %}</a>
+    <a class="ms-md-2 me-md-3 footer-link" href="https://gewaessercampus.de/imprint">{% translate "Imprint" %}</a>
+    <span class="mx-md-3">
+        {% translate "a project by" %}<a class="footer-link" href="https://desk-lab.de"> <i>desklab</i></a>
+    </span>
+    {% if ENVIRONMENT == "dev" %}
+        <span class="mx-md-3 bg-warning px-2 py-1">
+            <a class="footer-link text-dark" href="https://github.com/desklab/gcampus">
+                v{{ GCAMPUS_VERSION }}
+            </a>
+            <span class="ms-md-1">{% translate "Test instance - Data will be deleted periodically" %}</span>
+        </span>
+    {% else %}
+        <span class="mx-md-3">
+            <a class="footer-link" href="https://github.com/desklab/gcampus">
+                v{{ GCAMPUS_VERSION }}
+            </a>
+        </span>
+    {% endif %}
+</div>

@@ -1,0 +1,44 @@
+{% load i18n params static %}
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
+    <div class="offcanvas-header">
+        <h4 id="offcanvasFilterLabel">
+            {% translate "Additional filter options" %}
+        </h4>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div>
+            {% with filter.form.flow_type as field %}
+                <div class="mb-4">
+                    <span class="fs-5 fw-semibold mb-3">{% translate "Flow type" %}</span>
+                    {% include "gcampuscore/forms/components/helptext.html" %}
+                    {{ field }}
+                </div>
+            {% endwith %}
+        </div>
+        <div>
+            {% with filter.form.water_type as field %}
+                <div class="mb-4">
+                    <span class="fs-5 fw-semibold mb-3">{% translate "Water type" %}</span>
+                    {% include "gcampuscore/forms/components/helptext.html" %}
+                    {% for flow_type in filter.form.water_type %}
+                        <div class="form-check">
+                            {{ flow_type.tag }}
+                            <label for="{{ flow_type.id_for_label }}" class="form-check-label">
+                                {{ flow_type.choice_label }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endwith %}
+        </div>
+        <div class="col-auto mb-2">
+            <a class="btn btn-secondary position-relative" role="button" href="{% waters_url %}">
+                {% translate "Reset filter" %}
+            </a>
+            <button type="submit" class="btn btn-primary position-relative">
+                {% translate "Apply filter" %}
+            </button>
+        </div>
+    </div>
+</div>

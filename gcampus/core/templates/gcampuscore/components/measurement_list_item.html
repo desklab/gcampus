@@ -7,9 +7,9 @@
             {% translate "Measurement" %} #{{ measurement.pk|stringformat:"05d" }}
         </a>
     </h5>
-    <small class="text-secondary">
+    <small class="text-secondary d-flex flex-column flex-sm-row gap-sm-4">
         {% if env != "water_list" %}
-            <a class="link-decoration-none-dark me-4 second" href="{{ water_url }}">
+            <a class="link-decoration-none-dark second" href="{{ water_url }}">
                 <span class="align-middle">
                     <i class="me-1 circle-icon water-icon {{ measurement.water.flow_type }}" data-bs-toggle="tooltip"
                        title="{{ measurement.water.get_flow_type_display|capfirst }}"></i>
@@ -18,14 +18,14 @@
             </a>
         {% endif %}
 
-        <a class="link-decoration-none-dark me-4 second"
+        <a class="link-decoration-none-dark second"
            href="{% url "gcampuscore:mapview" %}{% map_options_url lat=measurement.location.y|unlocalize lng=measurement.location.x|unlocalize zoom=14 %}">
             <span>{% include "gcampuscore/icons/geo.html" %}</span>
             <span class="ms-1 align-middle">{{ measurement.location_name }}</span>
         </a>
 
         {% if measurement.parameters.count != 0 %}
-            <a class="link-decoration-none-dark me-4 second" href="{{ detail_url }}">
+            <a class="link-decoration-none-dark second" href="{{ detail_url }}">
                 <span class="align-middle">
                     <div class="indicator-list">
                         {% for parameter in measurement.parameters.all %}
@@ -65,15 +65,16 @@
         {% endif %}
 
         {% if measurement.name != "" %}
-            <span>{% include "gcampuscore/icons/people.html" %}</span>
-            <span class="ms-1 me-4 align-middle">{{ measurement.name }}</span>
+            <span class="second">
+                <span>{% include "gcampuscore/icons/people.html" %}</span>
+                <span class="ms-1 align-middle">{{ measurement.name }}</span>
+            </span>
         {% endif %}
-
-        <span data-bs-toggle="tooltip" data-bs-placement="top"
-              title="{{ measurement.time|timesince:today }}"
-              class="me-4">
-            <span>{% include "gcampuscore/icons/calendar4-event.html" %}</span>
-            <span class="ms-1 align-middle ">{{ measurement.time|localtime|localize }}</span>
-        </span>
+        {% with time_since=measurement.time|timesince:today  %}
+            <span class="second align-self-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{{ time_since }}" title="{{ time_since }}">
+                {% include "gcampuscore/icons/calendar4-event.html" %}
+                <span class="ms-1 align-middle ">{{ measurement.time|localtime|localize }}</span>
+            </span>
+        {% endwith %}
     </small>
 </div>

@@ -61,7 +61,11 @@ def update_course(
 @receiver(post_save, sender=AccessKey)
 @receiver(post_delete, sender=AccessKey)
 def update_access_key_documents(
-    sender: Type[AccessKey], instance: AccessKey, *args, **kwargs  # noqa
+    sender: Type[AccessKey],
+    instance: AccessKey,
+    *args,
+    update_fields: Optional[Union[tuple, list]] = None,
+    **kwargs,  # noqa
 ):
     """Post-save and -delete signal receiver for access keys
 
@@ -76,10 +80,14 @@ def update_access_key_documents(
     :param instance: The modified instance. Used to retrieve the
         associated course token.
     :param args: Additional arguments passed by the signal
+    :param update_fields: Optional list of updated fields
     :param kwargs: Additional keyword arguments passed by the signal
     """
     if kwargs.get("created", False):
         logger.debug("Access key has been created, skip updating 'CourseOverviewPDF'.")
+        return
+    if update_fields and len(update_fields) == 1 and "last_login" in update_fields:
+        logger.debug("User logged in, skip updating 'CourseOverviewPDF'.")
         return
     course: Course = instance.course
     render_cached_document_view.apply_async(

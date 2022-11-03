@@ -2,7 +2,7 @@
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
     <div class="offcanvas-header">
         <h4 id="offcanvasFilterLabel">
-            {% translate "Additional Filteroptions" %}
+            {% translate "Additional filter options" %}
         </h4>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
@@ -11,6 +11,13 @@
             {% with filter.form.time_range as field %}
                 <div class="mb-4">
                     <span class="fs-5 fw-semibold mb-3">{% translate "Measurement time range" %}</span>
+                    {% include "gcampuscore/forms/components/helptext.html" %}
+                    {{ field }}
+                </div>
+            {% endwith %}
+            {% with filter.form.flow_type as field %}
+                <div class="mb-4">
+                    <span class="fs-5 fw-semibold mb-3">{% translate "Flow type" %}</span>
                     {% include "gcampuscore/forms/components/helptext.html" %}
                     {{ field }}
                 </div>

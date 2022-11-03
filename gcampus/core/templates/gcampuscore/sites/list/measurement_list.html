@@ -51,8 +51,8 @@
 {% endblock %}
 {% block content %}
     <div class="container-fluid">
-        <form method="GET" class="row align-items-center">
-            <div class="col-auto">
+        <form method="GET" class="row align-items-center gap-2">
+            <div class="col-12 col-md-auto">
                 <div class="input-group">
                     {% with filter.form.name as field %}
                         {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}

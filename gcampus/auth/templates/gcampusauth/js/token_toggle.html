@@ -1,23 +1,25 @@
 <script type="text/javascript">
-    function _registerdisplaytoken(displaytoken) {
-        let showButton = displaytoken.getElementsByClassName('btn-token-show')[0];
-        let hideButton = displaytoken.getElementsByClassName('btn-token-hide')[0];
-        let hiddenField = displaytoken.getElementsByClassName('token-field-hidden')[0];
-        let clearField = displaytoken.getElementsByClassName('token-field-clear')[0];
-        showButton.addEventListener('click', function() {
-            showButton.classList.add("d-none");
-            hideButton.classList.remove("d-none");
-            hiddenField.classList.add("d-none");
-            clearField.classList.remove("d-none");
-        });
-        hideButton.addEventListener('click', function() {
-            showButton.classList.remove("d-none");
-            hideButton.classList.add("d-none");
-            hiddenField.classList.remove("d-none");
-            clearField.classList.add("d-none");
-        });
-    }
+    (function () {
+        function _registerdisplaytoken(displaytoken) {
+            let showButton = displaytoken.getElementsByClassName('btn-token-show')[0];
+            let hideButton = displaytoken.getElementsByClassName('btn-token-hide')[0];
+            let hiddenField = displaytoken.getElementsByClassName('token-field-hidden')[0];
+            let clearField = displaytoken.getElementsByClassName('token-field-clear')[0];
+            showButton.addEventListener('click', function() {
+                showButton.classList.add("d-none");
+                hideButton.classList.remove("d-none");
+                hiddenField.classList.add("d-none");
+                clearField.classList.remove("d-none");
+            });
+            hideButton.addEventListener('click', function() {
+                showButton.classList.remove("d-none");
+                hideButton.classList.add("d-none");
+                hiddenField.classList.remove("d-none");
+                clearField.classList.add("d-none");
+            });
+        }
 
-    let displaytokenList = [].slice.call(document.querySelectorAll('[data-gcampusauth-toggle="1"]'));
-    displaytokenList.map(_registerdisplaytoken);
+        let displaytokenList = [].slice.call(document.querySelectorAll('[data-gcampusauth-toggle="1"]'));
+        displaytokenList.map(_registerdisplaytoken);
+    })();
 </script>

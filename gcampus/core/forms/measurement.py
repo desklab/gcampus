@@ -35,7 +35,7 @@ from django.utils.translation import pgettext_lazy
 
 from gcampus.core.fields import SplitSplitDateTimeField
 from gcampus.core.models import Measurement, Parameter, ParameterType, StructureIndex
-from gcampus.core.models.measurement import ParameterTypeCategory
+from gcampus.core.models.parameter import ParameterTypeCategory
 from gcampus.map.widgets import GeoPointWidget
 
 _MIN_TIME = settings.MEASUREMENT_MIN_TIME

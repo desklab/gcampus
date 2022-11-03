@@ -33,8 +33,8 @@ parameters.html{% extends "gcampuscore/base.html" %}
 {% block content %}
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <form method="POST" class="px-5 py-3">
+            <div class="col col-lg-10">
+                <form method="POST" class="py-3">
                     <h4><label class="mb-2">{% translate "Parameters" %}</label></h4>
                     <div class="text-danger">
                         {% for error in formset.non_form_errors %}

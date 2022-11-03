@@ -13,14 +13,15 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import List, Optional, Set
+from typing import List, Optional, Set, Tuple
 
 from django.conf import settings
 from django.contrib.postgres.search import SearchQuery
 from django.core.validators import EMPTY_VALUES
 from django.db.models import QuerySet, Q
-from django.forms import CheckboxSelectMultiple, BaseForm
+from django.forms import CheckboxSelectMultiple, BaseForm, Select
 from django.http import HttpRequest
+from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
 from django_filters import (
     Filter,
@@ -30,6 +31,8 @@ from django_filters import (
     ModelMultipleChoiceFilter,
     BooleanFilter,
     DateFromToRangeFilter,
+    ChoiceFilter,
+    MultipleChoiceFilter,
 )
 
 from gcampus.auth import session
@@ -39,6 +42,14 @@ from gcampus.core.fields.datetime import HistogramDateTimeField
 from gcampus.core.fields.personal import ToggleField
 from gcampus.core.models import ParameterType
 from gcampus.core.models.util import EMPTY
+from gcampus.core.models.water import FlowType, WaterType, Water
+
+WATER_TYPES = [
+    (value, capfirst(label)) for value, label in WaterType.choices if value is not None
+]
+FLOW_TYPES = [
+    (value, capfirst(label)) for value, label in FlowType.choices if value is not None
+]
 
 
 def _get_filter_request(filter_instance: Filter) -> Optional[HttpRequest]:
@@ -76,22 +87,48 @@ class ParameterTypeFilter(ModelMultipleChoiceFilter):
         return qs
 
 
-class MeasurementSearchFilter(CharFilter):
+class SearchFilter(CharFilter):
     TSVECTOR_CONF = getattr(settings, "TSVECTOR_CONF")
+
+    def __init__(self, *args, related_fields: Optional[List[str]] = None, **kwargs):
+        super(SearchFilter, self).__init__(*args, **kwargs)
+        self.related_fields: List[str] = related_fields or []
 
     def filter(self, qs, value):
         if value in EMPTY_VALUES:
             return qs
         if self.distinct:
             qs = qs.distinct()
-        qs = self.get_method(qs)(
-            **{self.field_name: SearchQuery(value, config=self.TSVECTOR_CONF)}
-        )
-        return qs
+        search_query = SearchQuery(value, config=self.TSVECTOR_CONF)
+        query = Q(**{self.field_name: search_query})
+        for related_field in self.related_fields:
+            query |= Q(**{f"{related_field}__{self.field_name}": search_query})
+        return self.get_method(qs)(query)
 
 
 class DateRange(DateFromToRangeFilter):
     field_class = HistogramDateTimeField
+
+
+class WaterFilterSet(FilterSet):
+    form: BaseForm
+
+    water_type = MultipleChoiceFilter(
+        field_name="water_type",
+        choices=WATER_TYPES,
+        widget=CheckboxSelectMultiple(attrs={"class": "form-check-input"}),
+    )
+    flow_type = ChoiceFilter(
+        field_name="flow_type",
+        null_label=FlowType.__empty__,
+        widget=Select(attrs={"class": "form-select form-select-sm"}),
+        choices=FLOW_TYPES,
+    )
+    name = SearchFilter(
+        field_name="search_vector",
+        label=_("Search"),
+        help_text=_("Fulltext search for waters."),
+    )
 
 
 class MeasurementFilterSet(FilterSet):
@@ -156,9 +193,10 @@ class MeasurementFilterSet(FilterSet):
 
         return len(applied_filters) != 0
 
-    name = MeasurementSearchFilter(
+    name = SearchFilter(
         field_name="search_vector",
         label=_("Search"),
+        related_fields=["water"],
         help_text=_("Fulltext search for measurements."),
     )
     time_range = DateRange(
@@ -173,6 +211,12 @@ class MeasurementFilterSet(FilterSet):
         widget=CheckboxSelectMultiple(attrs={"class": "form-check-input"}),
         label=_("Parameter"),
         help_text=_("Filter for measurements containing specific parameters."),
+    )
+    flow_type = ChoiceFilter(
+        field_name="water__flow_type",
+        null_label=FlowType.__empty__,
+        widget=Select(attrs={"class": "form-select form-select-sm"}),
+        choices=FLOW_TYPES,
     )
 
     same_course = BooleanNoOpFilter(

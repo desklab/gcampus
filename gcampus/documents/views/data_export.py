@@ -28,8 +28,7 @@ from django.views import View
 from django.views.generic.list import MultipleObjectMixin
 
 from gcampus.core.filters import MeasurementFilterSet
-from gcampus.core.models import Water
-from gcampus.core.models.measurement import Measurement, ParameterType
+from gcampus.core.models import Water, Measurement, ParameterType
 
 
 class DataExportView(MultipleObjectMixin, View, ABC):
@@ -74,14 +73,18 @@ class DataExportView(MultipleObjectMixin, View, ABC):
                     yield current
                 current = None
             if current is None:
+                water_type = measurement["water__water_type"]
+                flow_type = measurement["water__flow_type"]
                 water_name = Water.get_water_name(
-                    measurement["water__name"], measurement["water__water_type"]
+                    measurement["water__name"], water_type
                 )
                 current = {
                     "id": measurement["pk"],
                     "name": measurement["name"],
                     "location_name": measurement["location_name"],
                     "water_name": water_name,
+                    "water_type": water_type,
+                    "flow_type": flow_type,
                     "time": measurement["time"],
                 }
                 current.update({param_name: "" for param_name in self.parameter_types})
@@ -95,7 +98,15 @@ class DataExportView(MultipleObjectMixin, View, ABC):
             yield current
 
     def get_headers(self) -> Tuple[str, ...]:
-        headers = ("id", "name", "location_name", "water_name", "time")
+        headers = (
+            "id",
+            "name",
+            "location_name",
+            "water_name",
+            "water_type",
+            "flow_type",
+            "time",
+        )
         return headers + self.parameter_types
 
     def get_queryset(self):
@@ -108,6 +119,7 @@ class DataExportView(MultipleObjectMixin, View, ABC):
             "location_name",
             "water__name",
             "water__water_type",
+            "water__flow_type",
             "time",
             "parameters__value",
             "parameters__parameter_type__name",
@@ -159,10 +171,17 @@ class XLSXExportView(DataExportView):
     file_ending = "xlsx"
 
     def _stream(self) -> Iterator:
-
         stream = xlsx_streaming.stream_queryset_as_xlsx(self.iter_rows(), batch_size=10)
         return stream
 
     def get_headers(self) -> Tuple[str, ...]:
-        headers = (_("ID"), _("Name"), _("Location name"), _("Water name"), _("Time"))
+        headers = (
+            _("ID"),
+            _("Name"),
+            _("Location name"),
+            _("Water name"),
+            _("Water type"),
+            _("Flow type"),
+            _("Time"),
+        )
         return headers + self.parameter_types

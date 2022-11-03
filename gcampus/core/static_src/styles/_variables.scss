@@ -93,18 +93,14 @@ $table-cell-padding-y: .8rem;
 $table-cell-padding-x: .8rem;
 
 $sidebar-opened-width: 260px;
-$sidebar-closed-width: 4.5rem;
+$sidebar-closed-width: 4 * $spacer;
 
 $gcampus-navbar-height: 72px;
-$gcampus-footer-height: 50px;
-
-
+$gcampus-footer-height: 48px;
 
 $badge-border-radius: 0;
 $alert-border-radius: 0;
 $tooltip-border-radius: 0;
-
-//$btn-padding-x: 2em;
 
 $table-variants: ();
 

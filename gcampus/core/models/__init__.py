@@ -13,12 +13,8 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from gcampus.core.models.measurement import (
-    Measurement,
-    ParameterType,
-    Parameter,
-    Calibration,
-)
+from gcampus.core.models.measurement import Measurement
+from gcampus.core.models.parameter import ParameterType, Parameter, Calibration
 from gcampus.core.models.water import Water
 from gcampus.core.models.index.bach import BACHIndex
 from gcampus.core.models.index.saprobic import SaprobicIndex
