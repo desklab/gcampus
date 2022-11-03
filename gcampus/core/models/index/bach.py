@@ -86,7 +86,7 @@ class BACHIndex(WaterQualityIndex):
                     if temp_lookup[i][0] < raw <= temp_lookup[i + 1][0]:
                         temp = lin_est(temp_lookup[i], temp_lookup[i + 1], raw)
         else:
-            temp = 50  # default
+            temp = None
 
         o2_lookup = [
             (0, 2),
@@ -130,7 +130,7 @@ class BACHIndex(WaterQualityIndex):
                     if o2_lookup[i][0] < raw <= o2_lookup[i + 1][0]:
                         o2 = lin_est(o2_lookup[i], o2_lookup[i + 1], raw)
         else:
-            o2 = 50  # default
+            o2 = None
 
         bsb5_lookup = [
             (0, 100),
@@ -163,7 +163,7 @@ class BACHIndex(WaterQualityIndex):
                     if bsb5_lookup[i][0] < raw <= bsb5_lookup[i + 1][0]:
                         bsb5 = lin_est(bsb5_lookup[i], bsb5_lookup[i + 1], raw)
         else:
-            bsb5 = 50  # default
+            bsb5 = None
 
         ph_lookup = [
             (3, 1),
@@ -205,7 +205,7 @@ class BACHIndex(WaterQualityIndex):
                     if ph_lookup[i][0] < raw <= ph_lookup[i + 1][0]:
                         ph = lin_est(ph_lookup[i], ph_lookup[i + 1], raw)
         else:
-            ph = 50  # default
+            ph = None
 
         no3_lookup = [
             (0, 100),
@@ -238,7 +238,7 @@ class BACHIndex(WaterQualityIndex):
                     if no3_lookup[i][0] < raw <= no3_lookup[i + 1][0]:
                         no3 = lin_est(no3_lookup[i], no3_lookup[i + 1], raw)
         else:
-            no3 = 50  # default
+            no3 = None
 
         po4_lookup = [
             (0, 100),
@@ -276,7 +276,7 @@ class BACHIndex(WaterQualityIndex):
                     if po4_lookup[i][0] < raw <= po4_lookup[i + 1][0]:
                         po4 = lin_est(po4_lookup[i], po4_lookup[i + 1], raw)
         else:
-            po4 = 50  # default
+            po4 = None
 
         nh4_lookup = [
             (0, 100),
@@ -310,7 +310,7 @@ class BACHIndex(WaterQualityIndex):
                     if nh4_lookup[i][0] < raw <= nh4_lookup[i + 1][0]:
                         nh4 = lin_est(nh4_lookup[i], nh4_lookup[i + 1], raw)
         else:
-            nh4 = 50  # default
+            nh4 = None
 
         conductivity_lookup = [
             (0, 72),
@@ -359,18 +359,45 @@ class BACHIndex(WaterQualityIndex):
                             conductivity_lookup[i], conductivity_lookup[i + 1], raw
                         )
         else:
-            conductivity = 50  # default
+            conductivity = None
 
-        index = (
-            temp**0.08
-            * o2**0.20
-            * bsb5**0.20
-            * ph**0.10
-            * no3**0.10
-            * po4**0.10
-            * nh4**0.15
-            * conductivity**0.07
-        )
+        sum_of_weights = 0
+
+        if temp is not None:
+            sum_of_weights += 0.08
+        if o2 is not None:
+            sum_of_weights += 0.20
+        if bsb5 is not None:
+            sum_of_weights += 0.20
+        if ph is not None:
+            sum_of_weights += 0.10
+        if no3 is not None:
+            sum_of_weights += 0.10
+        if po4 is not None:
+            sum_of_weights += 0.10
+        if nh4 is not None:
+            sum_of_weights += 0.15
+        if conductivity is not None:
+            sum_of_weights += 0.07
+
+        index = 1
+
+        if temp is not None:
+            index *= temp ** (0.08 / sum_of_weights)
+        if o2 is not None:
+            index *= o2 ** (0.20 / sum_of_weights)
+        if bsb5 is not None:
+            index *= bsb5 ** (0.20 / sum_of_weights)
+        if ph is not None:
+            index *= ph ** (0.10 / sum_of_weights)
+        if no3 is not None:
+            index *= no3 ** (0.10 / sum_of_weights)
+        if po4 is not None:
+            index *= po4 ** (0.10 / sum_of_weights)
+        if nh4 is not None:
+            index *= nh4 ** (0.15 / sum_of_weights)
+        if conductivity is not None:
+            index *= conductivity ** (0.07 / sum_of_weights)
 
         return index
 
