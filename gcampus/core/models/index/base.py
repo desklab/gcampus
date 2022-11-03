@@ -27,7 +27,7 @@ class WaterQualityIndex(models.Model):
     class Meta:
         abstract = True
 
-    value: models.IntegerField = models.IntegerField(
+    value: models.FloatField = models.FloatField(
         default=0,
         null=True,
         blank=True,

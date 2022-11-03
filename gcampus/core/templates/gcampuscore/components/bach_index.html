@@ -36,7 +36,7 @@
                 </div>
                 <div class="fw-bold">
                     {% if measurement.bach_index.validity >= 0.25 %}
-                        {{ measurement.bach_index.value }}
+                        {{ measurement.bach_index.value|floatformat:"2" }}
                     {% else %}
                         {% translate "N/A" %}
                     {% endif %}

@@ -36,7 +36,7 @@
                 </div>
                 <div class="fw-bold">
                     {% if measurement.saprobic_index.validity >= 0.25 %}
-                        {{ measurement.saprobic_index.value }}
+                        {{ measurement.saprobic_index.value|floatformat:"2" }}
                     {% else %}
                         {% translate "N/A" %}
                     {% endif %}

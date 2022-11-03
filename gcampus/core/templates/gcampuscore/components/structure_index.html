@@ -36,7 +36,7 @@
                 </div>
                 <div class="fw-bold">
                     {% if measurement.structure_index.validity >= 0.25 %}
-                        {{ measurement.structure_index.value }}
+                        {{ measurement.structure_index.value|floatformat:"2" }}
                     {% else %}
                         {% translate "N/A" %}
                     {% endif %}
