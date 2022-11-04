@@ -34,49 +34,38 @@ parameters.html{% extends "gcampuscore/base.html" %}
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10">
-                {% if object.measurement.water.flow_type == "running" %}
-                    <form method="POST" id="StructureIndexForm" class="{% if form.errors %}has-validation{% endif %}">
-                        {% csrf_token %}
-                        <div class="px-5">
-                            <div class="text-danger">
-                                {% for error in form.non_field_errors %}
-                                    <p>{{ error }}</p>
-                                {% endfor %}
-                                {% for error in form.token_errors %}
-                                    <p>{{ error }}</p>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        {% include "gcampuscore/forms/components/structure_component.html" with field=form.utilization %}
-                        {% include "gcampuscore/forms/components/structure_component.html" with field=form.margin %}
-                        {% include "gcampuscore/forms/components/structure_component.html" with field=form.course %}
-                        {% include "gcampuscore/forms/components/structure_component.html" with field=form.bank_vegetation %}
-                        {% include "gcampuscore/forms/components/structure_component.html" with field=form.bank_structure %}
-                        {% include "gcampuscore/forms/components/structure_component.html" with field=form.cross_section %}
-                        {% include "gcampuscore/forms/components/structure_component.html" with field=form.flow %}
-                        {% include "gcampuscore/forms/components/structure_component.html" with field=form.depth_variance %}
-                        {% include "gcampuscore/forms/components/structure_component.html" with field=form.riverbed %}
-                        {% include "gcampuscore/forms/components/structure_component.html" with field=form.continuity %}
-                        <div class="mt-3 w-100 align-items-end d-flex">
-                            <a href="." class="ms-auto btn btn-secondary btn-block">
-                                {% translate "Discard" %}
-                            </a>
-                            <button type="submit"
-                                    class="ms-2 btn btn-primary btn-block">
-                                {% translate "Save" %}
-                            </button>
-                        </div>
-                    </form>
-                {% else %}
-                    <div class="box box-warning d-flex align-items-center py-2" role="alert">
-                        {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-3" %}
-                        <div>
-                            {% blocktranslate trimmed %}
-                                It is currently not possible to save structural information for standing waters.
-                            {% endblocktranslate %}
+                <form method="POST" id="StructureIndexForm" class="{% if form.errors %}has-validation{% endif %}">
+                    {% csrf_token %}
+                    <div class="px-5">
+                        <div class="text-danger">
+                            {% for error in form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                            {% for error in form.token_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
                         </div>
                     </div>
-                {% endif %}
+                    {% include "gcampuscore/forms/components/structure_component.html" with field=form.utilization %}
+                    {% include "gcampuscore/forms/components/structure_component.html" with field=form.margin %}
+                    {% include "gcampuscore/forms/components/structure_component.html" with field=form.course %}
+                    {% include "gcampuscore/forms/components/structure_component.html" with field=form.bank_vegetation %}
+                    {% include "gcampuscore/forms/components/structure_component.html" with field=form.bank_structure %}
+                    {% include "gcampuscore/forms/components/structure_component.html" with field=form.cross_section %}
+                    {% include "gcampuscore/forms/components/structure_component.html" with field=form.flow %}
+                    {% include "gcampuscore/forms/components/structure_component.html" with field=form.depth_variance %}
+                    {% include "gcampuscore/forms/components/structure_component.html" with field=form.riverbed %}
+                    {% include "gcampuscore/forms/components/structure_component.html" with field=form.continuity %}
+                    <div class="mt-3 w-100 align-items-end d-flex">
+                        <a href="." class="ms-auto btn btn-secondary btn-block">
+                            {% translate "Discard" %}
+                        </a>
+                        <button type="submit"
+                                class="ms-2 btn btn-primary btn-block">
+                            {% translate "Save" %}
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

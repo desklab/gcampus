@@ -307,9 +307,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-xl-4 py-3">
-                        <div class="mb-5">
-                            {% include "gcampuscore/components/trophic_index.html" with measurement=measurement %}
-                        </div>
+                        {% if measurement.water.flow_type == "standing" %}
+                            <div class="mb-5">
+                                {% include "gcampuscore/components/trophic_index.html" with measurement=measurement %}
+                            </div>
+                        {% endif %}
                         {% if measurement.water.flow_type == "running" %}
                             {% include "gcampuscore/components/saprobic_index.html" with measurement=measurement %}
                         {% endif %}

@@ -23,11 +23,13 @@ parameters.html{% extends "gcampuscore/base.html" %}
             {% include "gcampuscore/components/nav_item.html" with url=chemical_parameter_url title=chemical_parameters_title view_name="gcampuscore:add-chemical-parameters" %}
         {% endif %}
 
-        {% url "gcampuscore:edit-biological-parameters" pk=object.pk as biological_parameter_url %}
-        {% include "gcampuscore/components/nav_item.html" with url=biological_parameter_url title=biological_parameters_title view_name="gcampuscore:edit-biological-parameters" %}
+        {% if object.water.flow_type == "running" %}
+            {% url "gcampuscore:edit-biological-parameters" pk=object.pk as biological_parameter_url %}
+            {% include "gcampuscore/components/nav_item.html" with url=biological_parameter_url title=biological_parameters_title view_name="gcampuscore:edit-biological-parameters" %}
 
-        {% url "gcampuscore:edit-structure-index" pk=object.pk as structure_index_url %}
-        {% include "gcampuscore/components/nav_item.html" with url=structure_index_url title=structure_index_title view_name="gcampuscore:edit-structure-index" %}
+            {% url "gcampuscore:edit-structure-index" pk=object.pk as structure_index_url %}
+            {% include "gcampuscore/components/nav_item.html" with url=structure_index_url title=structure_index_title view_name="gcampuscore:edit-structure-index" %}
+        {% endif %}
     </ul>
 {% endblock %}
 {% block content %}

@@ -42,7 +42,6 @@ from gcampus.core.views.base import TitleMixin
 class ChemicalParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
     formset_class = ChemicalParameterFormSet
     template_name = "gcampuscore/forms/parameters-chemical.html"
-    next_view_name = "gcampuscore:edit-biological-parameters"
 
     def get_title(self) -> str:
         return _("Edit Measurement {pk:d} - Chemical Parameters").format(
@@ -50,7 +49,13 @@ class ChemicalParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
         )
 
     def get_next_url(self):
-        return reverse(self.next_view_name, kwargs={"pk": self.instance.pk})
+        if self.instance.water.flow_type == "running":
+            next_view_name = "gcampuscore:edit-biological-parameters"
+        elif self.instance.water.flow_type == "standing":
+            next_view_name = "gcampuscore:measurement-detail"
+        else:
+            next_view_name = "gcampuscore:measurement-detail"
+        return reverse(next_view_name, kwargs={"pk": self.instance.pk})
 
     def get_context_data(self, **kwargs):
         if "object" not in kwargs:

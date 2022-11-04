@@ -46,18 +46,9 @@
                 <div class="text-secondary fw-light">
                     {% translate "Validity" %}
                 </div>
-                {% if measurement.trophic_index.validity >= 0.25 %}
-                    <div class="fw-bold">
-                        {% widthratio measurement.trophic_index.validity 1 100 %}%
-                    </div>
-                {% else %}
-                    <div class="fw-bold">
-                        {% comment %}
-                        TODO: display names of parameters used to calculate trophic index
-                                (one or multiple of chlorophyll, visdepth, po4)
-                        {% endcomment %}
-                    </div>
-                {% endif %}
+                <div class="fw-bold">
+                    {% widthratio measurement.trophic_index.validity 1 100 %}%
+                </div>
             </div>
         </div>
     </div>

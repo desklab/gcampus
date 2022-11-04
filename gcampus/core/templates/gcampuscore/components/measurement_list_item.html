@@ -24,7 +24,7 @@
             <span class="ms-1 align-middle">{{ measurement.location_name }}</span>
         </a>
 
-        {% if measurement.parameters.count != 0 %}
+        {% if measurement.parameters.count > 0 or measurement.structure_index.validity > 0 %}
             <a class="link-decoration-none-dark second" href="{{ detail_url }}">
                 <span class="align-middle">
                     <div class="indicator-list">
@@ -40,17 +40,16 @@
                             {% endif %}
                         {% endfor %}
                     </div>
-                    {% if measurement.saprobic_index.validity != 0 %}
+                    {% if measurement.saprobic_index.validity > 0 %}
                         {% translate "Saprobic Index" as saprobic_index_tooltip %}
-                        <span class="ms-1 me-1 text-primary"data-bs-toggle="tooltip"
+                        <span class="text-primary ms-1" data-bs-toggle="tooltip"
                                        title="{{ saprobic_index_tooltip }}">
                             {% include "gcampuscore/icons/bug-fill.html" %}
                         </span>
                     {% endif %}
-
-                    {% if measurement.structure_index.validity != 0 %}
+                    {% if measurement.structure_index.validity > 0 %}
                         {% translate "Structure Index" as structure_index_tooltip %}
-                        <span class="ms-1 me-1 text-primary" data-bs-toggle="tooltip"
+                        <span class="text-primary ms-1" data-bs-toggle="tooltip"
                                        title="{{ structure_index_tooltip }}">
                             {% include "gcampuscore/icons/rulers.html" %}
                         </span>
