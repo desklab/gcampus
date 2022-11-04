@@ -59,16 +59,16 @@ class TrophicIndex(WaterQualityIndex):
 
         if "visdepth" in kwargs:
             raw = kwargs.get("visdepth")
-            if raw >= 8:
-                visdepth = 1
-            elif raw >= 2:
-                visdepth = 2
-            elif raw >= 0.8:
-                visdepth = 3
-            elif raw >= 0.3:
-                visdepth = 4
-            else:
+            if raw <= 60:
                 visdepth = 5
+            elif raw <= 120:
+                visdepth = 4
+            elif raw <= 200:
+                visdepth = 3
+            elif raw <= 500:
+                visdepth = 2
+            else:
+                visdepth = 1
             index_sum += visdepth * 4
             sum_of_weights += 4
 
