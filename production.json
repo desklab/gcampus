@@ -123,6 +123,30 @@
     "model": "gcampuscore.ParameterType",
     "pk": 12,
     "fields": {
+      "name": "Chlorophyll",
+      "short_name": "Chl",
+      "unit": "mg/L",
+      "identifier": "chlorophyll",
+      "color": "5C432B",
+      "category": "chemical"
+    }
+  },
+   {
+    "model": "gcampuscore.ParameterType",
+    "pk": 13,
+    "fields": {
+      "name": "Sichttiefe",
+      "short_name": "d",
+      "unit": "cm",
+      "identifier": "temp",
+      "color": "B7AF19",
+      "category": "chemical"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 14,
+    "fields": {
       "name": "Steinfliegelarven",
       "short_name": "plecoptera",
       "unit": "",
@@ -133,7 +157,7 @@
   },
   {
     "model": "gcampuscore.ParameterType",
-    "pk": 13,
+    "pk": 15,
     "fields": {
       "name": "Libellenlarven",
       "short_name": "odonata",
@@ -145,7 +169,7 @@
   },
   {
     "model": "gcampuscore.ParameterType",
-    "pk": 14,
+    "pk": 16,
     "fields": {
       "name": "Egel",
       "short_name": "hirudinea",
@@ -157,7 +181,7 @@
   },
   {
     "model": "gcampuscore.ParameterType",
-    "pk": 15,
+    "pk": 17,
     "fields": {
       "name": "Schnecken",
       "short_name": "gastropoda",
@@ -169,7 +193,7 @@
   },
   {
     "model": "gcampuscore.ParameterType",
-    "pk": 16,
+    "pk": 18,
     "fields": {
       "name": "Mückenlarven",
       "short_name": "diptera",
@@ -181,7 +205,7 @@
   },
   {
     "model": "gcampuscore.ParameterType",
-    "pk": 17,
+    "pk": 19,
     "fields": {
       "name": "Flohkrebse",
       "short_name": "amphipoda",
@@ -193,7 +217,7 @@
   },
   {
     "model": "gcampuscore.ParameterType",
-    "pk": 18,
+    "pk": 20,
     "fields": {
       "name": "Köcherfliegelarven",
       "short_name": "trichoptera",
