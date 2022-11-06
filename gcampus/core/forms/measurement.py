@@ -146,14 +146,14 @@ class ChemicalParameterForm(ModelForm):
     """
 
     parameter_type = ModelChoiceField(
-        queryset=ParameterType.objects.filter(category=ParameterTypeCategory.CHEMICAL)
+        widget=Select(attrs={"class": "form-select form-select-sm"}),
+        queryset=ParameterType.objects.filter(category=ParameterTypeCategory.CHEMICAL),
     )
 
     class Meta:
         model = Parameter
         fields = ("parameter_type", "value", "comment")
         widgets = {
-            "parameter_type": Select(attrs={"class": "form-select form-select-sm"}),
             "value": NumberInput(
                 attrs={
                     "class": "form-control form-control-sm",
@@ -185,18 +185,20 @@ class BiologicalParameterForm(ModelForm):
     """
 
     parameter_type = ModelChoiceField(
-        queryset=ParameterType.objects.filter(category=ParameterTypeCategory.BIOLOGICAL)
+        widget=Select(attrs={"class": "form-select form-select-sm"}),
+        queryset=ParameterType.objects.filter(
+            category=ParameterTypeCategory.BIOLOGICAL
+        ),
     )
 
     class Meta:
         model = Parameter
         fields = ("parameter_type", "value", "comment")
         widgets = {
-            "parameter_type": Select(attrs={"class": "form-select form-select-sm"}),
             "value": NumberInput(
                 attrs={
                     "class": "form-control form-control-sm",
-                    "placeholder": _("Value"),
+                    "placeholder": _("Abundance"),
                     "min": 0,
                     "max": 100000,
                 }
@@ -287,20 +289,20 @@ class BiologicalParameterFormset(BaseParameterFormset):
     parameter_category: ParameterTypeCategory = ParameterTypeCategory.BIOLOGICAL
 
 
-ChemicalParameterFormSet: Type[DynamicInlineFormset] = inlineformset_factory(
+ChemicalParameterFormSet: Type[ChemicalParameterFormset] = inlineformset_factory(
     Measurement,
     Parameter,
     form=ChemicalParameterForm,
     can_delete=True,
     extra=0,
-    formset=DynamicInlineFormset,
+    formset=ChemicalParameterFormset,
 )
 
-BiologicalParameterFormSet: Type[DynamicInlineFormset] = inlineformset_factory(
+BiologicalParameterFormSet: Type[BiologicalParameterFormset] = inlineformset_factory(
     Measurement,
     Parameter,
     form=BiologicalParameterForm,
     can_delete=True,
     extra=0,
-    formset=DynamicInlineFormset,
+    formset=BiologicalParameterFormset,
 )
