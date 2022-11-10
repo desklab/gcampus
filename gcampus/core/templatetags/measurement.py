@@ -28,3 +28,15 @@ def has_parameter_type(measurement: Measurement, parameter_type_identifier: str)
         return "active"
     else:
         return "inactive"
+
+
+@register.simple_tag()
+def has_parameter_category(
+    measurement: Measurement, parameter_type_category: str
+) -> bool:
+    if parameter_type_category in measurement.parameters.values_list(
+        "parameter_type__category", flat="true"
+    ):
+        return True
+    else:
+        return False

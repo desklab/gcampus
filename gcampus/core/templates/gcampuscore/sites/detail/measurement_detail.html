@@ -1,5 +1,5 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n map l10n tz %}
+{% load i18n map l10n tz measurement %}
 {% block extra_head %}
     {{ block.super }}
     {% load_mapbox_css %}
@@ -169,53 +169,57 @@
                 </div>
             </div>
         </div>
-        <div class="py-4">
-            <div class="container">
-                <h3 class="mb-4 fw-light">{% translate "Chemical Parameters" %}</h3>
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th scope="col">{% translate "Parameter" %}</th>
-                        <th scope="col">{% translate "Value" %}</th>
-                        <th scope="col">{% translate "Note" %}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for parameter in object.parameters.all %}
-                        {% if parameter.parameter_type.category == "chemical" %}
-                            <tr>
-                                <td>
-                                    <i class="circle-icon indicator-icon"
-                                       style="background-color: #{{ parameter.parameter_type.color|lower }} !important;"
-                                       data-bs-toggle="tooltip"
-                                       title="{{ parameter.parameter_type.name|capfirst }}">
-                                    </i>
-                                    <span class="ms-2">{{ parameter.parameter_type.name }}</span>
-                                </td>
-                                <td class="font-monospace">
-                                    {{ parameter.value }}&nbsp;{{ parameter.parameter_type.unit }}
-                                </td>
-                                <td>
-                                    {% if parameter.comment %}
-                                        {% if parameter.is_comment_short %}
-                                            {{ parameter.comment|linebreaksbr }}
+
+        {% has_parameter_category object "chemical" as has_chemical_parameter %}
+        {% if has_chemical_parameter %}
+            <div class="py-4">
+                <div class="container">
+                    <h3 class="mb-4 fw-light">{% translate "Chemical Parameters" %}</h3>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">{% translate "Parameter" %}</th>
+                            <th scope="col">{% translate "Value" %}</th>
+                            <th scope="col">{% translate "Note" %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for parameter in object.parameters.all %}
+                            {% if parameter.parameter_type.category == "chemical" %}
+                                <tr>
+                                    <td>
+                                        <i class="circle-icon indicator-icon"
+                                           style="background-color: #{{ parameter.parameter_type.color|lower }} !important;"
+                                           data-bs-toggle="tooltip"
+                                           title="{{ parameter.parameter_type.name|capfirst }}">
+                                        </i>
+                                        <span class="ms-2">{{ parameter.parameter_type.name }}</span>
+                                    </td>
+                                    <td class="font-monospace">
+                                        {{ parameter.value }}&nbsp;{{ parameter.parameter_type.unit }}
+                                    </td>
+                                    <td>
+                                        {% if parameter.comment %}
+                                            {% if parameter.is_comment_short %}
+                                                {{ parameter.comment|linebreaksbr }}
+                                            {% else %}
+                                                <a href="#" data-bs-toggle="modal"
+                                                   data-bs-target="#parameterModal{{ parameter.id }}">
+                                                    {% translate "Show note" %}
+                                                </a>
+                                            {% endif %}
                                         {% else %}
-                                            <a href="#" data-bs-toggle="modal"
-                                               data-bs-target="#parameterModal{{ parameter.id }}">
-                                                {% translate "Show note" %}
-                                            </a>
+                                            {% translate "N/A" context "no value provided (water name, comment, etc)" %}
                                         {% endif %}
-                                    {% else %}
-                                        {% translate "N/A" context "no value provided (water name, comment, etc)" %}
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-                    </tbody>
-                </table>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        {% endif %}
 
         {% if object.water.flow_type == "running" and object.saprobic_index.validity > 0 %}
             <div class="py-4" id="measurement-body measurement-data">
