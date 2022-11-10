@@ -43,24 +43,26 @@ function createMeasurementPopup(coords, map, data, template) {
     );
     let parameterIndicators = getContentElement(item, 'parameterList');
     for (let parameter of parameters) {
-        let container = document.createElement('div');
-        container.classList.add('indicator-container');
-        let icon = document.createElement('i');
-        icon.classList.add('circle-icon', 'indicator-icon');
-        icon.setAttribute(
-            'style',
-            'background-color: #'
-            + String(parameter.parameter_type.color).toLowerCase()
-            + ' !important;'
-        );
-        icon.setAttribute('title', String(parameter.parameter_type.name));
-        icon.setAttribute('data-bs-toggle', 'tooltip');
-        container.insertAdjacentElement('afterbegin', icon);
-        parameterIndicators.insertAdjacentElement('beforeend', container);
-        try {
-            new gcampuscore.main.Tooltip(icon);
-        } catch (e) {
-            console.error('Unable to call `gcampuscore.main.Tooltip`');
+        if (parameter.parameter_type.category === 'chemical') {
+            let container = document.createElement('div');
+            container.classList.add('indicator-container');
+            let icon = document.createElement('i');
+            icon.classList.add('circle-icon', 'indicator-icon');
+            icon.setAttribute(
+                'style',
+                'background-color: #'
+                + String(parameter.parameter_type.color).toLowerCase()
+                + ' !important;'
+            );
+            icon.setAttribute('title', String(parameter.parameter_type.name));
+            icon.setAttribute('data-bs-toggle', 'tooltip');
+            container.insertAdjacentElement('afterbegin', icon);
+            parameterIndicators.insertAdjacentElement('beforeend', container);
+            try {
+                new gcampuscore.main.Tooltip(icon);
+            } catch (e) {
+                console.error('Unable to call `gcampuscore.main.Tooltip`');
+            }
         }
     }
 }
