@@ -33,8 +33,20 @@ parameters.html{% extends "gcampuscore/base.html" %}
 {% block content %}
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-10">
+            <div class="col col-lg-10">
                 <form method="POST" id="StructureIndexForm" class="{% if form.errors %}has-validation{% endif %}">
+                    <h4><label class="mb-2">{% translate "Structural Assessment" %}</label></h4>
+                    <div class="text-danger">
+                        {% for error in formset.non_form_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3 box box-info">
+                        <div class="my-2">
+                            {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                            {% translate "Document the assessment of the structural water quality. If this assessment was not a part of your field trip, skip this step by clicking 'Save & Exit'." %}
+                        </div>
+                    </div>
                     {% csrf_token %}
                     <div class="px-5">
                         <div class="text-danger">
@@ -62,7 +74,7 @@ parameters.html{% extends "gcampuscore/base.html" %}
                         </a>
                         <button type="submit"
                                 class="ms-2 btn btn-primary btn-block">
-                            {% translate "Save" %}
+                            {% translate "Save & Exit" %}
                         </button>
                     </div>
                 </form>

@@ -70,7 +70,11 @@ parameters.html{% extends "gcampuscore/base.html" %}
                         </a>
                         <button type="submit"
                                 class="ms-2 btn btn-primary btn-block">
-                            {% translate "Save" %}
+                            {% if object.water.flow_type == "running" %}
+                                {% translate "Save & Continue" %}
+                            {% else %}
+                                {% translate "Save & Exit" %}
+                            {% endif %}
                         </button>
                     </div>
                 </form>

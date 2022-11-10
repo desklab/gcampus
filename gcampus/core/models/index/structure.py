@@ -189,14 +189,14 @@ class StructureIndex(WaterQualityIndex):
         max_length=20,
         choices=BankVegetationCategory.choices,
         default=BankVegetationCategory.NA,
-        verbose_name=_("Water course"),
+        verbose_name=_("Water bank vegetation"),
     )
 
     bank_structure = models.CharField(
         max_length=20,
         choices=BankStructureCategory.choices,
         default=BankStructureCategory.NA,
-        verbose_name=_("Water course"),
+        verbose_name=_("Water bank structure"),
     )
 
     cross_section = models.CharField(

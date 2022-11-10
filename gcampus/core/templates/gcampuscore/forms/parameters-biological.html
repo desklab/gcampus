@@ -33,13 +33,19 @@ parameters.html{% extends "gcampuscore/base.html" %}
 {% block content %}
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <form method="POST" class="px-5 py-3">
-                    <h4><label class="mb-2">{% translate "Parameters" %}</label></h4>
+            <div class="col col-lg-10">
+                <form method="POST" class="py-3">
+                    <h4><label class="mb-2">{% translate "Saprobic Abundancies" %}</label></h4>
                     <div class="text-danger">
                         {% for error in formset.non_form_errors %}
                             <p>{{ error }}</p>
                         {% endfor %}
+                    </div>
+                    <div class="mb-3 box box-info">
+                        <div class="my-2">
+                            {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                            {% translate "Document the abundancies of the observed saprobic organisms. If this observation was not a part of your field trip, skip this step by clicking 'Save & Continue'. Use the note field to describe your procedure in the case you deviated from the standard protocoll." %}
+                        </div>
                     </div>
                     {% csrf_token %}
                     {% for field in formset.management_form %}
@@ -62,7 +68,7 @@ parameters.html{% extends "gcampuscore/base.html" %}
                         </a>
                         <button type="submit"
                                 class="ms-2 btn btn-primary btn-block">
-                            {% translate "Save" %}
+                            {% translate "Save & Continue" %}
                         </button>
                     </div>
                 </form>
