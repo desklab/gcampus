@@ -32,6 +32,7 @@ from gcampus.core.models import (
     TrophicIndex,
     StructureIndex,
 )
+from gcampus.core.models.index.base import WaterQualityIndex
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 
 
@@ -180,51 +181,38 @@ class ParameterAdmin(admin.ModelAdmin):
 
 
 @admin.action(description=_("Recalculate selected indices"))
-def update_bach_index(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):
+def update_index(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):
+    index: WaterQualityIndex
+    with transaction.atomic():
+        for index in queryset:
+            index.update()
+
+
+class BaseIndexAdmin(admin.ModelAdmin):
+    index: WaterQualityIndex
+    actions = [update_index]
+    list_display = (
+        "__str__",
+        "measurement",
+        "validity",
+        "value",
+    )
+
+
+class BACHIndexAdmin(BaseIndexAdmin):
     index: BACHIndex
-    with transaction.atomic():
-        for index in queryset:
-            index.update()
 
 
-class BACHIndexAdmin(admin.ModelAdmin):
-    actions = [update_bach_index]
-
-
-@admin.action(description=_("Recalculate selected indices"))
-def update_saprobic_index(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):
+class SaprobicIndexAdmin(BaseIndexAdmin):
     index: SaprobicIndex
-    with transaction.atomic():
-        for index in queryset:
-            index.update()
 
 
-class SaprobicIndexAdmin(admin.ModelAdmin):
-    actions = [update_saprobic_index]
-
-
-@admin.action(description=_("Recalculate selected indices"))
-def update_trophic_index(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):
+class TrophicIndexAdmin(BaseIndexAdmin):
     index: TrophicIndex
-    with transaction.atomic():
-        for index in queryset:
-            index.update()
 
 
-class TrophicIndexAdmin(admin.ModelAdmin):
-    actions = [update_trophic_index]
-
-
-@admin.action(description=_("Recalculate selected indices"))
-def update_structure_index(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):
+class StructureIndexAdmin(BaseIndexAdmin):
     index: StructureIndex
-    with transaction.atomic():
-        for index in queryset:
-            index.update()
-
-
-class StructureIndexAdmin(admin.ModelAdmin):
-    actions = [update_structure_index]
 
 
 admin.site.register(Measurement, MeasurementAdmin)
