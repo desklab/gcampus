@@ -41,14 +41,11 @@ def hide(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):  # noqa
 
 def osm_update(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):  # noqa
     with transaction.atomic():
-        client = httpx.Client()
         water: Water  # Used for type hints
-        try:
+        with httpx.Client() as client:
             for water in queryset:
                 water.update_from_osm(client=client)
                 water.save()
-        finally:
-            client.close()
 
 
 def show(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):  # noqa
