@@ -23,6 +23,7 @@ __all__ = [
 import logging
 from typing import Union, Optional
 
+from django.db import transaction
 from django.db.models import QuerySet
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
@@ -109,10 +110,11 @@ def clear_measurement_documents(
 
 @receiver(post_save, sender=Parameter)
 def update_measurement_indices(sender, instance: Parameter, **kwargs):
-    instance.measurement.bach_index.update()
-    instance.measurement.saprobic_index.update()
-    instance.measurement.trophic_index.update()
-    instance.measurement.structure_index.update()
+    with transaction.atomic:
+        instance.measurement.bach_index.update()
+        instance.measurement.saprobic_index.update()
+        instance.measurement.trophic_index.update()
+        instance.measurement.structure_index.update()
 
 
 @receiver(post_save, sender=Measurement)

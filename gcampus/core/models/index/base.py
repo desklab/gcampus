@@ -55,12 +55,13 @@ class WaterQualityIndex(models.Model):
         verbose_name=_("Validity"),
     )
 
-    def update(self):
+    def update(self, commit=True):
         self._update_value(commit=False)
         self._update_classification(commit=False)
         self._update_description(commit=False)
         self._update_validity(commit=False)
-        self.save()
+        if commit:
+            self.save()
 
     def _update_value(self, commit=True):
         parameters = self.measurement.parameters.all()
