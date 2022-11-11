@@ -19,7 +19,7 @@ __ALL__ = ["TrophicIndex"]
 
 from typing import Union
 
-from django.contrib.gis.db import models
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models.index.base import WaterQualityIndex
