@@ -12,10 +12,12 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
+import copy
 from typing import Optional
 
 from django.views.generic.base import ContextMixin
+
+from gcampus.core.tabs import TabNavigation
 
 
 class TitleMixin(ContextMixin):
@@ -26,6 +28,28 @@ class TitleMixin(ContextMixin):
 
     def get_context_data(self, **kwargs):
         """Insert the page title into the context dict."""
-        if "page_title" not in kwargs:
-            kwargs["page_title"] = self.get_title()
+        kwargs.setdefault("page_title", self.get_title())
         return super().get_context_data(**kwargs)
+
+
+class TabsMixin(ContextMixin):
+    tabs: TabNavigation
+    current_tab_name: Optional[str] = None
+
+    def get_tabs(self) -> TabNavigation:
+        """Get tabs for current instance. The tabs are a deep copy of
+        the class attribute :attr:`.tabs` to avoid mutation of other
+        instances.
+
+        To change a tab (e.g. set its url), first retrieve the deep
+        copy (i.e. calling the super method) and then modify the tabs.
+        """
+        tabs: TabNavigation = copy.deepcopy(self.tabs)
+        if self.current_tab_name:
+            tabs[self.current_tab_name].active = True
+        return tabs
+
+    def get_context_data(self, **kwargs):
+        """Insert the tabs into the context dict."""
+        kwargs.setdefault("tabs", self.get_tabs())
+        return super(TabsMixin, self).get_context_data(**kwargs)
