@@ -12,6 +12,7 @@
 {% block main_class %}bg-light min-vh-100{% endblock %}
 {% block content %}
     <div class="container">
+        {{ tabs }}
         <h3 class="py-4">{% trans "Course token" %}</h3>
         <div class="box box-info mb-3">
             {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
