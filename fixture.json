@@ -48,7 +48,7 @@
       "updated_at": "2022-11-04T12:07:58.457Z",
       "deactivated": false,
       "last_login": null,
-      "token": "abcdefgh",
+      "token": "ABCDEFGH",
       "course": 1,
       "permissions": []
     }
