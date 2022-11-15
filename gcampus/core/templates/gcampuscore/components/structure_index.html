@@ -16,10 +16,10 @@
                     </div>
                 {% else %}
                     <div class="index-classification display-1 fw-bolder class-unknown">
-                        {% translate "N/A" %}
+                        {% translate "N/A" context "no value provided (water name, comment, etc)" as not_any %}
                     </div>
                     <div class="invisible display-4">
-                        {% translate "N/A" %}
+                        {% translate "N/A" context "no value provided (water name, comment, etc)" as not_any %}
                     </div>
                 {% endif %}
             </div>
@@ -35,10 +35,10 @@
                     {% translate "Value" %}
                 </div>
                 <div class="fw-bold">
-                    {% if measurement.structure_index.validity >= 0.25 %}
+                    {% if measurement.structure_index.validity >= 0.4 %}
                         {{ measurement.structure_index.value|floatformat:"2" }}
                     {% else %}
-                        {% translate "N/A" %}
+                        {% translate "N/A" context "no value provided (water name, comment, etc)" as not_any %}
                     {% endif %}
                 </div>
             </div>

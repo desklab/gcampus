@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-10 10:19+0100\n"
+"POT-Creation-Date: 2022-11-11 17:20+0100\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -739,32 +739,31 @@ msgstr ""
 msgid "Successfully logged out"
 msgstr "Du wurdest erfolgreich abgemeldet"
 
-#: gcampus/core/admin.py:58
+#: gcampus/core/admin.py:56
 msgid "Hide selected items for all users"
 msgstr "Ausgewählte Einträge für alle Nutzer verstecken"
 
-#: gcampus/core/admin.py:59
+#: gcampus/core/admin.py:57
 msgid "Show selected items for all users"
 msgstr "Ausgewählte Einträge für alle Nutzer anzeigen"
 
-#: gcampus/core/admin.py:60
+#: gcampus/core/admin.py:58
 msgid "Update from OpenStreetMap"
 msgstr "Mit OpenStreetMap updaten"
 
-#: gcampus/core/admin.py:76
+#: gcampus/core/admin.py:74
 msgid "Create or update Water Quality Indices"
 msgstr "Gewässergüteindizes erstellen oder aktualisieren"
 
-#: gcampus/core/admin.py:152
+#: gcampus/core/admin.py:150
 msgid "OpenStreetMap URL"
 msgstr "OpenStreetMap URL"
 
-#: gcampus/core/admin.py:157
+#: gcampus/core/admin.py:155
 msgid "No OpenStreetMap ID provided!"
 msgstr "Keine OpenStreetMap ID angegeben!"
 
-#: gcampus/core/admin.py:185 gcampus/core/admin.py:197
-#: gcampus/core/admin.py:209 gcampus/core/admin.py:221
+#: gcampus/core/admin.py:183
 msgid "Recalculate selected indices"
 msgstr "Ausgewählte Indizes neu berechnen"
 
@@ -1641,9 +1640,19 @@ msgstr "Klasse"
 #: gcampus/core/templates/gcampuscore/components/trophic_index.html:19
 #: gcampus/core/templates/gcampuscore/components/trophic_index.html:22
 #: gcampus/core/templates/gcampuscore/components/trophic_index.html:41
-#, fuzzy
-#| msgctxt "no value provided (water name, comment, etc)"
-#| msgid "N/A"
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:77
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:113
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:132
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:212
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:257
+#: gcampus/core/templates/gcampuscore/sites/detail/water_detail.html:24
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:93
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:102
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:141
+#: gcampus/mail/templates/gcampusmail/access_key_deactivation/base.html:5
+#: gcampus/mail/templates/gcampusmail/course_deletion/base.html:5
+#: gcampus/mail/templates/gcampusmail/register/overview.html:4
+msgctxt "no value provided (water name, comment, etc)"
 msgid "N/A"
 msgstr "N/A"
 
@@ -1957,9 +1966,9 @@ msgid ""
 msgstr ""
 "Dokumentiere die beobachteten Saprobien-Häufigkeiten. Falls du diese Analyse "
 "im Rahmen deiner Exkursion nicht durchgeführt hast, kannst du diesen Schritt "
-"mit einem Klick auf 'Speichern & Weiter' überspringen. "
-"Nutze das Notizfeld, um dein Vorgehen zu beschreiben, "
-"falls du von der vorgeschlagenen Vorgehensweise abgewichen bist."
+"mit einem Klick auf 'Speichern & Weiter' überspringen. Nutze das Notizfeld, "
+"um dein Vorgehen zu beschreiben, falls du von der vorgeschlagenen "
+"Vorgehensweise abgewichen bist."
 
 #: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:68
 #: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:70
@@ -2036,22 +2045,6 @@ msgstr "Bist du dir sicher, dass du diese Messung löschen willst?"
 #: gcampus/documents/views/data_export.py:182
 msgid "Water name"
 msgstr "Gewässername"
-
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:77
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:113
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:132
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:212
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:257
-#: gcampus/core/templates/gcampuscore/sites/detail/water_detail.html:24
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:93
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:102
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:141
-#: gcampus/mail/templates/gcampusmail/access_key_deactivation/base.html:5
-#: gcampus/mail/templates/gcampusmail/course_deletion/base.html:5
-#: gcampus/mail/templates/gcampusmail/register/overview.html:4
-msgctxt "no value provided (water name, comment, etc)"
-msgid "N/A"
-msgstr "N/A"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:86
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:150
@@ -2284,21 +2277,15 @@ msgstr "Messung {pk:d} bearbeiten - Information"
 msgid "All measurements"
 msgstr "Alle Messungen"
 
-#: gcampus/core/views/parameter.py:64
-#, fuzzy, python-brace-format
-#| msgid "Edit Measurement {pk:d} - Measured Parameters"
+#: gcampus/core/views/parameter.py:113
 msgid "Edit Measurement {pk:d} - Chemical Parameters"
 msgstr "Messung {pk:d} bearbeiten - Chemische Parameter"
 
-#: gcampus/core/views/parameter.py:137
-#, fuzzy, python-brace-format
-#| msgid "Edit Measurement {pk:d} - Measured Parameters"
+#: gcampus/core/views/parameter.py:138
 msgid "Edit Measurement {pk:d} - Biological Parameters"
 msgstr "Messung {pk:d} bearbeiten - Biologische Parameter"
 
-#: gcampus/core/views/parameter.py:215
-#, fuzzy, python-brace-format
-#| msgid "Edit Measurement {pk:d} - Information"
+#: gcampus/core/views/parameter.py:168
 msgid "Edit Measurement {pk:d} - Structure Index"
 msgstr "Messung {pk:d} bearbeiten - Strukturgüte"
 

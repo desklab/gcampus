@@ -43,6 +43,11 @@ from gcampus.core.views.base import TitleMixin
 class BaseParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
     formset_class = BaseParameterFormset
 
+    def __init__(self, **kwargs):
+        super(BaseParameterFormSetView, self).__init__(**kwargs)
+        self.instance: Optional[Parameter] = None
+        self.token: Optional[BaseToken] = None
+
     def get(self, request: HttpRequest, pk: int, *args, **kwargs):
         # This will raise an exception if the provided token has
         # insufficient permissions
@@ -123,11 +128,6 @@ class ChemicalParameterFormSetView(BaseParameterFormSetView):
             next_view_name = "gcampuscore:measurement-detail"
         return reverse(next_view_name, kwargs={"pk": self.instance.pk})
 
-    def __init__(self, **kwargs):
-        super(ChemicalParameterFormSetView, self).__init__(**kwargs)
-        self.instance: Optional[Parameter] = None
-        self.token: Optional[BaseToken] = None
-
 
 class BiologicalParameterFormSetView(BaseParameterFormSetView):
     formset_class = BiologicalParameterFormSet
@@ -142,23 +142,12 @@ class BiologicalParameterFormSetView(BaseParameterFormSetView):
     def get_next_url(self):
         return reverse(self.next_view_name, kwargs={"pk": self.instance.pk})
 
-    def __init__(self, **kwargs):
-        super(BiologicalParameterFormSetView, self).__init__(**kwargs)
-        self.instance: Optional[Parameter] = None
-        self.token: Optional[BaseToken] = None
 
-
-class StructureIndexFormViewMixin(TitleMixin, ModelFormMixin):
-    template_name = "gcampuscore/forms/structure-index.html"
-    next_view_name = "gcampuscore:measurement-detail"
-
-    def get_success_url(self):
-        return reverse(self.next_view_name, kwargs={"pk": self.object.pk})
-
-
-class StructureIndexEditView(StructureIndexFormViewMixin, UpdateView):
+class StructureIndexEditView(UpdateView):
     model = StructureIndex
     form_class = StructureIndexForm
+    template_name = "gcampuscore/forms/structure-index.html"
+    next_view_name = "gcampuscore:measurement-detail"
 
     @method_decorator(require_permission_edit_measurement)
     def dispatch(self, *args, **kwargs):
@@ -168,3 +157,6 @@ class StructureIndexEditView(StructureIndexFormViewMixin, UpdateView):
         return gettext("Edit Measurement {pk:d} - Structure Index").format(
             pk=self.object.pk
         )
+
+    def get_success_url(self):
+        return reverse(self.next_view_name, kwargs={"pk": self.object.pk})

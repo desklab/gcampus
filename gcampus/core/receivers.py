@@ -110,7 +110,7 @@ def clear_measurement_documents(
 
 @receiver(post_save, sender=Parameter)
 def update_measurement_indices(sender, instance: Parameter, **kwargs):
-    with transaction.atomic:
+    with transaction.atomic():
         instance.measurement.bach_index.update()
         instance.measurement.saprobic_index.update()
         instance.measurement.trophic_index.update()
