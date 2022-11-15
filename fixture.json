@@ -22,7 +22,7 @@
       "updated_at": "2022-11-04T12:07:30.681Z",
       "deactivated": false,
       "last_login": null,
-      "token": "abcd12345678",
+      "token": "ABCD12345678",
       "course": 1,
       "permissions": []
     }
