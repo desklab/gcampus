@@ -13,17 +13,32 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__all__ = ["update_measurement_document", "clear_measurement_documents"]
+__all__ = [
+    "update_measurement_document",
+    "clear_measurement_documents",
+    "update_measurement_indices",
+    "create_measurement_indices",
+]
 
 import logging
 from typing import Union, Optional
 
+from django.db import transaction
 from django.db.models import QuerySet
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.utils.translation import get_language
 
-from gcampus.core.models import Parameter, Measurement, ParameterType, Water
+from gcampus.core.models import (
+    Parameter,
+    Measurement,
+    ParameterType,
+    Water,
+    BACHIndex,
+    SaprobicIndex,
+    TrophicIndex,
+    StructureIndex,
+)
 from gcampus.documents.tasks import render_cached_document_view
 
 logger = logging.getLogger("gcampus.core.receivers")
@@ -91,3 +106,23 @@ def clear_measurement_documents(
     # Note that the file will not be deleted from the storage backend,
     # only its reference is removed from the database.
     qs.update(document=None)
+
+
+@receiver(post_save, sender=Parameter)
+def update_measurement_indices(sender, instance: Parameter, **kwargs):
+    with transaction.atomic():
+        instance.measurement.bach_index.update()
+        instance.measurement.saprobic_index.update()
+        instance.measurement.trophic_index.update()
+        instance.measurement.structure_index.update()
+
+
+@receiver(post_save, sender=Measurement)
+def create_measurement_indices(
+    sender, instance: Measurement, created: bool = False, **kwargs
+):
+    if created:
+        BACHIndex.objects.get_or_create(measurement_id=instance.pk)
+        SaprobicIndex.objects.get_or_create(measurement_id=instance.pk)
+        TrophicIndex.objects.get_or_create(measurement_id=instance.pk)
+        StructureIndex.objects.get_or_create(measurement_id=instance.pk)

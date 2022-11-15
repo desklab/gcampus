@@ -46,4 +46,13 @@ input[type="number"].appearance-textfield {
     border-left: 5px solid $red;
     background-color: $red-100;
   }
+
+  &.box-success {
+    border-left: 5px solid $green;
+    background-color: $green-100;
+  }
+}
+
+.text-gray {
+  color: $gray-500 !important;
 }

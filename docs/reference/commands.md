@@ -7,7 +7,7 @@ Import water (rivers with a certain minimum length) from OpenStreetMaps.
 python manage.py importwater [-l, --length [length]] area
 ```
 
-### `area`
+#### `area`
 Name of an OpenStreetMap area. **Example**: `Baden-Württemberg`.
 
 ## `defaultpermissions`
@@ -18,5 +18,5 @@ loading data from a fixture which might not include all permissions.
 python manage.py defaultpermissions [-f]
 ```
 
-### `-f`
+#### `-f`
 Force the application of default permissions to **all** token users.

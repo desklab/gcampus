@@ -23,7 +23,7 @@ from gcampus.core.models import Measurement, Parameter, ParameterType, Water
 class ParameterTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParameterType
-        fields = ("name", "short_name", "unit", "color")
+        fields = ("name", "short_name", "unit", "color", "category")
 
 
 class ParameterSerializer(serializers.ModelSerializer):

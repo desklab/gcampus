@@ -13,12 +13,30 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from gcampus.core.models.measurement import Measurement
-from gcampus.core.models.parameter import ParameterType, Parameter, Calibration
-from gcampus.core.models.water import Water
-from gcampus.core.models.index import (
-    BACHIndex,
-    SaprobicIndex,
-    TrophicIndex,
-    StructureIndex,
-)
+from django import template
+
+from gcampus.core.models import Measurement
+
+register = template.Library()
+
+
+@register.simple_tag()
+def has_parameter_type(measurement: Measurement, parameter_type_identifier: str) -> str:
+    if parameter_type_identifier in measurement.parameters.values_list(
+        "parameter_type__identifier", flat="true"
+    ):
+        return "active"
+    else:
+        return "inactive"
+
+
+@register.simple_tag()
+def has_parameter_category(
+    measurement: Measurement, parameter_type_category: str
+) -> bool:
+    if parameter_type_category in measurement.parameters.values_list(
+        "parameter_type__category", flat="true"
+    ):
+        return True
+    else:
+        return False

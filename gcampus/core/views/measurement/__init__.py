@@ -155,9 +155,9 @@ class MeasurementMapView(TitleMixin, ListView):
     template_name = "gcampuscore/sites/mapview.html"
 
 
-class MesurementFormViewMixin(TitleMixin, ModelFormMixin):
+class MeasurementFormViewMixin(TitleMixin, ModelFormMixin):
     template_name = "gcampuscore/forms/measurement.html"
-    next_view_name = "gcampuscore:add-parameters"
+    next_view_name = "gcampuscore:add-chemical-parameters"
 
     def get_context_data(self, **kwargs):
         if "water_form" not in kwargs:
@@ -178,13 +178,13 @@ class MesurementFormViewMixin(TitleMixin, ModelFormMixin):
                     "this may take up to {delay:d} seconds."
                 ).format(delay=req_timeout),
             ]
-        return super(MesurementFormViewMixin, self).get_context_data(**kwargs)
+        return super(MeasurementFormViewMixin, self).get_context_data(**kwargs)
 
     def get_success_url(self):
         return reverse(self.next_view_name, kwargs={"pk": self.object.pk})
 
 
-class MeasurementCreateView(MesurementFormViewMixin, CreateView):
+class MeasurementCreateView(MeasurementFormViewMixin, CreateView):
     form_class = MeasurementForm
     title = gettext_lazy("Create new measurement")
 
@@ -200,7 +200,7 @@ class MeasurementCreateView(MesurementFormViewMixin, CreateView):
         return super(MeasurementCreateView, self).form_valid(form)
 
 
-class MeasurementEditView(MesurementFormViewMixin, UpdateView):
+class MeasurementEditView(MeasurementFormViewMixin, UpdateView):
     model = Measurement
     form_class = MeasurementForm
     template_name = MeasurementCreateView.template_name

@@ -6,7 +6,9 @@
       "name": "Nitrat",
       "short_name": "NO<sub>3</sub>",
       "unit": "mg/L",
-      "color": "854B4B"
+      "identifier": "no3",
+      "color": "B79219",
+      "category": "chemical"
     }
   },
   {
@@ -16,7 +18,9 @@
       "name": "Nitrit",
       "short_name": "NO<sub>2</sub>",
       "unit": "mg/L",
-      "color": "B79219"
+      "identifier": "no2",
+      "color": "4D2E2E",
+      "category": "chemical"
     }
   },
   {
@@ -26,7 +30,9 @@
       "name": "pH-Wert",
       "short_name": "pH",
       "unit": "",
-      "color": "339D8F"
+      "identifier": "ph",
+      "color": "4B8552",
+      "category": "chemical"
     }
   },
   {
@@ -36,7 +42,9 @@
       "name": "Sulfat",
       "short_name": "SO<sub>4</sub>",
       "unit": "mg/L",
-      "color": "337A9D"
+      "identifier": "so4",
+      "color": "1B4154",
+      "category": "chemical"
     }
   },
   {
@@ -46,7 +54,177 @@
       "name": "Ammonium",
       "short_name": "NH<sub>4</sub>",
       "unit": "mg/L",
-      "color": "4B8552"
+      "identifier": "nh4",
+      "color": "339D8F",
+      "category": "chemical"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 8,
+    "fields": {
+      "name": "Phosphat",
+      "short_name": "PO<sub>4</sub>",
+      "unit": "mg/L",
+      "identifier": "po4",
+      "color": "996637",
+      "category": "chemical"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 9,
+    "fields": {
+      "name": "Biologischer Sauerstoffbedarf",
+      "short_name": "BSB<sub>5</sub>",
+      "unit": "mg/L",
+      "identifier": "bod5",
+      "color": "775F13",
+      "category": "chemical"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 10,
+    "fields": {
+      "name": "Sauerstoffsättigung",
+      "short_name": "O<sub>2</sub>",
+      "unit": "%",
+      "identifier": "o2",
+      "color": "28472C",
+      "category": "chemical"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 11,
+    "fields": {
+      "name": "Leitfähigkeit",
+      "short_name": "",
+      "unit": "µS/cm",
+      "identifier": "conductivity",
+      "color": "854B4B",
+      "category": "chemical"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 12,
+    "fields": {
+      "name": "Temperatur",
+      "short_name": "T",
+      "unit": "°C",
+      "identifier": "temp",
+      "color": "337A9D",
+      "category": "chemical"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 13,
+    "fields": {
+      "name": "Chlorophyll",
+      "short_name": "Chl",
+      "unit": "mg/L",
+      "identifier": "chlorophyll",
+      "color": "5C432B",
+      "category": "chemical"
+    }
+  },
+   {
+    "model": "gcampuscore.ParameterType",
+    "pk": 14,
+    "fields": {
+      "name": "Sichttiefe",
+      "short_name": "d",
+      "unit": "cm",
+      "identifier": "visdepth",
+      "color": "B7AF19",
+      "category": "chemical"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 15,
+    "fields": {
+      "name": "Steinfliegelarven",
+      "short_name": "plecoptera",
+      "unit": "",
+      "identifier": "plecoptera",
+      "color": "",
+      "category": "biological"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 16,
+    "fields": {
+      "name": "Libellenlarven",
+      "short_name": "odonata",
+      "unit": "",
+      "identifier": "odonata",
+      "color": "",
+      "category": "biological"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 17,
+    "fields": {
+      "name": "Egel",
+      "short_name": "hirudinea",
+      "unit": "",
+      "identifier": "hirudinea",
+      "color": "",
+      "category": "biological"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 18,
+    "fields": {
+      "name": "Schnecken",
+      "short_name": "gastropoda",
+      "unit": "",
+      "identifier": "gastropoda",
+      "color": "",
+      "category": "biological"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 19,
+    "fields": {
+      "name": "Mückenlarven",
+      "short_name": "diptera",
+      "unit": "",
+      "identifier": "diptera",
+      "color": "",
+      "category": "biological"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 20,
+    "fields": {
+      "name": "Flohkrebse",
+      "short_name": "amphipoda",
+      "unit": "",
+      "identifier": "amphipoda",
+      "color": "",
+      "category": "biological"
+    }
+  },
+  {
+    "model": "gcampuscore.ParameterType",
+    "pk": 21,
+    "fields": {
+      "name": "Köcherfliegelarven",
+      "short_name": "trichoptera",
+      "unit": "",
+      "identifier": "trichoptera",
+      "color": "",
+      "category": "biological"
     }
   },
   {

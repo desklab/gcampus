@@ -24,7 +24,11 @@ from gcampus.core.views.measurement import (
     MeasurementEditView,
     MeasurementDeleteView,
 )
-from gcampus.core.views.parameter import ParameterFormSetView
+from gcampus.core.views.parameter import (
+    ChemicalParameterFormSetView,
+    BiologicalParameterFormSetView,
+    StructureIndexEditView,
+)
 from gcampus.core.views.water import WaterListView, WaterDetailView
 
 # uncomment to test 404 and 500 pages locally
@@ -43,11 +47,14 @@ urlpatterns = [
     path("", MeasurementMapView.as_view(), name="mapview"),
     # Measurement
     path("measurement/add/", MeasurementCreateView.as_view(), name="add-measurement"),
-    path("measurement/add/<int:pk>/parameters/", ParameterFormSetView.as_view(), name="add-parameters"),
+    path("measurement/add/<int:pk>/parameters/chemical", ChemicalParameterFormSetView.as_view(), name="add-chemical-parameters"),
+    path("measurement/add/<int:pk>/parameters/biological", BiologicalParameterFormSetView.as_view(), name="add-biological-parameters"),
     path("measurement/<int:pk>/", MeasurementDetailView.as_view(), name="measurement-detail"),
     path("measurement/<int:pk>/delete", MeasurementDeleteView.as_view(), name="delete-measurement"),
     path("measurement/<int:pk>/edit/", MeasurementEditView.as_view(), name="edit-measurement"),
-    path("measurement/<int:pk>/edit/parameters/", ParameterFormSetView.as_view(), name="edit-parameters"),
+    path("measurement/<int:pk>/edit/parameters/chemical", ChemicalParameterFormSetView.as_view(), name="edit-chemical-parameters"),
+    path("measurement/<int:pk>/edit/parameters/biological", BiologicalParameterFormSetView.as_view(), name="edit-biological-parameters"),
+    path("measurement/<int:pk>/edit/parameters/structural", StructureIndexEditView.as_view(), name="edit-structure-index"),
     path("measurements/", MeasurementListView.as_view(), name="measurements"),
     path("waters/", WaterListView.as_view(), name="waters"),
     path("water/<int:pk>/", WaterDetailView.as_view(), name="water-detail"),

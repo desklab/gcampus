@@ -48,7 +48,7 @@
   display: inline-block;
 
   :first-child {
-    margin-left: 0 !important;
+    margin-left: 0rem !important;
   }
 
   .indicator-container {
@@ -59,12 +59,56 @@
 
     .indicator-icon {
       position: relative;
-      top: 0;
+      top: .1rem;
       bottom: 0;
       z-index: 0;
 
       &:hover {
         z-index: 1;
+      }
+
+      &.no3 {
+        background-color: $no3 !important;
+      }
+
+      &.no2 {
+        background-color: $no2 !important;
+      }
+
+      &.nh4 {
+        background-color: $nh4 !important;
+      }
+
+      &.so4 {
+        background-color: $so4 !important;
+      }
+
+      &.po4 {
+        background-color: $po4 !important;
+      }
+
+      &.ph {
+        background-color: $ph !important;
+      }
+
+      &.temp {
+        background-color: $temp !important;
+      }
+
+      &.conductivity {
+        background-color: $conductivity !important;
+      }
+
+      &.o2 {
+        background-color: $o2 !important;
+      }
+
+      &.bod5 {
+        background-color: $bod5 !important;
+      }
+
+      &.inactive {
+        background-color: $gray-300 !important;
       }
     }
   }

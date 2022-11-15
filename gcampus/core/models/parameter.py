@@ -14,42 +14,45 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from django.db import models
-from django.utils.translation import gettext_lazy
+from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models import util
-from gcampus.core.models.measurement import HiddenManager
+from gcampus.core.models.measurement import Measurement, HiddenManager
 from gcampus.core.models.util import EMPTY
 
 
+class ParameterTypeCategory(models.TextChoices):
+    NA = "undefined", _("undefined")
+    BIOLOGICAL = "biological", _("biological")
+    CHEMICAL = "chemical", _("chemical")
+    PHYSICAL = "physical", _("physical")
+    __empty__ = _("unknown")
+
+
 class ParameterType(models.Model):
-    """The parameter type stores information about possible parameters
-    that can be measured. An example for such a parameter type would be
-    the pH value, Nitrate concentration, etc.
-    """
-
     class Meta:
-        verbose_name = gettext_lazy("Parameter type")
-        verbose_name_plural = gettext_lazy("Parameter types")
+        verbose_name = _("Parameter type")
+        verbose_name_plural = _("Parameter types")
 
-    #: Name of the parameter type.
-    name = models.CharField(
-        blank=True, max_length=280, verbose_name=gettext_lazy("Name")
-    )
-    #: Short parameter type name used for symbols.
+    name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
     short_name = models.CharField(
-        blank=True, max_length=50, verbose_name=gettext_lazy("Short name")
+        blank=True, max_length=50, verbose_name=_("Short name")
     )
-    #: Typical unit used for the parameter. E.g. "%". Can be left blank
-    #: for no unit.
-    unit = models.CharField(
-        blank=True, max_length=10, verbose_name=gettext_lazy("Unit")
+    unit = models.CharField(blank=True, max_length=10, verbose_name=_("Unit"))
+    identifier = models.CharField(
+        blank=True,
+        max_length=20,
+        verbose_name=_("Identifier"),
+    )
+    category = models.CharField(
+        max_length=20,
+        choices=ParameterTypeCategory.choices,
+        default=ParameterTypeCategory.NA,
+        verbose_name=_("Category"),
     )
 
-    #: Hex value of the color used for symbols (in combination with
-    #: the :attr:`.short_name` attribute).
-    color = models.CharField(
-        blank=True, verbose_name=gettext_lazy("Color"), max_length=7
-    )
+    # Hex value of color displayed
+    color = models.CharField(blank=True, verbose_name=_("Color"), max_length=7)
 
     def __str__(self):
         if self.unit in EMPTY:
@@ -58,93 +61,35 @@ class ParameterType(models.Model):
             return f"{self.name} ({self.unit})"
 
 
-class Limit(models.Model):
-    """The limit model stores information on a parameters limits
-    set by an authority. As there might be multiple levels
-    (e.g. good and bad water conditions), a parameter type can have
-    multiple limits.
-    """
-
-    class Meta:
-        verbose_name = gettext_lazy("Limit")
-        verbose_name_plural = gettext_lazy("Limits")
-
-    limit_type = models.CharField(max_length=20, blank=True)
-
-    limit_value = models.FloatField(blank=True)
-
-    parameter_limit = models.ForeignKey(
-        ParameterType,
-        related_name="parameter_limit",
-        on_delete=models.PROTECT,
-        default=True,
-        verbose_name=gettext_lazy("Parameter type"),
-    )
-    graph_color = models.CharField(max_length=20, default="red")
-
-
-class Calibration(models.Model):
-    """Calibration for converting an optical density (measured using
-    a photometer) into the value of the associated parameter type.
-    """
-
-    class Meta:
-        verbose_name = gettext_lazy("Calibration")
-        verbose_name_plural = gettext_lazy("Calibrations")
-
-    name = models.CharField(
-        blank=True, max_length=280, verbose_name=gettext_lazy("Name")
-    )
-
-    parameter_type = models.ForeignKey(
-        ParameterType,
-        on_delete=models.PROTECT,
-        verbose_name=gettext_lazy("Parameter"),
-        related_name="calibrations",
-    )
-
-    calibration_formula = models.CharField(
-        blank=True, max_length=100, verbose_name=gettext_lazy("Calibration formula")
-    )
-
-    x_max = models.FloatField(
-        default=-9999, verbose_name=gettext_lazy("Maximal parameter value")
-    )
-
-    x_min = models.FloatField(
-        default=-9999, verbose_name=gettext_lazy("Minimal parameter value")
-    )
-
-
 class Parameter(util.DateModelMixin):
     class Meta:
         default_manager_name = "all_objects"
-        verbose_name = gettext_lazy("Parameter")
-        verbose_name_plural = gettext_lazy("Parameters")
+        verbose_name = _("Parameter")
+        verbose_name_plural = _("Parameters")
 
     parameter_type = models.ForeignKey(
         ParameterType,
         on_delete=models.PROTECT,
-        verbose_name=gettext_lazy("Parameter"),
+        # We opted to use 'Parameter' in the front-end. See issue
+        # https://github.com/desklab/gcampus/issues/46 for more.
+        verbose_name=_("Parameter"),
         related_name="parameters",
     )
-    value = models.FloatField(blank=False, verbose_name=gettext_lazy("Value"))
+    value = models.FloatField(blank=False, verbose_name=_("Value"))
     measurement = models.ForeignKey(
-        "Measurement",
+        Measurement,
         on_delete=models.CASCADE,
-        verbose_name=gettext_lazy("Associated measurement"),
+        verbose_name=_("Associated measurement"),
         related_name="parameters",
     )
-    comment = models.TextField(blank=True, verbose_name=gettext_lazy("Note"))
-    hidden = models.BooleanField(default=False, verbose_name=gettext_lazy("Hidden"))
+    comment = models.TextField(blank=True, verbose_name=_("Note"))
+    hidden = models.BooleanField(default=False, verbose_name=_("Hidden"))
 
-    #: By default, :attr:`.objects` should only return measurements that are
-    #: not hidden.
-    #: To get all measurements (e.g. in the admin interface), use
-    #: the :attr:`.objects` manager.
+    # By default, ``objects`` should only return measurements that are
+    # not hidden.
+    # To get all measurements (e.g. in the admin interface), use
+    # the ``all_objects`` manager.
     objects = HiddenManager()
-    #: The default manager used to retrieve **all** (includes hidden
-    #: parameters) objects.
     all_objects = models.Manager()
 
     @property
@@ -152,11 +97,36 @@ class Parameter(util.DateModelMixin):
         """Short comments are less than 51 characters long and do not
         contain any breaks. Short comments can be displayed in the
         parameter table whereas longer comments need to be in their own
-        modal."""
+        small modal."""
         return len(self.comment) <= 50 and "\n" not in self.comment
 
     def __str__(self):
-        return gettext_lazy("Parameter %(pk)s (%(name)s)") % {
+        return _("Parameter %(pk)s (%(name)s)") % {
             "pk": self.pk,
             "name": self.parameter_type.name,
         }
+
+
+class Calibration(models.Model):
+    class Meta:
+        verbose_name = _("Calibration")
+        verbose_name_plural = _("Calibrations")
+
+    name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
+
+    parameter_type = models.ForeignKey(
+        ParameterType,
+        on_delete=models.PROTECT,
+        # We opted to use 'Parameter' in the front-end. See issue
+        # https://github.com/desklab/gcampus/issues/46 for more.
+        verbose_name=_("Parameter"),
+        related_name="calibrations",
+    )
+
+    calibration_formula = models.CharField(
+        blank=True, max_length=100, verbose_name=_("Calibration formula")
+    )
+
+    x_max = models.FloatField(default=-9999, verbose_name=_("Maximal parameter value"))
+
+    x_min = models.FloatField(default=-9999, verbose_name=_("Minimal parameter value"))
