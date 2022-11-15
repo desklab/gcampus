@@ -35,7 +35,7 @@ from gcampus.core.forms.measurement import (
     StructureIndexForm,
     BaseParameterFormset,
 )
-from gcampus.core.models import Parameter, Measurement
+from gcampus.core.models import Measurement
 from gcampus.core.models.index.structure import StructureIndex
 from gcampus.core.views.base import TitleMixin
 
@@ -45,7 +45,7 @@ class BaseParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
 
     def __init__(self, **kwargs):
         super(BaseParameterFormSetView, self).__init__(**kwargs)
-        self.instance: Optional[Parameter] = None
+        self.instance: Optional[Measurement] = None
         self.token: Optional[BaseToken] = None
 
     def get(self, request: HttpRequest, pk: int, *args, **kwargs):

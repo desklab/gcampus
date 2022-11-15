@@ -189,7 +189,6 @@ def update_index(modeladmin: admin.ModelAdmin, request, queryset: QuerySet):
 
 
 class BaseIndexAdmin(admin.ModelAdmin):
-    index: WaterQualityIndex
     actions = [update_index]
     list_display = (
         "__str__",
