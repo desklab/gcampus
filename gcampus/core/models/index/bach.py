@@ -132,7 +132,7 @@ class BACHIndex(WaterQualityIndex):
         else:
             o2 = None
 
-        bsb5_lookup = [
+        bod5_lookup = [
             (0, 100),
             (0, 5, 99.5),
             (1, 98),
@@ -152,18 +152,18 @@ class BACHIndex(WaterQualityIndex):
             (10, 10),
             (15, 4),
         ]
-        if "bsb5" in kwargs:
-            raw = kwargs.get("bsb5")
+        if "bod5" in kwargs:
+            raw = kwargs.get("bod5")
             if raw <= 0:
-                bsb5 = 100
+                bod5 = 100
             elif raw > 15:
-                bsb5 = 4
+                bod5 = 4
             else:
-                for i in range(len(bsb5_lookup) - 1):
-                    if bsb5_lookup[i][0] < raw <= bsb5_lookup[i + 1][0]:
-                        bsb5 = lin_est(bsb5_lookup[i], bsb5_lookup[i + 1], raw)
+                for i in range(len(bod5_lookup) - 1):
+                    if bod5_lookup[i][0] < raw <= bod5_lookup[i + 1][0]:
+                        bod5 = lin_est(bod5_lookup[i], bod5_lookup[i + 1], raw)
         else:
-            bsb5 = None
+            bod5 = None
 
         ph_lookup = [
             (3, 1),
@@ -367,7 +367,7 @@ class BACHIndex(WaterQualityIndex):
             sum_of_weights += 0.08
         if o2 is not None:
             sum_of_weights += 0.20
-        if bsb5 is not None:
+        if bod5 is not None:
             sum_of_weights += 0.20
         if ph is not None:
             sum_of_weights += 0.10
@@ -386,8 +386,8 @@ class BACHIndex(WaterQualityIndex):
             index *= temp ** (0.08 / sum_of_weights)
         if o2 is not None:
             index *= o2 ** (0.20 / sum_of_weights)
-        if bsb5 is not None:
-            index *= bsb5 ** (0.20 / sum_of_weights)
+        if bod5 is not None:
+            index *= bod5 ** (0.20 / sum_of_weights)
         if ph is not None:
             index *= ph ** (0.10 / sum_of_weights)
         if no3 is not None:
@@ -448,7 +448,7 @@ class BACHIndex(WaterQualityIndex):
             validity += 0.08
         if "o2" in parameters:
             validity += 0.20
-        if "bsb5" in parameters:
+        if "bod5" in parameters:
             validity += 0.20
         if "ph" in parameters:
             validity += 0.10

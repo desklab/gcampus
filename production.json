@@ -75,10 +75,10 @@
     "model": "gcampuscore.ParameterType",
     "pk": 9,
     "fields": {
-      "name": "BSB",
+      "name": "Biologischer Sauerstoffbedarf",
       "short_name": "BSB<sub>5</sub>",
       "unit": "mg/L",
-      "identifier": "bsb5",
+      "identifier": "bod5",
       "color": "775F13",
       "category": "chemical"
     }
@@ -138,7 +138,7 @@
       "name": "Sichttiefe",
       "short_name": "d",
       "unit": "cm",
-      "identifier": "temp",
+      "identifier": "visdepth",
       "color": "B7AF19",
       "category": "chemical"
     }
