@@ -22,6 +22,7 @@ from typing import Type, Optional, ClassVar, Tuple, Union, Dict, List
 from django.http import HttpRequest
 from django.template.backends.base import BaseEngine
 from django.template.backends.django import DjangoTemplates
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 
@@ -63,17 +64,46 @@ class Renderable:
 @dataclasses.dataclass
 class Tab(Renderable):
     name: str
+    view_name: Optional[str] = None
     url: Optional[str] = None
     disabled: bool = False
     active: bool = False
+    vn_requires_args: bool = False
 
     # Class variables
     template_name: ClassVar[str] = "gcampuscore/components/tab.html"
+
+    def get_url_from_view_name(
+        self,
+        fmt: Optional[dict] = None,
+        reverse_args: Optional[tuple] = None,
+        reverse_kwargs: Optional[dict] = None,
+    ) -> str:
+        if self.view_name is None:
+            raise ValueError("'view_name' is not set.")
+        if fmt is not None:
+            view_name = self.view_name.format(**fmt)
+        else:
+            view_name = self.view_name
+        return reverse(view_name, args=reverse_args, kwargs=reverse_kwargs)
+
+    def set_url_from_view_name(
+        self,
+        fmt: Optional[dict] = None,
+        reverse_args: Optional[tuple] = None,
+        reverse_kwargs: Optional[dict] = None,
+    ):
+        self.url = self.get_url_from_view_name(
+            fmt=fmt, reverse_args=reverse_args, reverse_kwargs=reverse_kwargs
+        )
 
     def get_context(self, **kwargs) -> dict:
         context: dict = dataclasses.asdict(self)
         context["class_list"]: List[str] = []
         context["attrs"]: List[str] = []
+        url = self.url
+        if self.view_name is not None and url is None and not self.vn_requires_args:
+            url = self.get_url_from_view_name()
         if self.disabled:
             context["class_list"].append("disabled")
             context["attrs"].append('aria-disabled="true"')
@@ -81,7 +111,7 @@ class Tab(Renderable):
             context["class_list"].append("active")
             context["attrs"].append('aria-current="page"')
         if self.url:
-            context["attrs"].append(f'href="{self.url!s}"')
+            context["attrs"].append(f'href="{url!s}"')
         # Mark all attributes as safe to avoid double quotes
         context["attrs"] = map(mark_safe, context["attrs"])
         context.update(kwargs)
