@@ -33,7 +33,10 @@ class TitleMixin(ContextMixin):
 
 
 class TabsMixin(ContextMixin):
+    #: Required: Instance of :class:`gcampus.core.tabs.TabNavigation`.
     tabs: TabNavigation
+    #: If set, the :meth:`.get_tabs` method will automatically set the
+    #: tab with the provided key as ``active``.
     current_tab_name: Optional[str] = None
 
     def get_tabs(self) -> TabNavigation:
@@ -49,7 +52,7 @@ class TabsMixin(ContextMixin):
             tabs[self.current_tab_name].active = True
         return tabs
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> dict:
         """Insert the tabs into the context dict."""
         kwargs.setdefault("tabs", self.get_tabs())
         return super(TabsMixin, self).get_context_data(**kwargs)

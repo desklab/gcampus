@@ -27,6 +27,16 @@ from django.utils.safestring import mark_safe
 
 
 class Renderable:
+    """Mixin for renderable classes. Subclasses must implement the
+    method :meth:`.get_context` and set the attribute
+    :attr:`.template_name` or alternatively overwrite the
+    :meth:`.get_template` method.
+
+    By calling ``str(instance)`` on an instance of a subclass, the
+    HTML content is rendered. This can be used for example in templates
+    with ``{{ instance }}``.
+    """
+
     backend: Type[BaseEngine] = DjangoTemplates
     template_name: ClassVar[str]
 
@@ -63,11 +73,25 @@ class Renderable:
 
 @dataclasses.dataclass
 class Tab(Renderable):
+    #: Name of the tab (displayed in HTML output)
     name: str
+    #: Optional view name. May require additional arguments before
+    #: calling :meth:`django.urls.reverse`. See
+    #: :attr:`.vn_requires_args` for mor information.
     view_name: Optional[str] = None
+    #: Optional url. If set, the :attr:`.view_name` attribute is
+    #: ignored.
     url: Optional[str] = None
+    #: Display the tab as disabled. By default, tabs are not disabled.
     disabled: bool = False
+    #: Display the tab as active. By default, tabs are not active.
     active: bool = False
+    #: If true, the :meth:`.get_context` method will not use the
+    #: :attr:`.view_name` attribute even if no url is provided. This
+    #: attribute indicates that additional arguments (e.g. the primary
+    #: key of an object) is required for reversing the view name.
+    #: To apply additional arguments,
+    #: see :meth:`.set_url_from_view_name`.
     vn_requires_args: bool = False
 
     # Class variables
@@ -79,6 +103,16 @@ class Tab(Renderable):
         reverse_args: Optional[tuple] = None,
         reverse_kwargs: Optional[dict] = None,
     ) -> str:
+        """Return the reverse for :attr:`.view_name` with additional
+        arguments passed to :meth:`django.urls.reverse`.
+
+        :param fmt: Optional dictionary used to format the view name
+            string.
+        :param reverse_args: Arguments passed as ``args`` to
+            :meth:`django.urls.reverse`.
+        :param reverse_kwargs: Keyword arguments passed as ``kwargs``
+            to :meth:`django.urls.reverse`.
+        """
         if self.view_name is None:
             raise ValueError("'view_name' is not set.")
         if fmt is not None:
@@ -93,11 +127,28 @@ class Tab(Renderable):
         reverse_args: Optional[tuple] = None,
         reverse_kwargs: Optional[dict] = None,
     ):
+        """Set :attr:`.url` using the reverse for :attr:`.view_name`
+        with additional arguments passed to :meth:`django.urls.reverse`.
+
+        Instead of :meth:`.get_url_from_view_name`, this method sets the
+        :attr:`.url` attribute in-place and returns nothing.
+
+        :param fmt: Optional dictionary used to format the view name
+            string.
+        :param reverse_args: Arguments passed as ``args`` to
+            :meth:`django.urls.reverse`.
+        :param reverse_kwargs: Keyword arguments passed as ``kwargs``
+            to :meth:`django.urls.reverse`.
+        """
         self.url = self.get_url_from_view_name(
             fmt=fmt, reverse_args=reverse_args, reverse_kwargs=reverse_kwargs
         )
 
     def get_context(self, **kwargs) -> dict:
+        """Context for rendering the tab. Uses
+        :meth:`dataclasses.asdict` to transform the attributes of this
+        dataclass into a dictionary.
+        """
         context: dict = dataclasses.asdict(self)
         context["class_list"]: List[str] = []
         context["attrs"]: List[str] = []
@@ -143,6 +194,10 @@ class TabNavigation(Renderable):
         return self.tabs[item]
 
     def __deepcopy__(self, memo):
+        """Deep copies are required when using this class as a class
+        attribute, for examples in view classes. This prevents mutating
+        the tabs of other class instances.
+        """
         if isinstance(self.tabs, tuple):
             return TabNavigation(*copy.deepcopy(self.tabs, memo))
         elif isinstance(self.tabs, dict):

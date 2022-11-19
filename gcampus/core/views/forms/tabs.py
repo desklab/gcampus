@@ -66,6 +66,14 @@ class MeasurementEditTabsMixin(TitleMixin, TabsMixin):
         return reverse(self.next_view_name, kwargs={"pk": self._get_measurement().pk})
 
     def _get_measurement(self) -> Measurement:
+        """Get current measurement from ``self``. As this mixin may be
+        used by different view classes that do not all provide a common
+        interface to the measurement instance, this method checks for
+        the presence of the ``object`` and ``instance`` attribute.
+        If the instance is of type
+        :class:`gcampus.core.models.index.base.WaterQualityIndex`, the
+        related measurement is returned.
+        """
         if hasattr(self, "object"):
             if isinstance(self.object, WaterQualityIndex):
                 return self.object.measurement
@@ -76,15 +84,20 @@ class MeasurementEditTabsMixin(TitleMixin, TabsMixin):
             raise RuntimeError("Neither 'object' nor 'instance' are available.")
 
     def _get_flow_type(self) -> FlowType:
+        """Retrieve the flow type of the current measurement."""
         return self._get_measurement().water.flow_type
 
     def get_tabs(self) -> TabNavigation:
-        # Create a deep copy of the tabs to avoid mutation
-        # of the class member
+        # Create a deep copy of the tabs to avoid mutation and
+        # side effects
         tabs: TabNavigation = super(MeasurementEditTabsMixin, self).get_tabs()
+        # Set chemical and meta urls
         reverse_kwargs = {"pk": self._get_measurement().pk}
-        tabs["chemical"].set_url_from_view_name(reverse_kwargs=reverse_kwargs)
         tabs["meta"].set_url_from_view_name(reverse_kwargs=reverse_kwargs)
+        tabs["chemical"].set_url_from_view_name(reverse_kwargs=reverse_kwargs)
+        # The tabs 'biological' and 'structure' are only supported by
+        # waters of flow type 'running'. If the water is not of that
+        # type, the tabs are instead being disabled.
         only_running_keys = ["biological", "structure"]
         for key in only_running_keys:
             if self._get_flow_type() == FlowType.RUNNING:

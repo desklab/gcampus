@@ -85,6 +85,7 @@ class MeasurementCreateView(
 
     def get_tabs(self) -> TabNavigation:
         tabs = super(MeasurementCreateView, self).get_tabs()
+        # No measurement created yet, disable all other tabs
         tabs["meta"].url = reverse("gcampuscore:add-measurement")
         tabs["chemical"].disabled = True
         tabs["biological"].disabled = True

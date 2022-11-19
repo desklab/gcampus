@@ -119,6 +119,8 @@ class ChemicalParameterFormSetView(BaseParameterFormSetView):
     template_name = "gcampuscore/forms/parameters-chemical.html"
 
     def get_success_url(self):
+        # Depending on the flow type of the current water, additional
+        # forms are possible. The next view is changed accordingly.
         if self._get_flow_type() == FlowType.RUNNING:
             self.next_view_name = "gcampuscore:edit-biological-parameters"
         return super(ChemicalParameterFormSetView, self).get_success_url()
@@ -131,7 +133,11 @@ class BiologicalParameterFormSetView(BaseParameterFormSetView):
     next_view_name = "gcampuscore:edit-structure-index"
 
     def get_instance(self, pk: int) -> Measurement:
+        # Get the measurement to check the flow type of its related
+        # water
         instance: Measurement = super().get_instance(pk)
         if instance.water.flow_type != FlowType.RUNNING:
+            # Biological parameters are only supported by running flow
+            # types.
             raise Http404("Parameter types not supported")
         return instance

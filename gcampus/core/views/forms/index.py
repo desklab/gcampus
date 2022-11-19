@@ -12,6 +12,7 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -40,5 +41,8 @@ class StructureIndexEditView(MeasurementEditTabsMixin, UpdateView):
             Measurement, pk=self.kwargs.get(self.pk_url_kwarg)
         )
         if measurement.water.flow_type != FlowType.RUNNING:
+            # Structure indices are only supported for waters with flow
+            # type 'running'.
             raise Http404("Index not supported")
+        # Get the related structure index for the current measurement
         return get_object_or_404(self.model, measurement=measurement)
