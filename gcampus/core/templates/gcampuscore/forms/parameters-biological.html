@@ -1,38 +1,10 @@
-parameters.html{% extends "gcampuscore/base.html" %}
+{% extends "gcampuscore/base.html" %}
 {% load i18n static %}
-{% block title %}
-    {% translate "Add Parameters" %}
-{% endblock %}
 {% block body_class %}bg-light{% endblock %}
-{% block navbar_title %}{% endblock %}
-{% block navbar_other %}
-    <ul class="nav navbar-nav me-auto">
-        {% translate "1. Metadata" as metadata_title %}
-        {% translate "2. Measured Parameters" as chemical_parameters_title %}
-        {% translate "3. Saprobic Abundancies" as biological_parameters_title %}
-        {% translate "4. Structural Assessment" as structure_index_title %}
-
-        {% url "gcampuscore:edit-measurement" pk=object.pk as edit_url %}
-        {% include "gcampuscore/components/nav_item.html" with url=edit_url title=metadata_title view_name="gcampuscore:edit-measurement" %}
-
-        {% url "gcampuscore:edit-chemical-parameters" pk=object.pk as chemical_parameter_url %}
-        {% include "gcampuscore/components/nav_item.html" with url=chemical_parameter_url title=chemical_parameters_title view_name="gcampuscore:edit-chemical-parameters" %}
-
-        {% if request.resolver_match.view_name == "gcampuscore:edit-biological-parameters" %}
-            {% url "gcampuscore:edit-biological-parameters" pk=object.pk as biological_parameter_url %}
-            {% include "gcampuscore/components/nav_item.html" with url=biological_parameter_url title=biological_parameters_title view_name="gcampuscore:edit-biological-parameters" %}
-        {% else %}
-            {% url "gcampuscore:add-biological-parameters" pk=object.pk as biological_parameter_url %}
-            {% include "gcampuscore/components/nav_item.html" with url=biological_parameter_url title=biological_parameters_title view_name="gcampuscore:add-biological-parameters" %}
-        {% endif %}
-        {% url "gcampuscore:edit-structure-index" pk=object.pk as structure_index_url %}
-        {% include "gcampuscore/components/nav_item.html" with url=structure_index_url title=structure_index_title view_name="gcampuscore:edit-structure-index" %}
-
-    </ul>
-{% endblock %}
 {% block content %}
     <div class="container">
-        <div class="row justify-content-center">
+        {{ tabs }}
+        <div class="pt-4 row justify-content-center">
             <div class="col col-lg-10">
                 <form method="POST" class="py-3">
                     <h4><label class="mb-2">{% translate "Saprobic Abundancies" %}</label></h4>
