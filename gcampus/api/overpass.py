@@ -298,8 +298,8 @@ def query(
             headers={"User-Agent": user_agent},
             timeout=request_timeout,
         )
-    except httpx.TimeoutException:
-        raise OverpassAPIError()
+    except httpx.TimeoutException as e:
+        raise OverpassAPIError(getattr(e, "message", "Timeout"))
     finally:
         if client is None:
             # Close '_client' manually. Otherwise, the client has to be
