@@ -84,6 +84,34 @@
     color: $quality-7;
   }
 
+  &.trophic-class-I {
+    color: $quality-1;
+  }
+
+  &.trophic-class-I-II {
+    color: $quality-2;
+  }
+
+  &.trophic-class-II {
+    color: $quality-3;
+  }
+
+  &.trophic-class-II-III {
+    color: $quality-4;
+  }
+
+  &.trophic-class-III {
+    color: $quality-5;
+  }
+
+  &.trophic-class-III-IV {
+    color: $quality-6;
+  }
+
+  &.trophic-class-IV {
+    color: $quality-7;
+  }
+
   &.class-unknown {
     color: $gray-500;
   }
