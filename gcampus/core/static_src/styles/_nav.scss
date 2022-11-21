@@ -54,7 +54,7 @@
 
     &.disabled,
     &:disabled {
-      color: var(--#{$prefix}nav-link-disabled-color);
+      color: $gray-500;
       background-color: transparent;
       border-bottom-color: transparent;
     }
@@ -67,6 +67,5 @@
     background-color: transparent;
     border-bottom-color: $primary;
   }
-
 }
 
