@@ -124,10 +124,11 @@ You will need to set the environment variable `MAPBOX_ACCESS_TOKEN`
 with a valid Mapbox access token for some things to work properly.
 ```
 
-Prepare database and load example data:
+Prepare database and load example data (to get a clean database after a reset refer to [Mockup](mockup.md)):
 
 ```shell
 python manage.py migrate
+python manage.py loaddata production.json
 python manage.py loaddata fixture.json
 ```
 
