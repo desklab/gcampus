@@ -27,7 +27,7 @@ to be under the same license that covers the project.
 ## Code
 
 The code used in this project (including the source of this documentation) is tracked in 
-[**github.com/desklab/gcampus**](https://github.com/desklab/gcampus/en/latest/).
+[**github.com/desklab/gcampus**](https://github.com/desklab/gcampus/).
 
 ## License
 
