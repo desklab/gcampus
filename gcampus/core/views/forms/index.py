@@ -36,6 +36,9 @@ class StructureIndexEditView(MeasurementEditTabsMixin, UpdateView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        kwargs["measurement"] = self._get_measurement()
+
     def get_object(self, queryset=None) -> model:
         measurement: Measurement = get_object_or_404(
             Measurement, pk=self.kwargs.get(self.pk_url_kwarg)

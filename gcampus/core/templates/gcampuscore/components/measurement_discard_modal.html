@@ -12,7 +12,7 @@
                     {% blocktrans trimmed %}
                         Are you sure you want to discard all values of this measurement?
                     {% endblocktrans %}
-                    {% if detail %}
+                    {% if measurement %}
                         {% blocktrans trimmed %}
                             Doing this will bring you to the measurement detail site, where you can safely delete this
                             measurement.
@@ -23,8 +23,8 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         {% translate "Close" %}
                     </button>
-                    {% if detail %}
-                        <a href="{% url "gcampuscore:measurement-detail" pk=object.id %}" class="btn btn-danger">
+                    {% if measurement %}
+                        <a href="{% url "gcampuscore:measurement-detail" pk=measurement.id %}" class="btn btn-danger">
                     {% else %}
                         <a href="{% url "gcampuscore:mapview" %}" class="btn btn-danger">
                     {% endif %}

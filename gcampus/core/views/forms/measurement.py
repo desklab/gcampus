@@ -117,6 +117,10 @@ class MeasurementEditView(
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        kwargs["measurement"] = self.object
+        return super(MeasurementEditView, self).get_context_data()
+
 
 class MeasurementDeleteView(TitleMixin, DeleteView):
     model = Measurement
