@@ -4,9 +4,11 @@
     {{ block.super }}
     {% load_mapbox_css %}
 {% endblock %}
+{% block modals %}
+    {% include "gcampuscore/components/measurement_discard_modal.html" with measurement=measurement only %}
+{% endblock %}
 {% block main_class %}bg-light{% endblock %}
 {% block content %}
-    {% include "gcampuscore/components/measurement_discard_modal.html" with detail=0 %}
     <div class="container">
         {{ tabs }}
         <div class="pt-4 row justify-content-center">

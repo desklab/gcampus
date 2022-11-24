@@ -1,8 +1,10 @@
 {% extends "gcampuscore/base.html" %}
 {% load i18n static %}
 {% block body_class %}bg-light{% endblock %}
+{% block modals %}
+    {% include "gcampuscore/components/measurement_discard_modal.html" with measurement=measurement only %}
+{% endblock %}
 {% block content %}
-            {% include "gcampuscore/components/measurement_discard_modal.html" with detail=1 %}
     <div class="container">
         {{ tabs }}
         <div class="pt-4 row justify-content-center">
