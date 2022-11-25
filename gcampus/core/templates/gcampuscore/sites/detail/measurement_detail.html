@@ -170,6 +170,23 @@
             </div>
         </div>
 
+        {% if object.data_quality_warning %}
+            <div class="py-4 container">
+                <div class="box box-warning d-flex align-items-center py-2 mt-2 me-2" role="alert">
+                    {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-3" %}
+                    <div>
+                        {% blocktrans trimmed %}
+                            Some parameters of this measurement have <b>anomalous values</b>.
+                            This may have been caused by an error in the measurement procedure or incorrect
+                            documentation. Please take this into account when analysing and interpreting
+                            this measurement. If you think the values are correct and this warning is inappropriate,
+                            use the report form to notify the GewässerCampus team.
+                        {% endblocktrans %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
         {% has_parameter_category object "chemical" as has_chemical_parameter %}
         {% if has_chemical_parameter %}
             <div class="py-4">

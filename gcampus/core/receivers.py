@@ -117,6 +117,18 @@ def update_measurement_indices(sender, instance: Parameter, **kwargs):
         instance.measurement.structure_index.update()
 
 
+@receiver(post_save, sender=Parameter)
+def check_warning_limits(sender, instance: Parameter, **kwargs):
+    if instance.parameter_type.lower_warning_limit is not None:
+        if instance.value < instance.parameter_type.lower_warning_limit:
+            instance.measurement.requires_review = True
+            instance.measurement.save()
+    if instance.parameter_type.upper_warning_limit is not None:
+        if instance.value > instance.parameter_type.upper_warning_limit:
+            instance.measurement.requires_review = True
+            instance.measurement.save()
+
+
 @receiver(post_save, sender=Measurement)
 def create_measurement_indices(
     sender, instance: Measurement, created: bool = False, **kwargs

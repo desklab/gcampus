@@ -67,12 +67,14 @@ class Measurement(util.DateModelMixin):
         verbose_name=_("Name"),
         help_text=_("Your forename or team name. This will be publicly visible."),
     )
+
     #: Location of the measurement
     location: models.PointField = models.PointField(
         blank=False,
         verbose_name=_("Location"),
         help_text=_("Location of the measurement"),
     )
+
     location_name: models.CharField = models.CharField(
         blank=True,
         null=True,
@@ -80,6 +82,7 @@ class Measurement(util.DateModelMixin):
         verbose_name=_("Location name"),
         help_text=_("An approximated location for the measurement"),
     )
+
     water: models.ForeignKey = models.ForeignKey(
         "Water",
         on_delete=models.PROTECT,
@@ -89,11 +92,13 @@ class Measurement(util.DateModelMixin):
         verbose_name=_("Water"),
         help_text=_("The water associated with this measurement"),
     )
+
     time: models.DateTimeField = models.DateTimeField(
         blank=False,
         verbose_name=pgettext_lazy("measurement time", "Time"),
         help_text=_("Date and time of the measurement"),
     )
+
     #: Additional comment (or 'note') for the measurement. Note that
     #: there is also a comment field in the :class:`.Parameter` model.
     comment = models.TextField(
@@ -101,6 +106,7 @@ class Measurement(util.DateModelMixin):
         verbose_name=_("Note"),
         help_text=_("Note on your measurement. This will be publicly visible."),
     )
+
     #: Hidden measurements appear to the user as being deleted. To avoid
     #: data loss, deleting a measurement will only mark is as hidden.
     hidden = models.BooleanField(default=False, verbose_name=_("Hidden"))
@@ -112,6 +118,13 @@ class Measurement(util.DateModelMixin):
     requires_review = models.BooleanField(
         default=False,
         verbose_name=_("requires review"),
+    )
+
+    #: Used to flag measurements containing parameters which seem not to be
+    #: feasible. Set by admins/moderators in the admin interface.
+    data_quality_warning = models.BooleanField(
+        default=False,
+        verbose_name=_("data quality warning"),
     )
 
     #: Internal comment used in the review process. Should not be

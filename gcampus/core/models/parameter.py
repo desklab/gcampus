@@ -54,6 +54,18 @@ class ParameterType(models.Model):
     # Hex value of color displayed
     color = models.CharField(blank=True, verbose_name=_("Color"), max_length=7)
 
+    lower_warning_limit = models.FloatField(
+        blank=True,
+        null=True,
+        verbose_name=_("lower warning limit"),
+    )
+
+    upper_warning_limit = models.FloatField(
+        blank=True,
+        null=True,
+        verbose_name=_("upper warning limit"),
+    )
+
     def __str__(self):
         if self.unit in EMPTY:
             return f"{self.name}"
