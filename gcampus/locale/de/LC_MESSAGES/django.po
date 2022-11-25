@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-25 12:14+0100\n"
+"POT-Creation-Date: 2022-11-25 20:55+0100\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -125,6 +125,10 @@ msgstr "Ausgewählte Token sperren"
 #: gcampus/auth/admin.py:35
 msgid "Reactivate selected tokens"
 msgstr "Ausgewählte Token freigeben"
+
+#: gcampus/auth/admin.py:58 gcampus/core/admin.py:100
+msgid "Remove cached documents"
+msgstr "Dokumente (cached) entfernen"
 
 #: gcampus/auth/apps.py:25
 msgid "GCampus Auth"
@@ -749,15 +753,15 @@ msgstr "Mit OpenStreetMap updaten"
 msgid "Create or update Water Quality Indices"
 msgstr "Gewässergüteindizes erstellen oder aktualisieren"
 
-#: gcampus/core/admin.py:150
+#: gcampus/core/admin.py:162
 msgid "OpenStreetMap URL"
 msgstr "OpenStreetMap URL"
 
-#: gcampus/core/admin.py:155
+#: gcampus/core/admin.py:167
 msgid "No OpenStreetMap ID provided!"
 msgstr "Keine OpenStreetMap ID angegeben!"
 
-#: gcampus/core/admin.py:183
+#: gcampus/core/admin.py:195
 msgid "Recalculate selected indices"
 msgstr "Ausgewählte Indizes neu berechnen"
 
@@ -1759,8 +1763,8 @@ msgid ""
 "Doing this will bring you to the measurement detail site, where you can "
 "safely delete this measurement."
 msgstr ""
-"Durch diese Aktion kommst du zurück zur Detailansicht der Messung. "
-"Dort kannst du diese Messung löschen."
+"Durch diese Aktion kommst du zurück zur Detailansicht der Messung. Dort "
+"kannst du diese Messung löschen."
 
 #: gcampus/core/templates/gcampuscore/components/measurement_discard_modal.html:24
 #: gcampus/core/templates/gcampuscore/components/report_modal.html:42

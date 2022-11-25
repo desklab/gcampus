@@ -97,6 +97,13 @@ def create_or_update_indices(modeladmin: admin.ModelAdmin, request, queryset: Qu
             trophic_index.update()
 
 
+@admin.action(description=_("Remove cached documents"))
+def remove_cached_measurement_documents(
+    modeladmin: admin.ModelAdmin, request, qs: QuerySet
+):
+    qs.update(document=None)
+
+
 class MeasurementAdmin(LeafletGeoAdmin):
     search_fields = (
         "name",
@@ -118,7 +125,12 @@ class MeasurementAdmin(LeafletGeoAdmin):
     list_display_links = ("__str__",)
     inlines = [ParameterInline]
     readonly_fields = ADMIN_READ_ONLY_FIELDS + ("location_name",)
-    actions = [hide, show, create_or_update_indices]
+    actions = [
+        hide,
+        show,
+        create_or_update_indices,
+        remove_cached_measurement_documents,
+    ]
 
     def get_queryset(self, request):
         """

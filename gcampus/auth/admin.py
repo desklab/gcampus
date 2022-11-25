@@ -55,6 +55,13 @@ class CourseInline(admin.TabularInline):
     extra = 0
 
 
+@admin.action(description=_("Remove cached documents"))
+def remove_cached_overview_documents(
+    modeladmin: admin.ModelAdmin, request, qs: QuerySet
+):
+    qs.update(overview_document=None)
+
+
 class CourseAdmin(admin.ModelAdmin):
     list_filter = ("email_verified",)
     search_fields = ("name", "school_name", "teacher_name")
@@ -68,6 +75,7 @@ class CourseAdmin(admin.ModelAdmin):
     list_display_links = ("__str__",)
     inlines = [CourseTokenInline, AccessKeyInline]
     readonly_fields = ADMIN_READ_ONLY_FIELDS
+    actions = [remove_cached_overview_documents]
 
 
 class AccessKeyAdmin(admin.ModelAdmin):
