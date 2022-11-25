@@ -5,7 +5,7 @@
     {% translate "N/A" context "no value provided (water name, comment, etc)" as not_any %}
     {% firstof course_name not_any asvar name %}
     {% firstof course_school not_any asvar school %}
-    {% blocktranslate trimmed asvar content_text with name=name school=school days=days %}
+    {% blocktranslate trimmed asvar content_text with name=course_name school=course_school days=days %}
         The course you registered on GewässerCampus
         (course name: {{ name }}, school: {{ school }}) has been deleted
         due to inactivity.<br>

@@ -6,7 +6,7 @@
     {% firstof course_name not_any asvar name %}
     {% firstof course_school not_any asvar school %}
     {% url "gcampusauth:course-access-keys" as course_url %}
-    {% blocktranslate trimmed asvar content_text with course_url=url name=name school=school days=days %}
+    {% blocktranslate trimmed asvar content_text with course_url=url name=course_name school=course_school days=days %}
         Some access keys of the course you registered on GewässerCampus
         (course name: {{ name }}, school: {{ school }}) have been
         deactivated as they have been created more than {{ days }} days

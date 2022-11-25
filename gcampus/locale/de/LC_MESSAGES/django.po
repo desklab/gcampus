@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-19 17:23+0100\n"
+"POT-Creation-Date: 2022-11-25 12:14+0100\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -1394,7 +1394,7 @@ msgstr "Farbe"
 
 #: gcampus/core/models/parameter.py:68
 #: gcampus/core/templates/gcampuscore/components/bach_index.html:56
-#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:10
+#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:13
 msgid "Parameters"
 msgstr "Parameter"
 
@@ -1742,6 +1742,38 @@ msgstr "ein Projekt von"
 msgid "Test instance - Data will be deleted periodically"
 msgstr "Test-Instanz - Daten werden regelmäßig gelöscht"
 
+#: gcampus/core/templates/gcampuscore/components/measurement_discard_modal.html:6
+#, fuzzy
+#| msgid "Create new measurement"
+msgid "Discard new measurement"
+msgstr "Neue Messung verwerfen"
+
+#: gcampus/core/templates/gcampuscore/components/measurement_discard_modal.html:12
+#, fuzzy
+#| msgid "Are you sure you want to delete this measurement?"
+msgid "Are you sure you want to discard all values of this measurement?"
+msgstr "Bist du dir sicher, dass du diese Messung löschen willst?"
+
+#: gcampus/core/templates/gcampuscore/components/measurement_discard_modal.html:16
+msgid ""
+"Doing this will bring you to the measurement detail site, where you can "
+"safely delete this measurement."
+msgstr ""
+"Durch diese Aktion kommst du zurück zur Detailansicht der Messung. "
+"Dort kannst du diese Messung löschen."
+
+#: gcampus/core/templates/gcampuscore/components/measurement_discard_modal.html:24
+#: gcampus/core/templates/gcampuscore/components/report_modal.html:42
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:55
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:83
+#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:37
+msgid "Close"
+msgstr "Schließen"
+
+#: gcampus/core/templates/gcampuscore/components/measurement_discard_modal.html:31
+msgid "Discard values"
+msgstr "Messwerte verwerfen"
+
 #: gcampus/core/templates/gcampuscore/components/measurement_list_item.html:51
 msgid "Structure Index"
 msgstr "Strukturgüte-Index"
@@ -1770,13 +1802,6 @@ msgid ""
 msgstr ""
 "Bitte beschreibe das Problem mit dieser Messung. Wir werden das Problem "
 "schnellstmöglich beheben und die Messung gegebenfalls anpassen oder löschen."
-
-#: gcampus/core/templates/gcampuscore/components/report_modal.html:42
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:55
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:83
-#: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:37
-msgid "Close"
-msgstr "Schließen"
 
 #: gcampus/core/templates/gcampuscore/components/report_modal.html:45
 msgid "Submit"
@@ -1834,19 +1859,19 @@ msgstr "Parameter hinzufügen"
 msgid "Click to add a new parameter to your measurement"
 msgstr "Klicke hier um einen neuen Parameter zu deiner Messung hinzuzufügen"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:68
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:71
 msgid "Follow these steps to select the location and the correct water:"
 msgstr ""
 "Führe die folgenden Schritte aus, um den Ort und das Gewässer auszuwählen:"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:71
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:74
 msgid ""
 "<b>Drop the pin (click) on the map</b> at the place of your measurement."
 msgstr ""
 "Setze durch einen <b>Klick auf die Karte</b> den Pin an den Ort deiner "
 "Messung."
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:73
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:76
 msgid ""
 "<b>Select the correct water from the list below.</b> If your water is not "
 "shown right away, use the last option of the list to start a more detailed "
@@ -1856,32 +1881,32 @@ msgstr ""
 "dein Gewässer nicht angezeigt wird, nutze die letzte Option in der Liste, um "
 "eine detaillierte Suche zu starten oder ein neues Gewässer anzulegen."
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:85
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:99
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:88
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:102
 msgid "Error"
 msgstr "Fehler"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:106
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:110
 msgid "Nearby waters"
 msgstr "Umliegende Gewässer"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:109
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:113
 msgid "Select a location on the map to load nearby waters"
 msgstr "Wähle einen Standort auf der Karte um umliegende Gewässer zu laden"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:120
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:124
 msgid "Loading ..."
 msgstr "Lädt ..."
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:128
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:132
 msgid "Water not found?"
 msgstr "Gewässer nicht gefunden?"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:131
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:135
 msgid "Search for more waters on OpenStreetMap"
 msgstr "Suche nach weiteren Gewässern auf OpenStreetMap"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:147
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:151
 msgid ""
 "Add more <b>information on the environmental conditions</b> which may be "
 "helpful to evaluate your measurement, e.g.:"
@@ -1889,28 +1914,35 @@ msgstr ""
 "Ergänze <b>Informationen zu den Umweltbedingung</b>, die bei der Auswertung "
 "der Messung hilfreich sein können, z.B.:"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:153
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:158
 msgid ""
 "Did you collect your samples from the lakeside / river bank or from the "
 "center of the water?"
 msgstr "Wurde die Probe am Ufer oder in der Mitte des Gewässers entnommen?"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:154
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:159
 msgid "Which visual observations did you make during your measurement?"
 msgstr "Welche Beobachtungen hast du während der Messung gemacht?"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:166
-#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:44
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:173
+#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:45
 #: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:45
+#: gcampus/core/templates/gcampuscore/forms/structure-index.html:50
+msgid "Discard"
+msgstr "Verwerfen"
+
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:176
+#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:49
+#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:50
 msgid "Save & Continue"
 msgstr "Speichern & Weiter"
 
-#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:10
+#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:13
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:227
 msgid "Saprobic Abundancies"
 msgstr "Saprobienhäufigkeiten"
 
-#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:19
+#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:22
 msgid ""
 "Document the abundancies of the observed saprobic organisms. If this "
 "observation was not a part of your field trip, skip this step by clicking "
@@ -1923,13 +1955,7 @@ msgstr ""
 "um dein Vorgehen zu beschreiben, falls du von der vorgeschlagenen "
 "Vorgehensweise abgewichen bist."
 
-#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:40
-#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:40
-#: gcampus/core/templates/gcampuscore/forms/structure-index.html:45
-msgid "Discard"
-msgstr "Verwerfen"
-
-#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:19
+#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:22
 msgid ""
 "Convert each optical density into the concentration of the parameter you "
 "measured and document the resulting value here. Use the note field to "
@@ -1939,17 +1965,17 @@ msgstr ""
 "und gebe das Ergebnis hier ein. Nutze das Notizfeld, um dein Vorgehen zu "
 "beschreiben, falls du von der vorgeschlagenen Vorgehensweise abgewichen bist."
 
-#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:47
-#: gcampus/core/templates/gcampuscore/forms/structure-index.html:49
+#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:52
+#: gcampus/core/templates/gcampuscore/forms/structure-index.html:54
 msgid "Save & Exit"
 msgstr "Speichen & Beenden"
 
-#: gcampus/core/templates/gcampuscore/forms/structure-index.html:10
+#: gcampus/core/templates/gcampuscore/forms/structure-index.html:13
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:272
 msgid "Structural Assessment"
 msgstr "Strukturgüte-Bewertung"
 
-#: gcampus/core/templates/gcampuscore/forms/structure-index.html:19
+#: gcampus/core/templates/gcampuscore/forms/structure-index.html:22
 msgid ""
 "Document the assessment of the structural water quality. If this assessment "
 "was not a part of your field trip, skip this step by clicking 'Save & Exit'."
@@ -2682,7 +2708,7 @@ msgstr ""
 "Schule: %(school)s) wurden deaktiviert, da sie vor mehr als %(days)s Tagen "
 "erstellt wurden.<br>Schüler:innen können diese Zugangscodes nun nicht mehr "
 "verwenden, um neue Messungen zu erstellen oder ihre alten Messungen zu "
-"bearbeiten.<br>Du kanns die Zugangscodes in der <a href=\"%(course_url)s"
+"bearbeiten.<br>Du kannst die Zugangscodes in der <a href=\"%(course_url)s"
 "\">Kursverwaltung</a> jederzeit wieder aktivieren.<br> <br> Wenn du der "
 "Meinung bist, dass dies versehentlich passiert ist oder du noch nie einen "
 "Kurs auf GewässerCampus registriert hast, kannst du uns gerne kontaktieren."
@@ -2788,9 +2814,13 @@ msgstr ""
 msgid "GCampus Map"
 msgstr "GCampus Karte"
 
-#: gcampus/settings/base.py:176
+#: gcampus/settings/base.py:175
 msgid "English"
 msgstr "Englisch"
+
+#: gcampus/settings/base.py:175
+msgid "German"
+msgstr "Deutsch"
 
 #: gcampus/tasks/apps.py:24
 msgid "GCampus Tasks"
@@ -2813,9 +2843,6 @@ msgstr "GCampus Aufgaben"
 
 #~ msgid "Edit Measurement {pk:d} - Structure Index"
 #~ msgstr "Messung {pk:d} bearbeiten - Strukturgüte"
-
-#~ msgid "German"
-#~ msgstr "Deutsch"
 
 #~ msgid "Admin link"
 #~ msgstr "Admin link"
