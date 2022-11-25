@@ -1,4 +1,4 @@
-#  Copyright (C) 2021-2022 desklab gUG (haftungsbeschränkt)
+#  Copyright (C) 2022 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -13,13 +13,5 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from django.views.generic import ListView
-
-from gcampus.core.models import Measurement
-from gcampus.core.views.base import TitleMixin
-
-
-class MeasurementMapView(TitleMixin, ListView):
-    model = Measurement
-    title = "GewässerCampus"
-    template_name = "gcampuscore/sites/mapview.html"
+from gcampus.core.views.details.measurement import MeasurementDetailView
+from gcampus.core.views.details.water import WaterDetailView

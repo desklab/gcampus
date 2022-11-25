@@ -18,21 +18,21 @@
                     </p>
                     {% with form.problem_choices as field %}
                         <div class="mb-3">
-                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                            {% include "gcampuscore/forms/components/helptext.html" %}
-                          {{ field }}
-                        </div>
-                    {% endwith %}
-                    {% with form.text as field %}
-                        <div class="mb-3">
-                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
                             {% include "gcampuscore/forms/components/helptext.html" %}
                             {{ field }}
                         </div>
                     {% endwith %}
-                {% with form.email as field %}
+                    {% with form.text as field %}
                         <div class="mb-3">
-                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                            {% include "gcampuscore/forms/components/helptext.html" %}
+                            {{ field }}
+                        </div>
+                    {% endwith %}
+                    {% with form.email as field %}
+                        <div class="mb-3">
+                            {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
                             {% include "gcampuscore/forms/components/helptext.html" %}
                             {{ field }}
                         </div>

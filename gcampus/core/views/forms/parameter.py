@@ -15,38 +15,38 @@
 
 from __future__ import annotations
 
+__all__ = ["ChemicalParameterFormSetView", "BiologicalParameterFormSetView"]
+
 from typing import Optional
 
-from django.http import HttpResponseRedirect, HttpRequest
+from django.http import HttpResponseRedirect, HttpRequest, Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.utils.decorators import method_decorator
-from django.utils.translation import gettext_lazy as _
-from django.utils.translation import gettext
 from django.views.generic.base import TemplateResponseMixin, View
-from django.views.generic.edit import ModelFormMixin, UpdateView
 
 from gcampus.auth.exceptions import UnauthenticatedError, TokenEditPermissionError
 from gcampus.auth.models.token import BaseToken
-from gcampus.core.decorators import require_permission_edit_measurement
 from gcampus.core.forms.measurement import (
     ChemicalParameterFormSet,
     BiologicalParameterFormSet,
-    StructureIndexForm,
     BaseParameterFormset,
 )
 from gcampus.core.models import Measurement
-from gcampus.core.models.index.structure import StructureIndex
-from gcampus.core.views.base import TitleMixin
+from gcampus.core.models.water import FlowType
+from gcampus.core.views.forms.tabs import MeasurementEditTabsMixin
 
 
-class BaseParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
+class BaseParameterFormSetView(MeasurementEditTabsMixin, TemplateResponseMixin, View):
     formset_class = BaseParameterFormset
+    next_view_name: str
 
     def __init__(self, **kwargs):
         super(BaseParameterFormSetView, self).__init__(**kwargs)
         self.instance: Optional[Measurement] = None
         self.token: Optional[BaseToken] = None
+
+    def get_success_url(self):
+        return reverse(self.next_view_name, kwargs={"pk": self.instance.pk})
 
     def get(self, request: HttpRequest, pk: int, *args, **kwargs):
         # This will raise an exception if the provided token has
@@ -55,9 +55,12 @@ class BaseParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
         return self.render_to_response(self.get_context_data(formset=formset))
 
     def get_context_data(self, **kwargs):
-        if "object" not in kwargs:
-            kwargs["object"] = self.instance
+        kwargs.setdefault("object", self.instance)
+        kwargs.setdefault("measurement", self._get_measurement())
         return super().get_context_data(**kwargs)
+
+    def get_instance(self, pk: int) -> Measurement:
+        return get_object_or_404(Measurement, id=pk)
 
     def get_formset(self, request: HttpRequest, pk: int) -> formset_class:
         """Get Formset
@@ -76,7 +79,7 @@ class BaseParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
             contains the ID to the measurement entry that is being
             edited.
         """
-        self.instance = get_object_or_404(Measurement, id=pk)
+        self.instance = self.get_instance(pk)
         self.token: BaseToken = request.token
         if self.token is None:
             raise UnauthenticatedError()
@@ -98,7 +101,7 @@ class BaseParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
 
     def form_valid(self, formset: formset_class):
         formset.save()
-        return HttpResponseRedirect(self.get_next_url())
+        return HttpResponseRedirect(self.get_success_url())
 
     def post(self, request: HttpRequest, pk: int, *args, **kwargs):
         # This will raise an exception if the provided token has
@@ -112,51 +115,30 @@ class BaseParameterFormSetView(TitleMixin, TemplateResponseMixin, View):
 
 class ChemicalParameterFormSetView(BaseParameterFormSetView):
     formset_class = ChemicalParameterFormSet
+    next_view_name = "gcampuscore:measurement-detail"
+    current_tab_name = "chemical"
     template_name = "gcampuscore/forms/parameters-chemical.html"
 
-    def get_title(self) -> str:
-        return _("Edit Measurement {pk:d} - Chemical Parameters").format(
-            pk=self.instance.pk
-        )
-
-    def get_next_url(self):
-        if self.instance.water.flow_type == "running":
-            next_view_name = "gcampuscore:edit-biological-parameters"
-        elif self.instance.water.flow_type == "standing":
-            next_view_name = "gcampuscore:measurement-detail"
-        else:
-            next_view_name = "gcampuscore:measurement-detail"
-        return reverse(next_view_name, kwargs={"pk": self.instance.pk})
+    def get_success_url(self):
+        # Depending on the flow type of the current water, additional
+        # forms are possible. The next view is changed accordingly.
+        if self._get_flow_type() == FlowType.RUNNING:
+            self.next_view_name = "gcampuscore:edit-biological-parameters"
+        return super(ChemicalParameterFormSetView, self).get_success_url()
 
 
 class BiologicalParameterFormSetView(BaseParameterFormSetView):
     formset_class = BiologicalParameterFormSet
+    current_tab_name = "biological"
     template_name = "gcampuscore/forms/parameters-biological.html"
     next_view_name = "gcampuscore:edit-structure-index"
 
-    def get_title(self) -> str:
-        return _("Edit Measurement {pk:d} - Biological Parameters").format(
-            pk=self.instance.pk
-        )
-
-    def get_next_url(self):
-        return reverse(self.next_view_name, kwargs={"pk": self.instance.pk})
-
-
-class StructureIndexEditView(UpdateView):
-    model = StructureIndex
-    form_class = StructureIndexForm
-    template_name = "gcampuscore/forms/structure-index.html"
-    next_view_name = "gcampuscore:measurement-detail"
-
-    @method_decorator(require_permission_edit_measurement)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
-    def get_title(self) -> str:
-        return gettext("Edit Measurement {pk:d} - Structure Index").format(
-            pk=self.object.pk
-        )
-
-    def get_success_url(self):
-        return reverse(self.next_view_name, kwargs={"pk": self.object.pk})
+    def get_instance(self, pk: int) -> Measurement:
+        # Get the measurement to check the flow type of its related
+        # water
+        instance: Measurement = super().get_instance(pk)
+        if instance.water.flow_type != FlowType.RUNNING:
+            # Biological parameters are only supported by running flow
+            # types.
+            raise Http404("Parameter types not supported")
+        return instance

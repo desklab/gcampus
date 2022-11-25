@@ -1,17 +1,9 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n menu auth_token %}
-{% block navbar_title %}{% endblock %}
-{% block navbar_other %}
-    <ul class="nav navbar-nav me-auto">
-        {% trans "Course data" as course_data_title %}
-        {% include "gcampuscore/components/nav_item.html" with title=course_data_title view_name="gcampusauth:course-update" %}
-        {% trans "Manage access keys" as access_keys_title %}
-        {% include "gcampuscore/components/nav_item.html" with title=access_keys_title view_name="gcampusauth:course-access-keys" %}
-    </ul>
-{% endblock %}
+{% load i18n auth_token %}
 {% block main_class %}bg-light min-vh-100{% endblock %}
 {% block content %}
     <div class="container">
+        {{ tabs }}
         <h3 class="py-4">{% trans "Course token" %}</h3>
         <div class="box box-info mb-3">
             {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}

@@ -56,18 +56,29 @@ from gcampus.auth.models.course import (
 from gcampus.auth.models.token import AccessKey, CourseToken, TokenType
 from gcampus.auth.tasks import send_registration_email
 from gcampus.core import settings
-from gcampus.core.views.base import TitleMixin
+from gcampus.core.tabs import TabNavigation, Tab
+from gcampus.core.views.base import TitleMixin, TabsMixin
 
 logger = logging.getLogger("gcampus.auth.views.course")
 
+_TITLE = _("Course administration")
+_COURSE_TABS = TabNavigation(
+    course=Tab(_("Course data"), url=reverse_lazy("gcampusauth:course-update")),
+    access_keys=Tab(
+        _("Access keys"), url=reverse_lazy("gcampusauth:course-access-keys")
+    ),
+)
 
-class CourseUpdateView(TitleMixin, UpdateView):
+
+class CourseUpdateView(TitleMixin, TabsMixin, UpdateView):
     form_class = CourseForm
     model = Course
     object: Course
     template_name_suffix = "_edit_form"
     success_url = reverse_lazy("gcampusauth:course-update")
-    title = _("Course data")
+    title = _TITLE
+    tabs = _COURSE_TABS
+    current_tab_name = "course"
 
     @method_decorator(require_course_token)
     def dispatch(self, request, *args, **kwargs):
@@ -86,7 +97,7 @@ class CourseUpdateView(TitleMixin, UpdateView):
     def get_object(self, queryset=None):
         token: CourseToken = self.request.token
         if not isinstance(token, CourseToken):
-            raise RuntimeError("At this point 'request.toke' has to be a course token!")
+            raise RuntimeError("'request.token' has to be a course token!")
         return token.course
 
     def get_context_data(self, **kwargs):
@@ -95,16 +106,19 @@ class CourseUpdateView(TitleMixin, UpdateView):
 
 class AccessKeyCreateView(
     TitleMixin,
+    TabsMixin,
     MultipleObjectTemplateResponseMixin,
     MultipleObjectMixin,
     FormMixin,
     ProcessFormView,
 ):
+    object_list: List[AccessKey]
     form_class = GenerateAccessKeysForm
     model = AccessKey
-    object_list: List[AccessKey]
     success_url = reverse_lazy("gcampusauth:course-access-keys")
-    title = _("Access keys")
+    title = _TITLE
+    tabs = _COURSE_TABS
+    current_tab_name = "access_keys"
 
     @method_decorator(require_course_token)
     def dispatch(self, request, *args, **kwargs):

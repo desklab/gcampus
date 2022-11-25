@@ -74,13 +74,29 @@ $display-font-sizes: $font-sizes;
 
 $display-font-weight: $font-weight-normal;
 
+// ---------------------------------------------------------------------
+// Borders
+// ---------------------------------------------------------------------
+$border-width: 1px;
+$border-widths: (
+  1: 1px,
+  2: 2px,
+  3: 3px,
+  4: 4px,
+  5: 5px
+);
+
+$border-radius: 0px;
+$border-style: solid;
+$border-color-translucent: rgba($black, .175);
+$border-color: $gray-200;
+
 
 // ---------------------------------------------------------------------
 // Links
 // ---------------------------------------------------------------------
 $link-color: $primary;
 
-$border-color: $gray-200;
 $input-border-color: $gray-300;
 
 $table-border-color: $border-color;

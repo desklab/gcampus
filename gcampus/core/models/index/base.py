@@ -22,11 +22,14 @@ from typing import Union
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from gcampus.core.models import Measurement
+
 
 class WaterQualityIndex(models.Model):
     class Meta:
         abstract = True
 
+    measurement: Union[models.ForeignKey, Measurement]
     value: models.FloatField = models.FloatField(
         default=0,
         null=True,

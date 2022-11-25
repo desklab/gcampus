@@ -1,0 +1,37 @@
+{% load i18n %}
+<div class="modal fade" id="discardModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% translate "Discard new measurement" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                <p>
+                    {% blocktrans trimmed %}
+                        Are you sure you want to discard all values of this measurement?
+                    {% endblocktrans %}
+                    {% if measurement %}
+                        {% blocktrans trimmed %}
+                            Doing this will bring you to the measurement detail site, where you can safely delete this
+                            measurement.
+                        {% endblocktrans %}
+                    {% endif %}
+                </p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        {% translate "Close" %}
+                    </button>
+                    {% if measurement %}
+                        <a href="{% url "gcampuscore:measurement-detail" pk=measurement.id %}" class="btn btn-danger">
+                    {% else %}
+                        <a href="{% url "gcampuscore:mapview" %}" class="btn btn-danger">
+                    {% endif %}
+                    {% translate "Discard values" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

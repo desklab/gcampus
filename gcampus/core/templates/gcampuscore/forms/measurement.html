@@ -4,42 +4,14 @@
     {{ block.super }}
     {% load_mapbox_css %}
 {% endblock %}
-{% block main_class %}bg-light{% endblock %}
-{% block navbar_title %}{% endblock %}
-{% block navbar_other %}
-    <ul class="nav navbar-nav me-auto">
-        {% translate "1. Metadata" as metadata_title %}
-        {% translate "2. Measured Parameters" as chemical_parameters_title %}
-        {% translate "3. Saprobic Abundancies" as biological_parameters_title %}
-        {% translate "4. Structural Assessment" as structure_index_title %}
-
-
-        {% if request.resolver_match.view_name == "gcampuscore:edit-measurement" %}
-            {% url "gcampuscore:edit-measurement" pk=object.pk as edit_url %}
-            {% include "gcampuscore/components/nav_item.html" with url=edit_url title=metadata_title view_name="gcampuscore:edit-measurement" %}
-
-            {% url "gcampuscore:edit-chemical-parameters" pk=object.pk as chemical_parameter_url %}
-            {% include "gcampuscore/components/nav_item.html" with url=chemical_parameter_url title=chemical_parameters_title view_name="gcampuscore:edit-chemical-parameters" %}
-
-            {% if object.water.flow_type == "running" %}
-                {% url "gcampuscore:edit-biological-parameters" pk=object.pk as biological_parameter_url %}
-                {% include "gcampuscore/components/nav_item.html" with url=biological_parameter_url title=biological_parameters_title view_name="gcampuscore:edit-biological-parameters" %}
-
-                {% url "gcampuscore:edit-structure-index" pk=object.pk as structure_index_url %}
-                {% include "gcampuscore/components/nav_item.html" with url=structure_index_url title=structure_index_title view_name="gcampuscore:edit-structure-index" %}
-            {% endif %}
-        {% else %}
-            {% include "gcampuscore/components/nav_item.html" with title=metadata_title view_name="gcampuscore:add-measurement" %}
-            <li class="nav-item">
-                <a class="nav-link link-dark disabled">{{ values_title }}</a>
-            </li>
-        {% endif %}
-
-    </ul>
+{% block modals %}
+    {% include "gcampuscore/components/measurement_discard_modal.html" with measurement=measurement only %}
 {% endblock %}
+{% block main_class %}bg-light{% endblock %}
 {% block content %}
     <div class="container">
-        <div class="row justify-content-center">
+        {{ tabs }}
+        <div class="pt-4 row justify-content-center">
             <div class="col col-lg-10">
                 <form method="POST" id="measurementForm" class="{% if form.errors %}has-validation{% endif %}">
                     {% csrf_token %}
@@ -133,7 +105,8 @@
                                 {% endif %}
                             {% endwith %}
                             <div class="list-group list-group-spaced mt-2" id="waterSuggestions">
-                                <div class="list-group-item list-group-item-spaced text-center shadow-box" id="waterSuggestionsInfo">
+                                <div class="list-group-item list-group-item-spaced text-center shadow-box"
+                                     id="waterSuggestionsInfo">
                                     {% translate "Nearby waters" %}
                                     <br>
                                     <small>
@@ -176,7 +149,8 @@
                                     <div class="my-2">
                                         {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
                                         {% blocktranslate trimmed %}
-                                            Add more <b>information on the environmental conditions</b> which may be helpful
+                                            Add more <b>information on the environmental conditions</b> which may be
+                                            helpful
                                             to evaluate your measurement, e.g.:
                                         {% endblocktranslate %}
                                     </div>
@@ -193,6 +167,11 @@
                         {% endwith %}
                     </div>
                     <div class="text-end mb-5">
+                        <a class="ms-auto btn btn-secondary btn-block"
+                           data-bs-toggle="modal"
+                           data-bs-target="#discardModal">
+                            {% translate "Discard" %}
+                        </a>
                         <button class="btn btn-primary">
                             {% translate "Save & Continue" %}
                         </button>

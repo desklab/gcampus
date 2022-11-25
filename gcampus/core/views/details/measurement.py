@@ -1,4 +1,4 @@
-#  Copyright (C) 2021-2022 desklab gUG (haftungsbeschränkt)
+#  Copyright (C) 2022 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -12,44 +12,27 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-from __future__ import annotations
-
 import datetime
 import logging
 from inspect import cleandoc
 
-from django.conf import settings
 from django.contrib import messages
 from django.core.mail import mail_managers
-from django.shortcuts import redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.utils.translation import gettext, gettext_lazy
-from django.views.decorators.http import require_POST
-from django.views.generic import DetailView, ListView
-from django.views.generic.edit import (
-    CreateView,
-    UpdateView,
-    DeleteView,
-    ModelFormMixin,
-    FormMixin,
-)
+from django.utils.translation import gettext
+from django.views.generic import DetailView
+from django.views.generic.edit import FormMixin
 
 from gcampus.auth.decorators import throttle
-from gcampus.auth.models.token import BaseToken
+from gcampus.auth.models import BaseToken
 from gcampus.auth.session import is_authenticated
-from gcampus.core.decorators import (
-    require_permission_create_measurement,
-    require_permission_edit_measurement,
-)
-from gcampus.core.forms.measurement import MeasurementForm, ReportForm
-from gcampus.core.forms.water import WaterForm
+from gcampus.core.forms.measurement import ReportForm
 from gcampus.core.models import Measurement
 from gcampus.core.views.base import TitleMixin
-from gcampus.core.views.measurement.list import MeasurementListView
+from gcampus.core.views.forms import MeasurementDeleteView
 
-logger = logging.getLogger("gcampus.core.views.measurement")
+logger = logging.getLogger("gcampus.core.views.details.measurement")
 
 
 class MeasurementDetailView(FormMixin, TitleMixin, DetailView):
@@ -108,17 +91,17 @@ class MeasurementDetailView(FormMixin, TitleMixin, DetailView):
 
         email_string = f"""
         A user has submitted a problem with the following measurement:
-        
+
         '{admin_url}'
-        
+
         From url: {current_url}
-        
+
         Time: {now}
-        
+
         Problem type: {problem_type}
 
         Additional information: {form.cleaned_data['text'] or '-'}
-        
+
         E-Mail address: {form.cleaned_data['email'] or '-'}
         """
         return cleandoc(email_string)
@@ -147,92 +130,3 @@ class MeasurementDetailView(FormMixin, TitleMixin, DetailView):
 
     def get_success_url(self):
         return reverse("gcampuscore:measurement-detail", kwargs={"pk": self.object.id})
-
-
-class MeasurementMapView(TitleMixin, ListView):
-    model = Measurement
-    title = "GewässerCampus"
-    template_name = "gcampuscore/sites/mapview.html"
-
-
-class MeasurementFormViewMixin(TitleMixin, ModelFormMixin):
-    template_name = "gcampuscore/forms/measurement.html"
-    next_view_name = "gcampuscore:add-chemical-parameters"
-
-    def get_context_data(self, **kwargs):
-        if "water_form" not in kwargs:
-            kwargs["water_form"] = WaterForm()
-        if "loading_texts" not in kwargs:
-            req_timeout = getattr(settings, "OVERPASS_TIMEOUT", 20)
-            kwargs["loading_texts"] = [
-                gettext("Looking for nearby waters on OpenStreetMap."),
-                gettext("This may take up to {delay:d} seconds.").format(
-                    delay=req_timeout
-                ),
-                gettext(
-                    "It looks like your requests takes a bit longer. "
-                    "We are still looking for nearby waters."
-                ),
-                gettext(
-                    "Due to the complexity of geospatial data, "
-                    "this may take up to {delay:d} seconds."
-                ).format(delay=req_timeout),
-            ]
-        return super(MeasurementFormViewMixin, self).get_context_data(**kwargs)
-
-    def get_success_url(self):
-        return reverse(self.next_view_name, kwargs={"pk": self.object.pk})
-
-
-class MeasurementCreateView(MeasurementFormViewMixin, CreateView):
-    form_class = MeasurementForm
-    title = gettext_lazy("Create new measurement")
-
-    @method_decorator(require_permission_create_measurement)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
-    def form_valid(self, form: MeasurementForm):
-        instance: Measurement = form.instance
-        instance.token = self.request.token
-        # Calling ``super`` will call ``form.save`` which in turn calls
-        # ``instance.save``.
-        return super(MeasurementCreateView, self).form_valid(form)
-
-
-class MeasurementEditView(MeasurementFormViewMixin, UpdateView):
-    model = Measurement
-    form_class = MeasurementForm
-    template_name = MeasurementCreateView.template_name
-    next_view_name = MeasurementCreateView.next_view_name
-
-    @method_decorator(require_permission_edit_measurement)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
-    def get_title(self) -> str:
-        return gettext("Edit Measurement {pk:d} - Information").format(
-            pk=self.object.pk
-        )
-
-
-class MeasurementDeleteView(TitleMixin, DeleteView):
-    model = Measurement
-    success_url = reverse_lazy("gcampuscore:mapview")
-
-    # Only allow post requests. HTML frontend is handled by
-    # MeasurementDetailView. See MeasurementDetailView.get_context_data.
-    @method_decorator(require_POST)
-    @method_decorator(require_permission_edit_measurement)
-    def dispatch(self, request, pk: int, *args, **kwargs):
-        return super(MeasurementDeleteView, self).dispatch(request, pk, *args, **kwargs)
-
-    def form_valid(self, form):
-        success_url = self.get_success_url()
-        self.object: Measurement
-        # Instead of permanently deleting the measurement, it is instead
-        # hidden from all users. Consider this as some kind of temporary
-        # trash (i.e. marked for deletion).
-        self.object.hidden = True
-        self.object.save()
-        return redirect(success_url)

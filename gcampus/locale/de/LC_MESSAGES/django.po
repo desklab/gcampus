@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-15 14:59+0100\n"
+"POT-Creation-Date: 2022-11-19 17:23+0100\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -51,7 +51,7 @@ msgid "Convert"
 msgstr "Umrechnen"
 
 #: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:19
-#: gcampus/core/forms/measurement.py:160 gcampus/core/models/index/base.py:34
+#: gcampus/core/forms/measurement.py:160 gcampus/core/models/index/base.py:37
 #: gcampus/core/models/parameter.py:78
 #: gcampus/core/templates/gcampuscore/components/bach_index.html:36
 #: gcampus/core/templates/gcampuscore/components/saprobic_index.html:36
@@ -200,7 +200,7 @@ msgid "Access key"
 msgstr "Zugangscode"
 
 #: gcampus/auth/forms/token.py:42 gcampus/auth/models/token.py:224
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:15
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:7
 #: gcampus/mail/templates/gcampusmail/register/overview.html:5
 msgid "Course token"
 msgstr "Kursschlüssel"
@@ -268,8 +268,8 @@ msgid "Course token %(id)s"
 msgstr "Kursschlüssel %(id)s"
 
 #: gcampus/auth/models/token.py:269
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:69
-#: gcampus/auth/views/course.py:107
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:59
+#: gcampus/auth/views/course.py:68
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:123
 #: gcampus/mail/templates/gcampusmail/register/overview.html:25
 msgid "Access keys"
@@ -288,23 +288,11 @@ msgstr "Spezifische Berechtigungen für diesen Zugangscode."
 msgid "Access key %(id)s"
 msgstr "Zugangscode %(id)s"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:8
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:6
-#: gcampus/auth/views/course.py:70
-#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:78
-msgid "Course data"
-msgstr "Kursdaten"
-
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:10
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:8
-msgid "Manage access keys"
-msgstr "Zugangscodes verwalten"
-
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:17
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:7
 msgid "Generate new access keys"
 msgstr "Zugangscodes erstellen"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:20
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:10
 msgid ""
 "These <b>access keys</b> are used to create new measurements. A single key "
 "can be shared by a group of students working together."
@@ -313,7 +301,7 @@ msgstr ""
 "werden. Ein Zugangscode kann von mehreren Schüler:innen, die in einer Gruppe "
 "zusammenarbeiten, gleichzeitig genutzt werden."
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:31
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:21
 #, python-format
 msgid ""
 "You have reached the maximum (%(max_count)s) number of access keys.<br> If "
@@ -324,11 +312,11 @@ msgstr ""
 "Solltest du mehr benötigen kannst du dafür jederzeit einen neuen <a class="
 "\"alert-link\" href=\"%(register_url)s\">Kurs registrieren</a>."
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:49
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:39
 msgid "Generate"
 msgstr "Erstellen"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:61
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:51
 #, python-format
 msgid ""
 "Please note that the number of access keys is limited to <strong>"
@@ -337,16 +325,16 @@ msgstr ""
 "Bitte beachte, dass die Anzahl der Zugangsschlüssel auf <strong>"
 "%(max_count)s pro Kurs</strong> begrenzt ist."
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:77
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:67
 msgid "Deactivated"
 msgstr "Deaktiviert"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:80
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:70
 msgid "Active"
 msgstr "Aktiv"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:92
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:110
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:82
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:100
 #: gcampus/core/templates/gcampuscore/components/water_list_item.html:17
 #, python-format
 msgid "%(count)s measurement"
@@ -354,19 +342,19 @@ msgid_plural "%(count)s measurements"
 msgstr[0] "%(count)s Messung"
 msgstr[1] "%(count)s Messungen"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:122
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:112
 msgid "Last login:"
 msgstr "Letzte Anmeldung:"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:126
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:116
 msgid "never"
 msgstr "Noch nie"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:135
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:125
 msgid "Activate"
 msgstr "Aktivieren"
 
-#: gcampus/auth/templates/gcampusauth/accesskey_list.html:137
+#: gcampus/auth/templates/gcampusauth/accesskey_list.html:127
 msgid "Deactivate"
 msgstr "Deaktivieren"
 
@@ -376,6 +364,7 @@ msgid "Course Measurements"
 msgstr "Messungen des Kurses"
 
 #: gcampus/auth/templates/gcampusauth/components/auth_menu.html:15
+#: gcampus/auth/views/course.py:64
 #: gcampus/core/templates/gcampuscore/components/sidebar.html:18
 msgid "Course administration"
 msgstr "Kursverwaltung"
@@ -490,7 +479,7 @@ msgstr ""
 msgid "Register"
 msgstr "Registrieren"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:18
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:10
 #: gcampus/mail/templates/gcampusmail/register/overview.html:8
 msgid ""
 "With this <b>course token</b>, you can manage your course and edit your "
@@ -500,34 +489,34 @@ msgstr ""
 "Messungen deiner Schüler:innen bearbeiten. Daher sollte er nicht "
 "veröffentlicht werden."
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:27
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:19
 msgid "Course and contact data"
 msgstr "Kurs- und Kontaktdaten"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:51
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:43
 msgid "Email address verified"
 msgstr "E-Mail-Adresse verifiziert"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:58
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:50
 #, python-format
 msgid "Pending email confirmation: %(email)s"
 msgstr "Ausstehende E-Mail Bestätigung: %(email)s"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:96
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:88
 #: gcampus/core/templates/gcampuscore/components/water_custom.html:27
 msgid "Save"
 msgstr "Speichern"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:100
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:92
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:337
 msgid "Documents"
 msgstr "Dokumente"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:103
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:95
 msgid "Save course overview"
 msgstr "Kursübersicht speichern"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:104
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:96
 msgid ""
 "Download a PDF with a summary of your registration data, your course token, "
 "and all access keys for the students of your course."
@@ -535,11 +524,11 @@ msgstr ""
 "Lade eine PDF Datei mit einer Übersicht deines Kurses mit deinem "
 "Kursschlüssel und einer Liste aller Zugangscodes herunter."
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:113
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:105
 msgid "Save access keys for students"
 msgstr "Zugangscodes speichern"
 
-#: gcampus/auth/templates/gcampusauth/course_edit_form.html:114
+#: gcampus/auth/templates/gcampusauth/course_edit_form.html:106
 msgid ""
 "Download a PDF with all access keys (one key per page) of your course with "
 "instructions for your students."
@@ -702,22 +691,27 @@ msgstr ""
 "einem Kursschlüssel anmelden</a> oder einen neuen Kurs <a class=\"text-dark"
 "\" href=\"%(register_url)s\">registrieren</a>."
 
-#: gcampus/auth/views/course.py:122
+#: gcampus/auth/views/course.py:66
+#: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:78
+msgid "Course data"
+msgstr "Kursdaten"
+
+#: gcampus/auth/views/course.py:136
 #, python-brace-format
 msgid "You successfully generated {count:d} new access keys"
 msgstr "Du hast erfolgreich {count:d} neue Zugangscodes erstellt"
 
-#: gcampus/auth/views/course.py:175
+#: gcampus/auth/views/course.py:189
 msgid "All done! The course you registered is now active."
 msgstr "Geschafft! Dein registrierter Kurs ist jetzt aktiv."
 
-#: gcampus/auth/views/course.py:184
+#: gcampus/auth/views/course.py:198
 msgid "Email confirmed. You email is now set to {new_email!s}."
 msgstr ""
 "E-Mail-Adresse bestätigt! Deine E-Mail-Adresse wurde zu {new_email!s} "
 "geändert."
 
-#: gcampus/auth/views/course.py:203
+#: gcampus/auth/views/course.py:217
 msgid ""
 "It seems like you have been logged in with a different course token or with "
 "an access key. You have been logged out and are now logged in with the "
@@ -933,15 +927,15 @@ msgstr "BACH Index"
 msgid "BACH Indices"
 msgstr "BACH Indizes"
 
-#: gcampus/core/models/index/base.py:41
+#: gcampus/core/models/index/base.py:44
 msgid "Classification"
 msgstr "Klassifizierung"
 
-#: gcampus/core/models/index/base.py:48
+#: gcampus/core/models/index/base.py:51
 msgid "Description"
 msgstr "Beschreibung"
 
-#: gcampus/core/models/index/base.py:55
+#: gcampus/core/models/index/base.py:58
 #: gcampus/core/templates/gcampuscore/components/bach_index.html:48
 #: gcampus/core/templates/gcampuscore/components/saprobic_index.html:48
 #: gcampus/core/templates/gcampuscore/components/structure_index.html:48
@@ -1400,7 +1394,7 @@ msgstr "Farbe"
 
 #: gcampus/core/models/parameter.py:68
 #: gcampus/core/templates/gcampuscore/components/bach_index.html:56
-#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:40
+#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:10
 msgid "Parameters"
 msgstr "Parameter"
 
@@ -1840,47 +1834,19 @@ msgstr "Parameter hinzufügen"
 msgid "Click to add a new parameter to your measurement"
 msgstr "Klicke hier um einen neuen Parameter zu deiner Messung hinzuzufügen"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:11
-#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:10
-#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:10
-#: gcampus/core/templates/gcampuscore/forms/structure-index.html:10
-msgid "1. Metadata"
-msgstr "1. Metadaten"
-
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:12
-#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:11
-#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:11
-#: gcampus/core/templates/gcampuscore/forms/structure-index.html:11
-msgid "2. Measured Parameters"
-msgstr "2. Messwerte"
-
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:13
-#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:12
-#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:12
-#: gcampus/core/templates/gcampuscore/forms/structure-index.html:12
-msgid "3. Saprobic Abundancies"
-msgstr "3. Sparobienhäufigkeiten"
-
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:14
-#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:13
-#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:13
-#: gcampus/core/templates/gcampuscore/forms/structure-index.html:13
-msgid "4. Structural Assessment"
-msgstr "4. Strukturgüte-Bewertung"
-
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:99
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:68
 msgid "Follow these steps to select the location and the correct water:"
 msgstr ""
 "Führe die folgenden Schritte aus, um den Ort und das Gewässer auszuwählen:"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:102
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:71
 msgid ""
 "<b>Drop the pin (click) on the map</b> at the place of your measurement."
 msgstr ""
 "Setze durch einen <b>Klick auf die Karte</b> den Pin an den Ort deiner "
 "Messung."
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:104
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:73
 msgid ""
 "<b>Select the correct water from the list below.</b> If your water is not "
 "shown right away, use the last option of the list to start a more detailed "
@@ -1890,32 +1856,32 @@ msgstr ""
 "dein Gewässer nicht angezeigt wird, nutze die letzte Option in der Liste, um "
 "eine detaillierte Suche zu starten oder ein neues Gewässer anzulegen."
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:116
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:130
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:85
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:99
 msgid "Error"
 msgstr "Fehler"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:137
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:106
 msgid "Nearby waters"
 msgstr "Umliegende Gewässer"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:140
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:109
 msgid "Select a location on the map to load nearby waters"
 msgstr "Wähle einen Standort auf der Karte um umliegende Gewässer zu laden"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:151
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:120
 msgid "Loading ..."
 msgstr "Lädt ..."
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:159
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:128
 msgid "Water not found?"
 msgstr "Gewässer nicht gefunden?"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:162
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:131
 msgid "Search for more waters on OpenStreetMap"
 msgstr "Suche nach weiteren Gewässern auf OpenStreetMap"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:178
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:147
 msgid ""
 "Add more <b>information on the environmental conditions</b> which may be "
 "helpful to evaluate your measurement, e.g.:"
@@ -1923,34 +1889,28 @@ msgstr ""
 "Ergänze <b>Informationen zu den Umweltbedingung</b>, die bei der Auswertung "
 "der Messung hilfreich sein können, z.B.:"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:184
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:153
 msgid ""
 "Did you collect your samples from the lakeside / river bank or from the "
 "center of the water?"
 msgstr "Wurde die Probe am Ufer oder in der Mitte des Gewässers entnommen?"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:185
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:154
 msgid "Which visual observations did you make during your measurement?"
 msgstr "Welche Beobachtungen hast du während der Messung gemacht?"
 
-#: gcampus/core/templates/gcampuscore/forms/measurement.html:197
-#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:72
-#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:75
+#: gcampus/core/templates/gcampuscore/forms/measurement.html:166
+#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:44
+#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:45
 msgid "Save & Continue"
 msgstr "Speichern & Weiter"
 
-#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:4
-#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:4
-#: gcampus/core/templates/gcampuscore/forms/structure-index.html:4
-msgid "Add Parameters"
-msgstr "Parameter Hinzufügen"
-
-#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:38
+#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:10
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:227
 msgid "Saprobic Abundancies"
 msgstr "Saprobienhäufigkeiten"
 
-#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:47
+#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:19
 msgid ""
 "Document the abundancies of the observed saprobic organisms. If this "
 "observation was not a part of your field trip, skip this step by clicking "
@@ -1963,13 +1923,13 @@ msgstr ""
 "um dein Vorgehen zu beschreiben, falls du von der vorgeschlagenen "
 "Vorgehensweise abgewichen bist."
 
-#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:68
-#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:70
-#: gcampus/core/templates/gcampuscore/forms/structure-index.html:73
+#: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:40
+#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:40
+#: gcampus/core/templates/gcampuscore/forms/structure-index.html:45
 msgid "Discard"
 msgstr "Verwerfen"
 
-#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:49
+#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:19
 msgid ""
 "Convert each optical density into the concentration of the parameter you "
 "measured and document the resulting value here. Use the note field to "
@@ -1979,17 +1939,17 @@ msgstr ""
 "und gebe das Ergebnis hier ein. Nutze das Notizfeld, um dein Vorgehen zu "
 "beschreiben, falls du von der vorgeschlagenen Vorgehensweise abgewichen bist."
 
-#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:77
-#: gcampus/core/templates/gcampuscore/forms/structure-index.html:77
+#: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:47
+#: gcampus/core/templates/gcampuscore/forms/structure-index.html:49
 msgid "Save & Exit"
 msgstr "Speichen & Beenden"
 
-#: gcampus/core/templates/gcampuscore/forms/structure-index.html:38
+#: gcampus/core/templates/gcampuscore/forms/structure-index.html:10
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:272
 msgid "Structural Assessment"
 msgstr "Strukturgüte-Bewertung"
 
-#: gcampus/core/templates/gcampuscore/forms/structure-index.html:47
+#: gcampus/core/templates/gcampuscore/forms/structure-index.html:19
 msgid ""
 "Document the assessment of the structural water quality. If this assessment "
 "was not a part of your field trip, skip this step by clicking 'Save & Exit'."
@@ -2223,7 +2183,7 @@ msgstr "Messung an stehendem Gewässer"
 msgid "Measurement at running water"
 msgstr "Messung an Fließgewässer"
 
-#: gcampus/core/views/measurement/__init__.py:140
+#: gcampus/core/views/details/measurement.py:123
 msgid ""
 "You have successfully reported this measurement. The team has been informed "
 "and will look into your request as soon as possible."
@@ -2231,16 +2191,16 @@ msgstr ""
 "Du hast diese Messung erfolgreich gemeldet. Das Team wurde informiert und "
 "wird Deine Anfrage so schnell wie möglich prüfen."
 
-#: gcampus/core/views/measurement/__init__.py:168
+#: gcampus/core/views/forms/measurement.py:56
 msgid "Looking for nearby waters on OpenStreetMap."
 msgstr "Suche nach umliegenden Gewässern auf OpenStreetMap."
 
-#: gcampus/core/views/measurement/__init__.py:169
+#: gcampus/core/views/forms/measurement.py:57
 #, python-brace-format
 msgid "This may take up to {delay:d} seconds."
 msgstr "Das kann bis zu {delay:d} Sekunden dauern."
 
-#: gcampus/core/views/measurement/__init__.py:173
+#: gcampus/core/views/forms/measurement.py:61
 msgid ""
 "It looks like your requests takes a bit longer. We are still looking for "
 "nearby waters."
@@ -2248,7 +2208,7 @@ msgstr ""
 "Scheinbar dauert die Anfrage etwas länger. Wir suchen weiter nach Gewässern "
 "in der Nähe der Messung."
 
-#: gcampus/core/views/measurement/__init__.py:177
+#: gcampus/core/views/forms/measurement.py:65
 #, python-brace-format
 msgid ""
 "Due to the complexity of geospatial data, this may take up to {delay:d} "
@@ -2257,35 +2217,35 @@ msgstr ""
 "Aufgrund der Komplexität von Karten-Daten kann die Anfrage bis zu {delay:d} "
 "Sekunden dauern."
 
-#: gcampus/core/views/measurement/__init__.py:189
+#: gcampus/core/views/forms/measurement.py:82
 msgid "Create new measurement"
 msgstr "Neue Messung erstellen"
 
-#: gcampus/core/views/measurement/__init__.py:214
-#, python-brace-format
-msgid "Edit Measurement {pk:d} - Information"
-msgstr "Messung {pk:d} bearbeiten - Information"
+#: gcampus/core/views/forms/tabs.py:31
+msgid "1. Metadata"
+msgstr "1. Metadaten"
 
-#: gcampus/core/views/measurement/list.py:39
+#: gcampus/core/views/forms/tabs.py:36
+msgid "2. Measured Parameters"
+msgstr "2. Messwerte"
+
+#: gcampus/core/views/forms/tabs.py:41
+msgid "3. Saprobic Abundancies"
+msgstr "3. Sparobienhäufigkeiten"
+
+#: gcampus/core/views/forms/tabs.py:46
+msgid "4. Structural Assessment"
+msgstr "4. Strukturgüte-Bewertung"
+
+#: gcampus/core/views/forms/tabs.py:61
+msgid "Edit {measurement!s}"
+msgstr "{measurement!s} Bearbeiten"
+
+#: gcampus/core/views/lists/measurement.py:39
 msgid "All measurements"
 msgstr "Alle Messungen"
 
-#: gcampus/core/views/parameter.py:118
-#, python-brace-format
-msgid "Edit Measurement {pk:d} - Chemical Parameters"
-msgstr "Messung {pk:d} bearbeiten - Chemische Parameter"
-
-#: gcampus/core/views/parameter.py:138
-#, python-brace-format
-msgid "Edit Measurement {pk:d} - Biological Parameters"
-msgstr "Messung {pk:d} bearbeiten - Biologische Parameter"
-
-#: gcampus/core/views/parameter.py:157
-#, python-brace-format
-msgid "Edit Measurement {pk:d} - Structure Index"
-msgstr "Messung {pk:d} bearbeiten - Strukturgüte"
-
-#: gcampus/core/views/water/list.py:39
+#: gcampus/core/views/lists/water.py:39
 msgid "All waters"
 msgstr "Alle Gewässer"
 
@@ -2828,17 +2788,34 @@ msgstr ""
 msgid "GCampus Map"
 msgstr "GCampus Karte"
 
-#: gcampus/settings/base.py:175
+#: gcampus/settings/base.py:176
 msgid "English"
 msgstr "Englisch"
-
-#: gcampus/settings/base.py:175
-msgid "German"
-msgstr "Deutsch"
 
 #: gcampus/tasks/apps.py:24
 msgid "GCampus Tasks"
 msgstr "GCampus Aufgaben"
+
+#~ msgid "Manage access keys"
+#~ msgstr "Zugangscodes verwalten"
+
+#~ msgid "Add Parameters"
+#~ msgstr "Parameter Hinzufügen"
+
+#~ msgid "Edit Measurement {pk:d} - Information"
+#~ msgstr "Messung {pk:d} bearbeiten - Information"
+
+#~ msgid "Edit Measurement {pk:d} - Chemical Parameters"
+#~ msgstr "Messung {pk:d} bearbeiten - Chemische Parameter"
+
+#~ msgid "Edit Measurement {pk:d} - Biological Parameters"
+#~ msgstr "Messung {pk:d} bearbeiten - Biologische Parameter"
+
+#~ msgid "Edit Measurement {pk:d} - Structure Index"
+#~ msgstr "Messung {pk:d} bearbeiten - Strukturgüte"
+
+#~ msgid "German"
+#~ msgstr "Deutsch"
 
 #~ msgid "Admin link"
 #~ msgstr "Admin link"

@@ -1,0 +1,7 @@
+{% spaceless %}
+    <li class="nav-item">
+        <a class="nav-link{% if class_list %} {{ class_list|join:" " }}{% endif %}"{% if attrs %} {{ attrs|join:" " }}{% endif %}>
+            {{ name }}
+        </a>
+    </li>
+{% endspaceless %}

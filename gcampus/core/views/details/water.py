@@ -1,4 +1,4 @@
-#  Copyright (C) 2021-2022 desklab gUG (haftungsbeschränkt)
+#  Copyright (C) 2022 desklab gUG (haftungsbeschränkt)
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -13,13 +13,12 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from __future__ import annotations
+__all__ = ["WaterDetailView"]
 
 from django.views.generic import DetailView
 
-from gcampus.core.models.water import Water
+from gcampus.core.models import Water
 from gcampus.core.views.base import TitleMixin
-from gcampus.core.views.water.list import WaterListView
 
 
 class WaterDetailView(TitleMixin, DetailView):

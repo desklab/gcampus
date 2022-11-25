@@ -21,9 +21,9 @@ from django.db.models import Count
 from django.utils.translation import gettext_lazy
 from django.views.generic import ListView
 
+from gcampus.core.filters import WaterFilterSet
 from gcampus.core.models import Water
 from gcampus.core.views.base import TitleMixin
-from gcampus.core.filters import WaterFilterSet
 
 
 class WaterListView(TitleMixin, ListView):
