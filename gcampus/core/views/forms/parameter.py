@@ -56,7 +56,7 @@ class BaseParameterFormSetView(MeasurementEditTabsMixin, TemplateResponseMixin, 
 
     def get_context_data(self, **kwargs):
         kwargs.setdefault("object", self.instance)
-        kwargs["measurement"] = self._get_measurement()
+        kwargs.setdefault("measurement", self._get_measurement())
         return super().get_context_data(**kwargs)
 
     def get_instance(self, pk: int) -> Measurement:
