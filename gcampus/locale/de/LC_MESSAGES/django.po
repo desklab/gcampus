@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-25 16:33+0100\n"
+"POT-Creation-Date: 2022-11-28 16:37+0100\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -52,12 +52,12 @@ msgstr "Umrechnen"
 
 #: gcampus/analysis/templates/gcampusanalysis/components/od_converter_item.html:19
 #: gcampus/core/forms/measurement.py:160 gcampus/core/models/index/base.py:37
-#: gcampus/core/models/parameter.py:78
+#: gcampus/core/models/parameter.py:90
 #: gcampus/core/templates/gcampuscore/components/bach_index.html:36
 #: gcampus/core/templates/gcampuscore/components/saprobic_index.html:36
 #: gcampus/core/templates/gcampuscore/components/structure_index.html:36
 #: gcampus/core/templates/gcampuscore/components/trophic_index.html:36
-#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:182
+#: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:199
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:125
 msgid "Value"
 msgstr "Wert"
@@ -753,15 +753,15 @@ msgstr "Mit OpenStreetMap updaten"
 msgid "Create or update Water Quality Indices"
 msgstr "Gewässergüteindizes erstellen oder aktualisieren"
 
-#: gcampus/core/admin.py:162
+#: gcampus/core/admin.py:163
 msgid "OpenStreetMap URL"
 msgstr "OpenStreetMap URL"
 
-#: gcampus/core/admin.py:167
+#: gcampus/core/admin.py:168
 msgid "No OpenStreetMap ID provided!"
 msgstr "Keine OpenStreetMap ID angegeben!"
 
-#: gcampus/core/admin.py:195
+#: gcampus/core/admin.py:196
 msgid "Recalculate selected indices"
 msgstr "Ausgewählte Indizes neu berechnen"
 
@@ -879,14 +879,14 @@ msgstr ""
 "kontaktieren, falls wir Rückfragen haben. Sie wird mit niemandem sonst "
 "geteilt. Weitere Informationen findest du in der Datenschutzerklärung."
 
-#: gcampus/core/forms/measurement.py:99 gcampus/core/models/measurement.py:99
+#: gcampus/core/forms/measurement.py:99 gcampus/core/models/measurement.py:98
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:69
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:118
 msgctxt "measurement time"
 msgid "Time"
 msgstr "Messzeitpunkt"
 
-#: gcampus/core/forms/measurement.py:100 gcampus/core/models/measurement.py:100
+#: gcampus/core/forms/measurement.py:100 gcampus/core/models/measurement.py:99
 msgid "Date and time of the measurement"
 msgstr "Datum und Uhrzeit der Messung"
 
@@ -907,7 +907,7 @@ msgstr ""
 "wurde, kann das Gewässer aus den Vorschlägen ausgewählt werden."
 
 #: gcampus/core/forms/measurement.py:168 gcampus/core/forms/measurement.py:209
-#: gcampus/core/models/measurement.py:107 gcampus/core/models/parameter.py:97
+#: gcampus/core/models/measurement.py:106 gcampus/core/models/parameter.py:97
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:24
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:126
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:200
@@ -1292,66 +1292,66 @@ msgstr "Messungen"
 msgid "Name"
 msgstr "Name"
 
-#: gcampus/core/models/measurement.py:69
+#: gcampus/core/models/measurement.py:68
 msgid "Your forename or team name. This will be publicly visible."
 msgstr ""
 "Dein Vorname oder ein Team Name. Diese Information ist öffentlich sichtbar."
 
-#: gcampus/core/models/measurement.py:75
+#: gcampus/core/models/measurement.py:74
 msgid "Location"
 msgstr "Standort"
 
-#: gcampus/core/models/measurement.py:76
+#: gcampus/core/models/measurement.py:75
 msgid "Location of the measurement"
 msgstr "Standort der Messung"
 
-#: gcampus/core/models/measurement.py:83
+#: gcampus/core/models/measurement.py:82
 #: gcampus/documents/views/data_export.py:181
 msgid "Location name"
 msgstr "Standortname"
 
-#: gcampus/core/models/measurement.py:84
+#: gcampus/core/models/measurement.py:83
 msgid "An approximated location for the measurement"
 msgstr "Ein abgeschätzter Standort der Messung"
 
-#: gcampus/core/models/measurement.py:93 gcampus/core/models/water.py:158
+#: gcampus/core/models/measurement.py:92 gcampus/core/models/water.py:158
 msgid "Water"
 msgstr "Gewässer"
 
-#: gcampus/core/models/measurement.py:94
+#: gcampus/core/models/measurement.py:93
 msgid "The water associated with this measurement"
 msgstr "Das Gewässer an dem die Messung durchgeführt wurde"
 
-#: gcampus/core/models/measurement.py:108
+#: gcampus/core/models/measurement.py:107
 msgid "Note on your measurement. This will be publicly visible."
 msgstr "Notiz zu deiner Messung. Die Notiz wird für alle öffentlich einsehbar."
 
-#: gcampus/core/models/measurement.py:113 gcampus/core/models/parameter.py:98
+#: gcampus/core/models/measurement.py:112 gcampus/core/models/parameter.py:98
 msgid "Hidden"
 msgstr "Versteckt"
 
-#: gcampus/core/models/measurement.py:121
+#: gcampus/core/models/measurement.py:120
 msgid "requires review"
 msgstr "erfordert Überprüfung"
 
-#: gcampus/core/models/measurement.py:128
+#: gcampus/core/models/measurement.py:127
 msgid "data quality warning"
 msgstr "Datenqualität-Warnung"
 
-#: gcampus/core/models/measurement.py:136 gcampus/core/models/water.py:205
+#: gcampus/core/models/measurement.py:135 gcampus/core/models/water.py:205
 msgid "internal comment"
 msgstr "interner Kommentar"
 
-#: gcampus/core/models/measurement.py:146
+#: gcampus/core/models/measurement.py:145
 msgid "Document"
 msgstr "Dokument"
 
-#: gcampus/core/models/measurement.py:192
+#: gcampus/core/models/measurement.py:191
 #, python-brace-format
 msgid "Measurement #{id:05d}"
 msgstr "Messung #{id:05d}"
 
-#: gcampus/core/models/measurement.py:195
+#: gcampus/core/models/measurement.py:194
 #, python-format
 msgid "Measurement %(id)s"
 msgstr "Messung %(id)s"
@@ -2056,14 +2056,6 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:178
-#, fuzzy
-#| msgid ""
-#| "Some parameters of this measurement have <b>anomalous values</b>. This "
-#| "may have been caused by an error in the measurement procedure or "
-#| "incorrect documentation. Please take this into account when analysing and "
-#| "interpreting this measurement. If you think the values are correct and "
-#| "this warning is inappropriate, use the report to form to notify the "
-#| "GewässerCampus team."
 msgid ""
 "Some parameters of this measurement have <b>anomalous values</b>. This may "
 "have been caused by an error in the measurement procedure or incorrect "
