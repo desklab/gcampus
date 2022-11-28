@@ -8,7 +8,8 @@
       "unit": "mg/L",
       "identifier": "no3",
       "color": "B79219",
-      "category": "chemical"
+      "category": "chemical",
+      "upper_warning_limit": 1000
     }
   },
   {
@@ -20,7 +21,8 @@
       "unit": "mg/L",
       "identifier": "no2",
       "color": "4D2E2E",
-      "category": "chemical"
+      "category": "chemical",
+      "upper_warning_limit": 1000
     }
   },
   {
@@ -32,7 +34,9 @@
       "unit": "",
       "identifier": "ph",
       "color": "4B8552",
-      "category": "chemical"
+      "category": "chemical",
+      "lower_warning_limit": 4,
+      "upper_warning_limit": 10
     }
   },
   {
@@ -44,7 +48,8 @@
       "unit": "mg/L",
       "identifier": "so4",
       "color": "1B4154",
-      "category": "chemical"
+      "category": "chemical",
+      "upper_warning_limit": 1000
     }
   },
   {
@@ -56,7 +61,8 @@
       "unit": "mg/L",
       "identifier": "nh4",
       "color": "339D8F",
-      "category": "chemical"
+      "category": "chemical",
+      "upper_warning_limit": 1000
     }
   },
   {
@@ -68,7 +74,8 @@
       "unit": "mg/L",
       "identifier": "po4",
       "color": "996637",
-      "category": "chemical"
+      "category": "chemical",
+      "upper_warning_limit": 1000
     }
   },
   {
@@ -80,7 +87,8 @@
       "unit": "mg/L",
       "identifier": "bod5",
       "color": "775F13",
-      "category": "chemical"
+      "category": "chemical",
+      "upper_warning_limit": 1000
     }
   },
   {
@@ -92,7 +100,8 @@
       "unit": "%",
       "identifier": "o2",
       "color": "28472C",
-      "category": "chemical"
+      "category": "chemical",
+      "upper_warning_limit": 200
     }
   },
   {
@@ -104,7 +113,8 @@
       "unit": "µS/cm",
       "identifier": "conductivity",
       "color": "854B4B",
-      "category": "chemical"
+      "category": "chemical",
+      "upper_warning_limit": 20000
     }
   },
   {
@@ -116,7 +126,8 @@
       "unit": "°C",
       "identifier": "temp",
       "color": "337A9D",
-      "category": "chemical"
+      "category": "chemical",
+      "upper_warning_limit": 80
     }
   },
   {
@@ -128,7 +139,8 @@
       "unit": "mg/L",
       "identifier": "chlorophyll",
       "color": "5C432B",
-      "category": "chemical"
+      "category": "chemical",
+      "upper_warning_limit": 1000
     }
   },
    {
@@ -140,7 +152,8 @@
       "unit": "cm",
       "identifier": "visdepth",
       "color": "B7AF19",
-      "category": "chemical"
+      "category": "chemical",
+      "upper_warning_limit": 2000
     }
   },
   {
@@ -152,7 +165,8 @@
       "unit": "",
       "identifier": "plecoptera",
       "color": "",
-      "category": "biological"
+      "category": "biological",
+      "upper_warning_limit": 1000
     }
   },
   {
@@ -164,7 +178,8 @@
       "unit": "",
       "identifier": "odonata",
       "color": "",
-      "category": "biological"
+      "category": "biological",
+      "upper_warning_limit": 1000
     }
   },
   {
@@ -176,7 +191,8 @@
       "unit": "",
       "identifier": "hirudinea",
       "color": "",
-      "category": "biological"
+      "category": "biological",
+      "upper_warning_limit": 1000
     }
   },
   {
@@ -188,7 +204,8 @@
       "unit": "",
       "identifier": "gastropoda",
       "color": "",
-      "category": "biological"
+      "category": "biological",
+      "upper_warning_limit": 1000
     }
   },
   {
@@ -200,7 +217,8 @@
       "unit": "",
       "identifier": "diptera",
       "color": "",
-      "category": "biological"
+      "category": "biological",
+      "upper_warning_limit": 1000
     }
   },
   {
@@ -212,7 +230,8 @@
       "unit": "",
       "identifier": "amphipoda",
       "color": "",
-      "category": "biological"
+      "category": "biological",
+      "upper_warning_limit": 1000
     }
   },
   {
@@ -224,7 +243,8 @@
       "unit": "",
       "identifier": "trichoptera",
       "color": "",
-      "category": "biological"
+      "category": "biological",
+      "upper_warning_limit": 1000
     }
   },
   {
