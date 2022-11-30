@@ -30,7 +30,9 @@ NEXT_URL_FIELD_NAME = "next_url"
 
 class AccessKeyForm(forms.Form):
     token = HyphenatedTokenField(
-        TokenType.access_key, required=True, label=_("Access key")
+        TokenType.access_key,
+        required=True,
+        label=_("Access key"),
     )
     next_url = CharField(required=False, max_length=255, widget=forms.HiddenInput())
 
