@@ -4,7 +4,7 @@
 {% block exception_title %}{% translate "Login" %}{% endblock %}
 {% block exception_message %}
     {% include "gcampusauth/components/current_token_info.html" %}
-
+    {% url "gcampusauth:login" as login_url %}
     {% blocktranslate trimmed %}
         Some features, for example adding a new measurement,
         are limited to authenticated users.
@@ -18,6 +18,9 @@
         register
         a new course.
     {% endblocktranslate %}
+    <a class="btn btn-primary btn-block btn-sm w-100" href="{{ login_url }}">
+        {% translate "Go back to previous login page" %}
+    </a>
 {% endblock %}
 {% block exception_options %}
     <div class="p-4 p-md-5 border bg-light">
