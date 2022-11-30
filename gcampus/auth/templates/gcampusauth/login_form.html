@@ -3,20 +3,7 @@
 {% block title %}{% translate "Login" %}{% endblock %}
 {% block content %}
     <div class="container">
-        {% blocktranslate trimmed %}
-            Some features, for example adding a new measurement,
-            are limited to authenticated users.
-            Please use your access key to
-            log in as a student.
-            If you don't have an access key, your teacher can generate one for you.
-            <br><br>
-            As a teacher you can
-            login with a course token
-            or
-            register
-            a new course.
-        {% endblocktranslate %}
-        <br><br>
+
         {% include "gcampusauth/components/current_token_info.html" %}
         {% if authenticated %}
             <hr class="my-4">
@@ -53,6 +40,14 @@
                             </div>
                         </div>
                     </form>
+                    <br><br>
+                    {% blocktranslate trimmed %}
+                        Some features, for example adding a new measurement,
+                        are limited to authenticated users.
+                        Please use your access key to
+                        log in as a student.
+                        If you don't have an access key, your teacher can generate one for you.
+                    {% endblocktranslate %}
                 </div>
             </div>
             <div class="col-sm ">
@@ -77,17 +72,29 @@
                             </div>
                         </div>
                     </form>
+                    <br><br>
+                    {% blocktranslate trimmed %}
+                        As a teacher you can
+                        login with a course token. With this you will have access to an overview of all
+                        measurements of your students and be able to edit and hide
+                        these measurements.
+                    {% endblocktranslate %}
                 </div>
             </div>
             <div class="col-sm order-last">
                 <div class="p-4 p-md-5 border bg-light">
                     <div class="row justify-content-center">
                         <div class="col">
+                            <br><br>
                             <a href="{% url "gcampusauth:register" %}" class="btn btn-primary btn-block btn-sm w-100">
                                 Register
                             </a>
                         </div>
                     </div>
+                    <br><br>
+                    {% blocktranslate trimmed %}
+                        To be able to create a new course, you need to register by clicking the button below.
+                    {% endblocktranslate %}
                 </div>
             </div>
         </div>
