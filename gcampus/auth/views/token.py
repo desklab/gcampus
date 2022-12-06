@@ -150,5 +150,5 @@ class AccessKeyFormView(LoginFormView):
 class CourseTokenFormView(LoginFormView):
     template_name: str = "gcampusauth/failed_login_form.html"
     form_class = CourseTokenForm
-    success_url = reverse_lazy("gcampuscore:mapview")
+    success_url = reverse_lazy("gcampusauth:course-update")
     token_type = TokenType.course_token
