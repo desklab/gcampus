@@ -40,6 +40,13 @@ class MeasurementKit(models.Model):
 
     color = models.CharField(blank=True, verbose_name=_("Color"), max_length=7)
 
+    def __str__(self):
+        if self.pk is not None:
+            return _("#{pk:02d} ({name})").format(pk=self.pk, name=self.short_name)
+        else:
+            # In this case, ``id`` will be replaced with ``None``
+            return _("Measurement Kit - %(id)s") % {"id": self.pk}
+
 
 class Calibration(models.Model):
     class Meta:
@@ -71,3 +78,12 @@ class Calibration(models.Model):
         verbose_name=_("Measurement Kit"),
         related_name="calibrations",
     )
+
+    def __str__(self):
+        if self.pk is not None:
+            return _("#{pk:03d} ({param} {min} - {max})").format(
+                pk=self.pk, param=self.parameter_type, min=self.x_min, max=self.x_max
+            )
+        else:
+            # In this case, ``id`` will be replaced with ``None``
+            return _("Calibration - %(id)s") % {"id": self.pk}

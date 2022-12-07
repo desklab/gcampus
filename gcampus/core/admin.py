@@ -31,7 +31,6 @@ from gcampus.core.models import (
     TrophicIndex,
     StructureIndex,
 )
-from gcampus.tools.models import Calibration
 from gcampus.core.models.index.base import WaterQualityIndex
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 
@@ -175,10 +174,6 @@ class ParameterTypeAdmin(admin.ModelAdmin):
     inlines = [ParameterInline]
 
 
-class CalibrationAdmin(admin.ModelAdmin):
-    pass
-
-
 class ParameterAdmin(admin.ModelAdmin):
     search_fields = ("parameter_type__name",)
     list_filter = ("parameter_type", "hidden")
@@ -231,7 +226,6 @@ admin.site.register(Measurement, MeasurementAdmin)
 admin.site.register(ParameterType, ParameterTypeAdmin)
 admin.site.register(Parameter, ParameterAdmin)
 admin.site.register(Water, WaterAdmin)
-admin.site.register(Calibration, CalibrationAdmin)
 admin.site.register(BACHIndex, BACHIndexAdmin)
 admin.site.register(SaprobicIndex, SaprobicIndexAdmin)
 admin.site.register(TrophicIndex, TrophicIndexAdmin)
