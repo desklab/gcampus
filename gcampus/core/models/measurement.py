@@ -15,7 +15,7 @@
 
 from __future__ import annotations
 
-__ALL__ = ["Measurement", "ParameterType", "Parameter", "Calibration"]
+__ALL__ = ["Measurement", "ParameterType", "Parameter"]
 
 from typing import List
 

@@ -21,7 +21,7 @@
                         {% endblocktranslate %}
                     {% endif %}
                     <div class="mt-2 text-end">
-                        <a class="btn btn-sm btn-secondary" href="{% url "gcampusanalysis:od_converter_overview" %}">
+                        <a class="btn btn-sm btn-secondary" href="{% url "gcampustools:od_converter_overview" %}">
                             {% translate "Select different parameter" %}
                         </a>
                     </div>
@@ -35,14 +35,14 @@
                 </div>
                 <div class="col-5 d-none d-md-block bg-light"></div>
                 {# Placeholder #}
-                {% include "gcampusanalysis/components/od_converter_item.html" %}
+                {% include "gcampustools/components/od_converter_item.html" %}
             {% endfor %}
         </div>
     </div>
 {% endblock %}
 {% block body_js %}
     {{ block.super }}
-    <script type="text/javascript" src="{% static 'gcampusanalysis/js/calibration.js' %}"></script>
+    <script type="text/javascript" src="{% static 'gcampustools/js/calibration.js' %}"></script>
     <script type="text/javascript">
         {% for calibration in calibrations %}
         let chart{{ calibration.pk }} = (function () {
@@ -50,7 +50,7 @@
             if ('{{ parameter.unit }}' !== '') {
                 xLabel = xLabel + ' [{{ parameter.unit }}]';
             }
-            return gcampusanalysis.calibration.createChart(
+            return gcampustools.calibration.createChart(
                 {{ calibration.pk }},
                 document.getElementById("chart{{ calibration.name }}"),
                 '{{ calibration.calibration_formula }}',
@@ -65,7 +65,7 @@
         document.getElementById('conversionForm{{ calibration.pk }}')
             .addEventListener(
                 'submit',
-                (event) => gcampusanalysis.calibration.formConversion(event, {{ calibration.pk }}, chart{{ calibration.pk }})
+                (event) => gcampustools.calibration.formConversion(event, {{ calibration.pk }}, chart{{ calibration.pk }})
             );
         {% endfor %}
     </script>

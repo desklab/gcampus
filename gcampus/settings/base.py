@@ -86,7 +86,7 @@ INSTALLED_APPS = [
     "gcampus.api",
     "gcampus.map",
     "gcampus.documents",
-    "gcampus.analysis",
+    "gcampus.tools",
     "gcampus.mail",
     # Other django apps
     # Sometimes the order is important

@@ -13,4 +13,4 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-default_app_config = "gcampus.analysis.apps.GCampusAnalysisAppConfig"
+from gcampus.tools.models.calibration import MeasurementKit, Calibration

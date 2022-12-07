@@ -26,12 +26,12 @@ from gcampus.core.models import (
     ParameterType,
     Parameter,
     Water,
-    Calibration,
     BACHIndex,
     SaprobicIndex,
     TrophicIndex,
     StructureIndex,
 )
+from gcampus.tools.models import Calibration
 from gcampus.core.models.index.base import WaterQualityIndex
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 

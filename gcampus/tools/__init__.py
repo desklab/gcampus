@@ -12,23 +12,5 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from importlib.util import find_spec
 
-from django.conf import settings
-from django.contrib import admin
-from django.urls import path, include
-
-urlpatterns = [
-    path("", include("gcampus.core.urls")),
-    path("", include("gcampus.auth.urls")),
-    path("", include("gcampus.documents.urls")),
-    path("", include("gcampus.tools.urls")),
-    path("api/v1/", include("gcampus.api.urls", namespace="v1")),
-    path("admin/", admin.site.urls),
-]
-
-if settings.DEBUG and find_spec("debug_toolbar"):
-    # Only add debug toolbar urls if the module is present
-    urlpatterns.append(path("__debug__/", include("debug_toolbar.urls"))),
-
-handler403 = "gcampus.auth.views.permission_denied_error_handler"
+default_app_config = "gcampus.tools.apps.GCampusToolsAppConfig"

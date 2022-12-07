@@ -2,7 +2,7 @@
 {% load i18n static list_iter %}
 {% block extra_head %}
     {{ block.super }}
-    <script type="text/javascript" src="{% static 'gcampusanalysis/js/calibration.js' %}"></script>
+    <script type="text/javascript" src="{% static 'gcampustools/js/calibration.js' %}"></script>
 {% endblock %}
 {% block main_class %}main-pb-0 main-pt-0{% endblock %}
 {% block navbar_title %}
@@ -26,13 +26,13 @@
                 {% for _ in range %}
                     <div class="row">
                         {% if not forloop.counter0|get_iter_num:0 >= param_num %}
-                            {% include "gcampusanalysis/components/od_card.html" with row_pos=0 %}
+                            {% include "gcampustools/components/od_card.html" with row_pos=0 %}
                         {% endif %}
                         {% if not forloop.counter0|get_iter_num:1 >= param_num %}
-                            {% include "gcampusanalysis/components/od_card.html" with row_pos=1 %}
+                            {% include "gcampustools/components/od_card.html" with row_pos=1 %}
                         {% endif %}
                         {% if not forloop.counter0|get_iter_num:2 >= param_num %}
-                            {% include "gcampusanalysis/components/od_card.html" with row_pos=2 %}
+                            {% include "gcampustools/components/od_card.html" with row_pos=2 %}
                         {% endif %}
                     </div>
                 {% endfor %}
