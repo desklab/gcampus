@@ -16,14 +16,21 @@
 from django.urls import path
 
 from gcampus.tools.apps import GCampusToolsAppConfig
-from gcampus.tools.views import ODConverterOverView, ODConverterDetailView
+from gcampus.tools.views import (
+    ODConverterOverView,
+    ODConverterDetailView,
+    MeasurementKitOverView,
+    ToolsOverView,
+)
 
 # Turn off black formatting and pylint
 # fmt: off
 # pylint: disable=line-too-long
 urlpatterns = [
-    path("tools/convert", ODConverterOverView.as_view(), name="od_converter_overview"),
-    path("tools/convert/<int:pk>/", ODConverterDetailView.as_view(), name="od_converter"),
+    path("tools/", ToolsOverView.as_view(), name="tools"),
+    path("tools/kits/", MeasurementKitOverView.as_view(), name="measurement_kit_overview"),
+    path("tools/kits/<int:pk_kit>/", ODConverterOverView.as_view(), name="od_converter_overview"),
+    path("tools/kits/<int:pk_kit>/convert/<int:pk>/", ODConverterDetailView.as_view(), name="od_converter"),
 ]
 # fmt: on
 # pylint: enable=line-too-long

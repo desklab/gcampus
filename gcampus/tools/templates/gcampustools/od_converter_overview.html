@@ -11,13 +11,17 @@
 
 {% block content %}
     <div class="container-fluid px-0">
-        <div class="container my-5">
-            <div class="text-secondary mt-4">
-                {% blocktranslate trimmed with url="https://desk-lab.de/docs/gcampus-calibration" %}
-                    This tool helps you to convert the optical density you measured with the photometer into
-                    the value of the specific parameter. It uses a standard calibration which has been prepared
-                    by the GewässerCampus team. You can find more information on how to create and
-                    use a calibration <a href={{ url }} class="text-reset">here</a>.
+        <div class="container mb-5 mt-3">
+            <h2 class="text-secondary">
+                {% translate "Parameter" %}
+                <a class="btn btn-sm btn-secondary float-end"
+                   href="{% url "gcampustools:tools" %}">
+                    {% translate "Select different kit" %}
+                </a>
+            </h2>
+            <div>
+                {% blocktranslate trimmed %}
+                    Choose the parameter for which you want to convert the Optical Density.
                 {% endblocktranslate %}
             </div>
         </div>

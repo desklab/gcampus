@@ -8,7 +8,7 @@
     <div class="container-fluid px-0">
         <div class="row">
             <div class="col-12 col-md-7">
-                <div class="mt-3 mb-5 p-3 bg-light">
+                <div class="box box-info mb-3 mt-4">
                     {% if parameter.unit != "" %}
                         {% blocktranslate trimmed with name=parameter.name unit=parameter.unit %}
                             This tool helps you to convert the optical density you measured with the photometer into
@@ -20,11 +20,12 @@
                             <b>{{ name }}</b>.
                         {% endblocktranslate %}
                     {% endif %}
-                    <div class="mt-2 text-end">
-                        <a class="btn btn-sm btn-secondary" href="{% url "gcampustools:od_converter_overview" %}">
+                </div>
+                <div class="mb-5 text-end">
+                        <a class="btn btn-sm btn-secondary"
+                           href="{% url "gcampustools:od_converter_overview" pk_kit=pk_kit %}">
                             {% translate "Select different parameter" %}
                         </a>
-                    </div>
                 </div>
             </div>
             <div class="col-5 d-none d-md-block bg-light"></div>
@@ -45,28 +46,28 @@
     <script type="text/javascript" src="{% static 'gcampustools/js/calibration.js' %}"></script>
     <script type="text/javascript">
         {% for calibration in calibrations %}
-        let chart{{ calibration.pk }} = (function () {
-            let xLabel = '{{ parameter.name }}';
-            if ('{{ parameter.unit }}' !== '') {
-                xLabel = xLabel + ' [{{ parameter.unit }}]';
-            }
-            return gcampustools.calibration.createChart(
-                {{ calibration.pk }},
-                document.getElementById("chart{{ calibration.name }}"),
-                '{{ calibration.calibration_formula }}',
-                '{% blocktranslate with parameter_type=calibration.parameter_type %}Calibration fit for {{ parameter_type }}{% endblocktranslate %}',
-                xLabel,
-                '{% translate "Optical density" %}',
-                '{{ calibration.x_max }}',
-                '{{ calibration.x_min }}'
-            );
-        })();
+            let chart{{ calibration.pk }} = (function () {
+                let xLabel = '{{ parameter.name }}';
+                if ('{{ parameter.unit }}' !== '') {
+                    xLabel = xLabel + ' [{{ parameter.unit }}]';
+                }
+                return gcampustools.calibration.createChart(
+                    {{ calibration.pk }},
+                    document.getElementById("chart{{ calibration.name }}"),
+                    '{{ calibration.calibration_formula }}',
+                    '{% blocktranslate with parameter_type=calibration.parameter_type %}Calibration fit for {{ parameter_type }}{% endblocktranslate %}',
+                    xLabel,
+                    '{% translate "Optical density" %}',
+                    '{{ calibration.x_max }}',
+                    '{{ calibration.x_min }}'
+                );
+            })();
 
-        document.getElementById('conversionForm{{ calibration.pk }}')
-            .addEventListener(
-                'submit',
-                (event) => gcampustools.calibration.formConversion(event, {{ calibration.pk }}, chart{{ calibration.pk }})
-            );
+            document.getElementById('conversionForm{{ calibration.pk }}')
+                .addEventListener(
+                    'submit',
+                    (event) => gcampustools.calibration.formConversion(event, {{ calibration.pk }}, chart{{ calibration.pk }})
+                );
         {% endfor %}
     </script>
 {% endblock %}
