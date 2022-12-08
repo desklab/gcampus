@@ -253,7 +253,37 @@
     "fields": {
       "name": "GewässerCampus Kit",
       "short_name": "GC Kit",
-      "identifier": "gcampuskit",
+      "identifier": "gcampus",
+      "color": "000000"
+    }
+  },
+  {
+    "model": "gcampustools.MeasurementKit",
+    "pk": 2,
+    "fields": {
+      "name": "JBL Pro Auqatest Lab",
+      "short_name": "JBL",
+      "identifier": "jblpal",
+      "color": "000000"
+    }
+  },
+  {
+    "model": "gcampustools.MeasurementKit",
+    "pk": 3,
+    "fields": {
+      "name": "VISOCOLOR School Analysekoffer",
+      "short_name": "VC",
+      "identifier": "vcsa",
+      "color": "000000"
+    }
+  },
+  {
+    "model": "gcampustools.MeasurementKit",
+    "pk": 4,
+    "fields": {
+      "name": "MQuant Kompaktlabor für Wasseruntersuchungen",
+      "short_name": "MQ",
+      "identifier": "mqkl",
       "color": "000000"
     }
   },
@@ -339,6 +369,150 @@
       "x_max": 9.0,
       "x_min": 6.0,
       "measurement_kit": 1
+    }
+  },
+  {
+    "model": "gcampustools.calibration",
+    "pk": 8,
+    "fields": {
+      "name": "Ammonium",
+      "parameter_type": 6,
+      "calibration_formula": "10.101010*od",
+      "x_max": 5,
+      "x_min": 0,
+      "measurement_kit": 2
+    }
+  },
+  {
+    "model": "gcampustools.calibration",
+    "pk": 9,
+    "fields": {
+      "name": "Nitrat",
+      "parameter_type": 1,
+      "calibration_formula": "66.666667*od",
+      "x_max": 80,
+      "x_min": 0,
+      "measurement_kit": 2
+    }
+  },
+  {
+    "model": "gcampustools.calibration",
+    "pk": 10,
+    "fields": {
+      "name": "Nitrit",
+      "parameter_type": 2,
+      "calibration_formula": "2.597403*od",
+      "x_max": 1,
+      "x_min": 0,
+      "measurement_kit": 2
+    }
+  },
+  {
+    "model": "gcampustools.calibration",
+    "pk": 11,
+    "fields": {
+      "name": "Phosphat",
+      "parameter_type": 8,
+      "calibration_formula": "4.629630*od",
+      "x_max": 2,
+      "x_min": 0,
+      "measurement_kit": 2
+    }
+  },
+  {
+    "model": "gcampustools.calibration",
+    "pk": 12,
+    "fields": {
+      "name": "Ammonium",
+      "parameter_type": 6,
+      "calibration_formula": "2.631579*od",
+      "x_max": 2,
+      "x_min": 0,
+      "measurement_kit": 3
+    }
+  },
+  {
+    "model": "gcampustools.calibration",
+    "pk": 13,
+    "fields": {
+      "name": "Nitrat",
+      "parameter_type": 1,
+      "calibration_formula": "50.251256*od",
+      "x_max": 50,
+      "x_min": 0,
+      "measurement_kit": 3
+    }
+  },
+  {
+    "model": "gcampustools.calibration",
+    "pk": 14,
+    "fields": {
+      "name": "Nitrit",
+      "parameter_type": 2,
+      "calibration_formula": "0.787402*od",
+      "x_max": 1,
+      "x_min": 0,
+      "measurement_kit": 3
+    }
+  },
+  {
+    "model": "gcampustools.calibration",
+    "pk": 15,
+    "fields": {
+      "name": "Phosphat",
+      "parameter_type": 8,
+      "calibration_formula": "19.607843*od",
+      "x_max": 15,
+      "x_min": 0,
+      "measurement_kit": 3
+    }
+  },
+  {
+    "model": "gcampustools.calibration",
+    "pk": 16,
+    "fields": {
+      "name": "Ammonium",
+      "parameter_type": 6,
+      "calibration_formula": "2.652520*od",
+      "x_max": 1.5,
+      "x_min": 0,
+      "measurement_kit": 4
+    }
+  },
+  {
+    "model": "gcampustools.calibration",
+    "pk": 17,
+    "fields": {
+      "name": "Nitrat",
+      "parameter_type": 1,
+      "calibration_formula": "166.666667*od",
+      "x_max": 150,
+      "x_min": 0,
+      "measurement_kit": 4
+    }
+  },
+  {
+    "model": "gcampustools.calibration",
+    "pk": 18,
+    "fields": {
+      "name": "Nitrit",
+      "parameter_type": 2,
+      "calibration_formula": "0.849618*od",
+      "x_max": 1,
+      "x_min": 0,
+      "measurement_kit": 4
+    }
+  },
+  {
+    "model": "gcampustools.calibration",
+    "pk": 19,
+    "fields": {
+      "name": "Phosphat",
+      "parameter_type": 8,
+      "calibration_formula": "3.571429*od",
+      "x_max": 3,
+      "x_min": 0,
+      "measurement_kit": 4
     }
   }
 ]
