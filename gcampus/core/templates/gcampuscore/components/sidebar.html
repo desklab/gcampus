@@ -22,7 +22,9 @@
             {% include "gcampuscore/components/sidebar_item.html" with url=measurements_filter_url icon="gcampuscore/icons/list-ul.html" title=measurements_title view_name="gcampuscore:measurements" %}
             {% waters_url as waters_filter_url %}
             {% include "gcampuscore/components/sidebar_item.html" with url=waters_filter_url icon="gcampuscore/icons/droplet.html" title=waters_title view_name="gcampuscore:waters" %}
-            {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/compass.html" title=tools_title view_name="gcampustools:tools" other_view_names="gcampustools:od_converter_overview" %}
+            {% with "gcampustools:measurement_kit_overview,gcampustools:od_converter_overview,gcampustools:od_converter" as tools_other_view_names %}
+                {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/compass.html" title=tools_title view_name="gcampustools:tools" other_view_names=tools_other_view_names %}
+            {% endwith %}
             {% if user_token_is_course_token %}
                 {% include "gcampuscore/components/sidebar_item.html" with icon="gcampuscore/icons/people.html" title=course_title view_name="gcampusauth:course-update" other_view_names="gcampusauth:course-access-keys" %}
             {% endif %}
