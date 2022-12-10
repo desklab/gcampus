@@ -13,39 +13,13 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__ALL__ = ["MeasurementKit", "Calibration"]
+__ALL__ = ["Calibration"]
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models.parameter import ParameterType
-
-
-class MeasurementKit(models.Model):
-    class Meta:
-        verbose_name = _("Measurement Kit")
-        verbose_name_plural = _("Measurement Kit")
-
-    name = models.CharField(blank=True, max_length=200, verbose_name=_("Name"))
-
-    short_name = models.CharField(
-        blank=True, max_length=50, verbose_name=_("Short name")
-    )
-
-    identifier = models.CharField(
-        blank=True,
-        max_length=20,
-        verbose_name=_("Identifier"),
-    )
-
-    color = models.CharField(blank=True, verbose_name=_("Color"), max_length=7)
-
-    def __str__(self):
-        if self.pk is not None:
-            return _("#{pk:02d} ({name})").format(pk=self.pk, name=self.short_name)
-        else:
-            # In this case, ``id`` will be replaced with ``None``
-            return _("Measurement Kit - %(id)s") % {"id": self.pk}
+from gcampus.tools.models.kit import MeasurementKit
 
 
 class Calibration(models.Model):
@@ -53,13 +27,13 @@ class Calibration(models.Model):
         verbose_name = _("Calibration")
         verbose_name_plural = _("Calibrations")
 
-    name = models.CharField(blank=True, max_length=280, verbose_name=_("Name"))
+    name = models.CharField(
+        blank=False, null=False, max_length=280, verbose_name=_("Name")
+    )
 
     parameter_type = models.ForeignKey(
         ParameterType,
         on_delete=models.PROTECT,
-        # We opted to use 'Parameter' in the front-end. See issue
-        # https://github.com/desklab/gcampus/issues/46 for more.
         verbose_name=_("Parameter"),
         related_name="calibrations",
     )
@@ -75,7 +49,7 @@ class Calibration(models.Model):
     measurement_kit = models.ForeignKey(
         MeasurementKit,
         on_delete=models.PROTECT,
-        verbose_name=_("Measurement Kit"),
+        verbose_name=_("Measurement kit"),
         related_name="calibrations",
     )
 
@@ -85,5 +59,5 @@ class Calibration(models.Model):
                 pk=self.pk, param=self.parameter_type, min=self.x_min, max=self.x_max
             )
         else:
-            # In this case, ``id`` will be replaced with ``None``
-            return _("Calibration - %(id)s") % {"id": self.pk}
+            # In this case, ``pk`` will be replaced with ``None``
+            return _("Calibration - {pk}").format(pk=self.pk)
