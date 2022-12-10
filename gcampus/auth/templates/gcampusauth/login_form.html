@@ -1,105 +1,142 @@
 {% extends "gcampuscore/base.html" %}
-{% load i18n auth_token %}
-{% block title %}{% translate "Login" %}{% endblock %}
-{% block content %}
-    <div class="container">
-
-        {% include "gcampusauth/components/current_token_info.html" %}
-        {% if authenticated %}
-            <hr class="my-4">
-            <small class="text-muted">
-                {% blocktranslate trimmed %}
-                    If you login with a different access key or course token,
-                    you will automatically be logged out from your old key.
-                {% endblocktranslate %}
-            </small>
-        {% endif %}
-        <div class="row">
-            <div class="col-sm order-first">
-                {% url "gcampusauth:login-course-token" as login_coursetoken_url %}
-                {% url "gcampusauth:login-access-key" as login_accesskey_url %}
-                {% url "gcampusauth:register" as register_url %}
-                <div class="p-4 p-md-5 border bg-light">
-                    <form action="{{ access_key_form_url }}" method="post">
-                        <div class="row justify-content-center">
-                            <div class="col">
-                                {% csrf_token %}
-                                {# Token #}
-                                {% with access_key_form.token as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
-                                {{ access_key_form.next_url }}
-                            </div>
-                            <div class="col-lg-12">
-                                <button class="btn btn-primary btn-block btn-sm w-100">
-                                    {% translate "Login with access key" %}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <br><br>
+{% load static i18n auth_token %}
+{% block body %}
+    <div class="d-flex flex-column flex-md-row min-vh-100 g-0 align-items-md-stretch align-items-center">
+        <div class="col-12 col-md-8 bg-white d-flex flex-column justify-content-center">
+            <div class="container text-center mx-auto py-5">
+                <h1 class="mb-4">
                     {% blocktranslate trimmed %}
-                        Some features, for example adding a new measurement,
-                        are limited to authenticated users.
-                        Please use your access key to
-                        log in as a student.
-                        If you don't have an access key, your teacher can generate one for you.
+                        Login to
+                        <span class="gcampus-logo text-dark"><span>Gewässer</span>Campus</span>
                     {% endblocktranslate %}
-                </div>
-            </div>
-            <div class="col-sm ">
-                <div class="p-4 p-md-5 border bg-light">
-                    <form action="{{ course_token_form_url }}" method="post">
-                        <div class="row justify-content-center">
-                            <div class="col">
-                                {% csrf_token %}
-                                {# Token #}
-                                {% with course_token_form.token as field %}
-                                    <div class="mb-3">
-                                        {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
-                                        {{ field }}
-                                    </div>
-                                {% endwith %}
-                                {{ course_token_form.next_url }}
-                            </div>
-                            <div class="col-lg-12">
-                                <button class="btn btn-primary btn-block btn-sm w-100">
-                                    {% translate "Login with course token" %}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <br><br>
+                </h1>
+                {% if authenticated %}
+                    {% include "gcampusauth/components/current_token_info.html" %}
                     {% blocktranslate trimmed %}
-                        As a teacher you can
-                        login with a course token. With this you will have access to an overview of all
-                        measurements of your students and be able to edit and hide
-                        these measurements.
+                        If you login with a different access key or course token,
+                        you will automatically be logged out from your old key.
                     {% endblocktranslate %}
-                </div>
+                {% else %}
+                    {% blocktranslate trimmed %}
+                        Login as a student using you <b>access key</b>
+                        to create new measurements and edit your
+                        existing ones.<br>
+                        Teachers can login using a <b>course token</b>
+                        to administer the course, edit measurements and
+                        create new access keys.
+                    {% endblocktranslate %}
+                {% endif %}
             </div>
-            <div class="col-sm order-last">
-                <div class="p-4 p-md-5 border bg-light">
-                    <div class="row justify-content-center">
-                        <div class="col">
-                            <br><br>
-                            <a href="{% url "gcampusauth:register" %}" class="btn btn-primary btn-block btn-sm w-100">
-                                Register
-                            </a>
-                        </div>
+            <div class="pb-4 row g-0 justify-content-center">
+                <div class="col-12 col-lg-6 px-lg-3 d-flex justify-content-center align-items-start border-end-lg">
+                    <h2>
+                        {% include "gcampuscore/icons/person-fill.html" with extra_class="text-muted flex-shrink-0 me-3" only %}
+                    </h2>
+                    <div>
+                        <h2 class="fw-bold mb-0">{% translate "Student" %}</h2>
+                        <p>
+                            {% blocktranslate trimmed %}
+                                Login using an <b>access key</b>:
+                            {% endblocktranslate %}
+                        </p>
+                        <form action="{% url "gcampusauth:login-access-key" %}" method="post">
+                            {% csrf_token %}
+                            {# Token #}
+                            {% with access_key_form.token as field %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <small class="text-danger">{{ field.errors }}</small>
+                                    {% endif %}
+                                </div>
+                            {% endwith %}
+                            {{ access_key_form.next_url }}
+                            <button class="btn btn-primary btn-block btn-sm w-100" type="submit">
+                                {% translate "Login with access key" %}
+                            </button>
+                        </form>
                     </div>
-                    <br><br>
-                    {% blocktranslate trimmed %}
-                        To be able to create a new course, you need to register by clicking the button below.
-                    {% endblocktranslate %}
+                </div>
+                <div class="col-12 col-lg-6 mt-4 mt-lg-0 px-lg-3 d-flex justify-content-center align-items-start">
+                    <h2>
+                        {% include "gcampuscore/icons/teacher.html" with extra_class="text-muted flex-shrink-0 me-3" only %}
+                    </h2>
+                    <div>
+                        <h2 class="fw-bold mb-0">{% translate "Teacher" %}</h2>
+                        <p>
+                            {% blocktranslate trimmed %}
+                                Login using a <b>course token</b>:
+                            {% endblocktranslate %}
+                        </p>
+                        <form action="{% url "gcampusauth:login-course-token" %}" method="post">
+                            {% csrf_token %}
+                            {# Token #}
+                            {% with course_token_form.token as field %}
+                                <div class="mb-3">
+                                    {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <small class="text-danger">{{ field.errors }}</small>
+                                    {% endif %}
+                                </div>
+                            {% endwith %}
+                            {{ course_token_form.next_url }}
+                            <button class="btn btn-primary btn-block btn-sm w-100" type="submit">
+                                {% translate "Login with access key" %}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="col-12 col-md-4 bg-light d-flex flex-fill align-items-center justify-content-center">
+            <div class="container py-3 px-md-5">
+                <h2 class="fw-bold mb-0">{% translate "Register a new course" %}</h2>
+                <p>
+                    {% blocktranslate trimmed %}
+                        Register a course and generate access keys
+                        for your students, create new measurements, and
+                        <b>publish your data on GewässerCampus</b>.
+                    {% endblocktranslate %}
+                </p>
+                <a href="{% url "gcampusauth:register" %}" class="btn btn-lg btn-primary">
+                    {% translate "Register" %}
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="bg-light">
+        <footer class="container d-flex flex-wrap justify-content-md-between justify-content-start align-items-center py-4">
+            <div class="col-12 col-md text-muted">
+                <a href="/" class="link-dark gcampus-logo">
+                    <span>Gewässer</span><span>Campus</span>
+                </a>
+                {% translate "a project by" as project_text %}
+                <span class="mx-1">&horbar;</span>
+                {{ project_text|capfirst }}
+                <a class="footer-link" href="https://desk-lab.de"><i>desklab</i></a>
+            </div>
+            <ul class="nav col-12 col-md justify-content-start justify-content-md-end gap-2">
+                <li class="nav-item">
+                    <a href="https://gewaessercampus.de/terms" class="nav-link px-0 text-muted">
+                        {% translate "Terms and conditions" %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://gewaessercampus.de/gdp" class="nav-link px-0 text-muted">
+                        {% translate "Privacy policy" %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://gewaessercampus.de/imprint" class="nav-link px-0 text-muted">
+                        {% translate "Imprint" %}
+                    </a>
+                </li>
+            </ul>
+        </footer>
     </div>
 {% endblock %}
-{% block extra_body %}
+{% block body_js %}
     {% include "gcampusauth/js/token_input.html" %}
 {% endblock %}
