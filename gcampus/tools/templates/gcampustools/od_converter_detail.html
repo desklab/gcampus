@@ -2,7 +2,7 @@
 {% load i18n static %}
 {% block main_class %}main-pb-0 main-pt-0{% endblock %}
 {% block navbar_title %}
-    {% translate "Optical Density Converter" %} - {{ parameter.name }}
+    {% translate "Optical Density Converter" %} - {{ parameter.name }} ({{ kit.short_name }})
 {% endblock %}
 {% block content %}
     <div class="container-fluid px-0">
@@ -23,7 +23,7 @@
                 </div>
                 <div class="mb-5 text-end">
                         <a class="btn btn-sm btn-secondary"
-                           href="{% url "gcampustools:od-converter-overview" pk_kit=pk_kit %}">
+                           href="{% url "gcampustools:od-converter-overview" pk_kit=kit.pk %}">
                             {% translate "Select different parameter" %}
                         </a>
                 </div>

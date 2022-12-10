@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="container mt-5 mb-3">
-            {% for k in kits %}
+            {% for k in object_list %}
                 {% include "gcampustools/components/measurement_kit_card.html" with kit=k %}
             {% endfor %}
         </div>
