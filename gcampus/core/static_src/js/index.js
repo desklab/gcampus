@@ -92,12 +92,13 @@ function setup() {
         document.getElementById('sidebar').classList.remove('show-sidebar');
         sidebarControl.setAttribute("aria-expanded", false);
     }
-
-    sidebarElement.addEventListener('hide.bs.collapse', () => setSidebarCookie(false));
-    sidebarElement.addEventListener('show.bs.collapse', () => setSidebarCookie(true));
+    if (sidebarElement !== undefined && sidebarElement !== null) {
+        sidebarElement.addEventListener('hide.bs.collapse', () => setSidebarCookie(false));
+        sidebarElement.addEventListener('show.bs.collapse', () => setSidebarCookie(true));
+    }
 
     const mainContent = document.querySelector('main');
-    if (mainContent !== undefined) {
+    if (mainContent !== undefined && mainContent !== null) {
         mainContent.addEventListener('transitionend', function () {
             for (let map in window._maps) {
                 window._maps[map].resize();
