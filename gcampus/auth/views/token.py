@@ -20,7 +20,7 @@ __all__ = [
 ]
 
 from abc import ABC
-from typing import Union, Optional
+from typing import Union, Optional, Type
 from urllib.parse import unquote
 
 from django.contrib import messages
@@ -50,10 +50,12 @@ from gcampus.core.models.util import EMPTY
 from gcampus.core.views.base import TitleMixin
 
 
-class LoginFormView(FormView, ABC):
+class LoginFormView(FormView, TitleMixin, ABC):
     template_name = "gcampusauth/login_form.html"
     success_url = reverse_lazy("gcampuscore:mapview")
-    token_type: TokenType  # has to be set by child classes
+    title = gettext_lazy("Login")
+    # Has to be set by child classes
+    token_type: Optional[TokenType]
 
     def get_initial(self):
         """Return the initial data to use for forms on this view."""
@@ -70,9 +72,22 @@ class LoginFormView(FormView, ABC):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["is_access_key_form"] = self.token_type is TokenType.access_key
-        context["is_course_token_form"] = self.token_type is TokenType.course_token
+        initial = self.get_initial()
+        if self.token_type is TokenType.access_key:
+            context["access_key_form"] = context["form"]
+            context["course_token_form"] = CourseTokenForm(initial=initial)
+        elif self.token_type is TokenType.course_token:
+            context["access_key_form"] = AccessKeyForm(initial=initial)
+            context["course_token_form"] = context["form"]
+        else:
+            context["access_key_form"] = AccessKeyForm(initial=initial)
+            context["course_token_form"] = CourseTokenForm(initial=initial)
         return context
+
+    def get_form(self, **kwargs) -> Union[None, AccessKeyForm, CourseTokenForm]:
+        if self.token_type is None:
+            return None
+        return super().get_form(**kwargs)
 
     def _do_login(self, form: Union[AccessKeyForm, CourseTokenForm]):
         """Login logic for access keys or course tokens.
@@ -127,28 +142,18 @@ def logout(request: HttpRequest):
     return redirect("gcampuscore:mapview")
 
 
-class LoginView(TitleMixin, TemplateView):
-    template_name: str = "gcampusauth/login_form.html"
+class LoginView(LoginFormView):
+    token_type = None
     http_method_names = ["get"]
-    title = gettext_lazy("Login")
-
-    def get_context_data(self, **kwargs):
-        kwargs["access_key_form"] = AccessKeyForm()
-        kwargs["access_key_form_url"] = reverse("gcampusauth:login-access-key")
-        kwargs["course_token_form"] = CourseTokenForm()
-        kwargs["course_token_form_url"] = reverse("gcampusauth:login-course-token")
-        return super().get_context_data(**kwargs)
 
 
 class AccessKeyFormView(LoginFormView):
-    template_name: str = "gcampusauth/failed_login_form.html"
     form_class = AccessKeyForm
     success_url = reverse_lazy("gcampuscore:mapview")
     token_type = TokenType.access_key
 
 
 class CourseTokenFormView(LoginFormView):
-    template_name: str = "gcampusauth/failed_login_form.html"
     form_class = CourseTokenForm
     success_url = reverse_lazy("gcampusauth:course-update")
     token_type = TokenType.course_token
