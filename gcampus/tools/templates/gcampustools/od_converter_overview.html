@@ -11,18 +11,34 @@
 
 {% block content %}
     <div class="container-fluid px-0">
-        <div class="container mb-5 mt-3">
-            <h2 class="text-secondary">
-                {% translate "Parameter" %}
-                <a class="btn btn-sm btn-secondary float-end"
-                   href="{% url "gcampustools:measurement-kit-overview" %}">
-                    {% translate "Select different kit" %}
-                </a>
-            </h2>
-            <div>
-                {% blocktranslate trimmed %}
-                    Choose the parameter for which you want to convert the Optical Density.
-                {% endblocktranslate %}
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-xl-6 my-3">
+                    <h2 class="text-secondary">
+                        {% translate "Parameter" %}
+                    </h2>
+                    <div>
+                        {% blocktranslate trimmed %}
+                            Choose the parameter for which you want to convert the Optical Density.
+                        {% endblocktranslate %}
+                    </div>
+                </div>
+                <div class="bg-light border-0 p-2 col-12 col-xl-6 my-3 row">
+                    <div class="col">
+                        <span class="text-secondary">
+                            {% translate "selected kit" %}
+                        </span>
+                        <h3 class="text-primary">
+                            {{ kit.name }}
+                        </h3>
+                    </div>
+                    <div class="col d-flex aligns-items-center my-auto">
+                        <a class="btn btn-secondary ms-auto"
+                           href="{% url "gcampustools:measurement-kit-overview" %}">
+                            {% translate "Select different kit" %}
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="container mt-5 mb-3">

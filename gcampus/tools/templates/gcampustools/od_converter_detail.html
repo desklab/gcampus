@@ -8,7 +8,40 @@
     <div class="container-fluid px-0">
         <div class="row">
             <div class="col-12 col-md-7">
-                <div class="box box-info mb-3 mt-4">
+                <div class="mx-1 my-3 p-2 bg-light border-0 row">
+                    <div class="col">
+                            <span class="text-secondary">
+                                {% translate "selected kit" %}
+                            </span>
+                        <h3 class="text-primary">
+                            {{ kit.name }}
+                        </h3>
+                    </div>
+                    <div class="col d-flex aligns-items-center my-auto">
+                        <a class="btn btn-secondary ms-auto"
+                           href="{% url "gcampustools:measurement-kit-overview" %}">
+                            {% translate "Select different kit" %}
+                        </a>
+                    </div>
+                </div>
+                <div class="mx-1 mb-5 p-2 bg-light border-0 row">
+                    <div class="col">
+                            <span class="text-secondary">
+                                {% translate "selected parameter" %}
+                            </span>
+                        <h3 class="text-primary">
+                            {{ parameter.name }}
+                        </h3>
+                    </div>
+                    <div class="col d-flex aligns-items-center my-auto">
+                        <a class="btn btn-secondary ms-auto"
+                           href="{% url "gcampustools:od-converter-overview" pk_kit=kit.pk %}">
+                            {% translate "Select different parameter" %}
+                        </a>
+                    </div>
+                </div>
+                <div class="box box-info mb-5 mt-3 mx-1">
+                    {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
                     {% if parameter.unit != "" %}
                         {% blocktranslate trimmed with name=parameter.name unit=parameter.unit %}
                             This tool helps you to convert the optical density you measured with the photometer into
@@ -20,12 +53,6 @@
                             <b>{{ name }}</b>.
                         {% endblocktranslate %}
                     {% endif %}
-                </div>
-                <div class="mb-5 text-end">
-                        <a class="btn btn-sm btn-secondary"
-                           href="{% url "gcampustools:od-converter-overview" pk_kit=kit.pk %}">
-                            {% translate "Select different parameter" %}
-                        </a>
                 </div>
             </div>
             <div class="col-5 d-none d-md-block bg-light"></div>

@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-08 10:07+0100\n"
+"POT-Creation-Date: 2022-12-12 13:45+0100\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Jonas Drotleff <j.drotleff@desk-lab.de>\n"
 "Language-Team: \n"
@@ -301,7 +301,7 @@ msgid "Your Measurements"
 msgstr "Deine Messungen"
 
 #: gcampus/auth/templates/gcampusauth/components/auth_menu.html:28
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:41
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:43
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -721,8 +721,8 @@ msgstr ""
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:204
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:299
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:124
-#: gcampus/tools/models/calibration.py:63
-#: gcampus/tools/templates/gcampustools/od_converter_overview.html:16
+#: gcampus/tools/models/calibration.py:37
+#: gcampus/tools/templates/gcampustools/od_converter_overview.html:18
 msgid "Parameter"
 msgstr "Parameter"
 
@@ -1225,8 +1225,7 @@ msgstr "Messungen"
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:65
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:124
 #: gcampus/documents/views/data_export.py:180
-#: gcampus/tools/models/calibration.py:29
-#: gcampus/tools/models/calibration.py:56
+#: gcampus/tools/models/calibration.py:31 gcampus/tools/models/kit.py:28
 msgid "Name"
 msgstr "Name"
 
@@ -1318,7 +1317,7 @@ msgstr "Parameter Typ"
 msgid "Parameter types"
 msgstr "Parameter Typen"
 
-#: gcampus/core/models/parameter.py:39 gcampus/tools/models/calibration.py:32
+#: gcampus/core/models/parameter.py:39 gcampus/tools/models/kit.py:32
 msgid "Short name"
 msgstr "Kurzer Name"
 
@@ -1326,7 +1325,7 @@ msgstr "Kurzer Name"
 msgid "Unit"
 msgstr "Einheit"
 
-#: gcampus/core/models/parameter.py:45 gcampus/tools/models/calibration.py:38
+#: gcampus/core/models/parameter.py:45 gcampus/tools/models/kit.py:39
 msgid "Identifier"
 msgstr "ID"
 
@@ -1334,7 +1333,7 @@ msgstr "ID"
 msgid "Category"
 msgstr "Kategorie"
 
-#: gcampus/core/models/parameter.py:55 gcampus/tools/models/calibration.py:41
+#: gcampus/core/models/parameter.py:55 gcampus/tools/models/kit.py:42
 msgid "Color"
 msgstr "Farbe"
 
@@ -1539,12 +1538,12 @@ msgstr ""
 "informiert und kümmern uns so schnell wie möglich um eine Lösung."
 
 #: gcampus/core/templates/gcampuscore/base.html:93
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:34
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:36
 msgid "New Measurement"
 msgstr "Neue Messung"
 
 #: gcampus/core/templates/gcampuscore/base.html:99
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:44
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:46
 msgid "Log in"
 msgstr "Anmelden"
 
@@ -1756,11 +1755,11 @@ msgid "All Waters"
 msgstr "Alle Gewässer"
 
 #: gcampus/core/templates/gcampuscore/components/sidebar.html:18
-#: gcampus/tools/templates/gcampustools/tools.html:9 gcampus/tools/views.py:12
+#: gcampus/tools/templates/gcampustools/tools.html:9 gcampus/tools/views.py:13
 msgid "Tools"
 msgstr "Werkzeuge"
 
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:53
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:55
 msgid "About the project"
 msgstr "Über das Projekt"
 
@@ -2774,57 +2773,60 @@ msgstr "GCampus Aufgaben"
 msgid "GCampus Tools"
 msgstr "GCampus Werkzeuge"
 
-#: gcampus/tools/models/calibration.py:26
 #: gcampus/tools/models/calibration.py:27
-#: gcampus/tools/models/calibration.py:78
-msgid "Measurement Kit"
-msgstr "Chemikalien-Set"
-
-#: gcampus/tools/models/calibration.py:45
-#, python-brace-format
-msgid "#{pk:02d} ({name})"
-msgstr "#{pk:02d} ({name})"
-
-#: gcampus/tools/models/calibration.py:48
-#, fuzzy, python-format
-#| msgid "Measurement %(id)s"
-msgid "Measurement Kit - %(id)s"
-msgstr "Chemikalien-Set - %(id)s"
-
-#: gcampus/tools/models/calibration.py:53
 msgid "Calibration"
 msgstr "Kalibrierung"
 
-#: gcampus/tools/models/calibration.py:54
+#: gcampus/tools/models/calibration.py:28
 msgid "Calibrations"
 msgstr "Kalibrierung"
 
-#: gcampus/tools/models/calibration.py:68
+#: gcampus/tools/models/calibration.py:42
 msgid "Calibration formula"
 msgstr "Kalibrationsformel"
 
-#: gcampus/tools/models/calibration.py:71
+#: gcampus/tools/models/calibration.py:45
 msgid "Maximal parameter value"
 msgstr "Maximaler Parameter-Wert"
 
-#: gcampus/tools/models/calibration.py:73
+#: gcampus/tools/models/calibration.py:47
 msgid "Minimal parameter value"
 msgstr "Minimaler Parameter-Wert"
 
-#: gcampus/tools/models/calibration.py:84
+#: gcampus/tools/models/calibration.py:52 gcampus/tools/models/kit.py:24
+#, fuzzy
+#| msgid "Measurement Kit"
+msgid "Measurement kit"
+msgstr "Chemikalien-Set"
+
+#: gcampus/tools/models/calibration.py:58
 #, python-brace-format
 msgid "#{pk:03d} ({param} {min} - {max})"
 msgstr "#{pk:03d} ({param} {min} - {max})"
 
-#: gcampus/tools/models/calibration.py:89
-#, fuzzy, python-format
-#| msgid "Calibrations"
-msgid "Calibration - %(id)s"
-msgstr "Kalibrierung - %(id)s"
+#: gcampus/tools/models/calibration.py:63
+#| msgid "Calibration"
+msgid "Calibration - {pk}"
+msgstr "Kalibrierung - {pk}"
+
+#: gcampus/tools/models/kit.py:25
+#| msgid "Measurements"
+msgid "Measurement kits"
+msgstr "Chemikalien-Sets"
+
+#: gcampus/tools/models/kit.py:46
+#, python-brace-format
+msgid "#{pk:02d} ({name})"
+msgstr "#{pk:02d} ({name})"
+
+#: gcampus/tools/models/kit.py:49
+#| msgid "Measurement Kit"
+msgid "Measurement kit - {pk}"
+msgstr "Chemikalien-Set - {pk}"
 
 #: gcampus/tools/templates/gcampustools/components/od_converter_item.html:5
 #: gcampus/tools/templates/gcampustools/components/od_converter_item.html:9
-#: gcampus/tools/templates/gcampustools/od_converter_detail.html:60
+#: gcampus/tools/templates/gcampustools/od_converter_detail.html:87
 msgid "Optical density"
 msgstr "Optische Dichte"
 
@@ -2838,34 +2840,45 @@ msgstr "Kopieren"
 
 #: gcampus/tools/templates/gcampustools/measurement_kit_overview.html:9
 #: gcampus/tools/templates/gcampustools/measurement_kit_overview.html:16
-#: gcampus/tools/views.py:17
-#, fuzzy
+#: gcampus/tools/views.py:18
 #| msgid "Measurements"
 msgid "Measurement Kits"
 msgstr "Chemikalien-Sets"
 
 #: gcampus/tools/templates/gcampustools/measurement_kit_overview.html:19
-#, fuzzy
-#| msgid "Save course overview"
-msgid "Back to tools overview"
-msgstr "Zurück zur Werkzeug-Übersicht"
-
-#: gcampus/tools/templates/gcampustools/measurement_kit_overview.html:23
 msgid ""
 "Choose the measurement kit you used in combination with the photometer. If "
 "you are not sure, which kit you have used, ask your teacher."
 msgstr ""
 "Wähle das Chemikalien-Set, dass du zusammen mit dem Photometer genutzt hast. "
-"Falls du dir nicht sicher bist, welches Set du auswählen musst, kannst du bei "
-"deiner Lehrkraft nachfragen."
+"Falls du dir nicht sicher bist, welches Set du auswählen musst, kannst du "
+"bei deiner Lehrkraft nachfragen."
 
 #: gcampus/tools/templates/gcampustools/od_converter_detail.html:5
 #: gcampus/tools/templates/gcampustools/od_converter_overview.html:9
-#: gcampus/tools/views.py:32 gcampus/tools/views.py:49
+#: gcampus/tools/views.py:30 gcampus/tools/views.py:49
 msgid "Optical Density Converter"
 msgstr "Umrechnung für die Optische Dichte"
 
-#: gcampus/tools/templates/gcampustools/od_converter_detail.html:13
+#: gcampus/tools/templates/gcampustools/od_converter_detail.html:14
+#: gcampus/tools/templates/gcampustools/od_converter_overview.html:29
+msgid "selected kit"
+msgstr "ausgewähltes Chemikalien-Set"
+
+#: gcampus/tools/templates/gcampustools/od_converter_detail.html:23
+#: gcampus/tools/templates/gcampustools/od_converter_overview.html:38
+msgid "Select different kit"
+msgstr "Anderes Chemikalien-Set auswählen"
+
+#: gcampus/tools/templates/gcampustools/od_converter_detail.html:30
+msgid "selected parameter"
+msgstr "ausgewählter Parameter"
+
+#: gcampus/tools/templates/gcampustools/od_converter_detail.html:39
+msgid "Select different parameter"
+msgstr "Anderen Parameter auswählen"
+
+#: gcampus/tools/templates/gcampustools/od_converter_detail.html:46
 #, python-format
 msgid ""
 "This tool helps you to convert the optical density you measured with the "
@@ -2874,7 +2887,7 @@ msgstr ""
 "Mit diesem Werkzeug kannst du die mit dem Photometer gemessene Optische "
 "Dichte in <b>%(name)s</b> in %(unit)s umrechnen."
 
-#: gcampus/tools/templates/gcampustools/od_converter_detail.html:18
+#: gcampus/tools/templates/gcampustools/od_converter_detail.html:51
 #, python-format
 msgid ""
 "This tool helps you to convert the optical density you measured with the "
@@ -2883,24 +2896,15 @@ msgstr ""
 "Mit diesem Werkzeug kannst du die mit dem Photometer gemessene Optische "
 "Dichte in <b>%(name)s</b> umrechnen."
 
-#: gcampus/tools/templates/gcampustools/od_converter_detail.html:27
-msgid "Select different parameter"
-msgstr "Anderen Parameter auswählen"
-
-#: gcampus/tools/templates/gcampustools/od_converter_detail.html:58
+#: gcampus/tools/templates/gcampustools/od_converter_detail.html:85
 #, python-format
 msgid "Calibration fit for %(parameter_type)s"
 msgstr "Kalibrierung für %(parameter_type)s"
 
-#: gcampus/tools/templates/gcampustools/od_converter_overview.html:19
-#, fuzzy
-#| msgid "Select different parameter"
-msgid "Select different kit"
-msgstr "Anderen Chemikalien-Set auswählen"
-
-#: gcampus/tools/templates/gcampustools/od_converter_overview.html:23
+#: gcampus/tools/templates/gcampustools/od_converter_overview.html:21
 msgid "Choose the parameter for which you want to convert the Optical Density."
-msgstr "Wähle den Parameter, für den du die Optische Dichte umrechnen möchtest."
+msgstr ""
+"Wähle den Parameter, für den du die Optische Dichte umrechnen möchtest."
 
 #: gcampus/tools/templates/gcampustools/tools.html:23
 msgid "OD Conversion"
@@ -2926,8 +2930,23 @@ msgid ""
 "This tool helps you to find all documents you need to include the "
 "GewässerCampus project into your lessons"
 msgstr ""
-"Hier kannst du alle Unterrichtsmaterialien finden und herunterladen, "
-"damit du sie im Unterricht einsetzen kannst."
+"Hier kannst du alle Unterrichtsmaterialien finden und herunterladen, damit "
+"du sie im Unterricht einsetzen kannst."
+
+#, fuzzy, python-format
+#~| msgid "Measurement %(id)s"
+#~ msgid "Measurement Kit - %(id)s"
+#~ msgstr "Chemikalien-Set - %(id)s"
+
+#, fuzzy, python-format
+#~| msgid "Calibrations"
+#~ msgid "Calibration - %(id)s"
+#~ msgstr "Kalibrierung - %(id)s"
+
+#, fuzzy
+#~| msgid "Save course overview"
+#~ msgid "Back to tools overview"
+#~ msgstr "Zurück zur Werkzeug-Übersicht"
 
 #~ msgid "Manage access keys"
 #~ msgstr "Zugangscodes verwalten"
