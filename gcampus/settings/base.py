@@ -63,7 +63,6 @@ LOGGING = {
         },
     },
 }
-
 INSTALLED_APPS = [
     "gcampus.admin.apps.GCampusAdminAppConfig",
     "django.contrib.auth",
@@ -85,6 +84,7 @@ INSTALLED_APPS = [
     "gcampus.auth",
     "gcampus.api",
     "gcampus.map",
+    "gcampus.export",
     "gcampus.documents",
     "gcampus.analysis",
     "gcampus.mail",
@@ -92,6 +92,7 @@ INSTALLED_APPS = [
     # Sometimes the order is important
     "django.forms",
 ]
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
