@@ -30,7 +30,13 @@ class MeasurementListView(TitleMixin, ListView):
     template_name = "gcampuscore/sites/list/measurement_list.html"
     model = Measurement
     queryset = (
-        Measurement.objects.prefetch_related("parameters__parameter_type")
+        Measurement.objects.prefetch_related(
+            "parameters__parameter_type",
+            "bach_index",
+            "saprobic_index",
+            "structure_index",
+            "trophic_index",
+        )
         .select_related("water")
         .defer("water__geometry")
         .order_by("-time")
@@ -49,14 +55,13 @@ class MeasurementListView(TitleMixin, ListView):
         self.queryset = self.filter.qs
         return super(MeasurementListView, self).get_queryset()
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        if "filter" not in kwargs:
-            kwargs["filter"] = self.filter
-        kwargs["today"] = timezone.now()
-        if "filter_status" not in kwargs:
-            kwargs["filter_status"] = False
-        kwargs["filter_status"] = self.filter.get_status()
-        kwargs["count"] = self.get_queryset().count()
-        return super(MeasurementListView, self).get_context_data(
-            object_list=object_list, **kwargs
-        )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if "filter" not in context:
+            context["filter"] = self.filter
+        if "filter_status" not in context:
+            context["filter_status"] = False
+        context["today"] = timezone.now()
+        context["filter_status"] = self.filter.get_status()
+        context["count"] = context["paginator"].count
+        return context
