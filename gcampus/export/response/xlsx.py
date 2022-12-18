@@ -39,6 +39,7 @@ class XlsxResponse(MeasurementExportResponse):
         "location_name",
         "water__name",
         "water__flow_type",
+        "water__water_type",  # required for 'Water.display_name'
         "time",
         "comment",
         "data_quality_warning",
@@ -52,6 +53,11 @@ class XlsxResponse(MeasurementExportResponse):
         parameter_queryset = Parameter.objects.only(
             "value",
             "parameter_type_id",
+            # 'measurement_id' seems to be required to assign the
+            # parameters to their measurements. If not provided here,
+            # the field will be fetched later.
+            "measurement_id",
+            "comment",
         )
         return (
             measurements.select_related("water")
