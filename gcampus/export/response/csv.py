@@ -36,9 +36,11 @@ class CsvResponse(MeasurementExportResponse):
         "water_id",
         "water_name",
         "flow_type",
+        "water_type",
         "data_quality_warning",
         "index_validity",
         "note",
+        "full_type_name",
         "measurement_note",
     )
 
@@ -85,6 +87,7 @@ class CsvResponse(MeasurementExportResponse):
             "water_id": water.pk,
             "water_name": str(water.display_name),
             "flow_type": str(water.flow_type),
+            "water_type": str(water.water_type),
             "data_quality_warning": measurement.data_quality_warning,
             "measurement_note": str(measurement.comment),
         }
@@ -92,9 +95,10 @@ class CsvResponse(MeasurementExportResponse):
             parameter_type: ParameterType = row.parameter_type
             data.update(
                 {
-                    "type": str(parameter_type.name),
+                    "type": str(parameter_type.identifier),
                     "unit": str(parameter_type.unit),
                     "note": str(row.comment),
+                    "full_type_name": str(parameter_type.name),
                 }
             )
         else:  # 'row' has to be of type 'WaterQualityIndex'
@@ -102,6 +106,7 @@ class CsvResponse(MeasurementExportResponse):
                 {
                     "type": str(row._meta.verbose_name),
                     "index_validity": row.validity,
+                    "full_type_name": str(row._meta.verbose_name),
                 }
             )
         return data

@@ -38,7 +38,7 @@ class MeasurementExportResponse(FileResponse, ABC):
         "water_id",
         "water__name",
         "water__flow_type",
-        "water__water_type",  # required for 'Water.display_name'
+        "water__water_type",
         "time",
         "comment",
         "data_quality_warning",
