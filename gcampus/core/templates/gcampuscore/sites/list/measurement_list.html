@@ -36,11 +36,11 @@
                             data-bs-dismiss="modal">
                         {% translate "Close" %}
                     </button>
-                    <a href="{% url "gcampusdocuments:measurement-list-csv" %}?{% request_params %}"
+                    <a href="{% url "gcampusexport:measurements-csv" %}?{% request_params %}"
                        class="btn btn-primary">
                         {% translate "Download CSV file" %}
                     </a>
-                     <a href="{% url "gcampusdocuments:measurement-list-xlsx" %}?{% request_params %}"
+                     <a href="{% url "gcampusexport:measurements-xlsx" %}?{% request_params %}"
                         class="btn btn-primary">
                         {% translate "Download Excel file" %}
                     </a>
