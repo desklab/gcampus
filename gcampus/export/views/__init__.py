@@ -13,6 +13,8 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+__all__ = ["CsvExportView", "XlsxExportView"]
+
 from abc import ABC
 from typing import Type
 
@@ -22,6 +24,7 @@ from django.views.generic.list import MultipleObjectMixin
 
 from gcampus.core.filters import MeasurementFilterSet
 from gcampus.core.models import Measurement
+from gcampus.export.response import CsvResponse
 from gcampus.export.response.base import MeasurementExportResponse
 from gcampus.export.response.xlsx import XlsxResponse
 
@@ -46,3 +49,7 @@ class DataExportView(MultipleObjectMixin, View, ABC):
 
 class XlsxExportView(DataExportView):
     response_class = XlsxResponse
+
+
+class CsvExportView(DataExportView):
+    response_class = CsvResponse

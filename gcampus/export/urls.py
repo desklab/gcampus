@@ -16,10 +16,11 @@
 from django.urls import path
 
 from gcampus.export.apps import GCampusExportConfig
-from gcampus.export.views import XlsxExportView
+from gcampus.export.views import XlsxExportView, CsvExportView
 
 urlpatterns = [
-    path("export/xlsx/", XlsxExportView.as_view(), name="course"),
+    path("export/csv/", CsvExportView.as_view(), name="measurements-csv"),
+    path("export/xlsx/", XlsxExportView.as_view(), name="measurements-xlsx"),
 ]
 
 
