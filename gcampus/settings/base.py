@@ -200,9 +200,9 @@ MEASUREMENT_MAX_TIME = datetime.datetime(2100, month=1, day=1, tzinfo=utc)
 NOMINATIM_DOMAIN = "nominatim.openstreetmap.org"
 GEOLOCKUP_CACHE_TIMEOUT = 60 * 60 * 24 * 100  # 100 days
 
-# Alternative OSM overpass server: "https://overpass-api.de/api/interpreter"
+# Alternative OSM overpass server: "https://overpass.kumi.systems/api/interpreter"
 OVERPASS_SERVER = get_env_read_file(
-    "GCAMPUS_OVERPASS_SERVER", "https://overpass.kumi.systems/api/interpreter"
+    "GCAMPUS_OVERPASS_SERVER", "https://overpass-api.de/api/interpreter"
 )
 OVERPASS_CACHE = 60 * 60 * 24 * 2
 OVERPASS_TIMEOUT = 20  # Timeout in seconds
