@@ -95,6 +95,10 @@ class WaterQualityIndex(models.Model):
         if commit:
             self.save()
 
+    @property
+    def valid_flow_type(self) -> bool:
+        raise NotImplementedError("subclasses must implement valid_flow_type")
+
     @classmethod
     def calculate_index(cls, **kwargs) -> float:
         raise NotImplementedError()

@@ -23,6 +23,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models.index.base import WaterQualityIndex
+from gcampus.core.models.water import FlowType
 
 
 class SaprobicIndex(WaterQualityIndex):
@@ -66,6 +67,10 @@ class SaprobicIndex(WaterQualityIndex):
         self.value = self.calculate_index(kwargs=kwargs)
         if commit:
             self.save()
+
+    @property
+    def valid_flow_type(self) -> bool:
+        return self.measurement.water.flow_type == FlowType.RUNNING
 
     @classmethod
     def calculate_index(cls, kwargs) -> Union[None, float]:
