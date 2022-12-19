@@ -83,11 +83,19 @@ class XlsxResponse(MeasurementExportResponse):
             number_format.set_num_format(2)
             datetime_format = wb.add_format()
             datetime_format.set_num_format(22)
+            percentage_format = wb.add_format()
+            percentage_format.set_num_format(10)
             cols = self._write_header(sheet, parameter_types, bold_format)
             row: Measurement
             for i, row in enumerate(self._rows):
                 self._write_row(
-                    sheet, i + 1, row, parameter_types, number_format, datetime_format
+                    sheet,
+                    i + 1,
+                    row,
+                    parameter_types,
+                    number_format,
+                    datetime_format,
+                    percentage_format,
                 )
             wb.set_properties(
                 {
@@ -111,6 +119,7 @@ class XlsxResponse(MeasurementExportResponse):
         parameter_types: List[Tuple[int, str, str]],
         number_format: Format,
         datetime_format: Format,
+        percentage_format: Format,
     ):
         sheet.write_url(
             row_number,
@@ -130,8 +139,9 @@ class XlsxResponse(MeasurementExportResponse):
         )
         sheet.write_boolean(row_number, 6, measurement.data_quality_warning)
         parameters: List[Parameter] = measurement.parameters.all()
+        offset = 7
         # Write the numeric value of all parameters
-        for i, (pk, _, _) in enumerate(parameter_types):
+        for pk, _, _ in parameter_types:
             params: List[Parameter] = [
                 param for param in parameters if param.parameter_type_id == pk
             ]
@@ -148,13 +158,38 @@ class XlsxResponse(MeasurementExportResponse):
                     )
                 # Add comments of each parameter
                 comments += [p.comment for p in params if p.comment]
-                sheet.write_number(row_number, 7 + i, mean, cell_format=number_format)
+                sheet.write_number(row_number, offset, mean, cell_format=number_format)
                 if comments:
                     # Add comments seperated by a new line
-                    sheet.write_comment(row_number, 7 + i, "\n".join(comments))
+                    sheet.write_comment(row_number, offset, "\n".join(comments))
             else:
-                sheet.write_blank(row_number, 7 + i, None, cell_format=number_format)
-        sheet.write_string(row_number, 7 + len(parameter_types), measurement.comment)
+                sheet.write_blank(row_number, offset, None, cell_format=number_format)
+            offset += 1
+        index: WaterQualityIndex
+        for index in measurement.indices:
+            if not index.valid_flow_type:
+                # Index is not valid for this flow type. Write blank
+                # values and continue
+                sheet.write_blank(row_number, offset, None, cell_format=number_format)
+                offset += 1
+                sheet.write_blank(
+                    row_number, offset, None, cell_format=percentage_format
+                )
+                offset += 1
+                continue
+            if index.validity > 0:
+                sheet.write_number(
+                    row_number, offset, index.value, cell_format=number_format
+                )
+            else:
+                # Write blank value, validity is too low
+                sheet.write_blank(row_number, offset, None, cell_format=number_format)
+            offset += 1
+            sheet.write_number(
+                row_number, offset, index.validity, cell_format=percentage_format
+            )
+            offset += 1
+        sheet.write_string(row_number, offset, measurement.comment)
 
     @staticmethod
     def _write_header(
@@ -178,6 +213,11 @@ class XlsxResponse(MeasurementExportResponse):
             if unit:
                 name = f"{name!s} [{unit!s}]"
             cells.append(name)
+        validity_str = str(WaterQualityIndex.validity.field.verbose_name)
+        for index in (BACHIndex, SaprobicIndex, StructureIndex, TrophicIndex):
+            name = str(index._meta.verbose_name)
+            cells.append(name)
+            cells.append(f"{name} ({validity_str})")
         cells.append(Measurement.comment.field.verbose_name)
         for i, cell in enumerate(cells):
             # call 'str(cell)' to evaluate lazy translations
