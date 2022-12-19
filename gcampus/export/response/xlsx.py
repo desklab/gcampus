@@ -16,6 +16,7 @@
 __all__ = ["XlsxResponse"]
 
 import os
+from numbers import Number
 from typing import Tuple, IO, List
 
 from django.urls import reverse
@@ -38,8 +39,9 @@ from gcampus.core.models import (
     StructureIndex,
 )
 from gcampus.core.models.index.base import WaterQualityIndex
-from gcampus.core.models.water import FlowType
 from gcampus.export.response.base import MeasurementExportResponse
+from gcampus.export.workbook import ExportWorkbook
+from gcampus.export.worksheet import ExportWorksheet, CellData, CellType
 
 
 class XlsxResponse(MeasurementExportResponse):
@@ -76,27 +78,12 @@ class XlsxResponse(MeasurementExportResponse):
             .values_list("pk", "name", "unit")
         )
         workbook_options = {"constant_memory": True, "tmpdir": self._tempdir.name}
-        with Workbook(filename, options=workbook_options) as wb:
-            sheet = wb.add_worksheet(gettext("Measurements"))
-            bold_format = wb.add_format({"bold": True})
-            number_format = wb.add_format()
-            number_format.set_num_format(2)
-            datetime_format = wb.add_format()
-            datetime_format.set_num_format(22)
-            percentage_format = wb.add_format()
-            percentage_format.set_num_format(10)
-            cols = self._write_header(sheet, parameter_types, bold_format)
+        with ExportWorkbook(filename, options=workbook_options) as wb:
+            sheet: ExportWorksheet = wb.add_worksheet(gettext("Measurements"))
+            self._write_header(sheet, parameter_types)
             row: Measurement
             for i, row in enumerate(self._rows):
-                self._write_row(
-                    sheet,
-                    i + 1,
-                    row,
-                    parameter_types,
-                    number_format,
-                    datetime_format,
-                    percentage_format,
-                )
+                sheet.write_row_data(i + 1, self._get_row_data(row, parameter_types))
             wb.set_properties(
                 {
                     "title": gettext("Measurement data from GewässerCampus"),
@@ -112,44 +99,37 @@ class XlsxResponse(MeasurementExportResponse):
         return open(filename, "rb")
 
     @staticmethod
-    def _write_row(
-        sheet: Worksheet,
-        row_number: int,
+    def _get_row_data(
         measurement: Measurement,
         parameter_types: List[Tuple[int, str, str]],
-        number_format: Format,
-        datetime_format: Format,
-        percentage_format: Format,
-    ):
-        sheet.write_url(
-            row_number,
-            0,
-            XlsxResponse._get_measurement_url(measurement),
-            string=f"#{measurement.pk:05d}",
-            tip=capfirst(gettext("open on GewässerCampus")),
-        )
-        sheet.write_string(row_number, 1, measurement.name)
-        sheet.write_datetime(
-            row_number, 2, make_naive(measurement.time), cell_format=datetime_format
-        )
-        sheet.write_string(row_number, 3, str(measurement.location_name))
-        sheet.write_string(row_number, 4, str(measurement.water.display_name))
-        sheet.write_string(
-            row_number, 5, capfirst(measurement.water.get_flow_type_display())
-        )
-        sheet.write_boolean(row_number, 6, measurement.data_quality_warning)
+    ) -> List[CellData]:
+        url = XlsxResponse._get_measurement_url(measurement)
+        url_kwargs = {
+            "string": f"#{measurement.pk:05d}",
+            "tip": capfirst(gettext("open on GewässerCampus")),
+        }
+        row_data: List[CellData] = [
+            CellData(url, CellType.url, kwargs=url_kwargs),
+            CellData(measurement.name, CellType.string),
+            CellData(measurement.time, CellType.datetime),
+            CellData(measurement.location_name, CellType.string),
+            CellData(measurement.water.display_name, CellType.string),
+            CellData(measurement.water.get_flow_type_display(), CellType.string),
+            CellData(measurement.water.get_water_type_display(), CellType.string),
+            CellData(measurement.data_quality_warning, CellType.boolean),
+        ]
         parameters: List[Parameter] = measurement.parameters.all()
-        offset = 7
-        # Write the numeric value of all parameters
         for pk, _, _ in parameter_types:
             params: List[Parameter] = [
                 param for param in parameters if param.parameter_type_id == pk
             ]
+            value = None
+            comment = None
             if params:
                 comments: List[str] = []
                 count = len(params)
                 # Compute the mean of the parameter
-                mean = sum(map(lambda p: p.value, params)) / count
+                value = sum(map(lambda p: p.value, params)) / count
                 if count > 1:
                     # Add comment for number of measurements used for
                     # averaging
@@ -158,55 +138,44 @@ class XlsxResponse(MeasurementExportResponse):
                     )
                 # Add comments of each parameter
                 comments += [p.comment for p in params if p.comment]
-                sheet.write_number(row_number, offset, mean, cell_format=number_format)
                 if comments:
                     # Add comments seperated by a new line
-                    sheet.write_comment(row_number, offset, "\n".join(comments))
-            else:
-                sheet.write_blank(row_number, offset, None, cell_format=number_format)
-            offset += 1
+                    comment = "\n".join(comments)
+            row_data.append(CellData(value, CellType.number, comment=comment))
         index: WaterQualityIndex
         for index in measurement.indices:
             if not index.valid_flow_type:
                 # Index is not valid for this flow type. Write blank
                 # values and continue
-                sheet.write_blank(row_number, offset, None, cell_format=number_format)
-                offset += 1
-                sheet.write_blank(
-                    row_number, offset, None, cell_format=percentage_format
-                )
-                offset += 1
+                row_data.append(CellData(None, CellType.number))
+                row_data.append(CellData(None, CellType.percentage))
                 continue
             if index.validity > 0:
-                sheet.write_number(
-                    row_number, offset, index.value, cell_format=number_format
-                )
+                value = index.value
             else:
                 # Write blank value, validity is too low
-                sheet.write_blank(row_number, offset, None, cell_format=number_format)
-            offset += 1
-            sheet.write_number(
-                row_number, offset, index.validity, cell_format=percentage_format
-            )
-            offset += 1
-        sheet.write_string(row_number, offset, measurement.comment)
+                value = None
+            row_data.append(CellData(value, CellType.number))
+            row_data.append(CellData(index.validity, CellType.percentage))
+        row_data.append(CellData(measurement.comment, CellType.string))
+        return row_data
 
     @staticmethod
     def _write_header(
-        sheet: Worksheet,
+        sheet: ExportWorksheet,
         parameter_types: List[Tuple[int, str, str]],
-        format: Format,
     ) -> int:
         """
         :returns: Total number of columns
         """
         cells = [
-            gettext("ID"),
-            Measurement.name.field.verbose_name,
-            Measurement.time.field.verbose_name,
-            Measurement.location_name.field.verbose_name,
-            gettext("Water name"),
-            Water.flow_type.field.verbose_name,
+            Measurement._meta.verbose_name,
+            (Measurement.name.field.verbose_name, 20),
+            (Measurement.time.field.verbose_name, 20),
+            (Measurement.location_name.field.verbose_name, 20),
+            (gettext("Water name"), 20),
+            (Water.flow_type.field.verbose_name, 20),
+            (Water.water_type.field.verbose_name, 20),
             capfirst(gettext("data quality warning")),
         ]
         for _, name, unit in parameter_types:
@@ -219,13 +188,4 @@ class XlsxResponse(MeasurementExportResponse):
             cells.append(name)
             cells.append(f"{name} ({validity_str})")
         cells.append(Measurement.comment.field.verbose_name)
-        for i, cell in enumerate(cells):
-            # call 'str(cell)' to evaluate lazy translations
-            text = str(cell)
-            col_width = max(len(text) + 2, 10)
-            if 1 <= i <= 5:
-                # Increase cell width for names and time
-                col_width = max(col_width, 20)
-            sheet.write_string(0, i, text, cell_format=format)
-            sheet.set_column(i, i, col_width)
-        return len(cells)
+        sheet.write_header(0, cells)
