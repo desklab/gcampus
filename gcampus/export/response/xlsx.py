@@ -13,10 +13,11 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import os
-from typing import Iterable, Tuple, IO, List
+__all__ = ["XlsxResponse"]
 
-from django.db.models import QuerySet, Prefetch
+import os
+from typing import Tuple, IO, List
+
 from django.urls import reverse
 from django.utils.text import capfirst
 from django.utils.timezone import localtime, make_naive
@@ -26,49 +27,23 @@ from xlsxwriter.format import Format
 from xlsxwriter.worksheet import Worksheet
 
 from gcampus.core import get_base_url
-from gcampus.core.models import Parameter, ParameterType, Measurement, Water
+from gcampus.core.models import (
+    Parameter,
+    ParameterType,
+    Measurement,
+    Water,
+    TrophicIndex,
+    BACHIndex,
+    SaprobicIndex,
+    StructureIndex,
+)
+from gcampus.core.models.index.base import WaterQualityIndex
+from gcampus.core.models.water import FlowType
 from gcampus.export.response.base import MeasurementExportResponse
 
 
 class XlsxResponse(MeasurementExportResponse):
-    database_chunk_size: int = 2000
     file_ending: str = "xlsx"
-    values: Tuple[str, ...] = (
-        "pk",
-        "name",
-        "location_name",
-        "water__name",
-        "water__flow_type",
-        "water__water_type",  # required for 'Water.display_name'
-        "time",
-        "comment",
-        "data_quality_warning",
-        "bach_index",
-        "saprobic_index",
-        "structure_index",
-        "trophic_index",
-    )
-
-    def _get_rows(self, measurements: QuerySet) -> Iterable:
-        parameter_queryset = Parameter.objects.only(
-            "value",
-            "parameter_type_id",
-            # 'measurement_id' seems to be required to assign the
-            # parameters to their measurements. If not provided here,
-            # the field will be fetched later.
-            "measurement_id",
-            "comment",
-        )
-        return (
-            measurements.select_related("water")
-            .only(*self.values)
-            .prefetch_related(
-                # Prefetch parameters with 'parameter_queryset' to limit
-                # number of database requests
-                Prefetch("parameters", queryset=parameter_queryset)
-            )
-            .iterator(chunk_size=self.database_chunk_size)
-        )
 
     @staticmethod
     def _get_measurement_url(measurement: Measurement) -> str:
