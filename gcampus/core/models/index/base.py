@@ -58,6 +58,9 @@ class WaterQualityIndex(models.Model):
         verbose_name=_("Validity"),
     )
 
+    validity_warning = 0.7
+    validity_limit = 0.4
+
     def update(self, commit=True):
         self._update_value(commit=False)
         self._update_classification(commit=False)
@@ -110,3 +113,17 @@ class WaterQualityIndex(models.Model):
     @classmethod
     def calculate_validity(cls, parameters) -> float:
         raise NotImplementedError()
+
+    @property
+    def has_validity_warning(self):
+        if self.validity <= self.validity_warning:
+            return True
+        else:
+            return False
+
+    @property
+    def show_classification(self):
+        if self.validity >= self.validity_limit:
+            return True
+        else:
+            return False

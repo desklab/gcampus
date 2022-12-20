@@ -8,7 +8,7 @@
                 <div class="text-secondary fw-bold pb-2">
                     {% translate "BACH Index" %}
                 </div>
-                {% if measurement.bach_index.validity >= 0.25 %}
+                {% if measurement.bach_index.show_classification %}
                     <div class="index-classification display-1 fw-bolder bach-class-{{ measurement.bach_index.classification }}">
                         {% translate "Class" %} {{ measurement.bach_index.classification }}
                     </div>
@@ -36,7 +36,7 @@
                     {% translate "Value" %}
                 </div>
                 <div class="fw-bold">
-                    {% if measurement.bach_index.validity >= 0.4 %}
+                    {% if measurement.bach_index.show_classification %}
                         {{ measurement.bach_index.value|floatformat:"2" }}
                     {% else %}
                         {{ not_any }}
@@ -94,7 +94,7 @@
     </div>
 </div>
 
-{% if measurement.bach_index.validity < 0.4 %}
+{% if not measurement.bach_index.show_classification %}
     <div class="box box-warning d-flex align-items-center py-2 mt-2 me-2" role="alert">
         {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-3" %}
         <div>
@@ -103,7 +103,8 @@
             {% endblocktrans %}
         </div>
     </div>
-{% elif measurement.bach_index.validity < 0.7 %}
+{% endif %}
+{% if measurement.bach_index.has_validity_warning and measurement.bach_index.show_classification %}
     <div class="box box-info d-flex align-items-center py-2 mt-2 me-2" role="alert">
         {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-3" %}
         <div>
