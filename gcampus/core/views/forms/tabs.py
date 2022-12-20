@@ -38,7 +38,7 @@ MEASUREMENT_FORM_TABS = TabNavigation(
         vn_requires_args=True,
     ),
     biological=Tab(
-        _("3. Saprobic Abundancies"),
+        _("3. Saprobic Abundances"),
         view_name="gcampuscore:edit-biological-parameters",
         vn_requires_args=True,
     ),
