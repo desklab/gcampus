@@ -30,6 +30,7 @@ OptionalFormat = Optional[Format]
 
 
 class CellType(Enum):
+    integer = "integer"
     number = "number"
     datetime = "datetime"
     percentage = "percentage"
@@ -51,6 +52,8 @@ class CellData:
             return None
         if self.cell_type is CellType.string or self.cell_type is CellType.url:
             return str(self.data)
+        elif self.cell_type is CellType.integer:
+            return int(self.data)
         elif self.cell_type is CellType.number or self.cell_type is CellType.percentage:
             return float(self.data)
         elif self.cell_type is CellType.datetime:
@@ -65,6 +68,7 @@ class CellData:
 
 class ExportWorksheet(Worksheet):
     _header_format: OptionalFormat
+    _integer_format: OptionalFormat
     _number_format: OptionalFormat
     _datetime_format: OptionalFormat
     _percentage_format: OptionalFormat
@@ -72,11 +76,13 @@ class ExportWorksheet(Worksheet):
     def set_formats(
         self,
         header_format: OptionalFormat,
+        integer_format: OptionalFormat,
         number_format: OptionalFormat,
         datetime_format: OptionalFormat,
         percentage_format: OptionalFormat,
     ):
         self._header_format = header_format
+        self._integer_format = integer_format
         self._number_format = number_format
         self._datetime_format = datetime_format
         self._percentage_format = percentage_format
@@ -86,6 +92,12 @@ class ExportWorksheet(Worksheet):
         if not hasattr(self, "_header_format"):
             raise RuntimeError("must call set_formats before calling write_row_data")
         return self._header_format
+
+    @property
+    def integer_format(self) -> OptionalFormat:
+        if not hasattr(self, "_integer_format"):
+            raise RuntimeError("must call set_formats before calling write_row_data")
+        return self._integer_format
 
     @property
     def number_format(self) -> OptionalFormat:

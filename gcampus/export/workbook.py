@@ -28,6 +28,8 @@ class ExportWorkbook(Workbook):
 
     def _init_formats(self):
         self.header_format = self.add_format({"bold": True})
+        self.integer_format = self.add_format()
+        self.integer_format.set_num_format(1)
         self.number_format = self.add_format()
         self.number_format.set_num_format(2)
         self.datetime_format = self.add_format()
@@ -40,6 +42,7 @@ class ExportWorkbook(Workbook):
         if isinstance(worksheet, ExportWorksheet):
             worksheet.set_formats(
                 self.header_format,
+                self.integer_format,
                 self.number_format,
                 self.datetime_format,
                 self.percentage_format,
