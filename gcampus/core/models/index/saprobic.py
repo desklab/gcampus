@@ -17,7 +17,7 @@ from __future__ import annotations
 
 __ALL__ = ["SaprobicIndex"]
 
-from typing import Union
+from typing import Union, ClassVar, Optional
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -29,6 +29,9 @@ class SaprobicIndex(WaterQualityIndex):
     class Meta:
         verbose_name = _("Saprobic Index")
         verbose_name_plural = _("Saprobic Indices")
+
+    slug: ClassVar[str] = "saprobic"
+    icon_name: ClassVar[str] = "rulers"
 
     measurement = models.OneToOneField(
         "gcampuscore.Measurement",  # noqa
@@ -145,3 +148,6 @@ class SaprobicIndex(WaterQualityIndex):
         validity = min(validity, 1)
 
         return validity
+
+    def get_indicator_template(self) -> Optional[str]:
+        return None

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 __ALL__ = ["StructureIndex"]
 
-from typing import Union
+from typing import Union, Optional, ClassVar
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -156,6 +156,9 @@ class StructureIndex(WaterQualityIndex):
         verbose_name = _("Physical-Structural Index")
         verbose_name_plural = _("Physical-Structural Indices")
 
+    slug: ClassVar[str] = "structure"
+    icon_name: ClassVar[str] = "bug-fill"
+
     measurement = models.OneToOneField(
         "gcampuscore.Measurement",  # noqa
         blank=False,
@@ -250,6 +253,9 @@ class StructureIndex(WaterQualityIndex):
         self.validity = self.calculate_validity(self)
         if commit:
             self.save()
+
+    def get_indicator_template(self) -> Optional[str]:
+        return None
 
     @classmethod
     def calculate_index(cls, instance) -> float:
