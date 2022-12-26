@@ -17,14 +17,13 @@ from __future__ import annotations
 
 __ALL__ = ["WaterQualityIndex"]
 
-from abc import ABC, ABCMeta
 from typing import Union, ClassVar, Optional
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models import Measurement
-from gcampus.core.tabs import Renderable
+from gcampus.core.renderable import Renderable
 
 
 class WaterQualityIndex(models.Model, Renderable):
