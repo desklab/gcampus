@@ -39,6 +39,7 @@ from gcampus.core.models import (
     StructureIndex,
 )
 from gcampus.core.models.index.base import WaterQualityIndex
+from gcampus.core.models.parameter import ParameterTypeCategory
 from gcampus.export.response.base import MeasurementExportResponse
 from gcampus.export.workbook import ExportWorkbook
 from gcampus.export.worksheet import ExportWorksheet, CellData, CellType
@@ -74,8 +75,8 @@ class XlsxResponse(MeasurementExportResponse):
         os.close(fd)  # The file is handled by the Workbook class
         parameter_types: List[Tuple[int, str, str]] = (
             ParameterType.objects.order_by("pk")
-            .only("pk", "name", "unit")
-            .values_list("pk", "name", "unit")
+            .only("pk", "name", "unit", "category")
+            .values_list("pk", "name", "unit", "category")
         )
         workbook_options = {"constant_memory": True, "tmpdir": self._tempdir.name}
         with ExportWorkbook(filename, options=workbook_options) as wb:
@@ -119,15 +120,15 @@ class XlsxResponse(MeasurementExportResponse):
             CellData(measurement.data_quality_warning, CellType.boolean),
         ]
         parameters: List[Parameter] = measurement.parameters.all()
-        for pk, _, _ in parameter_types:
+        for pk, _, _, category in parameter_types:
             params: List[Parameter] = [
                 param for param in parameters if param.parameter_type_id == pk
             ]
             value = None
             comment = None
-            if params:
+            count = len(params)
+            if count > 0:
                 comments: List[str] = []
-                count = len(params)
                 # Compute the mean of the parameter
                 value = sum(map(lambda p: p.value, params)) / count
                 if count > 1:
@@ -141,7 +142,14 @@ class XlsxResponse(MeasurementExportResponse):
                 if comments:
                     # Add comments seperated by a new line
                     comment = "\n".join(comments)
-            row_data.append(CellData(value, CellType.number, comment=comment))
+            cell_type: CellType = CellType.number
+            if category == ParameterTypeCategory.BIOLOGICAL and count <= 1:
+                # Change value and corresponding cell type to an
+                # integer as all biological parameters are counts and
+                # the value is not an average.
+                value = int(value)
+                cell_type = CellType.integer
+            row_data.append(CellData(value, cell_type, comment=comment))
         index: WaterQualityIndex
         for index in measurement.indices:
             value = classification = description = validity = None
@@ -176,7 +184,7 @@ class XlsxResponse(MeasurementExportResponse):
             (Water.water_type.field.verbose_name, 20),
             capfirst(gettext("data quality warning")),
         ]
-        for _, name, unit in parameter_types:
+        for _, name, unit, _ in parameter_types:
             if unit:
                 name = f"{name!s} [{unit!s}]"
             cells.append(name)
