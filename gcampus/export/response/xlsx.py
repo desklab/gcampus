@@ -144,19 +144,17 @@ class XlsxResponse(MeasurementExportResponse):
             row_data.append(CellData(value, CellType.number, comment=comment))
         index: WaterQualityIndex
         for index in measurement.indices:
-            if not index.valid_flow_type:
-                # Index is not valid for this flow type. Write blank
-                # values and continue
-                row_data.append(CellData(None, CellType.number))
-                row_data.append(CellData(None, CellType.percentage))
-                continue
-            if index.validity > 0:
-                value = index.value
-            else:
-                # Write blank value, validity is too low
-                value = None
+            value = classification = description = validity = None
+            if index.valid_flow_type:
+                validity = index.validity
+                if index.validity > 0:
+                    value = index.value
+                    classification = index.classification
+                    description = index.description
             row_data.append(CellData(value, CellType.number))
-            row_data.append(CellData(index.validity, CellType.percentage))
+            row_data.append(CellData(classification, CellType.string))
+            row_data.append(CellData(description, CellType.string))
+            row_data.append(CellData(validity, CellType.percentage))
         row_data.append(CellData(measurement.comment, CellType.string))
         return row_data
 
@@ -182,10 +180,14 @@ class XlsxResponse(MeasurementExportResponse):
             if unit:
                 name = f"{name!s} [{unit!s}]"
             cells.append(name)
+        classification_str = str(WaterQualityIndex.classification.field.verbose_name)
+        description_str = str(WaterQualityIndex.description.field.verbose_name)
         validity_str = str(WaterQualityIndex.validity.field.verbose_name)
         for index in (BACHIndex, SaprobicIndex, StructureIndex, TrophicIndex):
             name = str(index._meta.verbose_name)
             cells.append(name)
+            cells.append(f"{name} ({classification_str})")
+            cells.append(f"{name} ({description_str})")
             cells.append(f"{name} ({validity_str})")
         cells.append(Measurement.comment.field.verbose_name)
         sheet.write_header(0, cells)
