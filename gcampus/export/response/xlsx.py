@@ -17,7 +17,7 @@ __all__ = ["XlsxResponse"]
 
 import os
 from numbers import Number
-from typing import Tuple, IO, List
+from typing import Tuple, IO, List, Optional
 
 from django.urls import reverse
 from django.utils.text import capfirst
@@ -124,9 +124,10 @@ class XlsxResponse(MeasurementExportResponse):
             params: List[Parameter] = [
                 param for param in parameters if param.parameter_type_id == pk
             ]
-            value = None
-            comment = None
-            count = len(params)
+            value: Optional[Number] = None
+            comment: Optional[str] = None
+            count: int = len(params)
+            cell_type: CellType = CellType.number
             if count > 0:
                 comments: List[str] = []
                 # Compute the mean of the parameter
@@ -142,8 +143,7 @@ class XlsxResponse(MeasurementExportResponse):
                 if comments:
                     # Add comments seperated by a new line
                     comment = "\n".join(comments)
-            cell_type: CellType = CellType.number
-            if category == ParameterTypeCategory.BIOLOGICAL and count <= 1:
+            if category == ParameterTypeCategory.BIOLOGICAL and count == 1:
                 # Change value and corresponding cell type to an
                 # integer as all biological parameters are counts and
                 # the value is not an average.
