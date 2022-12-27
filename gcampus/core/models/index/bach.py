@@ -38,6 +38,10 @@ class BACHIndex(WaterQualityIndex):
         related_name="bach_index",
     )
 
+    @property
+    def valid_flow_type(self) -> bool:
+        return True
+
     @classmethod
     def calculate_index(cls, **kwargs) -> float:
         temp_lookup = [

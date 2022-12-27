@@ -16,7 +16,6 @@
 from django.urls import path
 
 from gcampus.documents.apps import GCampusDocumentsAppConfig
-from gcampus.documents.views.data_export import XLSXExportView, CSVExportView
 from gcampus.documents.views.print import (
     CourseOverviewPDF,
     AccessKeyCombinedPDF,
@@ -40,16 +39,6 @@ urlpatterns = [
         "documents/measurements/pdf",
         MeasurementListPDF.as_view(),
         name="measurement-list-pdf",
-    ),
-    path(
-        "documents/measurements/csv",
-        CSVExportView.as_view(),
-        name="measurement-list-csv",
-    ),
-    path(
-        "documents/measurements/xlsx",
-        XLSXExportView.as_view(),
-        name="measurement-list-xlsx",
     ),
 ]
 

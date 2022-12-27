@@ -15,9 +15,9 @@
 
 from __future__ import annotations
 
-__ALL__ = ["Measurement", "ParameterType", "Parameter", "Calibration"]
+__all__ = ["Measurement", "HiddenManager"]
 
-from typing import List
+from typing import List, Optional
 
 from django.contrib.gis.db import models
 from django.contrib.postgres.indexes import GinIndex
@@ -210,3 +210,12 @@ class Measurement(util.DateModelMixin):
         return super(Measurement, self)._do_update(
             base_qs, using, pk_val, mod_values, update_fields, forced_update
         )
+
+    @property
+    def indices(self) -> list:
+        return [
+            self.bach_index,
+            self.saprobic_index,
+            self.structure_index,
+            self.trophic_index,
+        ]

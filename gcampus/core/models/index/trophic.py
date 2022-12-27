@@ -23,6 +23,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models.index.base import WaterQualityIndex
+from gcampus.core.models.water import FlowType
 
 
 class TrophicIndex(WaterQualityIndex):
@@ -37,6 +38,10 @@ class TrophicIndex(WaterQualityIndex):
         on_delete=models.CASCADE,
         related_name="trophic_index",
     )
+
+    @property
+    def valid_flow_type(self) -> bool:
+        return self.measurement.water.flow_type == FlowType.STANDING
 
     @classmethod
     def calculate_index(cls, **kwargs) -> float:

@@ -23,6 +23,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.core.models.index.base import WaterQualityIndex
+from gcampus.core.models.water import FlowType
 
 
 class UtilizationCategory(models.TextChoices):
@@ -250,6 +251,10 @@ class StructureIndex(WaterQualityIndex):
         self.validity = self.calculate_validity(self)
         if commit:
             self.save()
+
+    @property
+    def valid_flow_type(self) -> bool:
+        return self.measurement.water.flow_type == FlowType.RUNNING
 
     @classmethod
     def calculate_index(cls, instance) -> float:
