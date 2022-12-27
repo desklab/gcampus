@@ -154,6 +154,8 @@ class ExportWorksheet(Worksheet):
         fmt: OptionalFormat = getattr(self, f"{cell_type.value}_format", None)
         if cell_data.data is None:
             return self.write_blank, fmt
+        if cell_type is CellType.integer:
+            cell_type = CellType.number
         if cell_type is CellType.percentage:
             return self.write_number, fmt
         else:
