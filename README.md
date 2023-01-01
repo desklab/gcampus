@@ -11,7 +11,7 @@
 Limnology aiming to provide students the possibility to analyse, publish
 and discuss results of self-conducted measurements of water-quality in
 rivers and lakes. It is developed by [desklab](https://www.desk-lab.de) in
-cooperation with the [TU Kaiserslautern](https://www.mv.uni-kl.de/biovt/)
+cooperation with the [RPTU](https://www.mv.uni-kl.de/biovt/)
 and funded by the [DBU](https://www.dbu.de/).
 See [gewaessercampus.de](https://gewaessercampus.de) for more information.
 

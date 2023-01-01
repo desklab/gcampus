@@ -3,9 +3,9 @@
 **Technical Documentation**
 
 GewässerCampus is part of an educational project on Limnology aiming to provide students the possibility to analyse,
-publish and discuss results of self-conducted measurements of water-quality in rivers and lakes. It is developed
-by [desklab](https://desk-lab.de) in cooperation with the TU Kaiserslautern and funded by the Deutsche Bundesstiftung
-Umwelt.
+publish and discuss results of self-conducted measurements of water-quality in rivers and lakes. It is developed by
+[desklab](https://www.desk-lab.de) in cooperation with the [RPTU](https://www.mv.uni-kl.de/biovt/) and funded by 
+the [DBU](https://www.dbu.de/).
 
 ```{important}
 This is a technical documentation intedned for developers, data
