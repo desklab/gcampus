@@ -1,12 +1,18 @@
 {% extends "gcampuscore/base.html" %}
 {% load i18n %}
 {% block main_class %}main-pt-0 min-vh-100{% endblock %}
-{% block content %}
+{% block body %}
     <div class="container-fluid px-0">
         <form method="POST">
             {% csrf_token %}
             <div class="row">
-                <div class="col-7 px-5">
+                <div class="col-7 px-5 pt-5 ">
+                <h1 class="mb-4">
+                    {% blocktranslate trimmed %}
+                        Register at
+                        <span class="gcampus-logo text-dark"><span>Gewässer</span>Campus</span>
+                    {% endblocktranslate %}
+                </h1>
                     <p class="mt-3">
                         {% blocktranslate context "help text register" trimmed %}
                             Register your class or course and generate a list
