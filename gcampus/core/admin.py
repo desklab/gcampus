@@ -26,7 +26,6 @@ from gcampus.core.models import (
     ParameterType,
     Parameter,
     Water,
-    Calibration,
     BACHIndex,
     SaprobicIndex,
     TrophicIndex,
@@ -175,10 +174,6 @@ class ParameterTypeAdmin(admin.ModelAdmin):
     inlines = [ParameterInline]
 
 
-class CalibrationAdmin(admin.ModelAdmin):
-    pass
-
-
 class ParameterAdmin(admin.ModelAdmin):
     search_fields = ("parameter_type__name",)
     list_filter = ("parameter_type", "hidden")
@@ -231,7 +226,6 @@ admin.site.register(Measurement, MeasurementAdmin)
 admin.site.register(ParameterType, ParameterTypeAdmin)
 admin.site.register(Parameter, ParameterAdmin)
 admin.site.register(Water, WaterAdmin)
-admin.site.register(Calibration, CalibrationAdmin)
 admin.site.register(BACHIndex, BACHIndexAdmin)
 admin.site.register(SaprobicIndex, SaprobicIndexAdmin)
 admin.site.register(TrophicIndex, TrophicIndexAdmin)

@@ -1,0 +1,32 @@
+{% extends "gcampuscore/base.html" %}
+{% load i18n static list_iter %}
+{% block extra_head %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'gcampustools/js/calibration.js' %}"></script>
+{% endblock %}
+{% block main_class %}main-pb-0 main-pt-0{% endblock %}
+{% block navbar_title %}
+    {% translate "Measurement Kits" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid px-0">
+        <div class="container mb-5 mt-3">
+            <h2 class="text-secondary">
+                {% translate "Measurement Kits" %}
+            </h2>
+            <div>
+                {% blocktranslate trimmed %}
+                    Choose the measurement kit you used in combination with the photometer. If you are not sure, which
+                    kit you have used, ask your teacher.
+                {% endblocktranslate %}
+            </div>
+        </div>
+        <div class="container mt-5 mb-3">
+            {% for k in object_list %}
+                {% include "gcampustools/components/measurement_kit_card.html" with kit=k %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+

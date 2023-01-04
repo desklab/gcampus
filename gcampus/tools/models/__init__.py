@@ -13,12 +13,5 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from gcampus.core.models.measurement import Measurement
-from gcampus.core.models.parameter import ParameterType, Parameter
-from gcampus.core.models.water import Water
-from gcampus.core.models.index import (
-    BACHIndex,
-    SaprobicIndex,
-    TrophicIndex,
-    StructureIndex,
-)
+from gcampus.tools.models.kit import MeasurementKit
+from gcampus.tools.models.calibration import Calibration

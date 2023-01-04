@@ -1,0 +1,58 @@
+{% extends "gcampuscore/base.html" %}
+{% load i18n static list_iter %}
+{% block extra_head %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'gcampustools/js/calibration.js' %}"></script>
+{% endblock %}
+{% block main_class %}main-pb-0 main-pt-0{% endblock %}
+{% block navbar_title %}
+    {% translate "Tools" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid px-0">
+        <div class="container py-4">
+            <div class="row">
+
+                <div class="col-12 col-xl-6 my-3">
+                    <div class="card p-3 bg-light border-0 text-center h-100">
+                        <h1 class="text-primary">
+                            {% include "gcampuscore/icons/calculator.html" %}
+                        </h1>
+                        <h3 class="text-secondary fw-bold">
+                            {% translate "OD Conversion" %}
+                        </h3>
+                        <div class="text-dark">
+                            {% blocktranslate trimmed %}
+                                This tool helps you to convert the optical density you measured with the photometer into
+                                the value of the specific parameter. It uses a standard calibration which has been
+                                prepared by the GewässerCampus team.
+                            {% endblocktranslate %}
+                        </div>
+                        <a href="{% url "gcampustools:measurement-kit-overview" %}" class="stretched-link"></a>
+                    </div>
+                </div>
+
+                <div class="col-12 col-xl-6 my-3">
+                    <div class="card p-3 bg-light border-0 text-center h-100">
+                        <h1 class="text-primary">
+                            {% include "gcampuscore/icons/file-earmark-text.html" %}
+                        </h1>
+                        <h3 class="text-secondary fw-bold">
+                            {% translate "Educational Documents" %}
+                        </h3>
+                        <div class="text-dark">
+                            {% blocktranslate trimmed %}
+                                This tool helps you to find all documents you need to include the GewässerCampus project
+                                into your lessons
+                            {% endblocktranslate %}
+                        </div>
+                        <a href="https://desk-lab.de/docs" class="stretched-link"></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

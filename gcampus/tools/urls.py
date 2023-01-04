@@ -12,24 +12,27 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from importlib.util import find_spec
 
-from django.conf import settings
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 
+from gcampus.tools.apps import GCampusToolsAppConfig
+from gcampus.tools.views import (
+    ODConverterOverView,
+    ODConverterDetailView,
+    MeasurementKitOverView,
+    ToolsOverView,
+)
+
+# Turn off black formatting and pylint
+# fmt: off
+# pylint: disable=line-too-long
 urlpatterns = [
-    path("", include("gcampus.core.urls")),
-    path("", include("gcampus.auth.urls")),
-    path("", include("gcampus.documents.urls")),
-    path("", include("gcampus.tools.urls")),
-    path("", include("gcampus.export.urls")),
-    path("api/v1/", include("gcampus.api.urls", namespace="v1")),
-    path("admin/", admin.site.urls),
+    path("tools/", ToolsOverView.as_view(), name="tools"),
+    path("tools/kits/", MeasurementKitOverView.as_view(), name="measurement-kit-overview"),
+    path("tools/kits/<int:pk_kit>/", ODConverterOverView.as_view(), name="od-converter-overview"),
+    path("tools/kits/<int:pk_kit>/convert/<int:pk>/", ODConverterDetailView.as_view(), name="od-converter"),
 ]
+# fmt: on
+# pylint: enable=line-too-long
 
-if settings.DEBUG and find_spec("debug_toolbar"):
-    # Only add debug toolbar urls if the module is present
-    urlpatterns.append(path("__debug__/", include("debug_toolbar.urls"))),
-
-handler403 = "gcampus.auth.views.permission_denied_error_handler"
+app_name = GCampusToolsAppConfig.label

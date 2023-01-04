@@ -309,19 +309,19 @@ let gcampusmailConfig = (env, options) => {
     });
 }
 
-let gcampusanalysisConfig = (env, options) => {
+let gcampustoolsConfig = (env, options) => {
     let common = commonConfig(env, options);
     return Object.assign(common, {
-        name: 'gcampusanalysis',
+        name: 'gcampustools',
         entry: {
-            calibration: path.resolve(__dirname, 'gcampus', 'analysis', 'static_src', 'js', 'calibration.js'),
+            calibration: path.resolve(__dirname, 'gcampus', 'tools', 'static_src', 'js', 'calibration.js'),
         },
         output: {
-            path: path.resolve(__dirname, 'gcampus', 'analysis', 'static', 'gcampusanalysis'),
-            publicPath: '/static/gcampusanalysis',
+            path: path.resolve(__dirname, 'gcampus', 'tools', 'static', 'gcampustools'),
+            publicPath: '/static/gcampustools',
             filename: 'js/[name].js',
             library: {
-                name: ['gcampusanalysis', '[name]'],
+                name: ['gcampustools', '[name]'],
                 type: 'var'
             }
         },
@@ -331,8 +331,8 @@ let gcampusanalysisConfig = (env, options) => {
             // new CopyWebpackPlugin({
             //     patterns: [
             //         {
-            //             from: path.resolve(__dirname, 'gcampus', 'analysis', 'static_src', 'assets'),
-            //             to: path.resolve(__dirname, 'gcampus', 'analysis', 'static', 'gcampusanalysis', 'assets'),
+            //             from: path.resolve(__dirname, 'gcampus', 'tools', 'static_src', 'assets'),
+            //             to: path.resolve(__dirname, 'gcampus', 'tools', 'static', 'gcampustools', 'assets'),
             //         },
             //     ]
             // })
@@ -349,6 +349,6 @@ module.exports = (env, options) => {
         gcampusauthConfig(env, options),
         gcampusdocumentsConfig(env, options),
         gcampusmailConfig(env, options),
-        gcampusanalysisConfig(env, options),
+        gcampustoolsConfig(env, options),
     ];
 };

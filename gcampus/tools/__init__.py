@@ -13,23 +13,4 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from django.urls import path
-
-from gcampus.analysis.apps import GCampusAnalysisAppConfig
-from gcampus.analysis.views import ODConverterOverView, ODConverterDetailView
-
-# Necessary to get the plots to work
-# from gcampus.analysis.dash_apps import Example_Measurement
-
-
-# Turn off black formatting and pylint
-# fmt: off
-# pylint: disable=line-too-long
-urlpatterns = [
-    path("analysis/convert", ODConverterOverView.as_view(), name="od_converter_overview"),
-    path("analysis/convert/<int:pk>/", ODConverterDetailView.as_view(), name="od_converter"),
-]
-# fmt: on
-# pylint: enable=line-too-long
-
-app_name = GCampusAnalysisAppConfig.label
+default_app_config = "gcampus.tools.apps.GCampusToolsAppConfig"

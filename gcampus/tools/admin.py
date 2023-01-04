@@ -13,4 +13,26 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-default_app_config = "gcampus.analysis.apps.GCampusAnalysisAppConfig"
+from django.contrib.gis import admin
+
+from gcampus.tools.models import MeasurementKit, Calibration
+
+
+class MeasurementKitAdmin(admin.ModelAdmin):
+    list_display = (
+        "__str__",
+        "identifier",
+        "short_name",
+    )
+
+
+class CalibrationAdmin(admin.ModelAdmin):
+    list_display = (
+        "__str__",
+        "measurement_kit",
+        "parameter_type",
+    )
+
+
+admin.site.register(MeasurementKit, MeasurementKitAdmin)
+admin.site.register(Calibration, CalibrationAdmin)

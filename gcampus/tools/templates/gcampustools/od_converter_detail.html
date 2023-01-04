@@ -1,0 +1,101 @@
+{% extends "gcampuscore/base.html" %}
+{% load i18n static %}
+{% block main_class %}main-pb-0 main-pt-0{% endblock %}
+{% block navbar_title %}
+    {% translate "Optical Density Converter" %} - {{ parameter.name }} ({{ kit.short_name }})
+{% endblock %}
+{% block content %}
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-12 col-md-7">
+                <div class="mx-1 my-3 p-2 bg-light border-0 row">
+                    <div class="col">
+                            <span class="text-secondary">
+                                {% translate "selected kit" %}
+                            </span>
+                        <h3 class="text-primary">
+                            {{ kit.name }}
+                        </h3>
+                    </div>
+                    <div class="col d-flex aligns-items-center my-auto">
+                        <a class="btn btn-secondary ms-auto"
+                           href="{% url "gcampustools:measurement-kit-overview" %}">
+                            {% translate "Select different kit" %}
+                        </a>
+                    </div>
+                </div>
+                <div class="mx-1 mb-5 p-2 bg-light border-0 row">
+                    <div class="col">
+                            <span class="text-secondary">
+                                {% translate "selected parameter" %}
+                            </span>
+                        <h3 class="text-primary">
+                            {{ parameter.name }}
+                        </h3>
+                    </div>
+                    <div class="col d-flex aligns-items-center my-auto">
+                        <a class="btn btn-secondary ms-auto"
+                           href="{% url "gcampustools:od-converter-overview" pk_kit=kit.pk %}">
+                            {% translate "Select different parameter" %}
+                        </a>
+                    </div>
+                </div>
+                <div class="box box-info mb-5 mt-3 mx-1">
+                    {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                    {% if parameter.unit != "" %}
+                        {% blocktranslate trimmed with name=parameter.name unit=parameter.unit %}
+                            This tool helps you to convert the optical density you measured with the photometer into
+                            the concentration of <b>{{ name }}</b> in {{ unit }}.
+                        {% endblocktranslate %}
+                    {% else %}
+                        {% blocktranslate trimmed with name=parameter.name unit=parameter.unit %}
+                            This tool helps you to convert the optical density you measured with the photometer into
+                            <b>{{ name }}</b>.
+                        {% endblocktranslate %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-5 d-none d-md-block bg-light"></div>
+            {# Placeholder #}
+            {% for calibration in calibrations %}
+                <div class="col-12 col-md-7{% if not forloop.first %} pt-3{% endif %}">
+                    <h3>{{ calibration.name }}</h3>
+                </div>
+                <div class="col-5 d-none d-md-block bg-light"></div>
+                {# Placeholder #}
+                {% include "gcampustools/components/od_converter_item.html" %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+{% block body_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'gcampustools/js/calibration.js' %}"></script>
+    <script type="text/javascript">
+        {% for calibration in calibrations %}
+            let chart{{ calibration.pk }} = (function () {
+                let xLabel = '{{ parameter.name }}';
+                if ('{{ parameter.unit }}' !== '') {
+                    xLabel = xLabel + ' [{{ parameter.unit }}]';
+                }
+                return gcampustools.calibration.createChart(
+                    {{ calibration.pk }},
+                    document.getElementById("chart{{ calibration.name }}"),
+                    '{{ calibration.calibration_formula }}',
+                    '{% blocktranslate with parameter_type=calibration.parameter_type %}Calibration fit for {{ parameter_type }}{% endblocktranslate %}',
+                    xLabel,
+                    '{% translate "Optical density" %}',
+                    '{{ calibration.x_max }}',
+                    '{{ calibration.x_min }}'
+                );
+            })();
+
+            document.getElementById('conversionForm{{ calibration.pk }}')
+                .addEventListener(
+                    'submit',
+                    (event) => gcampustools.calibration.formConversion(event, {{ calibration.pk }}, chart{{ calibration.pk }})
+                );
+        {% endfor %}
+    </script>
+{% endblock %}
+

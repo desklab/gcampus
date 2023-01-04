@@ -2,7 +2,7 @@
 {# Since we need two arguments, one indicating the row the second one the column, we need a filter #}
 {# with two arguments. This is done with 2 filters where th first one ("one_more) just returns both arguments #}
 {# so we can access both in the second filter("list_item"). Look into the list_iter file to see how it is done #}
-{% with parameters|one_more:forloop.counter0|list_item:row_pos as parameter %}
+{% with object_list|one_more:forloop.counter0|list_item:row_pos as parameter %}
     <style>
         .square {
             width: 120px;
@@ -29,7 +29,7 @@
             <div class="mt-3 justify-content-center">
                 <h5 class="text-center text-secondary">{{ parameter.name }}</h5>
             </div>
-            <a href="{% url "gcampusanalysis:od_converter" pk=parameter.pk %}" class="stretched-link"></a>
+            <a href="{% url "gcampustools:od-converter" pk_kit=kit.pk pk=parameter.pk %}" class="stretched-link"></a>
         </div>
     </div>
 {% endwith %}
