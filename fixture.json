@@ -168,7 +168,7 @@
       "comment": "Team",
       "hidden": false,
       "requires_review": false,
-      "data_quality_warning": false,
+      "parameter_quality_warning": false,
       "internal_comment": "",
       "search_vector": "'bodense':3A 'immenstaad':1A",
       "document": ""
@@ -189,7 +189,7 @@
       "comment": "",
       "hidden": false,
       "requires_review": false,
-      "data_quality_warning": false,
+      "parameter_quality_warning": false,
       "internal_comment": null,
       "search_vector": "'hessigheim':2A 'team':1A",
       "document": ""
@@ -210,7 +210,7 @@
       "comment": "",
       "hidden": false,
       "requires_review": false,
-      "data_quality_warning": false,
+      "parameter_quality_warning": false,
       "internal_comment": "",
       "search_vector": "'pfalz':3A 'rheinland':2A 'rheinland-pfalz':1A",
       "document": ""
@@ -231,7 +231,7 @@
       "comment": "",
       "hidden": false,
       "requires_review": false,
-      "data_quality_warning": false,
+      "parameter_quality_warning": false,
       "internal_comment": "",
       "search_vector": "'axel':1A 'mannheim':2A",
       "document": ""
@@ -252,7 +252,7 @@
       "comment": "",
       "hidden": false,
       "requires_review": true,
-      "data_quality_warning": false,
+      "parameter_quality_warning": false,
       "internal_comment": null,
       "search_vector": "'axel':1A 'pfalz':4A 'rheinland':3A 'rheinland-pfalz':2A",
       "document": ""
@@ -273,7 +273,7 @@
       "comment": "",
       "hidden": true,
       "requires_review": false,
-      "data_quality_warning": false,
+      "parameter_quality_warning": false,
       "internal_comment": "",
       "search_vector": "'axel':1A 'heddesheim':2A",
       "document": ""
@@ -294,7 +294,7 @@
       "comment": "",
       "hidden": false,
       "requires_review": false,
-      "data_quality_warning": true,
+      "parameter_quality_warning": true,
       "internal_comment": null,
       "search_vector": "'jonas':1A 'pfalz':4A 'rheinland':3A 'rheinland-pfalz':2A",
       "document": ""

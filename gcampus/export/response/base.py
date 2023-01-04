@@ -41,7 +41,7 @@ class MeasurementExportResponse(FileResponse, ABC):
         "water__water_type",
         "time",
         "comment",
-        "data_quality_warning",
+        "parameter_quality_warning",
     )
 
     def __init__(self, measurements: QuerySet, *args, as_attachment=True, **kwargs):

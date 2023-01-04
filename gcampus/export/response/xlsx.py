@@ -117,7 +117,7 @@ class XlsxResponse(MeasurementExportResponse):
             CellData(measurement.water.display_name, CellType.string),
             CellData(measurement.water.get_flow_type_display(), CellType.string),
             CellData(measurement.water.get_water_type_display(), CellType.string),
-            CellData(measurement.data_quality_warning, CellType.boolean),
+            CellData(measurement.parameter_quality_warning, CellType.boolean),
         ]
         parameters: List[Parameter] = measurement.parameters.all()
         for pk, _, _, category in parameter_types:

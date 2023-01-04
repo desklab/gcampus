@@ -37,7 +37,7 @@ class CsvResponse(MeasurementExportResponse):
         "water_name",
         "flow_type",
         "water_type",
-        "data_quality_warning",
+        "parameter_quality_warning",
         "index_validity",
         "note",
         "full_type_name",
@@ -88,7 +88,7 @@ class CsvResponse(MeasurementExportResponse):
             "water_name": str(water.display_name),
             "flow_type": str(water.flow_type),
             "water_type": str(water.water_type),
-            "data_quality_warning": measurement.data_quality_warning,
+            "parameter_quality_warning": measurement.parameter_quality_warning,
             "measurement_note": str(measurement.comment),
         }
         if isinstance(row, Parameter):

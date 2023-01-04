@@ -120,7 +120,7 @@ class MeasurementAdmin(LeafletGeoAdmin):
         "token",
         "hidden",
         "requires_review",
-        "data_quality_warning",
+        "parameter_quality_warning",
     )
     list_display_links = ("__str__",)
     inlines = [ParameterInline]

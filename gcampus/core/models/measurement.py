@@ -122,7 +122,7 @@ class Measurement(util.DateModelMixin):
 
     #: Used to flag measurements containing parameters which seem not to be
     #: feasible. Set by admins/moderators in the admin interface.
-    data_quality_warning = models.BooleanField(
+    parameter_quality_warning = models.BooleanField(
         default=False,
         verbose_name=_("data quality warning"),
     )
