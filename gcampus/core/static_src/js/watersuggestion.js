@@ -355,14 +355,18 @@ class WaterList {
         // the actual request. This delay is acceptable as the Overpass
         // API request is quite lengthy and thus another 300ms will not
         // matter.
-        // This is done to avoid spamming requests when the user double
+        // This is done to avoid spamming requests when the user double-
         // clicks on the map e.g. to zoom. Only the last click will go
         // through to the server.
         this._requestTimeout = setTimeout(() => {
             this._requestTimeout = null;
             fetchWaterLookup(lng, lat)
                 .then(data => this.setFeatures(data.features, 'db'))
-                .catch(this.onError.bind(this));
+                .catch((err) => {
+                    // Set empty features to continue with the flow
+                    this.setFeatures(null, 'db');
+                    this.onError(err);
+                });
         }, 300);
     }
 
@@ -388,7 +392,11 @@ class WaterList {
         }, 3000);
         fetchOverpassLookup(this.lng, this.lat)
             .then(data => this.setFeatures(data.features, 'osm'))
-            .catch(this.onError.bind(this))
+            .catch((err) => {
+                // Set empty features to continue with the flow
+                this.setFeatures(null, 'osm');
+                this.onError(err);
+            })
             .finally(() => {
                 clearInterval(textInterval);
                 if (textTimeout !== null)
