@@ -39,6 +39,7 @@ class MeasurementKit(models.Model):
         verbose_name=_("Identifier"),
     )
 
+    # Hex value of color displayed
     color = models.CharField(blank=True, verbose_name=_("Color"), max_length=7)
 
     def __str__(self):
