@@ -32,7 +32,7 @@ class TrophicIndex(WaterQualityIndex):
         verbose_name_plural = _("Trophic Indices")
 
     slug: ClassVar[str] = "trophic"
-    icon_name: ClassVar[str] = "bug-fill"
+    icon_name: ClassVar[str] = "droplet-fill"
 
     measurement = models.OneToOneField(
         "gcampuscore.Measurement",  # noqa

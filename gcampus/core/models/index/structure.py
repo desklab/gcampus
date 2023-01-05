@@ -158,7 +158,7 @@ class StructureIndex(WaterQualityIndex):
         verbose_name_plural = _("Physical-Structural Indices")
 
     slug: ClassVar[str] = "structure"
-    icon_name: ClassVar[str] = "bug-fill"
+    icon_name: ClassVar[str] = "rulers"
 
     measurement = models.OneToOneField(
         "gcampuscore.Measurement",  # noqa

@@ -32,7 +32,7 @@ class SaprobicIndex(WaterQualityIndex):
         verbose_name_plural = _("Saprobic Indices")
 
     slug: ClassVar[str] = "saprobic"
-    icon_name: ClassVar[str] = "rulers"
+    icon_name: ClassVar[str] = "bug-fill"
 
     measurement = models.OneToOneField(
         "gcampuscore.Measurement",  # noqa
