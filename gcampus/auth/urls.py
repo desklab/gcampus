@@ -17,9 +17,8 @@ from django.urls import path
 from django.views.generic import RedirectView
 
 from gcampus.auth.apps import GCampusAuthAppConfig
+from gcampus.auth.forms import AccessKeyForm, CourseTokenForm
 from gcampus.auth.views import (
-    AccessKeyLoginFormView,
-    CourseTokenLoginFormView,
     logout,
     RegisterFormView,
     CourseUpdateView,
@@ -27,6 +26,7 @@ from gcampus.auth.views import (
     EmailConfirmationView,
     AccessKeyDeactivationView,
 )
+from gcampus.auth.views.token import LoginView, AccessKeyFormView, CourseTokenFormView
 
 app_name = GCampusAuthAppConfig.label
 
@@ -36,9 +36,9 @@ app_name = GCampusAuthAppConfig.label
 urlpatterns = [
     # Token
     path("register/", RegisterFormView.as_view(), name="register"),
-    path("login/", RedirectView.as_view(permanent=True, pattern_name=f"{app_name}:login-access-key"), name="login"),
-    path("login/accesskey/", AccessKeyLoginFormView.as_view(), name="login-access-key"),
-    path("login/coursetoken/", CourseTokenLoginFormView.as_view(), name="login-course-token"),
+    path("login/", LoginView.as_view(), name="login"),
+    path("login/access-key/", AccessKeyFormView.as_view(), name="login-access-key"),
+    path("login/course-token/", CourseTokenFormView.as_view(), name="login-course-token"),
     path('logout/', logout, name="logout"),
     # Course Overview
     path("course/", CourseUpdateView.as_view(), name="course-update"),

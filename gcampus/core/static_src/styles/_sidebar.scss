@@ -18,8 +18,17 @@
 $sidebar-transition: .12s;
 
 .gcampus-logo {
+  font-weight: $font-weight-bold !important;
+  text-decoration: none !important;;
+  color: $white !important;;
   :first-child {
-    color: $blue-200;
+    color: $blue-200 !important;;
+  }
+  &.link-dark, &.text-dark {
+    color: $gray-800 !important;;
+    :first-child {
+      color: $blue-600 !important;;
+    }
   }
 }
 

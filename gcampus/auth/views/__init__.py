@@ -15,8 +15,8 @@
 
 __all__ = [
     "RegisterFormView",
-    "AccessKeyLoginFormView",
-    "CourseTokenLoginFormView",
+    "AccessKeyFormView",
+    "CourseTokenFormView",
     "AccessKeyDeactivationView",
     "logout",
     "permission_denied_error_handler",
@@ -43,11 +43,7 @@ from gcampus.auth.views.course import (
     AccessKeyDeactivationView,
 )
 from gcampus.auth.views.register import RegisterFormView
-from gcampus.auth.views.token import (
-    AccessKeyLoginFormView,
-    CourseTokenLoginFormView,
-    logout,
-)
+from gcampus.auth.views.token import AccessKeyFormView, CourseTokenFormView, logout
 
 
 def permission_denied_error_handler(

@@ -104,6 +104,8 @@ $warning:    $yellow;
 $danger:     $red;
 $light:      $gray-100;
 $dark:       $gray-900;
+$light-blue: $blue-200;
+$dark-blue:  $blue-800;
 
 $theme-colors: (
   "primary":    $primary,
@@ -113,7 +115,9 @@ $theme-colors: (
   "warning":    $warning,
   "danger":     $danger,
   "light":      $light,
-  "dark":       $dark
+  "dark":       $dark,
+  "light-blue": $light-blue,
+  "dark-blue":  $dark-blue
 );
 
 $body-bg: $white !default;

@@ -1,0 +1,26 @@
+{% load static i18n %}
+<div class="bg-dark-blue">
+    <footer class="container d-flex flex-wrap justify-content-md-between justify-content-start align-items-center px-5">
+        <div class="col-md-6 col-12 text-muted text-md-start text-center align-items-center py-4">
+                <img src="{% static "gcampuscore/assets/logo.png" %}" width="48" height="48"
+                     class="border border-1 border-white rounded rounded-3 bg-white">
+        </div>
+        <ul class="nav col-md-6 col-12 justify-content-between justify-content-md-end gap-3 py-4">
+            <li class="nav-item">
+                <a href="https://gewaessercampus.de/terms" class="nav-link px-0 text-light">
+                    {% translate "Terms and conditions" %}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="https://gewaessercampus.de/gdp" class="nav-link px-0 text-light">
+                    {% translate "Privacy policy" %}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="https://gewaessercampus.de/imprint" class="nav-link px-0 text-light">
+                    {% translate "Imprint" %}
+                </a>
+            </li>
+        </ul>
+    </footer>
+</div>
