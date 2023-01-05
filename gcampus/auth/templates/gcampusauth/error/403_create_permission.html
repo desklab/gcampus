@@ -22,9 +22,13 @@
 {% endblock %}
 {% block exception_options %}
     <div class="p-4 p-md-5 border bg-light">
-        <a class="w-100 btn btn-lg btn-primary" role="button"
-           href="{% url "gcampusauth:login-access-key" %}{% next_url %}">
-            {% translate "Login with access key" %}
+        <a class="w-100 btn btn-lg btn-primary mb-4" role="button"
+           href="{% url "gcampusauth:login" %}{% next_url %}">
+            {% translate "Login" %}
+        </a>
+        <a class="w-100 btn btn-lg btn-dark-blue mb-4" role="button"
+           href="{% url "gcampusauth:register" %}{% next_url %}">
+            {% translate "Register a new course" %}
         </a>
         <hr class="my-4">
         <small class="text-muted">

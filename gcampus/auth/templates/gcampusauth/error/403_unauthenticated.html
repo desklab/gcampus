@@ -18,7 +18,11 @@
     <div class="p-4 p-md-5 border bg-light">
         <a class="w-100 btn btn-lg btn-primary mb-4" role="button"
            href="{% url "gcampusauth:login" %}{% next_url %}">
-            {% translate "Login or register a course" %}
+            {% translate "Login" %}
+        </a>
+        <a class="w-100 btn btn-lg btn-dark-blue" role="button"
+           href="{% url "gcampusauth:register" %}{% next_url %}">
+            {% translate "Register a new course" %}
         </a>
     </div>
 {% endblock %}
