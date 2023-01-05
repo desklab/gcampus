@@ -15,60 +15,12 @@
 
 import copy
 import dataclasses
-from functools import cached_property
-from pathlib import Path
-from typing import Type, Optional, ClassVar, Tuple, Union, Dict, List
+from typing import Optional, ClassVar, Tuple, Union, Dict, List
 
-from django.http import HttpRequest
-from django.template.backends.base import BaseEngine
-from django.template.backends.django import DjangoTemplates
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
-
-class Renderable:
-    """Mixin for renderable classes. Subclasses must implement the
-    method :meth:`.get_context` and set the attribute
-    :attr:`.template_name` or alternatively overwrite the
-    :meth:`.get_template` method.
-
-    By calling ``str(instance)`` on an instance of a subclass, the
-    HTML content is rendered. This can be used for example in templates
-    with ``{{ instance }}``.
-    """
-
-    backend: Type[BaseEngine] = DjangoTemplates
-    template_name: ClassVar[str]
-
-    def get_context(self, **kwargs) -> dict:
-        raise NotImplementedError("subclasses must implement get_context()")
-
-    def get_template(self, template_name: str):
-        return self.engine.get_template(template_name)
-
-    @cached_property
-    def engine(self) -> BaseEngine:
-        return self.backend(
-            {
-                "APP_DIRS": True,
-                "DIRS": [Path(__file__).parent / self.backend.app_dirname],  # noqa
-                "NAME": "gcampustabs",
-                "OPTIONS": {},
-            }
-        )
-
-    def render(
-        self,
-        template_name: Optional[str] = None,
-        context: Optional[dict] = None,
-        request: Optional[HttpRequest] = None,
-    ) -> str:
-        template = self.get_template(template_name or self.template_name)
-        context = context or self.get_context()
-        return mark_safe(template.render(context, request=request).strip())
-
-    __str__ = render
-    __html__ = render
+from gcampus.core.renderable import Renderable
 
 
 @dataclasses.dataclass

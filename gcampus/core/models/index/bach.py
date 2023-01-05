@@ -17,7 +17,7 @@ from __future__ import annotations
 
 __ALL__ = ["BACHIndex"]
 
-from typing import Union
+from typing import Union, ClassVar
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -29,6 +29,9 @@ class BACHIndex(WaterQualityIndex):
     class Meta:
         verbose_name = _("BACH Index")
         verbose_name_plural = _("BACH Indices")
+
+    slug: ClassVar[str] = "bach"
+    icon_name: ClassVar[str] = "droplet-fill"
 
     measurement = models.OneToOneField(
         "gcampuscore.Measurement",  # noqa

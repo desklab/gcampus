@@ -17,7 +17,7 @@ from __future__ import annotations
 
 __ALL__ = ["TrophicIndex"]
 
-from typing import Union
+from typing import Optional, Union, ClassVar
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -31,6 +31,9 @@ class TrophicIndex(WaterQualityIndex):
         verbose_name = _("Trophic Index")
         verbose_name_plural = _("Trophic Indices")
 
+    slug: ClassVar[str] = "trophic"
+    icon_name: ClassVar[str] = "bug-fill"
+
     measurement = models.OneToOneField(
         "gcampuscore.Measurement",  # noqa
         blank=False,
@@ -38,6 +41,9 @@ class TrophicIndex(WaterQualityIndex):
         on_delete=models.CASCADE,
         related_name="trophic_index",
     )
+
+    def get_indicator_template(self) -> Optional[str]:
+        return None
 
     @property
     def valid_flow_type(self) -> bool:

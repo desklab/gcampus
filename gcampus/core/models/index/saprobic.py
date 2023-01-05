@@ -17,7 +17,7 @@ from __future__ import annotations
 
 __ALL__ = ["SaprobicIndex"]
 
-from typing import Union
+from typing import Union, ClassVar, Optional
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -30,6 +30,9 @@ class SaprobicIndex(WaterQualityIndex):
     class Meta:
         verbose_name = _("Saprobic Index")
         verbose_name_plural = _("Saprobic Indices")
+
+    slug: ClassVar[str] = "saprobic"
+    icon_name: ClassVar[str] = "rulers"
 
     measurement = models.OneToOneField(
         "gcampuscore.Measurement",  # noqa
@@ -136,17 +139,20 @@ class SaprobicIndex(WaterQualityIndex):
     @classmethod
     def calculate_validity(cls, kwargs) -> float:
         validity = 0
-        abundance_sum = 0
+        total_abundance = 0
 
         for species in cls.SAPROBIC_INDICATORS:
             if species[0] in kwargs:
-                abundance_sum += kwargs.get(species[0])
+                total_abundance += kwargs.get(species[0])
 
-        if abundance_sum < 15:
-            validity += abundance_sum * 0.07
+        if total_abundance < 15:
+            validity += total_abundance * 0.07
         else:
             validity = 1
 
         validity = min(validity, 1)
 
         return validity
+
+    def get_indicator_template(self) -> Optional[str]:
+        return None

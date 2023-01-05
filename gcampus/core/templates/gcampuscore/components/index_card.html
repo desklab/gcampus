@@ -2,21 +2,20 @@
 {% translate "N/A" context "no value provided (water name, comment, etc)" as not_any %}
 <div class="bg-light me-2">
     <div class="my-auto p-4">
-
         <div class="row">
             <div class="col-9">
                 <div class="text-secondary fw-bold pb-2">
-                    {% translate "Saprobic Index" %}
+                    {{ name }}
                 </div>
-                {% if measurement.saprobic_index.validity >= 0.25 %}
-                    <div class="index-classification display-1 fw-bolder saprobic-class-{{ measurement.saprobic_index.classification }}">
-                        {% translate "Class" %} {{ measurement.saprobic_index.classification }}
+                {% if show_classification %}
+                    <div class="index-classification display-1 fw-bolder {{ css_class }}">
+                        {% translate "Class" %} {{ classification }}
                     </div>
-                    <div class="index-classification display-4 fw-bolder bach-class-{{ measurement.saprobic_index.classification }}">
-                        {{ measurement.saprobic_index.description }}
+                    <div class="index-classification display-4 fw-bolder {{ css_class }}">
+                        {{ measurement.bach_index.description }}
                     </div>
                 {% else %}
-                    <div class="index-classification display-1 fw-bolder class-unknown ">
+                    <div class="index-classification display-1 fw-bolder class-unknown">
                         {{ not_any }}
                     </div>
                     <div class="invisible display-4">
@@ -25,38 +24,46 @@
                 {% endif %}
             </div>
             <div class="col-3">
-                <div class="display-1 text-end text-gray pe-2">
-                    {% include "gcampuscore/icons/bug-fill.html" with extra_class="flex-shrink-0" %}
-                </div>
+               <div class="display-1 text-end text-gray pe-2">
+                   {% include icon_template with extra_class="flex-shrink-0" %}
+               </div>
             </div>
         </div>
         <div class="pt-4 row">
-            <div class="col-4">
+            <div class="col-3">
                 <div class="text-secondary fw-light">
                     {% translate "Value" %}
                 </div>
                 <div class="fw-bold">
-                    {% if measurement.saprobic_index.validity >= 0.25 %}
-                        {{ measurement.saprobic_index.value|floatformat:"2" }}
+                    {% if show_classification %}
+                        {{ value|floatformat:"2" }}
                     {% else %}
                         {{ not_any }}
                     {% endif %}
                 </div>
             </div>
-            <div class="col-8">
+            <div class="col-5">
                 <div class="text-secondary fw-light">
                     {% translate "Validity" %}
                 </div>
                 <div class="fw-bold">
-                    {% widthratio measurement.saprobic_index.validity 1 100 %}%
+                    {% widthratio validity 1 100 %}%
                 </div>
             </div>
+            {% if indicator_template %}
+                <div class="col-4">
+                    <div class="text-secondary fw-light">
+                        {% translate "Parameters" %}
+                    </div>
+                    {% include indicator_template with measurement=measurement only %}
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>
 
-{% if measurement.saprobic_index.validity < 0.25 %}
-    <div class="box box-warning d-flex align-items-center py-2 mt-2 me-2" role="alert">
+{% if not show_classification %}
+    <div class="box box-warning d-flex align-items-center py-2 bg-light me-2" role="alert">
         {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-3" %}
         <div>
             {% blocktrans trimmed %}
@@ -64,8 +71,8 @@
             {% endblocktrans %}
         </div>
     </div>
-{% elif measurement.saprobic_index.validity < 0.7 %}
-    <div class="box box-info d-flex align-items-center py-2 mt-2 me-2" role="alert">
+{% elif has_validity_warning and show_classification %}
+    <div class="box box-info d-flex align-items-center py-2 bg-light me-2" role="alert">
         {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-3" %}
         <div>
             {% blocktrans trimmed %}
