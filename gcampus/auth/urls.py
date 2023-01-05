@@ -39,9 +39,6 @@ urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
     path("login/access-key/", AccessKeyFormView.as_view(), name="login-access-key"),
     path("login/course-token/", CourseTokenFormView.as_view(), name="login-course-token"),
-    #path("login/", RedirectView.as_view(permanent=True, pattern_name=f"{app_name}:login-access-key"), name="login"),
-    #path("login/accesskey/", AccessKeyLoginFormView.as_view(), name="login-access-key"),
-    #path("login/coursetoken/", CourseTokenLoginFormView.as_view(), name="login-course-token"),
     path('logout/', logout, name="logout"),
     # Course Overview
     path("course/", CourseUpdateView.as_view(), name="course-update"),

@@ -1,7 +1,8 @@
 {% extends "gcampuscore/base.html" %}
 {% load static i18n auth_token %}
 {% block body %}
-    <div class="d-flex flex-column flex-md-row min-vh-20 g-0 align-items-md-stretch align-items-center pb-4">
+    <div class="min-vh-100 d-flex flex-column">
+    <div class="d-flex flex-column flex-md-row g-0 align-items-md-stretch align-items-center pb-4 my-auto">
         <div class="col-12 bg-white d-flex flex-column justify-content-center">
             <div class="container text-center mx-auto py-5">
                 <h1 class="mb-4">
@@ -10,6 +11,11 @@
                         <span class="gcampus-logo text-dark"><span>Gewässer</span>Campus</span>
                     {% endblocktranslate %}
                 </h1>
+                <div class="mb-3 mt-1">
+                    <a role="button" class="btn btn-secondary btn-sm" href="/">
+                        {% translate "Back to the web application" %}
+                    </a>
+                </div>
                 {% if authenticated %}
                     {% include "gcampusauth/components/current_token_info.html" %}
                     {% blocktranslate trimmed %}
@@ -28,7 +34,7 @@
                 {% endif %}
             </div>
             <div class="pb-4 row g-0 justify-content-center">
-                <div class="col-12 col-lg-6 px-lg-3 d-flex justify-content-center align-items-start border-end-lg">
+                <div class="col-10 col-lg-4 px-lg-3 py-3 py-lg-0 d-flex justify-content-center align-items-start border-end-lg">
                     <h2>
                         {% include "gcampuscore/icons/person-fill.html" with extra_class="text-muted flex-shrink-0 me-3" only %}
                     </h2>
@@ -47,7 +53,17 @@
                                     {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
                                     {{ field }}
                                     {% if field.errors %}
-                                        <small class="text-danger">{{ field.errors }}</small>
+                                        <div class="box box-error mt-3 mb-1">
+                                            {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                                            <span class="fw-bold">{% translate "Error" %}</span>
+                                            <div class="ms-2">
+                                                <ul>
+                                                    {% for error in field.errors %}
+                                                        <li>{{ error|escape }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
                                     {% endif %}
                                 </div>
                             {% endwith %}
@@ -58,7 +74,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-12 col-lg-6 mt-4 mt-lg-0 px-lg-3 d-flex justify-content-center align-items-start">
+                <div class="col-10 col-lg-4 mt-4 mt-lg-0 px-lg-3 py-3 py-lg-0 d-flex justify-content-center align-items-start">
                     <h2>
                         {% include "gcampuscore/icons/teacher.html" with extra_class="text-muted flex-shrink-0 me-3" only %}
                     </h2>
@@ -77,7 +93,17 @@
                                     {% include "gcampuscore/forms/components/label.html" with class="mb-2" %}
                                     {{ field }}
                                     {% if field.errors %}
-                                        <small class="text-danger">{{ field.errors }}</small>
+                                        <div class="box box-error mt-3 mb-1">
+                                            {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                                            <span class="fw-bold">{% translate "Error" %}</span>
+                                            <div class="ms-2">
+                                                <ul>
+                                                    {% for error in field.errors %}
+                                                        <li>{{ error|escape }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
                                     {% endif %}
                                 </div>
                             {% endwith %}
@@ -92,51 +118,23 @@
         </div>
     </div>
     <div class="d-flex flex-column flex-md-row g-0 align-items-md-stretch align-items-center">
-        <div class="col-12 col-md-4 bg-light flex-fill align-items-center justify-content-center py-2">
+        <div class="col-12 col-md-4 bg-light flex-fill align-items-center justify-content-center py-5">
             <div class="container py-3 px-md-5 text-center">
                 <h2 class="fw-bold mb-0">{% translate "Register a new course" %}</h2>
-                <p>
+                <p class="py-1">
                     {% blocktranslate trimmed %}
-                        Register a course and generate access keys
-                        for your students, create new measurements, and
-                        <b>publish your data on GewässerCampus</b>.
+                        Register a course and <b>generate access keys</b>
+                        for your students, <b>create new measurements</b>, and
+                        <b>publish your data</b> on GewässerCampus.
                     {% endblocktranslate %}
                 </p>
-                <a href="{% url "gcampusauth:register" %}" class="btn btn-lg btn-primary">
+                <a href="{% url "gcampusauth:register" %}" class="btn btn-lg btn-primary mb-3">
                     {% translate "Register" %}
                 </a>
             </div>
         </div>
     </div>
-    <div class="bg-light">
-        <footer class="container d-flex flex-wrap justify-content-md-between justify-content-start align-items-center py-5">
-            <div class="col-12 text-muted">
-                <a href="/" class="link-dark gcampus-logo">
-                    <span>Gewässer</span><span>Campus</span>
-                </a>
-                {% translate "a project by" as project_text %}
-                <span class="mx-1">&horbar;</span>
-                {{ project_text|capfirst }}
-                <a class="footer-link" href="https://desk-lab.de"><i>desklab</i></a>
-            </div>
-            <ul class="nav col-12 col-md justify-content-start justify-content-md-end gap-2">
-                <li class="nav-item">
-                    <a href="https://gewaessercampus.de/terms" class="nav-link px-0 text-muted">
-                        {% translate "Terms and conditions" %}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://gewaessercampus.de/gdp" class="nav-link px-0 text-muted">
-                        {% translate "Privacy policy" %}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://gewaessercampus.de/imprint" class="nav-link px-0 text-muted">
-                        {% translate "Imprint" %}
-                    </a>
-                </li>
-            </ul>
-        </footer>
+    {% include "gcampusauth/components/footer.html" %}
     </div>
 {% endblock %}
 {% block body_js %}
