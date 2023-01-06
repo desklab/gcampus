@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-05 19:33+0100\n"
+"POT-Creation-Date: 2023-01-06 10:34+0100\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Axel Schlindwein <a.schlindwein@desk-lab.de>\n"
 "Language-Team: \n"
@@ -627,8 +627,8 @@ msgid ""
 "Login to <span class=\"gcampus-logo text-dark\"><span>Gewässer</span>Campus</"
 "span>"
 msgstr ""
-"Anmeldung bei <span class=\"gcampus-logo text-dark\"><span>Gewässer</span>Campus</"
-"span>"
+"Anmeldung bei <span class=\"gcampus-logo text-dark\"><span>Gewässer</"
+"span>Campus</span>"
 
 #: gcampus/auth/templates/gcampusauth/login_form.html:26
 msgid ""
@@ -636,8 +636,8 @@ msgid ""
 "and edit your existing ones.<br> Teachers can login using a <b>course token</"
 "b> to administer the course, edit measurements and create new access keys."
 msgstr ""
-"Melde dich als Schüler:in mit einem <b>Zugangscode</b> an, um neue Messungen zu "
-"erstellen und vorhandene Messungen zu bearbeiten.<br> Lehrkräfte können "
+"Melde dich als Schüler:in mit einem <b>Zugangscode</b> an, um neue Messungen "
+"zu erstellen und vorhandene Messungen zu bearbeiten.<br> Lehrkräfte können "
 "sich mit einem <b>Kursschlüssel</b> anmelden, um den Kurs zu verwalten, "
 "Messungen zu bearbeiten und neue Zugangscodes zu erstellen."
 
@@ -657,7 +657,6 @@ msgid "Error"
 msgstr "Fehler"
 
 #: gcampus/auth/templates/gcampusauth/login_form.html:72
-#: gcampus/auth/templates/gcampusauth/login_form.html:112
 msgid "Login with access key"
 msgstr "Mit Zugangscode anmelden"
 
@@ -669,14 +668,19 @@ msgstr "Lehrkraft"
 msgid "Login using a <b>course token</b>:"
 msgstr "Mit <b>Kursschlüssel</b> anmelden"
 
+#: gcampus/auth/templates/gcampusauth/login_form.html:112
+msgid "Login with course token"
+msgstr "Mit Kursschlüssel anmelden"
+
 #: gcampus/auth/templates/gcampusauth/login_form.html:125
 msgid ""
 "Register a course and <b>generate access keys</b> for your students, "
 "<b>create new measurements</b>, and <b>publish your data</b> on "
 "GewässerCampus."
 msgstr ""
-"Registriere einen Kurs und <b>erzeuge Zugangscodes</b> für Schüler:innen, "
-"um <b>neue Messungen</b> zu erstellen und <b>Daten</b> in GewässerCampus zu <b>veröffentlichen</b>."
+"Registriere einen Kurs und <b>erzeuge Zugangscodes</b> für Schüler:innen, um "
+"<b>neue Messungen</b> zu erstellen und <b>Daten</b> in GewässerCampus zu "
+"<b>veröffentlichen</b>."
 
 #: gcampus/auth/views/course.py:66
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:78
