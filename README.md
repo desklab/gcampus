@@ -1,11 +1,22 @@
-<img width="100%" src="./artwork/readme/readme-head.png">
+<p align="center">
+<img width="20%" src="./artwork/rastergraphics/logo-1000x1000.png">
 
 <br>
 <br>
 
-[![Test](https://github.com/desklab/gcampus/actions/workflows/test.yml/badge.svg)](https://github.com/desklab/gcampus/actions/workflows/test.yml)
-[![Documentation Status](https://readthedocs.org/projects/gcampus/badge/?version=latest)](https://gcampus.readthedocs.io/en/latest/?badge=latest)
-[![Build and Deploy](https://github.com/desklab/gcampus/actions/workflows/release.yml/badge.svg)](https://dev.gewaessercampus.de/)
+<a href="https://github.com/desklab/gcampus/actions/workflows/test.yml">
+  <img src="https://github.com/desklab/gcampus/actions/workflows/test.yml/badge.svg">
+</a>
+
+<a href="https://github.com/desklab/gcampus/actions/workflows/release.yml">
+  <img src="https://github.com/desklab/gcampus/actions/workflows/release.yml/badge.svg">
+</a>
+
+<a href="https://gcampus.readthedocs.io/en/latest/">
+  <img src="https://readthedocs.org/projects/gcampus/badge/?version=latest">
+</a>
+
+</p>
 
 **GewässerCampus** (`gcampus`) is part of an educational project on
 Limnology aiming to provide students the possibility to analyse, publish
@@ -17,8 +28,6 @@ See [gewaessercampus.de](https://gewaessercampus.de) for more information.
 
 
 <hr>
-
-<h1 align="center" style="text-align: center; font-size: 28px;">gcampus</h1>
 
 
 This repository (`desklab/gcampus`) contains the source code running behind the
