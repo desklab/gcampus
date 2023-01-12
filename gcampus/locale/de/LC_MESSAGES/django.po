@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-06 10:34+0100\n"
+"POT-Creation-Date: 2023-01-12 09:28+0100\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Axel Schlindwein <a.schlindwein@desk-lab.de>\n"
 "Language-Team: \n"
@@ -2520,8 +2520,8 @@ msgstr ""
 "von %(measurement_count)s Messungen."
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:76
-msgid "Summary"
-msgstr "Zusammenfassung"
+msgid "Overview"
+msgstr "Übersicht"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:80
 msgid "Data subset"
