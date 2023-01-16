@@ -78,7 +78,8 @@
             <main class="{% block main_class %}{% endblock %}">
                 <nav class="navbar gcampus-navbar navbar-light bg-white fixed-top border-bottom navbar-expand">
                     <div class="container-fluid flex-nowrap">
-                        <div class="mw-75 flex-shrink-1 d-md-block d-flex flex-row gap-md-0 gap-3 align-items-center" id="navbar-title">
+                        <div class="mw-75 flex-shrink-1 d-md-block d-flex flex-row gap-md-0 gap-3 align-items-center"
+                             id="navbar-title">
                             <button class="btn btn-lg btn-toolbar d-block d-md-none" type="button"
                                     data-bs-toggle="collapse"
                                     data-bs-target="#sidebar"
@@ -103,6 +104,20 @@
                         </ul>
                     </div>
                 </nav>
+                {% if ENVIRONMENT == "dev" %}
+                    <div class="container">
+                        <div class="box box-warning d-flex align-items-center py-2 my-3" role="alert">
+                            {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-3" %}
+                            <div>
+                                {% blocktrans trimmed %}
+                                    You are currently using a test instance of GewässerCampus.
+                                    Data is most likely fictional and does not represent real measurements.
+                                    Courses and data will be deleted periodically.
+                                {% endblocktrans %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
                 {% block content %}
                 {% endblock %}
                 {% block pagination %}

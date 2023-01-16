@@ -31,125 +31,135 @@
 </head>
 <body>
 
-    <div class="footer-left">
-        <span class="bold">{% translate "Document ID" %}</span>: GC-DATA-MD
-    </div>
+<div class="footer-left">
+    <span class="bold">{% translate "Document ID" %}</span>: GC-DATA-MD
+</div>
 
-    <div class="footer-right">
-        <a href="https://gewaessercampus.de" class="footer-link">www.gewaessercampus.de</a>
-    </div>
+<div class="footer-right">
+    <a href="https://gewaessercampus.de" class="footer-link">www.gewaessercampus.de</a>
+</div>
 
-    <div class="footer-center container">
-        <div class="w-88 float-left">
-            {% blocktrans trimmed %}
-                The project <span class="color-secondary">Gewässer</span><span class="color-primary">Campus</span>
-                provides more educational material and information on how to analyse water quality at www.gewaessercampus.de.
-                This document includes maps and information on water bodies and their names from Mapbox (www.mapbox.com)
-                and OpenStreetMap (www.openstreetmap.org) as well as measurement data of GewässerCampus contributors.
-                More information on the respective licenses is available online.
-            {% endblocktrans %}
+<div class="footer-center container">
+    <div class="w-88 float-left">
+        {% blocktrans trimmed %}
+            The project <span class="color-secondary">Gewässer</span><span class="color-primary">Campus</span>
+            provides more educational material and information on how to analyse water quality at
+            www.gewaessercampus.de.
+            This document includes maps and information on water bodies and their names from Mapbox (www.mapbox.com)
+            and OpenStreetMap (www.openstreetmap.org) as well as measurement data of GewässerCampus contributors.
+            More information on the respective licenses is available online.
+        {% endblocktrans %}
+    </div>
+    <div class="footer-qrcode float-right">
+        <img src="{% static 'gcampusdocuments/assets/gcampus-qr-code.png' %}" alt="">
+    </div>
+</div>
+
+<article>
+    <div class="gcampus-print-page">
+
+        <!-- general information -->
+        <div class="w-100">
+            <div class="rotated-section-heading color-grey w-abs-250">
+                {% translate "Info" %}
+            </div>
+            <div class="text-justify h-abs-250 document-description">
+                {% with time=measurement.time|localtime|localize name=measurement.name location=measurement.location_name %}
+                    {% if name != "" %}
+                        {% blocktranslate trimmed %}
+                            This document has been created automatically and contains a summary of the measurement
+                            from {{ name }} on {{ time }} in {{ location }}.
+                        {% endblocktranslate %}
+                    {% else %}
+                        {% blocktranslate trimmed %}
+                            This document has been created automatically and contains a summary of the measurement
+                            on {{ time }} in {{ location }}.
+                        {% endblocktranslate %}
+                    {% endif %}
+                    {% if ENVIRONMENT == "dev" %}
+                        {% blocktrans trimmed %}
+                            This document was created using a test instance of GewässerCampus. The available
+                            measurement data is most likely fictional and does not represent a real measurement.
+                        {% endblocktrans %}
+                    {% endif %}
+                {% endwith %}
+
+            </div>
         </div>
-        <div class="footer-qrcode float-right">
-            <img src="{% static 'gcampusdocuments/assets/gcampus-qr-code.png' %}" alt="">
-        </div>
-    </div>
 
-    <article>
-        <div class="gcampus-print-page">
-
-            <!-- general information -->
-            <div class="w-100">
-                <div class="rotated-section-heading color-grey w-abs-250">
-                    {% translate "Info" %}
-                </div>        
-                <div class="text-justify h-abs-250 document-description">
-                    {% with time=measurement.time|localtime|localize name=measurement.name location=measurement.location_name %}
-                        {% if name != "" %}
-                            {%  blocktranslate trimmed %}
-                                This document has been created automatically and contains a summary of the measurement
-                                from {{ name }} on {{ time }} in {{ location }}.
-                            {% endblocktranslate %}
-                        {% else %}
-                            {%  blocktranslate trimmed %}
-                                This document has been created automatically and contains a summary of the measurement
-                                on {{ time }} in {{ location }}.
-                            {% endblocktranslate %}
-                        {% endif %}
-                    {% endwith %}
+        <!-- metadata -->
+        <div class="w-100">
+            <div class="rotated-section-heading color-secondary w-abs-800">
+                {% translate "Metadata" %}
+            </div>
+            <div class="container measurementinfo-container h-abs-800">
+                <div class="w-abs-700 float-left measurementmeta-container">
+                    <h5 class="measurementmeta-heading text-muted">{% translate "Water name" %}</h5>
+                    {% if object.water_name %}
+                        <h3 class="measurementmeta-content color-secondary">{{ object.water_name }}
+                    {% else %}
+                        <h3 class="measurementmeta-content color-grey">
+                        {% translate "N/A" context "no value provided (water name, comment, etc)" %}
+                    {% endif %}
+                    </h3>
+                    <h5 class="measurementmeta-heading text-muted">{% translate "Time" %}</h5>
+                    <h3 class="measurementmeta-content color-secondary">{{ object.time|localtime|localize }}</h3>
+                    <h5 class="measurementmeta-heading text-muted">{% translate "Note" %}</h5>
+                    {% if object.comment %}
+                        <p>{{ object.comment }}
+                            {% else %}
+                        <p class="measurementmeta-content color-grey">
+                        {% translate "N/A" context "no value provided (water name, comment, etc)" %}
+                    {% endif %}
+                    </p>
                 </div>
-            </div>    
-
-            <!-- metadata -->
-            <div class="w-100">
-                <div class="rotated-section-heading color-secondary w-abs-800">
-                    {% translate "Metadata" %}
-                </div>        
-                <div class="container measurementinfo-container h-abs-800">
-                    <div class="w-abs-700 float-left measurementmeta-container">
-                        <h5 class="measurementmeta-heading text-muted">{% translate "Water name" %}</h5>
-                            {% if object.water_name %}
-                                <h3 class="measurementmeta-content color-secondary">{{ object.water_name }}
-                            {% else %}
-                                <h3 class="measurementmeta-content color-grey">{% translate "N/A" context "no value provided (water name, comment, etc)" %}
-                            {% endif %}
-                        </h3>
-                        <h5 class="measurementmeta-heading text-muted">{% translate "Time" %}</h5>
-                        <h3 class="measurementmeta-content color-secondary">{{ object.time|localtime|localize }}</h3>
-                        <h5 class="measurementmeta-heading text-muted">{% translate "Note" %}</h5>
-                            {% if object.comment %}
-                                <p>{{ object.comment }}
-                            {% else %}
-                                <p class="measurementmeta-content color-grey">{% translate "N/A" context "no value provided (water name, comment, etc)" %}
-                            {% endif %}
-                        </p>
+                <div class="w-abs-800 float-left">
+                    <div class="w-abs-800 h-abs-600">
+                        <img src="{{ map }}" alt="Map image">
                     </div>
-                    <div class="w-abs-800 float-left">
-                            <div class ="w-abs-800 h-abs-600">
-                                <img src="{{ map }}" alt="Map image">
-                            </div>
-                        </div>
                 </div>
             </div>
+        </div>
 
-            <!-- measured values -->
-            <div class="w-100">
-                <div class="rotated-section-heading color-primary w-abs-800">
-                    {% translate "Measured values" %}
-                </div>  
-                <div class="measurementdata-container">
-                    <div class="container">
-                        <table class="table">
-                            <thead>
+        <!-- measured values -->
+        <div class="w-100">
+            <div class="rotated-section-heading color-primary w-abs-800">
+                {% translate "Measured values" %}
+            </div>
+            <div class="measurementdata-container">
+                <div class="container">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="w-abs-600 color-primary" scope="col">{% translate "Parameter" %}</th>
+                            <th class="w-abs-400 color-primary" scope="col">{% translate "Value" %}</th>
+                            <th class="w-abs-400 color-primary" scope="col">{% translate "Note" %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for parameter in object.parameters.all %}
                             <tr>
-                                <th class="w-abs-600 color-primary" scope="col">{% translate "Parameter" %}</th>
-                                <th class="w-abs-400 color-primary" scope="col">{% translate "Value" %}</th>
-                                <th class="w-abs-400 color-primary" scope="col">{% translate "Note" %}</th>
+                                <td>{{ parameter.parameter_type }}</td>
+                                <td class="font-monospace">
+                                    {{ parameter.value }} {{ parameter.parameter_type.unit }}
+                                </td>
+                                <td> {# TODO: improve width to fit comments #}
+                                    <small class="color-grey">
+                                        {% if parameter.comment %}
+                                            {{ parameter.comment }}
+                                        {% else %}
+                                            {% translate "N/A" context "no value provided (water name, comment, etc)" %}
+                                        {% endif %}
+                                    </small>
+                                </td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            {% for parameter in object.parameters.all %}
-                                <tr>
-                                    <td>{{ parameter.parameter_type }}</td>
-                                    <td class="font-monospace">
-                                        {{ parameter.value }} {{ parameter.parameter_type.unit }}
-                                    </td>
-                                    <td> {# TODO: improve width to fit comments #}
-                                        <small class="color-grey">
-                                            {% if parameter.comment %}
-                                                {{ parameter.comment }}
-                                            {% else %}
-                                                {% translate "N/A" context "no value provided (water name, comment, etc)" %}
-                                            {% endif %}
-                                        </small>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-       </div>
-    </article>
+        </div>
+    </div>
+</article>
 </body>
 </html>

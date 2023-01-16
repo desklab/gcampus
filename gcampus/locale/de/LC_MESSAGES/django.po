@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-12 09:28+0100\n"
+"POT-Creation-Date: 2023-01-16 12:14+0100\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Axel Schlindwein <a.schlindwein@desk-lab.de>\n"
 "Language-Team: \n"
@@ -785,7 +785,7 @@ msgstr ""
 #: gcampus/core/templates/gcampuscore/components/filter.html:27
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:204
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:299
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:124
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:134
 #: gcampus/tools/models/calibration.py:37
 #: gcampus/tools/templates/gcampustools/od_converter_overview.html:18
 msgid "Parameter"
@@ -899,7 +899,7 @@ msgstr ""
 #: gcampus/core/models/parameter.py:90
 #: gcampus/core/templates/gcampuscore/components/index_card.html:35
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:205
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:125
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:135
 #: gcampus/tools/templates/gcampustools/components/od_converter_item.html:19
 msgid "Value"
 msgstr "Wert"
@@ -910,8 +910,8 @@ msgstr "Wert"
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:132
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:206
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:256
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:98
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:126
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:107
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:136
 msgid "Note"
 msgstr "Notiz"
 
@@ -1273,7 +1273,7 @@ msgid "Measurement"
 msgstr "Messung"
 
 #: gcampus/core/models/measurement.py:50
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:116
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:124
 #: gcampus/export/response/xlsx.py:83
 msgid "Measurements"
 msgstr "Messungen"
@@ -1586,15 +1586,25 @@ msgstr ""
 "Der Prozess wurde wegen eines Fehlers abgebrochen. Wir wurden automatisch "
 "informiert und kümmern uns so schnell wie möglich um eine Lösung."
 
-#: gcampus/core/templates/gcampuscore/base.html:93
+#: gcampus/core/templates/gcampuscore/base.html:94
 #: gcampus/core/templates/gcampuscore/components/sidebar.html:36
 msgid "New Measurement"
 msgstr "Neue Messung"
 
-#: gcampus/core/templates/gcampuscore/base.html:99
+#: gcampus/core/templates/gcampuscore/base.html:100
 #: gcampus/core/templates/gcampuscore/components/sidebar.html:46
 msgid "Log in"
 msgstr "Anmelden"
+
+#: gcampus/core/templates/gcampuscore/base.html:112
+msgid ""
+"You are currently using a test instance of GewässerCampus. Data is most "
+"likely fictional and does not represent real measurements. Courses and data "
+"will be deleted periodically."
+msgstr ""
+"Du nutzt aktuell eine Test-Instanz von GewässerCampus. Die meisten Daten "
+"sind wahrscheinlich erfunden und stammen nicht von echten Messungen. Kurse "
+"und Daten werden regelmäßig gelöscht."
 
 #: gcampus/core/templates/gcampuscore/components/filter.html:5
 #: gcampus/core/templates/gcampuscore/components/water_filter.html:5
@@ -1633,8 +1643,8 @@ msgid "a project by"
 msgstr "ein Projekt von"
 
 #: gcampus/core/templates/gcampuscore/components/footer_content.html:22
-msgid "Test instance - Data will be deleted periodically"
-msgstr "Test-Instanz - Daten werden regelmäßig gelöscht"
+msgid "Test instance"
+msgstr "Test-Instanz"
 
 #: gcampus/core/templates/gcampuscore/components/index_card.html:2
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:77
@@ -1643,9 +1653,9 @@ msgstr "Test-Instanz - Daten werden regelmäßig gelöscht"
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:235
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:280
 #: gcampus/core/templates/gcampuscore/sites/detail/water_detail.html:24
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:93
 #: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:102
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:141
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:112
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:151
 #: gcampus/mail/templates/gcampusmail/access_key_deactivation/base.html:5
 #: gcampus/mail/templates/gcampusmail/course_deletion/base.html:5
 #: gcampus/mail/templates/gcampusmail/register/overview.html:4
@@ -1953,7 +1963,7 @@ msgstr "Bist du dir sicher, dass du diese Messung löschen willst?"
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:73
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:104
 #: gcampus/core/templates/gcampuscore/sites/detail/water_detail.html:18
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:89
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:97
 #: gcampus/export/response/xlsx.py:182
 msgid "Water name"
 msgstr "Gewässername"
@@ -2320,8 +2330,8 @@ msgstr ""
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:63
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:66
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:63
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:63
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:64
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:64
 msgid "Info"
 msgstr "Info"
 
@@ -2480,7 +2490,7 @@ msgstr ""
 "sowie Messdaten von GewässerCampus-Nutzer:innen. Weitere Informationen zu "
 "den entsprechenden Lizenzen sind online verfügbar."
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:68
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:69
 #, python-format
 msgid ""
 "This document has been created automatically and contains a summary of the "
@@ -2489,7 +2499,7 @@ msgstr ""
 "Dieses Dokument wurde automatisch erstellt und enthält eine Zusammenfassung "
 "der Messung von %(name)s am %(time)s in %(location)s."
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:73
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:74
 #, python-format
 msgid ""
 "This document has been created automatically and contains a summary of the "
@@ -2498,19 +2508,29 @@ msgstr ""
 "Dieses Dokument wurde automatisch erstellt und enthält eine Zusammenfassung "
 "der Messung am %(time)s in %(location)s."
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:85
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:80
+msgid ""
+"This document was created using a test instance of GewässerCampus. The "
+"available measurement data is most likely fictional and does not represent a "
+"real measurement."
+msgstr ""
+"Dieses Dokument wurde mit einer Test-Instanz von GewässerCampus erstellt. "
+"Die meisten Daten sind wahrscheinlich erfunden und stammen nicht von einer "
+"echten Messung."
+
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:93
 msgid "Metadata"
 msgstr "Metadaten"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:96
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:105
 msgid "Time"
 msgstr "Zeitpunkt"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:117
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:127
 msgid "Measured values"
 msgstr "Messwerte"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:67
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:68
 #, python-format
 msgid ""
 "This document has been created automatically and contains a summary of "
@@ -2519,27 +2539,37 @@ msgstr ""
 "Dieses Dokument wurde automatisch erstellt und enthält eine Zusammenfassung "
 "von %(measurement_count)s Messungen."
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:76
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:73
+msgid ""
+"This document was created using a test instance of GewässerCampus. The "
+"available measurement data is most likely fictional and does not represent "
+"real measurements."
+msgstr ""
+"Dieses Dokument wurde mit einer Test-Instanz von GewässerCampus erstellt. "
+"Die meisten Daten sind wahrscheinlich erfunden und stammen nicht von echten "
+"Messungen."
+
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:84
 msgid "Overview"
 msgstr "Übersicht"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:80
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:88
 msgid "Data subset"
 msgstr "Datensatz"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:81
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:89
 msgid "measurements"
 msgstr "Messungen"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:82
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:90
 msgid "waters"
 msgstr "Gewässer"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:84
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:92
 msgid "Time range"
 msgstr "Zeitspanne"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:99
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:107
 msgid "Notes"
 msgstr "Notizen"
 
@@ -2927,11 +2957,11 @@ msgid "Choose the parameter for which you want to convert the Optical Density."
 msgstr ""
 "Wähle den Parameter, für den du die Optische Dichte umrechnen möchtest."
 
-#: gcampus/tools/templates/gcampustools/tools.html:23
+#: gcampus/tools/templates/gcampustools/tools.html:22
 msgid "OD Conversion"
 msgstr "Umrechnung der OD"
 
-#: gcampus/tools/templates/gcampustools/tools.html:26
+#: gcampus/tools/templates/gcampustools/tools.html:25
 msgid ""
 "This tool helps you to convert the optical density you measured with the "
 "photometer into the value of the specific parameter. It uses a standard "
@@ -2942,11 +2972,11 @@ msgstr ""
 "Die Umrechnung basiert auf einer vom GewässerCampus Team bereitgestellten "
 "Kalibrierung."
 
-#: gcampus/tools/templates/gcampustools/tools.html:42
+#: gcampus/tools/templates/gcampustools/tools.html:41
 msgid "Educational Documents"
 msgstr "Unterrichtsmaterialien"
 
-#: gcampus/tools/templates/gcampustools/tools.html:45
+#: gcampus/tools/templates/gcampustools/tools.html:44
 msgid ""
 "This tool helps you to find all documents you need to include the "
 "GewässerCampus project into your lessons"
