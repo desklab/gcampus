@@ -261,7 +261,7 @@
     "model": "gcampustools.MeasurementKit",
     "pk": 2,
     "fields": {
-      "name": "JBL Pro Auqatest Lab",
+      "name": "JBL Pro Aquatest Lab",
       "short_name": "JBL",
       "identifier": "jblpal",
       "color": "000000"
