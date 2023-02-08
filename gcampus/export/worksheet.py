@@ -21,8 +21,9 @@ from enum import Enum
 from typing import List, Optional, Union, Tuple, Callable, Any
 
 from django.utils.timezone import is_naive, make_naive
+from django.utils.translation import gettext as _
 from xlsxwriter.format import Format
-from xlsxwriter.worksheet import Worksheet
+from xlsxwriter.worksheet import Worksheet, cell_string_tuple
 
 from gcampus.core.models.util import EMPTY
 
@@ -174,3 +175,24 @@ class ExportWorksheet(Worksheet):
                 error = self.write_comment(row, col, str(cell_data.comment))
                 if error:
                     return error
+
+    # Undecorated version of write_boolean().
+    def _write_boolean(self, row, col, boolean, cell_format=None):
+
+        # Check that row and col are valid and store max and min values.
+        if self._check_dimensions(row, col):
+            return -1
+
+        # Write previous row if in in-line string constant_memory mode.
+        if self.constant_memory and row > self.previous_row:
+            self._write_single_row(row)
+
+        if boolean:
+            value = _("yes")
+        else:
+            value = _("no")
+
+        # Store the cell data in the worksheet data table.
+        self.table[row][col] = cell_string_tuple(value, cell_format)
+
+        return 0
