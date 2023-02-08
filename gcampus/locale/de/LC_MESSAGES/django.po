@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-16 12:14+0100\n"
+"POT-Creation-Date: 2023-02-08 13:25+0100\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Axel Schlindwein <a.schlindwein@desk-lab.de>\n"
 "Language-Team: \n"
@@ -2634,6 +2634,14 @@ msgstr "in GewässerCampus öffnen"
 #, python-brace-format
 msgid "Average of {count:d} measurements"
 msgstr "Durchschnitt von {count:d} Messungen"
+
+#: gcampus/export/worksheet.py:191
+msgid "yes"
+msgstr "ja"
+
+#: gcampus/export/worksheet.py:193
+msgid "no"
+msgstr "nein"
 
 #: gcampus/mail/apps.py:9
 msgid "GCampus E-Mail"
