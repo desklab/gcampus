@@ -52,9 +52,13 @@ class ODConverterDetailView(TitleMixin, DetailView):
     context_object_name = "parameter"
 
     def get_context_data(self, **kwargs):
-        kwargs["calibrations"] = Calibration.objects.filter(
-            parameter_type=self.object,
-            measurement_kit=self.kwargs.get("pk_kit"),
-        ).all()
+        kwargs["calibrations"] = (
+            Calibration.objects.filter(
+                parameter_type=self.object,
+                measurement_kit=self.kwargs.get("pk_kit"),
+            )
+            .order_by("pk")
+            .all()
+        )
         kwargs["kit"] = get_object_or_404(MeasurementKit, pk=self.kwargs.get("pk_kit"))
         return super(ODConverterDetailView, self).get_context_data(**kwargs)

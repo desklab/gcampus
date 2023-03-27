@@ -143,7 +143,7 @@
       "upper_warning_limit": 1000
     }
   },
-   {
+  {
     "model": "gcampuscore.ParameterType",
     "pk": 14,
     "fields": {
@@ -351,11 +351,11 @@
     "model": "gcampustools.calibration",
     "pk": 6,
     "fields": {
-      "name": "pH-Wert 4,25 - 6,25",
+      "name": "pH-Wert (6 - 9)",
       "parameter_type": 4,
-      "calibration_formula": "(od-2.9331)/(-0.4604)",
-      "x_max": 6.25,
-      "x_min": 4.25,
+      "calibration_formula": "(od+1.0958)/(0.1817)",
+      "x_max": 9.0,
+      "x_min": 6.0,
       "measurement_kit": 1
     }
   },
@@ -363,11 +363,11 @@
     "model": "gcampustools.calibration",
     "pk": 7,
     "fields": {
-      "name": "pH-Wert 6 - 9",
+      "name": "pH-Wert (4,25 - 6,25)",
       "parameter_type": 4,
-      "calibration_formula": "(od+1.0958)/(0.1817)",
-      "x_max": 9.0,
-      "x_min": 6.0,
+      "calibration_formula": "(od-2.9331)/(-0.4604)",
+      "x_max": 6.25,
+      "x_min": 4.25,
       "measurement_kit": 1
     }
   },
