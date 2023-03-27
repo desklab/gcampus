@@ -141,7 +141,7 @@ class BACHIndex(WaterQualityIndex):
 
         bod5_lookup = [
             (0, 100),
-            (0, 5, 99.5),
+            (0.5, 99.5),
             (1, 98),
             (1.5, 95),
             (2, 90),
@@ -181,7 +181,7 @@ class BACHIndex(WaterQualityIndex):
             (5.5, 34.5),
             (6, 56.5),
             (6.5, 78.5),
-            (6, 6, 83),
+            (6.6, 83),
             (6.7, 87.5),
             (6.8, 92),
             (6.9, 96),
@@ -287,7 +287,7 @@ class BACHIndex(WaterQualityIndex):
 
         nh4_lookup = [
             (0, 100),
-            (0, 2, 84),
+            (0.2, 84),
             (0.4, 60),
             (0.6, 49),
             (0.8, 40),
