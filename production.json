@@ -514,5 +514,17 @@
       "x_min": 0,
       "measurement_kit": 4
     }
+  },
+  {
+    "model": "gcampustools.calibration",
+    "pk": 20,
+    "fields": {
+      "name": "Sauerstoff",
+      "parameter_type": 10,
+      "calibration_formula": "(od-0.0714)/(0.0072)",
+      "x_max": 140,
+      "x_min": 0,
+      "measurement_kit": 1
+    }
   }
 ]
