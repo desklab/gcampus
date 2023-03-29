@@ -39,7 +39,8 @@ class RegisterFormView(TitleMixin, CreateView):
     success_url = reverse_lazy("gcampuscore:mapview")
     object: Course
 
-    @method_decorator(throttle())
+    @method_decorator(throttle(scope="registration_burst"))
+    @method_decorator(throttle(scope="registration_sustained"))
     def post(self, request, *args, **kwargs):
         return super(RegisterFormView, self).post(request, *args, **kwargs)
 

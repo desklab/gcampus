@@ -190,7 +190,17 @@ REST_FRAMEWORK = {
     ],
     "PAGE_SIZE": 100,
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
-    "DEFAULT_THROTTLE_RATES": {"frontend_anon": "5/min", "login": "300/h"},
+    "DEFAULT_THROTTLE_RATES": {
+        "frontend_anon": "10/min",
+        "measurement_report": "10/min",
+        "course_update": "20/min",
+        "registration_burst": "20/min",
+        "registration_sustained": "200/day",
+        "confirmation_burst": "20/min",
+        "confirmation_sustained": "200/day",
+        "login_burst": "100/min",
+        "login_sustained": "400/h",
+    },
 }
 
 # Measurement settings

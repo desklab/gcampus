@@ -124,7 +124,8 @@ class LoginFormView(FormView, TitleMixin, ABC):
         else:
             raise PermissionDenied(TOKEN_INVALID_ERROR)
 
-    @method_decorator(throttle(scope="login"))
+    @method_decorator(throttle(scope="login_burst"))
+    @method_decorator(throttle(scope="login_sustained"))
     def post(self, request, *args, **kwargs):
         return super(LoginFormView, self).post(request, *args, **kwargs)
 

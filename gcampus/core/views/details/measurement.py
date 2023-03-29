@@ -62,7 +62,7 @@ class MeasurementDetailView(FormMixin, TitleMixin, DetailView):
         else:
             raise RuntimeError("'self.object' is not set")
 
-    @method_decorator(throttle())
+    @method_decorator(throttle("measurement_report"))
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()

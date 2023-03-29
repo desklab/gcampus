@@ -85,7 +85,7 @@ class CourseUpdateView(TitleMixin, TabsMixin, UpdateView):
         return super(CourseUpdateView, self).dispatch(request, *args, **kwargs)
 
     @method_decorator(require_permissions("gcampusauth.change_course"))
-    @method_decorator(throttle())  # Throttled to avoid email spam
+    @method_decorator(throttle(scope="course_update"))  # Throttled to avoid email spam
     def post(self, request, *args, **kwargs):
         return super(CourseUpdateView, self).post(request, *args, **kwargs)
 
@@ -168,7 +168,9 @@ class EmailConfirmationView(View):
     redirect_url = reverse_lazy("gcampusauth:course-update")
     token_generator: EmailConfirmationTokenGenerator = default_token_generator
 
-    @method_decorator(throttle())  # Try to avoid brute force
+    # Try to avoid brute force
+    @method_decorator(throttle(scope="confirmation_burst"))
+    @method_decorator(throttle(scope="confirmation_sustained"))
     def get(self, request: HttpRequest, courseidb64: str, token: str, *args, **kwargs):
         course: Optional[Course]
         try:
