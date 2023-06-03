@@ -170,12 +170,14 @@ let gcampuscoreConfig = (env, options) => {
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        from: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'fonts'),
-                        to: path.resolve(__dirname, 'gcampus', 'core', 'static', 'gcampuscore', 'fonts'),
+                        from: 'fonts/*.{ttf,woff2}',
+                        to: path.resolve(__dirname, 'gcampus', 'core', 'static', 'gcampuscore'),
+                        context: path.resolve(__dirname, 'gcampus', 'core', 'static_src'),
                     },
                     {
-                        from: path.resolve(__dirname, 'gcampus', 'core', 'static_src', 'assets'),
-                        to: path.resolve(__dirname, 'gcampus', 'core', 'static', 'gcampuscore', 'assets'),
+                        from: 'assets/*.{png,jpg,svg}',
+                        to: path.resolve(__dirname, 'gcampus', 'core', 'static', 'gcampuscore'),
+                        context: path.resolve(__dirname, 'gcampus', 'core', 'static_src'),
                     },
                 ]
             })
@@ -199,18 +201,6 @@ let gcampusmapConfig = (env, options) => {
                 type: 'var'
             }
         },
-        // Enable lines below if assets are needed
-        // plugins: [
-        //     ...(common.plugins || []),
-        //     new CopyWebpackPlugin({
-        //         patterns: [
-        //             {
-        //                 from: path.resolve(__dirname, 'gcampus', 'map', 'static_src', 'assets'),
-        //                 to: path.resolve(__dirname, 'gcampus', 'map', 'static', 'gcampusmap', 'assets'),
-        //             },
-        //         ]
-        //     })
-        // ],
     });
 }
 
@@ -233,13 +223,10 @@ let gcampusauthConfig = (env, options) => {
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        from: path.resolve(__dirname, 'gcampus', 'auth', 'static_src', 'fonts'),
-                        to: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth', 'fonts'),
+                        from: 'fonts/*.{ttf,woff2}',
+                        to: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth'),
+                        context: path.resolve(__dirname, 'gcampus', 'auth', 'static_src'),
                     },
-                    // {
-                    //     from: path.resolve(__dirname, 'gcampus', 'auth', 'static_src', 'assets'),
-                    //     to: path.resolve(__dirname, 'gcampus', 'auth', 'static', 'gcampusauth', 'assets'),
-                    // },
                 ]
             })
         ],
@@ -268,8 +255,9 @@ let gcampusdocumentsConfig = (env, options) => {
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        from: path.resolve(__dirname, 'gcampus', 'documents', 'static_src', 'assets'),
-                        to: path.resolve(__dirname, 'gcampus', 'documents', 'static', 'gcampusdocuments', 'assets'),
+                        from: 'assets/*.{png,jpg,svg}',
+                        to: path.resolve(__dirname, 'gcampus', 'documents', 'static', 'gcampusdocuments'),
+                        context: path.resolve(__dirname, 'gcampus', 'documents', 'static_src'),
                     },
                 ]
             }),
@@ -297,14 +285,6 @@ let gcampusmailConfig = (env, options) => {
         plugins: [
             ...(common.plugins || []),
             new RemoveEmptyScriptsPlugin(),
-            // new CopyWebpackPlugin({
-            //     patterns: [
-            //         {
-            //             from: path.resolve(__dirname, 'gcampus', 'mail', 'static_src', 'assets'),
-            //             to: path.resolve(__dirname, 'gcampus', 'mail', 'static', 'gcampusmail', 'assets'),
-            //         },
-            //     ]
-            // }),
         ],
     });
 }
@@ -325,18 +305,6 @@ let gcampustoolsConfig = (env, options) => {
                 type: 'var'
             }
         },
-        // Enable lines below if assets are needed
-        //plugins: [
-        //    ...(common.plugins || []),
-            // new CopyWebpackPlugin({
-            //     patterns: [
-            //         {
-            //             from: path.resolve(__dirname, 'gcampus', 'tools', 'static_src', 'assets'),
-            //             to: path.resolve(__dirname, 'gcampus', 'tools', 'static', 'gcampustools', 'assets'),
-            //         },
-            //     ]
-            // })
-       // ],
     });
 }
 
