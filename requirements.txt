@@ -22,7 +22,7 @@ django-filter~=22.1
 django-celery-results~=2.4.0
 
 djangorestframework-gis~=1.0.0
-djangorestframework~=3.13.1
+djangorestframework~=3.14.0
 
 weasyprint~=53.3
 xlsx-streaming==1.1.0
