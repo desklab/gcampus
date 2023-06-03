@@ -18,7 +18,6 @@ import math
 import time
 from typing import List, Tuple, Optional, Union
 
-import numpy as np
 from django.conf import settings
 from django.contrib.gis.geos import Point
 from django.core.cache import cache
@@ -150,7 +149,6 @@ def get_intervals_from_today(date: datetime.datetime) -> List[datetime.datetime]
     today = timezone.now()
     num_bins = math.ceil((today - date).days / 7) + 2
     if not num_bins > 52:
-
         dates: List[datetime.datetime] = [
             today - datetime.timedelta(weeks=x) for x in reversed(range(num_bins))
         ]
@@ -198,10 +196,10 @@ def get_measurement_intervals(
             ):
                 measurements_per_interval[interval_index] += 1
                 break
-    measurements_per_interval = (
-        np.array(measurements_per_interval) / np.max(measurements_per_interval) * 100
+    max_measurements = max(measurements_per_interval)
+    return list(
+        map(lambda m: int(m / max_measurements * 100), measurements_per_interval)
     )
-    return [int(measurement_val) for measurement_val in measurements_per_interval]
 
 
 def convert_dates_to_js_milliseconds(dates: List[datetime.datetime]) -> List[int]:
