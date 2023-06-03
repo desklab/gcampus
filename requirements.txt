@@ -6,7 +6,7 @@ psycogreen~=1.0.2
 psycopg2-binary~=2.9.3
 celery[redis]~=5.2
 redis~=4.3.4
-gevent~=21.12
+gevent~=22.10.2
 gunicorn[gevent]~=20.1
 
 geopy~=2.2.0
