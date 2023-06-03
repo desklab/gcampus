@@ -1,12 +1,12 @@
 ########################################################################
 # Static files
 ########################################################################
-FROM node:16 AS static
+FROM node:20 AS static
 LABEL maintainer="Jonas Drotleff <j.drotleff@desk-lab.de>"
 
 WORKDIR /usr/src/gcampus
 COPY package*.json ./
-RUN npm ci && npm rebuild node-sass --unsafe-perm
+RUN npm ci --also=dev
 
 COPY . .
 RUN npm run build && rm -rf gcampus/*/static_src package*.json node_modules
