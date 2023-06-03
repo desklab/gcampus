@@ -57,16 +57,16 @@
 
   &.shadow-box {
     box-shadow: 0 10px 0 -6px $list-group-bg,
-    0 10.5px 0 -5px transparentize($list-group-border-color, 0.025),
+    0 10.5px 0 -5px transparentize($border-color, 0.025),
     0 21px 0 -12px $list-group-bg,
-    0 21.5px 0 -11px transparentize($list-group-border-color, 0.05),
+    0 21.5px 0 -11px transparentize($border-color, 0.05),
   }
 
   &.list-group-item-hover.shadow-box:hover {
     box-shadow: 0 10px 0 -6px $list-group-hover-bg,
-    0 10.5px 0 -5px transparentize($list-group-border-color, 0.025),
+    0 10.5px 0 -5px transparentize($border-color, 0.025),
     0 21px 0 -12px $list-group-hover-bg,
-    0 21.5px 0 -11px transparentize($list-group-border-color, 0.05),
+    0 21.5px 0 -11px transparentize($border-color, 0.05),
   }
 }
 
