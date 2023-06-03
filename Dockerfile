@@ -14,12 +14,14 @@ RUN npm run build && rm -rf gcampus/*/static_src package*.json node_modules
 ########################################################################
 # gcampus Dockerfile
 ########################################################################
-FROM python:3.10-slim
+FROM python:3.11-slim
 LABEL maintainer="Jonas Drotleff <j.drotleff@desk-lab.de>"
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-ENV DEBIAN_FRONTEND noninteractive
+SHELL ["/bin/sh", "-eux", "-c"]
+
+ENV VIRTUAL_ENV=/home/gcampus/venv
 ENV DJANGO_SETTINGS_MODULE gcampus.settings.prod
+ENV DEBIAN_FRONTEND=noninteractive
 USER root
 
 ########################################################################
@@ -27,28 +29,36 @@ USER root
 ########################################################################
 
 # Install gdal and libproj-dev
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends --no-install-suggests binutils pandoc libproj-dev gdal-bin python3-pip python3-gi libpango-1.0-0 libpangoft2-1.0-0 && \
+RUN apt-get update && apt-get -y upgrade && \
+    apt-get install -y --no-install-recommends --no-install-suggests \
+    binutils \
+    gdal-bin  \
+    libpango-1.0-0  \
+    libpangoft2-1.0-0 \
+    libproj-dev  \
+    pandoc  \
+    python3-pip  \
+    python3-gi && \
     rm -rf /var/lib/apt/lists/*
 
-# Create gcampus directory and user
-RUN useradd -m gcampus && \
-    mkdir  -p /srv/gcampus && \
-    chown -R gcampus /srv/gcampus
-
-WORKDIR /srv/gcampus
+# Create gcampus user
+RUN useradd --create-home gcampus
 USER gcampus
+WORKDIR /home/gcampus
 
-COPY --from=static --chown=gcampus /usr/src/gcampus/requirements.txt /srv/gcampus/requirements.txt
+# Copy requirements.txt file
+COPY --from=static --chown=gcampus /usr/src/gcampus/requirements.txt ./requirements.txt
 
-# Install dependencies for gcampus
-RUN python3 -m venv venv && \
-    /srv/gcampus/venv/bin/pip install --no-cache-dir -r requirements.txt
+# Create venv for gcampus
+RUN python3 -m venv ${VIRTUAL_ENV}
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-COPY --from=static --chown=gcampus /usr/src/gcampus /srv/gcampus
+# Install requirements
+RUN pip install --disable-pip-version-check --no-cache-dir -r requirements.txt
 
-RUN chmod +x /srv/gcampus/docker-entrypoint.sh
+COPY --from=static --chown=gcampus /usr/src/gcampus ./
 
-USER gcampus
+RUN chmod +x ./docker-entrypoint.sh
+
 EXPOSE 8000
 ENTRYPOINT ["./docker-entrypoint.sh"]
