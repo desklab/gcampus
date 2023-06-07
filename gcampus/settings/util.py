@@ -59,6 +59,15 @@ def get_env_read_file(env: str, default=None):
 
 
 def get_email_tuple_list(emails: str) -> List[Tuple[str, str]]:
+    """Return a list of (name, email) tuples from a string.
+
+    >>> get_email_tuple_list("Admin:a@example.com,Test:t@example.com")
+    [('Admin', 'a@example.com'), ('Test', 't@example.com')]
+
+    :param emails: A string containing one or multiple names and email
+        addresses. The name is seperated from the email by a colon
+        (``:``) whereas each entry is seperated by a comma (``,``).
+    """
     return [
         (name, email)
         for name, email in (item.split(":") for item in emails.split(",") if item)
