@@ -29,3 +29,4 @@ DATABASES = {
 }
 
 CELERY_CONFIG.update({"task_always_eager": True})
+STORAGES.update({"default": {"BACKEND": "django.core.files.storage.InMemoryStorage"}})
