@@ -180,11 +180,11 @@ class Measurement(util.DateModelMixin):
             return True
         return self.location.coords != db_instance.location.coords
 
-    def save(self, **kwargs):
+    def save(self, *args, **kwargs):
         update_fields = kwargs.get("update_fields", None)
         if self.did_location_change(update_fields=update_fields):
             self.location_name = get_location_name(self.location)
-        return super(Measurement, self).save(**kwargs)
+        return super(Measurement, self).save(*args, **kwargs)
 
     def __str__(self):
         if self.pk is not None:
