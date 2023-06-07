@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "django.contrib.gis",
     "django.contrib.postgres",
@@ -95,6 +96,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -126,6 +128,7 @@ TEMPLATES = [
         },
     },
 ]
+
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 # Use bootstrap colors
 MESSAGE_TAGS = {
@@ -178,8 +181,21 @@ LANGUAGES = (("en", _("English")), ("de", _("German")))
 LOCALE_PATHS = [BASE_DIR.joinpath("gcampus", "locale")]
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
-from gcampus.settings.files import *  # noqa
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+# It is important that static files are served from the same domain
+# as the website itself as JavaScript workers have to obey the
+# same-origin policy.
+STATIC_URL = "/static/"  # Must end in a slash
+MEDIA_ROOT = get_env_read_file("GCAMPUS_MEDIA_ROOT", str(BASE_DIR / "media"))
+STATIC_ROOT = get_env_read_file("GCAMPUS_STATIC_ROOT", str(BASE_DIR / "static"))
 
 # Rest Framework
 REST_FRAMEWORK = {
