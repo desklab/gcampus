@@ -238,12 +238,12 @@ class StructureIndex(WaterQualityIndex):
         verbose_name=_("Continuity"),
     )
 
-    def save(self, **kwargs):
+    def save(self, *args, **kwargs):
         self._update_value(commit=False)
         self._update_classification(commit=False)
         self._update_description(commit=False)
         self._update_validity(commit=False)
-        return super(StructureIndex, self).save(**kwargs)
+        return super(StructureIndex, self).save(*args, **kwargs)
 
     def _update_value(self, commit=True):
         self.value = self.calculate_index(self)

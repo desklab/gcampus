@@ -207,14 +207,14 @@ class Water(DateModelMixin):
 
     _default_water_name: str = gettext_lazy("Unnamed {water_type!s}")
 
-    def save(self, **kwargs):
+    def save(self, *args, **kwargs):
         if not kwargs.get("update_fields", None):
             # skip if 'update_fields' is provided
             if not self.water_type:
                 self.water_type = self.guess_water_type(self.tags)
             if not self.flow_type:
                 self.flow_type = self.guess_flow_type(self.water_type)
-        return super(Water, self).save(**kwargs)
+        return super(Water, self).save(*args, **kwargs)
 
     def _do_insert(self, manager, using, fields, update_pk, raw):
         mod_fields = list(fields)
