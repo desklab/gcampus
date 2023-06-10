@@ -27,8 +27,10 @@ errorlog = "-"  # log to stderr
 loglevel = "info"
 # capture_output = True
 bind = "0.0.0.0:8000"
-workers = 4
 worker_class = "gevent"
+# Because we are using 'gevent' worker, a lower number of actual workers
+# is required, because every request spawns a new greenlet
+workers = 2
 post_fork = post_fork_patch
 max_requests = 2000
 max_requests_jitter = 20
