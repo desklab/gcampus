@@ -21,6 +21,7 @@ from django.db.models.fields.files import FieldFile
 from django.http import StreamingHttpResponse, HttpRequest
 from django.utils import translation
 
+from gcampus.core.files import file_exists
 from gcampus.documents.document import (
     render_document,
     as_bytes_io,
@@ -83,7 +84,7 @@ class CachedDocumentResponse(StreamingHttpResponse):
             )
 
         file: FieldFile = getattr(instance, model_file_field)
-        if rebuild or not file:
+        if rebuild or not file_exists(file):
             # File does not exist yet. Start rendering the file
             document_template = render_document_template(
                 template, context=context, request=request, using=using

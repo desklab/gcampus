@@ -31,6 +31,7 @@ from weasyprint import HTML
 from gcampus.core import get_base_url
 from gcampus.documents.document import as_bytes_io, render_document_template
 from gcampus.documents.utils import url_fetcher
+from gcampus.core.files import file_exists
 from gcampus.tasks.lock import redis_lock
 
 logger = logging.getLogger("gcampus.documents.tasks")
@@ -84,7 +85,8 @@ def render_cached_document_view(
     # this document is done when the lock has been acquired.
     with redis_lock(lock_name):
         _instance.refresh_from_db(fields=(view_instance.model_file_field,))
-        if not force and getattr(_instance, view_instance.model_file_field):
+        file: File = getattr(_instance, view_instance.model_file_field)
+        if not force and file_exists(file):
             # The file is already cached and does not have to be rebuilt
             logger.debug("Skip file render as 'force' is set to 'False'.")
             return
