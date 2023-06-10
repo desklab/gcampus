@@ -1,7 +1,6 @@
 django~=4.1
 
-psycogreen~=1.0.2
-psycopg2-binary~=2.9.3
+psycopg~=3.1
 celery[redis]~=5.2
 redis~=4.5
 gevent~=22.10.2
