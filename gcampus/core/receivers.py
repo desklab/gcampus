@@ -58,8 +58,15 @@ def update_measurement_document(
 
     if isinstance(instance, Measurement):
         if "document" in update_fields:
+            # The signal was triggered by the document field itself.
+            # It has either been deleted or created. No need to create
+            # it again.
             return
         if created:
+            # The measurement has just been created, no need to create
+            # a document for it yet.
+            return
+        if len(update_fields) == 1 and "requires_review" in update_fields:
             return
         measurement: Measurement = instance
     elif isinstance(instance, Parameter):
@@ -84,6 +91,9 @@ def update_measurement_document(
             measurement.pk,
             get_language(),
         ),
+        # If multiple parameters are created/deleted at the same time,
+        # skip rebuilding the document after the first parameter.
+        kwargs={"force": False},
     )
 
 
