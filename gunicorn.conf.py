@@ -15,10 +15,12 @@
 
 from gunicorn.workers.base import Worker
 from gevent import monkey
+from psycogreen.gevent import patch_psycopg
 
 
 def post_fork_patch(server, worker: Worker):
     monkey.patch_all()
+    patch_psycopg()
     worker.log.info("Patched 'psycopg'")
 
 
