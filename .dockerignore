@@ -1,5 +1,7 @@
 .DS_Store
 .git
+Dockerfile
+.dockerignore
 
 # Python
 *.pyc
@@ -7,10 +9,7 @@ __pycache__
 /venv
 /.venv
 .coverage
-
-# Compiled Static Files
-# Enabled again for compiling static files in multiple steps
-# static/
+.pytest_cache
 
 # Node
 /node_modules
@@ -22,15 +21,26 @@ __pycache__
 # IDE
 .idea
 .vscode
-README.md
+
+# Other development files
 requirements-dev.txt
 artwork
 .github
 fixture.json
+pyproject.toml
+.eslintrc.js
+README.md
+docker-compose.yml
+.pre-commit-config.yaml
+.readthedocs.yaml
+environment.yml
 
-# Generated PDF files
+
+# Generated files
 /*.pdf
 /media
+/static
+/gcampus/*/static
 
-# Generated documentation
-/docs/_build
+# Documentation
+/docs
