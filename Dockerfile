@@ -32,13 +32,11 @@ USER root
 RUN apt-get update && apt-get -y upgrade && \
     apt-get install -y --no-install-recommends --no-install-suggests \
     binutils \
-    gdal-bin  \
-    libpango-1.0-0  \
+    libgdal28 \
+    libpango-1.0-0 \
     libpangoft2-1.0-0 \
-    libproj-dev  \
-    pandoc  \
-    python3-pip  \
-    python3-gi && \
+    libproj-dev \
+    pandoc && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /var/log
 
