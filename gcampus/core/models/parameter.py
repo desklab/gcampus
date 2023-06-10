@@ -66,6 +66,17 @@ class ParameterType(models.Model):
         verbose_name=_("upper warning limit"),
     )
 
+    def check_warning_limits(self, value: float) -> bool:
+        """Check whether the provided value exceeds the warning limits.
+
+        :param value: Number (integer or float).
+        :returns: ``True`` if the provided value exceeds the warning
+            limits and a warning should be triggered.
+        """
+        return (
+            self.lower_warning_limit is not None and value < self.lower_warning_limit
+        ) or (self.upper_warning_limit is not None and value > self.upper_warning_limit)
+
     def __str__(self):
         if self.unit in EMPTY:
             return f"{self.name}"

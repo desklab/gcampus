@@ -119,16 +119,13 @@ def update_measurement_indices(sender, instance: Parameter, **kwargs):
 
 @receiver(post_save, sender=Parameter)
 def check_warning_limits(sender, instance: Parameter, **kwargs):
-    if instance.parameter_type.lower_warning_limit is not None:
-        if instance.value < instance.parameter_type.lower_warning_limit:
-            instance.measurement.requires_review = True
-            instance.measurement.save()
-            return
-    if instance.parameter_type.upper_warning_limit is not None:
-        if instance.value > instance.parameter_type.upper_warning_limit:
-            instance.measurement.requires_review = True
-            instance.measurement.save()
-            return
+    parameter_type: ParameterType = instance.parameter_type
+    if (
+        not instance.measurement.requires_review
+        and parameter_type.check_warning_limits(instance.value)
+    ):
+        instance.measurement.requires_review = True
+        instance.measurement.save(update_fields=("requires_review",))
 
 
 @receiver(post_save, sender=Measurement)
