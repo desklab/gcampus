@@ -39,7 +39,8 @@ RUN apt-get update && apt-get -y upgrade && \
     pandoc  \
     python3-pip  \
     python3-gi && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/log
 
 # Create gcampus user
 RUN useradd --create-home gcampus
