@@ -18,9 +18,11 @@ from typing import Optional, Union, Type
 
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
+from django.utils import timezone
 from django.utils.translation import get_language
 
-from gcampus.auth.models import Course, AccessKey
+from gcampus.auth.models import Course, AccessKey, BaseToken
+from gcampus.auth.signals import token_user_logged_in
 from gcampus.documents.tasks import render_cached_document_view
 
 logger = logging.getLogger("gcampus.auth.recievers")
@@ -58,6 +60,12 @@ def update_course(
     )
 
 
+@receiver(token_user_logged_in)
+def update_last_token_login(sender, instance: BaseToken, **kwargs):  # noqa
+    instance.last_login = timezone.now()
+    instance.save(update_fields=["last_login"])
+
+
 @receiver(post_save, sender=AccessKey)
 @receiver(post_delete, sender=AccessKey)
 def update_access_key_documents(
@@ -87,6 +95,8 @@ def update_access_key_documents(
         logger.debug("Access key has been created, skip updating 'CourseOverviewPDF'.")
         return
     if update_fields and len(update_fields) == 1 and "last_login" in update_fields:
+        # Triggered by updating the 'last_login' field, e.g. from the
+        # 'update_last_token_login' function.
         logger.debug("User logged in, skip updating 'CourseOverviewPDF'.")
         return
     course: Course = instance.course

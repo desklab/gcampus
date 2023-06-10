@@ -26,6 +26,5 @@ class GCampusAuthAppConfig(AppConfig):
 
     def ready(self):
         from . import receivers  # imported to connect all receivers
-        from .models import update_last_token_login
 
-        token_user_logged_in.connect(update_last_token_login)
+        super().ready()
