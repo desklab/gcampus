@@ -72,6 +72,12 @@ jobs:
       - name: Install Requirements
         run: pip install -r requirements.txt
 
+      - name: Collect static files
+        run: python manage.py collectstatic --no-input
+        env:
+          DJANGO_SETTINGS_MODULE: 'gcampus.settings.test'
+          GCAMPUS_REDIS_HOST: 'localhost'
+
       - name: Run Tests
         run: python manage.py test
         env:
