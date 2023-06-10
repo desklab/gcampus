@@ -13,13 +13,6 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from django.utils import timezone
-
 from gcampus.auth.models.course import Course
 from gcampus.auth.models.token import BaseToken, AccessKey, CourseToken
 from gcampus.auth.models.user import User
-
-
-def update_last_token_login(sender, instance: BaseToken, **kwargs):  # noqa
-    instance.last_login = timezone.now()
-    instance.save(update_fields=["last_login"])
