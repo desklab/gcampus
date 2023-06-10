@@ -58,6 +58,8 @@ RUN pip install --disable-pip-version-check --no-cache-dir -r requirements.txt
 
 COPY --from=static --chown=gcampus /usr/src/gcampus ./
 
+RUN GCAMPUS_ALLOWED_HOSTS="" python manage.py collectstatic --no-input && rm -rf gcampus/*/static
+
 RUN chmod +x ./docker-entrypoint.sh
 
 EXPOSE 8000
