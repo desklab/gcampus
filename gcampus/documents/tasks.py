@@ -29,9 +29,12 @@ from django.views import View
 from weasyprint import HTML
 
 from gcampus.core import get_base_url
-from gcampus.documents.document import as_bytes_io, render_document_template
-from gcampus.documents.utils import url_fetcher
 from gcampus.core.files import file_exists
+from gcampus.documents.document import (
+    as_bytes_io,
+    render_document_template,
+    url_fetcher,
+)
 from gcampus.tasks.lock import redis_lock
 
 logger = logging.getLogger("gcampus.documents.tasks")
