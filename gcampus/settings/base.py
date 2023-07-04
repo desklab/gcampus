@@ -113,6 +113,7 @@ ROOT_URLCONF = "gcampus.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "NAME": "default",
         "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -124,6 +125,30 @@ TEMPLATES = [
                 "gcampus.auth.context_processors.auth",
                 "gcampus.core.context_processors.get_gcampus_meta",
                 "gcampus.core.context_processors.sidebar",
+            ],
+        },
+    },
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "NAME": "document",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "gcampus.core.context_processors.get_gcampus_meta",
+            ],
+        },
+    },
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "NAME": "email",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "gcampus.core.context_processors.get_gcampus_meta",
             ],
         },
     },

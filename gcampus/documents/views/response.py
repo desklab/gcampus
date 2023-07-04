@@ -18,15 +18,11 @@ from typing import Type
 
 from django.db.models import Model
 from django.db.models.fields.files import FieldFile
-from django.http import StreamingHttpResponse, HttpRequest
-from django.utils import translation
+from django.http import StreamingHttpResponse, HttpRequest, FileResponse
+from django.template.loader import render_to_string
 
 from gcampus.core.files import file_exists
-from gcampus.documents.document import (
-    render_document,
-    as_bytes_io,
-    render_document_template,
-)
+from gcampus.documents.document import render_document, as_bytes_io
 from gcampus.documents.tasks import render_document_to_model
 
 
@@ -41,9 +37,7 @@ class DocumentResponse(StreamingHttpResponse):
         using=None,
         headers=None,
     ):
-        document = render_document(
-            template, context=context, request=request, using=using
-        )
+        document = render_document(template, context=context, using=using)
         filelike_obj: BytesIO = as_bytes_io(document)
         # Jump to the end of the file-like object
         filelike_obj.seek(0, 2)
@@ -61,7 +55,7 @@ class DocumentResponse(StreamingHttpResponse):
         super().__init__(filelike_obj, content_type=content_type, headers=headers)
 
 
-class CachedDocumentResponse(StreamingHttpResponse):
+class CachedDocumentResponse(FileResponse):
     def __init__(
         self,
         request: HttpRequest,
@@ -75,7 +69,6 @@ class CachedDocumentResponse(StreamingHttpResponse):
         content_type=None,
         using=None,
         rebuild: bool = False,
-        headers=None,
         **kwargs,
     ):
         if not hasattr(instance, model_file_field):
@@ -86,8 +79,12 @@ class CachedDocumentResponse(StreamingHttpResponse):
         file: FieldFile = getattr(instance, model_file_field)
         if rebuild or not file_exists(file):
             # File does not exist yet. Start rendering the file
-            document_template = render_document_template(
-                template, context=context, request=request, using=using
+            document_template = render_to_string(
+                template,
+                context=context,
+                using=using
+                # The request is not provided to not leak any request
+                # related information inside the document.
             )
             render_document_to_model(
                 document_template,
@@ -95,22 +92,7 @@ class CachedDocumentResponse(StreamingHttpResponse):
                 model,
                 model_file_field,
                 instance,
-                translation.get_language(),
             )
             instance.refresh_from_db(fields=(model_file_field,))
             file: FieldFile = getattr(instance, model_file_field)
-
-        # Jump to the end of the file-like object
-        file.seek(0, 2)
-        # File position corresponds to the file size
-        content_size = file.tell()
-        # Go back to the beginning
-        file.seek(0)
-
-        if headers is None:
-            headers = {}
-        if "Content-Disposition" not in headers:
-            headers["Content-Disposition"] = f"attachment; filename={filename}"
-        if "Content-Length" not in headers:
-            headers["Content-Length"] = content_size
-        super().__init__(file, content_type=content_type, headers=headers, **kwargs)
+        super().__init__(file, as_attachment=True, filename=filename, **kwargs)

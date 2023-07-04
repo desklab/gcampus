@@ -17,27 +17,38 @@ __all__ = ["render_cached_document_view", "render_document_to_model"]
 
 import logging
 import time
+from io import BytesIO
 from typing import Type, Union, Tuple
 
 from celery import shared_task
 from django.conf import settings
 from django.core.files import File
-from django.db.models import Model
+from django.db.models import Model, Q, Manager
+from django.db.models.fields.files import FieldFile
+from django.template.loader import render_to_string
 from django.utils import translation
 from django.utils.module_loading import import_string
 from django.views import View
-from weasyprint import HTML
 
-from gcampus.core import get_base_url
 from gcampus.core.files import file_exists
-from gcampus.documents.document import (
-    as_bytes_io,
-    render_document_template,
-    url_fetcher,
-)
+from gcampus.documents.document import as_bytes_io, render_document_from_html
 from gcampus.tasks.lock import redis_lock
 
 logger = logging.getLogger("gcampus.documents.tasks")
+
+
+def get_document_lock_name(model: type[Model] | str, pk) -> str:
+    """Get the lock name for building or modifying the document of a
+    certain database row.
+
+    :param model: Model (and thereby table) of the document.
+    :param pk: Primary key of the row related to the document.
+    """
+    if isinstance(model, str):
+        model: type[Model] = import_string(model)
+    if not issubclass(model, Model):
+        raise ValueError(f"'{model}' is not a valid model")
+    return f"document_{model.objects.model._meta.db_table}_{pk}"
 
 
 @shared_task
@@ -69,7 +80,6 @@ def render_cached_document_view(
     # language for now. Caching different documents for each language
     # should be implemented at some point.
     language: str = settings.LANGUAGE_CODE
-    translation.activate(language)
     if isinstance(view, str):
         view = import_string(view)
     if (
@@ -79,33 +89,36 @@ def render_cached_document_view(
     ):
         raise ValueError("Expected a view of type 'CachedDocumentView'.")
 
-    model, _instance = get_instance_retry(view.model, instance)
-    view_instance = view.mock_view(_instance)  # Create a fake view
+    model: Type[Model]
+    instance: Model
+    model, instance = get_instance_retry(view.model, instance)
+    view_instance = view.mock_view(instance)  # Create a fake view
 
-    lock_name = f"render_cached_document_view_{view.__name__}_{_instance.pk}"
+    lock_name = get_document_lock_name(model, instance.pk)
     # A lock is used to prevent multiple workers from creating the same
     # document. Not that the check for ``force`` and the existence of
     # this document is done when the lock has been acquired.
     with redis_lock(lock_name):
-        _instance.refresh_from_db(fields=(view_instance.model_file_field,))
-        file: File = getattr(_instance, view_instance.model_file_field)
+        instance.refresh_from_db(fields=(view_instance.model_file_field,))
+        file: File = getattr(instance, view_instance.model_file_field)
         if not force and file_exists(file):
             # The file is already cached and does not have to be rebuilt
             logger.debug("Skip file render as 'force' is set to 'False'.")
             return
-        document_template = render_document_template(
-            view_instance.get_template_names(),
-            context=view_instance.get_context_data(),
-            request=view_instance.request,
-            using=view_instance.template_engine,
-        )
+        with translation.override(language):
+            document_template = render_to_string(
+                view_instance.get_template_names(),
+                context=view_instance.get_context_data(),
+                using=view_instance.template_engine,
+                # The template engine choice will avoid issues where
+                # 'request' is not defined.
+            )
         render_document_to_model(
             document_template,
             view_instance.get_internal_filename(),
             view_instance.model,
             view_instance.model_file_field,
-            _instance,
-            language,
+            instance,
         )
 
 
@@ -116,15 +129,28 @@ def render_document_to_model(
     model: Union[str, Type[Model]],
     model_file_field: str,
     instance: Union[Model, int],
-    language: str,
 ):
-    translation.activate(language)
+    """Render a document to model instance
+
+    This function will create the document (provided by the HTML string
+    template) and apply it to the provided model instance.
+
+    :param template: HTML template for the WeasyPrint document.
+    :param filename: File name used in the model's file field.
+    :param model: Model, like :class:`gcampus.core.models.Measurement`.
+    :param model_file_field: String name of the field which holds the
+        file.
+    :param instance: Either a primary key or an acutal instance of the
+        model.
+    """
     model, instance = get_instance_retry(model, instance)
-    html = HTML(string=template, url_fetcher=url_fetcher, base_url=get_base_url())
-    document = html.render()
-    filelike_obj = as_bytes_io(document)
-    setattr(instance, model_file_field, File(filelike_obj, name=filename))
-    instance.save(update_fields=(model_file_field,))
+    document = render_document_from_html(template)
+    filelike_obj: BytesIO
+    with as_bytes_io(document) as filelike_obj:
+        # Makes sure the memory (buffer) is released after saving the
+        # file.
+        setattr(instance, model_file_field, File(filelike_obj, name=filename))
+        instance.save(update_fields=(model_file_field,))
 
 
 def get_instance_retry(
@@ -153,3 +179,4 @@ def get_instance_retry(
             time.sleep(retry_delay)
 
     raise model.DoesNotExist(f"Unable to find {model} with 'pk={instance}'")
+
