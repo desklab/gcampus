@@ -48,19 +48,14 @@ def url_fetcher(url: str, **kwargs):
         path = os.path.relpath(o.path, settings.STATIC_URL)
         normalized_path = posixpath.normpath(path).lstrip("/")
         mime_type, encoding = mimetypes.guess_type(path, strict=True)
-        if getattr(settings, "AWS_STATIC_USE_STATIC_URL", False):
-            from django.contrib.staticfiles.storage import staticfiles_storage
-
-            file_obj = staticfiles_storage.open(normalized_path)
-        else:
-            absolute_path = finders.find(normalized_path)
-            if not absolute_path:
-                raise FileNotFoundError()
-            if not os.path.isfile(absolute_path):
-                raise URLFetchingError(
-                    f"File '{url}' (resolved to '{absolute_path}') not found!"
-                )
-            file_obj = open(absolute_path, "rb")
+        absolute_path = finders.find(normalized_path)
+        if not absolute_path:
+            raise FileNotFoundError()
+        if not os.path.isfile(absolute_path):
+            raise URLFetchingError(
+                f"File '{url}' (resolved to '{absolute_path}') not found!"
+            )
+        file_obj = open(absolute_path, "rb")
         return {
             "mime_type": mime_type,
             "encoding": encoding,
