@@ -87,6 +87,11 @@ CELERY_CONFIG["beat_schedule"] = {
         "schedule": crontab(minute=20, hour=2, day_of_week="tue"),
         "args": tuple(),
     },
+    "weekly-document-maintenance": {
+        "task": "gcampus.documents.tasks.document_cleanup",
+        "schedule": crontab(minute=40, hour=3, day_of_week="sat"),
+        "args": tuple(),
+    },
 }
 if ENVIRONMENT in ["dev"]:
     CELERY_CONFIG["beat_schedule"].update(

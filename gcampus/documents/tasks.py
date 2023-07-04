@@ -22,7 +22,9 @@ from typing import Type, Union, Tuple
 
 from celery import shared_task
 from django.conf import settings
+from django.contrib.staticfiles.utils import get_files
 from django.core.files import File
+from django.core.files.storage import default_storage, Storage
 from django.db.models import Model, Q, Manager
 from django.db.models.fields.files import FieldFile
 from django.template.loader import render_to_string
@@ -30,7 +32,9 @@ from django.utils import translation
 from django.utils.module_loading import import_string
 from django.views import View
 
+from gcampus.auth.models import Course
 from gcampus.core.files import file_exists
+from gcampus.core.models import Measurement
 from gcampus.documents.document import as_bytes_io, render_document_from_html
 from gcampus.tasks.lock import redis_lock
 
@@ -180,3 +184,89 @@ def get_instance_retry(
 
     raise model.DoesNotExist(f"Unable to find {model} with 'pk={instance}'")
 
+
+@shared_task
+def document_cleanup():
+    """Document cleanup and maintenance task.
+
+    This task will check for broken links between the database and the
+    storage backend for media files.
+    If a media file is found in the storage backend but no related
+    document is found in the database (orphaned file), it is deleted
+    from the storage backend.
+    The reverse is also applicable: If a file specified in the database
+    is not found in the storage backend, the reference is removed from
+    the database.
+
+    Note: Only :class:`django.core.files.storage.FileSystemStorage` is
+    supported for orphaned files.
+    """
+    table_columns: list[tuple[Manager, str]] = [
+        (Measurement.all_objects, "document"),
+        (Course.objects, "overview_document"),
+    ]
+    for manager, file_field in table_columns:
+        _cleanup_database_reference(manager, file_field)
+    _cleanup_orphaned_files(table_columns)
+
+
+def _cleanup_orphaned_files(
+    table_columns: list[tuple[Manager, str]], storage: Storage = default_storage
+):
+    """Cleanup orphaned files.
+
+    Iterate over all files in the file storage backend and check all
+    provided managers with their respective file field for references
+    to the current file.
+
+    If a file is not referenced by any of the database tables, it is
+    being deleted.
+
+    This function only uses I/O functions provided by the file storage
+    backend and can thus be used with any storage backend.
+
+    Example usage:
+
+        # Find files that are not referenced by 'Person.picture'
+        # where 'Person' is a model and 'picture' is the associated
+        # file field.
+        _cleanup_orphaned_files([(Person.objects, "picture")]
+
+    :param table_columns: List of tuples with a
+        :class:`django.db.models.Manager` and its associated file field.
+    :param storage: Optional storage backend.
+    """
+    for file in get_files(storage):
+        if any(
+            manager.only(file_field).filter(**{file_field: file}).exists()
+            for manager, file_field in table_columns
+        ):
+            # The file is referenced by at least one database file
+            # field, do not delete the file.
+            continue
+        else:
+            storage.delete(file)
+
+
+def _cleanup_database_reference(manager: Manager, field: str):
+    """Cleanup database references to deleted files.
+
+    For a given manager (e.g. ``Model.objects``), find all instances
+    that have a file set in their ``field`` column. If the file does
+    not exist, the reference is removed at a final step with a single
+    ``update`` call.
+
+    :param manager: Django model manager for the table.
+    :param field: Column name of the file field.
+    """
+    # Query for rows where the file field is not set
+    empty_file_query: Q = Q(**{f"{field}__isnull": True}) | Q(**{field: ""})
+    # List of primary keys that should be reset
+    reset_pks: list = []
+    # Get all rows that have the file field column set
+    for instance in manager.only("pk", field).exclude(empty_file_query):
+        file: FieldFile | None = getattr(instance, field, None)
+        if not file_exists(file):
+            reset_pks.append(instance.pk)
+    if reset_pks:
+        manager.filter(pk__in=reset_pks).update(**{field: None})
