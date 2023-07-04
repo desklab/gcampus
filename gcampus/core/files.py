@@ -17,7 +17,7 @@ from django.core.files import File
 from django.core.files.storage import default_storage, Storage
 
 
-def file_exists(file: File, storage: Storage = default_storage) -> bool:
+def file_exists(file: File | None, storage: Storage = default_storage) -> bool:
     """Check if a :class:`django.core.files.File` exists.
 
     Sometimes files may get deleted from the actual storage. In that
@@ -29,4 +29,4 @@ def file_exists(file: File, storage: Storage = default_storage) -> bool:
     :param storage: Optional storage instance. Defaults to
          :attr:`django.core.files.storage.default_storage`.
     """
-    return file and storage.exists(file.name)
+    return bool(file and storage.exists(file.name))
