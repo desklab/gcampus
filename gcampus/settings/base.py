@@ -18,7 +18,6 @@ import os
 from pathlib import Path
 
 from django.contrib import messages
-from django.utils.timezone import utc
 from django.utils.translation import gettext_lazy as _
 
 from gcampus import __version__
@@ -245,8 +244,12 @@ REST_FRAMEWORK = {
 }
 
 # Measurement settings
-MEASUREMENT_MIN_TIME = datetime.datetime(1900, month=1, day=1, tzinfo=utc)
-MEASUREMENT_MAX_TIME = datetime.datetime(2100, month=1, day=1, tzinfo=utc)
+MEASUREMENT_MIN_TIME = datetime.datetime(
+    1900, month=1, day=1, tzinfo=datetime.timezone.utc
+)
+MEASUREMENT_MAX_TIME = datetime.datetime(
+    2100, month=1, day=1, tzinfo=datetime.timezone.utc
+)
 
 # Geo Settings
 NOMINATIM_DOMAIN = "nominatim.openstreetmap.org"
