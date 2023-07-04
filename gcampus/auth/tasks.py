@@ -35,7 +35,6 @@ def send_registration_email(
 ):
     if language is None:
         language = settings.LANGUAGE_CODE
-    translation.activate(language)
 
     # Retrieve the instance if a primary key is passed
     if not isinstance(instance, Course):
@@ -58,11 +57,12 @@ def send_registration_email(
         file.open(mode="rb")
         file_content = file.read()
 
-    email_template = RegisterEmailTemplate(instance)
-    message = email_template.as_message(
-        [instance.teacher_email],
-        attachments=[(filename, file_content, "application/pdf")],
-    )
+    with translation.override(language):
+        email_template = RegisterEmailTemplate(instance)
+        message = email_template.as_message(
+            [instance.teacher_email],
+            attachments=[(filename, file_content, "application/pdf")],
+        )
     message.send()
 
 
@@ -78,7 +78,7 @@ def send_email_confirmation_email(
     """
     if language is None:
         language = settings.LANGUAGE_CODE
-    translation.activate(language)
-    email_template = ConfirmationEmailTemplate(url)
-    message = email_template.as_message([email])
+    with translation.override(language):
+        email_template = ConfirmationEmailTemplate(url)
+        message = email_template.as_message([email])
     message.send()

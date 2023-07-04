@@ -43,10 +43,9 @@ def send_course_deletion_email(
 ):
     if language is None:
         language = settings.LANGUAGE_CODE
-    translation.activate(language)
-
-    email_template = MaintenanceCourseDeletion(course_name, course_school)
-    message = email_template.as_message([email])
+    with translation.override(language):
+        email_template = MaintenanceCourseDeletion(course_name, course_school)
+        message = email_template.as_message([email])
     message.send()
 
 
@@ -60,10 +59,9 @@ def send_access_key_deactivation_email(
 ):
     if language is None:
         language = settings.LANGUAGE_CODE
-    translation.activate(language)
-
-    email_template = MaintenanceAccessKeys(course_name, course_school, access_keys)
-    message = email_template.as_message([email])
+    with translation.override(language):
+        email_template = MaintenanceAccessKeys(course_name, course_school, access_keys)
+        message = email_template.as_message([email])
     message.send()
 
 

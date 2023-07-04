@@ -48,8 +48,8 @@ class CsvResponse(MeasurementExportResponse):
         # Ensure reproducibility by fixing the language. Some
         # translations may be used in the output (namely, the verbose
         # name of the indices).
-        translation.activate("en")
-        super().__init__(*args, **kwargs)
+        with translation.override("en"):
+            super().__init__(*args, **kwargs)
 
     def _get_rows(
         self, measurements: QuerySet
