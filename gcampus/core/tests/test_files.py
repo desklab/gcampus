@@ -15,9 +15,7 @@
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
-from django.db import models
 from django.test import TestCase
-from django.test.utils import isolate_apps
 
 from gcampus.auth.models import Course
 from gcampus.core.files import file_exists

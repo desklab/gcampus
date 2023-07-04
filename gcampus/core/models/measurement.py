@@ -17,7 +17,7 @@ from __future__ import annotations
 
 __all__ = ["Measurement", "HiddenManager"]
 
-from typing import List, Optional
+from typing import List
 
 from django.contrib.gis.db import models
 from django.contrib.postgres.indexes import GinIndex
