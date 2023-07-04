@@ -31,7 +31,7 @@ from django.views.generic import TemplateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
 
-from gcampus.documents.utils import mock_request
+from gcampus.documents.document import DOCUMENT_TEMPLATE_ENGINE
 from gcampus.documents.views.response import CachedDocumentResponse, DocumentResponse
 
 
@@ -44,6 +44,7 @@ class FileNameMixin:
 
 class DocumentView(FileNameMixin, TemplateView):
     content_type = "application/pdf"
+    template_engine = DOCUMENT_TEMPLATE_ENGINE
     response_class = DocumentResponse
 
     def render_to_response(self, context, **response_kwargs):
@@ -69,7 +70,6 @@ class SingleObjectDocumentView(SingleObjectMixin, DocumentView):
             instance: Model = cls.model.objects.get(pk=instance)
         self = cls()
         self.object = instance
-        self.request = mock_request()
         return self
 
 

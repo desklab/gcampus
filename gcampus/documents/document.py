@@ -14,7 +14,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 __all__ = [
-    "render_document_template",
+    "render_document_from_html",
     "render_document",
     "as_bytes_io",
     "as_file",
@@ -30,13 +30,13 @@ from urllib.parse import urlsplit
 
 from django.conf import settings
 from django.contrib.staticfiles import finders
-from django.http import HttpRequest
 from django.template.loader import render_to_string
 from weasyprint import HTML, Document
 from weasyprint.urls import URLFetchingError, default_url_fetcher
 
 from gcampus.core import get_base_url
-from gcampus.documents.utils import mock_request
+
+DOCUMENT_TEMPLATE_ENGINE: str = "document"
 
 
 def url_fetcher(url: str, **kwargs):
@@ -70,29 +70,26 @@ def url_fetcher(url: str, **kwargs):
         return default_url_fetcher(url, **kwargs)
 
 
-def render_document_template(
-    template: Union[str, List[str]],
-    context: Optional[dict] = None,
-    request: Optional[HttpRequest] = None,
-    using=None,
-) -> str:
-    # Add dummy request to enable context processors.
-    # Context processors will not be run when no request is provided,
-    # even if they might not require a request.
-    if request is None:
-        request = mock_request()
-    return render_to_string(template, context=context, request=request, using=using)
-
-
 def render_document(
     template: Union[str, List[str]],
     context: Optional[dict] = None,
-    request: Optional[HttpRequest] = None,
-    using=None,
+    using=DOCUMENT_TEMPLATE_ENGINE,
 ) -> Document:
-    document_str = render_document_template(template, context, request, using)
-    html = HTML(string=document_str, url_fetcher=url_fetcher, base_url=get_base_url())
-    return html.render()
+    document_str = render_to_string(template, context=context, using=using)
+    return render_document_from_html(document_str)
+
+
+def render_document_from_html(html: str) -> Document:
+    """Render a document from a provided HTML string.
+
+    Applies all the required parameters like the ``url_fetcher``
+    and ``base_url`` to render the WeasyPrint document.
+
+    :param html: String HTML, e.g. rendered from a template using
+        :func:`django.template.loader.render_to_string`.
+    :returns: A rendered :class:`weasyprint.Document` instance.
+    """
+    return HTML(string=html, url_fetcher=url_fetcher, base_url=get_base_url()).render()
 
 
 def as_bytes_io(document: Document, **kwargs) -> BytesIO:

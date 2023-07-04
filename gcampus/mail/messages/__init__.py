@@ -18,13 +18,11 @@ from abc import ABC
 
 import pypandoc
 from django.core.mail import EmailMessage, EmailMultiAlternatives
-from django.http import HttpRequest
 from django.template.loader import render_to_string
 from lxml import html as lxml_html
 from premailer import transform
 
 from gcampus.core import get_base_url
-from gcampus.documents.utils import mock_request
 from gcampus.mail.templatetags.mail import include_static
 
 
@@ -32,15 +30,8 @@ class EmailTemplate(ABC):
     template_path: str
     subject: str
     preheader: str
+    template_engine: str = "email"
     stylesheet: str = "gcampusmail/styles/mail.css"
-
-    def __init__(self, request: t.Optional[HttpRequest] = None):
-        """
-        :param request: Optional request instance. A request is required
-            for context processors to work. If no request is provided,
-            a mock request will be created.
-        """
-        self.request = request if request is not None else mock_request()
 
     def get_html_template(self) -> str:
         return self.template_path
@@ -68,10 +59,10 @@ class EmailTemplate(ABC):
         :param using: Template engine passed to
             :func:`django.template.loader.render_to_string`.
         """
+        if using is None:
+            using = self.template_engine
         context = self.get_context()
-        html = render_to_string(
-            self.get_html_template(), context=context, request=self.request, using=using
-        )
+        html = render_to_string(self.get_html_template(), context=context, using=using)
         text = _to_raw_text(html)
         # Some email clients still do not support styles defined in the
         # HTML '<head>' tag. Styles must be applied inline, i.e. using
