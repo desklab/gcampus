@@ -13,7 +13,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import List, Optional, Set, Tuple
+from typing import List, Optional, Set
 
 from django.conf import settings
 from django.contrib.postgres.search import SearchQuery
@@ -42,7 +42,7 @@ from gcampus.core.fields.datetime import HistogramDateTimeField
 from gcampus.core.fields.personal import ToggleField
 from gcampus.core.models import ParameterType
 from gcampus.core.models.util import EMPTY
-from gcampus.core.models.water import FlowType, WaterType, Water
+from gcampus.core.models.water import FlowType, WaterType
 
 WATER_TYPES = [
     (value, capfirst(label)) for value, label in WaterType.choices if value is not None
