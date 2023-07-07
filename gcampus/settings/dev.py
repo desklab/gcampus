@@ -19,6 +19,9 @@ from gcampus.settings.base import *  # noqa
 
 DEBUG = True
 
+# Set default log level to 'DEBUG'
+LOGGING["loggers"]["gcampus"]["level"] = os.getenv("GCAMPUS_LOG_LEVEL", "DEBUG")
+
 DATABASES = {
     "default": {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
