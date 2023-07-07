@@ -57,7 +57,7 @@ LOGGING = {
         },
         "gcampus": {
             "handlers": ["console"],
-            "level": os.getenv("GCAMPUS_LOG_LEVEL", "DEBUG"),
+            "level": os.getenv("GCAMPUS_LOG_LEVEL", "INFO"),
             "propagate": True,
         },
     },
