@@ -15,15 +15,16 @@
 
 import typing as t
 from abc import ABC
+from collections.abc import Iterable
 
-import pypandoc
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.template.loader import render_to_string
 from lxml import html as lxml_html
+from lxml.html import HtmlElement
 from premailer import transform
 
 from gcampus.core import get_base_url
-from gcampus.mail.templatetags.mail import include_static
 
 
 class EmailTemplate(ABC):
@@ -100,7 +101,10 @@ class EmailTemplate(ABC):
 def _to_raw_text(html: str) -> str:
     root = lxml_html.fromstring(html)
     contents = root.xpath("//div[@class='content']")
-    content = "\n".join(
-        map(lambda c: lxml_html.tostring(c, encoding="unicode"), contents)
-    )
-    return pypandoc.convert_text(content, "plain", "html", extra_args=["--wrap=none"])
+    return "\n\n".join(_text_contents_iter(contents))
+
+
+def _text_contents_iter(contents: Iterable[HtmlElement]) -> Iterable[str]:
+    content: HtmlElement
+    for content in contents:
+        yield " ".join(n.strip() for n in content.itertext())
