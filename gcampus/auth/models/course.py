@@ -114,7 +114,7 @@ class EmailConfirmationTokenGenerator:
 
         # Check the timestamp is within limit.
         token_age = timedelta(seconds=(self._num_seconds(self._now()) - ts))
-        if token_age > settings.EMAIL_CONFIRMATION_TIMEOUT:
+        if token_age > settings.CONFIRMATION_TIMEOUT:
             raise EmailVerificationExpired()
 
         return True
