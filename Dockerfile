@@ -35,8 +35,7 @@ RUN apt-get update && apt-get -y upgrade && \
     libgdal28 \
     libpango-1.0-0 \
     libpangoft2-1.0-0 \
-    libproj-dev \
-    pandoc && \
+    libproj-dev && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /var/log
 
