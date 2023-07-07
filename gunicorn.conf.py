@@ -25,9 +25,9 @@ def post_fork_patch(server, worker: Worker):
 
 
 wsgi_app = "gcampus.wsgi"
+capture_output = True  # Capture log output from Django
 errorlog = "-"  # log to stderr
 loglevel = "info"
-# capture_output = True
 bind = "0.0.0.0:8000"
 worker_class = "gevent"
 # Because we are using 'gevent' worker, a lower number of actual workers
