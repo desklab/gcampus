@@ -1,4 +1,5 @@
-{% load auth_token static i18n l10n tz %}
+{% load settings auth_token static i18n l10n tz %}
+{% settings "ENVIRONMENT" as deploy_env %}
 <!doctype html>
 <html lang="de">
 <head>
@@ -10,7 +11,7 @@
     <style>
         @page {
             @top-right {
-                content: "{% now "DATETIME_FORMAT" %} \A {% translate "version" %} {{ GCAMPUS_VERSION }} \A {% translate "page" %} " counter(page) " {% translate "of" %} " counter(pages);
+                content: "{% now "DATETIME_FORMAT" %} \A {% translate "version" %} {% settings "GCAMPUS_VERSION" %} \A {% translate "page" %} " counter(page) " {% translate "of" %} " counter(pages);
                 white-space: pre-line;
                 color: #606060;
                 font-size: 7pt;
@@ -69,7 +70,7 @@
                     This document has been created automatically and contains a summary of {{ measurement_count }}
                     measurements.
                 {% endblocktranslate %}
-                {% if ENVIRONMENT == "dev" %}
+                {% if deploy_env == "dev" %}
                     {% blocktrans trimmed %}
                         This document was created using a test instance of GewässerCampus. The available
                         measurement data is most likely fictional and does not represent real measurements.

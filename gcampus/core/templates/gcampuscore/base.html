@@ -1,4 +1,4 @@
-{% load static auth_token i18n next_url %}
+{% load static auth_token i18n next_url settings %}
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -12,7 +12,8 @@
     <title>{% block title %}{% if page_title %}{{ page_title }} - GewässerCampus{% else %}GewässerCampus{% endif %}{% endblock %}</title>
     <meta name="description" content="{% block description %}{% endblock %}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    {% if ENVIRONMENT == "dev" %}
+    {% settings "ENVIRONMENT" as deploy_env %}
+    {% if deploy_env == "dev" %}
         <link rel="icon" href="{% static 'gcampuscore/assets/favicon-dev.png' %}">
     {% else %}
         <link rel="icon" href="{% static 'gcampuscore/assets/favicon.png' %}">
@@ -104,7 +105,7 @@
                         </ul>
                     </div>
                 </nav>
-                {% if ENVIRONMENT == "dev" %}
+                {% if deploy_env == "dev" %}
                     <div class="container">
                         <div class="box box-warning d-flex align-items-center py-2 my-3" role="alert">
                             {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-3" %}
@@ -134,7 +135,7 @@
 {# Global javascript #}
 <script type="text/javascript">
     window.SIDEBAR_STATE_COOKIE_NAME = '{{ sidebar_cookie_name }}';
-    window.TIME_ZONE_COOKIE_NAME = '{{ TIME_ZONE_COOKIE_NAME }}';
+    window.TIME_ZONE_COOKIE_NAME = '{% settings "TIME_ZONE_COOKIE_NAME" %}';
 </script>
 <script type="text/javascript" src="{% static 'gcampuscore/js/main.js' %}"></script>
 {% if authenticated %}{% displaytoken_js %}{% endif %}

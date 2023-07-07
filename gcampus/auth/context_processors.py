@@ -33,5 +33,4 @@ def auth(request: HttpRequest) -> dict:
         "user_token_is_course_token": (
             session.get_token_type(request) is TokenType.course_token
         ),
-        "email_confirmation_timeout": settings.EMAIL_CONFIRMATION_TIMEOUT.days,
     }

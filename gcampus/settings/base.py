@@ -122,7 +122,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "gcampus.auth.context_processors.auth",
-                "gcampus.core.context_processors.get_gcampus_meta",
                 "gcampus.core.context_processors.sidebar",
             ],
         },
@@ -133,10 +132,9 @@ TEMPLATES = [
         "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "gcampus.core.context_processors.get_gcampus_meta",
-            ],
+            # This template backend is usually not rendered with a
+            # request provided, so context processors will not work.
+            "context_processors": [],
         },
     },
     {
@@ -145,10 +143,9 @@ TEMPLATES = [
         "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "gcampus.core.context_processors.get_gcampus_meta",
-            ],
+            # This template backend is usually not rendered with a
+            # request provided, so context processors will not work.
+            "context_processors": [],
         },
     },
 ]
@@ -176,7 +173,8 @@ MANAGERS = get_email_tuple_list(os.environ.get("GCAMPUS_MANAGERS", ""))
 ADMINS = get_email_tuple_list(os.environ.get("GCAMPUS_ADMINS", ""))
 EMAIL_SUBJECT_PREFIX = "[GewässerCampus] "
 
-EMAIL_CONFIRMATION_TIMEOUT = datetime.timedelta(days=5)
+CONFIRMATION_TIMEOUT_DAYS = os.environ.get("GCAMPUS_CONFIRMATION_TIMEOUT", 5)
+CONFIRMATION_TIMEOUT = datetime.timedelta(days=CONFIRMATION_TIMEOUT_DAYS)
 AUTH_USER_MODEL = "gcampusauth.User"
 
 # Password validation

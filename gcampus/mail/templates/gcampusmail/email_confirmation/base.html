@@ -1,8 +1,9 @@
 {% extends "gcampusmail/base.html" %}
-{% load i18n auth_token %}
+{% load i18n auth_token settings %}
 {% block content %}
     {% translate "Please confirm your email address" as header_text %}
-    {% blocktranslate trimmed asvar content_text with url=url days=email_confirmation_timeout %}
+    {% settings "CONFIRMATION_TIMEOUT_DAYS" as confirmation_timeout_days %}
+    {% blocktranslate trimmed asvar content_text with url=url days=confirmation_timeout_days %}
         Click the link below to confirm your email address:
         <br>
         <a href="{{ url }}">{{ url }}</a>

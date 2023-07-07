@@ -1,8 +1,9 @@
 {% extends "gcampuscore/base_error.html" %}
-{% load i18n next_url %}
+{% load i18n next_url settings %}
 {% block exception_message %}
     {% url "gcampusauth:register" as register_url %}
-    {% blocktranslate trimmed with days=email_confirmation_timeout %}
+    {% settings "CONFIRMATION_TIMEOUT_DAYS" as confirmation_timeout_days %}
+    {% blocktranslate trimmed with days=confirmation_timeout_days %}
         The email confirmation link you used has expired. Note that it is only
         valid for {{ days }} days. If the email address of a course is not verified, it
         will be deleted automatically after some time.
