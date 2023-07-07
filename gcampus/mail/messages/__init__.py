@@ -51,7 +51,8 @@ class EmailTemplate(ABC):
         return context
 
     def get_stylesheet(self) -> str:
-        return include_static(self.stylesheet)
+        with staticfiles_storage.open(self.stylesheet, mode="rb") as f:
+            return f.read().decode("utf-8")
 
     def render(self, using=None) -> t.Tuple[str, str]:
         """Render email templates
