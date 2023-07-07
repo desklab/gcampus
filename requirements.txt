@@ -2,7 +2,7 @@ django~=4.1
 
 psycogreen~=1.0.2
 psycopg2-binary~=2.9.3
-celery[redis]~=5.2
+celery[redis]~=5.3
 redis~=4.5
 gevent~=22.10.2
 gunicorn[gevent]~=20.1
