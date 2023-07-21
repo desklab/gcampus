@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("gcampuscore", "0006_alter_parametertype_short_name"),
     ]

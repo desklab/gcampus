@@ -13,6 +13,8 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+__all__ = ["BACHIndex", "SaprobicIndex", "TrophicIndex", "StructureIndex"]
+
 from gcampus.core.models.index.bach import BACHIndex
 from gcampus.core.models.index.saprobic import SaprobicIndex
 from gcampus.core.models.index.trophic import TrophicIndex

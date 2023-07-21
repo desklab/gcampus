@@ -110,7 +110,6 @@ def get_static_map(
         style_id = mapbox_settings["STYLE_ID"]
     if timeout is None:
         timeout = getattr(settings, "REQUEST_TIMEOUT", 5)
-    has_label = len(markers) > 1
     overlay = ",".join((_create_pin(p, size=pin_size) for p in markers))
     url = (
         f"https://api.mapbox.com/styles/v1/{username}/{style_id}"

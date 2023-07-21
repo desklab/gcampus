@@ -81,7 +81,7 @@ class ParameterTypeFilter(ModelMultipleChoiceFilter):
             return qs
         if self.distinct:
             qs = qs.distinct()
-        query_name = f"parameters__parameter_type__pk__in"
+        query_name = "parameters__parameter_type__pk__in"
         for parameter_type_id in parameter_type_ids:
             qs = self.get_method(qs)(**{query_name: [parameter_type_id]})
         return qs

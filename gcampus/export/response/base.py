@@ -17,11 +17,10 @@ __all__ = ["MeasurementExportResponse"]
 
 import tempfile
 from abc import ABC
-from typing import Iterable, IO, Tuple, List, Union
+from typing import Iterable, IO, Tuple
 
 from django.db.models import QuerySet, Prefetch
 from django.http import FileResponse
-from django.utils.functional import cached_property
 from django.utils.translation import gettext
 
 from gcampus.core.models import Parameter

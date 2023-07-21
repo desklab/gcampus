@@ -17,14 +17,12 @@ from __future__ import annotations
 
 __all__ = ["Measurement", "HiddenManager"]
 
-from typing import List
-
 from django.contrib.gis.db import models
 from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField
 from django.core.exceptions import ObjectDoesNotExist
-from django.utils.translation import gettext_lazy as _
-from django.utils.translation import pgettext_lazy
+from django.utils.translation import gettext_lazy as gettext_lazy
+from django.utils.translation import gettext, pgettext_lazy
 
 from gcampus.core.models import util
 from gcampus.core.util import get_location_name
@@ -46,8 +44,8 @@ class Measurement(util.DateModelMixin):
 
     class Meta:
         default_manager_name = "objects"
-        verbose_name = _("Measurement")
-        verbose_name_plural = _("Measurements")
+        verbose_name = gettext_lazy("Measurement")
+        verbose_name_plural = gettext_lazy("Measurements")
         indexes = (GinIndex(fields=("search_vector",)),)
         ordering = ("created_at", "name")
 
@@ -64,23 +62,25 @@ class Measurement(util.DateModelMixin):
     name: models.CharField = models.CharField(
         blank=True,
         max_length=280,
-        verbose_name=_("Name"),
-        help_text=_("Your forename or team name. This will be publicly visible."),
+        verbose_name=gettext_lazy("Name"),
+        help_text=gettext_lazy(
+            "Your forename or team name. This will be publicly visible."
+        ),
     )
 
     #: Location of the measurement
     location: models.PointField = models.PointField(
         blank=False,
-        verbose_name=_("Location"),
-        help_text=_("Location of the measurement"),
+        verbose_name=gettext_lazy("Location"),
+        help_text=gettext_lazy("Location of the measurement"),
     )
 
     location_name: models.CharField = models.CharField(
         blank=True,
         null=True,
         max_length=280,
-        verbose_name=_("Location name"),
-        help_text=_("An approximated location for the measurement"),
+        verbose_name=gettext_lazy("Location name"),
+        help_text=gettext_lazy("An approximated location for the measurement"),
     )
 
     water: models.ForeignKey = models.ForeignKey(
@@ -89,27 +89,29 @@ class Measurement(util.DateModelMixin):
         blank=False,
         null=False,
         related_name="measurements",
-        verbose_name=_("Water"),
-        help_text=_("The water associated with this measurement"),
+        verbose_name=gettext_lazy("Water"),
+        help_text=gettext_lazy("The water associated with this measurement"),
     )
 
     time: models.DateTimeField = models.DateTimeField(
         blank=False,
         verbose_name=pgettext_lazy("measurement time", "Time"),
-        help_text=_("Date and time of the measurement"),
+        help_text=gettext_lazy("Date and time of the measurement"),
     )
 
     #: Additional comment (or 'note') for the measurement. Note that
     #: there is also a comment field in the :class:`.Parameter` model.
     comment = models.TextField(
         blank=True,
-        verbose_name=_("Note"),
-        help_text=_("Note on your measurement. This will be publicly visible."),
+        verbose_name=gettext_lazy("Note"),
+        help_text=gettext_lazy(
+            "Note on your measurement. This will be publicly visible."
+        ),
     )
 
     #: Hidden measurements appear to the user as being deleted. To avoid
     #: data loss, deleting a measurement will only mark is as hidden.
-    hidden = models.BooleanField(default=False, verbose_name=_("Hidden"))
+    hidden = models.BooleanField(default=False, verbose_name=gettext_lazy("Hidden"))
 
     #: Used for moderation and review of measurements: If a measurement
     #: is reported using the report form, it is automatically marked
@@ -117,14 +119,14 @@ class Measurement(util.DateModelMixin):
     #: problematic measurements in the admin interface.
     requires_review = models.BooleanField(
         default=False,
-        verbose_name=_("requires review"),
+        verbose_name=gettext_lazy("requires review"),
     )
 
     #: Used to flag measurements containing parameters which seem not to be
     #: feasible. Set by admins/moderators in the admin interface.
     parameter_quality_warning = models.BooleanField(
         default=False,
-        verbose_name=_("data quality warning"),
+        verbose_name=gettext_lazy("data quality warning"),
     )
 
     #: Internal comment used in the review process. Should not be
@@ -132,7 +134,7 @@ class Measurement(util.DateModelMixin):
     internal_comment = models.TextField(
         null=True,
         blank=True,
-        verbose_name=_("internal comment"),
+        verbose_name=gettext_lazy("internal comment"),
     )
 
     #: The search vector will be overwritten and turned into a postgres
@@ -142,7 +144,7 @@ class Measurement(util.DateModelMixin):
     #: File field to cache the measurement detail document for this
     #: measurement.
     document = models.FileField(
-        verbose_name=_("Document"),
+        verbose_name=gettext_lazy("Document"),
         upload_to="documents/measurement",
         blank=True,
         null=True,
@@ -150,7 +152,7 @@ class Measurement(util.DateModelMixin):
 
     #: Related field: List of all parameters associated with this
     #: measurement.
-    parameters: List["Parameter"]
+    parameters: list
 
     #: The default manager **without** hidden measurements.
     objects = HiddenManager()
@@ -188,10 +190,10 @@ class Measurement(util.DateModelMixin):
 
     def __str__(self):
         if self.pk is not None:
-            return _("Measurement #{id:05d}").format(id=self.pk)
+            return gettext("Measurement #{id:05d}").format(id=self.pk)
         else:
             # In this case, ``id`` will be replaced with ``None``
-            return _("Measurement %(id)s") % {"id": self.pk}
+            return gettext("Measurement %(id)s") % {"id": self.pk}
 
     def _do_insert(self, manager, using, fields, update_pk, raw):
         mod_fields = list(fields)

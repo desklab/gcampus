@@ -13,5 +13,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+__all__ = ["MeasurementDetailView", "WaterDetailView"]
+
 from gcampus.core.views.details.measurement import MeasurementDetailView
 from gcampus.core.views.details.water import WaterDetailView

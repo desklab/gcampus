@@ -36,29 +36,48 @@ from gcampus.core.views.lists import MeasurementListView, WaterListView
 # def custom_server_error(request):
 #    return server_error(request)
 
-# Turn off black formatting and pylint
-# fmt: off
-# pylint: disable=line-too-long
 urlpatterns = [
     # Index
     path("", MeasurementMapView.as_view(), name="mapview"),
     # Details
-    path("measurement/<int:pk>/", MeasurementDetailView.as_view(), name="measurement-detail"),
+    path(
+        "measurement/<int:pk>/",
+        MeasurementDetailView.as_view(),
+        name="measurement-detail",
+    ),
     path("water/<int:pk>/", WaterDetailView.as_view(), name="water-detail"),
     # Forms
     path("measurement/add/", MeasurementCreateView.as_view(), name="add-measurement"),
-    path("measurement/<int:pk>/edit/", MeasurementEditView.as_view(), name="edit-measurement"),
-    path("measurement/<int:pk>/edit/parameters/chemical", ChemicalParameterFormSetView.as_view(), name="edit-chemical-parameters"),
-    path("measurement/<int:pk>/edit/parameters/biological", BiologicalParameterFormSetView.as_view(), name="edit-biological-parameters"),
-    path("measurement/<int:pk>/edit/parameters/structural", StructureIndexEditView.as_view(), name="edit-structure-index"),
-    path("measurement/<int:pk>/delete", MeasurementDeleteView.as_view(), name="delete-measurement"),
+    path(
+        "measurement/<int:pk>/edit/",
+        MeasurementEditView.as_view(),
+        name="edit-measurement",
+    ),
+    path(
+        "measurement/<int:pk>/edit/parameters/chemical",
+        ChemicalParameterFormSetView.as_view(),
+        name="edit-chemical-parameters",
+    ),
+    path(
+        "measurement/<int:pk>/edit/parameters/biological",
+        BiologicalParameterFormSetView.as_view(),
+        name="edit-biological-parameters",
+    ),
+    path(
+        "measurement/<int:pk>/edit/parameters/structural",
+        StructureIndexEditView.as_view(),
+        name="edit-structure-index",
+    ),
+    path(
+        "measurement/<int:pk>/delete",
+        MeasurementDeleteView.as_view(),
+        name="delete-measurement",
+    ),
     # Lists
     path("measurements/", MeasurementListView.as_view(), name="measurements"),
     path("waters/", WaterListView.as_view(), name="waters"),
     # path("404/", custom_page_not_found), # uncomment to test 404 page locally
     # path("500/", custom_server_error), # uncomment to test 500 page locally
 ]
-# fmt: on
-# pylint: enable=line-too-long
 
 app_name = GCampusCoreAppConfig.label

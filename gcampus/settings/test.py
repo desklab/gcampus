@@ -13,7 +13,10 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from gcampus.settings.base import *  # noqa
+# Disable warning for potentially undefined variables
+# ruff: noqa: F405, F403
+
+from gcampus.settings.base import *
 
 DEBUG = False
 

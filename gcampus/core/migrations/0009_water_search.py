@@ -9,7 +9,6 @@ TSVECTOR_CONF = getattr(settings, "TSVECTOR_CONF", "german")
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("gcampuscore", "0008_measurement_internal_comment_and_more"),
     ]

@@ -63,10 +63,12 @@ class BankVegetationCategory(models.TextChoices):
         "narrow continuous grove, wet meadow, tall herbaceous plants or reeds"
     )
     SPARSE = "sparse", _(
-        "sparse grove, herbaceous vegetation of stinging nettles and other nutrient indicators"
+        "sparse grove, herbaceous vegetation of stinging nettles "
+        "and other nutrient indicators"
     )
     NON_NATIVE = "non-native", _(
-        "individual trees, non-native vegetation (cottonwoods, conifers, or ornamental shrubs), mowed bank"
+        "individual trees, non-native vegetation "
+        "(cottonwoods, conifers, or ornamental shrubs), mowed bank"
     )
     ARTIFICIAL = "artificial", _("no trees, no herbaceous vegetation, paved bank")
     NA = "unknown", _("unknown")
@@ -74,7 +76,8 @@ class BankVegetationCategory(models.TextChoices):
 
 class BankStructureCategory(models.TextChoices):
     NATURAL = "natural", _(
-        "no fixed banks, many inlets and widenings, water body can expand unhindered in width"
+        "no fixed banks, many inlets and widenings, "
+        "water body can expand unhindered in width"
     )
     STRAIGHT = "straight", _(
         "banks straightened, not visibly fixed, some indentations and widenings"
@@ -126,10 +129,12 @@ class DepthVarianceCategory(models.TextChoices):
 
 class RiverbedCategory(models.TextChoices):
     MOSAIC = "mosaic", _(
-        "mosaic-like distribution of sand/gravel/stones and deadwood, pronounced formation of islands"
+        "mosaic-like distribution of sand/gravel/stones and deadwood, "
+        "pronounced formation of islands"
     )
     DIVERSE = "diverse", _(
-        "diversified riverbed (sand/gravel/stones/deadwood), rudimentary formation of islands"
+        "diversified riverbed (sand/gravel/stones/deadwood), "
+        "rudimentary formation of islands"
     )
     INTERVALS = "intervals", _(
         "more uniform riverbed, different structures at greater intervals"
@@ -142,7 +147,8 @@ class RiverbedCategory(models.TextChoices):
 class ContinuityCategory(models.TextChoices):
     NATURAL = "natural", _("no obstacles, natural waterfall/cascade")
     STEP = "step", _(
-        "piping < 2 m, artificial step of single stones, can be overcome by fish and invertebrates"
+        "piping < 2 m, artificial step of single stones, "
+        "can be overcome by fish and invertebrates"
     )
     OBSTACLE = "obstacle", _(
         "piping 2-5m, minor step (< 30 cm), can be overcome by fish, fish ladder"

@@ -23,9 +23,6 @@ from django.urls import reverse
 from django.utils.text import capfirst
 from django.utils.timezone import localtime, make_naive
 from django.utils.translation import gettext
-from xlsxwriter import Workbook
-from xlsxwriter.format import Format
-from xlsxwriter.worksheet import Worksheet
 
 from gcampus.core import get_base_url
 from gcampus.core.models import (

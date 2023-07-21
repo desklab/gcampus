@@ -13,5 +13,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+__all__ = ["MeasurementKit", "Calibration"]
+
 from gcampus.tools.models.kit import MeasurementKit
 from gcampus.tools.models.calibration import Calibration

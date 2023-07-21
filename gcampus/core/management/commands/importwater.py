@@ -70,4 +70,4 @@ class Command(RichCommand):
                 except Water.DoesNotExist:
                     water = Water.from_element(relation)
                 water.save()
-        self.console.print(f"Done!")
+        self.console.print("Done!")

@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("gcampusauth", "0003_email_permissions_last_login"),
     ]

@@ -178,7 +178,6 @@ class ExportWorksheet(Worksheet):
 
     # Undecorated version of write_boolean().
     def _write_boolean(self, row, col, boolean, cell_format=None):
-
         # Check that row and col are valid and store max and min values.
         if self._check_dimensions(row, col):
             return -1

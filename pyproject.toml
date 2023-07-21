@@ -1,20 +1,18 @@
 [tool.black]
 line-length = 88
-target-version = ["py37"]
-exclude = "/(\\.eggs|\\.git|venv|gulpfile.js|node_modules)/"
+target-version = ["py311"]
+extend-exclude = "/(\\.eggs|\\.git|venv|gulpfile.js|node_modules)/"
 
-[tool.pylint.master]
-ignore = "frontend"
-[tool.pylint.messages_control]
-disable = "C0330, C0326"
-[tool.pylint.format]
-max-line-length = "88"
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+extend-exclude = ["migrations"]
 
 [tool.isort]
 profile = "black"
 multi_line_output = 3
 line_length = 88
-py_version = "37"
+py_version = "311"
 only_sections = true
 skip = "frontend"
 
@@ -27,3 +25,8 @@ omit = [
     "*/settings/*.py",
     "gcampus/[aw]sgi.py",
 ]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "gcampus.settings.test"
+# -- recommended but optional:
+python_files = ["gcampus/**/tests/*.py", "gcampus/**/tests.py"]

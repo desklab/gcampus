@@ -33,8 +33,8 @@ def list_item(lstrow, rowpos):
     """
     lst, row = lstrow
     try:
-        return lst[row * 3 + rowpos]
-    except:
+        return lst[int(row * 3 + rowpos)]
+    except IndexError:
         return None
 
 

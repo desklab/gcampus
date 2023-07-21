@@ -16,7 +16,7 @@ import csv
 import os
 from typing import Iterable, IO, Tuple, Union
 
-from django.db.models import QuerySet, Prefetch
+from django.db.models import QuerySet
 from django.utils import translation
 from django.utils.timezone import localtime
 

@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("gcampuscore", "0007_alter_limit_options_alter_calibration_x_max_and_more"),
     ]

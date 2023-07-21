@@ -20,7 +20,7 @@ __all__ = [
 ]
 
 from abc import ABC
-from typing import Union, Optional, Type
+from typing import Union, Optional
 from urllib.parse import unquote
 
 from django.contrib import messages
@@ -30,10 +30,9 @@ from django.core.exceptions import PermissionDenied
 from django.dispatch import receiver
 from django.http import HttpRequest
 from django.shortcuts import redirect
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy, gettext
-from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 
 from gcampus.auth import session

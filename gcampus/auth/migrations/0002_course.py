@@ -23,7 +23,6 @@ def create_courses(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("gcampusauth", "0001_initial"),
     ]

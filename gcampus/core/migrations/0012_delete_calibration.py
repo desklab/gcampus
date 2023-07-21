@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("gcampuscore", "0011_measurement_data_quality_warning_and_more"),
     ]

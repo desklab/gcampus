@@ -14,10 +14,8 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from django.urls import path
-from django.views.generic import RedirectView
 
 from gcampus.auth.apps import GCampusAuthAppConfig
-from gcampus.auth.forms import AccessKeyForm, CourseTokenForm
 from gcampus.auth.views import (
     logout,
     RegisterFormView,
@@ -30,21 +28,26 @@ from gcampus.auth.views.token import LoginView, AccessKeyFormView, CourseTokenFo
 
 app_name = GCampusAuthAppConfig.label
 
-# Turn off black formatting and pylint
-# fmt: off
-# pylint: disable=line-too-long
 urlpatterns = [
     # Token
     path("register/", RegisterFormView.as_view(), name="register"),
     path("login/", LoginView.as_view(), name="login"),
     path("login/access-key/", AccessKeyFormView.as_view(), name="login-access-key"),
-    path("login/course-token/", CourseTokenFormView.as_view(), name="login-course-token"),
-    path('logout/', logout, name="logout"),
+    path(
+        "login/course-token/", CourseTokenFormView.as_view(), name="login-course-token"
+    ),
+    path("logout/", logout, name="logout"),
     # Course Overview
     path("course/", CourseUpdateView.as_view(), name="course-update"),
     path("course/acceskeys/", AccessKeyCreateView.as_view(), name="course-access-keys"),
-    path("course/acceskeys/<int:pk>/", AccessKeyDeactivationView.as_view(), name="course-access-keys-deactivate"),
-    path("email/confirm/<courseidb64>/<token>/", EmailConfirmationView.as_view(), name="email-confirmation"),
+    path(
+        "course/acceskeys/<int:pk>/",
+        AccessKeyDeactivationView.as_view(),
+        name="course-access-keys-deactivate",
+    ),
+    path(
+        "email/confirm/<courseidb64>/<token>/",
+        EmailConfirmationView.as_view(),
+        name="email-confirmation",
+    ),
 ]
-# fmt: on
-# pylint: enable=line-too-long

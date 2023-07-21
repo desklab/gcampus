@@ -23,4 +23,5 @@ class GCampusCoreAppConfig(AppConfig):
     verbose_name = _("GCampus Core")
 
     def ready(self):
-        from . import receivers  # imported to connect all receivers
+        # Imported to connect all receivers
+        from . import receivers  # noqa: F401

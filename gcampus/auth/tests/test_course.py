@@ -28,7 +28,6 @@ from gcampus.tasks.tests.utils import BaseMockTaskTest
 
 
 class CourseTest(LoginTestMixin, BaseMockTaskTest):
-
     DEFAULT_COURSE_DATA: dict = {
         "name": "GCampus Test Case",
         "school_name": "GCampus Test Case",

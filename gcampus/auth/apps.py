@@ -16,8 +16,6 @@
 from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
 
-from gcampus.auth.signals import token_user_logged_in
-
 
 class GCampusAuthAppConfig(AppConfig):
     name = "gcampus.auth"
@@ -25,6 +23,7 @@ class GCampusAuthAppConfig(AppConfig):
     verbose_name = _("GCampus Auth")
 
     def ready(self):
-        from . import receivers  # imported to connect all receivers
+        # Imported to connect all receivers
+        from . import receivers  # noqa: F401
 
         super().ready()

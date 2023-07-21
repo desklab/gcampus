@@ -120,5 +120,5 @@ def _wrap_token_character(character: str, hide: bool = False) -> str:
     else:
         raise ValueError(f"Invalid token character {character}")
     if hide:
-        return f'<span class="token-char token-hidden">*</span>'
+        return '<span class="token-char token-hidden">*</span>'
     return f'<span class="token-char token-{character_type}">{character}</span>'
