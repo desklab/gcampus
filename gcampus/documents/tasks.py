@@ -186,7 +186,7 @@ def get_instance_retry(
 
 
 @shared_task
-def document_cleanup():
+def document_cleanup() -> tuple[int, int]:
     """Document cleanup and maintenance task.
 
     This task will check for broken links between the database and the
@@ -200,19 +200,24 @@ def document_cleanup():
 
     Note: Only :class:`django.core.files.storage.FileSystemStorage` is
     supported for orphaned files.
+
+    :returns: A tuple ``(references, files)`` with the number of
+        references and files that were removed successfully.
     """
     table_columns: list[tuple[Manager, str]] = [
         (Measurement.all_objects, "document"),
         (Course.objects, "overview_document"),
     ]
+    references: int = 0
     for manager, file_field in table_columns:
-        _cleanup_database_reference(manager, file_field)
-    _cleanup_orphaned_files(table_columns)
+        references += _cleanup_database_reference(manager, file_field)
+    files: int = _cleanup_orphaned_files(table_columns)
+    return references, files
 
 
 def _cleanup_orphaned_files(
     table_columns: list[tuple[Manager, str]], storage: Storage = default_storage
-):
+) -> int:
     """Cleanup orphaned files.
 
     Iterate over all files in the file storage backend and check all
@@ -235,7 +240,9 @@ def _cleanup_orphaned_files(
     :param table_columns: List of tuples with a
         :class:`django.db.models.Manager` and its associated file field.
     :param storage: Optional storage backend.
+    :returns: Number of files that have been deleted.
     """
+    file_counter: int = 0
     for file in get_files(storage):
         if any(
             manager.only(file_field).filter(**{file_field: file}).exists()
@@ -246,9 +253,11 @@ def _cleanup_orphaned_files(
             continue
         else:
             storage.delete(file)
+            file_counter += 1
+    return file_counter
 
 
-def _cleanup_database_reference(manager: Manager, field: str):
+def _cleanup_database_reference(manager: Manager, field: str) -> int:
     """Cleanup database references to deleted files.
 
     For a given manager (e.g. ``Model.objects``), find all instances
@@ -258,6 +267,7 @@ def _cleanup_database_reference(manager: Manager, field: str):
 
     :param manager: Django model manager for the table.
     :param field: Column name of the file field.
+    :returns: Number of references that have been removed.
     """
     # Query for rows where the file field is not set
     empty_file_query: Q = Q(**{f"{field}__isnull": True}) | Q(**{field: ""})
@@ -269,4 +279,6 @@ def _cleanup_database_reference(manager: Manager, field: str):
         if not file_exists(file):
             reset_pks.append(instance.pk)
     if reset_pks:
-        manager.filter(pk__in=reset_pks).update(**{field: None})
+        return manager.filter(pk__in=reset_pks).update(**{field: None})
+    else:
+        return 0
