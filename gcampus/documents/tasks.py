@@ -13,7 +13,11 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__all__ = ["render_cached_document_view", "render_document_to_model"]
+__all__ = [
+    "render_cached_document_view",
+    "render_document_to_model",
+    "document_cleanup",
+]
 
 import logging
 import time
