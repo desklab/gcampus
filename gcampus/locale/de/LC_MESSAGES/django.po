@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-08 13:25+0100\n"
+"POT-Creation-Date: 2023-07-21 19:39+0200\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Axel Schlindwein <a.schlindwein@desk-lab.de>\n"
 "Language-Team: \n"
@@ -52,7 +52,7 @@ msgstr "Ausgewählte Token freigeben"
 msgid "Remove cached documents"
 msgstr "Dokumente (cached) entfernen"
 
-#: gcampus/auth/apps.py:25
+#: gcampus/auth/apps.py:23
 msgid "GCampus Auth"
 msgstr "GCampus Auth"
 
@@ -231,12 +231,12 @@ msgstr ""
 #, python-format
 msgid ""
 "You have reached the maximum (%(max_count)s) number of access keys.<br> If "
-"you need more access keys, consider <a class=\"alert-link\" href="
-"\"%(register_url)s\">registering a new course</a>."
+"you need more access keys, consider <a class=\"alert-link\" "
+"href=\"%(register_url)s\">registering a new course</a>."
 msgstr ""
 "Du hast das Maximum (%(max_count)s) an erlaubten Zugangscodes erreicht.<br> "
-"Solltest du mehr benötigen kannst du dafür jederzeit einen neuen <a class="
-"\"alert-link\" href=\"%(register_url)s\">Kurs registrieren</a>."
+"Solltest du mehr benötigen kannst du dafür jederzeit einen neuen <a "
+"class=\"alert-link\" href=\"%(register_url)s\">Kurs registrieren</a>."
 
 #: gcampus/auth/templates/gcampusauth/accesskey_list.html:39
 msgid "Generate"
@@ -245,11 +245,11 @@ msgstr "Erstellen"
 #: gcampus/auth/templates/gcampusauth/accesskey_list.html:51
 #, python-format
 msgid ""
-"Please note that the number of access keys is limited to <strong>"
-"%(max_count)s per course</strong>."
+"Please note that the number of access keys is limited to "
+"<strong>%(max_count)s per course</strong>."
 msgstr ""
-"Bitte beachte, dass die Anzahl der Zugangsschlüssel auf <strong>"
-"%(max_count)s pro Kurs</strong> begrenzt ist."
+"Bitte beachte, dass die Anzahl der Zugangsschlüssel auf "
+"<strong>%(max_count)s pro Kurs</strong> begrenzt ist."
 
 #: gcampus/auth/templates/gcampusauth/accesskey_list.html:67
 msgid "Deactivated"
@@ -423,12 +423,12 @@ msgstr ""
 msgctxt "register form accept terms"
 msgid ""
 "I do accept the <a href=\"https://gewaessercampus.de/terms\">terms and "
-"conditions</a> as well as the <a href=\"https://gewaessercampus.de/gdp"
-"\">privacy policy</a> for using this web application."
+"conditions</a> as well as the <a href=\"https://gewaessercampus.de/"
+"gdp\">privacy policy</a> for using this web application."
 msgstr ""
-"Ich akzeptiere die <a href=\"https://gewaessercampus.de/terms"
-"\">Nutzungsbedingungen</a> und die <a href=\"https://gewaessercampus.de/gdp"
-"\">Datenschutzerklärung</a> für diese Webanwendung."
+"Ich akzeptiere die <a href=\"https://gewaessercampus.de/"
+"terms\">Nutzungsbedingungen</a> und die <a href=\"https://gewaessercampus.de/"
+"gdp\">Datenschutzerklärung</a> für diese Webanwendung."
 
 #: gcampus/auth/templates/gcampusauth/course_create_form.html:143
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:173
@@ -524,15 +524,15 @@ msgstr ""
 
 #: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:27
 #: gcampus/auth/templates/gcampusauth/error/403_edit_permission.html:16
-#: gcampus/auth/templates/gcampusauth/error/403_email_verification_expired.html:19
+#: gcampus/auth/templates/gcampusauth/error/403_email_verification_expired.html:20
 #: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:21
 #: gcampus/auth/templates/gcampusauth/error/403_view_permission.html:26
-#: gcampus/auth/views/token.py:56
+#: gcampus/auth/views/token.py:55
 msgid "Login"
 msgstr "Anmelden"
 
 #: gcampus/auth/templates/gcampusauth/error/403_create_permission.html:31
-#: gcampus/auth/templates/gcampusauth/error/403_email_verification_expired.html:24
+#: gcampus/auth/templates/gcampusauth/error/403_email_verification_expired.html:25
 #: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:25
 #: gcampus/auth/templates/gcampusauth/login_form.html:123
 #: gcampus/auth/views/register.py:38
@@ -568,7 +568,7 @@ msgstr ""
 "Wenn du dich mit einem anderen Zugangscode oder Kursschlüssel anmeldest, "
 "wist du automatisch von deinem alten Schlüssel abgemedet."
 
-#: gcampus/auth/templates/gcampusauth/error/403_email_verification_expired.html:5
+#: gcampus/auth/templates/gcampusauth/error/403_email_verification_expired.html:6
 #, python-format
 msgid ""
 "The email confirmation link you used has expired. Note that it is only valid "
@@ -581,8 +581,8 @@ msgstr ""
 "beachte, dass er nur für %(days)s Tage gültig ist. Wenn die E-Mail-Adresse "
 "eines Kurses nicht verifiziert wird, wird dieser nach einiger Zeit "
 "automatisch gelöscht.<br>Keine Sorge, Du kannst jederzeit einen neuen Kurs "
-"mit der gleichen E-Mail-Adresse <a class=\"text-dark\" href="
-"\"%(register_url)s\">registrieren</a>."
+"mit der gleichen E-Mail-Adresse <a class=\"text-dark\" "
+"href=\"%(register_url)s\">registrieren</a>."
 
 #: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:7
 #, python-format
@@ -590,8 +590,8 @@ msgid ""
 "Some features, for example adding a new measurement, are limited to "
 "authenticated users. Please use your access key or the course token to log "
 "in. <br><br> If you don't have an access key, your teacher can generate one "
-"for you. As a teacher you can <a class=\"text-dark\" href=\"%(register_url)s"
-"\">register</a> a new course."
+"for you. As a teacher you can <a class=\"text-dark\" "
+"href=\"%(register_url)s\">register</a> a new course."
 msgstr ""
 "Einige Funktionen wie zum Beispiel das Hinzufügen von Messungen sind nur für "
 "angemeldete Nutzer zugänglich. Bitte verwende deinen Zugangscode oder einen "
@@ -692,17 +692,17 @@ msgstr "Kursdaten"
 msgid "You successfully generated {count:d} new access keys"
 msgstr "Du hast erfolgreich {count:d} neue Zugangscodes erstellt"
 
-#: gcampus/auth/views/course.py:189
+#: gcampus/auth/views/course.py:191
 msgid "All done! The course you registered is now active."
 msgstr "Geschafft! Dein registrierter Kurs ist jetzt aktiv."
 
-#: gcampus/auth/views/course.py:198
+#: gcampus/auth/views/course.py:200
 msgid "Email confirmed. You email is now set to {new_email!s}."
 msgstr ""
 "E-Mail-Adresse bestätigt! Deine E-Mail-Adresse wurde zu {new_email!s} "
 "geändert."
 
-#: gcampus/auth/views/course.py:217
+#: gcampus/auth/views/course.py:219
 msgid ""
 "It seems like you have been logged in with a different course token or with "
 "an access key. You have been logged out and are now logged in with the "
@@ -712,7 +712,7 @@ msgstr ""
 "angemeldet. Du wurdest automatisch abgemeldet und stattdessen mit dem "
 "Zugangscode deiner verifizierten E-Mail-Adresse angemeldet."
 
-#: gcampus/auth/views/register.py:51
+#: gcampus/auth/views/register.py:52
 msgid ""
 "You successfully registered a course. An activation link has been sent to "
 "your email address."
@@ -780,12 +780,12 @@ msgid "Filter for measurements conducted in a specified time range."
 msgstr ""
 "Nach Messungen suchen die in einem bestimmten Zeitraum gemessen wurden."
 
-#: gcampus/core/filters.py:212 gcampus/core/models/parameter.py:79
-#: gcampus/core/models/parameter.py:87
+#: gcampus/core/filters.py:212 gcampus/core/models/parameter.py:90
+#: gcampus/core/models/parameter.py:98
 #: gcampus/core/templates/gcampuscore/components/filter.html:27
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:204
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:299
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:134
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:136
 #: gcampus/tools/models/calibration.py:37
 #: gcampus/tools/templates/gcampustools/od_converter_overview.html:18
 msgid "Parameter"
@@ -896,22 +896,22 @@ msgstr ""
 "wurde, kann das Gewässer aus den Vorschlägen ausgewählt werden."
 
 #: gcampus/core/forms/measurement.py:160 gcampus/core/models/index/base.py:44
-#: gcampus/core/models/parameter.py:90
+#: gcampus/core/models/parameter.py:101
 #: gcampus/core/templates/gcampuscore/components/index_card.html:35
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:205
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:135
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:137
 #: gcampus/tools/templates/gcampustools/components/od_converter_item.html:19
 msgid "Value"
 msgstr "Wert"
 
 #: gcampus/core/forms/measurement.py:168 gcampus/core/forms/measurement.py:209
-#: gcampus/core/models/measurement.py:106 gcampus/core/models/parameter.py:97
+#: gcampus/core/models/measurement.py:106 gcampus/core/models/parameter.py:108
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:24
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:132
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:206
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:256
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:107
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:136
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:109
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:138
 msgid "Note"
 msgstr "Notiz"
 
@@ -975,13 +975,13 @@ msgstr "geschlossene Ortschaft, Industriegebiet"
 #: gcampus/core/models/index/structure.py:37
 #: gcampus/core/models/index/structure.py:46
 #: gcampus/core/models/index/structure.py:55
-#: gcampus/core/models/index/structure.py:72
-#: gcampus/core/models/index/structure.py:91
-#: gcampus/core/models/index/structure.py:100
-#: gcampus/core/models/index/structure.py:115
-#: gcampus/core/models/index/structure.py:124
-#: gcampus/core/models/index/structure.py:139
-#: gcampus/core/models/index/structure.py:152
+#: gcampus/core/models/index/structure.py:74
+#: gcampus/core/models/index/structure.py:94
+#: gcampus/core/models/index/structure.py:103
+#: gcampus/core/models/index/structure.py:118
+#: gcampus/core/models/index/structure.py:127
+#: gcampus/core/models/index/structure.py:144
+#: gcampus/core/models/index/structure.py:158
 #: gcampus/core/models/parameter.py:29 gcampus/core/models/water.py:48
 #: gcampus/core/models/water.py:70 gcampus/core/models/water.py:128
 msgid "unknown"
@@ -1044,7 +1044,7 @@ msgstr ""
 "lückiger Gehölzsaum mit Krautflur, Krautflur aus Brennesseln u.a. "
 "Nährstoffzeigern"
 
-#: gcampus/core/models/index/structure.py:69
+#: gcampus/core/models/index/structure.py:70
 msgid ""
 "individual trees, non-native vegetation (cottonwoods, conifers, or "
 "ornamental shrubs), mowed bank"
@@ -1052,11 +1052,11 @@ msgstr ""
 "Einzelbäume, standortfremde Vegetation (z.B. Pappeln, Nadelbäume oder "
 "Ziersträucher), gemähtes Ufer"
 
-#: gcampus/core/models/index/structure.py:71
+#: gcampus/core/models/index/structure.py:73
 msgid "no trees, no herbaceous vegetation, paved bank"
 msgstr "keine Uferbäume, keine Krautflur, befestigter Uferrand"
 
-#: gcampus/core/models/index/structure.py:77
+#: gcampus/core/models/index/structure.py:79
 msgid ""
 "no fixed banks, many inlets and widenings, water body can expand unhindered "
 "in width"
@@ -1064,93 +1064,93 @@ msgstr ""
 "keine festgelegte Uferlinie, viele Einbuchtungen und Aufweitungen, Gewässer "
 "kann sich ungehindert in die Breite ausdehnen"
 
-#: gcampus/core/models/index/structure.py:80
+#: gcampus/core/models/index/structure.py:83
 msgid "banks straightened, not visibly fixed, some indentations and widenings"
 msgstr ""
 "Ufer begradigt aber nicht sichtbar befestigt, mit einigen Einbuchtungen und "
 "Aufweitungen"
 
-#: gcampus/core/models/index/structure.py:83
+#: gcampus/core/models/index/structure.py:86
 msgid "banks partly strengthened (< 50%), bank failures possible"
 msgstr "Ufer stellenweise befestigt (< 50%), Uferabbrüche möglich"
 
-#: gcampus/core/models/index/structure.py:86
+#: gcampus/core/models/index/structure.py:89
 msgid "banks predominantly strengthened (>50%) by stone fills or wooden piles."
 msgstr ""
 "Ufer überwiegend befestigt (> 50%), Befestigung durch Steinschüttungen oder "
 "Holzpfähle"
 
-#: gcampus/core/models/index/structure.py:89
+#: gcampus/core/models/index/structure.py:92
 msgid ""
 "straight bank, steep slope, strengthened (pavement, concrete or similar)"
 msgstr "Ufer steil abfallend und durchgehend befestigt (Pflaster, Beton o.ä.)"
 
-#: gcampus/core/models/index/structure.py:95
+#: gcampus/core/models/index/structure.py:98
 msgid "very shallow (width:depth > 10:1)"
 msgstr "sehr flach (Breite:Tiefe > 10:1)"
 
-#: gcampus/core/models/index/structure.py:96
+#: gcampus/core/models/index/structure.py:99
 msgid "shallow (width:depth approx. 5:1)"
 msgstr "flach (10:1 > Breite:Tiefe > 5:1)"
 
-#: gcampus/core/models/index/structure.py:97
+#: gcampus/core/models/index/structure.py:100
 msgid "moderately deep (width:depth approx. 3:1)"
 msgstr "mäßig tief (5:1 > Breite:Tiefe > 3:1)"
 
-#: gcampus/core/models/index/structure.py:98
+#: gcampus/core/models/index/structure.py:101
 msgid "deep (width:depth approx. 2:1)"
 msgstr "tief (3:1 > Breite:Tiefe > 2:1)"
 
-#: gcampus/core/models/index/structure.py:99
+#: gcampus/core/models/index/structure.py:102
 msgid "very deep (width:depth < 2:1)"
 msgstr "sehr tief (Breite:Tiefe < 2:1)"
 
-#: gcampus/core/models/index/structure.py:105
+#: gcampus/core/models/index/structure.py:108
 msgid "mosaic-like, different flow patterns next to and behind each other"
 msgstr ""
 "mosaikartig, d.h. neben- und hintereinander finden sich unterschiedliche "
 "Strömungsbilder"
 
-#: gcampus/core/models/index/structure.py:108
+#: gcampus/core/models/index/structure.py:111
 msgid "fast and slow flowing water alternate in close succession"
 msgstr ""
 "dicht hintereinander wechseln sich schnell und langsam fließendes Wasser ab"
 
-#: gcampus/core/models/index/structure.py:111
+#: gcampus/core/models/index/structure.py:114
 msgid "alternation of slow and fast flowing water at longer intervals"
 msgstr ""
 "Wechsel von langsam und schnell fließendem Wasser in größeren Abständen"
 
-#: gcampus/core/models/index/structure.py:113
+#: gcampus/core/models/index/structure.py:116
 msgid "alternation of slow and fast flowing water recognizable"
 msgstr "Wechsel von langsam und schnell fließendem Wasser erkennbar"
 
-#: gcampus/core/models/index/structure.py:114
+#: gcampus/core/models/index/structure.py:117
 msgid "uniform flowing water"
 msgstr "Strömung einheitlich"
 
-#: gcampus/core/models/index/structure.py:119
+#: gcampus/core/models/index/structure.py:122
 msgid "mosaic-like alternation between deep and shallow water areas"
 msgstr ""
 "sehr groß, d.h. tiefe und flache Gewässerbereiche wechseln mosaikartig ab"
 
-#: gcampus/core/models/index/structure.py:120
+#: gcampus/core/models/index/structure.py:123
 msgid "major depth variance"
 msgstr "große Tiefenvarianz"
 
-#: gcampus/core/models/index/structure.py:121
+#: gcampus/core/models/index/structure.py:124
 msgid "moderate depth variance"
 msgstr "mäßige Tiefenvarianz"
 
-#: gcampus/core/models/index/structure.py:122
+#: gcampus/core/models/index/structure.py:125
 msgid "minor depth variance"
 msgstr "geringe Tiefenvarianz"
 
-#: gcampus/core/models/index/structure.py:123
+#: gcampus/core/models/index/structure.py:126
 msgid "no depth variance"
 msgstr "keine Tiefenvarianz"
 
-#: gcampus/core/models/index/structure.py:129
+#: gcampus/core/models/index/structure.py:132
 msgid ""
 "mosaic-like distribution of sand/gravel/stones and deadwood, pronounced "
 "formation of islands"
@@ -1158,7 +1158,7 @@ msgstr ""
 "mosaikartige Verteilung von Sand, Kies, Steinen & Totholz ausgeprägte "
 "Inselbildung"
 
-#: gcampus/core/models/index/structure.py:132
+#: gcampus/core/models/index/structure.py:136
 msgid ""
 "diversified riverbed (sand/gravel/stones/deadwood), rudimentary formation of "
 "islands"
@@ -1166,29 +1166,29 @@ msgstr ""
 "Gewässersohle abwechslungsreich (Sand/Steine/Totholz), Ansätze von "
 "Inselbildung"
 
-#: gcampus/core/models/index/structure.py:135
+#: gcampus/core/models/index/structure.py:140
 msgid "more uniform riverbed, different structures at greater intervals"
 msgstr ""
 "Gewässersohle gleichmäßiger, unterschiedliche Strukturen in größeren "
 "Abständen"
 
-#: gcampus/core/models/index/structure.py:137
+#: gcampus/core/models/index/structure.py:142
 msgid "silted/paved/concreted riverbed over long stretches"
 msgstr ""
 "Gewässersohle über größere Strecken verschlammt, versandet und/oder "
 "gepflastert/betoniert"
 
-#: gcampus/core/models/index/structure.py:138
+#: gcampus/core/models/index/structure.py:143
 msgid "uniform riverbed, completely silted/paved/concreted"
 msgstr ""
 "Gewässersohle einförmig vollständig verschlammt, versandet und/oder "
 "gepflastert/betoniert"
 
-#: gcampus/core/models/index/structure.py:143
+#: gcampus/core/models/index/structure.py:148
 msgid "no obstacles, natural waterfall/cascade"
 msgstr "keine Hindernisse, natürlicher Wasserfall oder Kaskade"
 
-#: gcampus/core/models/index/structure.py:145
+#: gcampus/core/models/index/structure.py:150
 msgid ""
 "piping < 2 m, artificial step of single stones, can be overcome by fish and "
 "invertebrates"
@@ -1196,66 +1196,66 @@ msgstr ""
 "Verrohrung < 2 m, künstliche Stufe aus einzelnen Steinen, kann von Fischen "
 "und Wirbellosen überwunden werden"
 
-#: gcampus/core/models/index/structure.py:148
+#: gcampus/core/models/index/structure.py:154
 msgid "piping 2-5m, minor step (< 30 cm), can be overcome by fish, fish ladder"
 msgstr ""
 "Verrohrung 2-5 m, Stufe < 30cm, kann von Fischen überwunden werden, evtl. "
 "Fischtreppe"
 
-#: gcampus/core/models/index/structure.py:150
+#: gcampus/core/models/index/structure.py:156
 msgid "piping 5-10m, major step or other barriers (30-100 cm)"
 msgstr "Verrohrung 5-10 m, Stufe oder andere Barriere (30 - 100cm)"
 
-#: gcampus/core/models/index/structure.py:151
+#: gcampus/core/models/index/structure.py:157
 msgid "piping > 10 m, step or other barriers > 100 cm"
 msgstr "Verrohrung > 10 m, Stufe oder andere Barriere > 100cm"
 
-#: gcampus/core/models/index/structure.py:157
+#: gcampus/core/models/index/structure.py:163
 msgid "Physical-Structural Index"
 msgstr "Strukturgüte-Index"
 
-#: gcampus/core/models/index/structure.py:158
+#: gcampus/core/models/index/structure.py:164
 msgid "Physical-Structural Indices"
 msgstr "Strukturgüte-Indizes"
 
-#: gcampus/core/models/index/structure.py:175
+#: gcampus/core/models/index/structure.py:181
 msgid "Environment utilization"
 msgstr "Nutzung der Aue"
 
-#: gcampus/core/models/index/structure.py:182
+#: gcampus/core/models/index/structure.py:188
 msgid "Margin width"
 msgstr "Gewässerrandstreifen"
 
-#: gcampus/core/models/index/structure.py:189
+#: gcampus/core/models/index/structure.py:195
 msgid "Water course"
 msgstr "Gewässerverlauf"
 
-#: gcampus/core/models/index/structure.py:196
+#: gcampus/core/models/index/structure.py:202
 msgid "Water bank vegetation"
 msgstr "Uferbewuchs"
 
-#: gcampus/core/models/index/structure.py:203
+#: gcampus/core/models/index/structure.py:209
 msgid "Water bank structure"
 msgstr "Uferstruktur"
 
-#: gcampus/core/models/index/structure.py:210
+#: gcampus/core/models/index/structure.py:216
 msgid "Water cross-section"
 msgstr "Gewässerquerschnitt"
 
-#: gcampus/core/models/index/structure.py:217
+#: gcampus/core/models/index/structure.py:223
 msgid "Water flow pattern"
 msgstr "Strömungsbild"
 
-#: gcampus/core/models/index/structure.py:224
+#: gcampus/core/models/index/structure.py:230
 msgid "Variance of water depth"
 msgstr "Tiefenvarianz"
 
-#: gcampus/core/models/index/structure.py:231
+#: gcampus/core/models/index/structure.py:237
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:320
 msgid "Riverbed"
 msgstr "Gewässersohle"
 
-#: gcampus/core/models/index/structure.py:238
+#: gcampus/core/models/index/structure.py:244
 msgid "Continuity"
 msgstr "Durchgängigkeit"
 
@@ -1267,25 +1267,25 @@ msgstr "Trophieindex"
 msgid "Trophic Indices"
 msgstr "Trophieindizes"
 
-#: gcampus/core/models/measurement.py:49
+#: gcampus/core/models/measurement.py:47
 #: gcampus/core/templates/gcampuscore/components/measurement_list_item.html:7
 msgid "Measurement"
 msgstr "Messung"
 
-#: gcampus/core/models/measurement.py:50
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:124
-#: gcampus/export/response/xlsx.py:83
+#: gcampus/core/models/measurement.py:48
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:134
+#: gcampus/export/response/xlsx.py:80
 msgid "Measurements"
 msgstr "Messungen"
 
-#: gcampus/core/models/measurement.py:67 gcampus/core/models/parameter.py:37
+#: gcampus/core/models/measurement.py:65 gcampus/core/models/parameter.py:37
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:65
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:124
 #: gcampus/tools/models/calibration.py:31 gcampus/tools/models/kit.py:28
 msgid "Name"
 msgstr "Name"
 
-#: gcampus/core/models/measurement.py:68
+#: gcampus/core/models/measurement.py:67
 msgid "Your forename or team name. This will be publicly visible."
 msgstr ""
 "Dein Vorname oder ein Team Name. Diese Information ist öffentlich sichtbar."
@@ -1314,36 +1314,36 @@ msgstr "Gewässer"
 msgid "The water associated with this measurement"
 msgstr "Das Gewässer an dem die Messung durchgeführt wurde"
 
-#: gcampus/core/models/measurement.py:107
+#: gcampus/core/models/measurement.py:108
 msgid "Note on your measurement. This will be publicly visible."
 msgstr "Notiz zu deiner Messung. Die Notiz wird für alle öffentlich einsehbar."
 
-#: gcampus/core/models/measurement.py:112 gcampus/core/models/parameter.py:98
+#: gcampus/core/models/measurement.py:114 gcampus/core/models/parameter.py:109
 msgid "Hidden"
 msgstr "Versteckt"
 
-#: gcampus/core/models/measurement.py:120
+#: gcampus/core/models/measurement.py:122
 msgid "requires review"
 msgstr "erfordert Überprüfung"
 
-#: gcampus/core/models/measurement.py:127 gcampus/export/response/xlsx.py:185
+#: gcampus/core/models/measurement.py:129 gcampus/export/response/xlsx.py:182
 msgid "data quality warning"
 msgstr "Datenqualität-Warnung"
 
-#: gcampus/core/models/measurement.py:135 gcampus/core/models/water.py:205
+#: gcampus/core/models/measurement.py:137 gcampus/core/models/water.py:205
 msgid "internal comment"
 msgstr "interner Kommentar"
 
-#: gcampus/core/models/measurement.py:145
+#: gcampus/core/models/measurement.py:147
 msgid "Document"
 msgstr "Dokument"
 
-#: gcampus/core/models/measurement.py:191
+#: gcampus/core/models/measurement.py:193
 #, python-brace-format
 msgid "Measurement #{id:05d}"
 msgstr "Messung #{id:05d}"
 
-#: gcampus/core/models/measurement.py:194
+#: gcampus/core/models/measurement.py:196
 #, python-format
 msgid "Measurement %(id)s"
 msgstr "Messung %(id)s"
@@ -1400,17 +1400,17 @@ msgstr "unteres Limit (Warnung)"
 msgid "upper warning limit"
 msgstr "oberes Limit (Warnung)"
 
-#: gcampus/core/models/parameter.py:80
+#: gcampus/core/models/parameter.py:91
 #: gcampus/core/templates/gcampuscore/components/index_card.html:56
 #: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:13
 msgid "Parameters"
 msgstr "Parameter"
 
-#: gcampus/core/models/parameter.py:94
+#: gcampus/core/models/parameter.py:105
 msgid "Associated measurement"
 msgstr "Verknüpfte Messung"
 
-#: gcampus/core/models/parameter.py:116
+#: gcampus/core/models/parameter.py:127
 #, python-format
 msgid "Parameter %(pk)s (%(name)s)"
 msgstr "Parameter %(pk)s (%(name)s)"
@@ -1586,17 +1586,17 @@ msgstr ""
 "Der Prozess wurde wegen eines Fehlers abgebrochen. Wir wurden automatisch "
 "informiert und kümmern uns so schnell wie möglich um eine Lösung."
 
-#: gcampus/core/templates/gcampuscore/base.html:94
+#: gcampus/core/templates/gcampuscore/base.html:95
 #: gcampus/core/templates/gcampuscore/components/sidebar.html:36
 msgid "New Measurement"
 msgstr "Neue Messung"
 
-#: gcampus/core/templates/gcampuscore/base.html:100
+#: gcampus/core/templates/gcampuscore/base.html:101
 #: gcampus/core/templates/gcampuscore/components/sidebar.html:46
 msgid "Log in"
 msgstr "Anmelden"
 
-#: gcampus/core/templates/gcampuscore/base.html:112
+#: gcampus/core/templates/gcampuscore/base.html:113
 msgid ""
 "You are currently using a test instance of GewässerCampus. Data is most "
 "likely fictional and does not represent real measurements. Courses and data "
@@ -1642,7 +1642,7 @@ msgstr "Filter anwenden"
 msgid "a project by"
 msgstr "ein Projekt von"
 
-#: gcampus/core/templates/gcampuscore/components/footer_content.html:22
+#: gcampus/core/templates/gcampuscore/components/footer_content.html:23
 msgid "Test instance"
 msgstr "Test-Instanz"
 
@@ -1653,9 +1653,9 @@ msgstr "Test-Instanz"
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:235
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:280
 #: gcampus/core/templates/gcampuscore/sites/detail/water_detail.html:24
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:102
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:112
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:151
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:104
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:114
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:153
 #: gcampus/mail/templates/gcampusmail/access_key_deactivation/base.html:5
 #: gcampus/mail/templates/gcampusmail/course_deletion/base.html:5
 #: gcampus/mail/templates/gcampusmail/register/overview.html:4
@@ -1963,8 +1963,8 @@ msgstr "Bist du dir sicher, dass du diese Messung löschen willst?"
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:73
 #: gcampus/core/templates/gcampuscore/sites/detail/measurement_detail.html:104
 #: gcampus/core/templates/gcampuscore/sites/detail/water_detail.html:18
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:97
-#: gcampus/export/response/xlsx.py:182
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:99
+#: gcampus/export/response/xlsx.py:179
 msgid "Water name"
 msgstr "Gewässername"
 
@@ -2092,18 +2092,18 @@ msgstr "Messdaten herunterladen"
 #, python-format
 msgid ""
 "GewässerCampus includes maps and information on water bodies and their names "
-"from <a class=\"text-reset\" href=\"%(mapbox_url)s\">Mapbox</a> and <a class="
-"\"text-reset\" href=\"%(osm_url)s\">OpenStreetMap</a> as well as measurement "
-"data of GewässerCampus contributors. Make sure you respect the licenses of "
-"these datasets. More details are provided <a class=\"text-reset\" href="
-"\"%(license_url)s\">here</a>."
+"from <a class=\"text-reset\" href=\"%(mapbox_url)s\">Mapbox</a> and <a "
+"class=\"text-reset\" href=\"%(osm_url)s\">OpenStreetMap</a> as well as "
+"measurement data of GewässerCampus contributors. Make sure you respect the "
+"licenses of these datasets. More details are provided <a class=\"text-"
+"reset\" href=\"%(license_url)s\">here</a>."
 msgstr ""
-"GewässerCampus enthält Karten und Informationen über Gewässer von <a class="
-"\"text-reset\" href=\"%(mapbox_url)s\">Mapbox</a> und <a class=\"text-reset"
-"\" href=\"%(osm_url)s\">OpenStreetMap</a> sowie Daten, die von Mitwirkenden "
-"von GewässerCampus erfasst wurden. Verwende die Daten nur im Rahmen dieser "
-"Lizenzen. Mehr Details dazu findest du <a class=\"text-reset\" href="
-"\"%(license_url)s\">hier</a>."
+"GewässerCampus enthält Karten und Informationen über Gewässer von <a "
+"class=\"text-reset\" href=\"%(mapbox_url)s\">Mapbox</a> und <a class=\"text-"
+"reset\" href=\"%(osm_url)s\">OpenStreetMap</a> sowie Daten, die von "
+"Mitwirkenden von GewässerCampus erfasst wurden. Verwende die Daten nur im "
+"Rahmen dieser Lizenzen. Mehr Details dazu findest du <a class=\"text-reset\" "
+"href=\"%(license_url)s\">hier</a>."
 
 #: gcampus/core/templates/gcampuscore/sites/list/measurement_list.html:41
 msgid "Download CSV file"
@@ -2284,44 +2284,44 @@ msgstr "GCampus Dokumente"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:13
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:13
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:13
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:13
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:15
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:14
 msgid "version"
 msgstr "Version"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:13
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:13
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:13
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:13
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:15
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:14
 msgid "page"
 msgstr "Seite"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:13
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:13
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:13
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:13
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:15
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:14
 msgid "of"
 msgstr "von"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:35
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:35
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:35
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:35
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:37
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:36
 msgid "Document ID"
 msgstr "Dokument ID"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:44
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:44
 msgid ""
-"The project <span class=\"color-secondary\">Gewässer</span><span class="
-"\"color-primary\">Campus</span> is carried out by the <i>non-profit "
+"The project <span class=\"color-secondary\">Gewässer</span><span "
+"class=\"color-primary\">Campus</span> is carried out by the <i>non-profit "
 "organisation desklab</i> in cooperation with the <i>WG for Bioprocess "
 "Engineering of the RPTU</i> and financially supported by the <i>German "
 "Federal Environmental Foundation (DBU)</i>. More educational material and "
 "information on this project is available at www.gewaessercampus.de."
 msgstr ""
-"Das Projekt <b><span class=\"color-secondary\">Gewässer</span><span class="
-"\"color-primary\">Campus</span></b> wird durch die <i>gemeinnützige "
+"Das Projekt <b><span class=\"color-secondary\">Gewässer</span><span "
+"class=\"color-primary\">Campus</span></b> wird durch die <i>gemeinnützige "
 "desklab&nbsp;UG (haftungsbeschränkt)</i> in Zusammenarbeit mit dem "
 "<i>Lehrgebiet für Bioverfahrenstechnik der RPTU</i> durchgeführt und durch "
 "die <i>Deutsche Bundesstiftung Umwelt</i> finanziell gefördert. Weitere "
@@ -2330,8 +2330,8 @@ msgstr ""
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:63
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:66
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:64
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:64
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:66
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:65
 msgid "Info"
 msgstr "Info"
 
@@ -2390,7 +2390,7 @@ msgstr "Login der Webanwendung"
 
 #: gcampus/documents/templates/gcampusdocuments/documents/access_student_combined.html:100
 msgid ""
-"This link leads to the login page of the web application (www."
+"This link leads to the login page of the web application (app."
 "gewaessercampus.de/login). After entering the access key, measurements can "
 "be created or edited."
 msgstr ""
@@ -2471,26 +2471,26 @@ msgstr ""
 "dieser Messung aufrufen. Du kannst dazu die Übersicht deiner Messungen oder "
 "auch die Karten- oder Listenansicht verwenden."
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:44
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:44
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:46
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:45
 msgid ""
-"The project <span class=\"color-secondary\">Gewässer</span><span class="
-"\"color-primary\">Campus</span> provides more educational material and "
-"information on how to analyse water quality at app.gewaessercampus.de. This "
+"The project <span class=\"color-secondary\">Gewässer</span><span "
+"class=\"color-primary\">Campus</span> provides more educational material and "
+"information on how to analyse water quality at www.gewaessercampus.de. This "
 "document includes maps and information on water bodies and their names from "
 "Mapbox (www.mapbox.com) and OpenStreetMap (www.openstreetmap.org) as well as "
 "measurement data of GewässerCampus contributors. More information on the "
 "respective licenses is available online."
 msgstr ""
-"Das Projekt <span class=\"color-secondary\">Gewässer</span><span class="
-"\"color-primary\">Campus</span> stellt weitere Unterrichtsmaterialien und "
-"Informationen zur Analyse der Gewässergüte unter app.gewaessercampus.de zur "
-"Verfügung. Dieses Dokument enthält Karten und Angaben zu Gewässern und deren "
-"Namen von Mapbox (www.mapbox.com) und OpenStreetMap (www.openstreetmap.org) "
-"sowie Messdaten von GewässerCampus-Nutzer:innen. Weitere Informationen zu "
-"den entsprechenden Lizenzen sind online verfügbar."
+"Das Projekt <span class=\"color-secondary\">Gewässer</span><span "
+"class=\"color-primary\">Campus</span> stellt weitere Unterrichtsmaterialien "
+"und Informationen zur Analyse der Gewässergüte unter app.gewaessercampus.de "
+"zur Verfügung. Dieses Dokument enthält Karten und Angaben zu Gewässern und "
+"deren Namen von Mapbox (www.mapbox.com) und OpenStreetMap (www.openstreetmap."
+"org) sowie Messdaten von GewässerCampus-Nutzer:innen. Weitere Informationen "
+"zu den entsprechenden Lizenzen sind online verfügbar."
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:69
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:71
 #, python-format
 msgid ""
 "This document has been created automatically and contains a summary of the "
@@ -2499,7 +2499,7 @@ msgstr ""
 "Dieses Dokument wurde automatisch erstellt und enthält eine Zusammenfassung "
 "der Messung von %(name)s am %(time)s in %(location)s."
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:74
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:76
 #, python-format
 msgid ""
 "This document has been created automatically and contains a summary of the "
@@ -2508,7 +2508,7 @@ msgstr ""
 "Dieses Dokument wurde automatisch erstellt und enthält eine Zusammenfassung "
 "der Messung am %(time)s in %(location)s."
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:80
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:82
 msgid ""
 "This document was created using a test instance of GewässerCampus. The "
 "available measurement data is most likely fictional and does not represent a "
@@ -2518,19 +2518,19 @@ msgstr ""
 "Die meisten Daten sind wahrscheinlich erfunden und stammen nicht von einer "
 "echten Messung."
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:93
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:95
 msgid "Metadata"
 msgstr "Metadaten"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:105
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:107
 msgid "Time"
 msgstr "Zeitpunkt"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:127
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_detail.html:129
 msgid "Measured values"
 msgstr "Messwerte"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:68
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:69
 #, python-format
 msgid ""
 "This document has been created automatically and contains a summary of "
@@ -2539,7 +2539,7 @@ msgstr ""
 "Dieses Dokument wurde automatisch erstellt und enthält eine Zusammenfassung "
 "von %(measurement_count)s Messungen."
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:73
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:74
 msgid ""
 "This document was created using a test instance of GewässerCampus. The "
 "available measurement data is most likely fictional and does not represent "
@@ -2549,27 +2549,35 @@ msgstr ""
 "Die meisten Daten sind wahrscheinlich erfunden und stammen nicht von echten "
 "Messungen."
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:84
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:85
 msgid "Overview"
 msgstr "Übersicht"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:88
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:89
 msgid "Data subset"
 msgstr "Datensatz"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:89
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:90
 msgid "measurements"
 msgstr "Messungen"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:90
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:91
 msgid "waters"
 msgstr "Gewässer"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:92
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:93
 msgid "Time range"
 msgstr "Zeitspanne"
 
-#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:107
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:102
+msgid ""
+"Multiple measurements have been combined. The number on the markers indicate "
+"the number of measurements at that location."
+msgstr ""
+"Es wurden mehrere Messungen kombiniert. "
+"Die Zahl auf den Markierungen gibt die Anzahl der Messungen an diesem Ort an."
+
+#: gcampus/documents/templates/gcampusdocuments/documents/measurement_list.html:117
 msgid "Notes"
 msgstr "Notizen"
 
@@ -2598,11 +2606,11 @@ msgstr "{course_name!s}-zugangscodes.pdf"
 msgid "gewaessercampus-measurement-detail.pdf"
 msgstr "gewaessercampus-messung.pdf"
 
-#: gcampus/documents/views/print.py:107
+#: gcampus/documents/views/print.py:109
 msgid "gewaessercampus-measurement-detail-{name:s}.pdf"
 msgstr "gewaessercampus-messung-{name:s}.pdf"
 
-#: gcampus/documents/views/print.py:114
+#: gcampus/documents/views/print.py:116
 msgid "gewaessercampus-measurement-list.pdf"
 msgstr "gewaessercampus-messungen-liste.pdf"
 
@@ -2610,36 +2618,36 @@ msgstr "gewaessercampus-messungen-liste.pdf"
 msgid "GCampus Export"
 msgstr "GewässerCampus Export"
 
-#: gcampus/export/response/base.py:50
+#: gcampus/export/response/base.py:49
 msgid "measurements.{file_ending!s}"
 msgstr "messungen.{file_ending!s}"
 
-#: gcampus/export/response/xlsx.py:90
+#: gcampus/export/response/xlsx.py:87
 msgid "Measurement data from GewässerCampus"
 msgstr "GewässerCampus-Messdaten"
 
-#: gcampus/export/response/xlsx.py:92
+#: gcampus/export/response/xlsx.py:89
 msgid "GewässerCampus contributors, OpenStreetMap contributors"
 msgstr "GewässerCampus Beitragende, OpenStreetMap Beitragende"
 
-#: gcampus/export/response/xlsx.py:96
+#: gcampus/export/response/xlsx.py:93
 msgid "Export created with GewässerCampus"
 msgstr "Export erstellt mit GewässerCampus"
 
-#: gcampus/export/response/xlsx.py:110
+#: gcampus/export/response/xlsx.py:107
 msgid "open on GewässerCampus"
 msgstr "in GewässerCampus öffnen"
 
-#: gcampus/export/response/xlsx.py:139
+#: gcampus/export/response/xlsx.py:136
 #, python-brace-format
 msgid "Average of {count:d} measurements"
 msgstr "Durchschnitt von {count:d} Messungen"
 
-#: gcampus/export/worksheet.py:191
+#: gcampus/export/worksheet.py:190
 msgid "yes"
 msgstr "ja"
 
-#: gcampus/export/worksheet.py:193
+#: gcampus/export/worksheet.py:192
 msgid "no"
 msgstr "nein"
 
@@ -2703,19 +2711,20 @@ msgid ""
 "name: %(name)s, school: %(school)s) have been deactivated as they have been "
 "created more than %(days)s days ago.<br> Students can now no longer use "
 "these access keys to create new measurements or edit their old measurements."
-"<br> You can always re-activate access keys in the <a href=\"%(course_url)s"
-"\">course administration</a>. <br> <br> If you think this happened on "
-"accident, or you never registered a course on GewässerCampus, don't hesitate "
-"to contact us."
+"<br> You can always re-activate access keys in the <a "
+"href=\"%(course_url)s\">course administration</a>. <br> <br> If you think "
+"this happened on accident, or you never registered a course on "
+"GewässerCampus, don't hesitate to contact us."
 msgstr ""
 "Einige Zugangscodes deines Kurses auf GewässerCampus (Kursname: %(name)s, "
 "Schule: %(school)s) wurden deaktiviert, da sie vor mehr als %(days)s Tagen "
 "erstellt wurden.<br>Schüler:innen können diese Zugangscodes nun nicht mehr "
 "verwenden, um neue Messungen zu erstellen oder ihre alten Messungen zu "
-"bearbeiten.<br>Du kannst die Zugangscodes in der <a href=\"%(course_url)s"
-"\">Kursverwaltung</a> jederzeit wieder aktivieren.<br> <br> Wenn du der "
-"Meinung bist, dass dies versehentlich passiert ist oder du noch nie einen "
-"Kurs auf GewässerCampus registriert hast, kannst du uns gerne kontaktieren."
+"bearbeiten.<br>Du kannst die Zugangscodes in der <a "
+"href=\"%(course_url)s\">Kursverwaltung</a> jederzeit wieder aktivieren.<br> "
+"<br> Wenn du der Meinung bist, dass dies versehentlich passiert ist oder du "
+"noch nie einen Kurs auf GewässerCampus registriert hast, kannst du uns gerne "
+"kontaktieren."
 
 #: gcampus/mail/templates/gcampusmail/access_key_deactivation/list.html:5
 msgid "The following access keys have been deactivated:"
@@ -2753,19 +2762,20 @@ msgstr ""
 msgid "Please confirm your email address"
 msgstr "Bitte bestätige deine E-Mail-Adresse"
 
-#: gcampus/mail/templates/gcampusmail/email_confirmation/base.html:5
+#: gcampus/mail/templates/gcampusmail/email_confirmation/base.html:6
 #, python-format
 msgid ""
-"Click the link below to confirm your email address: <br> <a href=\"%(url)s\">"
-"%(url)s</a> <br> This link is valid for %(days)s days. <br> If you got this "
-"email by accident and did not sign up on GewässerCampus, you can safely "
-"ignore this message and delete it. Feel free to contact us if you have any "
-"issues."
+"Click the link below to confirm your email address: <br> <a "
+"href=\"%(url)s\">%(url)s</a> <br> This link is valid for %(days)s days. <br> "
+"If you got this email by accident and did not sign up on GewässerCampus, you "
+"can safely ignore this message and delete it. Feel free to contact us if you "
+"have any issues."
 msgstr ""
-"Klicke den Link um deine E-Mail-Adresse zu bestätigen:<br><a href=\"%(url)s"
-"\">%(url)s</a><br>Dieser Link ist für %(days)s Tage gültig.<br>Solltest du "
-"diese E-Mail versehentlich bekommen haben kannst du sie einfach ignorieren "
-"und löschen. Bei weiteren Fragen kannst du uns jederzeit kontaktieren."
+"Klicke den Link um deine E-Mail-Adresse zu bestätigen:<br><a "
+"href=\"%(url)s\">%(url)s</a><br>Dieser Link ist für %(days)s Tage gültig."
+"<br>Solltest du diese E-Mail versehentlich bekommen haben kannst du sie "
+"einfach ignorieren und löschen. Bei weiteren Fragen kannst du uns jederzeit "
+"kontaktieren."
 
 #: gcampus/mail/templates/gcampusmail/register/base.html:7
 msgid "Thank you for registering a course!"
@@ -2778,15 +2788,15 @@ msgid ""
 "may now share the access keys with your students and start measuring. <br> "
 "<b>We are excited to see your data!</b> <br> Below is a summary of your "
 "registered course. If any of this information is incorrect or incomplete, "
-"you can always update your course on <a href=\"%(course_url)s"
-"\">GewässerCampus</a>."
+"you can always update your course on <a "
+"href=\"%(course_url)s\">GewässerCampus</a>."
 msgstr ""
 "Die Registrierung deines Kurses für GewässerCampus war erfolgreich! Du "
 "kannst nun die Zugangscodes an Schüler:innen verteilen und mit dem Messen "
 "loslegen. <br> <b>Wir warten gespannt auf eure Messwerte!</b> <br> "
 "Nachfolgend findest du eine Übersicht über deinen Kurs. Sollte etwas nicht "
-"stimmen, kannst du jederzeit deinen Kurs auf <a href=\"%(course_url)s"
-"\">GewässerCampus</a> bearbeiten."
+"stimmen, kannst du jederzeit deinen Kurs auf <a "
+"href=\"%(course_url)s\">GewässerCampus</a> bearbeiten."
 
 #: gcampus/mail/templates/gcampusmail/register/base.html:22
 msgid "Your course"
@@ -2818,11 +2828,11 @@ msgstr ""
 msgid "GCampus Map"
 msgstr "GCampus Karte"
 
-#: gcampus/settings/base.py:176
+#: gcampus/settings/base.py:201
 msgid "English"
 msgstr "Englisch"
 
-#: gcampus/settings/base.py:176
+#: gcampus/settings/base.py:201
 msgid "German"
 msgstr "Deutsch"
 
@@ -2855,8 +2865,6 @@ msgid "Minimal parameter value"
 msgstr "Minimaler Parameter-Wert"
 
 #: gcampus/tools/models/calibration.py:52 gcampus/tools/models/kit.py:24
-#, fuzzy
-#| msgid "Measurement Kit"
 msgid "Measurement kit"
 msgstr "Chemikalien-Set"
 

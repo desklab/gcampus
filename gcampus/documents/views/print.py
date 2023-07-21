@@ -95,8 +95,12 @@ class MeasurementDetailPDF(CachedDocumentView):
     object: Measurement
 
     def get_context_data(self, **kwargs):
-        map_bytes: bytes = get_static_map(
-            [self.object.location], center=self.object.location.tuple
+        map_bytes: bytes
+        map_bytes, _ = get_static_map(
+            [
+                self.object.location,
+            ],
+            center=self.object.location.tuple,
         )
         kwargs["map"] = f"data:image/png;base64,{base64.b64encode(map_bytes).decode()}"
         return super(MeasurementDetailPDF, self).get_context_data(**kwargs)
@@ -165,11 +169,15 @@ class MeasurementListPDF(ListDocumentView):
             queryset.only("time").values_list("time", flat=True).latest("time")
         )
         points: List[Point] = queryset.all().values_list("location", flat=True)
-        map_bytes: bytes = get_static_map(
+        map_bytes: bytes
+        clustered: bytes
+
+        map_bytes, clustered = get_static_map(
             points,
             bbox=(self.get_bbox() if len(points) > 1 else None),
             center=(points[0].tuple if len(points) == 1 else None),
         )
         kwargs["map"] = f"data:image/png;base64,{base64.b64encode(map_bytes).decode()}"
+        kwargs["clustered"] = clustered
         context.update(kwargs)
         return super().get_context_data(**context)

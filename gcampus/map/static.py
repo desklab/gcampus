@@ -17,9 +17,11 @@ from typing import Tuple, Optional, List
 
 import httpx
 from django.conf import settings
-from django.contrib.gis.geos import Point
+from django.contrib.gis.geos import Point, MultiPoint
 from django.core.cache import cache
 from django.utils.crypto import md5
+
+from gcampus.map.clustering import mean_shift_clustering
 
 
 def _create_pin(
@@ -50,12 +52,13 @@ def _get_cache_key(url: str) -> str:
 
 
 def get_static_map(
-    markers: List[Point],
+    markers: List[Point] | MultiPoint,
     center: Optional[Tuple[float, float]] = None,  # Order: lng, lat
     zoom: Optional[float] = 15,
     bbox: Optional[Tuple[float, float, float, float]] = None,
     size: Tuple[int, int] = (800, 600),
     padding: Optional[int] = 50,
+    max_markers: int = 5,
     pin_size: str = "l",
     attribution: bool = False,  # Important: Add attribution elsewhere
     access_token: Optional[str] = None,
@@ -63,7 +66,7 @@ def get_static_map(
     username: Optional[str] = None,
     client: Optional[httpx.Client] = None,
     timeout: Optional[int] = None,
-) -> bytes:
+) -> tuple[bytes, bool]:
     """Get a static map image from the Mapbox API.
 
     :param markers: List of points.
@@ -75,6 +78,9 @@ def get_static_map(
     :param size: Image size (in pixels).
     :param padding: Optional padding. Ignored if ``bbox`` is ``None``
         but ``center`` is specified.
+    :param max_markers: Maximum number of markers allowed. If the passed
+        number of markers exceeds this, the markers are clustered
+        instead.
     :param pin_size: Size of the pins/markers as specified in
         ``markers``.
     :param attribution: If set to ``False``, the OpenStreetMap
@@ -89,7 +95,8 @@ def get_static_map(
     :param client: Optional HTTPX client.
     :param timeout: Optional timeout, defaults to the default timeout
         (``REQUEST_TIMEOUT``).
-    :returns: Image as bytes.
+    :returns: ``(image, clustered)``: Tuple of an image as bytes and
+        a boolean indicating whether the points are clustered.
     """
     if bbox is None and center is None:
         positioning = "auto"
@@ -110,16 +117,25 @@ def get_static_map(
         style_id = mapbox_settings["STYLE_ID"]
     if timeout is None:
         timeout = getattr(settings, "REQUEST_TIMEOUT", 5)
-    overlay = ",".join((_create_pin(p, size=pin_size) for p in markers))
+    if len(markers) > max_markers:
+        clustered: bool = True
+        markers, labels = mean_shift_clustering(markers)
+    else:
+        clustered: bool = False
+        labels = [""] * len(markers)
+    overlay = ",".join(
+        _create_pin(p, label=l, size=pin_size) for p, l in zip(markers, labels)
+    )
     url = (
         f"https://api.mapbox.com/styles/v1/{username}/{style_id}"
         f"/static/{overlay}/{positioning}/{size[0]}x{size[1]}@2x"
     )
     sentinel = object()
+    sentinel = object()  # Like None, but not actually None
     cache_key = _get_cache_key(url)
     cached_val = cache.get(cache_key, sentinel)
     if cached_val is not sentinel:
-        return cached_val
+        return cached_val, clustered
     params = {"access_token": access_token}
     if not attribution:
         params["attribution"] = "false"
@@ -150,6 +166,6 @@ def get_static_map(
     if response.is_success:
         content = response.content
         cache.set(cache_key, content)
-        return content
+        return content, clustered
     # Unreachable code. If the response is not successful, an exception
     # will be raised in a previous step.
