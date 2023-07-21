@@ -63,7 +63,6 @@ def get_static_map(
     attribution: bool = False,  # Important: Add attribution elsewhere
     access_token: Optional[str] = None,
     style_id: Optional[str] = None,
-    username: Optional[str] = None,
     client: Optional[httpx.Client] = None,
     timeout: Optional[int] = None,
 ) -> tuple[bytes, bool]:
@@ -90,8 +89,6 @@ def get_static_map(
         backend access token specified in the settings.
     :param style_id: Optional Mapbox style ID. Defaults to the style ID
         as specified in the settings.
-    :param username: Optional Mapbox username, associated to the style
-        ID. Defaults to the default username from the settings.
     :param client: Optional HTTPX client.
     :param timeout: Optional timeout, defaults to the default timeout
         (``REQUEST_TIMEOUT``).
@@ -111,10 +108,8 @@ def get_static_map(
     mapbox_settings: dict = getattr(settings, "MAP_SETTINGS")
     if access_token is None:
         access_token = mapbox_settings["MAPBOX_BACKEND_ACCESS_TOKEN"]
-    if username is None:
-        username = mapbox_settings["USERNAME"]
     if style_id is None:
-        style_id = mapbox_settings["STYLE_ID"]
+        style_id = mapbox_settings["STYLE_ID_PRINT"]
     if timeout is None:
         timeout = getattr(settings, "REQUEST_TIMEOUT", 5)
     if len(markers) > max_markers:
@@ -127,10 +122,9 @@ def get_static_map(
         _create_pin(p, label=l, size=pin_size) for p, l in zip(markers, labels)
     )
     url = (
-        f"https://api.mapbox.com/styles/v1/{username}/{style_id}"
+        f"https://api.mapbox.com/styles/v1/{style_id}"
         f"/static/{overlay}/{positioning}/{size[0]}x{size[1]}@2x"
     )
-    sentinel = object()
     sentinel = object()  # Like None, but not actually None
     cache_key = _get_cache_key(url)
     cached_val = cache.get(cache_key, sentinel)

@@ -266,6 +266,7 @@ MAP_SETTINGS = {
     "CENTER": (8.4430, 49.4922),
     "ZOOM": 8,
     "STYLE_ID": "cl4odlfc5000p14mrdd9ucxu4",
+    "STYLE_ID_PRINT": "mapbox/light-v11",
     "STYLE": "mapbox://styles/axelschlindwein/cl4odlfc5000p14mrdd9ucxu4?optimize=true",
     "USERNAME": get_env_read_file("MAPBOX_USERNAME"),
     "MAPBOX_ACCESS_TOKEN": get_env_read_file("MAPBOX_ACCESS_TOKEN"),
