@@ -12,7 +12,7 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
+import logging
 from typing import Tuple, Optional, List
 
 import httpx
@@ -22,6 +22,8 @@ from django.core.cache import cache
 from django.utils.crypto import md5
 
 from gcampus.map.clustering import mean_shift_clustering
+
+logger = logging.getLogger("gcampus.map.static")
 
 
 def _create_pin(
@@ -58,7 +60,7 @@ def get_static_map(
     bbox: Optional[Tuple[float, float, float, float]] = None,
     size: Tuple[int, int] = (800, 600),
     padding: Optional[int] = 50,
-    max_markers: int = 5,
+    max_markers: int | None = None,
     pin_size: str = "l",
     attribution: bool = False,  # Important: Add attribution elsewhere
     access_token: Optional[str] = None,
@@ -79,7 +81,8 @@ def get_static_map(
         but ``center`` is specified.
     :param max_markers: Maximum number of markers allowed. If the passed
         number of markers exceeds this, the markers are clustered
-        instead.
+        instead. If ``None``, the default number is chosen from the
+        settings (``MAX_MARKER_PRINT`` in ``MAP_SETTINGS``)
     :param pin_size: Size of the pins/markers as specified in
         ``markers``.
     :param attribution: If set to ``False``, the OpenStreetMap
@@ -112,6 +115,8 @@ def get_static_map(
         style_id = mapbox_settings["STYLE_ID_PRINT"]
     if timeout is None:
         timeout = getattr(settings, "REQUEST_TIMEOUT", 5)
+    if max_markers is None:
+        max_markers = mapbox_settings["MAX_MARKER_PRINT"]
     if len(markers) > max_markers:
         clustered: bool = True
         markers, labels = mean_shift_clustering(markers)
@@ -129,7 +134,9 @@ def get_static_map(
     cache_key = _get_cache_key(url)
     cached_val = cache.get(cache_key, sentinel)
     if cached_val is not sentinel:
+        logger.debug("Found cached static map")
         return cached_val, clustered
+    logger.debug("Map not cached, requesting new map instead")
     params = {"access_token": access_token}
     if not attribution:
         params["attribution"] = "false"
@@ -143,6 +150,7 @@ def get_static_map(
     else:
         _client = client
     try:
+        logger.debug("Requesting map from Mapbox...")
         response: httpx.Response = _client.get(
             url,
             params=params,
@@ -159,6 +167,7 @@ def get_static_map(
     response.raise_for_status()
     if response.is_success:
         content = response.content
+        logger.debug("Caching static map for later use...")
         cache.set(cache_key, content)
         return content, clustered
     # Unreachable code. If the response is not successful, an exception
