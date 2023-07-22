@@ -30,6 +30,7 @@ from urllib.parse import urlsplit
 
 from django.conf import settings
 from django.contrib.staticfiles import finders
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.template.loader import render_to_string
 from weasyprint import HTML, Document
 from weasyprint.urls import URLFetchingError, default_url_fetcher
@@ -49,13 +50,16 @@ def url_fetcher(url: str, **kwargs):
         normalized_path = posixpath.normpath(path).lstrip("/")
         mime_type, encoding = mimetypes.guess_type(path, strict=True)
         absolute_path = finders.find(normalized_path)
-        if not absolute_path:
-            raise FileNotFoundError()
-        if not os.path.isfile(absolute_path):
-            raise URLFetchingError(
-                f"File '{url}' (resolved to '{absolute_path}') not found!"
-            )
-        file_obj = open(absolute_path, "rb")
+        try:
+            if not absolute_path:
+                raise FileNotFoundError()
+            if not os.path.isfile(absolute_path) or not os.path.exists(absolute_path):
+                raise FileNotFoundError(
+                    f"File '{url}' (resolved to '{absolute_path}') not found!"
+                )
+            file_obj = open(absolute_path, "rb")
+        except FileNotFoundError:
+            file_obj = staticfiles_storage.open(normalized_path, mode="rb")
         return {
             "mime_type": mime_type,
             "encoding": encoding,
