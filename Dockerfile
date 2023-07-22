@@ -14,7 +14,7 @@ RUN npm run build && rm -rf gcampus/*/static_src package*.json node_modules
 ########################################################################
 # gcampus Dockerfile
 ########################################################################
-FROM python:3.11-slim
+FROM python:3.11-slim-bookworm
 LABEL maintainer="Jonas Drotleff <j.drotleff@desk-lab.de>"
 
 SHELL ["/bin/sh", "-eux", "-c"]
@@ -32,10 +32,10 @@ USER root
 RUN apt-get update && apt-get -y upgrade && \
     apt-get install -y --no-install-recommends --no-install-suggests \
     binutils \
-    libgdal28 \
+    libgdal32 \
     libpango-1.0-0 \
     libpangoft2-1.0-0 \
-    libproj-dev && \
+    libproj25 && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /var/log
 
