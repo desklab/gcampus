@@ -22,10 +22,13 @@ from django.conf import settings
 from django.core.mail import mail_managers
 from django.db import transaction
 from django.db.models import Q, Count
+from django.db.models.signals import post_delete, post_save
 from django.utils import timezone, translation
 
 from gcampus.auth.models import Course, AccessKey, CourseToken
+from gcampus.auth.receivers import update_access_key_documents
 from gcampus.core.models import Measurement, Water
+from gcampus.documents.tasks import render_cached_document_view
 from gcampus.mail.messages.maintenance import (
     MaintenanceAccessKeys,
     MaintenanceCourseDeletion,
@@ -88,7 +91,15 @@ def maintenance():
     unverified_courses_count = 0
     with transaction.atomic():
         for course in unverified_courses:
-            AccessKey.objects.filter(course=course).delete()
+            try:
+                post_delete.disconnect(
+                    receiver=update_access_key_documents, sender=AccessKey
+                )
+                AccessKey.objects.filter(course=course).delete()
+            finally:
+                post_delete.connect(
+                    receiver=update_access_key_documents, sender=AccessKey
+                )
             CourseToken.objects.filter(course=course).delete()
             course.delete()
             unverified_courses_count += 1
@@ -105,7 +116,15 @@ def maintenance():
     unused_courses_count = 0
     with transaction.atomic():
         for course in unused_courses:
-            AccessKey.objects.filter(course=course).delete()
+            try:
+                post_delete.disconnect(
+                    receiver=update_access_key_documents, sender=AccessKey
+                )
+                AccessKey.objects.filter(course=course).delete()
+            finally:
+                post_delete.connect(
+                    receiver=update_access_key_documents, sender=AccessKey
+                )
             CourseToken.objects.filter(course=course).delete()
             send_course_deletion_email.apply_async(
                 args=(course.teacher_email, course.name, course.school_name)
@@ -120,17 +139,28 @@ def maintenance():
     courses: Dict[int, List[str]] = {}
     access_key_count = 0
     with transaction.atomic():
-        for access_key in old_access_keys:
-            access_key.deactivated = True
-            access_key.save()
-            access_key_count += 1
-            courses.setdefault(access_key.course_id, [])
-            courses[access_key.course_id].append(access_key.token)
+        try:
+            post_save.disconnect(receiver=update_access_key_documents, sender=AccessKey)
+            for access_key in old_access_keys:
+                access_key.deactivated = True
+                access_key.save()
+                access_key_count += 1
+                courses.setdefault(access_key.course_id, [])
+                courses[access_key.course_id].append(access_key.token)
+        finally:
+            post_save.connect(receiver=update_access_key_documents, sender=AccessKey)
 
     # Send email notifying the teacher about deactivated courses
     for course_id, access_keys in courses.items():
         course = Course.objects.only("teacher_email", "name", "school_name").get(
             pk=course_id
+        )
+        render_cached_document_view.apply_async(
+            args=(
+                "gcampus.documents.views.CourseOverviewPDF",
+                course.pk,
+                translation.get_language(),
+            ),
         )
         send_access_key_deactivation_email.apply_async(
             args=(course.teacher_email, course.name, course.school_name, access_keys)
