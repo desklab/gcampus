@@ -2,59 +2,42 @@ body {
     margin: 0cm;
 }
 
-head, head > title, head > meta {
-    display: inline;
-    visibility: hidden;
-    position: absolute;
-    top: -1000px;
+@page {
+    margin: 3cm 2cm 1.5cm 2cm; // top right bottom left
+    padding-bottom: 2.6cm;
 }
 
-@page {
-    margin: 3cm 2cm 2.2cm 2cm; //top right bottom left
-    @bottom-center {
-        //content: "Die Webanwendung GewässerCampus wird durch die gemeinnützige desklab UG (haftungsbeschränkt) in Zusammenarbeit mit dem Lehrgebiet für Bioverfahrenstechnik der RPTU entwickelt und durch die Deutsche Bundesstiftung Umwelt finanziell gefördert.";
-        content: "";
-        font-size: 7pt;
-        text-align: justify;
-        text-align-last: center;
-        padding: 1cm 0cm 1cm 0cm;
-        width: 100%;
-        color: $grey-500;
-        box-sizing: border-box;
-        //border-top: .02cm solid $grey-400;
-    }
+.footer {
+    position: fixed;
+    bottom: -2.6cm;
+    left: 0;
+    right: 0;
+    font-size: 7.5pt;
+    color: $grey-500;
+}
+
+.footer-top {
+    display: flow-root;
+    height: 14pt;
 }
 
 .footer-left {
-    position: fixed;
-    bottom: 1.7cm;
-    left: 0cm;
-    margin-bottom: -0.6cm;
     width: 8cm;
+    float: left;
     font-size: 9pt;
-    color: $grey-500;
     text-align: left;
 }
 
 .footer-right {
-    position: fixed;
-    bottom: 1.7cm;
-    right: 0cm;
-    margin-bottom: -0.6cm;
     width: 6cm;
+    float: right;
     font-size: 9pt;
-    color: $grey-500;
     text-align: right;
 }
 
 .footer-center {
-    position: fixed;
     border-top: $grey-500 1px solid;
-    padding-top: .2cm;
-    bottom: .75cm;
-    left: 0cm;
-    width: 17cm;
+    padding-top: .1cm;
     font-size: 7.5pt;
-    color: $grey-500;
     text-align: justify;
 }

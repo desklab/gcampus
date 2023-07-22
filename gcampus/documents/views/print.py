@@ -97,10 +97,7 @@ class MeasurementDetailPDF(CachedDocumentView):
     def get_context_data(self, **kwargs):
         map_bytes: bytes
         map_bytes, _ = get_static_map(
-            [
-                self.object.location,
-            ],
-            center=self.object.location.tuple,
+            [self.object.location], center=self.object.location.tuple
         )
         kwargs["map"] = f"data:image/png;base64,{base64.b64encode(map_bytes).decode()}"
         return super(MeasurementDetailPDF, self).get_context_data(**kwargs)

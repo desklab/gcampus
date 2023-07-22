@@ -4,7 +4,10 @@
 <head>
     <meta charset="utf-8">
     <link href="{% static "gcampusdocuments/styles/gcampus.css" %}" rel="stylesheet">
-    <title>gcampus Document</title>
+    <title>{% trans "Access keys" %} - {{ course }}</title>
+    <meta name="author" content="{% translate "GewässerCampus Team" %}">
+    <meta name="generator" content="{% translate "GewässerCampus" %}">
+    <meta name="dcterms.created" content="{% now "c" %}">
     <meta name="id" content="gcampus-doc-01">
     {% displaytoken_head %}
     <style>
@@ -30,30 +33,7 @@
     </style>
 </head>
 <body>
-
-<div class="footer-left">
-    <span class="bold">{% translate "Document ID" %}</span>: GC-ADMIN-AK
-</div>
-
-<div class="footer-right">
-    <a href="https://gewaessercampus.de" class="footer-link">www.gewaessercampus.de</a>
-</div>
-
-<div class="footer-center container">
-    <div class="w-88 float-left">
-        {% blocktrans trimmed %}
-            The project <span class="color-secondary">Gewässer</span><span class="color-primary">Campus</span>
-            is carried out by the <i>non-profit organisation desklab</i> in cooperation with the
-            <i>WG for Bioprocess Engineering of the RPTU</i> and financially supported by the
-            <i>German Federal Environmental Foundation (DBU)</i>. More educational material and information on this project
-            is available at www.gewaessercampus.de.
-        {% endblocktrans %}
-    </div>
-    <div class="footer-qrcode float-right">
-        <img src="{% static 'gcampusdocuments/assets/gcampus-qr-code.png' %}" alt="">
-    </div>
-</div>
-
+{% include "gcampusdocuments/components/footer.html" with document_id="GC-ADMIN-AK" %}
 {% for token in course.access_keys.all %}
     {% if not token.deactivated %}
         <article>
@@ -62,10 +42,10 @@
 
                 <!-- general information -->
                 <div class="w-100">
-                    <div class="rotated-section-heading color-grey w-abs-350">
+                    <div class="rotated-section-heading color-grey w-abs-250">
                         {% translate "Info" %}
                     </div>
-                    <div class="text-justify h-abs-350 student-document-description">
+                    <div class="text-justify h-abs-250 student-document-description">
                         {% blocktrans trimmed %}
                             This document was created automatically and contains an
                             access key and further information for using the
@@ -76,17 +56,15 @@
 
                 <!-- course data and token -->
                 <div class="w-100">
-                    <div class="rotated-section-heading color-secondary w-abs-800">
+                    <div class="rotated-section-heading color-secondary w-abs-700">
                         {% translate "Access key" %}
                     </div>
-                    <div class="coursedata-container overflow-hidden h-abs-800 w-abs-1600">
-
+                    <div class="coursedata-container overflow-hidden h-abs-700 w-abs-1600">
                         <div class="float-left w-abs-400">
                             <div class="accesskey-single">
                                 {% displaytoken token.token hidden=False toggle=False %}
                             </div>
                         </div>
-
                         <div class="w-abs-900 float-right">
                             <div class="qrcode float-left">
                                 <img src="{% static 'gcampusdocuments/assets/gcampus-qr-code.png' %}" alt="">
