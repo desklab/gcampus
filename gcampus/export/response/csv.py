@@ -26,7 +26,7 @@ from gcampus.export.response.base import MeasurementExportResponse
 
 
 class CsvResponse(MeasurementExportResponse):
-    file_ending = ".csv"
+    file_ending = "csv"
     fieldnames: Tuple[str, ...] = (
         "type",
         "unit",
