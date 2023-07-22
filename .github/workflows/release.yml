@@ -92,13 +92,13 @@ jobs:
           DOCKER_HOST: 'ssh://${{ secrets.DEPLOY_DOCKER_USER }}@${{ secrets.DEPLOY_DOCKER_HOST }}'
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          docker service update gcampus_gcampus --with-registry-auth --image="${{ env.current }}"
-          docker service update gcampus_gcampus_worker --with-registry-auth --image="${{ env.current }}"
+          docker service update gcampus_app --with-registry-auth --image="${{ env.current }}"
+          docker service update gcampus_worker --with-registry-auth --image="${{ env.current }}"
 
       - name: Deploy to staging environment
         env:
           DOCKER_HOST: 'ssh://${{ secrets.DEPLOY_DOCKER_USER }}@${{ secrets.DEPLOY_DOCKER_HOST }}'
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          docker service update gcampus_gcampus_dev --with-registry-auth --image="${{ env.current }}"
-          docker service update gcampus_gcampus_worker_dev --with-registry-auth --image="${{ env.current }}"
+          docker service update gcampus_app-dev --with-registry-auth --image="${{ env.current }}"
+          docker service update gcampus_worker-dev --with-registry-auth --image="${{ env.current }}"
