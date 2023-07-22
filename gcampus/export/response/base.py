@@ -74,6 +74,7 @@ class MeasurementExportResponse(FileResponse, ABC):
             "parameter_type_id",
             "parameter_type__name",
             "parameter_type__unit",
+            "parameter_type__identifier",
             # 'measurement_id' seems to be required to assign the
             # parameters to their measurements. If not provided here,
             # the field will be fetched later.
