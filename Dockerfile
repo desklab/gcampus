@@ -6,7 +6,7 @@ LABEL maintainer="Jonas Drotleff <j.drotleff@desk-lab.de>"
 
 WORKDIR /usr/src/gcampus
 COPY package*.json ./
-RUN npm ci --also=dev
+RUN npm ci --include=dev
 
 COPY . .
 RUN npm run build && rm -rf gcampus/*/static_src package*.json node_modules
