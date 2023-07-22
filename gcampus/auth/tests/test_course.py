@@ -18,7 +18,7 @@ from unittest.mock import patch
 
 from django.db import transaction
 from django.urls import reverse
-from django.utils.translation import get_language
+from django.utils.translation import get_language, gettext
 
 from gcampus.auth.forms import RegisterForm
 from gcampus.auth.models import CourseToken, Course, AccessKey
@@ -59,6 +59,21 @@ class CourseTest(LoginTestMixin, BaseMockTaskTest):
         with patch.object(render_cached_document_view, "apply_async") as mock:
             form.save()
             mock.assert_not_called()
+
+    def test_course_pretty_name(self):
+        course, course_token, _ = self.generate_course(5)
+        name = self.DEFAULT_COURSE_DATA["name"]
+        school_name = self.DEFAULT_COURSE_DATA["school_name"]
+        self.assertEqual(course.pretty_name, f"{name} ({school_name})")
+        course.name = None
+        course.school_name = school_name
+        self.assertEqual(course.pretty_name, school_name)
+        course.name = name
+        course.school_name = None
+        self.assertEqual(course.pretty_name, name)
+        course.name = None
+        course.school_name = None
+        self.assertEqual(course.pretty_name, gettext("Course"))
 
     def test_register_view(self):
         register_form_data = {

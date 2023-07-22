@@ -22,6 +22,7 @@ from django.db import models
 from django.utils.crypto import salted_hmac, constant_time_compare
 from django.utils.http import int_to_base36, base36_to_int
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext
 
 from gcampus.auth.exceptions import EmailVerificationExpired
 from gcampus.core.models.util import DateModelMixin
@@ -60,14 +61,32 @@ class Course(DateModelMixin):
         null=True,
     )
 
+    @property
+    def pretty_name(self) -> str:
+        """Prettier name that does not reveal the course id. Used e.g.
+        in the title of the course documents
+
+        :returns: Either the name (including school name if available),
+            only the school name if the course name is not available,
+            or simply 'Course' if neither are available.
+        """
+        if self.name and not self.school_name:
+            return self.name
+        elif self.name and self.school_name:
+            return f"{self.name} ({self.school_name})"
+        elif self.school_name:
+            return self.school_name
+        else:
+            return gettext("Course")
+
     def __str__(self):
         if self.name:
             if self.school_name:
-                return _("{name!s} ({school_name!s}, course {pk:d})").format(
+                return gettext("{name!s} ({school_name!s}, course {pk:d})").format(
                     name=self.name, school_name=self.school_name, pk=self.pk
                 )
-            return _("{name!s} (course {pk})").format(name=self.name, pk=self.pk)
-        return _("Course {pk}").format(pk=self.pk)
+            return gettext("{name!s} (course {pk})").format(name=self.name, pk=self.pk)
+        return gettext("Course {pk}").format(pk=self.pk)
 
 
 class EmailConfirmationTokenGenerator:
