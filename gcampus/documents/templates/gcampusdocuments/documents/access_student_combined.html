@@ -10,6 +10,7 @@
     <meta name="dcterms.created" content="{% now "c" %}">
     <meta name="id" content="gcampus-doc-01">
     {% displaytoken_head %}
+    {% include "gcampusdocuments/components/fonts.html" %}
     <style>
         @page {
             @top-right {
@@ -56,10 +57,10 @@
 
                 <!-- course data and token -->
                 <div class="w-100">
-                    <div class="rotated-section-heading color-secondary w-abs-700">
+                    <div class="rotated-section-heading color-secondary w-abs-600">
                         {% translate "Access key" %}
                     </div>
-                    <div class="coursedata-container overflow-hidden h-abs-700 w-abs-1600">
+                    <div class="coursedata-container overflow-hidden h-abs-600 w-abs-1600">
                         <div class="float-left w-abs-400">
                             <div class="accesskey-single">
                                 {% displaytoken token.token hidden=False toggle=False %}
