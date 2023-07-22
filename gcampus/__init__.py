@@ -15,5 +15,5 @@
 
 from django.utils.version import get_version
 
-VERSION = (0, 8, 0, "rc", 2)
+VERSION = (0, 8, 0, "rc", 3)
 __version__ = get_version(VERSION)
