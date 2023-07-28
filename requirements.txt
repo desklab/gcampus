@@ -26,3 +26,5 @@ djangorestframework~=3.14.0
 
 weasyprint~=59.0
 XlsxWriter~=3.0.3
+
+pillow~=9.5.0

@@ -12,15 +12,19 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 import logging
 from typing import Tuple, Optional, List
+from urllib.parse import quote, urljoin
 
 import httpx
 from django.conf import settings
 from django.contrib.gis.geos import Point, MultiPoint
 from django.core.cache import cache
+from django.urls import reverse
 from django.utils.crypto import md5
 
+from gcampus.core import get_base_url
 from gcampus.map.clustering import mean_shift_clustering
 
 logger = logging.getLogger("gcampus.map.static")
@@ -42,6 +46,31 @@ def _create_pin(
     if label != "":
         label = f"-{label}"
     return f"pin-{size}{label}+{color}({point.x},{point.y})"
+
+
+def _create_cluster_marker(point: Point, count: int) -> str:
+    """Construct a pin string according to the Mapbox Static Images
+    API schema for clustered custom markers.
+
+    :param point: The point (i.e. coordinates) of the marker/pin. Has to
+        be of type :class:`django.contrib.gis.geos.Point`.
+    :param count: Number of measurements at that location.
+    :returns: An overlay marker string.
+    """
+    if settings.DEBUG:
+        # In debug mode, the generated url will be from host 'localhost'
+        # and thus not be accessible for Mapbox. Use Mapbox markers
+        # instead.
+        if count > 99:
+            count = 99
+            return _create_pin(point, label=str(count))
+    url = reverse(
+        "gcampusmap:marker",
+        kwargs={"count": count, "version": settings.GCAMPUS_VERSION},
+    )
+    full_url = urljoin(get_base_url(), url)
+    url_quote = quote(full_url, safe="")
+    return f"url-{url_quote}({point.x},{point.y})"
 
 
 def _get_cache_key(url: str) -> str:
@@ -117,15 +146,14 @@ def get_static_map(
         timeout = getattr(settings, "REQUEST_TIMEOUT", 5)
     if max_markers is None:
         max_markers = mapbox_settings["MAX_MARKER_PRINT"]
-    if len(markers) > max_markers:
-        clustered: bool = True
-        markers, labels = mean_shift_clustering(markers)
+    clustered: bool = len(markers) > max_markers
+    if clustered:
+        markers, counts = mean_shift_clustering(markers)
+        overlay = ",".join(
+            _create_cluster_marker(p, count) for p, count in zip(markers, counts)
+        )
     else:
-        clustered: bool = False
-        labels = [""] * len(markers)
-    overlay = ",".join(
-        _create_pin(p, label=l, size=pin_size) for p, l in zip(markers, labels)
-    )
+        overlay = ",".join(_create_pin(p, size=pin_size) for p in markers)
     url = (
         f"https://api.mapbox.com/styles/v1/{style_id}"
         f"/static/{overlay}/{positioning}/{size[0]}x{size[1]}@2x"

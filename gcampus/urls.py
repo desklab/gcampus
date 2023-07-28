@@ -24,6 +24,7 @@ urlpatterns = [
     path("", include("gcampus.documents.urls")),
     path("", include("gcampus.tools.urls")),
     path("", include("gcampus.export.urls")),
+    path("", include("gcampus.map.urls")),
     path("api/v1/", include("gcampus.api.urls", namespace="v1")),
     path("admin/", admin.site.urls),
 ]
