@@ -23,8 +23,10 @@ from gcampus.auth.views import (
     AccessKeyCreateView,
     EmailConfirmationView,
     AccessKeyDeactivationView,
+    LoginView,
+    AccessKeyFormView,
+    CourseTokenFormView,
 )
-from gcampus.auth.views.token import LoginView, AccessKeyFormView, CourseTokenFormView
 
 app_name = GCampusAuthAppConfig.label
 

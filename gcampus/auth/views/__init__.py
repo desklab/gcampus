@@ -23,6 +23,7 @@ __all__ = [
     "CourseUpdateView",
     "EmailConfirmationView",
     "AccessKeyCreateView",
+    "LoginView",
 ]
 
 from django.core.exceptions import PermissionDenied
@@ -43,7 +44,12 @@ from gcampus.auth.views.course import (
     AccessKeyDeactivationView,
 )
 from gcampus.auth.views.register import RegisterFormView
-from gcampus.auth.views.token import AccessKeyFormView, CourseTokenFormView, logout
+from gcampus.auth.views.token import (
+    AccessKeyFormView,
+    CourseTokenFormView,
+    logout,
+    LoginView,
+)
 
 
 def permission_denied_error_handler(
