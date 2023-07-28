@@ -27,6 +27,7 @@ from gcampus.core.views.forms import (
     StructureIndexEditView,
 )
 from gcampus.core.views.lists import MeasurementListView, WaterListView
+from gcampus.core.views.robots import robots_txt
 
 # uncomment to test 404 and 500 pages locally
 # from django.views.defaults import page_not_found, server_error
@@ -37,6 +38,7 @@ from gcampus.core.views.lists import MeasurementListView, WaterListView
 #    return server_error(request)
 
 urlpatterns = [
+    path("robots.txt", robots_txt),
     # Index
     path("", MeasurementMapView.as_view(), name="mapview"),
     # Details
