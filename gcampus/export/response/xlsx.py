@@ -18,6 +18,7 @@ __all__ = ["XlsxResponse"]
 import os
 from numbers import Number
 from typing import Tuple, IO, List, Optional
+from urllib.parse import urljoin
 
 from django.urls import reverse
 from django.utils.text import capfirst
@@ -55,9 +56,8 @@ class XlsxResponse(MeasurementExportResponse):
             (``pk``) has to be present.
         :returns: Absolut url as string
         """
-        return get_base_url() + reverse(
-            "gcampuscore:measurement-detail", kwargs={"pk": measurement.pk}
-        )
+        url = reverse("gcampuscore:measurement-detail", kwargs={"pk": measurement.pk})
+        return urljoin(get_base_url(), url)
 
     def _get_file(self, fd: int, filename: str) -> IO:
         """Create the XLSX file and return a file-like object containing
