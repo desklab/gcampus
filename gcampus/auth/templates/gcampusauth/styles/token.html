@@ -1,4 +1,5 @@
 {% load static %}
+<link rel="preload" href="{% static 'gcampusauth/fonts/JetBrainsMono-Medium.woff2' %}" as="font" type="font/woff2" crossorigin>
 <style>
     @font-face {
         font-family: 'JetBrains Mono';
@@ -6,103 +7,58 @@
         url('{% static 'gcampusauth/fonts/JetBrainsMono-Medium.ttf' %}') format('truetype');
         font-weight: normal;
         font-style: normal;
+        font-display: swap;
     }
-    {% comment %}
-        @font-face {
-            font-family: 'JetBrains Mono';
-            src: url('{% static 'gcampusauth/fonts/JetBrainsMono-Regular.woff2' %}') format('woff'),
-                url('{% static 'gcampusauth/fonts/JetBrainsMono-Regular.ttf' %}') format('truetype');
-            font-weight: 400;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'JetBrains Mono';
-            src: url('{% static 'gcampusauth/fonts/JetBrainsMono-Thin.woff2' %}') format('woff'),
-            url('{% static 'gcampusauth/fonts/JetBrainsMono-Thin.ttf' %}') format('truetype');
-            font-weight: 100;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'JetBrains Mono';
-            src: url('{% static 'gcampusauth/fonts/JetBrainsMono-ExtraLight.woff2' %}') format('woff'),
-            url('{% static 'gcampusauth/fonts/JetBrainsMono-ExtraLight.ttf' %}') format('truetype');
-            font-weight: 200;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'JetBrains Mono';
-            src: url('{% static 'gcampusauth/fonts/JetBrainsMono-Light.woff2' %}') format('woff'),
-            url('{% static 'gcampusauth/fonts/JetBrainsMono-Light.ttf' %}') format('truetype');
-            font-weight: 300;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'JetBrains Mono';
-            src: url('{% static 'gcampusauth/fonts/JetBrainsMono-Bold.woff2' %}') format('woff'),
-            url('{% static 'gcampusauth/fonts/JetBrainsMono-Bold.ttf' %}') format('truetype');
-            font-weight: 600;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'JetBrains Mono';
-            src: url('{% static 'gcampusauth/fonts/JetBrainsMono-ExtraBold.woff2' %}') format('woff'),
-            url('{% static 'gcampusauth/fonts/JetBrainsMono-ExtraBold.ttf' %}') format('truetype');
-            font-weight: 700;
-            font-style: normal;
-        }
-    {% endcomment %}
-
-.token-char {
-    font-weight: normal;
-    font-family: 'JetBrains Mono', monospace;
-}
-.token-hidden {
-     color: var(--bs-gray-800);
- }
-
-.token-digit {
-     color: #496ea6;
- }
-
-.token-letter {
-     color: var(--bs-gray-800);
-}
-.token-separator {
-    display: inline-block;
-    font-weight: normal;
-    font-family: 'JetBrains Mono', monospace;
-    width: 0.6ch;
-    margin-left: 0.2ch;
-    margin-right: 0.2ch;
-    margin-bottom: 0.2ch;
-    vertical-align: middle;
-    border-bottom: 2pt solid var(--bs-gray-500);
-}
-
-@media print {
     .token-char {
         font-weight: normal;
         font-family: 'JetBrains Mono', monospace;
     }
-    
+    .token-hidden {
+         color: var(--bs-gray-800);
+     }
+
     .token-digit {
-        color: #ffffff;
-    }
-    
+         color: #496ea6;
+     }
+
     .token-letter {
-        color: #ffffff;
+         color: var(--bs-gray-800);
     }
-    
     .token-separator {
         display: inline-block;
         font-weight: normal;
         font-family: 'JetBrains Mono', monospace;
-        width: 0.08cm;
-        margin-left: 0.04cm;
-        margin-right: 0.04cm;
-        margin-bottom: 0.06cm;
+        width: 0.6ch;
+        margin-left: 0.2ch;
+        margin-right: 0.2ch;
+        margin-bottom: 0.2ch;
         vertical-align: middle;
+        border-bottom: 2pt solid var(--bs-gray-500);
     }
-}
 
+    @media print {
+        .token-char {
+            font-weight: normal;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .token-digit {
+            color: #ffffff;
+        }
+
+        .token-letter {
+            color: #ffffff;
+        }
+
+        .token-separator {
+            display: inline-block;
+            font-weight: normal;
+            font-family: 'JetBrains Mono', monospace;
+            width: 0.08cm;
+            margin-left: 0.04cm;
+            margin-right: 0.04cm;
+            margin-bottom: 0.06cm;
+            vertical-align: middle;
+        }
+    }
 </style>
