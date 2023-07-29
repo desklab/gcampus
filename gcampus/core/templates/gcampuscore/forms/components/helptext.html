@@ -1,5 +1,5 @@
 {% if field.help_text %}
-<span data-bs-toggle="tooltip"{% if class %} class="{{ class }}"{% endif %} title="{{ field.help_text }}">
+<span data-bs-toggle="tooltip"{% if class %} class="{{ class }}"{% endif %} role="note" title="{{ field.help_text }}">
     {% include "gcampuscore/icons/question-circle.html" %}
 </span>
 {% endif %}

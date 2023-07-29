@@ -11,8 +11,12 @@
         {% if env != "water_list" %}
             <a class="link-decoration-none-dark second" href="{{ water_url }}">
                 <span class="align-middle">
-                    <i class="me-1 circle-icon water-icon {{ measurement.water.flow_type }}" data-bs-toggle="tooltip"
-                       title="{{ measurement.water.get_flow_type_display|capfirst }}"></i>
+                    <i class="me-1 circle-icon water-icon {{ measurement.water.flow_type }}"
+                       role="definition"
+                       aria-label="{{ measurement.water.get_flow_type_display|capfirst }}"
+                       data-bs-toggle="tooltip"
+                       title="{{ measurement.water.get_flow_type_display|capfirst }}">
+                    </i>
                     {{ measurement.water_name }}
                 </span>
             </a>
@@ -34,6 +38,7 @@
                                     <i class="circle-icon indicator-icon"
                                        style="background-color: #{{ parameter.parameter_type.color|lower }} !important;"
                                        data-bs-toggle="tooltip"
+                                       role="definition"
                                        title="{{ parameter.parameter_type.name|capfirst }}">
                                     </i>
                                 </div>
@@ -65,7 +70,7 @@
             </span>
         {% endif %}
         {% with time_since=measurement.time|timesince:today  %}
-            <span class="second align-self-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{{ time_since }}" title="{{ time_since }}">
+            <span class="second align-self-start" role="note" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{{ time_since }}" title="{{ time_since }}">
                 {% include "gcampuscore/icons/calendar4-event.html" %}
                 <span class="ms-1 align-middle ">{{ measurement.time|localtime|localize }}</span>
             </span>

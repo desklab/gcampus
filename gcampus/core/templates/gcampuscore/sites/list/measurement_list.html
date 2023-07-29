@@ -73,7 +73,9 @@
             <div class="col-auto ms-auto">
                 {% if object_list %}
                     <span title="{% translate "Download data" %}"
-                          class="d-inline-block" tabindex="0"
+                          class="d-inline-block"
+                          tabindex="0"
+                          role="button"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom">
                         <button type="button"
@@ -87,6 +89,7 @@
                     <a href="{% url "gcampusdocuments:measurement-list-pdf" %}?{% request_params %}"
                        class="btn btn-light"
                        title="{% translate "Print summary" %}"
+                       role="button"
                        data-bs-toggle="tooltip"
                        data-bs-placement="bottom"
                        aria-label="{% translate "Print summary" %}">
