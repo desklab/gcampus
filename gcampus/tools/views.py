@@ -34,10 +34,25 @@ from gcampus.tools.models import Calibration, MeasurementKit
 class ToolsOverView(TitleMixin, TemplateView):
     title = gettext_lazy("Tools")
     template_name = "gcampustools/tools.html"
+    description = gettext_lazy(
+        "GewässerCampus provides tools that help you to easily "
+        "perform and analyze measurements. Calculate chemical "
+        "parameters from optical densities or view documents and "
+        "support material for a successful measurement."
+    )
+
+
+_DESCRIPTION = gettext_lazy(
+    "This tool helps you to convert the optical density you measured "
+    "with the photometer into the value of the specific parameter. "
+    "It uses a standard calibration which has been prepared by the "
+    "GewässerCampus team."
+)
 
 
 class MeasurementKitOverView(TitleMixin, ListView):
     title = gettext_lazy("Measurement Kits")
+    description = _DESCRIPTION
     template_name = "gcampustools/measurement_kit_overview.html"
     model = MeasurementKit
     queryset = MeasurementKit.objects.filter(calibrations__isnull=False).distinct()
@@ -45,6 +60,7 @@ class MeasurementKitOverView(TitleMixin, ListView):
 
 class ODConverterOverView(TitleMixin, ListView):
     title = gettext_lazy("Optical Density Converter")
+    description = _DESCRIPTION
     template_name = "gcampustools/od_converter_overview.html"
     model = ParameterType
     kit: MeasurementKit
@@ -69,6 +85,7 @@ class ODConverterOverView(TitleMixin, ListView):
 
 class ODConverterDetailView(TitleMixin, DetailView):
     title = gettext_lazy("Optical Density Converter")
+    description = _DESCRIPTION
     template_name = "gcampustools/od_converter_detail.html"
     model = ParameterType
     context_object_name = "parameter"

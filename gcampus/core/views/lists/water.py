@@ -37,6 +37,11 @@ class WaterListView(TitleMixin, ListView):
         .order_by("-measurement_count", "name")
     )
     title = gettext_lazy("All waters")
+    description = gettext_lazy(
+        "List of all the waters recorded on GewässerCampus. You can "
+        "browse the waters and view all measurements for a specific "
+        "water."
+    )
     context_object_name = "water_list"
     paginate_by = 10
     filter: WaterFilterSet

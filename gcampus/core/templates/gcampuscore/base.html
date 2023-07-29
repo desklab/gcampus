@@ -10,7 +10,13 @@
     <meta charset="utf-8"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>{% block title %}{% if page_title %}{{ page_title }} - GewässerCampus{% else %}GewässerCampus{% endif %}{% endblock %}</title>
-    <meta name="description" content="{% block description %}{% endblock %}"/>
+    {% blocktrans asvar default_description trimmed %}
+        The web application GewässerCampus enables students, teachers,
+        and Citizen Scientists to publish their measurements and
+        analyze the data from all measurements to understand and explore
+        the quality of waters.
+    {% endblocktrans %}
+    <meta name="description" content="{% block description %}{% firstof page_description default_description %}{% endblock %}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="theme-color" content="#2760A4">
     {% settings "ENVIRONMENT" as deploy_env %}

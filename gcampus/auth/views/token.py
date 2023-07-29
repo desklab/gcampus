@@ -53,6 +53,14 @@ class LoginFormView(FormView, TitleMixin, ABC):
     template_name = "gcampusauth/login_form.html"
     success_url = reverse_lazy("gcampuscore:mapview")
     title = gettext_lazy("Login")
+    description = gettext_lazy(
+        "Login as a student using you access key"
+        "to create new measurements and edit your "
+        "existing ones. "
+        "Teachers can login using a course token "
+        "to administer the course, edit measurements and "
+        "create new access keys."
+    )
     # Has to be set by child classes
     token_type: Optional[TokenType]
 

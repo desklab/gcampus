@@ -43,6 +43,9 @@ class MeasurementListView(TitleMixin, ListView):
         .all()
     )
     title = gettext_lazy("All measurements")
+    description = gettext_lazy(
+        "List of all the measurements recorded on GewässerCampus."
+    )
     context_object_name = "measurement_list"
     filter: MeasurementFilterSet
     paginate_by = 10

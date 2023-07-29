@@ -15,6 +15,7 @@
 
 __all__ = ["WaterDetailView"]
 
+from django.utils.translation import gettext
 from django.views.generic import DetailView
 
 from gcampus.core.models import Water
@@ -31,8 +32,15 @@ class WaterDetailView(TitleMixin, DetailView):
     )
     template_name = "gcampuscore/sites/detail/water_detail.html"
 
-    def get_title(self) -> str:
-        if self.object:
-            return str(self.object)
-        else:
+    def get_description(self) -> str:
+        if not self.object:
             raise RuntimeError("'self.object' is not set")
+        return gettext(
+            "Learn more about the water '{water}' and explore all measurements "
+            "that have been recorded at this water on GewässerCampus."
+        ).format(water=self.object.display_name)
+
+    def get_title(self) -> str:
+        if not self.object:
+            raise RuntimeError("'self.object' is not set")
+        return str(self.object)

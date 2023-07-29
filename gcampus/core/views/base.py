@@ -21,14 +21,19 @@ from gcampus.core.tabs import TabNavigation
 
 
 class TitleMixin(ContextMixin):
-    title: Optional[str] = None
+    title: str | None = None
+    description: str | None = None
 
     def get_title(self) -> str:
         return self.title
 
+    def get_description(self) -> str:
+        return self.description
+
     def get_context_data(self, **kwargs):
-        """Insert the page title into the context dict."""
+        """Insert the page title and description into the context."""
         kwargs.setdefault("page_title", self.get_title())
+        kwargs.setdefault("page_description", self.get_description())
         return super().get_context_data(**kwargs)
 
 

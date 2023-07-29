@@ -62,6 +62,10 @@ from gcampus.core.views.base import TitleMixin, TabsMixin
 logger = logging.getLogger("gcampus.auth.views.course")
 
 _TITLE = _("Course administration")
+_DESCRIPTION = _(
+    "Administer your GewässerCampus course. Edit your details, "
+    "manage and create access keys, and download your course documents."
+)
 _COURSE_TABS = TabNavigation(
     course=Tab(_("Course data"), url=reverse_lazy("gcampusauth:course-update")),
     access_keys=Tab(
@@ -77,6 +81,7 @@ class CourseUpdateView(TitleMixin, TabsMixin, UpdateView):
     template_name_suffix = "_edit_form"
     success_url = reverse_lazy("gcampusauth:course-update")
     title = _TITLE
+    description = _DESCRIPTION
     tabs = _COURSE_TABS
     current_tab_name = "course"
 
@@ -117,6 +122,7 @@ class AccessKeyCreateView(
     model = AccessKey
     success_url = reverse_lazy("gcampusauth:course-access-keys")
     title = _TITLE
+    description = _DESCRIPTION
     tabs = _COURSE_TABS
     current_tab_name = "access_keys"
 

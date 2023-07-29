@@ -36,6 +36,16 @@ class RegisterFormView(TitleMixin, CreateView):
     model = Course
     template_name_suffix = "_create_form"
     title = gettext_lazy("Register a new course")
+    description = gettext_lazy(
+        "Register your class or course and generate a list"
+        "of access keys for your students. "
+        "These keys can be used to create and later edit "
+        "measurements on GewässerCampus. "
+        "Alongside the generated access keys, you will also "
+        "receive a course token that should be kept "
+        "private. With this key you can view and edit all "
+        "your student's measurements."
+    )
     success_url = reverse_lazy("gcampuscore:mapview")
     object: Course
 

@@ -12,6 +12,7 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 import datetime
 import logging
 from inspect import cleandoc
@@ -20,7 +21,7 @@ from django.contrib import messages
 from django.core.mail import mail_managers
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.utils.translation import gettext
+from django.utils.translation import gettext, gettext_lazy
 from django.views.generic import DetailView
 from django.views.generic.edit import FormMixin
 
@@ -41,6 +42,11 @@ class MeasurementDetailView(FormMixin, TitleMixin, DetailView):
         "parameters"
     )
     template_name = "gcampuscore/sites/detail/measurement_detail.html"
+    description = gettext_lazy(
+        "Learn more about the measurement, explore nearby and similar "
+        "measurements, and download a PDF summary of this measurement "
+        "to discuss the results with others."
+    )
     form_class = ReportForm
     object: Measurement
 
