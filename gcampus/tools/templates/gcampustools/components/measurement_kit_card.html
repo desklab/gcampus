@@ -1,12 +1,13 @@
 {% load i18n %}
-<div class="col">
-    <div class="card p-3 mb-3 bg-light border-0">
-        <h1 class="text-primary">
-            {{ kit.short_name|safe }}
-        </h1>
-        <h5 class="text-secondary">
-            {{ kit.name }}
-        </h5>
-        <a href="{% url "gcampustools:od-converter-overview" pk_kit=kit.pk %}" class="stretched-link"></a>
-    </div>
+<div class="list-group-item list-group-item-action p-3">
+    <h1 class="text-primary">
+        <a class="icon-link icon-link-hover link-decoration-none-primary stretched-link" href="{% url "gcampustools:od-converter-overview" pk_kit=kit.pk %}">
+            {{ kit.short_name }}
+            {% include "gcampuscore/icons/arrow-right.html" %}
+        </a>
+    </h1>
+    <h5 class="text-secondary">
+        {{ kit.name }}
+    </h5>
+
 </div>

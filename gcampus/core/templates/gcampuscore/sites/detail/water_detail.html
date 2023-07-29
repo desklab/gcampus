@@ -5,8 +5,7 @@
     {% load_mapbox_css %}
 {% endblock %}
 {% block body_class %}d-flex flex-column min-vh-100{% endblock %}
-{% block main_class %}main-pt-0 px-0{% endblock %}
-{% block navbar_title %}<span>{{ object }}</span>{% endblock %}
+{% block main_class %}px-0{% endblock %}
 {% block content %}
     <div class="container-fluid px-0">
         <div class="bg-light" id="measurement-head">
@@ -29,16 +28,18 @@
                         {% if object.osm_id %} {# Links are only available for OSM entries #}
                             <div class="mb-2">
                                 <small class="text-muted">{% translate "Links" %}</small>
-                                <ul style="list-style-type: '&rarr;  ';">
-                                        <li>
-                                            <a class="link-dark" target="_blank" href="{{ object.osm_url }}">
-                                                {% translate "OpenStreetMap" %}
-                                            </a>
-                                        </li>
+                                <ul class="ps-0" style="list-style: none;">
+                                    <li>
+                                        <a class="icon-link icon-link-hover" target="_blank" href="{{ object.osm_url }}">
+                                            {% translate "OpenStreetMap" %}
+                                            {% include "gcampuscore/icons/arrow-right.html" %}
+                                        </a>
+                                    </li>
                                     {% if object.wikipedia_url %}
                                         <li>
-                                            <a class="link-dark" target="_blank" href="{{ object.wikipedia_url }}">
+                                            <a class="icon-link icon-link-hover" target="_blank" href="{{ object.wikipedia_url }}">
                                                 {% translate "Wikipedia" %}
+                                                {% include "gcampuscore/icons/arrow-right.html" %}
                                             </a>
                                         </li>
                                     {% endif %}

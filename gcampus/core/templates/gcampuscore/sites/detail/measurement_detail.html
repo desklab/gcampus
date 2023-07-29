@@ -5,8 +5,6 @@
     {% load_mapbox_css %}
 {% endblock %}
 {% block body_class %}d-flex flex-column min-vh-100{% endblock %}
-{% block main_class %}main-pt-0 px-0{% endblock %}
-{% block navbar_title %}<span>{{ object }}</span>{% endblock %}
 {% block modals %}
     {{ block.super }}
     {% for parameter in object.parameters.all %}
@@ -105,9 +103,10 @@
                                 <br>
                                 <h4>
                                     {% if object.water_name %}
-                                        <a class="link-decoration-none-secondary link-icon"
+                                        <a class="icon-link icon-link-hover "
                                            href="{% url "gcampuscore:water-detail" pk=object.water.pk %}">
                                             {{ object.water_name }}
+                                            {% include "gcampuscore/icons/arrow-right.html" %}
                                         </a>
                                     {% else %}
                                         {% translate "N/A" context "no value provided (water name, comment, etc)" %}

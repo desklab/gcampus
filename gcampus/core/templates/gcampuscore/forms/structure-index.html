@@ -5,11 +5,11 @@
     {% include "gcampuscore/components/measurement_discard_modal.html" with measurement=measurement only %}
 {% endblock %}
 {% block content %}
-    <div class="container">
+    <div class="container main-container">
         {{ tabs }}
         <div class="pt-4 row justify-content-center">
             <div class="col col-lg-10">
-                <form method="POST" id="StructureIndexForm" class="{% if form.errors %}has-validation{% endif %}">
+                <form method="POST" id="StructureIndexForm" class="py-3 {% if form.errors %}has-validation{% endif %}">
                     <h4><label class="mb-2">{% translate "Structural Assessment" %}</label></h4>
                     <div class="text-danger">
                         {% for error in formset.non_form_errors %}

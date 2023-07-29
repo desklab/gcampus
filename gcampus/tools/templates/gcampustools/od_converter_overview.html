@@ -1,16 +1,7 @@
 {% extends "gcampuscore/base.html" %}
 {% load i18n static list_iter %}
-{% block extra_head %}
-    {{ block.super }}
-    <script type="text/javascript" src="{% static 'gcampustools/js/calibration.js' %}"></script>
-{% endblock %}
-{% block main_class %}main-pb-0 main-pt-0{% endblock %}
-{% block navbar_title %}
-    {% translate "Optical Density Converter" %} ({{ kit.short_name }})
-{% endblock %}
-
 {% block content %}
-    <div class="container-fluid px-0">
+    <div class="container main-container">
         <div class="container">
             <div class="row">
                 <div class="col-12 col-xl-6 my-3">

@@ -1,11 +1,8 @@
 {% extends "gcampuscore/base.html" %}
 {% load i18n static %}
-{% block main_class %}main-pb-0 main-pt-0{% endblock %}
-{% block navbar_title %}
-    {% translate "Optical Density Converter" %} - {{ parameter.name }} ({{ kit.short_name }})
-{% endblock %}
+{% block main_class %}main-pb-0{% endblock %}
 {% block content %}
-    <div class="container-fluid px-0">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-md-7">
                 <div class="mx-1 my-3 p-2 bg-light border-0 row">

@@ -27,8 +27,11 @@
 }
 
 main {
-  padding-top: calc(#{$gcampus-navbar-height} + #{map-get($spacers, 3)});
-  &.main-pt-0 {
-    padding-top: $gcampus-navbar-height;
-  }
+  padding-top: calc(#{$gcampus-navbar-height});// + #{map-get($spacers, 3)});
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.main-container {
+  padding-top: calc(var(--#{$prefix}gutter-x) * .5);
 }

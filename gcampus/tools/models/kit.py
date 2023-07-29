@@ -43,8 +43,4 @@ class MeasurementKit(models.Model):
     color = models.CharField(blank=True, verbose_name=_("Color"), max_length=7)
 
     def __str__(self):
-        if self.pk is not None:
-            return _("#{pk:02d} ({name})").format(pk=self.pk, name=self.short_name)
-        else:
-            # In this case, ``pk`` will be replaced with ``None``
-            return _("Measurement kit - {pk}").format(pk=self.pk)
+        return self.name

@@ -1,19 +1,9 @@
 {% extends "gcampuscore/base.html" %}
 {% load i18n static list_iter %}
-{% block extra_head %}
-    {{ block.super }}
-    <script type="text/javascript" src="{% static 'gcampustools/js/calibration.js' %}"></script>
-{% endblock %}
-{% block main_class %}main-pb-0 main-pt-0{% endblock %}
-{% block navbar_title %}
-    {% translate "Tools" %}
-{% endblock %}
-
 {% block content %}
-    <div class="container-fluid">
-            <div class="row">
-
-                <div class="col-12 col-xl-6 my-3">
+    <div class="container main-container">
+        <div class="row g-3">
+            <div class="col-12 col-xl-6">
                     <div class="card p-3 bg-light border-0 text-center h-100">
                         <h1 class="text-primary">
                             {% include "gcampuscore/icons/calculator.html" %}
@@ -31,8 +21,7 @@
                         <a href="{% url "gcampustools:measurement-kit-overview" %}" class="stretched-link"></a>
                     </div>
                 </div>
-
-                <div class="col-12 col-xl-6 my-3">
+            <div class="col-12 col-xl-6">
                     <div class="card p-3 bg-light border-0 text-center h-100">
                         <h1 class="text-primary">
                             {% include "gcampuscore/icons/file-earmark-text.html" %}
@@ -49,7 +38,6 @@
                         <a href="https://desk-lab.de/docs/?query=&selection=54" class="stretched-link"></a>
                     </div>
                 </div>
-
         </div>
     </div>
 {% endblock %}
