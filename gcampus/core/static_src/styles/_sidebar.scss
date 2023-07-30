@@ -54,6 +54,9 @@ $sidebar-transition: .12s;
 
   .sidebar-item-icon {
     margin-right: map-get($spacers, 2);
+    .bi {
+      vertical-align: middle;
+    }
   }
 
   @include media-breakpoint-up(md) {
