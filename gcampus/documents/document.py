@@ -33,7 +33,7 @@ from django.contrib.staticfiles import finders
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.template.loader import render_to_string
 from weasyprint import HTML, Document
-from weasyprint.urls import URLFetchingError, default_url_fetcher
+from weasyprint.urls import default_url_fetcher
 
 from gcampus.core import get_base_url
 
