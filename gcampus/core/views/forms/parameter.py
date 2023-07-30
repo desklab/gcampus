@@ -22,10 +22,12 @@ from typing import Optional
 from django.http import HttpResponseRedirect, HttpRequest, Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateResponseMixin, View
 
 from gcampus.auth.exceptions import UnauthenticatedError, TokenEditPermissionError
 from gcampus.auth.models.token import BaseToken
+from gcampus.core.decorators import require_permission_edit_measurement
 from gcampus.core.forms.measurement import (
     ChemicalParameterFormSet,
     BiologicalParameterFormSet,
@@ -44,6 +46,10 @@ class BaseParameterFormSetView(MeasurementEditTabsMixin, TemplateResponseMixin, 
         super(BaseParameterFormSetView, self).__init__(**kwargs)
         self.instance: Optional[Measurement] = None
         self.token: Optional[BaseToken] = None
+
+    @method_decorator(require_permission_edit_measurement)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
     def get_success_url(self):
         return reverse(self.next_view_name, kwargs={"pk": self.instance.pk})
@@ -81,7 +87,7 @@ class BaseParameterFormSetView(MeasurementEditTabsMixin, TemplateResponseMixin, 
         """
         self.instance = self.get_instance(pk)
         self.token: BaseToken = request.token
-        if self.token is None:
+        if not self.token:
             raise UnauthenticatedError()
         if not self.token.has_perm("gcampuscore.change_measurement", obj=self.instance):
             raise TokenEditPermissionError()

@@ -20,10 +20,11 @@ from django.contrib.gis.geos import Point
 from django.db import transaction
 from django.forms.utils import ErrorList
 from django.urls import reverse
+from django.utils.timezone import now
 from rest_framework.throttling import SimpleRateThrottle
 
 from gcampus.auth.models import CourseToken, AccessKey, Course, BaseToken
-from gcampus.core.models import Water
+from gcampus.core.models import Water, Measurement
 from gcampus.core.models.water import WaterType
 
 
@@ -106,3 +107,45 @@ class LoginTestMixin(ThrottleTestMixin):
         else:
             raise NotImplementedError()
         return self.client.post(url, dict(token=token.token))
+
+    def logout(self):
+        self.client.get(reverse("gcampusauth:logout"))
+
+
+class MeasurementTestMixin(TokenTestMixin, WaterTestMixin):
+    view: str
+    _location = Point(x=8.684231, y=49.411955)
+
+    def setUp(self):
+        super().setUp()  # Creates tokens, water, etc.
+        self.access_key = self.tokens[0]
+        self.measurement = Measurement(
+            token=self.access_key,
+            name="Test Measurement",
+            water=self.water,
+            location=self._location,
+            time=now(),
+        )
+        self.measurement.save()
+
+    def _get_form_data(self) -> dict:
+        raise NotImplementedError(
+            "Tests have to implement the '_get_form_data' method."
+        )
+
+    def _get_url(self) -> str:
+        if not hasattr(self, "view"):
+            raise NotImplementedError(
+                "Tests have to provide the 'view' class attribute."
+            )
+        return reverse(self.view, kwargs={"pk": self.measurement.pk})
+
+    def _test_view_get(self, status_code: int):
+        response = self.client.get(self._get_url())
+        self.assertEqual(response.status_code, status_code)
+        return response
+
+    def _test_view_post(self, status_code: int):
+        response = self.client.post(self._get_url(), self._get_form_data())
+        self.assertEqual(response.status_code, status_code)
+        return response
