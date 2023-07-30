@@ -25,12 +25,12 @@
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
-    "eslint": "^8.45.0",
+    "eslint": "^8.46.0",
     "extract-loader": "^4.0.3",
     "file-loader": "^6.2.0",
     "postcss": "^8.4.27",
     "postcss-loader": "^7.3.3",
-    "sass": "^1.64.0",
+    "sass": "^1.64.1",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
     "terser-webpack-plugin": "^5.3.9",
@@ -41,8 +41,8 @@
   "dependencies": {
     "@mapbox/mapbox-gl-geocoder": "^5.0.1",
     "@popperjs/core": "^2.11.8",
-    "bootstrap": "^5.3.0",
-    "chart.js": "^4.3.0",
+    "bootstrap": "^5.3.1",
+    "chart.js": "^4.3.2",
     "chartjs-plugin-annotation": "^3.0.1",
     "mapbox-gl": "^2.15.0"
   }
