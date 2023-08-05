@@ -1,0 +1,14 @@
+{% load i18n %}
+<script type="text/html" id="errorPopupTemplate">
+    <div class="d-flex justify-content-center align-items-start p-2">
+        <h6>
+            {% include "gcampuscore/icons/exclamation-triangle-fill.html" with extra_class="flex-shrink-0 me-3" only %}
+        </h6>
+        <div>
+            <h6><b>{% translate "Error" %}</b></h6>
+            <p class="mb-0">
+                {% translate "Unable to load the data for this entry." %}
+            </p>
+        </div>
+    </div>
+</script>

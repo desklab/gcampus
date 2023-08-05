@@ -372,9 +372,9 @@
     </div>
 {% endblock %}
 {% block extra_body %}
-    <script type="text/html" id="measurementPopupTemplate">
-        {% include "gcampuscore/components/map_popup.html" %}
-    </script>
+    {% include "gcampuscore/components/map_popup.html" %}
+    {% include "gcampusmap/components/map_loading.html" %}
+    {% include "gcampusmap/components/map_error.html" %}
     <script>
         function loadCluster(event) {
             let map = event.target;

@@ -19,10 +19,17 @@
 @import "../../../core/static_src/styles/colors";
 @import "../../../core/static_src/styles/variables";
 @import "node_modules/bootstrap/scss/variables";
-
+@import "node_modules/bootstrap/scss/mixins";
 
 @import "node_modules/mapbox-gl/dist/mapbox-gl";
 @import "node_modules/@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder";
+
+.mapboxgl-map {
+  font-family: var(--#{$prefix}body-font-family);
+  @include font-size(var(--#{$prefix}body-font-size));
+  font-weight: var(--#{$prefix}body-font-weight);
+  line-height: var(--#{$prefix}body-line-height);
+}
 
 .mapboxgl-ctrl-geocoder {
   border-radius: 0;

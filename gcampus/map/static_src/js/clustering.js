@@ -22,11 +22,8 @@ function getContentElement(parent, contentType) {
     return parent.querySelector('[data-content-type="' + contentType + '"]');
 }
 
-function createMeasurementPopup(coords, map, data, template) {
-    let popup = new mapboxgl.Popup()
-        .setLngLat(coords)
-        .setHTML(template)
-        .addTo(map);
+function createMeasurementPopup(popup, data, template) {
+    popup.setHTML(template);
     let item = popup.getElement().querySelector('.mapboxgl-popup-content');
     let {name, time, parameters, url, water} = data.properties;
     let waterName = water.display_name;
@@ -191,6 +188,12 @@ function setupCluster(url, map) {
     const measurementPopupTemplate = (
         document.getElementById('measurementPopupTemplate').text
     );
+    const errorPopupTemplate = (
+        document.getElementById('errorPopupTemplate').text
+    );
+    const loadingPopupTemplate = (
+        document.getElementById('loadingPopupTemplate').text
+    );
     const rootStyle = getComputedStyle(document.documentElement);
     const unknownColor = rootStyle.getPropertyValue('--gcampus-unknown-water');
     const runningCase = ['==', ['get', 'water_flow_type'], 'running'];
@@ -312,7 +315,9 @@ function setupCluster(url, map) {
         }
         let measurementId = e.features[0].id;
         let data = measurementCache[measurementId];
+        let popup = new mapboxgl.Popup().setLngLat(coordinates).addTo(map);
         if (!data) {
+            popup.setHTML(loadingPopupTemplate);
             fetch(detailApiUrl + String(measurementId) + '/', {
                 method: 'get',
                 mode: 'cors',
@@ -324,10 +329,12 @@ function setupCluster(url, map) {
             }).then(response => response.json())
                 .then(data => {
                     measurementCache[measurementId] = data;
-                    createMeasurementPopup(coordinates, map, data, measurementPopupTemplate);
+                    createMeasurementPopup(popup, data, measurementPopupTemplate);
+                }).catch(err => {
+                    popup.setHTML(errorPopupTemplate);
                 });
         } else{
-            createMeasurementPopup(coordinates, map, data, measurementPopupTemplate);
+            createMeasurementPopup(popup, data, measurementPopupTemplate);
         }
     });
 }

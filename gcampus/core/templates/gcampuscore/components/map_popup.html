@@ -1,21 +1,23 @@
-<a class='text-bold text-dark text-decoration-none' href="">
-    <div class='px-2 container'>
-        <div class='pt-2'>
-            <span class='fs-6 text-bolder' data-content-type="waterName"></span>
-            <div class="mt-1">
-                <div class="indicator-list" data-content-type="parameterList"></div>
+<script type="text/html" id="measurementPopupTemplate">
+    <a class='text-bold text-dark text-decoration-none' href="">
+        <div class='px-2 container'>
+            <div class='pt-2'>
+                <span class='fs-6 text-bolder' data-content-type="waterName"></span>
+                <div class="mt-1">
+                    <div class="indicator-list" data-content-type="parameterList"></div>
+                </div>
+            </div>
+            <hr class='py-0 my-2'>
+            <div class='text-secondary'>
+                <div>
+                    {% include "gcampuscore/icons/people.html" %}
+                    <span class='ms-2 align-middle' data-content-type="measurementName"></span>
+                </div>
+                <div>
+                    {% include "gcampuscore/icons/calendar4-event.html" %}
+                    <span class='ms-2 align-middle' data-content-type="measurementTime"></span>
+                </div>
             </div>
         </div>
-        <hr class='py-0 my-2'>
-        <div class='text-secondary'>
-            <div>
-                {% include "gcampuscore/icons/people.html" %}
-                <span class='ms-2 align-middle' data-content-type="measurementName"></span>
-            </div>
-            <div>
-                {% include "gcampuscore/icons/calendar4-event.html" %}
-                <span class='ms-2 align-middle' data-content-type="measurementTime"></span>
-            </div>
-        </div>
-    </div>
-</a>
+    </a>
+</script>

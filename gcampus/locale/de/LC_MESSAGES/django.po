@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-29 18:56+0200\n"
+"POT-Creation-Date: 2023-08-05 14:59+0200\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Axel Schlindwein <a.schlindwein@desk-lab.de>\n"
 "Language-Team: \n"
@@ -293,7 +293,7 @@ msgstr "Messungen des Kurses"
 
 #: gcampus/auth/templates/gcampusauth/components/auth_menu.html:15
 #: gcampus/auth/views/course.py:64
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:17
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:23
 msgid "Course administration"
 msgstr "Kursverwaltung"
 
@@ -303,7 +303,7 @@ msgid "Your Measurements"
 msgstr "Deine Messungen"
 
 #: gcampus/auth/templates/gcampusauth/components/auth_menu.html:28
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:43
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:49
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -655,6 +655,7 @@ msgstr "Mit <b>Zugangscode</b> anmelden"
 #: gcampus/auth/templates/gcampusauth/login_form.html:98
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:88
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:102
+#: gcampus/map/templates/gcampusmap/components/map_error.html:8
 msgid "Error"
 msgstr "Fehler"
 
@@ -1629,21 +1630,28 @@ msgid ""
 "Scientists to publish their measurements and analyze the data from all "
 "measurements to understand and explore the quality of waters."
 msgstr ""
-"In der Webanwendung GewässerCampus können Schüler:innen, Lehrkräfte "
-"und Citizen Scientists eigene Messwerte veröffentlichen und den "
-"Datensatz aller Ergebnisse analysieren"
+"In der Webanwendung GewässerCampus können Schüler:innen, Lehrkräfte und "
+"Citizen Scientists eigene Messwerte veröffentlichen und den Datensatz aller "
+"Ergebnisse analysieren"
 
-#: gcampus/core/templates/gcampuscore/base.html:108
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:36
+#: gcampus/core/templates/gcampuscore/base.html:100
+#: gcampus/core/templates/gcampuscore/base.html:101
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:8
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:9
+msgid "Expand sidebar"
+msgstr ""
+
+#: gcampus/core/templates/gcampuscore/base.html:112
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:42
 msgid "New Measurement"
 msgstr "Neue Messung"
 
-#: gcampus/core/templates/gcampuscore/base.html:114
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:46
+#: gcampus/core/templates/gcampuscore/base.html:118
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:52
 msgid "Log in"
 msgstr "Anmelden"
 
-#: gcampus/core/templates/gcampuscore/base.html:125
+#: gcampus/core/templates/gcampuscore/base.html:129
 msgid ""
 "You are currently using a test instance of GewässerCampus. Data is most "
 "likely fictional and does not represent real measurements. Courses and data "
@@ -1817,27 +1825,27 @@ msgstr ""
 msgid "Submit"
 msgstr "Abschicken"
 
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:14
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:20
 msgctxt "explore page title"
 msgid "Explore"
 msgstr "Erkunden"
 
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:15
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:21
 msgctxt "filter page title"
 msgid "All Measurements"
 msgstr "Alle Messungen"
 
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:16
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:22
 msgctxt "water page title"
 msgid "All Waters"
 msgstr "Alle Gewässer"
 
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:18
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:24
 #: gcampus/tools/views.py:35
 msgid "Tools"
 msgstr "Werkzeuge"
 
-#: gcampus/core/templates/gcampuscore/components/sidebar.html:55
+#: gcampus/core/templates/gcampuscore/components/sidebar.html:61
 msgid "About the project"
 msgstr "Über das Projekt"
 
@@ -1892,6 +1900,7 @@ msgid "Select a location on the map to load nearby waters"
 msgstr "Wähle einen Standort auf der Karte um umliegende Gewässer zu laden"
 
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:124
+#: gcampus/map/templates/gcampusmap/components/map_loading.html:4
 msgid "Loading ..."
 msgstr "Lädt ..."
 
@@ -2242,8 +2251,8 @@ msgid ""
 "Learn more about the water '{water}' and explore all measurements that have "
 "been recorded at this water on GewässerCampus."
 msgstr ""
-"Erfahre mehr über das Gewässer \"{water}\" und erkunde alle Messungen "
-"die dort aufgezeichnet wurden."
+"Erfahre mehr über das Gewässer \"{water}\" und erkunde alle Messungen die "
+"dort aufgezeichnet wurden."
 
 #: gcampus/core/views/forms/measurement.py:56
 msgid "Looking for nearby waters on OpenStreetMap."
@@ -2312,50 +2321,50 @@ msgid ""
 "List of all the waters recorded on GewässerCampus. You can browse the waters "
 "and view all measurements for a specific water."
 msgstr ""
-"Liste aller Gewässer auf GewässerCampus. Du kannst die Gewässer erkunden "
-"und alle Messungen eines Gewässers untersuchen."
+"Liste aller Gewässer auf GewässerCampus. Du kannst die Gewässer erkunden und "
+"alle Messungen eines Gewässers untersuchen."
 
-#: gcampus/core/widgets.py:44
+#: gcampus/core/widgets.py:43
 msgid "Hour"
 msgstr "Stunde"
 
-#: gcampus/core/widgets.py:48
+#: gcampus/core/widgets.py:47
 msgctxt "hour input short"
 msgid "HH"
 msgstr ""
 
-#: gcampus/core/widgets.py:51
+#: gcampus/core/widgets.py:50
 msgid "Minute"
 msgstr "Minute"
 
-#: gcampus/core/widgets.py:55
+#: gcampus/core/widgets.py:54
 msgctxt "minute input short"
 msgid "MM"
 msgstr "MM"
 
-#: gcampus/core/widgets.py:79
+#: gcampus/core/widgets.py:78
 msgid "Day"
 msgstr "Tag"
 
-#: gcampus/core/widgets.py:83
+#: gcampus/core/widgets.py:82
 msgctxt "day input short"
 msgid "DD"
 msgstr "TT"
 
-#: gcampus/core/widgets.py:86
+#: gcampus/core/widgets.py:85
 msgid "Month"
 msgstr "Monat"
 
-#: gcampus/core/widgets.py:90
+#: gcampus/core/widgets.py:89
 msgctxt "month input short"
 msgid "MM"
 msgstr "MM"
 
-#: gcampus/core/widgets.py:97
+#: gcampus/core/widgets.py:96
 msgid "Year"
 msgstr "Jahr"
 
-#: gcampus/core/widgets.py:98
+#: gcampus/core/widgets.py:97
 msgctxt "year input short"
 msgid "YYYY"
 msgstr "JJJJ"
@@ -2894,6 +2903,10 @@ msgstr ""
 #: gcampus/map/apps.py:23
 msgid "GCampus Map"
 msgstr "GCampus Karte"
+
+#: gcampus/map/templates/gcampusmap/components/map_error.html:10
+msgid "Unable to load the data for this entry."
+msgstr "Die Daten für diesen Eintrag konnten nicht geladen werden."
 
 #: gcampus/settings/base.py:201
 msgid "English"
