@@ -115,6 +115,24 @@ class MeasurementListPDF(ListDocumentView):
     filename = gettext_lazy("gewaessercampus-measurement-list.pdf")
     context_object_name = "measurements"
     model = Measurement
+    queryset = (
+        Measurement.objects.order_by("time")
+        .prefetch_related("parameters")
+        .prefetch_related("parameters__parameter_type")
+        .select_related("water")
+        .only(
+            "id",
+            "location",
+            "time",
+            "water_id",
+            "water__flow_type",
+            "water__water_type",
+            "water__name",
+            "parameters__value",
+            "parameters__parameter_type__name",
+            "parameters__parameter_type__unit",
+        )
+    )
     filter: MeasurementFilterSet
 
     def get_bbox(self) -> Tuple[float, float, float, float]:
@@ -155,17 +173,16 @@ class MeasurementListPDF(ListDocumentView):
             }
         if context_object_name is not None:
             context[context_object_name] = queryset
-        kwargs["measurement_count"] = queryset.count()
+        simple_queryset = queryset.all().prefetch_related(None)
+        kwargs["measurement_count"] = simple_queryset.all().count()
         kwargs["water_count"] = (
-            queryset.only("water").order_by().distinct("water").count()
+            simple_queryset.all().only("water").order_by().distinct("water").count()
         )
-        kwargs["time_first"] = (
-            queryset.only("time").values_list("time", flat=True).earliest("time")
-        )
-        kwargs["time_last"] = (
-            queryset.only("time").values_list("time", flat=True).latest("time")
-        )
-        points: List[Point] = queryset.all().values_list("location", flat=True)
+        time_query = simple_queryset.all().only("time").values_list("time", flat=True)
+        kwargs["time_first"] = time_query.all().earliest("time")
+        kwargs["time_last"] = time_query.all().latest("time")
+
+        points: List[Point] = simple_queryset.all().values_list("location", flat=True)
         map_bytes: bytes
         clustered: bytes
 

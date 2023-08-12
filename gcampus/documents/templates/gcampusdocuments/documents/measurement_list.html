@@ -114,11 +114,11 @@
                 {% for measurement in measurements %}
                     <div class="measurementdata-item">
                             <span class="measurementdata-id">
-                                # {{ measurement.pk|stringformat:"05d" }}
+                                {{ measurement.pk|stringformat:"05d" }}
                             </span>
                         <i class="circle-icon water-icon {{ measurement.water.flow_type }}"></i>
                         <span>
-                                {{ measurement.water_name }} ({{ measurement.time|date:"Y-m-d" }})
+                                {{ measurement.water_name }} ({{ measurement.time|date:"SHORT_DATETIME_FORMAT" }})
                             </span>
                         <br>
                         <div class="measurementdata-parameters">
