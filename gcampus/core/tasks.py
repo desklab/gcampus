@@ -27,7 +27,8 @@ from django.utils import timezone, translation
 
 from gcampus.auth.models import Course, AccessKey, CourseToken
 from gcampus.auth.receivers import update_access_key_documents
-from gcampus.core.models import Measurement, Water
+from gcampus.core.models import Measurement, Water, Parameter
+from gcampus.core.receivers import update_measurement_document
 from gcampus.documents.tasks import render_cached_document_view
 from gcampus.mail.messages.maintenance import (
     MaintenanceAccessKeys,
@@ -193,7 +194,12 @@ def staging_maintenance():
     measurements = Measurement.all_objects.filter(
         Q(hidden=True) | Q(updated_at__lt=now - settings.MEASUREMENT_LIFETIME_STAGING)
     )
-    total, detail = measurements.delete()
+    try:
+        # Detach post_delete for all parameters
+        post_delete.disconnect(receiver=update_measurement_document, sender=Parameter)
+        total, detail = measurements.delete()
+    finally:
+        post_delete.connect(receiver=update_measurement_document, sender=Parameter)
     measurement_count = detail.get("gcampuscore.Measurement", 0)
 
     # Delete all old access keys
@@ -201,7 +207,11 @@ def staging_maintenance():
     access_keys = AccessKey.objects.filter(
         Q(last_login__isnull=True) | Q(last_login__lt=course_deletion_date)
     )
-    total, detail = access_keys.delete()
+    try:
+        post_delete.disconnect(receiver=update_access_key_documents, sender=AccessKey)
+        total, detail = access_keys.delete()
+    finally:
+        post_delete.connect(receiver=update_access_key_documents, sender=AccessKey)
     access_key_count = detail.get("gcampusauth.AccessKey", 0)
 
     # Delete all old courses
@@ -212,12 +222,17 @@ def staging_maintenance():
         | Q(course_token__last_login__lt=course_deletion_date),
     )
     course_token_count = 0
-    for course in courses:
-        _, detail = AccessKey.objects.filter(course=course).delete()
-        access_key_count += detail.get("gcampusauth.AccessKey", 0)
-        _, detail = CourseToken.objects.filter(course=course).delete()
-        course_token_count += detail.get("gcampusauth.CourseToken", 0)
-    _, detail = courses.delete()
+    try:
+        post_delete.disconnect(receiver=update_access_key_documents, sender=AccessKey)
+        for course in courses:
+            _, detail = AccessKey.objects.filter(course=course).delete()
+            access_key_count += detail.get("gcampusauth.AccessKey", 0)
+            _, detail = CourseToken.objects.filter(course=course).delete()
+            course_token_count += detail.get("gcampusauth.CourseToken", 0)
+        _, detail = courses.delete()
+    finally:
+        post_delete.connect(receiver=update_access_key_documents, sender=AccessKey)
+
     course_count = detail.get("gcampusauth.Course", 0)
 
     mail_managers(

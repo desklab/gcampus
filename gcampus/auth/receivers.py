@@ -86,7 +86,7 @@ def update_access_key_documents(
     :param sender: The sender. This is always the type
         :class:`AccessKey`
     :param instance: The modified instance. Used to retrieve the
-        associated course token.
+        associated course.
     :param args: Additional arguments passed by the signal
     :param update_fields: Optional list of updated fields
     :param kwargs: Additional keyword arguments passed by the signal
