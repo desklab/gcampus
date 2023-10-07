@@ -28,7 +28,7 @@
     "eslint": "^8.46.0",
     "extract-loader": "^4.0.3",
     "file-loader": "^6.2.0",
-    "postcss": "^8.4.27",
+    "postcss": "^8.4.31",
     "postcss-loader": "^7.3.3",
     "sass": "^1.64.1",
     "sass-loader": "^13.3.2",
