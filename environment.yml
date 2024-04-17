@@ -7,6 +7,6 @@ dependencies:
   - pip=24
   - libgdal>=3.8.5,<3.9.0a0
   - glib>=2.80.0,<3.0a0
-  - pango=1.50
+  - pango>=1.52.2,<2.0a0
   - pip:
       - '-r requirements-dev.txt'
