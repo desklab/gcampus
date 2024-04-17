@@ -4,9 +4,9 @@ channels:
   - defaults
 dependencies:
   - python=3.11
-  - pip=23
-  - libgdal=3.6
-  - glib=2.76
+  - pip=24
+  - libgdal>=3.8.5,<3.9.0a0
+  - glib>=2.80.0,<3.0a0
   - pango=1.50
   - pip:
       - '-r requirements-dev.txt'
