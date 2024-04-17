@@ -14,6 +14,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+from hashlib import md5
 from typing import Tuple, Optional, List
 from urllib.parse import quote, urljoin
 
@@ -22,7 +23,6 @@ from django.conf import settings
 from django.contrib.gis.geos import Point, MultiPoint
 from django.core.cache import cache
 from django.urls import reverse
-from django.utils.crypto import md5
 
 from gcampus.core import get_base_url
 from gcampus.map.clustering import mean_shift_clustering
@@ -75,7 +75,7 @@ def _create_cluster_marker(point: Point, count: int) -> str:
 
 def _get_cache_key(url: str) -> str:
     """Generate a cache key for static map images. To simplify and
-    declutter the key, a md5 hash is used. Note that security is
+    declutter the key, a md5 hash is used. Note that security is not
     crucial here, as the key is only used for cache lookups.
     """
     hasher = md5(url.encode(), usedforsecurity=False)
