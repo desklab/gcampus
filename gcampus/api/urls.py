@@ -32,7 +32,9 @@ router_v1.register(r"datatypes", ParameterTypeAPIViewSet)
 router_v1.register(r"datapoints", ParameterAPIViewSet)
 router_v1.register(r"waters", WaterAPIViewSet)
 router_v1.register(r"waterlookup", WaterLookupAPIViewSet, basename="waterlookup")
-router_v1.register(r"overpasslookup", OverpassLookupAPIViewSet, basename="waterlookup")
+router_v1.register(
+    r"overpasslookup", OverpassLookupAPIViewSet, basename="overpasslookup"
+)
 
 urlpatterns = [path("", include(router_v1.urls))]
 
