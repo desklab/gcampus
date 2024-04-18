@@ -18,134 +18,162 @@
                         </a>
                     </div>
                 </div>
-            <div class="mt-3">
-                {% blocktranslate context "help text register" trimmed %}
-                    Register your class or course and generate a list
-                    of <b>access keys</b> for your students.
-                    These keys can be used to create and later edit
-                    measurements on GewässerCampus. <br><br>
-                    Alongside the generated access keys, you will also
-                    receive a <b>course token</b> that should be kept
-                    private. With this key you can view and edit all
-                    your student's measurements.
-                {% endblocktranslate %}
-            </div>
-    </div>
-
-    <div class="px-5 py-3 my-3">
-        {% with form.school_name as field %}
-            <div class="mb-3">
-                <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h4>
-                {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
-            </div>
-        {% endwith %}
-        <div class="box box-info mb-3">
-            {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
-            {% blocktranslate context "help text school name" trimmed %}
-                The name of the school or educational institution
-                requesting new tokens. This information will not be
-                shared publicly but helps us to associate
-                measurements with your school or institution.
-            {% endblocktranslate %}
-        </div>
-    </div>
-
-    <div class="px-5 py-3 my-3">
-        {% with form.teacher_name as field %}
-            <div class="mb-3">
-                <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h4>
-                {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
-            </div>
-        {% endwith %}
-        <div class="box box-info mb-3">
-            {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
-            {% blocktranslate context "help text teacher name" trimmed %}
-                Your name or the name of a representative. This
-                information will also be kept private and is only
-                used for communication.
-            {% endblocktranslate %}
-        </div>
-    </div>
-
-    <div class="px-5 py-3 my-3">
-        {% with form.name as field %}
-            <div class="mb-3">
-                <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h4>
-                {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
-            </div>
-        {% endwith %}
-        <div class="box box-info mb-3">
-            {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
-            {% blocktranslate context "help text course key name" trimmed %}
-                You can choose to assign a name to the course key to
-                better differentiate the tokens from one another.
-            {% endblocktranslate %}
-        </div>
-    </div>
-
-    <div class="px-5 py-3 my-3">
-        {% with form.teacher_email as field %}
-            <div class="mb-3">
-                <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h4>
-                {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
-            </div>
-        {% endwith %}
-        <div class="box box-info mb-3">
-            {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
-            {% blocktranslate trimmed %}
-                Your Email address will only be used to send you the
-                Course token and the Access keys. <br>
-                In case we need to contact you this Email address
-                wil be used.
-            {% endblocktranslate %}
-        </div>
-    </div>
-
-    <div class="px-5 py-3 my-3">
-        {% with form.number_of_access_keys as field %}
-            <div class="mb-3">
-                <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h4>
-                {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
-            </div>
-        {% endwith %}
-        <div class="box box-info mb-3">
-            {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
-            {% blocktranslate with maximum=form.number_of_access_keys.field.max_value context "help text number of acess keys" trimmed %}
-                The number of access keys you want to generate. You
-                can create a maximum of {{ maximum }} access keys at
-                once. <br>
-                Students may share one access key in a group so not
-                everyone needs their own access key.<br>
-                If you want to add measurements by yourself,
-                you should create one additional access key.
-            {% endblocktranslate %}
-        </div>
-    </div>
-
-    <div class="px-5 py-3 my-3">
-        <div class="mb-3">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="TermsCheckbox" required>
-                <label class="form-check-label" for="TermsCheckbox">
-                    {% blocktranslate context "register form accept terms" trimmed %}
-                        I do accept the <a href="https://gewaessercampus.de/terms">terms and conditions</a>
-                        as well as the
-                        <a href="https://gewaessercampus.de/gdp">privacy policy</a> for using this web
-                        application.
+                <div class="mt-3">
+                    {% blocktranslate context "help text register" trimmed %}
+                        Register your class or course and generate a list
+                        of <b>access keys</b> for your students.
+                        These keys can be used to create and later edit
+                        measurements on GewässerCampus. <br><br>
+                        Alongside the generated access keys, you will also
+                        receive a <b>course token</b> that should be kept
+                        private. With this key you can view and edit all
+                        your student's measurements.
                     {% endblocktranslate %}
-                </label>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="px-5 pb-5">
-        <a type="button" class="btn btn-secondary btn-lg me-3" href="/">
-            {% translate "Discard" %}
-        </a>
-        <button class="btn btn-primary btn-lg" type="submit">
-            {% translate "Register" %}
-        </button>
-    </div>
-    </form>
+            <div class="px-5">
+                <div class="text-danger">
+                    {% for error in form.non_field_errors %}
+                        <p><b>{{ error }}</b></p>
+                    {% endfor %}
+                    {% for error in form.token_errors %}
+                        <p><b>{{ error }}</b></p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="px-5 py-3 my-3">
+                {% with form.school_name as field %}
+                    <div class="mb-3">
+                        <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h4>
+                        {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                    </div>
+                    {% for error in field.errors %}
+                        <p class="text-danger{% if forloop.last %} mb-3{% endif %}"><b>{{ error }}</b></p>
+                    {% endfor %}
+                {% endwith %}
+                <div class="box box-info mb-3">
+                    {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                    {% blocktranslate context "help text school name" trimmed %}
+                        The name of the school or educational institution
+                        requesting new tokens. This information will not be
+                        shared publicly but helps us to associate
+                        measurements with your school or institution.
+                    {% endblocktranslate %}
+                </div>
+            </div>
+
+            <div class="px-5 py-3 my-3">
+                {% with form.teacher_name as field %}
+                    <div class="mb-3">
+                        <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h4>
+                        {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                        {% for error in field.errors %}
+                            <p class="text-danger"><b>{{ error }}</b></p>
+                        {% endfor %}
+                    </div>
+                {% endwith %}
+                <div class="box box-info mb-3">
+                    {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                    {% blocktranslate context "help text teacher name" trimmed %}
+                        Your name or the name of a representative. This
+                        information will also be kept private and is only
+                        used for communication.
+                    {% endblocktranslate %}
+                </div>
+            </div>
+
+            <div class="px-5 py-3 my-3">
+                {% with form.name as field %}
+                    <div class="mb-3">
+                        <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h4>
+                        {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                    </div>
+                    {% for error in field.errors %}
+                        <p class="text-danger{% if forloop.last %} mb-3{% endif %}"><b>{{ error }}</b></p>
+                    {% endfor %}
+                {% endwith %}
+                <div class="box box-info mb-3">
+                    {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                    {% blocktranslate context "help text course key name" trimmed %}
+                        You can choose to assign a name to the course key to
+                        better differentiate the tokens from one another.
+                    {% endblocktranslate %}
+                </div>
+            </div>
+
+            <div class="px-5 py-3 my-3">
+                {% with form.teacher_email as field %}
+                    <div class="mb-3">
+                        <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h4>
+                        {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                        {% for error in field.errors %}
+                            <p class="text-danger"><b>{{ error }}</b></p>
+                        {% endfor %}
+                    </div>
+                {% endwith %}
+                <div class="box box-info mb-3">
+                    {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                    {% blocktranslate trimmed %}
+                        Your Email address will only be used to send you the
+                        Course token and the Access keys. <br>
+                        In case we need to contact you this Email address
+                        wil be used.
+                    {% endblocktranslate %}
+                </div>
+            </div>
+
+            <div class="px-5 py-3 my-3">
+                {% with form.number_of_access_keys as field %}
+                    <div class="mb-3">
+                        <h4>{% include "gcampuscore/forms/components/label.html" with class="mb-2" %}</h4>
+                        {% include "gcampuscore/forms/widgets/input.html" with widget=field.subwidgets.0.data %}
+                        {% for error in field.errors %}
+                            <p class="text-danger"><b>{{ error }}</b></p>
+                        {% endfor %}
+                    </div>
+                {% endwith %}
+                <div class="box box-info mb-3">
+                    {% include "gcampuscore/icons/info-circle-fill.html" with extra_class="flex-shrink-0 me-1" %}
+                    {% blocktranslate with maximum=form.number_of_access_keys.field.max_value context "help text number of acess keys" trimmed %}
+                        The number of access keys you want to generate. You
+                        can create a maximum of {{ maximum }} access keys at
+                        once. <br>
+                        Students may share one access key in a group so not
+                        everyone needs their own access key.<br>
+                        If you want to add measurements by yourself,
+                        you should create one additional access key.
+                    {% endblocktranslate %}
+                </div>
+            </div>
+
+            <div class="px-5 py-3 my-3">
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="TermsCheckbox" required>
+                        <label class="form-check-label" for="TermsCheckbox">
+                            {% blocktranslate context "register form accept terms" trimmed %}
+                                I do accept the <a href="https://gewaessercampus.de/terms">terms and conditions</a>
+                                as well as the
+                                <a href="https://gewaessercampus.de/gdp">privacy policy</a> for using this web
+                                application.
+                            {% endblocktranslate %}
+                        </label>
+                    </div>
+                    {% for error in field.errors %}
+                        <p class="text-danger"><b>{{ error }}</b></p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="px-5 pb-5">
+                <a type="button" class="btn btn-secondary btn-lg me-3" href="/">
+                    {% translate "Discard" %}
+                </a>
+                <button class="btn btn-primary btn-lg" type="submit">
+                    {% translate "Register" %}
+                </button>
+            </div>
+        </form>
     </div>
     <div class="mt-4">
         {% include "gcampusauth/components/footer.html" %}
