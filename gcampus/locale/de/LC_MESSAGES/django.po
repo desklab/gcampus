@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-05 14:59+0200\n"
+"POT-Creation-Date: 2024-04-18 02:12+0200\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Axel Schlindwein <a.schlindwein@desk-lab.de>\n"
 "Language-Team: \n"
@@ -368,7 +368,7 @@ msgstr ""
 "außerdem einen <b>Kursschlüssel</b> erhalten. Dieser sollte privat bleiben, "
 "da du damit alle Messungen deines Kurses verwalten kannst."
 
-#: gcampus/auth/templates/gcampusauth/course_create_form.html:44
+#: gcampus/auth/templates/gcampusauth/course_create_form.html:57
 msgctxt "help text school name"
 msgid ""
 "The name of the school or educational institution requesting new tokens. "
@@ -379,7 +379,7 @@ msgstr ""
 "werden sollen. Diese Daten werden nur für eine bessere Zuordnung der "
 "Zugangscodes intern von desklab verwendet und nicht veröffentlicht."
 
-#: gcampus/auth/templates/gcampusauth/course_create_form.html:62
+#: gcampus/auth/templates/gcampusauth/course_create_form.html:78
 msgctxt "help text teacher name"
 msgid ""
 "Your name or the name of a representative. This information will also be "
@@ -389,14 +389,14 @@ msgstr ""
 "Registrierung ist. Dieser Name wird nicht veröffentlicht und dient lediglich "
 "für die Kommunikation zwischen der Lehrkraft und desklab."
 
-#: gcampus/auth/templates/gcampusauth/course_create_form.html:79
+#: gcampus/auth/templates/gcampusauth/course_create_form.html:98
 msgctxt "help text course key name"
 msgid ""
 "You can choose to assign a name to the course key to better differentiate "
 "the tokens from one another."
 msgstr "Vergebe einen Namen für diesen Kurs, um den Überblick zu behalten."
 
-#: gcampus/auth/templates/gcampusauth/course_create_form.html:95
+#: gcampus/auth/templates/gcampusauth/course_create_form.html:117
 msgid ""
 "Your Email address will only be used to send you the Course token and the "
 "Access keys. <br> In case we need to contact you this Email address wil be "
@@ -406,7 +406,7 @@ msgstr ""
 "Kursschlüssel zu versenden. <br>Diese E-Mail-Adresse wird auch verwendet, "
 "falls wir dich kontaktieren müssen."
 
-#: gcampus/auth/templates/gcampusauth/course_create_form.html:113
+#: gcampus/auth/templates/gcampusauth/course_create_form.html:138
 #, python-format
 msgctxt "help text number of acess keys"
 msgid ""
@@ -421,7 +421,7 @@ msgstr ""
 "verwendet werden. Falls du selbst auch Messungen erstellen willst, solltest "
 "du einen zusätzlichen Zugangscode für dich erstellen."
 
-#: gcampus/auth/templates/gcampusauth/course_create_form.html:130
+#: gcampus/auth/templates/gcampusauth/course_create_form.html:155
 msgctxt "register form accept terms"
 msgid ""
 "I do accept the <a href=\"https://gewaessercampus.de/terms\">terms and "
@@ -432,7 +432,7 @@ msgstr ""
 "terms\">Nutzungsbedingungen</a> und die <a href=\"https://gewaessercampus.de/"
 "gdp\">Datenschutzerklärung</a> für diese Webanwendung."
 
-#: gcampus/auth/templates/gcampusauth/course_create_form.html:142
+#: gcampus/auth/templates/gcampusauth/course_create_form.html:170
 #: gcampus/core/templates/gcampuscore/forms/measurement.html:173
 #: gcampus/core/templates/gcampuscore/forms/parameters-biological.html:45
 #: gcampus/core/templates/gcampuscore/forms/parameters-chemical.html:57
@@ -440,7 +440,7 @@ msgstr ""
 msgid "Discard"
 msgstr "Verwerfen"
 
-#: gcampus/auth/templates/gcampusauth/course_create_form.html:145
+#: gcampus/auth/templates/gcampusauth/course_create_form.html:173
 #: gcampus/auth/templates/gcampusauth/login_form.html:132
 msgid "Register"
 msgstr "Registrieren"
@@ -537,7 +537,7 @@ msgstr "Anmelden"
 #: gcampus/auth/templates/gcampusauth/error/403_email_verification_expired.html:25
 #: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:25
 #: gcampus/auth/templates/gcampusauth/login_form.html:123
-#: gcampus/auth/views/register.py:38
+#: gcampus/auth/views/register.py:50
 msgid "Register a new course"
 msgstr "Neuen Kurs registrieren"
 
@@ -723,7 +723,7 @@ msgstr ""
 "angemeldet. Du wurdest automatisch abgemeldet und stattdessen mit dem "
 "Zugangscode deiner verifizierten E-Mail-Adresse angemeldet."
 
-#: gcampus/auth/views/register.py:40
+#: gcampus/auth/views/register.py:52
 msgid ""
 "Register your class or course and generate a listof access keys for your "
 "students. These keys can be used to create and later edit measurements on "
@@ -738,7 +738,11 @@ msgstr ""
 "Dieser sollte privat bleiben, da du damit alle Messungen deines Kurses "
 "verwalten kannst."
 
-#: gcampus/auth/views/register.py:62
+#: gcampus/auth/views/register.py:97
+msgid "Something went wrong, please try again later or contact us."
+msgstr "Etwas hat nicht geklappt. Versuche es später erneut oder kontaktiere uns."
+
+#: gcampus/auth/views/register.py:105
 msgid ""
 "You successfully registered a course. An activation link has been sent to "
 "your email address."
