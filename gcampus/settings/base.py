@@ -300,6 +300,9 @@ ACCESS_KEY_LENGTH = 8
 COURSE_TOKEN_LENGTH = 12
 # Maximum number of tokens that one can request
 REGISTER_MAX_ACCESS_KEY_NUMBER = 30
+# Minimum time in seconds to pass between GET and POST request
+# to prevent spam.
+REGISTER_MIN_FORM_DELAY = 12
 
 # Redis settings
 REDIS_HOST = get_env_read_file("GCAMPUS_REDIS_HOST", "localhost")

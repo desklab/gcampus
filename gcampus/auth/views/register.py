@@ -17,7 +17,12 @@ __all__ = [
     "RegisterFormView",
 ]
 
+import re
+import time
+
+from django.conf import settings
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -29,6 +34,13 @@ from gcampus.auth.decorators import throttle
 from gcampus.auth.forms import RegisterForm
 from gcampus.auth.models import Course
 from gcampus.core.views.base import TitleMixin
+
+_REGISTER_TIMESTAMP_SESSION_KEY = "gcampusauth_register_timestamp"
+
+# Regex to detect spam (random) school, teacher or course names.
+# Matches single words with two or more changes from lower to upper or
+# from upper to lower caps.
+_SPAM_REGEX = re.compile(r"([a-z]|[A-Z])([a-z]+[A-Z]+|[A-Z]+[a-z]+){2,}[a-zA-Z]*")
 
 
 class RegisterFormView(TitleMixin, CreateView):
@@ -49,12 +61,43 @@ class RegisterFormView(TitleMixin, CreateView):
     success_url = reverse_lazy("gcampuscore:mapview")
     object: Course
 
+    def get(self, request, *args, **kwargs):
+        request.session[_REGISTER_TIMESTAMP_SESSION_KEY] = time.time()
+        return super(RegisterFormView, self).get(request, *args, **kwargs)
+
     @method_decorator(throttle(scope="registration_burst"))
     @method_decorator(throttle(scope="registration_sustained"))
     def post(self, request, *args, **kwargs):
         return super(RegisterFormView, self).post(request, *args, **kwargs)
 
+    def is_spam(self, form: RegisterForm) -> bool:
+        school_name = form.cleaned_data["school_name"]
+        teacher_name = form.cleaned_data["teacher_name"]
+        name = form.cleaned_data["name"]
+        if school_name and teacher_name and name:
+            if (
+                _SPAM_REGEX.fullmatch(school_name)
+                and _SPAM_REGEX.fullmatch(teacher_name)
+                and _SPAM_REGEX.fullmatch(name)
+            ):
+                return True
+
+        timestamp: float | None = self.request.session.get(
+            _REGISTER_TIMESTAMP_SESSION_KEY, None
+        )
+        if timestamp is not None:
+            min_delay = getattr(settings, "REGISTER_MIN_FORM_DELAY", 12)
+            return timestamp is not None and (time.time() - timestamp) < min_delay
+
     def form_valid(self, form):
+        if self.is_spam(form):
+            form.add_error(
+                None,
+                ValidationError(
+                    _("Something went wrong, please try again later or contact us.")
+                ),
+            )
+            return self.form_invalid(form)
         super(RegisterFormView, self).form_valid(form)
         messages.success(
             self.request,
