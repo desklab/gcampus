@@ -62,6 +62,11 @@ class RegisterFormView(TitleMixin, CreateView):
     object: Course
 
     def get(self, request, *args, **kwargs):
+        """Get request.
+
+        Save the current time as a timestamp in the users' session. This
+        is later used to measure the time it took to fill out the form.
+        """
         request.session[_REGISTER_TIMESTAMP_SESSION_KEY] = time.time()
         return super(RegisterFormView, self).get(request, *args, **kwargs)
 
@@ -71,6 +76,15 @@ class RegisterFormView(TitleMixin, CreateView):
         return super(RegisterFormView, self).post(request, *args, **kwargs)
 
     def is_spam(self, form: RegisterForm) -> bool:
+        """Check if the form submission looks like typical spam
+        submissions.
+
+        There are two checks in place: Pattern-matching of all three
+        form fields and a time-based check.
+        If all three form fields match the pattern, they are considered
+        spam. If not but the user filled out the form in less then the
+        specified time, the form is equally considered spam.
+        """
         time_now = time.time()  # already retrieve the current time.
         school_name = form.cleaned_data["school_name"]
         teacher_name = form.cleaned_data["teacher_name"]
