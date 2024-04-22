@@ -71,6 +71,7 @@ class RegisterFormView(TitleMixin, CreateView):
         return super(RegisterFormView, self).post(request, *args, **kwargs)
 
     def is_spam(self, form: RegisterForm) -> bool:
+        time_now = time.time()  # already retrieve the current time.
         school_name = form.cleaned_data["school_name"]
         teacher_name = form.cleaned_data["teacher_name"]
         name = form.cleaned_data["name"]
@@ -87,7 +88,7 @@ class RegisterFormView(TitleMixin, CreateView):
         )
         if timestamp is not None:
             min_delay = getattr(settings, "REGISTER_MIN_FORM_DELAY", 12)
-            return timestamp is not None and (time.time() - timestamp) < min_delay
+            return timestamp is not None and (time_now - timestamp) < min_delay
 
     def form_valid(self, form):
         if self.is_spam(form):
