@@ -127,7 +127,7 @@ class RegisterFormView(TitleMixin, CreateView):
         # submissions come with that 'Accept' header. We minimize the
         # false-positive (legitimate submissions classified as spam)
         # by filtering out only these requests.
-        if self.request.headers["Accept"] == "*/*":
+        if self.request.headers.get("Accept", "*/*") == "*/*":
             # Check if the submission is considered spam.
             if self.is_spam(form):
                 # Add a generic error. Note that the timestamp is NOT reset,
