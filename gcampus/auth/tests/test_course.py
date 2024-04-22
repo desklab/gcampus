@@ -12,10 +12,11 @@
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
+import time
 from typing import Tuple, List
 from unittest.mock import patch
 
+from django.conf import settings
 from django.db import transaction
 from django.urls import reverse
 from django.utils.translation import get_language, gettext
@@ -32,6 +33,12 @@ class CourseTest(LoginTestMixin, BaseMockTaskTest):
         "name": "GCampus Test Case",
         "school_name": "GCampus Test Case",
         "teacher_name": "GCampus Testing",
+        "teacher_email": "testcase@gewaessercampus.de",
+    }
+    SPAM_COURSE_DATA: dict = {
+        "name": "dDJYMZwnLBXK",
+        "school_name": "BWVECJiLNcmXO",
+        "teacher_name": "aTLKXEUiSa",
         "teacher_email": "testcase@gewaessercampus.de",
     }
 
@@ -80,7 +87,12 @@ class CourseTest(LoginTestMixin, BaseMockTaskTest):
             "number_of_access_keys": 5,
         }
         register_form_data.update(self.DEFAULT_COURSE_DATA)
-        response = self.client.post(reverse("gcampusauth:register"), register_form_data)
+        response = self.client.post(
+            reverse("gcampusauth:register"),
+            register_form_data,
+            # Add header to circumvent spam checks.
+            headers={"Accept": "text/html,application/xhtml+xml,application/xml"},
+        )
         # 302 means the redirect was successful
         self.assertEqual(response.status_code, 302)
         try:
@@ -93,6 +105,54 @@ class CourseTest(LoginTestMixin, BaseMockTaskTest):
         self.assertEqual(
             course.access_keys.count(), register_form_data["number_of_access_keys"]
         )
+
+    def test_register_spam_data_view(self):
+        spam_register_form_data = {
+            "number_of_access_keys": 5,
+        }
+        spam_register_form_data.update(self.DEFAULT_COURSE_DATA)
+        with self.assertLogs("gcampus.auth.views.register", level="WARNING"):
+            response = self.client.post(
+                reverse("gcampusauth:register"),
+                spam_register_form_data,
+                headers={"Accept": "*/*"},
+            )
+        # 200 means the form contains errors
+        self.assertEqual(response.status_code, 200)
+
+    def test_register_spam_timestamp_view(self):
+        normal_register_form_data = {
+            "number_of_access_keys": 5,
+        }
+        normal_register_form_data.update(self.DEFAULT_COURSE_DATA)
+        get_response = self.client.get(reverse("gcampusauth:register"))
+        with self.assertLogs("gcampus.auth.views.register", level="WARNING"):
+            response = self.client.post(
+                reverse("gcampusauth:register"),
+                normal_register_form_data,
+                cookies=get_response.cookies,
+                headers={"Accept": "*/*"},
+            )
+        # 200 means the form contains errors
+        self.assertEqual(response.status_code, 200)
+
+    def test_register_no_spam_wait_view(self):
+        normal_register_form_data = {
+            "number_of_access_keys": 5,
+        }
+        normal_register_form_data.update(self.DEFAULT_COURSE_DATA)
+        get_response = self.client.get(reverse("gcampusauth:register"))
+        # Sleep for long enough
+        time.sleep(getattr(settings, "REGISTER_MIN_FORM_DELAY", 12) + 1)
+        with self.assertNoLogs("gcampus.auth.views.register", level="WARNING"):
+            response = self.client.post(
+                reverse("gcampusauth:register"),
+                normal_register_form_data,
+                cookies=get_response.cookies,
+                headers={"Accept": "*/*"},
+            )
+        # 301 means the form was valid and the view redirected
+        self.assertEqual(response.status_code, 302)
 
     def test_manual_creation(self):
         with patch.object(render_cached_document_view, "apply_async") as mock:
