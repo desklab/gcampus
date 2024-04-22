@@ -95,14 +95,27 @@ class RegisterFormView(TitleMixin, CreateView):
             return timestamp is not None and (time_now - timestamp) < min_delay
 
     def form_valid(self, form):
-        if self.is_spam(form):
-            form.add_error(
-                None,
-                ValidationError(
-                    _("Something went wrong, please try again later or contact us.")
-                ),
-            )
-            return self.form_invalid(form)
+        """Form is considered valid. Check for spam and save if not
+        spam. Sends a message to the user."""
+        # This 'Accept' header is rather uncommon, but all spam
+        # submissions come with that 'Accept' header. We minimize the
+        # false-positive (legitimate submissions classified as spam)
+        # by filtering out only these requests.
+        if self.request.headers["Accept"] == "*/*":
+            # Check if the submission is considered spam.
+            if self.is_spam(form):
+                # Add a generic error. Note that the timestamp is NOT reset,
+                # such that the user can resubmit the form and potentially
+                # pass the time-based check.
+                # This is by design, we assume that spam submissions will
+                # disregard the
+                form.add_error(
+                    None,
+                    ValidationError(
+                        _("Something went wrong, please try again or contact us.")
+                    ),
+                )
+                return self.form_invalid(form)
         super(RegisterFormView, self).form_valid(form)
         messages.success(
             self.request,
