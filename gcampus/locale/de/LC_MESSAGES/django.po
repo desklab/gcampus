@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-18 02:12+0200\n"
+"POT-Creation-Date: 2024-04-22 12:07+0200\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Axel Schlindwein <a.schlindwein@desk-lab.de>\n"
 "Language-Team: \n"
@@ -738,11 +738,12 @@ msgstr ""
 "Dieser sollte privat bleiben, da du damit alle Messungen deines Kurses "
 "verwalten kannst."
 
-#: gcampus/auth/views/register.py:97
-msgid "Something went wrong, please try again later or contact us."
-msgstr "Etwas hat nicht geklappt. Versuche es später erneut oder kontaktiere uns."
+#: gcampus/auth/views/register.py:127
+msgid "Something went wrong, please try again or contact us."
+msgstr ""
+"Etwas hat nicht geklappt. Versuche es später erneut oder kontaktiere uns."
 
-#: gcampus/auth/views/register.py:105
+#: gcampus/auth/views/register.py:135
 msgid ""
 "You successfully registered a course. An activation link has been sent to "
 "your email address."
