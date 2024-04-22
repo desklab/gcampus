@@ -17,6 +17,7 @@ __all__ = [
     "RegisterFormView",
 ]
 
+import logging
 import re
 import time
 
@@ -41,6 +42,8 @@ _REGISTER_TIMESTAMP_SESSION_KEY = "gcampusauth_register_timestamp"
 # Matches single words with two or more changes from lower to upper or
 # from upper to lower caps.
 _SPAM_REGEX = re.compile(r"([a-z]|[A-Z])([a-z]+[A-Z]+|[A-Z]+[a-z]+){2,}[a-zA-Z]*")
+
+logger = logging.getLogger("gcampus.auth.views.register")
 
 
 class RegisterFormView(TitleMixin, CreateView):
@@ -85,6 +88,7 @@ class RegisterFormView(TitleMixin, CreateView):
         spam. If not but the user filled out the form in less then the
         specified time, the form is equally considered spam.
         """
+        logger.info("Check 'register' submission for spam...")
         time_now = time.time()  # already retrieve the current time.
         school_name = form.cleaned_data["school_name"]
         teacher_name = form.cleaned_data["teacher_name"]
@@ -95,6 +99,7 @@ class RegisterFormView(TitleMixin, CreateView):
                 and _SPAM_REGEX.fullmatch(teacher_name)
                 and _SPAM_REGEX.fullmatch(name)
             ):
+                logger.warning("Submission considered spam: Spam regex matched")
                 return True
 
         timestamp: float | None = self.request.session.get(
@@ -103,10 +108,17 @@ class RegisterFormView(TitleMixin, CreateView):
         if timestamp is None:
             # Session has no timestamp information, e.g. because of
             # automated spam.
+            logger.warning(
+                "Submission considered spam: No timestamp information in session"
+            )
             return True
         else:
             min_delay = getattr(settings, "REGISTER_MIN_FORM_DELAY", 12)
-            return timestamp is not None and (time_now - timestamp) < min_delay
+            if timestamp is not None and (time_now - timestamp) < min_delay:
+                logger.warning("Submission considered spam: Submission too fast")
+                return True
+        logger.info("Submission passed spam checks")
+        return False
 
     def form_valid(self, form):
         """Form is considered valid. Check for spam and save if not
