@@ -86,7 +86,11 @@ class RegisterFormView(TitleMixin, CreateView):
         timestamp: float | None = self.request.session.get(
             _REGISTER_TIMESTAMP_SESSION_KEY, None
         )
-        if timestamp is not None:
+        if timestamp is None:
+            # Session has no timestamp information, e.g. because of
+            # automated spam.
+            return True
+        else:
             min_delay = getattr(settings, "REGISTER_MIN_FORM_DELAY", 12)
             return timestamp is not None and (time_now - timestamp) < min_delay
 
