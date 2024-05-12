@@ -263,8 +263,8 @@ REQUEST_TIMEOUT = 5  # Short timeout for simple requests
 REQUEST_USER_AGENT = f"GewaesserCampus ({GCAMPUS_HOMEPAGE})"
 
 MAP_SETTINGS = {
-    "CENTER": (8.4430, 49.4922),
-    "ZOOM": 8,
+    "CENTER": (10, 51),
+    "ZOOM": 5.2,
     "STYLE_ID": "cl4odlfc5000p14mrdd9ucxu4",
     "STYLE_ID_PRINT": "mapbox/light-v11",
     "MAX_MARKER_PRINT": 10,
