@@ -3,10 +3,10 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.12
-  - pip=24
+  - python=3.13
+  - pip=25
   - libgdal>=3.8.5,<3.9.0a0
-  - glib>=2.80.0,<3.0a0
-  - pango>=1.52.2,<2.0a0
+  - glib>=2.82.2,<3.0a0
+  - pango>=1.56.3,<2.0a0
   - pip:
       - '-r requirements-dev.txt'

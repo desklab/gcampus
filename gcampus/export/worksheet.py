@@ -23,7 +23,7 @@ from typing import List, Optional, Union, Tuple, Callable, Any
 from django.utils.timezone import is_naive, make_naive
 from django.utils.translation import gettext as _
 from xlsxwriter.format import Format
-from xlsxwriter.worksheet import Worksheet, cell_string_tuple
+from xlsxwriter.worksheet import Worksheet, CellStringTuple
 
 from gcampus.core.models.util import EMPTY
 
@@ -192,6 +192,6 @@ class ExportWorksheet(Worksheet):
             value = _("no")
 
         # Store the cell data in the worksheet data table.
-        self.table[row][col] = cell_string_tuple(value, cell_format)
+        self.table[row][col] = CellStringTuple(value, cell_format)
 
         return 0
