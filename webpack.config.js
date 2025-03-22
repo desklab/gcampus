@@ -90,7 +90,12 @@ const commonConfig = (env, options) => {
                                 ? []
                                 : [postcssLoader(env, options)]
                         ),
-                        {loader: 'sass-loader'}
+                        {
+                            loader: "sass-loader",
+                            options: {
+                                api: "legacy",
+                            },
+                        },
                     ]
                 },
                 // {
