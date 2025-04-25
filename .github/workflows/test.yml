@@ -33,7 +33,7 @@ jobs:
         ports:
           - 6379:6379
       postgis:
-        image: postgis/postgis:17
+        image: postgis/postgis:17-3.5
         env:
           POSTGRES_DB: ${{ env.GCAMPUS_DB_NAME }}
           POSTGRES_USER: ${{ env.GCAMPUS_DB_USER }}
