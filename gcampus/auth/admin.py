@@ -19,6 +19,7 @@ from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from gcampus.auth.models import AccessKey, CourseToken, User, Course
+from gcampus.auth.models.email import BlockedEmail
 from gcampus.core.admin import MeasurementInline
 from gcampus.core.models.util import ADMIN_READ_ONLY_FIELDS
 
@@ -120,3 +121,4 @@ admin.site.register(Course, CourseAdmin)
 admin.site.register(AccessKey, AccessKeyAdmin)
 admin.site.register(CourseToken, CourseTokenAdmin)
 admin.site.register(User, UserAdmin)
+admin.site.register(BlockedEmail, BlockedEmailAdmin)
