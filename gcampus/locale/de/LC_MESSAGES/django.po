@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-22 12:07+0200\n"
+"POT-Creation-Date: 2025-06-28 23:49+0200\n"
 "PO-Revision-Date: 2022-08-01 12:04+0200\n"
 "Last-Translator: Axel Schlindwein <a.schlindwein@desk-lab.de>\n"
 "Language-Team: \n"
@@ -102,6 +102,7 @@ msgid "Count"
 msgstr "Anzahl"
 
 #: gcampus/auth/forms/course.py:144 gcampus/auth/models/course.py:45
+#: gcampus/auth/models/email.py:12
 #: gcampus/documents/templates/gcampusdocuments/documents/access_course.html:71
 msgid "email"
 msgstr "E-Mail-Adresse"
@@ -132,7 +133,7 @@ msgid "Course token"
 msgstr "Kursschlüssel"
 
 #: gcampus/auth/models/course.py:33 gcampus/auth/models/course.py:80
-#: gcampus/auth/tests/test_course.py:76
+#: gcampus/auth/tests/test_course.py:84
 msgid "Course"
 msgstr "Kurs"
 
@@ -172,6 +173,19 @@ msgstr "{name!s} (Kurs {pk})"
 #, python-brace-format
 msgid "Course {pk}"
 msgstr "Kurs {pk}"
+
+#: gcampus/auth/models/email.py:9
+msgid "Blocked email"
+msgstr "Blockierte E-Mail-Adresse"
+
+#: gcampus/auth/models/email.py:10
+msgid "Blocked emails"
+msgstr "Blockierte E-Mail-Adressen"
+
+#: gcampus/auth/models/email.py:18 gcampus/core/models/measurement.py:137
+#: gcampus/core/models/water.py:205
+msgid "internal comment"
+msgstr "interner Kommentar"
 
 #: gcampus/auth/models/token.py:107
 msgid "Last login"
@@ -537,7 +551,7 @@ msgstr "Anmelden"
 #: gcampus/auth/templates/gcampusauth/error/403_email_verification_expired.html:25
 #: gcampus/auth/templates/gcampusauth/error/403_unauthenticated.html:25
 #: gcampus/auth/templates/gcampusauth/login_form.html:123
-#: gcampus/auth/views/register.py:50
+#: gcampus/auth/views/register.py:54
 msgid "Register a new course"
 msgstr "Neuen Kurs registrieren"
 
@@ -723,7 +737,7 @@ msgstr ""
 "angemeldet. Du wurdest automatisch abgemeldet und stattdessen mit dem "
 "Zugangscode deiner verifizierten E-Mail-Adresse angemeldet."
 
-#: gcampus/auth/views/register.py:52
+#: gcampus/auth/views/register.py:56
 msgid ""
 "Register your class or course and generate a listof access keys for your "
 "students. These keys can be used to create and later edit measurements on "
@@ -738,18 +752,18 @@ msgstr ""
 "Dieser sollte privat bleiben, da du damit alle Messungen deines Kurses "
 "verwalten kannst."
 
-#: gcampus/auth/views/register.py:127
-msgid "Something went wrong, please try again or contact us."
-msgstr ""
-"Etwas hat nicht geklappt. Versuche es später erneut oder kontaktiere uns."
-
-#: gcampus/auth/views/register.py:135
+#: gcampus/auth/views/register.py:128
 msgid ""
 "You successfully registered a course. An activation link has been sent to "
 "your email address."
 msgstr ""
 "Der Kurs wurde erfolgreich registriert! Ein Aktivierungslink wurde an deine "
 "E-Mail-Adresse gesendet."
+
+#: gcampus/auth/views/register.py:146
+msgid "Something went wrong, please try again or contact us."
+msgstr ""
+"Etwas hat nicht geklappt. Versuche es später erneut oder kontaktiere uns."
 
 #: gcampus/auth/views/token.py:57
 msgid ""
@@ -1372,10 +1386,6 @@ msgstr "erfordert Überprüfung"
 #: gcampus/core/models/measurement.py:129 gcampus/export/response/xlsx.py:182
 msgid "data quality warning"
 msgstr "Datenqualität-Warnung"
-
-#: gcampus/core/models/measurement.py:137 gcampus/core/models/water.py:205
-msgid "internal comment"
-msgstr "interner Kommentar"
 
 #: gcampus/core/models/measurement.py:147
 msgid "Document"
@@ -2233,7 +2243,7 @@ msgstr "Messung an stehendem Gewässer"
 msgid "Measurement at running water"
 msgstr "Messung an Fließgewässer"
 
-#: gcampus/core/views/details/measurement.py:46
+#: gcampus/core/views/details/measurement.py:47
 msgid ""
 "Learn more about the measurement, explore nearby and similar measurements, "
 "and download a PDF summary of this measurement to discuss the results with "
@@ -2242,7 +2252,7 @@ msgstr ""
 "Lerne mehr über die Messung, erkunde nahegelegene Messungen und lade eine "
 "PDF-Zusammenfassung zur gemeinsamen Disskussion herunter."
 
-#: gcampus/core/views/details/measurement.py:129
+#: gcampus/core/views/details/measurement.py:137
 msgid ""
 "You have successfully reported this measurement. The team has been informed "
 "and will look into your request as soon as possible."

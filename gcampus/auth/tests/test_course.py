@@ -23,6 +23,7 @@ from django.utils.translation import get_language, gettext
 
 from gcampus.auth.forms import RegisterForm
 from gcampus.auth.models import CourseToken, Course, AccessKey
+from gcampus.auth.models.email import BlockedEmail
 from gcampus.core.tests.mixins import LoginTestMixin
 from gcampus.documents.tasks import render_cached_document_view
 from gcampus.tasks.tests.utils import BaseMockTaskTest
@@ -135,6 +136,86 @@ class CourseTest(LoginTestMixin, BaseMockTaskTest):
             )
         # 200 means the form contains errors
         self.assertEqual(response.status_code, 200)
+
+    def test_register_non_blocked_email(self):
+        non_blocked_email = "testbackend@gewaessercampus.de"
+        email = BlockedEmail(email="someone.else@gewaessercampus.de")
+        email.save()
+        register_form_data = {
+            "number_of_access_keys": 5,
+        }
+        register_form_data.update(self.DEFAULT_COURSE_DATA)
+        register_form_data["teacher_email"] = non_blocked_email
+        response = self.client.post(
+            reverse("gcampusauth:register"),
+            register_form_data,
+            # Add header to circumvent spam checks.
+            headers={"Accept": "text/html,application/xhtml+xml,application/xml"},
+        )
+        # 302 means the redirect was successful, blocked emails are
+        # ignored silently
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(Course.objects.filter(teacher_email=non_blocked_email).exists())
+
+    def test_register_non_blocked_email_wildcard(self):
+        non_blocked_email = "testbackend@gewaessercampus.de"
+        email = BlockedEmail(email="*@example.com")
+        email.save()
+        register_form_data = {
+            "number_of_access_keys": 5,
+        }
+        register_form_data.update(self.DEFAULT_COURSE_DATA)
+        register_form_data["teacher_email"] = non_blocked_email
+        response = self.client.post(
+            reverse("gcampusauth:register"),
+            register_form_data,
+            # Add header to circumvent spam checks.
+            headers={"Accept": "text/html,application/xhtml+xml,application/xml"},
+        )
+        # 302 means the redirect was successful, blocked emails are
+        # ignored silently
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(Course.objects.filter(teacher_email=non_blocked_email).exists())
+
+    def test_register_blocked_email(self):
+        blocked_email = "testbackend@gewaessercampus.de"
+        email = BlockedEmail(email=blocked_email)
+        email.save()
+        register_form_data = {
+            "number_of_access_keys": 5,
+        }
+        register_form_data.update(self.DEFAULT_COURSE_DATA)
+        register_form_data["teacher_email"] = blocked_email
+        response = self.client.post(
+            reverse("gcampusauth:register"),
+            register_form_data,
+            # Add header to circumvent spam checks.
+            headers={"Accept": "text/html,application/xhtml+xml,application/xml"},
+        )
+        # 302 means the redirect was successful, blocked emails are
+        # ignored silently
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Course.objects.filter(teacher_email=blocked_email).exists())
+
+    def test_register_blocked_email_wildcard(self):
+        blocked_email = "testbackend@example.com"
+        email = BlockedEmail(email="*@example.com")
+        email.save()
+        register_form_data = {
+            "number_of_access_keys": 5,
+        }
+        register_form_data.update(self.DEFAULT_COURSE_DATA)
+        register_form_data["teacher_email"] = blocked_email
+        response = self.client.post(
+            reverse("gcampusauth:register"),
+            register_form_data,
+            # Add header to circumvent spam checks.
+            headers={"Accept": "text/html,application/xhtml+xml,application/xml"},
+        )
+        # 302 means the redirect was successful, blocked emails are
+        # ignored silently
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Course.objects.filter(teacher_email=blocked_email).exists())
 
     def test_register_no_spam_wait_view(self):
         normal_register_form_data = {

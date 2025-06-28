@@ -27,6 +27,7 @@ from django.views.generic.edit import FormMixin
 
 from gcampus.auth.decorators import throttle
 from gcampus.auth.models import BaseToken
+from gcampus.auth.models.email import check_email
 from gcampus.auth.session import is_authenticated
 from gcampus.core.forms.measurement import ReportForm
 from gcampus.core.models import Measurement
@@ -106,13 +107,30 @@ class MeasurementDetailView(FormMixin, TitleMixin, DetailView):
 
         Problem type: {problem_type}
 
-        Additional information: {form.cleaned_data['text'] or '-'}
+        Additional information: {form.cleaned_data["text"] or "-"}
 
-        E-Mail address: {form.cleaned_data['email'] or '-'}
+        E-Mail address: {form.cleaned_data["email"] or "-"}
         """
         return cleandoc(email_string)
 
     def form_valid(self, form):
+        success_message = gettext(
+            "You have successfully reported this measurement. The team has been "
+            "informed and will look into your request as soon as possible."
+        )
+        email = form.cleaned_data["email"]
+        if email and not check_email(email):
+            logger.warn(
+                f"Ignored measurement report for measurement '{self.object.pk}': Email blocked"
+            )
+            # We might want to print the success message anyway, but for
+            # now it is omitted.
+            # messages.success(
+            #     self.request,
+            #     message=success_message,
+            # )
+            return super(MeasurementDetailView, self).form_valid(form)
+
         self.object.requires_review = True
         self.object.save(update_fields=("requires_review",))
         current_url = self.request.get_full_path()
@@ -125,10 +143,7 @@ class MeasurementDetailView(FormMixin, TitleMixin, DetailView):
         )
         messages.success(
             self.request,
-            message=gettext(
-                "You have successfully reported this measurement. The team has been "
-                "informed and will look into your request as soon as possible."
-            ),
+            message=success_message,
         )
         email_text = self.create_measurement_report_string(form, current_url, admin_url)
         mail_managers(f"Measurement reported: {self.object!s}", email_text)

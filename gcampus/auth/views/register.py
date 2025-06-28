@@ -34,6 +34,7 @@ from django.views.generic import CreateView
 from gcampus.auth.decorators import throttle
 from gcampus.auth.forms import RegisterForm
 from gcampus.auth.models import Course
+from gcampus.auth.models.email import check_email
 from gcampus.core.views.base import TitleMixin
 
 _REGISTER_TIMESTAMP_SESSION_KEY = "gcampusauth_register_timestamp"
@@ -123,6 +124,10 @@ class RegisterFormView(TitleMixin, CreateView):
     def form_valid(self, form):
         """Form is considered valid. Check for spam and save if not
         spam. Sends a message to the user."""
+        success_message = _(
+            "You successfully registered a course. "
+            "An activation link has been sent to your email address."
+        )
         # This 'Accept' header is rather uncommon, but all spam
         # submissions come with that 'Accept' header. We minimize the
         # false-positive (legitimate submissions classified as spam)
@@ -142,13 +147,25 @@ class RegisterFormView(TitleMixin, CreateView):
                     ),
                 )
                 return self.form_invalid(form)
+
+        # Blocked emails are treated differently than the bot spam check
+        # as they should fail silently. Also, the false-positive rate
+        # is much lower as individual email addresses are blocked,
+        # so we don't have to check for the special header.
+        email = form.cleaned_data["teacher_email"]
+        if not check_email(email):
+            logger.warning("Submission considered spam: Email blocked")
+            # Optional: Show success message even if ignored:
+            # messages.success(
+            #     self.request,
+            #     success_message,
+            # )
+            return HttpResponseRedirect(self.success_url)
+
         super(RegisterFormView, self).form_valid(form)
         messages.success(
             self.request,
-            _(
-                "You successfully registered a course. "
-                "An activation link has been sent to your email address."
-            ),
+            success_message,
         )
         # In older versions of this function, the user has been logged
         # in automatically. This has been changed to the following:

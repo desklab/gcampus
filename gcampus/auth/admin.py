@@ -109,6 +109,13 @@ class CourseTokenAdmin(admin.ModelAdmin):
     actions = [deactivate_token, reactivate_token]
 
 
+class BlockedEmailAdmin(admin.ModelAdmin):
+    list_filter = ("created_at", "updated_at")
+    search_fields = ("email", "internal_comment")
+    list_display = ("email", "internal_comment")
+    readonly_fields = ADMIN_READ_ONLY_FIELDS
+
+
 admin.site.register(Course, CourseAdmin)
 admin.site.register(AccessKey, AccessKeyAdmin)
 admin.site.register(CourseToken, CourseTokenAdmin)
