@@ -1,3 +1,15 @@
+[project]
+name = "gcampus"
+version = "0.10.4"
+authors = [
+    {name = "Axel Schlindwein"},
+    {name = "Noah Wach"},
+    {name = "Jonas Drotleff", email = "j.drotleff@desk-lab.de" },
+]
+readme = "README.md"
+license = { text = "AGPL-3.0-only" }
+requires-python = ">=3.11"
+
 [tool.black]
 line-length = 88
 target-version = ["py311"]

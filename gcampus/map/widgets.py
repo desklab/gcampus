@@ -24,6 +24,7 @@ logger = logging.getLogger("gcampus.map.widgets")
 
 class GeoPointWidget(BaseGeometryWidget):
     geom_type = PointField.geom_type
+    module = "gcampusmap"
     map_srid = 4326
     map_width = 600
     map_height = 400
@@ -56,7 +57,7 @@ class GeoPointWidget(BaseGeometryWidget):
         context = super(GeoPointWidget, self).get_context(name, value, attrs)
         input_id: str = slugify(f"input-{name.replace('_', '-')}")
         map_container_id: str = slugify(f"map-{name.replace('_', '-')}")
-        module_name: str = context["module"]
+        module_name: str = self.module
         context.update(
             {
                 "input_id": input_id,

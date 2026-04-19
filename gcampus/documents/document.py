@@ -33,40 +33,39 @@ from django.contrib.staticfiles import finders
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.template.loader import render_to_string
 from weasyprint import HTML, Document
-from weasyprint.urls import default_url_fetcher
+from weasyprint.urls import URLFetcher, URLFetcherResponse
 
 from gcampus.core import get_base_url
 
 DOCUMENT_TEMPLATE_ENGINE: str = "document"
 
 
-def url_fetcher(url: str, **kwargs):
-    try:
-        o = urlsplit(url)
-    except ValueError:
-        return default_url_fetcher(url, **kwargs)
-    if o.netloc == settings.PRIMARY_HOST and o.path.startswith(settings.STATIC_URL):
-        path = os.path.relpath(o.path, settings.STATIC_URL)
-        normalized_path = posixpath.normpath(path).lstrip("/")
-        mime_type, encoding = mimetypes.guess_type(path, strict=True)
-        absolute_path = finders.find(normalized_path)
+class GCampusURLFetcher(URLFetcher):
+    def fetch(self, url, headers=None):
         try:
-            if not absolute_path:
-                raise FileNotFoundError()
-            if not os.path.isfile(absolute_path) or not os.path.exists(absolute_path):
-                raise FileNotFoundError(
-                    f"File '{url}' (resolved to '{absolute_path}') not found!"
-                )
-            file_obj = open(absolute_path, "rb")
-        except FileNotFoundError:
-            file_obj = staticfiles_storage.open(normalized_path, mode="rb")
-        return {
-            "mime_type": mime_type,
-            "encoding": encoding,
-            "file_obj": file_obj,
-        }
-    else:
-        return default_url_fetcher(url, **kwargs)
+            o = urlsplit(url)
+        except ValueError:
+            return super().fetch(url, headers)
+        if o.netloc == settings.PRIMARY_HOST and o.path.startswith(settings.STATIC_URL):
+            path = os.path.relpath(o.path, settings.STATIC_URL)
+            normalized_path = posixpath.normpath(path).lstrip("/")
+            mime_type, encoding = mimetypes.guess_type(path, strict=True)
+            absolute_path = finders.find(normalized_path)
+            try:
+                if not absolute_path:
+                    raise FileNotFoundError()
+                if not os.path.isfile(absolute_path) or not os.path.exists(absolute_path):
+                    raise FileNotFoundError(
+                        f"File '{url}' (resolved to '{absolute_path}') not found!"
+                    )
+                file_obj = open(absolute_path, "rb")
+            except FileNotFoundError:
+                file_obj = staticfiles_storage.open(normalized_path, mode="rb")
+            content_type = mime_type or "application/octet-stream"
+            if encoding:
+                content_type = f"{content_type}; charset={encoding}"
+            return URLFetcherResponse(url, file_obj.read(), {"Content-Type": content_type})
+        return super().fetch(url, headers)
 
 
 def render_document(
@@ -88,7 +87,7 @@ def render_document_from_html(html: str) -> Document:
         :func:`django.template.loader.render_to_string`.
     :returns: A rendered :class:`weasyprint.Document` instance.
     """
-    return HTML(string=html, url_fetcher=url_fetcher, base_url=get_base_url()).render()
+    return HTML(string=html, url_fetcher=GCampusURLFetcher(), base_url=get_base_url()).render()
 
 
 def as_bytes_io(document: Document, **kwargs) -> BytesIO:

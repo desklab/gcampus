@@ -223,13 +223,13 @@ class Water(DateModelMixin):
                 del mod_fields[i]
         return super(Water, self)._do_insert(manager, using, mod_fields, update_pk, raw)
 
-    def _do_update(self, base_qs, using, pk_val, values, update_fields, forced_update):
+    def _do_update(self, base_qs, using, pk_val, values, update_fields, forced_update, returning_fields):
         mod_values = list(values)
         for i, (field, _, value) in enumerate(mod_values):
             if field.name == "search_vector":
                 del mod_values[i]
         return super(Water, self)._do_update(
-            base_qs, using, pk_val, mod_values, update_fields, forced_update
+            base_qs, using, pk_val, mod_values, update_fields, forced_update, returning_fields
         )
 
     @property
